@@ -22,7 +22,9 @@ _MARATONAS_ALVO = [
     "maratona de manaus", "maratona caixa", "maratona de brasilia",
 ]
 
-_CLOSED_KW = {"encerrad", "esgotad"}
+_OPEN_KW = ("abertas", "aberto", "últimas unidades", "ultimas unidades",
+            "pré venda", "pre venda", "pré-venda", "pre-venda")
+_CLOSED_KW = ("encerrad", "esgotad")
 
 
 def scrape() -> list[Corrida]:
@@ -87,7 +89,7 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link_evento,
-        links_inscricao=[link_evento] if inscricoes_abertas else [],
+        links_inscricao=[link_evento] if inscricoes_abertas is not False else [],
         inscricoes=[],
     )
 
@@ -130,14 +132,19 @@ def _parse_image(raw: str | None) -> str | None:
 
 
 def _parse_inscricoes_abertas(event: dict) -> bool | None:
-    be = (event.get("bota_encerrado") or "").lower()
-    if any(k in be for k in _CLOSED_KW):
+    ba = (event.get("botao_aberto") or "").lower().strip()
+    be = (event.get("bota_encerrado") or "").lower().strip()
+
+    # botao_aberto is authoritative: if it signals open, trust it
+    if ba and ba != "null":
+        if any(kw in ba for kw in _OPEN_KW):
+            return True
+
+    # No open button + closed signal → closed
+    if (not ba or ba == "null") and any(kw in be for kw in _CLOSED_KW):
         return False
-    # yn_codigo_evento_encerrrado="sim" means restricted/not yet open to public
-    if (event.get("yn_codigo_evento_encerrrado") or "").lower() == "sim":
-        return False
-    # Published events not definitively closed default to open ("Inscreva-se")
-    return True
+
+    return None
 
 
 _PERCURSO_RE = re.compile(

@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: '0 9 * * *'   # 06:00 BRT (UTC-3)
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scraper/**'
+      - '.github/workflows/scrape.yml'
+      - 'requirements.txt'
 
 permissions:
   contents: write

@@ -116,9 +116,10 @@ function populateEstadoFilter() {
 // ---------------------------------------------------------------------------
 function applyFilters() {
   const today = todayStr();
+  const searching = state.searchQuery !== '';
 
   filteredCorridas = allCorridas.filter(c => {
-    if (!matchesPeriodo(c, today)) return false;
+    if (!searching && !matchesPeriodo(c, today)) return false;
     if (!matchesEstado(c)) return false;
     if (!matchesDistancia(c)) return false;
     if (!matchesSearch(c)) return false;

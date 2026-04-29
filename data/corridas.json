@@ -1,12 +1,1702 @@
 {
-  "gerado_em": "2026-04-29T13:19:12+00:00",
-  "total": 7,
+  "gerado_em": "2026-04-29T13:27:36+00:00",
+  "total": 57,
   "corridas": [
+    {
+      "id": "tokyo-marathon_int_2026-04-29",
+      "titulo": "Tokyo Marathon",
+      "data_evento": "2026-03-01",
+      "horario": "09:10",
+      "localizacao": "Tóquio, Japão",
+      "cidade": "Tóquio, Japão",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.marathon.tokyo/common/images/ogimg2026.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Tokyo Marathon",
+          "link_evento": "https://www.marathon.tokyo/en/",
+          "links_inscricao": [
+            "https://www.marathon.tokyo/en/participants/"
+          ],
+          "inscricoes": [
+            {
+              "descricao": "Tokyo Marathon",
+              "valor": null,
+              "disponivel": true,
+              "link": "https://www.marathon.tokyo/en/participants/"
+            }
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:47+00:00",
+      "updated_at": "2026-04-29T13:27:36+00:00"
+    },
+    {
+      "id": "corrida-100-voc-braslia_df_2026-04-29",
+      "titulo": "Corrida 100% Voc - Braslia",
+      "data_evento": "2026-04-01",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56747&Corrida 100% Voc� - Bras�lia",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56747&Corrida 100% Voc� - Bras�lia"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corrida-nacional-do-sesi-braslia_df_2026-04-29",
+      "titulo": "Corrida Nacional Do Sesi - Braslia",
+      "data_evento": "2026-04-01",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54361&Corrida Nacional do SESI - Bras�lia",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54361&Corrida Nacional do SESI - Bras�lia"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "live-42k-braslia_df_2026-04-29",
+      "titulo": "Live!42K - Braslia",
+      "data_evento": "2026-04-02",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 42.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=51449",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=51449"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "circuito-da-sade-1-etapa-ana-nri_df_2026-04-29",
+      "titulo": "Circuito Da Sade - 1 Etapa Ana Nri",
+      "data_evento": "2026-04-03",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54238&Circuito da Sa�de - 1� Etapa Ana N�ri",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54238&Circuito da Sa�de - 1� Etapa Ana N�ri"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corrida-kids-oh-geladim_df_2026-04-29",
+      "titulo": "Corrida Kids Oh Geladim",
+      "data_evento": "2026-04-03",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55987&Corrida Kids Oh Geladim",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55987&Corrida Kids Oh Geladim"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "desafio-das-torres_df_2026-04-29",
+      "titulo": "Desafio Das Torres",
+      "data_evento": "2026-04-03",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=51450&Desafio das Torres",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=51450&Desafio das Torres"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "movimente-se-corrida-e-caminhada-para-sade_df_2026-04-29",
+      "titulo": "Movimente-Se - Corrida E Caminhada Para Sade",
+      "data_evento": "2026-04-04",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56748&Movimente-se - Corrida e Caminhada para Sa�de",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56748&Movimente-se - Corrida e Caminhada para Sa�de"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "black-night-run-4-edio_df_2026-04-29",
+      "titulo": "Black Night Run - 4 Edio",
+      "data_evento": "2026-04-04",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54242&Black Night Run - 4� Edi��o",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54242&Black Night Run - 4� Edi��o"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "bop-run-bop-games-braslia_df_2026-04-29",
+      "titulo": "Bop Run - Bop Games Braslia",
+      "data_evento": "2026-04-05",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=57490&BOP Run - BOP Games Bras�lia",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=57490&BOP Run - BOP Games Bras�lia"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "capital-night_df_2026-04-29",
+      "titulo": "Capital Night",
+      "data_evento": "2026-04-06",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=57484&Capital Night",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=57484&Capital Night"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "maratona-btr-desafio-gua-mineral_df_2026-04-29",
+      "titulo": "Maratona Btr - Desafio Gua Mineral",
+      "data_evento": "2026-04-06",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55984&Maratona BTR - Desafio �gua Mineral",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55984&Maratona BTR - Desafio �gua Mineral"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "2-corrida-da-nazar-e-santo-agostinho-run_df_2026-04-29",
+      "titulo": "2 Corrida Da Nazar E Santo Agostinho Run",
+      "data_evento": "2026-04-07",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55985&2� Corrida da Nazar� e Santo Agostinho Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55985&2� Corrida da Nazar� e Santo Agostinho Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corridona-2026_df_2026-04-29",
+      "titulo": "Corridona 2026",
+      "data_evento": "2026-04-07",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55986&Corridona 2026",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55986&Corridona 2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "marotinga-2026_df_2026-04-29",
+      "titulo": "Marotinga 2026",
+      "data_evento": "2026-04-07",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55994&Marotinga 2026",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55994&Marotinga 2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "9-corrida-de-olho-na-sade_df_2026-04-29",
+      "titulo": "9 Corrida De Olho Na Sade",
+      "data_evento": "2026-04-08",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54243&9� Corrida De Olho Na Sa�de",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54243&9� Corrida De Olho Na Sa�de"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "19-corrida-unio-europeia-sunset-edition_df_2026-04-29",
+      "titulo": "19 Corrida Unio Europeia - Sunset Edition",
+      "data_evento": "2026-04-09",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55980&19� Corrida Uni�o Europeia - Sunset Edition",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55980&19� Corrida Uni�o Europeia - Sunset Edition"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "meia-maratona-da-polcia-federal_df_2026-04-29",
+      "titulo": "Meia Maratona Da Polcia Federal",
+      "data_evento": "2026-04-09",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55012&Meia Maratona da Pol�cia Federal",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55012&Meia Maratona da Pol�cia Federal"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "1-corrida-e-caminhada-do-divino-esprito-santo_df_2026-04-29",
+      "titulo": "1 Corrida E Caminhada Do Divino Esprito Santo",
+      "data_evento": "2026-04-10",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54766&1� Corrida e Caminhada do Divino Esp�rito Santo",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54766&1� Corrida e Caminhada do Divino Esp�rito Santo"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "porto-sade-blue-run_df_2026-04-29",
+      "titulo": "Porto Sade Blue Run",
+      "data_evento": "2026-04-10",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54111&Porto Sa�de Blue Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54111&Porto Sa�de Blue Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "cats-run-df_df_2026-04-29",
+      "titulo": "Cats Run Df",
+      "data_evento": "2026-04-12",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55989&Cats Run DF",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55989&Cats Run DF"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "etapa-plano-piloto_df_2026-04-29",
+      "titulo": "Etapa Plano Piloto",
+      "data_evento": "2026-04-12",
+      "horario": "07:05",
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:05+00:00",
+      "updated_at": "2026-04-29T13:27:05+00:00"
+    },
+    {
+      "id": "copa-run-2026_df_2026-04-29",
+      "titulo": "Copa Run 2026",
+      "data_evento": "2026-04-13",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54240&Copa Run 2026",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54240&Copa Run 2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "35-corrida-do-fogo-cbmdf_df_2026-04-29",
+      "titulo": "35 Corrida Do Fogo - Cbmdf",
+      "data_evento": "2026-04-14",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=53463&35� Corrida do Fogo - CBMDF",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=53463&35� Corrida do Fogo - CBMDF"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "pink-night-run_df_2026-04-29",
+      "titulo": "Pink Night Run",
+      "data_evento": "2026-04-15",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=57486&Pink Night Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=57486&Pink Night Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "1-corrida-do-bope_df_2026-04-29",
+      "titulo": "1 Corrida Do Bope",
+      "data_evento": "2026-04-16",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56746&1� Corrida do BOPE",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56746&1� Corrida do BOPE"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "circuito-serrano-corrida-de-rua-e-caminhada_df_2026-04-29",
+      "titulo": "Circuito Serrano Corrida De Rua E Caminhada",
+      "data_evento": "2026-04-16",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=53123&Circuito Serrano Corrida de Rua e Caminhada",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=53123&Circuito Serrano Corrida de Rua e Caminhada"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "track-fields-run-series-conjunto-nacional_df_2026-04-29",
+      "titulo": "Track&Fields Run Series - Conjunto Nacional",
+      "data_evento": "2026-04-16",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56192&Track&Fields Run Series - Conjunto Nacional\r\n",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56192&Track&Fields Run Series - Conjunto Nacional\r\n"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corrida-da-cmara_df_2026-04-29",
+      "titulo": "Corrida Da Cmara",
+      "data_evento": "2026-04-17",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54239&Corrida da C�mara",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54239&Corrida da C�mara"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "netshoes-run_df_2026-04-29",
+      "titulo": "Netshoes Run",
+      "data_evento": "2026-04-17",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55981&Netshoes Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55981&Netshoes Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "circuito-caixa-cross-parques-ona-pintada_df_2026-04-29",
+      "titulo": "Circuito Caixa Cross Parques - Ona Pintada",
+      "data_evento": "2026-04-18",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=57487&Circuito CAIXA Cross Parques - On�a Pintada",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=57487&Circuito CAIXA Cross Parques - On�a Pintada"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "cross-urbano-etapa-braslia_df_2026-04-29",
+      "titulo": "Cross Urbano - Etapa Braslia",
+      "data_evento": "2026-04-19",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56502&Cross Urbano - Etapa Bras�lia",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56502&Cross Urbano - Etapa Bras�lia"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "2-super-sunset-run_df_2026-04-29",
+      "titulo": "2 Super Sunset Run",
+      "data_evento": "2026-04-20",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54241&2� Super Sunset Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54241&2� Super Sunset Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "circuito-corre-que-d-bom-pelo-mundo-etapa-brasil_df_2026-04-29",
+      "titulo": "Circuito Corre Que D Bom Pelo Mundo Etapa Brasil",
+      "data_evento": "2026-04-21",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55011&Circuito Corre Que D� Bom Pelo Mundo � Etapa Brasil",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55011&Circuito Corre Que D� Bom Pelo Mundo � Etapa Brasil"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "circuito-corrida-zoo-animal-2026-etapa-arara-azul_df_2026-04-29",
+      "titulo": "Circuito Corrida Zoo Animal 2026 Etapa Arara Azul",
+      "data_evento": "2026-04-21",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55995&Circuito Corrida Zoo Animal 2026 � Etapa Arara Azul",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55995&Circuito Corrida Zoo Animal 2026 � Etapa Arara Azul"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "minions-run_df_2026-04-29",
+      "titulo": "Minions Run",
+      "data_evento": "2026-04-21",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56751&Minions Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56751&Minions Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "quatro-poderes-run_df_2026-04-29",
+      "titulo": "Quatro Poderes Run",
+      "data_evento": "2026-04-22",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54244&Quatro Poderes Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54244&Quatro Poderes Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "one-run-sunset-2026_df_2026-04-29",
+      "titulo": "One Run Sunset 2026",
+      "data_evento": "2026-04-23",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=52513&One Run Sunset 2026",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=52513&One Run Sunset 2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "21k-parque-da-cidade-d-sarah-kubitschek_df_2026-04-29",
+      "titulo": "21K Parque Da Cidade D. Sarah Kubitschek",
+      "data_evento": "2026-04-24",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=53124&21K Parque da Cidade D. Sarah Kubitschek",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=53124&21K Parque da Cidade D. Sarah Kubitschek"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corrida-da-infantaria_df_2026-04-29",
+      "titulo": "Corrida Da Infantaria",
+      "data_evento": "2026-04-24",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55993&Corrida da Infantaria",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55993&Corrida da Infantaria"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corrida-sindjus-36-anos_df_2026-04-29",
+      "titulo": "Corrida Sindjus 36 Anos",
+      "data_evento": "2026-04-24",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=57489&Corrida Sindjus 36 Anos",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=57489&Corrida Sindjus 36 Anos"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corrida-poupex_df_2026-04-29",
+      "titulo": "Corrida Poupex",
+      "data_evento": "2026-04-25",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=56749&Corrida Poupex",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=56749&Corrida Poupex"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "asics-run-challenge-2026_df_2026-04-29",
+      "titulo": "Asics Run Challenge 2026",
+      "data_evento": "2026-04-26",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55990&ASICS Run Challenge 2026",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55990&ASICS Run Challenge 2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "bsb-corre_df_2026-04-29",
+      "titulo": "Bsb Corre",
+      "data_evento": "2026-04-26",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=54765&BSB Corre",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=54765&BSB Corre"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "inscricoes-abertas-para-circuito-sesc-corridas-etapa-taguatinga_df_2026-04-29",
+      "titulo": "Inscrições Abertas Para Circuito Sesc + Corridas - Etapa Taguatinga",
+      "data_evento": "2026-04-26",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:05+00:00",
+      "updated_at": "2026-04-29T13:27:05+00:00"
+    },
+    {
+      "id": "circuito-das-estaes-inverno_df_2026-04-29",
+      "titulo": "Circuito Das Estaes - Inverno",
+      "data_evento": "2026-04-28",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=52913&Circuito das Esta��es - Inverno",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=52913&Circuito das Esta��es - Inverno"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "corre-que-so-joo_df_2026-04-29",
+      "titulo": "Corre Que So Joo",
+      "data_evento": "2026-04-30",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55982&Corre que � S�o Jo�o",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55982&Corre que � S�o Jo�o"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "mix-run_df_2026-04-29",
+      "titulo": "Mix Run",
+      "data_evento": "2026-04-30",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=53122&Mix Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=53122&Mix Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "circuito-das-estaes-primavera_df_2026-04-29",
+      "titulo": "Circuito Das Estaes - Primavera",
+      "data_evento": "2026-04-30",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=52912&Circuito das Esta��es - Primavera",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=52912&Circuito das Esta��es - Primavera"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "grand-premium-brasil_df_2026-04-29",
+      "titulo": "Grand Premium Brasil",
+      "data_evento": "2026-04-30",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=55991&Grand Premium Brasil",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=55991&Grand Premium Brasil"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "nutrio-brasil-run_df_2026-04-29",
+      "titulo": "Nutrio Brasil Run",
+      "data_evento": "2026-04-30",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "mostracorrida.asp?escolha=49959&Nutri��o Brasil Run",
+          "links_inscricao": [
+            "mostracorrida.asp?escolha=49959&Nutri��o Brasil Run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T13:27:02+00:00",
+      "updated_at": "2026-04-29T13:27:02+00:00"
+    },
+    {
+      "id": "bank-of-america-chicago-marathon_int_2026-04-29",
+      "titulo": "Bank of America Chicago Marathon",
+      "data_evento": "2026-10-11",
+      "horario": "07:30",
+      "localizacao": "Chicago, EUA",
+      "cidade": "Chicago, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://assets-chicagomarathon-com.s3.amazonaws.com/wp-content/uploads/2019/10/2019_ChicagoMarathon-1.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Bank of America Chicago Marathon",
+          "link_evento": "https://www.chicagomarathon.com/",
+          "links_inscricao": [
+            "https://www.chicagomarathon.com/register/"
+          ],
+          "inscricoes": [
+            {
+              "descricao": "Chicago Marathon",
+              "valor": null,
+              "disponivel": true,
+              "link": "https://www.chicagomarathon.com/register/"
+            }
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:46+00:00",
+      "updated_at": "2026-04-29T13:27:36+00:00"
+    },
     {
       "id": "boston-marathon_int_2026-04-29",
       "titulo": "Boston Marathon",
       "data_evento": "",
-      "horario": null,
+      "horario": "09:00",
       "localizacao": "Boston, EUA",
       "cidade": "Boston, EUA",
       "estado": "INT",
@@ -18,7 +1708,7 @@
         }
       ],
       "imagem_url": null,
-      "inscricoes_abertas": null,
+      "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
         {
@@ -27,20 +1717,27 @@
           "links_inscricao": [
             "https://www.baa.org/races/boston-marathon/"
           ],
-          "inscricoes": []
+          "inscricoes": [
+            {
+              "descricao": "Boston Marathon",
+              "valor": null,
+              "disponivel": true,
+              "link": "https://www.baa.org/races/boston-marathon/"
+            }
+          ]
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T12:57:46+00:00",
-      "updated_at": "2026-04-29T12:57:46+00:00"
+      "updated_at": "2026-04-29T13:27:36+00:00"
     },
     {
-      "id": "bank-of-america-chicago-marathon_int_2026-04-29",
-      "titulo": "Bank of America Chicago Marathon",
+      "id": "bmw-berlin-marathon_int_2026-04-29",
+      "titulo": "BMW Berlin Marathon",
       "data_evento": "",
-      "horario": null,
-      "localizacao": "Chicago, EUA",
-      "cidade": "Chicago, EUA",
+      "horario": "09:15",
+      "localizacao": "Berlim, Alemanha",
+      "cidade": "Berlim, Alemanha",
       "estado": "INT",
       "distancias": [
         {
@@ -49,22 +1746,107 @@
           "horario": null
         }
       ],
-      "imagem_url": null,
+      "imagem_url": "https://www.bmw-berlin-marathon.com/fileadmin/_processed_/4/7/csm_BM25_Website_Teaser_1920x1080_332c01cbb7.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Bank of America Chicago Marathon",
-          "link_evento": "https://www.chicagomarathon.com/",
+          "nome": "BMW Berlin Marathon",
+          "link_evento": "https://www.bmw-berlin-marathon.com/en/",
           "links_inscricao": [
-            "https://www.chicagomarathon.com/register/"
+            "https://www.bmw-berlin-marathon.com/en/register/"
           ],
-          "inscricoes": []
+          "inscricoes": [
+            {
+              "descricao": "BMW Berlin Marathon",
+              "valor": null,
+              "disponivel": false,
+              "link": "https://www.bmw-berlin-marathon.com/en/register/"
+            }
+          ]
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T12:57:46+00:00",
-      "updated_at": "2026-04-29T12:57:46+00:00"
+      "updated_at": "2026-04-29T13:27:36+00:00"
+    },
+    {
+      "id": "tcs-london-marathon_int_2026-04-29",
+      "titulo": "TCS London Marathon",
+      "data_evento": "",
+      "horario": "09:00",
+      "localizacao": "Londres, Reino Unido",
+      "cidade": "Londres, Reino Unido",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.londonmarathonevents.co.uk/sites/default/files/styles/social_media_share/public/2026-03/KC1_8024.JPG?h=e1696c84&itok=birhGfcd",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS London Marathon",
+          "link_evento": "https://www.tcslondonmarathon.com/",
+          "links_inscricao": [
+            "https://www.tcslondonmarathon.com/enter/"
+          ],
+          "inscricoes": [
+            {
+              "descricao": "TCS London Marathon",
+              "valor": null,
+              "disponivel": true,
+              "link": "https://www.tcslondonmarathon.com/enter/"
+            }
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:46+00:00",
+      "updated_at": "2026-04-29T13:27:36+00:00"
+    },
+    {
+      "id": "tcs-new-york-city-marathon_int_2026-04-29",
+      "titulo": "TCS New York City Marathon",
+      "data_evento": "",
+      "horario": "08:00",
+      "localizacao": "Nova York, EUA",
+      "cidade": "Nova York, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://prodsitecorehaku01-image.nyrr.org/nyrrsitecoreblob/nyrr/image/photogallery/2018/ua-nyc-half-the-course/31_nych18_sm_1474.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS New York City Marathon",
+          "link_evento": "https://www.nyrr.org/races/tcsnycmarathon",
+          "links_inscricao": [
+            "https://www.nyrr.org/races/tcsnycmarathon"
+          ],
+          "inscricoes": [
+            {
+              "descricao": "TCS NYC Marathon",
+              "valor": null,
+              "disponivel": true,
+              "link": "https://www.nyrr.org/races/tcsnycmarathon"
+            }
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:47+00:00",
+      "updated_at": "2026-04-29T13:27:36+00:00"
     },
     {
       "id": "tcs-sydney-marathon_int_2026-04-29",
@@ -97,134 +1879,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-29T12:57:47+00:00",
       "updated_at": "2026-04-29T12:57:47+00:00"
-    },
-    {
-      "id": "tokyo-marathon_int_2026-04-29",
-      "titulo": "Tokyo Marathon",
-      "data_evento": "",
-      "horario": null,
-      "localizacao": "Tóquio, Japão",
-      "cidade": "Tóquio, Japão",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Tokyo Marathon",
-          "link_evento": "https://www.marathon.tokyo/en/",
-          "links_inscricao": [
-            "https://www.marathon.tokyo/en/participants/"
-          ],
-          "inscricoes": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-29T12:57:47+00:00",
-      "updated_at": "2026-04-29T12:57:47+00:00"
-    },
-    {
-      "id": "tcs-london-marathon_int_2026-04-29",
-      "titulo": "TCS London Marathon",
-      "data_evento": "",
-      "horario": null,
-      "localizacao": "Londres, Reino Unido",
-      "cidade": "Londres, Reino Unido",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "TCS London Marathon",
-          "link_evento": "https://www.tcslondonmarathon.com/",
-          "links_inscricao": [
-            "https://www.tcslondonmarathon.com/enter/"
-          ],
-          "inscricoes": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-29T12:57:46+00:00",
-      "updated_at": "2026-04-29T12:57:46+00:00"
-    },
-    {
-      "id": "tcs-new-york-city-marathon_int_2026-04-29",
-      "titulo": "TCS New York City Marathon",
-      "data_evento": "",
-      "horario": null,
-      "localizacao": "Nova York, EUA",
-      "cidade": "Nova York, EUA",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "TCS New York City Marathon",
-          "link_evento": "https://www.nyrr.org/races/tcsnycmarathon",
-          "links_inscricao": [
-            "https://www.nyrr.org/races/tcsnycmarathon"
-          ],
-          "inscricoes": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-29T12:57:47+00:00",
-      "updated_at": "2026-04-29T12:57:47+00:00"
-    },
-    {
-      "id": "bmw-berlin-marathon_int_2026-04-29",
-      "titulo": "BMW Berlin Marathon",
-      "data_evento": "",
-      "horario": null,
-      "localizacao": "Berlim, Alemanha",
-      "cidade": "Berlim, Alemanha",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "BMW Berlin Marathon",
-          "link_evento": "https://www.bmw-berlin-marathon.com/en/",
-          "links_inscricao": [
-            "https://www.bmw-berlin-marathon.com/en/register/"
-          ],
-          "inscricoes": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-29T12:57:46+00:00",
-      "updated_at": "2026-04-29T12:57:46+00:00"
     }
   ]
 }

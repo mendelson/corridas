@@ -43,41 +43,18 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
         return []
 
-    # Old ASP site declares no charset; bytes are Windows-1252 (Latin-1 superset).
-    # Force-decode to avoid mojibake (e.g. "Bras�lia" → "Brasília").
+    # Old ASP site declares charset=iso-8859-1 with a typo (`https-equiv`),
+    # so httpx auto-detection fails. Force windows-1252 (cp1252 superset of latin-1).
     html_text = resp.content.decode("windows-1252", errors="replace")
-
-    # DEBUG: dump first 3000 bytes of decoded HTML and a sample of accented words
-    import os
-    debug_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data")
-    os.makedirs(debug_dir, exist_ok=True)
-    with open(os.path.join(debug_dir, "_corridas_br_debug.txt"), "w", encoding="utf-8") as f:
-        f.write(f"raw_bytes_len={len(resp.content)}\n")
-        f.write(f"decoded_len={len(html_text)}\n")
-        f.write(f"resp.encoding={resp.encoding!r}\n")
-        f.write(f"resp.charset_encoding={getattr(resp, 'charset_encoding', None)!r}\n")
-        # sample of bytes around 'Brasília' if present
-        for needle in [b"Bras\xedlia", b"Bras\xc3\xadlia", "Brasília".encode("utf-8")]:
-            idx = resp.content.find(needle)
-            f.write(f"raw bytes find {needle!r}: {idx}\n")
-        for needle in ["Brasília", "Brasil", "Braslia"]:
-            idx = html_text.find(needle)
-            f.write(f"decoded find {needle!r}: {idx}\n")
-        f.write("\nfirst 3000 chars of decoded:\n")
-        f.write(html_text[:3000])
-
     soup = BeautifulSoup(html_text, "lxml")
     corridas: list[Corrida] = []
 
-    # Look for table rows with event data
     rows = soup.select("table tr") or soup.select("tr")
-    debug_count = 0
     for row in rows:
         try:
-            corrida = _parse_row(row, debug=debug_count < 3)
+            corrida = _parse_row(row)
             if corrida:
                 corridas.append(corrida)
-                debug_count += 1
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao parsear linha: {e}")
 
@@ -95,27 +72,11 @@ def scrape() -> list[Corrida]:
     return corridas
 
 
-def _parse_row(row, debug: bool = False) -> Corrida | None:
+def _parse_row(row) -> Corrida | None:
     cells = row.find_all(["td", "th"])
     if len(cells) < 2:
         return None
     text = " ".join(c.get_text(strip=True) for c in cells)
-    if debug:
-        import os
-        cell_dump = " | ".join(repr(c.get_text(strip=True)) for c in cells)
-        link_dump = " ; ".join(
-            f"text={a.get_text(strip=True)!r} href={a.get('href','')!r}"
-            for a in row.find_all("a", href=True)[:3]
-        )
-        # Append to debug file so it gets committed
-        debug_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "_corridas_br_debug.txt")
-        with open(debug_path, "a", encoding="utf-8") as f:
-            f.write(f"\n--- ROW ---\n")
-            f.write(f"cells: {cell_dump}\n")
-            f.write(f"links: {link_dump}\n")
-            f.write(f"row_html: {str(row)[:500]}\n")
-        print(f"[{SOURCE_NAME}][DEBUG] cells={cell_dump}")
-        print(f"[{SOURCE_NAME}][DEBUG] links={link_dump}")
     if not text or len(text) < 10:
         return None
 

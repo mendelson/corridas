@@ -147,14 +147,24 @@ def save(corridas: list[Corrida]) -> None:
 # ---------------------------------------------------------------------------
 
 def _fields_changed(existing: Corrida, incoming: Corrida) -> bool:
-    for field in ["data_evento", "horario", "localizacao", "distancias",
-                  "imagem_url", "inscricoes_abertas", "periodo_inscricao", "fontes"]:
+    for field in ["titulo", "data_evento", "horario", "localizacao", "cidade",
+                  "estado", "distancias", "imagem_url", "inscricoes_abertas",
+                  "periodo_inscricao", "fontes"]:
         if getattr(existing, field) != getattr(incoming, field):
             return True
     return False
 
 
 def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
+    # Always refresh titulo/cidade/estado/id from the latest scrape so older
+    # broken values (e.g. mojibake before encoding fix) don't persist.
+    if incoming.titulo:
+        existing.titulo = incoming.titulo
+        existing.id = incoming.id
+    if incoming.cidade:
+        existing.cidade = incoming.cidade
+    if incoming.estado and incoming.estado != "??":
+        existing.estado = incoming.estado
     existing.data_evento = incoming.data_evento or existing.data_evento
     existing.horario = incoming.horario or existing.horario
     existing.localizacao = incoming.localizacao or existing.localizacao

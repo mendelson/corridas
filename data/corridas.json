@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-04-29T16:49:59+00:00",
+  "gerado_em": "2026-04-29T16:54:17+00:00",
   "total": 57,
   "corridas": [
     {
@@ -1031,6 +1031,38 @@
       "updated_at": "2026-04-29T16:49:59+00:00"
     },
     {
+      "id": "2-super-sunset-run_df_2026-04-29",
+      "titulo": "2 Super Sunset Run",
+      "data_evento": "2026-04-20",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Corridas BR",
+          "link_evento": "https://www.corridasbr.com.br/df/mostracorrida.asp?escolha=54241",
+          "links_inscricao": [
+            "https://www.corridasbr.com.br/df/mostracorrida.asp?escolha=54241"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:47:26+00:00",
+      "updated_at": "2026-04-29T16:49:59+00:00"
+    },
+    {
       "id": "boston-marathon_int_2026-04-29",
       "titulo": "Boston Marathon",
       "data_evento": "2026-04-20",
@@ -1068,38 +1100,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-29T16:43:04+00:00",
       "updated_at": "2026-04-29T16:47:31+00:00"
-    },
-    {
-      "id": "2-super-sunset-run_df_2026-04-29",
-      "titulo": "2 Super Sunset Run",
-      "data_evento": "2026-04-20",
-      "horario": null,
-      "localizacao": "Brasília-DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Corridas BR",
-          "link_evento": "https://www.corridasbr.com.br/df/mostracorrida.asp?escolha=54241",
-          "links_inscricao": [
-            "https://www.corridasbr.com.br/df/mostracorrida.asp?escolha=54241"
-          ],
-          "inscricoes": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-29T16:47:26+00:00",
-      "updated_at": "2026-04-29T16:49:59+00:00"
     },
     {
       "id": "circuito-corre-que-d-bom-pelo-mundo-etapa-brasil_df_2026-04-29",

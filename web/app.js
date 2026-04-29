@@ -15,6 +15,7 @@ const state = {
   dateFrom: null,
   dateTo: null,
   estado: 'todos',
+  searchQuery: '',
 };
 
 // ---------------------------------------------------------------------------
@@ -40,6 +41,7 @@ const modeInterval = $('modeInterval');
 const distMin = $('distMin');
 const distMax = $('distMax');
 const cardTemplate = $('cardTemplate');
+const searchInput = $('searchInput');
 
 // ---------------------------------------------------------------------------
 // Persistence (localStorage)
@@ -119,6 +121,7 @@ function applyFilters() {
     if (!matchesPeriodo(c, today)) return false;
     if (!matchesEstado(c)) return false;
     if (!matchesDistancia(c)) return false;
+    if (!matchesSearch(c)) return false;
     return true;
   });
 
@@ -179,6 +182,15 @@ function matchesDistancia(c) {
     if (mn === null && mx === null) return true;
     return kms.some(k => (mn === null || k >= mn) && (mx === null || k <= mx));
   }
+}
+
+function matchesSearch(c) {
+  const q = state.searchQuery;
+  if (!q) return true;
+  const haystack = [c.titulo, c.cidade, c.localizacao, c.estado]
+    .filter(Boolean).join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const needle = q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  return needle.split(/\s+/).every(word => haystack.includes(word));
 }
 
 // ---------------------------------------------------------------------------
@@ -490,6 +502,7 @@ function updateCount() {
 
 function isFiltersActive() {
   return (
+    state.searchQuery !== '' ||
     state.activePills.size > 0 ||
     state.distMin !== null ||
     state.distMax !== null ||
@@ -503,6 +516,7 @@ function updateClearButton() {
 }
 
 function clearFilters() {
+  state.searchQuery = '';
   state.activePills.clear();
   state.distMin = null;
   state.distMax = null;
@@ -511,6 +525,8 @@ function clearFilters() {
   state.dateFrom = null;
   state.dateTo = null;
   state.estado = 'todos';
+
+  searchInput.value = '';
 
   // Sync UI
   document.querySelectorAll('.pill').forEach(p => {
@@ -627,6 +643,15 @@ estadoSelect.addEventListener('change', () => {
   state.estado = estadoSelect.value;
   saveFilters();
   applyFilters();
+});
+
+let _searchTimer = null;
+searchInput.addEventListener('input', () => {
+  clearTimeout(_searchTimer);
+  _searchTimer = setTimeout(() => {
+    state.searchQuery = searchInput.value.trim();
+    applyFilters();
+  }, 200);
 });
 
 [btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));

@@ -1,0 +1,16 @@
+from . import (
+    brasil_que_corre,
+    corridas_br,
+    correr_brasilia,
+    central_da_corrida,
+    minhas_inscricoes,
+    corridas_brasil,
+    bora_correr,
+    brasil_corrida,
+    runner_brasil,
+    liverun,
+    tf_sports,
+    sesc_df,
+    ticket_sports,
+    portal_das_corridas,
+)

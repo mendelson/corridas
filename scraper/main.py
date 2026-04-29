@@ -17,20 +17,20 @@ from .utils import now_iso, today_iso
 # ---------------------------------------------------------------------------
 
 from .sources import (
-    brasil_que_corre,
-    corridas_br,
-    correr_brasilia,
+    # brasil_que_corre,
+    # corridas_br,
+    # correr_brasilia,
     central_da_corrida,
-    minhas_inscricoes,
-    corridas_brasil,
-    bora_correr,
-    brasil_corrida,
-    runner_brasil,
-    liverun,
-    tf_sports,
-    sesc_df,
     ticket_sports,
-    portal_das_corridas,
+    # minhas_inscricoes,
+    # corridas_brasil,
+    # bora_correr,
+    # brasil_corrida,
+    # runner_brasil,
+    # liverun,
+    # tf_sports,
+    # sesc_df,
+    # portal_das_corridas,
 )
 from .sources.majors import (
     tokyo,
@@ -43,20 +43,8 @@ from .sources.majors import (
 )
 
 SOURCES = [
-    correr_brasilia,
-    corridas_br,
-    brasil_que_corre,
     central_da_corrida,
-    minhas_inscricoes,
-    corridas_brasil,
-    bora_correr,
-    brasil_corrida,
-    runner_brasil,
-    liverun,
-    tf_sports,
-    sesc_df,
     ticket_sports,
-    portal_das_corridas,
     tokyo,
     boston,
     london,
@@ -64,6 +52,18 @@ SOURCES = [
     chicago,
     nyc,
     sydney,
+    # correr_brasilia,
+    # corridas_br,
+    # brasil_que_corre,
+    # minhas_inscricoes,
+    # corridas_brasil,
+    # bora_correr,
+    # brasil_corrida,
+    # runner_brasil,
+    # liverun,
+    # tf_sports,
+    # sesc_df,
+    # portal_das_corridas,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"
@@ -255,6 +255,14 @@ _NAV_FRAGMENTS = [
     "do treino ao lifestyle", "calendrio completo", "outros estados:",
 ]
 
+_CYCLING_KW = [
+    "pedal", "ciclismo", "ciclista", "bicicleta", " bike ", "mtb",
+    "cycling", "cyclist", "pedalada", "gravel", "velódromo",
+    # Triathlon / swimming (not road/trail running)
+    "triathlon", "triathon", "duathlon", "ironman",
+    "natação", "natacao", "águas abertas", "aguas abertas", "swimrun",
+]
+
 
 def _is_valid(c: Corrida) -> bool:
     titulo_lower = c.titulo.lower().strip()
@@ -271,8 +279,16 @@ def _is_valid(c: Corrida) -> bool:
     if any(frag in titulo_lower for frag in _NAV_FRAGMENTS):
         return False
 
+    # Reject cycling events — only road running and trail running
+    if any(kw in titulo_lower for kw in _CYCLING_KW):
+        return False
+
     # Non-INT events must have a valid date
     if c.estado != "INT" and not c.data_evento:
+        return False
+
+    # Distances are mandatory
+    if not c.distancias:
         return False
 
     # Reject if title looks like concatenated state abbreviations (nav garbage)
@@ -313,6 +329,7 @@ def main() -> None:
     print(f"[main] {len(merged)} corridas após merge")
 
     final = reconcile(estado_anterior, merged)
+    final = [c for c in final if _is_valid(c)]
     print(f"[main] {len(final)} corridas após reconciliação")
 
     save(final)

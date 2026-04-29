@@ -194,10 +194,27 @@ function renderCards() {
   emptyState.classList.add('hidden');
 
   const frag = document.createDocumentFragment();
+  let lastMonthKey = null;
   for (const corrida of filteredCorridas) {
+    const monthKey = corrida.data_evento ? corrida.data_evento.slice(0, 7) : null;
+    if (monthKey && monthKey !== lastMonthKey) {
+      frag.appendChild(buildMonthSeparator(monthKey));
+      lastMonthKey = monthKey;
+    }
     frag.appendChild(buildCard(corrida));
   }
   cardsList.appendChild(frag);
+}
+
+function buildMonthSeparator(monthKey) {
+  const [year, month] = monthKey.split('-');
+  const label = PT_MONTHS_FULL[parseInt(month, 10) - 1] + ' ' + year;
+  const div = document.createElement('div');
+  div.className = 'month-separator';
+  div.setAttribute('role', 'separator');
+  div.setAttribute('aria-label', label);
+  div.innerHTML = `<span class="month-separator-label">${label}</span>`;
+  return div;
 }
 
 function buildCard(c) {
@@ -224,12 +241,12 @@ function buildCard(c) {
   card.querySelector('.card-title').textContent = c.titulo;
 
   // Date
-  card.querySelector('.card-date').textContent = formatDate(c.data_evento, c.horario);
+  card.querySelector('.card-date').textContent = formatDate(c.data_evento, c.horario, c.distancias);
 
   // Location
   card.querySelector('.card-location').textContent = formatLocation(c.cidade, c.estado);
 
-  // Distances pills
+  // Distances pills (sorted ascending)
   const distContainer = card.querySelector('.card-distances');
   for (const km of formatDistancesPills(c.distancias)) {
     const span = document.createElement('span');
@@ -280,20 +297,27 @@ function buildExpanded(card, c) {
   const expFontes = card.querySelector('.expanded-fontes');
   const expInscricoes = card.querySelector('.expanded-inscricoes');
 
-  // Distances table
+  // Distances table (sorted ascending)
   if (c.distancias && c.distancias.length > 0) {
-    const h = document.createElement('p');
-    h.className = 'expanded-section-title';
-    h.textContent = 'Percursos';
-    expDist.appendChild(h);
+    const sorted = sortDistancias(c.distancias);
+    const hasDate    = sorted.some(d => d.data);
+    const hasHorario = sorted.some(d => d.horario);
 
     const table = document.createElement('table');
     table.className = 'dist-table';
-    table.innerHTML = '<thead><tr><th>Distância</th><th>Data</th><th>Horário</th></tr></thead>';
+    let thead = '<thead><tr><th>Distâncias</th>';
+    if (hasDate)    thead += '<th>Data</th>';
+    if (hasHorario) thead += '<th>Horário</th>';
+    thead += '</tr></thead>';
+    table.innerHTML = thead;
+
     const tbody = document.createElement('tbody');
-    for (const d of c.distancias) {
+    for (const d of sorted) {
       const tr = document.createElement('tr');
-      tr.innerHTML = `<td>${formatKm(d.km)}</td><td>${d.data ? formatDateShort(d.data) : '—'}</td><td>${d.horario || '—'}</td>`;
+      let cells = `<td>${formatKm(d.km)}</td>`;
+      if (hasDate)    cells += `<td>${d.data ? formatDateShort(d.data) : '—'}</td>`;
+      if (hasHorario) cells += `<td>${d.horario || '—'}</td>`;
+      tr.innerHTML = cells;
       tbody.appendChild(tr);
     }
     table.appendChild(tbody);
@@ -313,32 +337,21 @@ function buildExpanded(card, c) {
     expPeriod.appendChild(p);
   }
 
-  // Fontes
+  // Fontes: platform name + inscription button (only when link available)
   if (c.fontes && c.fontes.length > 0) {
     const h = document.createElement('p');
     h.className = 'expanded-section-title';
-    h.textContent = 'Onde se inscrever';
+    h.textContent = 'Fontes';
     expFontes.appendChild(h);
     for (const fonte of c.fontes) {
       const div = document.createElement('div');
       div.className = 'fonte-item';
-      div.innerHTML = `<div class="fonte-name">
-        <span>${fonte.nome}</span>
-        <a href="${fonte.link_evento}" target="_blank" rel="noopener" class="fonte-link" aria-label="Ver evento em ${fonte.nome}">${fonte.link_evento}</a>
-      </div>`;
-      if (fonte.links_inscricao && fonte.links_inscricao.length > 0) {
-        for (const lnk of fonte.links_inscricao) {
-          const a = document.createElement('a');
-          a.href = lnk;
-          a.target = '_blank';
-          a.rel = 'noopener';
-          a.textContent = 'Inscrever-se →';
-          a.className = 'fonte-link';
-          a.style.display = 'block';
-          a.style.marginTop = '4px';
-          div.appendChild(a);
-        }
-      }
+      const inscLink = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
+        ? fonte.links_inscricao[0] : (fonte.link_evento || null);
+      const btnHtml = inscLink
+        ? `<a href="${inscLink}" target="_blank" rel="noopener" class="btn-inscricao">Inscrever-se →</a>`
+        : '';
+      div.innerHTML = `<span class="fonte-nome-text">${fonte.nome}</span>${btnHtml}`;
       expFontes.appendChild(div);
     }
   }
@@ -375,17 +388,39 @@ function buildExpanded(card, c) {
 // Helpers
 // ---------------------------------------------------------------------------
 const PT_MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const PT_MONTHS_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const PT_WEEKDAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
 
-function formatDate(isoDate, horario) {
+function formatDate(isoDate, horario, distancias) {
   if (!isoDate) return 'Data a confirmar';
-  const d = new Date(isoDate + 'T12:00:00');
+
+  // Multi-day: at least 2 distinct dates across the distances themselves
+  const distDates = [...new Set(
+    (distancias || []).map(d => d.data).filter(Boolean)
+  )].sort();
+
+  if (distDates.length >= 2) {
+    return formatDateRange(distDates[0], distDates[distDates.length - 1]);
+  }
+
+  // Single day
+  return formatDateFull(isoDate) + (horario ? ` • ${horario.replace(':', 'h')}` : '');
+}
+
+function formatDateFull(iso) {
+  const d = new Date(iso + 'T12:00:00');
   const wd = PT_WEEKDAYS[d.getDay()];
-  const day = d.getDate();
-  const mon = PT_MONTHS[d.getMonth()];
-  let s = `${wd}, ${day} de ${mon}`;
-  if (horario) s += ` • ${horario.replace(':', 'h')}`;
-  return s;
+  return `${wd}, ${d.getDate()} de ${PT_MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+}
+
+function formatDateRange(fromIso, toIso) {
+  const d1 = new Date(fromIso + 'T12:00:00');
+  const d2 = new Date(toIso   + 'T12:00:00');
+  const sameMonth = d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
+  if (sameMonth) {
+    return `${d1.getDate()} a ${d2.getDate()} de ${PT_MONTHS[d1.getMonth()]} de ${d1.getFullYear()}`;
+  }
+  return `${d1.getDate()} de ${PT_MONTHS[d1.getMonth()]} a ${d2.getDate()} de ${PT_MONTHS[d2.getMonth()]} de ${d2.getFullYear()}`;
 }
 
 function formatDateShort(iso) {
@@ -399,9 +434,17 @@ function formatLocation(cidade, estado) {
   return [cidade, estado].filter(Boolean).join(' · ');
 }
 
+function sortDistancias(distancias) {
+  return [...distancias].sort((a, b) => {
+    const ka = typeof a.km === 'number' ? a.km : Infinity;
+    const kb = typeof b.km === 'number' ? b.km : Infinity;
+    return ka - kb;
+  });
+}
+
 function formatDistancesPills(distancias) {
   if (!distancias || distancias.length === 0) return [];
-  return distancias.map(d => formatKm(d.km));
+  return sortDistancias(distancias).map(d => formatKm(d.km));
 }
 
 function formatKm(km) {

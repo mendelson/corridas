@@ -1,21 +1,19 @@
-"""Scraper for centraldacorrida.com.br"""
+"""Scraper for centraldacorrida.com.br — Supabase edge-function API"""
 from __future__ import annotations
 import re
-from bs4 import BeautifulSoup
+from datetime import datetime, timezone, timedelta
 
 from ..http_client import get
-from ..models import Corrida, Distancia, FonteInfo, Inscricao
+from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_date, normalize_time, normalize_titulo, normalize_valor,
-    slugify, infer_estado, is_bsb_event, now_iso, today_iso
+    normalize_titulo, slugify, is_bsb_event, now_iso, today_iso,
 )
 
 BASE = "https://centraldacorrida.com.br"
-URLS = [
-    f"{BASE}/corridas/?estado=df",
-    f"{BASE}/corridas/",
-]
+API_URL = "https://tudmqbzxfbrjljpdpili.supabase.co/functions/v1/eventos-publicos"
 SOURCE_NAME = "Central da Corrida"
+
+BRT = timezone(timedelta(hours=-3))
 
 _MARATONAS_ALVO = [
     "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
@@ -24,95 +22,80 @@ _MARATONAS_ALVO = [
     "maratona de manaus", "maratona caixa", "maratona de brasilia",
 ]
 
+_CLOSED_KW = {"encerrad", "esgotad"}
+
 
 def scrape() -> list[Corrida]:
+    today = today_iso()
+    try:
+        resp = get(f"{API_URL}?Data_evento=gte.{today}")
+        resp.raise_for_status()
+        events: list[dict] = resp.json()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] erro ao buscar API: {e}")
+        return []
+
     corridas: list[Corrida] = []
-    seen_titles: set[str] = set()
-
-    for url in URLS:
+    for event in events:
         try:
-            resp = get(url)
-            resp.raise_for_status()
+            corrida = _parse_event(event, today)
+            if corrida:
+                corridas.append(corrida)
         except Exception as e:
-            print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
-            continue
-
-        soup = BeautifulSoup(resp.text, "lxml")
-        for el in _find_events(soup):
-            try:
-                corrida = _parse_event(el, url)
-                if not corrida:
-                    continue
-                titulo_lower = corrida.titulo.lower()
-                is_target = (
-                    is_bsb_event(corrida.localizacao, corrida.titulo)
-                    or any(m in titulo_lower for m in _MARATONAS_ALVO)
-                )
-                if is_target and corrida.titulo not in seen_titles:
-                    seen_titles.add(corrida.titulo)
-                    corridas.append(corrida)
-            except Exception as e:
-                print(f"[{SOURCE_NAME}] erro ao parsear evento: {e}")
+            print(f"[{SOURCE_NAME}] erro ao parsear evento '{event.get('Nome_evento')}': {e}")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _find_events(soup):
-    for sel in [".evento", ".race-card", ".card", "article", ".post", ".item"]:
-        els = soup.select(sel)
-        if els:
-            return els
-    return soup.find_all("li")
-
-
-def _parse_event(el, page_url: str) -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 5:
+def _parse_event(event: dict, today: str) -> Corrida | None:
+    if event.get("Publicado") != "sim":
         return None
 
-    heading = el.find(["h1", "h2", "h3", "h4", "strong"])
-    titulo_raw = heading.get_text(strip=True) if heading else text[:80]
-    titulo = normalize_titulo(titulo_raw)
+    titulo = normalize_titulo(event.get("Nome_evento") or "")
     if not titulo or len(titulo) < 3:
         return None
 
-    data = _extract_date(text)
-    localizacao = _extract_localizacao(el, text)
-    estado = infer_estado(localizacao, titulo) or "??"
+    estado = event.get("Estado") or "??"
+    cidade = event.get("Cidade") or ""
+    localizacao = f"{cidade}, {estado}" if cidade else estado
 
-    img = el.find("img")
-    imagem_url = (img.get("src") or img.get("data-src")) if img else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = BASE + imagem_url
+    titulo_lower = titulo.lower()
+    is_target = (
+        is_bsb_event(localizacao, titulo)
+        or any(m in titulo_lower for m in _MARATONAS_ALVO)
+    )
+    if not is_target:
+        return None
 
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else page_url
-    if link.startswith("/"):
-        link = BASE + link
+    data_evento, horario = _parse_datetime(event.get("Data_evento") or "")
 
-    distancias = _extract_distances(text)
-    inscricoes = _extract_inscricoes(el)
-    inscricoes_abertas: bool | None = None
-    if inscricoes:
-        inscricoes_abertas = any(i.disponivel for i in inscricoes)
+    imagem_url = _parse_image(event.get("imagem"))
+
+    slug = event.get("slug") or ""
+    link_evento = f"{BASE}/evento/{slug}" if slug else BASE
+
+    raw_text = " ".join(filter(None, [
+        event.get("regulamento"),
+        event.get("descricao_evento"),
+    ]))
+    distancias = _extract_distances(raw_text)
+
+    inscricoes_abertas = _parse_inscricoes_abertas(event)
 
     now = now_iso()
-    today = today_iso()
-    cidade = localizacao.split(",")[0].strip() if localizacao else ""
-
     fonte = FonteInfo(
         nome=SOURCE_NAME,
-        link_evento=link,
-        links_inscricao=_extract_links_inscricao(el, BASE),
-        inscricoes=inscricoes,
+        link_evento=link_evento,
+        links_inscricao=[link_evento] if inscricoes_abertas else [],
+        inscricoes=[],
     )
 
     return Corrida(
         id=f"{slugify(titulo)}_{estado.lower()}_{today}",
         titulo=titulo,
-        data_evento=data or "",
-        horario=normalize_time(text),
+        data_evento=data_evento,
+        horario=horario,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
@@ -127,60 +110,45 @@ def _parse_event(el, page_url: str) -> Corrida | None:
     )
 
 
-def _extract_date(text: str) -> str | None:
-    m = re.search(r"\d{1,2}/\d{1,2}/\d{4}", text)
-    if m:
-        return normalize_date(m.group(0))
-    m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
-    if m:
-        return normalize_date(m.group(0))
-    return None
+def _parse_datetime(raw: str) -> tuple[str, str | None]:
+    if not raw or raw == "null":
+        return "", None
+    try:
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        dt_brt = dt.astimezone(BRT)
+        return dt_brt.strftime("%Y-%m-%d"), dt_brt.strftime("%H:%M")
+    except Exception:
+        return "", None
 
 
-def _extract_localizacao(el, text: str) -> str:
-    for cls in ["local", "location", "cidade", "place", "endereco"]:
-        loc = el.find(class_=re.compile(cls, re.IGNORECASE))
-        if loc:
-            return loc.get_text(strip=True)
-    m = re.search(r"(Brasília|São Paulo|Rio de Janeiro|Curitiba|Porto Alegre|[A-Z][a-z]+-[A-Z]{2})", text)
-    if m:
-        return m.group(1)
-    return ""
+def _parse_image(raw: str | None) -> str | None:
+    if not raw or raw in ("null", ""):
+        return None
+    if raw.startswith("//"):
+        return "https:" + raw
+    return raw
+
+
+def _parse_inscricoes_abertas(event: dict) -> bool | None:
+    be = (event.get("bota_encerrado") or "").lower()
+    if any(k in be for k in _CLOSED_KW):
+        return False
+    # yn_codigo_evento_encerrrado="sim" means restricted/not yet open to public
+    if (event.get("yn_codigo_evento_encerrrado") or "").lower() == "sim":
+        return False
+    # Published events not definitively closed default to open ("Inscreva-se")
+    return True
 
 
 def _extract_distances(text: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+)\s*[kK][mM]?\b", text)
+    # Strip Bubble rich-text markup
+    text = re.sub(r"\[.*?\]", " ", text)
+    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
     seen: set[float] = set()
-    result = []
+    result: list[Distancia] = []
     for n in nums:
-        km = float(n)
+        km = float(n.replace(",", "."))
         if km not in seen and 1 <= km <= 200:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
     return result
-
-
-def _extract_inscricoes(el) -> list[Inscricao]:
-    result = []
-    for btn in el.find_all("a", href=True):
-        btn_text = btn.get_text(strip=True).lower()
-        if any(k in btn_text for k in ["inscri", "inscrever", "comprar", "valor"]):
-            result.append(Inscricao(
-                descricao=btn.get_text(strip=True),
-                valor=None,
-                disponivel=True,
-                link=btn["href"],
-            ))
-    return result
-
-
-def _extract_links_inscricao(el, base: str) -> list[str]:
-    links = []
-    for a in el.find_all("a", href=True):
-        href = a["href"]
-        text = a.get_text(strip=True).lower()
-        if any(k in text for k in ["inscri", "inscrever", "comprar"]):
-            if href.startswith("/"):
-                href = base + href
-            links.append(href)
-    return links

@@ -1,92 +1,22 @@
 """TCS Sydney Marathon scraper"""
-from __future__ import annotations
-import re
-from bs4 import BeautifulSoup
+from ._base import scrape_major
 
-from ...http_client import get
-from ...models import Corrida, Distancia, FonteInfo, Inscricao
-from ...utils import normalize_date, slugify, now_iso, today_iso, extract_date_from_soup
-
-URL = "https://www.tcssydneymarathon.com.au/"
-INSCRICAO_URL = "https://www.tcssydneymarathon.com.au/"
 SOURCE_NAME = "TCS Sydney Marathon"
-KNOWN_DATE = "2026-09-20"  # TCS Sydney Marathon 2026: September 20, 2026
+URL = "https://www.tcssydneymarathon.com.au/"
+KNOWN_DATE = "2026-09-20"
+HORARIO = "07:00"
+LOCALIZACAO = "Sydney, Austrália"
+
+_OPEN   = ["enter now", "register", "entries open", "apply", "entry open"]
+_CLOSED = ["entries closed", "entry closed", "sold out", "registration closed"]
 
 
-def scrape() -> list[Corrida]:
-    try:
-        resp = get(URL)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro: {e}")
-        return [_placeholder()]
-
-    soup = BeautifulSoup(resp.text, "lxml")
-    data = _extract_date(soup)
-    imagem_url = _extract_image(soup)
-    inscricoes_abertas = _check_inscricoes(soup)
-
-    now = now_iso()
-    today = today_iso()
-    titulo = "TCS Sydney Marathon"
-
-    fonte = FonteInfo(
-        nome=SOURCE_NAME, link_evento=URL,
-        links_inscricao=[INSCRICAO_URL],
-        inscricoes=[Inscricao(
-            descricao="TCS Sydney Marathon",
-            valor=None,
-            disponivel=inscricoes_abertas if inscricoes_abertas is not None else False,
-            link=INSCRICAO_URL,
-        )],
-    )
-
-    return [Corrida(
-        id=f"{slugify(titulo)}_int_{today}",
-        titulo=titulo,
-        data_evento=data or KNOWN_DATE,
-        horario="07:00",
-        localizacao="Sydney, Austrália",
-        cidade="Sydney, Austrália",
-        estado="INT",
-        distancias=[Distancia(km=42.195, data=None, horario=None)],
-        imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
-        periodo_inscricao=None,
-        fontes=[fonte],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )]
-
-
-def _extract_date(soup) -> str | None:
-    return extract_date_from_soup(soup)
-
-def _extract_image(soup) -> str | None:
-    img = soup.find("meta", property="og:image")
-    return img.get("content") if img else None
-
-
-def _check_inscricoes(soup) -> bool | None:
-    text = soup.get_text().lower()
-    if any(k in text for k in ["enter now", "register", "entries open"]):
-        return True
-    if any(k in text for k in ["entries closed", "sold out"]):
-        return False
-    return None
-
-
-def _placeholder() -> Corrida:
-    now = now_iso()
-    today = today_iso()
-    titulo = "TCS Sydney Marathon"
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=URL, links_inscricao=[INSCRICAO_URL], inscricoes=[])
-    return Corrida(
-        id=f"{slugify(titulo)}_int_{today}",
-        titulo=titulo, data_evento=KNOWN_DATE, horario="07:00",
-        localizacao="Sydney, Austrália", cidade="Sydney, Austrália", estado="INT",
-        distancias=[Distancia(km=42.195, data=None, horario=None)],
-        imagem_url=None, inscricoes_abertas=None, periodo_inscricao=None,
-        fontes=[fonte], miss_count=0, first_seen_at=now, updated_at=now,
+def scrape():
+    # Site has SSL issues — disable verification
+    return scrape_major(
+        source_name=SOURCE_NAME, titulo="TCS Sydney Marathon",
+        url=URL, known_date=KNOWN_DATE, horario=HORARIO,
+        localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
+        open_kw=_OPEN, closed_kw=_CLOSED,
+        ssl_verify=False,
     )

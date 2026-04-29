@@ -7,9 +7,10 @@ from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo, Inscricao
 from ...utils import normalize_date, slugify, now_iso, today_iso, extract_date_from_soup
 
-URL = "https://www.baa.org/"
+URL = "https://www.baa.org/races/boston-marathon/"
 INSCRICAO_URL = "https://www.baa.org/races/boston-marathon/"
 SOURCE_NAME = "Boston Marathon"
+KNOWN_DATE = "2026-04-20"  # Boston Marathon 2026: April 20, 2026 (Patriots' Day)
 
 
 def scrape() -> list[Corrida]:
@@ -43,7 +44,7 @@ def scrape() -> list[Corrida]:
     return [Corrida(
         id=f"{slugify(titulo)}_int_{today}",
         titulo=titulo,
-        data_evento=data or "",
+        data_evento=data or KNOWN_DATE,
         horario="09:00",
         localizacao="Boston, EUA",
         cidade="Boston, EUA",
@@ -83,7 +84,7 @@ def _placeholder() -> Corrida:
     fonte = FonteInfo(nome=SOURCE_NAME, link_evento=INSCRICAO_URL, links_inscricao=[INSCRICAO_URL], inscricoes=[])
     return Corrida(
         id=f"{slugify(titulo)}_int_{today}",
-        titulo=titulo, data_evento="", horario=None,
+        titulo=titulo, data_evento=KNOWN_DATE, horario="09:00",
         localizacao="Boston, EUA", cidade="Boston, EUA", estado="INT",
         distancias=[Distancia(km=42.195, data=None, horario=None)],
         imagem_url=None, inscricoes_abertas=None, periodo_inscricao=None,

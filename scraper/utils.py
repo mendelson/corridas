@@ -1,4 +1,5 @@
 from __future__ import annotations
+import html
 import re
 import unicodedata
 from datetime import date, datetime
@@ -112,14 +113,34 @@ def normalize_valor(raw: str | None) -> float | None:
 # Title normalization
 # ---------------------------------------------------------------------------
 
+_BR_STATES = {
+    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA",
+    "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN",
+    "RO", "RR", "RS", "SC", "SE", "SP", "TO", "INT",
+}
+
+
 def normalize_titulo(raw: str | None) -> str:
     if not raw:
         return ""
-    text = raw.strip()
-    # Remove emojis
+    text = html.unescape(raw.strip())
+    # Remove Symbol-Other (emojis) but keep letters, digits, punctuation
     text = "".join(c for c in text if not unicodedata.category(c).startswith("So"))
-    # Title case and strip excess whitespace
-    return re.sub(r"\s+", " ", text).strip().title()
+    text = re.sub(r"\s+", " ", text).strip()
+    # Apply title-case, then restore known abbreviations (state codes, distance tokens)
+    titled = text.title()
+    words = []
+    for orig, titled_word in zip(text.split(), titled.split()):
+        upper = orig.upper()
+        # Restore state abbreviations (DF, SP, etc.)
+        if upper in _BR_STATES and orig.isupper():
+            words.append(upper)
+        # Restore distance tokens: 5K, 10K, 21K, 42K
+        elif re.match(r'^\d+[kKmM],?$', orig):
+            words.append(re.sub(r'[kKmM]', lambda m: m.group().upper(), orig))
+        else:
+            words.append(titled_word)
+    return " ".join(words)
 
 
 # ---------------------------------------------------------------------------

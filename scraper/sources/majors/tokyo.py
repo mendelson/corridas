@@ -8,8 +8,9 @@ from ...models import Corrida, Distancia, FonteInfo, Inscricao
 from ...utils import normalize_date, normalize_time, slugify, now_iso, today_iso, extract_date_from_soup
 
 URL = "https://www.marathon.tokyo/en/"
-INSCRICAO_URL = "https://www.marathon.tokyo/en/participants/"
+INSCRICAO_URL = "https://www.marathon.tokyo/en/"
 SOURCE_NAME = "Tokyo Marathon"
+KNOWN_DATE = "2026-03-01"  # Tokyo Marathon 2026: March 1, 2026
 
 
 def scrape() -> list[Corrida]:
@@ -44,7 +45,7 @@ def scrape() -> list[Corrida]:
     return [Corrida(
         id=f"{slugify(titulo)}_int_{today}",
         titulo=titulo,
-        data_evento=data or "",
+        data_evento=data or KNOWN_DATE,
         horario="09:10",
         localizacao="Tóquio, Japão",
         cidade="Tóquio, Japão",
@@ -91,7 +92,7 @@ def _placeholder() -> Corrida:
     )
     return Corrida(
         id=f"{slugify(titulo)}_int_{today}",
-        titulo=titulo, data_evento="", horario=None,
+        titulo=titulo, data_evento=KNOWN_DATE, horario="09:10",
         localizacao="Tóquio, Japão", cidade="Tóquio, Japão", estado="INT",
         distancias=[Distancia(km=42.195, data=None, horario=None)],
         imagem_url=None, inscricoes_abertas=None, periodo_inscricao=None,

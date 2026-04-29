@@ -51,11 +51,13 @@ def scrape() -> list[Corrida]:
 
     # Look for table rows with event data
     rows = soup.select("table tr") or soup.select("tr")
+    debug_count = 0
     for row in rows:
         try:
-            corrida = _parse_row(row)
+            corrida = _parse_row(row, debug=debug_count < 3)
             if corrida:
                 corridas.append(corrida)
+                debug_count += 1
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao parsear linha: {e}")
 
@@ -73,11 +75,19 @@ def scrape() -> list[Corrida]:
     return corridas
 
 
-def _parse_row(row) -> Corrida | None:
+def _parse_row(row, debug: bool = False) -> Corrida | None:
     cells = row.find_all(["td", "th"])
     if len(cells) < 2:
         return None
     text = " ".join(c.get_text(strip=True) for c in cells)
+    if debug:
+        cell_dump = " | ".join(repr(c.get_text(strip=True)) for c in cells)
+        link_dump = " ; ".join(
+            f"text={a.get_text(strip=True)!r} href={a.get('href','')!r}"
+            for a in row.find_all("a", href=True)[:3]
+        )
+        print(f"[{SOURCE_NAME}][DEBUG] cells={cell_dump}")
+        print(f"[{SOURCE_NAME}][DEBUG] links={link_dump}")
     if not text or len(text) < 10:
         return None
 

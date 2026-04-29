@@ -1,6 +1,7 @@
 """Scraper for corridasbr.com.br/df/calendario.asp"""
 from __future__ import annotations
 import re
+from urllib.parse import urljoin, urlparse, urlunparse, parse_qs, urlencode
 from bs4 import BeautifulSoup
 
 from ..http_client import get
@@ -10,7 +11,28 @@ from ..utils import (
 )
 
 URL = "https://www.corridasbr.com.br/df/calendario.asp"
+BASE = "https://www.corridasbr.com.br/df/"
 SOURCE_NAME = "Corridas BR"
+
+
+def _clean_event_url(href: str) -> str:
+    """Build absolute URL keeping only mostracorrida.asp?escolha=N.
+    The site embeds the event title (with spaces) directly in the href,
+    which breaks URL parsing — we strip everything except 'escolha'."""
+    href = href.strip()
+    abs_url = urljoin(BASE, href)
+    parsed = urlparse(abs_url)
+    qs = parse_qs(parsed.query, keep_blank_values=False)
+    # Keep only 'escolha' (the event id)
+    cleaned_qs = {}
+    if "escolha" in qs:
+        # parse_qs may have split malformed values; pick the first numeric chunk
+        val = qs["escolha"][0]
+        m = re.match(r"\d+", val)
+        if m:
+            cleaned_qs["escolha"] = m.group(0)
+    new_query = urlencode(cleaned_qs)
+    return urlunparse(parsed._replace(query=new_query, fragment=""))
 
 
 def scrape() -> list[Corrida]:
@@ -21,7 +43,10 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
         return []
 
-    soup = BeautifulSoup(resp.text, "lxml")
+    # Old ASP site declares no charset; bytes are Windows-1252 (Latin-1 superset).
+    # Force-decode to avoid mojibake (e.g. "Bras�lia" → "Brasília").
+    html_text = resp.content.decode("windows-1252", errors="replace")
+    soup = BeautifulSoup(html_text, "lxml")
     corridas: list[Corrida] = []
 
     # Look for table rows with event data
@@ -90,9 +115,7 @@ def _parse_row(row) -> Corrida | None:
     if not titulo or len(titulo) < 3:
         return None
 
-    link = event_link or URL
-    if link.startswith("/"):
-        link = "https://www.corridasbr.com.br" + link
+    link = _clean_event_url(event_link) if event_link else URL
 
     distancias = _extract_distances(text)
 
@@ -138,9 +161,7 @@ def _parse_div(el) -> Corrida | None:
 
     data = _extract_date(text)
     link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
-    if link.startswith("/"):
-        link = "https://www.corridasbr.com.br" + link
+    link = _clean_event_url(link_tag["href"]) if link_tag else URL
 
     distancias = _extract_distances(text)
     now = now_iso()

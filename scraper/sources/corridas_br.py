@@ -46,6 +46,26 @@ def scrape() -> list[Corrida]:
     # Old ASP site declares no charset; bytes are Windows-1252 (Latin-1 superset).
     # Force-decode to avoid mojibake (e.g. "Bras�lia" → "Brasília").
     html_text = resp.content.decode("windows-1252", errors="replace")
+
+    # DEBUG: dump first 3000 bytes of decoded HTML and a sample of accented words
+    import os
+    debug_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data")
+    os.makedirs(debug_dir, exist_ok=True)
+    with open(os.path.join(debug_dir, "_corridas_br_debug.txt"), "w", encoding="utf-8") as f:
+        f.write(f"raw_bytes_len={len(resp.content)}\n")
+        f.write(f"decoded_len={len(html_text)}\n")
+        f.write(f"resp.encoding={resp.encoding!r}\n")
+        f.write(f"resp.charset_encoding={getattr(resp, 'charset_encoding', None)!r}\n")
+        # sample of bytes around 'Brasília' if present
+        for needle in [b"Bras\xedlia", b"Bras\xc3\xadlia", "Brasília".encode("utf-8")]:
+            idx = resp.content.find(needle)
+            f.write(f"raw bytes find {needle!r}: {idx}\n")
+        for needle in ["Brasília", "Brasil", "Braslia"]:
+            idx = html_text.find(needle)
+            f.write(f"decoded find {needle!r}: {idx}\n")
+        f.write("\nfirst 3000 chars of decoded:\n")
+        f.write(html_text[:3000])
+
     soup = BeautifulSoup(html_text, "lxml")
     corridas: list[Corrida] = []
 

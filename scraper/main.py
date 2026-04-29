@@ -225,6 +225,53 @@ def reconcile(
 # Main
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Validation filter
+# ---------------------------------------------------------------------------
+
+_NAV_TITLES = {
+    "calendário", "calendario", "calendrio", "listagem completa", "listagem",
+    "sugira uma corrida", "sugira corrida", "outros estados", "corridasbr",
+    "próximas corridas", "proximas corridas", "estados", "distrito federal",
+    "espírito santo", "mato grosso", "mato grosso do sul", "minas gerais",
+    "pernambuco", "rio de janeiro", "rio grande do norte", "rio grande do sul",
+    "são paulo", "santa catarina", "calendário completo", "home", "menu",
+    "buscar", "search", "início", "inicio", "sobre", "contato",
+}
+
+_NAV_FRAGMENTS = [
+    "quero dicas", "por e-mail", "experiências além", "para todos e variados",
+    "roteiros que fogem", "inspirações para", "suplementação saudável",
+    "do treino ao lifestyle", "calendrio completo", "outros estados:",
+]
+
+
+def _is_valid(c: Corrida) -> bool:
+    titulo_lower = c.titulo.lower().strip()
+
+    # Reject empty or very short titles
+    if len(titulo_lower) < 4:
+        return False
+
+    # Reject known navigation titles
+    if titulo_lower in _NAV_TITLES:
+        return False
+
+    # Reject titles that contain navigation fragments
+    if any(frag in titulo_lower for frag in _NAV_FRAGMENTS):
+        return False
+
+    # Non-INT events must have a valid date
+    if c.estado != "INT" and not c.data_evento:
+        return False
+
+    # Reject if title looks like concatenated state abbreviations (nav garbage)
+    if len(titulo_lower) > 20 and titulo_lower.replace(" ", "").isalpha() and titulo_lower == titulo_lower.lower() and " " not in c.titulo:
+        return False
+
+    return True
+
+
 def run_all_scrapers() -> list[Corrida]:
     all_corridas: list[Corrida] = []
 
@@ -248,6 +295,9 @@ def main() -> None:
 
     raw = run_all_scrapers()
     print(f"[main] {len(raw)} registros coletados (antes do merge)")
+
+    raw = [c for c in raw if _is_valid(c)]
+    print(f"[main] {len(raw)} registros após validação")
 
     merged = merge_rodada(raw)
     print(f"[main] {len(merged)} corridas após merge")

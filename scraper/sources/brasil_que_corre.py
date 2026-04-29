@@ -37,8 +37,7 @@ def scrape() -> list[Corrida]:
             break
 
     if not events:
-        # Fallback: all articles or list items
-        events = soup.find_all("li", recursive=True) or soup.find_all("article")
+        events = soup.find_all("article")
 
     for el in events:
         try:

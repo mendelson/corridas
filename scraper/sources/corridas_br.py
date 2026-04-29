@@ -62,12 +62,15 @@ def _parse_row(row) -> Corrida | None:
         if first in ("data", "evento", "prova"):
             return None
 
+    # First cell must contain a valid date
+    data = normalize_date(cells[0].get_text(strip=True))
+    if not data:
+        return None
+
     titulo_raw = cells[1].get_text(strip=True) if len(cells) > 1 else cells[0].get_text(strip=True)
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None
-
-    data = normalize_date(cells[0].get_text(strip=True))
 
     link_tag = row.find("a", href=True)
     link = link_tag["href"] if link_tag else URL

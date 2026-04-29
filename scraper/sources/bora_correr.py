@@ -39,7 +39,7 @@ def scrape() -> list[Corrida]:
 
 
 def _find_events(soup):
-    for sel in [".event", ".race", ".card", "article", ".post", ".item", "li"]:
+    for sel in [".event", ".race", ".card", "article", ".post", ".item"]:
         els = soup.select(sel)
         if len(els) > 1:
             return els

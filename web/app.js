@@ -188,9 +188,9 @@ function matchesDistancia(c) {
 function matchesSearch(c) {
   const q = state.searchQuery;
   if (!q) return true;
-  const haystack = [c.titulo, c.cidade, c.localizacao, c.estado]
-    .filter(Boolean).join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
-  const needle = q.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const haystack = [c.titulo, c.cidade, c.localizacao, c.estado].filter(Boolean).map(norm).join(' ');
+  const needle = norm(q);
   return needle.split(/\s+/).every(word => haystack.includes(word));
 }
 

@@ -229,6 +229,12 @@ _INTERVAL_RE = re.compile(
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
+# Matches "5KM: 07h00", "10km - 08:30" etc. to extract per-distance start times
+_DIST_TIME_RE = re.compile(
+    r"(\d+(?:[.,]\d+)?)\s*k(?:m)?\b\s*[:\-–]?\s*(\d{1,2})[h:](\d{2})",
+    re.IGNORECASE,
+)
+
 
 def _canonicalize(kms: list[float]) -> list[float]:
     """Replace values near known canonical distances; deduplicate."""
@@ -247,12 +253,31 @@ def _canonicalize(kms: list[float]) -> list[float]:
 
 def _extract_distances_from_text(text: str) -> list[Distancia]:
     """Extract distances from a detail description (authoritative source)."""
+    # Extract per-distance start times (e.g. "5KM: 07h00 | 3KM: 07h30")
+    time_map: dict[float, str] = {}
+    for m in _DIST_TIME_RE.finditer(text):
+        km = float(m.group(1).replace(",", "."))
+        h = int(m.group(2))
+        mi = m.group(3)
+        if 5 <= h <= 22:  # sanity: event start times, not completion times like 1h30
+            time_map[km] = f"{h:02d}:{mi}"
+
     clean = _INTERVAL_RE.sub(" ", text)
     raw = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE)
     kms = [float(n.replace(",", ".")) for n in raw]
     kms = [k for k in kms if 3 <= k <= 200]  # ≥3 km: filter walking/kids/hydration noise
     kms = _canonicalize(kms)
-    return [Distancia(km=k, data=None, horario=None) for k in sorted(kms)]
+
+    result = []
+    for k in sorted(kms):
+        horario = time_map.get(k)
+        if not horario:
+            for tk, tv in time_map.items():
+                if abs(tk - k) <= 0.5:
+                    horario = tv
+                    break
+        result.append(Distancia(km=k, data=None, horario=horario))
+    return result
 
 
 def _extract_distances(titulo_lower: str) -> list[Distancia]:

@@ -140,9 +140,17 @@ def _parse_inscricoes_abertas(event: dict) -> bool | None:
     return True
 
 
+_PERCURSO_RE = re.compile(
+    r"percurso\s+(?:de\s+\d+|até\s+\d+|superior\s+a\s+\d+|com\s+\d+)[^;.]*",
+    re.IGNORECASE,
+)
+
+
 def _extract_distances(text: str) -> list[Distancia]:
     # Strip Bubble rich-text markup
     text = re.sub(r"\[.*?\]", " ", text)
+    # Strip age-restriction clauses ("percurso de 10 km até 30 km: 18 anos")
+    text = _PERCURSO_RE.sub(" ", text)
     nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
     seen: set[float] = set()
     result: list[Distancia] = []

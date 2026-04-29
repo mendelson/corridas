@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FF6B35" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Corridas BR" />
+  <meta name="description" content="Corridas de rua no Brasil – Brasília, maratonas nacionais e World Marathon Majors" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <title>Corridas BR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <span class="app-title">🏃 Corridas BR</span>
+    <button class="btn-refresh" id="btnRefresh" aria-label="Atualizar">↻</button>
+  </header>
+
+  <div class="filters-bar" id="filtersBar">
+    <!-- Distance filter -->
+    <div class="filter-row" id="distanceFilter">
+      <div class="filter-mode-toggle">
+        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Selecionar</button>
+        <button class="mode-btn" id="modeInterval" aria-pressed="false">Intervalo</button>
+      </div>
+      <div id="pillsContainer" class="pills-container">
+        <button class="pill" data-km="5" aria-pressed="false">5K</button>
+        <button class="pill" data-km="10" aria-pressed="false">10K</button>
+        <button class="pill" data-km="21" aria-pressed="false">21K</button>
+        <button class="pill" data-km="42" aria-pressed="false">42K</button>
+        <button class="pill" data-km="outros" aria-pressed="false">Outras</button>
+      </div>
+      <div id="intervalContainer" class="interval-container hidden">
+        <label class="range-label">
+          De <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Distância mínima em km" />
+        </label>
+        <label class="range-label">
+          Até <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Distância máxima em km" />
+        </label>
+      </div>
+    </div>
+
+    <!-- Period + State -->
+    <div class="filter-row filter-row-selects">
+      <div class="select-wrapper">
+        <select id="periodoSelect" aria-label="Filtrar por período">
+          <option value="today">A partir de hoje</option>
+          <option value="30">Próximos 30 dias</option>
+          <option value="90">Próximos 3 meses</option>
+          <option value="180">Próximos 6 meses</option>
+          <option value="all">Todo o período</option>
+          <option value="custom">Intervalo personalizado</option>
+        </select>
+      </div>
+      <div class="select-wrapper">
+        <select id="estadoSelect" aria-label="Filtrar por estado">
+          <option value="todos">Todos</option>
+          <option value="INT">Internacionais</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Custom date range (hidden by default) -->
+    <div id="customDateRow" class="filter-row custom-date-row hidden">
+      <label class="range-label">
+        De <input type="date" id="dateFrom" aria-label="Data inicial" />
+      </label>
+      <label class="range-label">
+        Até <input type="date" id="dateTo" aria-label="Data final" />
+      </label>
+    </div>
+
+    <!-- Results count + clear -->
+    <div class="filter-row filter-meta">
+      <span id="resultCount" class="result-count">Carregando...</span>
+      <button class="btn-clear hidden" id="btnClear" aria-label="Limpar filtros">Limpar filtros</button>
+    </div>
+  </div>
+
+  <main id="cardsList" class="cards-list" role="list" aria-label="Lista de corridas"></main>
+
+  <div id="emptyState" class="empty-state hidden">
+    <p>Nenhuma corrida encontrada com os filtros atuais.</p>
+    <button class="btn-clear" id="btnClearEmpty">Limpar filtros</button>
+  </div>
+
+  <template id="cardTemplate">
+    <article class="card" role="listitem">
+      <div class="card-collapsed" role="button" tabindex="0" aria-expanded="false">
+        <div class="card-img-wrap">
+          <img class="card-img" alt="" loading="lazy" />
+          <div class="card-img-placeholder" aria-hidden="true"></div>
+        </div>
+        <div class="card-body">
+          <div class="card-top">
+            <h2 class="card-title"></h2>
+            <span class="badge-status"></span>
+          </div>
+          <div class="card-meta">
+            <span class="card-date"></span>
+            <span class="card-location"></span>
+          </div>
+          <div class="card-footer">
+            <div class="card-distances"></div>
+            <span class="badge-fontes hidden"></span>
+          </div>
+        </div>
+      </div>
+      <div class="card-expanded hidden" aria-hidden="true">
+        <div class="expanded-distances"></div>
+        <div class="expanded-period"></div>
+        <div class="expanded-fontes"></div>
+        <div class="expanded-inscricoes"></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

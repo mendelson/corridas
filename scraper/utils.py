@@ -1,0 +1,236 @@
+from __future__ import annotations
+import re
+import unicodedata
+from datetime import date, datetime
+from dateutil import parser as dateutil_parser
+from unidecode import unidecode
+
+# ---------------------------------------------------------------------------
+# Date normalization
+# ---------------------------------------------------------------------------
+
+_MONTH_PT = {
+    "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
+    "abril": "04", "maio": "05", "junho": "06", "julho": "07",
+    "agosto": "08", "setembro": "09", "outubro": "10",
+    "novembro": "11", "dezembro": "12",
+}
+
+_DATE_DMY = re.compile(r"(\d{1,2})[/\-\.](\d{1,2})[/\-\.](\d{4})")
+_DATE_PTBR = re.compile(
+    r"(\d{1,2})\s+de\s+([a-záéíóúãõâêô]+)\s+de\s+(\d{4})", re.IGNORECASE
+)
+
+
+def normalize_date(raw: str | None) -> str | None:
+    """Return ISO 8601 date string (YYYY-MM-DD) or None."""
+    if not raw:
+        return None
+    raw = raw.strip()
+
+    # Already ISO
+    if re.match(r"^\d{4}-\d{2}-\d{2}$", raw):
+        return raw
+
+    # DD/MM/YYYY or DD-MM-YYYY or DD.MM.YYYY
+    m = _DATE_DMY.search(raw)
+    if m:
+        d, mo, y = m.group(1), m.group(2), m.group(3)
+        return f"{y}-{mo.zfill(2)}-{d.zfill(2)}"
+
+    # "10 de agosto de 2025"
+    m = _DATE_PTBR.search(raw)
+    if m:
+        d, month_str, y = m.group(1), m.group(2).lower(), m.group(3)
+        mo = _MONTH_PT.get(unidecode(month_str))
+        if mo:
+            return f"{y}-{mo}-{d.zfill(2)}"
+
+    # Fallback to dateutil
+    try:
+        return dateutil_parser.parse(raw, dayfirst=True).strftime("%Y-%m-%d")
+    except Exception:
+        return None
+
+
+def normalize_time(raw: str | None) -> str | None:
+    """Return HH:MM string or None."""
+    if not raw:
+        return None
+    m = re.search(r"(\d{1,2})[h:](\d{2})", raw.strip())
+    if m:
+        return f"{m.group(1).zfill(2)}:{m.group(2)}"
+    m = re.search(r"(\d{1,2})h", raw.strip(), re.IGNORECASE)
+    if m:
+        return f"{m.group(1).zfill(2)}:00"
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Distance normalization
+# ---------------------------------------------------------------------------
+
+_DIST_NUM = re.compile(r"(\d+(?:[.,]\d+)?)\s*k", re.IGNORECASE)
+_DIST_WORDS = {
+    "cinco": 5, "dez": 10, "quinze": 15, "vinte": 20,
+    "meia": 21.097, "half": 21.097,
+    "maratona": 42.195, "marathon": 42.195, "full": 42.195,
+}
+
+
+def normalize_distance(raw: str | None) -> float | str | None:
+    if not raw:
+        return None
+    raw_l = raw.strip().lower()
+    for word, val in _DIST_WORDS.items():
+        if word in raw_l:
+            return val
+    m = _DIST_NUM.search(raw_l)
+    if m:
+        return float(m.group(1).replace(",", "."))
+    if "infantil" in raw_l or "kids" in raw_l:
+        return "Infantil"
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Money normalization
+# ---------------------------------------------------------------------------
+
+def normalize_valor(raw: str | None) -> float | None:
+    if not raw:
+        return None
+    cleaned = re.sub(r"[R$\s]", "", raw.strip())
+    cleaned = cleaned.replace(".", "").replace(",", ".")
+    try:
+        return float(cleaned)
+    except ValueError:
+        return None
+
+
+# ---------------------------------------------------------------------------
+# Title normalization
+# ---------------------------------------------------------------------------
+
+def normalize_titulo(raw: str | None) -> str:
+    if not raw:
+        return ""
+    text = raw.strip()
+    # Remove emojis
+    text = "".join(c for c in text if not unicodedata.category(c).startswith("So"))
+    # Title case and strip excess whitespace
+    return re.sub(r"\s+", " ", text).strip().title()
+
+
+# ---------------------------------------------------------------------------
+# Slugify
+# ---------------------------------------------------------------------------
+
+def slugify(text: str) -> str:
+    text = unidecode(text).lower()
+    text = re.sub(r"[^a-z0-9]+", "-", text)
+    return text.strip("-")
+
+
+# ---------------------------------------------------------------------------
+# Title similarity key (for merger)
+# ---------------------------------------------------------------------------
+
+_STOP_WORDS = {
+    "corrida", "run", "race", "maratona", "meia", "de", "da", "do",
+    "das", "dos", "em", "a", "o", "e", "na", "no", "para",
+}
+
+
+def normalize_titulo_merge(titulo: str) -> str:
+    t = unidecode(titulo).lower()
+    t = re.sub(r"[^a-z0-9 ]", " ", t)
+    # Strip standalone 4-digit years so "Corrida 2025" ≈ "Corrida"
+    t = re.sub(r"\b20\d{2}\b", "", t)
+    tokens = [w for w in t.split() if w not in _STOP_WORDS]
+    return " ".join(tokens)
+
+
+# ---------------------------------------------------------------------------
+# City → State lookup
+# ---------------------------------------------------------------------------
+
+_CIDADE_UF: dict[str, str] = {
+    # DF
+    "brasilia": "DF", "brasília": "DF", "plano piloto": "DF",
+    "taguatinga": "DF", "ceilândia": "DF", "ceilandia": "DF",
+    "sobradinho": "DF", "gama": "DF", "samambaia": "DF",
+    "aguas claras": "DF", "águas claras": "DF", "guara": "DF", "guará": "DF",
+    "nucleo bandeirante": "DF", "cruzeiro": "DF", "lago sul": "DF",
+    "lago norte": "DF", "paranoa": "DF", "paranoá": "DF",
+    "riacho fundo": "DF", "planaltina": "DF", "sao sebastiao": "DF",
+    "recanto das emas": "DF", "candangolandia": "DF",
+    # SP
+    "sao paulo": "SP", "são paulo": "SP", "campinas": "SP",
+    "santos": "SP", "sao bernardo": "SP", "guarulhos": "SP",
+    "osasco": "SP", "ribeirao preto": "SP", "sorocaba": "SP",
+    # RJ
+    "rio de janeiro": "RJ", "niteroi": "RJ", "petrópolis": "RJ",
+    "petropolis": "RJ",
+    # MG
+    "belo horizonte": "MG", "uberlandia": "MG", "contagem": "MG",
+    # RS
+    "porto alegre": "RS", "caxias do sul": "RS",
+    # PR
+    "curitiba": "PR", "londrina": "PR",
+    # SC
+    "florianopolis": "SC", "florianópolis": "SC", "joinville": "SC",
+    # CE
+    "fortaleza": "CE",
+    # BA
+    "salvador": "BA",
+    # PE
+    "recife": "PE",
+    # AM
+    "manaus": "AM",
+    # GO
+    "goiania": "GO", "goiânia": "GO",
+}
+
+_BSB_KEYWORDS = {
+    "brasília", "brasilia", "df", "distrito federal", "plano piloto",
+    "taguatinga", "ceilândia", "ceilandia", "sobradinho", "gama",
+    "samambaia", "águas claras", "aguas claras", "guará", "guara",
+}
+
+
+def infer_estado(localizacao: str, titulo: str = "") -> str | None:
+    text = (localizacao + " " + titulo).lower()
+    text_ascii = unidecode(text)
+
+    for keyword in _BSB_KEYWORDS:
+        if keyword in text or unidecode(keyword) in text_ascii:
+            return "DF"
+
+    for cidade, uf in _CIDADE_UF.items():
+        if unidecode(cidade) in text_ascii:
+            return uf
+
+    return None
+
+
+def is_bsb_event(localizacao: str, titulo: str = "") -> bool:
+    text = (localizacao + " " + titulo).lower()
+    text_ascii = unidecode(text)
+    for keyword in _BSB_KEYWORDS:
+        if keyword in text or unidecode(keyword) in text_ascii:
+            return True
+    return False
+
+
+# ---------------------------------------------------------------------------
+# Timestamp helpers
+# ---------------------------------------------------------------------------
+
+def now_iso() -> str:
+    from datetime import timezone
+    return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+
+
+def today_iso() -> str:
+    return date.today().isoformat()

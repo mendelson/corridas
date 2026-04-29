@@ -246,14 +246,23 @@ input { font-family: inherit; }
 }
 
 /* =====================================================================
-   Month Separator
+   Month Section
    ===================================================================== */
+.month-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .month-separator {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 4px 0 2px;
-  pointer-events: none;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
   user-select: none;
 }
 
@@ -273,6 +282,28 @@ input { font-family: inherit; }
   color: var(--color-text-secondary);
   white-space: nowrap;
   padding: 0 4px;
+}
+
+.month-chevron {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.month-separator:hover .month-separator-label,
+.month-separator:hover .month-chevron {
+  color: var(--color-accent);
+}
+
+.month-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.month-cards--collapsed {
+  display: none;
 }
 
 /* =====================================================================

@@ -207,27 +207,46 @@ function renderCards() {
   emptyState.classList.add('hidden');
 
   const frag = document.createDocumentFragment();
+  let currentSection = null;
   let lastMonthKey = null;
   for (const corrida of filteredCorridas) {
     const monthKey = corrida.data_evento ? corrida.data_evento.slice(0, 7) : null;
     if (monthKey && monthKey !== lastMonthKey) {
-      frag.appendChild(buildMonthSeparator(monthKey));
+      const { section, cardsContainer } = buildMonthSection(monthKey);
+      frag.appendChild(section);
+      currentSection = cardsContainer;
       lastMonthKey = monthKey;
     }
-    frag.appendChild(buildCard(corrida));
+    (currentSection || frag).appendChild(buildCard(corrida));
   }
   cardsList.appendChild(frag);
 }
 
-function buildMonthSeparator(monthKey) {
+function buildMonthSection(monthKey) {
   const [year, month] = monthKey.split('-');
   const label = PT_MONTHS_FULL[parseInt(month, 10) - 1] + ' ' + year;
-  const div = document.createElement('div');
-  div.className = 'month-separator';
-  div.setAttribute('role', 'separator');
-  div.setAttribute('aria-label', label);
-  div.innerHTML = `<span class="month-separator-label">${label}</span>`;
-  return div;
+
+  const section = document.createElement('div');
+  section.className = 'month-section';
+
+  const btn = document.createElement('button');
+  btn.className = 'month-separator';
+  btn.setAttribute('aria-expanded', 'true');
+  btn.setAttribute('aria-label', label);
+  btn.innerHTML = `<span class="month-separator-label">${label}</span><span class="month-chevron" aria-hidden="true">▾</span>`;
+
+  const cardsContainer = document.createElement('div');
+  cardsContainer.className = 'month-cards';
+
+  btn.addEventListener('click', () => {
+    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
+  });
+
+  section.appendChild(btn);
+  section.appendChild(cardsContainer);
+  return { section, cardsContainer };
 }
 
 function buildCard(c) {

@@ -101,11 +101,19 @@ def _parse_row(row, debug: bool = False) -> Corrida | None:
         return None
     text = " ".join(c.get_text(strip=True) for c in cells)
     if debug:
+        import os
         cell_dump = " | ".join(repr(c.get_text(strip=True)) for c in cells)
         link_dump = " ; ".join(
             f"text={a.get_text(strip=True)!r} href={a.get('href','')!r}"
             for a in row.find_all("a", href=True)[:3]
         )
+        # Append to debug file so it gets committed
+        debug_path = os.path.join(os.path.dirname(__file__), "..", "..", "data", "_corridas_br_debug.txt")
+        with open(debug_path, "a", encoding="utf-8") as f:
+            f.write(f"\n--- ROW ---\n")
+            f.write(f"cells: {cell_dump}\n")
+            f.write(f"links: {link_dump}\n")
+            f.write(f"row_html: {str(row)[:500]}\n")
         print(f"[{SOURCE_NAME}][DEBUG] cells={cell_dump}")
         print(f"[{SOURCE_NAME}][DEBUG] links={link_dump}")
     if not text or len(text) < 10:

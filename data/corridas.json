@@ -1,5 +1,230 @@
 {
-  "gerado_em": "",
-  "total": 0,
-  "corridas": []
+  "gerado_em": "2026-04-29T12:57:47+00:00",
+  "total": 7,
+  "corridas": [
+    {
+      "id": "boston-marathon_int_2026-04-29",
+      "titulo": "Boston Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Boston, EUA",
+      "cidade": "Boston, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Boston Marathon",
+          "link_evento": "https://www.baa.org/races/boston-marathon/",
+          "links_inscricao": [
+            "https://www.baa.org/races/boston-marathon/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:46+00:00",
+      "updated_at": "2026-04-29T12:57:46+00:00"
+    },
+    {
+      "id": "tcs-london-marathon_int_2026-04-29",
+      "titulo": "TCS London Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Londres, Reino Unido",
+      "cidade": "Londres, Reino Unido",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS London Marathon",
+          "link_evento": "https://www.tcslondonmarathon.com/",
+          "links_inscricao": [
+            "https://www.tcslondonmarathon.com/enter/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:46+00:00",
+      "updated_at": "2026-04-29T12:57:46+00:00"
+    },
+    {
+      "id": "bank-of-america-chicago-marathon_int_2026-04-29",
+      "titulo": "Bank of America Chicago Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Chicago, EUA",
+      "cidade": "Chicago, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Bank of America Chicago Marathon",
+          "link_evento": "https://www.chicagomarathon.com/",
+          "links_inscricao": [
+            "https://www.chicagomarathon.com/register/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:46+00:00",
+      "updated_at": "2026-04-29T12:57:46+00:00"
+    },
+    {
+      "id": "bmw-berlin-marathon_int_2026-04-29",
+      "titulo": "BMW Berlin Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Berlim, Alemanha",
+      "cidade": "Berlim, Alemanha",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "BMW Berlin Marathon",
+          "link_evento": "https://www.bmw-berlin-marathon.com/en/",
+          "links_inscricao": [
+            "https://www.bmw-berlin-marathon.com/en/register/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:46+00:00",
+      "updated_at": "2026-04-29T12:57:46+00:00"
+    },
+    {
+      "id": "tokyo-marathon_int_2026-04-29",
+      "titulo": "Tokyo Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Tóquio, Japão",
+      "cidade": "Tóquio, Japão",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Tokyo Marathon",
+          "link_evento": "https://www.marathon.tokyo/en/",
+          "links_inscricao": [
+            "https://www.marathon.tokyo/en/participants/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:47+00:00",
+      "updated_at": "2026-04-29T12:57:47+00:00"
+    },
+    {
+      "id": "tcs-sydney-marathon_int_2026-04-29",
+      "titulo": "TCS Sydney Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Sydney, Austrália",
+      "cidade": "Sydney, Austrália",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS Sydney Marathon",
+          "link_evento": "https://www.tcssydneymarathon.com.au/",
+          "links_inscricao": [
+            "https://www.tcssydneymarathon.com.au/enter/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:47+00:00",
+      "updated_at": "2026-04-29T12:57:47+00:00"
+    },
+    {
+      "id": "tcs-new-york-city-marathon_int_2026-04-29",
+      "titulo": "TCS New York City Marathon",
+      "data_evento": "",
+      "horario": null,
+      "localizacao": "Nova York, EUA",
+      "cidade": "Nova York, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS New York City Marathon",
+          "link_evento": "https://www.nyrr.org/races/tcsnycmarathon",
+          "links_inscricao": [
+            "https://www.nyrr.org/races/tcsnycmarathon"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T12:57:47+00:00",
+      "updated_at": "2026-04-29T12:57:47+00:00"
+    }
+  ]
 }

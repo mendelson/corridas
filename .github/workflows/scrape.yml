@@ -9,6 +9,7 @@ on:
     branches: [main]
     paths:
       - 'scraper/**'
+      - 'web/**'
       - '.github/workflows/scrape.yml'
       - 'requirements.txt'
 

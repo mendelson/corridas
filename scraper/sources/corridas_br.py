@@ -67,7 +67,14 @@ def _parse_row(row) -> Corrida | None:
     if not data:
         return None
 
-    titulo_raw = cells[1].get_text(strip=True) if len(cells) > 1 else cells[0].get_text(strip=True)
+    # Table structure: Date | City | Race name | ...
+    # Try col 2 (race name) first, fall back to col 1
+    if len(cells) >= 3:
+        titulo_raw = cells[2].get_text(strip=True) or cells[1].get_text(strip=True)
+    elif len(cells) >= 2:
+        titulo_raw = cells[1].get_text(strip=True)
+    else:
+        titulo_raw = cells[0].get_text(strip=True)
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None

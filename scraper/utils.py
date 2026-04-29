@@ -234,3 +234,53 @@ def now_iso() -> str:
 
 def today_iso() -> str:
     return date.today().isoformat()
+
+
+# ---------------------------------------------------------------------------
+# Robust date extraction from BeautifulSoup soup (for major scrapers)
+# ---------------------------------------------------------------------------
+
+_YEAR_RE = re.compile(r'\b(202[5-9]|203\d)\b')
+_MONTH_EN = r'(?:January|February|March|April|May|June|July|August|September|October|November|December)'
+_MONTH_DE = r'(?:Januar|Februar|März|April|Mai|Juni|Juli|August|September|Oktober|November|Dezember)'
+_MONTH_ANY = f'(?:{_MONTH_EN}|{_MONTH_DE})'
+
+_DATE_PATTERNS = [
+    re.compile(rf'\b{_MONTH_ANY}\s+\d{{1,2}}(?:st|nd|rd|th)?,?\s+20\d{{2}}\b', re.IGNORECASE),
+    re.compile(rf'\b\d{{1,2}}(?:st|nd|rd|th)?\s+{_MONTH_ANY},?\s+20\d{{2}}\b', re.IGNORECASE),
+    re.compile(rf'\b\d{{1,2}}\.\s*{_MONTH_ANY}\s+20\d{{2}}\b', re.IGNORECASE),
+    re.compile(r'\b20\d{2}[-/]\d{2}[-/]\d{2}\b'),
+    re.compile(r'\b\d{2}[-/]\d{2}[-/]20\d{2}\b'),
+]
+
+
+def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
+    """Scan BeautifulSoup tree for any recognisable date, return ISO 8601 or None."""
+    candidates: list[str] = []
+    for tag in soup.find_all(True, limit=300):
+        for text in [tag.get_text(' ', strip=True), tag.get('content', ''), tag.get('datetime', '')]:
+            if not text or len(text) > 200:
+                continue
+            for pat in _DATE_PATTERNS:
+                m = pat.search(text)
+                if m:
+                    try:
+                        parsed = dateutil_parser.parse(m.group(0), dayfirst=False)
+                        if 2025 <= parsed.year <= 2030:
+                            candidates.append(parsed.strftime('%Y-%m-%d'))
+                    except Exception:
+                        pass
+
+    if not candidates:
+        return None
+
+    # Prefer dates matching year_hint, otherwise pick the earliest future date
+    today = date.today().isoformat()
+    if year_hint:
+        year_str = str(year_hint)
+        same_year = [d for d in candidates if d.startswith(year_str)]
+        if same_year:
+            return sorted(same_year)[0]
+
+    future = [d for d in candidates if d >= today]
+    return sorted(future)[0] if future else sorted(candidates)[-1]

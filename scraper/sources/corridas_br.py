@@ -67,20 +67,30 @@ def _parse_row(row) -> Corrida | None:
     if not data:
         return None
 
-    # Table structure: Date | City | Race name | ...
-    # Try col 2 (race name) first, fall back to col 1
-    if len(cells) >= 3:
-        titulo_raw = cells[2].get_text(strip=True) or cells[1].get_text(strip=True)
-    elif len(cells) >= 2:
-        titulo_raw = cells[1].get_text(strip=True)
-    else:
-        titulo_raw = cells[0].get_text(strip=True)
-    titulo = normalize_titulo(titulo_raw)
+    # Find the event link — skip city-filter links (por_cidade.asp, por_estado.asp)
+    event_link = None
+    titulo_raw = None
+    for a in row.find_all("a", href=True):
+        href = a["href"]
+        if "por_cidade" in href or "por_estado" in href or "por_distancia" in href:
+            continue
+        event_link = href
+        titulo_raw = a.get_text(strip=True)
+        break
+
+    # Fallback: use the non-date, non-city cell text
+    if not titulo_raw:
+        for cell in cells[1:]:
+            txt = cell.get_text(strip=True)
+            if txt and len(txt) > 3 and not re.match(r'^[\d/\-\.]+$', txt):
+                titulo_raw = txt
+                break
+
+    titulo = normalize_titulo(titulo_raw or "")
     if not titulo or len(titulo) < 3:
         return None
 
-    link_tag = row.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
+    link = event_link or URL
     if link.startswith("/"):
         link = "https://www.corridasbr.com.br" + link
 

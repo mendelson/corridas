@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo, Inscricao
-from ...utils import normalize_date, normalize_time, slugify, now_iso, today_iso
+from ...utils import normalize_date, normalize_time, slugify, now_iso, today_iso, extract_date_from_soup
 
 URL = "https://www.marathon.tokyo/en/"
 INSCRICAO_URL = "https://www.marathon.tokyo/en/participants/"
@@ -61,17 +61,7 @@ def scrape() -> list[Corrida]:
 
 
 def _extract_date(soup) -> str | None:
-    for tag in soup.find_all(["time", "p", "span", "div"], limit=50):
-        text = tag.get_text(strip=True)
-        m = re.search(r"\b(20\d{2})\b", text)
-        if m:
-            year = m.group(1)
-            # Tokyo is typically in March
-            date_m = re.search(r"(\w+\s+\d{1,2})", text)
-            if date_m:
-                return normalize_date(f"{date_m.group(1)}, {year}")
-    return None
-
+    return extract_date_from_soup(soup)
 
 def _extract_image(soup) -> str | None:
     img = soup.find("meta", property="og:image")

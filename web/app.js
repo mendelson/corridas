@@ -129,11 +129,12 @@ function applyFilters() {
 
 function matchesPeriodo(c, today) {
   const d = c.data_evento;
+  if (!d) return false;  // never show events without a date
   switch (state.periodo) {
-    case 'today':   return !d || d >= today;
-    case '30':      return d && d >= today && d <= addDays(today, 30);
-    case '90':      return d && d >= today && d <= addDays(today, 90);
-    case '180':     return d && d >= today && d <= addDays(today, 180);
+    case 'today':   return d >= today;
+    case '30':      return d >= today && d <= addDays(today, 30);
+    case '90':      return d >= today && d <= addDays(today, 90);
+    case '180':     return d >= today && d <= addDays(today, 180);
     case 'all':     return true;
     case 'custom': {
       const from = state.dateFrom;

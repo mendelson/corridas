@@ -1,1 +1,1806 @@
-../data/corridas.json
+{
+  "gerado_em": "2026-04-29T17:32:00-03:00",
+  "total": 48,
+  "corridas": [
+    {
+      "id": "circuito-da-saude-etapa-ana-neri_df_2026-04-29",
+      "titulo": "Circuito Da Saúde Etapa Ana Néri",
+      "data_evento": "2026-05-03",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 2.5,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776437769536x999912922541457500/1c78c497-16b1-4fed-aad7-f6b5632e81d8.jpeg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/circuito-da-saúde-etapa-ana-néri",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "19a-corrida-uniao-europeia-sunset-edition_df_2026-04-29",
+      "titulo": "19ª Corrida União Europeia - Sunset Edition",
+      "data_evento": "2026-05-09",
+      "horario": "17:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 1.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.5,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1775834236471x466157074232250300/IMG_1677.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/ue2026",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/ue2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "1a-corrida-do-bope_df_2026-04-29",
+      "titulo": "1ª Corrida Do Bope",
+      "data_evento": "2026-05-16",
+      "horario": "19:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773865165009x754556473979459500/banner%20corrida%20bope.png",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/1ª-corrida-do-bope",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "circuito-serrano-corrida-de-rua-e-caminhada_df_2026-04-29",
+      "titulo": "Circuito Serrano Corrida De Rua E Caminhada",
+      "data_evento": "2026-05-16",
+      "horario": "17:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773241292854x783775488964265500/01_Banner-Evento_Circuito-Serrano-2026%20%282%29.png",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/quadra-5-comércio-local-23-02",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "corrida-da-camara_df_2026-04-29",
+      "titulo": "Corrida Da Câmara",
+      "data_evento": "2026-05-17",
+      "horario": "06:30",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1777467022261x757324640825254900/IMG_2424.jpeg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corridadacamara",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "onerun-sunset-2026_df_2026-04-29",
+      "titulo": "Onerun Sunset 2026",
+      "data_evento": "2026-05-23",
+      "horario": "17:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 1.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.5,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776257185911x900933108587847800/IMG_1882.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/onerun2026",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/onerun2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "corrida-sindjus-36-anos_df_2026-04-29",
+      "titulo": "Corrida Sindjus 36 Anos",
+      "data_evento": "2026-05-24",
+      "horario": "08:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 1.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.5,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1774050330165x820107327853891700/DOM.%2024MAIO%20%281200%20x%20420%20px%29%20%281%29.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/sindjus36",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/sindjus36"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "ts_72792",
+      "titulo": "21K Parque D. Sarah Kubitschek 2026",
+      "data_evento": "2026-05-24",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/SOZ747C345DE2G4G7SO1U1SVNFR19JFOWRLMUC1AIOJLFYHYQ2.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/21K+PARQUE++D.+SARAH+KUBITSCHEK+2026-72792",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/21K+PARQUE++D.+SARAH+KUBITSCHEK+2026-72792"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:32:00-03:00"
+    },
+    {
+      "id": "corre-que-e-sao-joao_df_2026-04-29",
+      "titulo": "Corre Que É São João",
+      "data_evento": "2026-05-30",
+      "horario": "19:00",
+      "localizacao": "BRASILIA, DF",
+      "cidade": "BRASILIA",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1775949212305x569254524987835300/BANNER%20SITE%20ATUALIZADO.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/correpimba",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/correpimba"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "20a-travessia-do-fogo_df_2026-04-29",
+      "titulo": "20ª Travessia Do Fogo",
+      "data_evento": "2026-05-30",
+      "horario": "06:00",
+      "localizacao": "Brasilia, DF",
+      "cidade": "Brasilia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1771246464940x735713454074222700/Banner-do-site-2.jpg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/20ª-travessia-do-fogo-",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "ts_86847",
+      "titulo": "Corrida Do Vinho Expovits Brasil 2026",
+      "data_evento": "2026-05-30",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/T249SAMTNYMDUL5598D8UVMJCQHG2F2XUR2I7R3M7HEAKIN9WP.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/Corrida+do+Vinho+Expovits+Brasil+2026-86847",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/Corrida+do+Vinho+Expovits+Brasil+2026-86847"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "corrida-e-caminhada-para-cristo_df_2026-04-29",
+      "titulo": "Corrida E Caminhada Para Cristo",
+      "data_evento": "2026-05-31",
+      "horario": "07:00",
+      "localizacao": "Samambaia-sul, DF",
+      "cidade": "Samambaia-sul",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773888367141x943237141496806700/1000224314.jpg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corrida-e-caminhada-para-cristo",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "ts_86595",
+      "titulo": "Corrida Nu Vai Bem - Etapa Brasília",
+      "data_evento": "2026-05-31",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/JJH1I8SNAROTQ453GMD1NDIQVFVDWCQ8QO9O5E86LAT1IP44GV.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+NU+VAI+BEM+-+ETAPA+BRAS%C3%8DLIA-86595",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+NU+VAI+BEM+-+ETAPA+BRAS%C3%8DLIA-86595"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "movimente-se-corrida-e-caminhada-para-saude_df_2026-04-29",
+      "titulo": "Movimente-Se: Corrida E Caminhada Para Saúde",
+      "data_evento": "2026-06-04",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1774537512282x214418893653642200/WhatsApp%20Image%202026-03-25%20at%2020.05.02.jpeg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/caminhada-movimenta-se",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "capital-night_df_2026-04-29",
+      "titulo": "Capital Night",
+      "data_evento": "2026-06-06",
+      "horario": "19:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776375091666x146408636496155870/WhatsApp%20Image%202026-04-16%20at%2008.48.55.jpeg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/capital-night",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/capital-night"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "maratona-btr-parque-agua-mineral-pnb_df_2026-04-29",
+      "titulo": "Maratona Btr - Parque Água Mineral Pnb.",
+      "data_evento": "2026-06-06",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 42.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773436665130x353554145915346370/CAPA%20SITE%201.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/maratona-btr-parque-agua-mineral-pnb",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/maratona-btr-parque-agua-mineral-pnb"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "corridona-2026_df_2026-04-29",
+      "titulo": "Corridona 2026",
+      "data_evento": "2026-06-07",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 2.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773412237072x600936238864604900/IMG_1802.png",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corridona2026",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "ts_85346",
+      "titulo": "Copa Run 2026",
+      "data_evento": "2026-06-13",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/VRE2WTXQ7DO1YNDNZD3ZNCRX5CHI7AAS5TKCVR1THDYH0RJ4XM.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/COPA+RUN+2026-85346",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/COPA+RUN+2026-85346"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:32:00-03:00"
+    },
+    {
+      "id": "35a-corrida-do-fogo-cbmdf_df_2026-04-29",
+      "titulo": "35ª Corrida Do Fogo - Cbmdf",
+      "data_evento": "2026-06-14",
+      "horario": "08:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1772820915298x969443354865638700/Encarte%20site%20%281%29.jpeg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/35corridadofogodf",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "2o-super-sunset-run-20-anos-da-super-adega_df_2026-04-29",
+      "titulo": "2º Super Sunset Run - 20 Anos Da Super Adega",
+      "data_evento": "2026-06-20",
+      "horario": "17:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1768937051774x234033728642944580/IMG_8787.png",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/2supersunset",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "circuito-corre-que-da-bom-pelo-mundo-brasil_df_2026-04-29",
+      "titulo": "Circuito Corre Que Da Bom Pelo Mundo - Brasil",
+      "data_evento": "2026-06-21",
+      "horario": "07:00",
+      "localizacao": "Brasilia, DF",
+      "cidade": "Brasilia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1770411781799x262483254753580480/BANNER%20BRASIL.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/circuito-corre-que-da-bom-pelo-mundo-etapa2brasil",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/circuito-corre-que-da-bom-pelo-mundo-etapa2brasil"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "ts_86573",
+      "titulo": "Minions Run - Brasília 2026",
+      "data_evento": "2026-06-21",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/7A9PMZZMPVEZ68TCWAN9CFQ2O6GR9ZGFVHWMBHA4QAA5PMPYF4.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/MINIONS+RUN+-+BRAS%C3%8DLIA+2026-86573",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/MINIONS+RUN+-+BRAS%C3%8DLIA+2026-86573"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "black-night-run_df_2026-04-29",
+      "titulo": "Black Night Run",
+      "data_evento": "2026-07-04",
+      "horario": "19:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 30.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1769452974829x102187906226965500/Capa%20site%20colorida.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/blacknightrun",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/blacknightrun"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "ts_86292",
+      "titulo": "Cats Run DF 2026",
+      "data_evento": "2026-07-12",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/K0NWC1CC1WJHLKWQZTNN7F9T2JM5ASKX6PE87F94O0MD6MICLN.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CATS+RUN+DF+2026-86292",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CATS+RUN+DF+2026-86292"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "ts_74549",
+      "titulo": "Desafio Das Torres Meia Maratona",
+      "data_evento": "2026-07-19",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/Y2PLBOA22PEC3BRCAWUKSWBJIMPGHQ4O0K0P4WF33ACUA1WQ8M.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/Desafio+das+torres+meia+maratona-74549",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/Desafio+das+torres+meia+maratona-74549"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:32:00-03:00"
+    },
+    {
+      "id": "ts_86042",
+      "titulo": "Asics Run Challenge 2026 - Etapa Brasília",
+      "data_evento": "2026-07-26",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/N8N0HD9VXT03ZIZKE5302UF7TE1YMXUIT57BXEL8W22PHD8COI.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/ASICS+RUN+CHALLENGE+2026+-+ETAPA+BRAS%C3%8DLIA-86042",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/ASICS+RUN+CHALLENGE+2026+-+ETAPA+BRAS%C3%8DLIA-86042"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "9o-corrida-de-olho-na-saude_df_2026-04-29",
+      "titulo": "9º Corrida De Olho Na Saúde",
+      "data_evento": "2026-08-08",
+      "horario": "17:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1769116105099x258677244191449540/Banner-do-Evento-1200x420-px%20banner.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/9corridadeolhonasaude",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/9corridadeolhonasaude"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "corrida-da-policia-federal_df_2026-04-29",
+      "titulo": "Corrida Da Polícia Federal",
+      "data_evento": "2026-08-09",
+      "horario": "06:30",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776346273779x133330929372441170/IMG_1921.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corridapf2026",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/corridapf2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "pink-night-run_df_2026-04-29",
+      "titulo": "Pink Night Run",
+      "data_evento": "2026-08-15",
+      "horario": "19:00",
+      "localizacao": "Brasilia, DF",
+      "cidade": "Brasilia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776276757972x630129691896451800/CAPA%20-%20CENTRAL%20DAS%20CORRIDAS%20%281%29.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/pink-night-run",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/pink-night-run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "quatro-poderes-run-2026_df_2026-04-29",
+      "titulo": "Quatro Poderes Run 2026",
+      "data_evento": "2026-08-22",
+      "horario": "17:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1769949121528x297724165570891300/Central%20da%20Corrida%20%201200x420.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/quatropoderesrun",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/quatropoderesrun"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "ts_73880",
+      "titulo": "Nutrição Brasil Run 2026",
+      "data_evento": "2026-08-30",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/1AN8F54N0W99KO3RX6V38ISBA0RB1CG0PYMKE6E7MYGUC9VCO4.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/NUTRI%C3%87%C3%83O+BRASIL+RUN+2026-73880",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/NUTRI%C3%87%C3%83O+BRASIL+RUN+2026-73880"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "corre-que-da-bom-pelo-mundo-etapa-franca_df_2026-04-29",
+      "titulo": "Corre Que Da Bom Pelo Mundo- Etapa França",
+      "data_evento": "2026-09-06",
+      "horario": "07:00",
+      "localizacao": "Brasilia, DF",
+      "cidade": "Brasilia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776273016101x655315813236953600/BANNER%20FRAN%C3%87A%20%285%29.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-franca",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-franca"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "circuito-da-saude-etapa-run-sus_df_2026-04-29",
+      "titulo": "Circuito Da Saúde Etapa Run Sus",
+      "data_evento": "2026-09-13",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 2.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1767885559046x102212231383618670/IMG_0041.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/circuito-da-saúde-etapa-run-sus",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/circuito-da-saúde-etapa-run-sus"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "tcs-sydney-marathon_int_2026",
+      "titulo": "TCS Sydney Marathon",
+      "data_evento": "2026-09-20",
+      "horario": "07:00",
+      "localizacao": "Sydney, Austrália",
+      "cidade": "Sydney, Austrália",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS Sydney Marathon",
+          "link_evento": "https://www.tcssydneymarathon.com.au/",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:23-03:00",
+      "updated_at": "2026-04-29T16:18:23-03:00"
+    },
+    {
+      "id": "bmw-berlin-marathon_int_2026",
+      "titulo": "BMW Berlin Marathon",
+      "data_evento": "2026-09-27",
+      "horario": "09:15",
+      "localizacao": "Berlim, Alemanha",
+      "cidade": "Berlim, Alemanha",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.bmw-berlin-marathon.com/fileadmin/_processed_/4/7/csm_BM25_Website_Teaser_1920x1080_332c01cbb7.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "BMW Berlin Marathon",
+          "link_evento": "https://www.bmw-berlin-marathon.com/en/",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:24-03:00",
+      "updated_at": "2026-04-29T16:18:24-03:00"
+    },
+    {
+      "id": "bank-of-america-chicago-marathon_int_2026",
+      "titulo": "Bank of America Chicago Marathon",
+      "data_evento": "2026-10-11",
+      "horario": "07:30",
+      "localizacao": "Chicago, EUA",
+      "cidade": "Chicago, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://assets-chicagomarathon-com.s3.amazonaws.com/wp-content/uploads/2019/10/2019_ChicagoMarathon-1.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Bank of America Chicago Marathon",
+          "link_evento": "https://www.chicagomarathon.com/",
+          "links_inscricao": [
+            "https://www.chicagomarathon.com/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:24-03:00",
+      "updated_at": "2026-04-29T16:18:24-03:00"
+    },
+    {
+      "id": "cmbrun-2026-3a-edicao_df_2026-04-29",
+      "titulo": "Cmbrun 2026 - 3ª Edição",
+      "data_evento": "2026-10-11",
+      "horario": "06:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773248028192x421266439125253200/Banner%20CMBRun%203Ed.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/cmbrun-2026---3ª-edição",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/cmbrun-2026---3ª-edição"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "ts_74339",
+      "titulo": "City Cross Marathon 2026",
+      "data_evento": "2026-10-25",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/LMFDNF8FJ92TKQFICCI0O8BZB66KN3HWL2UN9T6YBY358L9TZN.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CITY+CROSS+MARATHON+2026-74339",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CITY+CROSS+MARATHON+2026-74339"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:32:00-03:00"
+    },
+    {
+      "id": "halloween-night-run_df_2026-04-29",
+      "titulo": "Halloween Night Run",
+      "data_evento": "2026-10-31",
+      "horario": "19:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 30.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1769716634385x665918234221878400/Halloween%20calendario.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/-halloween-night-run",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/-halloween-night-run"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "tcs-new-york-city-marathon_int_2026",
+      "titulo": "TCS New York City Marathon",
+      "data_evento": "2026-11-01",
+      "horario": "08:00",
+      "localizacao": "Nova York, EUA",
+      "cidade": "Nova York, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://prodsitecorehaku01-image.nyrr.org/nyrrsitecoreblob/nyrr/image/photogallery/2018/ua-nyc-half-the-course/31_nych18_sm_1474.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS New York City Marathon",
+          "link_evento": "https://www.nyrr.org/races/tcsnycmarathon",
+          "links_inscricao": [
+            "https://www.nyrr.org/races/tcsnycmarathon"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:24-03:00",
+      "updated_at": "2026-04-29T16:18:24-03:00"
+    },
+    {
+      "id": "corre-que-da-bom-pelo-mundo-etapa-japao_df_2026-04-29",
+      "titulo": "Corre Que Da Bom Pelo Mundo- Etapa Japão",
+      "data_evento": "2026-11-22",
+      "horario": "07:00",
+      "localizacao": "Brasilia, DF",
+      "cidade": "Brasilia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1776361312635x958963270926625200/BANNER%20JAPAO.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-japao",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-japao"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "ts_74828",
+      "titulo": "Maratona Monumental De Brasília 2026",
+      "data_evento": "2026-11-22",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/2YU9UAH82Z5GOSP5FY9LD67TZU0G2BBXB4W5RRJE20PTQZWL1H.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/MARATONA+MONUMENTAL+DE+BRAS%C3%8DLIA+2026-74828",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/MARATONA+MONUMENTAL+DE+BRAS%C3%8DLIA+2026-74828"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:32:00-03:00"
+    },
+    {
+      "id": "ts_86297",
+      "titulo": "Corrida E Caminhada Inclusão A Toda Prova - DF 2026",
+      "data_evento": "2026-11-29",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/JX5IJ2MR6TT5BJA827HC8RGNL5VGTAACNGUTULQ7OB3AULFPYZ.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+E+CAMINHADA+INCLUS%C3%83O+A+TODA+PROVA+-+DF+2026-86297",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+E+CAMINHADA+INCLUS%C3%83O+A+TODA+PROVA+-+DF+2026-86297"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T17:10:26-03:00"
+    },
+    {
+      "id": "jingle-bells-2026_df_2026-04-29",
+      "titulo": "Jingle Bells 2026",
+      "data_evento": "2026-12-19",
+      "horario": "19:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1765818709005x564724861810775900/e33c43c1-22ba-41b7-873e-86a34f10a5c1.jpeg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/jinglebells2026",
+          "links_inscricao": [],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:21:07-03:00"
+    },
+    {
+      "id": "corrida-number-1-2027_df_2026-04-29",
+      "titulo": "Corrida Number #1 2027",
+      "data_evento": "2027-01-03",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1768043913291x309236173002996860/c722ffae-db48-496e-861f-f669ef4e572d.jpeg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corridanumberun2027",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/corridanumberun2027"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T15:21:07-03:00",
+      "updated_at": "2026-04-29T15:56:29-03:00"
+    },
+    {
+      "id": "tokyo-marathon_int_2027",
+      "titulo": "Tokyo Marathon",
+      "data_evento": "2027-03-07",
+      "horario": "09:10",
+      "localizacao": "Tóquio, Japão",
+      "cidade": "Tóquio, Japão",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.marathon.tokyo/common/images/ogimg2026.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Tokyo Marathon",
+          "link_evento": "https://www.marathon.tokyo/en/",
+          "links_inscricao": [
+            "https://www.marathon.tokyo/en/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:23-03:00",
+      "updated_at": "2026-04-29T16:18:23-03:00"
+    },
+    {
+      "id": "boston-marathon_int_2027",
+      "titulo": "Boston Marathon",
+      "data_evento": "2027-04-19",
+      "horario": "09:00",
+      "localizacao": "Boston, EUA",
+      "cidade": "Boston, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Boston Marathon",
+          "link_evento": "https://www.baa.org/races/boston-marathon/",
+          "links_inscricao": [
+            "https://www.baa.org/races/boston-marathon/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:23-03:00",
+      "updated_at": "2026-04-29T16:18:23-03:00"
+    },
+    {
+      "id": "tcs-london-marathon_int_2027",
+      "titulo": "TCS London Marathon",
+      "data_evento": "2027-04-25",
+      "horario": "09:00",
+      "localizacao": "Londres, Reino Unido",
+      "cidade": "Londres, Reino Unido",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.londonmarathonevents.co.uk/sites/default/files/styles/social_media_share/public/2026-03/KC1_8024.JPG?h=e1696c84&itok=birhGfcd",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TCS London Marathon",
+          "link_evento": "https://www.tcslondonmarathon.com/",
+          "links_inscricao": [
+            "https://www.tcslondonmarathon.com/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:18:24-03:00",
+      "updated_at": "2026-04-29T16:18:24-03:00"
+    }
+  ]
+}

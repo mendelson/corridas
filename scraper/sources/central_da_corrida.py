@@ -145,18 +145,27 @@ _PERCURSO_RE = re.compile(
     re.IGNORECASE,
 )
 
+_INTERVAL_RE = re.compile(
+    r"a cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
+    r"|cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
+    r"|\d+(?:[.,]\d+)?\s*k(?:m)?\s*(?:de hidrat|de água|de abastec)",
+    re.IGNORECASE,
+)
+
 
 def _extract_distances(text: str) -> list[Distancia]:
     # Strip Bubble rich-text markup
     text = re.sub(r"\[.*?\]", " ", text)
     # Strip age-restriction clauses ("percurso de 10 km até 30 km: 18 anos")
     text = _PERCURSO_RE.sub(" ", text)
+    # Strip hydration/supply interval mentions ("a cada 2,5km")
+    text = _INTERVAL_RE.sub(" ", text)
     nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
     seen: set[float] = set()
     result: list[Distancia] = []
     for n in nums:
         km = float(n.replace(",", "."))
-        if km not in seen and 1 <= km <= 200:
+        if km not in seen and 3 <= km <= 200:  # ≥3 km: exclude walks/kids/hydration noise
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
     return result

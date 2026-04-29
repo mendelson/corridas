@@ -85,7 +85,16 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
     dists = _extract_distances_from_text(" ".join(texts))
     if dists:
         corrida.distancias = dists
-    # If detail returns nothing, keep whatever title-based extraction found
+
+    # Set event-level horario from per-distance times or realDate fallback
+    per_dist_times = [d.horario for d in corrida.distancias if d.horario]
+    if per_dist_times:
+        corrida.horario = min(per_dist_times)
+    elif corrida.horario is None:
+        real_date = detail.get("realDate") or ""
+        m = re.search(r"\d{4}-\d{2}-\d{2}\s+(\d{1,2}):(\d{2})", real_date)
+        if m:
+            corrida.horario = f"{int(m.group(1)):02d}:{m.group(2)}"
 
 
 def _enrich_all_distances(corridas: list[Corrida]) -> None:

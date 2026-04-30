@@ -397,6 +397,21 @@ input { font-family: inherit; }
   color: #fff;
 }
 
+.month-separator--past {
+  border-left-color: var(--color-realized);
+}
+.month-separator--past .month-chevron {
+  background: rgba(158, 158, 158, 0.12);
+  color: var(--color-realized);
+}
+.month-separator--past:hover {
+  background: rgba(158, 158, 158, 0.08);
+}
+.month-separator--past:hover .month-chevron {
+  background: var(--color-realized);
+  color: #fff;
+}
+
 .month-cards {
   display: flex;
   flex-direction: column;

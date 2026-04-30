@@ -400,15 +400,25 @@ function renderCards() {
   }
   emptyState.classList.add('hidden');
 
-  // Group by month key (YYYY-MM) preserving sort order
+  const today = todayStr();
+  const frag = document.createDocumentFragment();
+
+  // In the default period (past15), split upcoming and past into separate sections
+  let toRender = filteredCorridas;
+  let recentPast = [];
+
+  if (state.periodo === 'past15') {
+    recentPast = filteredCorridas.filter(c => c.data_evento && c.data_evento < today);
+    toRender   = filteredCorridas.filter(c => !c.data_evento || c.data_evento >= today);
+  }
+
+  // Upcoming events grouped by month
   const byMonth = new Map();
-  for (const corrida of filteredCorridas) {
+  for (const corrida of toRender) {
     const key = corrida.data_evento ? corrida.data_evento.slice(0, 7) : '__sem_data';
     if (!byMonth.has(key)) byMonth.set(key, []);
     byMonth.get(key).push(corrida);
   }
-
-  const frag = document.createDocumentFragment();
   for (const [monthKey, corridas] of byMonth) {
     const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length);
     for (const corrida of corridas) {
@@ -416,7 +426,51 @@ function renderCards() {
     }
     frag.appendChild(section);
   }
+
+  // Past events section (collapsed, most-recent first)
+  if (recentPast.length > 0) {
+    frag.appendChild(buildPastSection(recentPast));
+  }
+
   cardsList.appendChild(frag);
+}
+
+function buildPastSection(corridas) {
+  // Show most-recently-run events first
+  const sorted = [...corridas].sort((a, b) =>
+    (b.data_evento || '').localeCompare(a.data_evento || ''));
+
+  const n = sorted.length;
+  const countLabel = n === 1 ? '1 corrida' : `${n} corridas`;
+
+  const section = document.createElement('div');
+  section.className = 'month-section';
+
+  const btn = document.createElement('button');
+  btn.className = 'month-separator month-separator--past';
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-label', `Corridas nos últimos 15 dias, ${countLabel}`);
+  btn.innerHTML = `
+    <span class="month-separator-label">🏁 Corridas nos últimos 15 dias</span>
+    <span class="month-count">${countLabel}</span>
+    <span class="month-chevron" aria-hidden="true">▸</span>`;
+
+  const cardsContainer = document.createElement('div');
+  cardsContainer.className = 'month-cards month-cards--collapsed';
+
+  for (const corrida of sorted) {
+    cardsContainer.appendChild(buildCard(corrida));
+  }
+
+  btn.addEventListener('click', () => {
+    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
+  });
+
+  section.appendChild(btn);
+  section.appendChild(cardsContainer);
+  return section;
 }
 
 function buildMonthSection(monthKey, count) {

@@ -1,82 +1,85 @@
-"""Scraper for maratonadorio.com.br"""
+"""Scraper for maratonadorio.com.br (Maratona do Rio 2026)
+
+Edição 2026 é multi-day (4–7 jun). Dados de distância, horário e preço
+são hardcoded conforme regulamento publicado; apenas a imagem og é
+buscada dinamicamente no site oficial.
+"""
 from __future__ import annotations
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo, Inscricao
-from ..utils import slugify, now_iso, today_iso, extract_date_from_soup
+from ..utils import slugify, now_iso, today_iso
 
-URL = "https://www.maratonadorio.com.br/"
-SOURCE_NAME = "Maratona do Rio"
-KNOWN_DATE = "2026-06-21"  # 3º domingo de junho, edição 2026
+URL          = "https://www.maratonadorio.com.br/"
+INSCRICAO_URL = "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+SOURCE_NAME  = "Maratona do Rio"
 
+# 2026: evento corre de 4 a 7 de junho. data_evento = último dia (42K),
+# garantindo que o card permaneça visível até o encerramento do evento.
+_DATA_EVENTO = "2026-06-07"
+
+# Cada distância tem data e horário próprios conforme regulamento 2026.
 _DISTANCIAS = [
-    Distancia(km=42.195, data=None, horario=None),
-    Distancia(km=21.097, data=None, horario=None),
-    Distancia(km=10.0,   data=None, horario=None),
-    Distancia(km=6.0,    data=None, horario=None),
+    Distancia(km=5.0,    data="2026-06-04", horario="16:00"),
+    Distancia(km=10.0,   data="2026-06-05", horario="07:00"),
+    Distancia(km=21.097, data="2026-06-06", horario="05:30"),
+    Distancia(km=42.195, data="2026-06-07", horario="05:30"),
+]
+
+# Preços conforme último lote divulgado (GoDream, abril 2026).
+_INSCRICOES = [
+    Inscricao(descricao="5K",               valor=179.00, disponivel=True, link=INSCRICAO_URL),
+    Inscricao(descricao="10K",              valor=199.00, disponivel=True, link=INSCRICAO_URL),
+    Inscricao(descricao="Meia Maratona 21K",valor=319.00, disponivel=True, link=INSCRICAO_URL),
+    Inscricao(descricao="Maratona 42K",     valor=329.00, disponivel=True, link=INSCRICAO_URL),
+    Inscricao(descricao="Desafio 21K+42K",  valor=648.00, disponivel=True, link=INSCRICAO_URL),
 ]
 
 
 def scrape() -> list[Corrida]:
-    try:
-        resp = get(URL)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
-        return [_build(KNOWN_DATE, None, None)]
-
-    soup = BeautifulSoup(resp.text, "lxml")
-    data = extract_date_from_soup(soup) or KNOWN_DATE
-    imagem_url = _og_image(soup)
-    inscricoes_abertas = _check_inscricoes(soup)
-
-    return [_build(data, imagem_url, inscricoes_abertas)]
+    imagem_url = _fetch_og_image()
+    return [_build(imagem_url)]
 
 
-def _build(data: str, imagem_url: str | None, inscricoes_abertas: bool | None) -> Corrida:
+def _fetch_og_image() -> str | None:
+    for url in [URL, INSCRICAO_URL]:
+        try:
+            resp = get(url)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, "lxml")
+                tag = soup.find("meta", property="og:image")
+                if tag and tag.get("content"):
+                    return tag["content"]
+        except Exception:
+            pass
+    return None
+
+
+def _build(imagem_url: str | None) -> Corrida:
     now = now_iso()
     today = today_iso()
     titulo = "Maratona do Rio"
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=URL,
-        links_inscricao=[URL],
-        inscricoes=[Inscricao(
-            descricao="Maratona do Rio",
-            valor=None,
-            disponivel=inscricoes_abertas if inscricoes_abertas is not None else False,
-            link=URL,
-        )],
+        links_inscricao=[INSCRICAO_URL],
+        inscricoes=_INSCRICOES,
     )
     return Corrida(
         id=f"{slugify(titulo)}_rj_{today}",
         titulo=titulo,
-        data_evento=data,
-        horario="06:00",
+        data_evento=_DATA_EVENTO,
+        horario="05:30",
         localizacao="Rio de Janeiro, RJ",
         cidade="Rio de Janeiro",
         estado="RJ",
         distancias=_DISTANCIAS,
         imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
+        inscricoes_abertas=True,
         periodo_inscricao=None,
         fontes=[fonte],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
     )
-
-
-def _og_image(soup) -> str | None:
-    tag = soup.find("meta", property="og:image")
-    return tag.get("content") if tag else None
-
-
-def _check_inscricoes(soup) -> bool | None:
-    text = soup.get_text().lower()
-    if any(k in text for k in ["inscreva-se", "inscrições abertas", "comprar", "garantir vaga"]):
-        return True
-    if any(k in text for k in ["inscrições encerradas", "esgotado", "encerradas"]):
-        return False
-    return None

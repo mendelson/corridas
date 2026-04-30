@@ -284,12 +284,21 @@ _NAV_FRAGMENTS = [
     "do treino ao lifestyle", "calendrio completo", "outros estados:",
 ]
 
-_CYCLING_KW = [
+_NON_RUNNING_KW = [
+    # Cycling
     "pedal", "ciclismo", "ciclista", "bicicleta", " bike ", "mtb",
-    "cycling", "cyclist", "pedalada", "gravel", "velódromo",
-    # Triathlon / swimming (not road/trail running)
-    "triathlon", "triathon", "duathlon", "ironman",
-    "natação", "natacao", "águas abertas", "aguas abertas", "swimrun",
+    "cycling", "cyclist", "pedalada", "gravel", "velódromo", "velodrome",
+    # Triathlon / multisport
+    "triathlon", "triathon", "duathlon", "ironman", "swimrun",
+    # Open water swimming & aquatic sports
+    "natação", "natacao", "nado ", "águas abertas", "aguas abertas",
+    "travessia",  # open water crossings (Travessia do Fogo, Santos-Guarujá, etc.)
+    "aquático", "aquatica", "aquático",
+    "remo ", "canoagem", "kayak", "caiaque",
+    "stand up paddle", "stand-up paddle",
+    # Other non-running sports that may appear in aggregators
+    "futebol", "voleibol", "vôlei", "volei", "basquete", "basquetebol",
+    "handball", "handebol", "tênis", "badminton", "esgrima",
 ]
 
 
@@ -308,8 +317,8 @@ def _is_valid(c: Corrida) -> bool:
     if any(frag in titulo_lower for frag in _NAV_FRAGMENTS):
         return False
 
-    # Reject cycling events — only road running and trail running
-    if any(kw in titulo_lower for kw in _CYCLING_KW):
+    # Reject non-running events (cycling, swimming, etc.)
+    if any(kw in titulo_lower for kw in _NON_RUNNING_KW):
         return False
 
     # Non-INT events must have a valid date

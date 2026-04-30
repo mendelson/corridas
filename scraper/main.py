@@ -17,20 +17,10 @@ from .utils import now_iso, today_iso
 # ---------------------------------------------------------------------------
 
 from .sources import (
-    brasil_que_corre,
-    correr_brasilia,
     central_da_corrida,
     ticket_sports,
     maratona_rio,
-    minhas_inscricoes,
-    corridas_brasil,
-    bora_correr,
-    brasil_corrida,
-    runner_brasil,
-    liverun,
     tf_sports,
-    sesc_df,
-    portal_das_corridas,
 )
 from .sources.majors import (
     tokyo,
@@ -46,17 +36,7 @@ SOURCES = [
     central_da_corrida,
     ticket_sports,
     maratona_rio,
-    correr_brasilia,
-    brasil_que_corre,
-    minhas_inscricoes,
-    corridas_brasil,
-    bora_correr,
-    brasil_corrida,
-    runner_brasil,
-    liverun,
     tf_sports,
-    sesc_df,
-    portal_das_corridas,
     tokyo,
     boston,
     london,

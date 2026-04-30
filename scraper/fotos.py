@@ -189,12 +189,16 @@ _FPX_SEARCH = f"{_FPX_BASE}/en/events/search"
 
 
 def _search_finisherpix(titulo: str, data_evento: str) -> str | None:
-    """Use FinisherPix's filter[query] search API."""
+    """Use FinisherPix's filter[query]+filter[year] search API.
+
+    filter[upcoming] is unreliable; filter[year] correctly returns
+    events from a specific year (past or future).
+    """
     if not titulo:
         return None
 
     year = data_evento[:4] if data_evento else None
-    params: dict = {"filter[query]": titulo, "filter[upcoming]": "0"}
+    params: dict = {"filter[query]": titulo}
     if year:
         params["filter[year]"] = year
 
@@ -205,12 +209,11 @@ def _search_finisherpix(titulo: str, data_evento: str) -> str | None:
 
         soup = BeautifulSoup(resp.text, "lxml")
 
-        for div in soup.find_all("div", attrs={"data-event-title": True}):
+        for div in soup.find_all("div", class_="event-item"):
             event_title = div.get("data-event-title", "")
             event_path = div.get("data-event-url", "")
 
             if not event_path:
-                # fallback: look for a link inside the div
                 a = div.find("a", href=re.compile(r"/en/event/\d+"))
                 if a:
                     event_path = a.get("href", "")

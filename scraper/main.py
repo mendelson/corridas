@@ -33,7 +33,7 @@ from .sources import (
     minhas_inscricoes,
     brasil_que_corre,
     correr_brasilia,
-    corridas_br,
+    # corridas_br,  # removido — ver SOURCES abaixo
     sesc_df,
     runner_brasil,
     brasil_corrida,
@@ -66,7 +66,8 @@ SOURCES = [
     # DF-specific sources
     brasil_que_corre,
     correr_brasilia,
-    corridas_br,
+    # corridas_br,  # removido: agrega eventos sem links de inscrição reais;
+    #               # 37 eventos DF exclusivos perdem-se (incl. Circuito das Estações)
     sesc_df,
     # Single major events (BR)
     maratona_rio,

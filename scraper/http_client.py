@@ -23,4 +23,5 @@ TIMEOUT = 30
 
 
 def get(url: str, **kwargs) -> httpx.Response:
-    return httpx.get(url, headers=HEADERS, timeout=TIMEOUT, follow_redirects=True, **kwargs)
+    kwargs.setdefault("timeout", TIMEOUT)
+    return httpx.get(url, headers=HEADERS, follow_redirects=True, **kwargs)

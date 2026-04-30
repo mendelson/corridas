@@ -202,6 +202,36 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
     return existing
 
 
+_GENERIC_IMAGE_PATTERNS = [
+    "logo", "favicon", "placeholder", "default", "banner",
+    "LargeRectangle", "No_Empty_Space", "no-image", "sem-imagem",
+]
+
+
+def _is_generic_image(url: str) -> bool:
+    url_lower = url.lower()
+    if url_lower.endswith(".gif"):
+        return True
+    return any(p.lower() in url_lower for p in _GENERIC_IMAGE_PATTERNS)
+
+
+def _og_image_from_url(url: str) -> str | None:
+    from bs4 import BeautifulSoup
+    try:
+        resp = http_get(url, timeout=15)
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "lxml")
+        tag = soup.find("meta", property="og:image")
+        if tag:
+            content = tag.get("content", "")
+            if content and not _is_generic_image(content):
+                return content
+    except Exception:
+        pass
+    return None
+
+
 def _check_and_refresh_links(existing: Corrida) -> bool:
     """Check if any inscription link is still live (HTTP 200).
     If yes, opportunistically refresh og:image from the page.
@@ -215,15 +245,52 @@ def _check_and_refresh_links(existing: Corrida) -> bool:
             resp = http_get(link, timeout=15)
             if resp.status_code != 200:
                 continue
-            # Link is live — try to refresh og:image
-            soup = BeautifulSoup(resp.text, "lxml")
-            tag = soup.find("meta", property="og:image")
-            if tag and tag.get("content"):
-                existing.imagem_url = tag["content"]
+            if not existing.imagem_url:
+                soup = BeautifulSoup(resp.text, "lxml")
+                tag = soup.find("meta", property="og:image")
+                if tag:
+                    content = tag.get("content", "")
+                    if content and not _is_generic_image(content):
+                        existing.imagem_url = content
             return True
         except Exception:
             pass
     return False
+
+
+def _enrich_images(corridas: list[Corrida]) -> None:
+    """For events without an image, try to fetch og:image from their event pages."""
+    missing = [c for c in corridas if not c.imagem_url]
+    if not missing:
+        return
+    print(f"[main] buscando imagens para {len(missing)} evento(s) sem foto...")
+
+    def _try_fetch(c: Corrida) -> tuple[Corrida, str | None]:
+        # Try link_evento and links_inscricao for each fonte
+        candidates: list[str] = []
+        for fonte in c.fontes:
+            if fonte.link_evento:
+                candidates.append(fonte.link_evento)
+            candidates.extend(fonte.links_inscricao)
+        for url in dict.fromkeys(candidates):  # deduplicate preserving order
+            img = _og_image_from_url(url)
+            if img:
+                return c, img
+        return c, None
+
+    found = 0
+    with ThreadPoolExecutor(max_workers=10) as ex:
+        futures = {ex.submit(_try_fetch, c): c for c in missing}
+        for fut in as_completed(futures):
+            try:
+                c, img = fut.result()
+                if img:
+                    c.imagem_url = img
+                    found += 1
+            except Exception:
+                pass
+
+    print(f"[main] {found}/{len(missing)} imagens encontradas")
 
 
 def _find_match(incoming: Corrida, estado_anterior: dict[str, Corrida]) -> Corrida | None:
@@ -412,6 +479,7 @@ def main() -> None:
     print(f"[main] {len(final)} corridas após dedup final")
 
     _normalize_all_locations(final)
+    _enrich_images(final)
     save(final)
 
 

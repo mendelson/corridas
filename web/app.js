@@ -17,7 +17,7 @@ const state = {
   periodo: 'past15',
   dateFrom: null,
   dateTo: null,
-  estado: _geoEstado || 'todos',
+  estado: 'todos',
   fontes: new Set(),
   searchQuery: '',
 };
@@ -77,7 +77,7 @@ function loadFilters() {
     state.distMode = saved.distMode || 'select';
     state.distMin = saved.distMin;
     state.distMax = saved.distMax;
-    state.estado = saved.estado || _geoEstado || 'todos';
+    state.estado = saved.estado || 'todos';
     state.fontes = new Set(saved.fontes || []);
   } catch (e) { /* ignore */ }
   // periodo always resets to default (not persisted)
@@ -221,9 +221,15 @@ function populateEstadoFilter() {
     estadoSelect.appendChild(grp);
   }
 
-  // If geo default not yet applied (detection happened after populate), try now
+  // If the saved state has no option in current data, reset to 'todos'
+  const availableValues = new Set([...estadoSelect.options].map(o => o.value));
+  if (state.estado !== 'todos' && !availableValues.has(state.estado)) {
+    state.estado = 'todos';
+  }
+
+  // Apply geo default if state is still 'todos'
   _applyGeoEstado();
-  // Fallback: ensure select reflects current state
+  // Ensure select reflects current state
   if (estadoSelect.value !== state.estado) estadoSelect.value = state.estado;
 }
 

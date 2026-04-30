@@ -23,6 +23,7 @@ from .sources import (
     maratona_rio,
     maratona_porto_alegre,
     sp_city_marathon,
+    sao_silvestre,
     tf_sports,
     liverun,
     iguana_sports,
@@ -76,6 +77,7 @@ SOURCES = [
     maratona_rio,
     maratona_porto_alegre,
     sp_city_marathon,
+    sao_silvestre,
     # World Majors
     tokyo,
     boston,

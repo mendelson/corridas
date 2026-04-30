@@ -124,33 +124,31 @@ const _STATE_NAME_MAP = {
   'Tocantins': 'TO',
 };
 
-function detectUserLocation() {
-  if (_geoEstado) return;
-  if (!navigator.geolocation) return;
-  navigator.geolocation.getCurrentPosition(async pos => {
-    try {
-      const { latitude: lat, longitude: lon } = pos.coords;
-      const ctrl = new AbortController();
-      const tid = setTimeout(() => ctrl.abort(), 6000);
-      const resp = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
-        { signal: ctrl.signal, headers: { 'Accept-Language': 'pt-BR' } }
-      );
-      clearTimeout(tid);
-      const data = await resp.json();
-      const uf = _STATE_NAME_MAP[data?.address?.state];
-      if (uf) {
-        _geoEstado = uf;
-        localStorage.setItem('corridas_geo_estado', uf);
-        if (state.estado === 'todos') {
-          state.estado = uf;
-          estadoSelect.value = uf;
-          saveFilters();
-          applyFilters();
-        }
-      }
-    } catch { /* ignore */ }
-  }, () => { /* permission denied */ }, { timeout: 5000 });
+// Apply _geoEstado to the select if the option already exists; called from both
+// detectUserLocation (late resolution) and populateEstadoFilter (early resolution).
+function _applyGeoEstado() {
+  if (!_geoEstado || state.estado !== 'todos') return;
+  state.estado = _geoEstado;
+  if ([...estadoSelect.options].some(o => o.value === _geoEstado)) {
+    estadoSelect.value = _geoEstado;
+    applyFilters();
+  }
+}
+
+async function detectUserLocation() {
+  if (_geoEstado) { _applyGeoEstado(); return; }
+  try {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 5000);
+    const resp = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
+    clearTimeout(tid);
+    const data = await resp.json();
+    if (data.country_code === 'BR' && data.region_code) {
+      _geoEstado = data.region_code;
+      localStorage.setItem('corridas_geo_estado', _geoEstado);
+      _applyGeoEstado();
+    }
+  } catch { /* ignore */ }
 }
 
 function _extractCountry(cidade) {
@@ -202,7 +200,10 @@ function populateEstadoFilter() {
     estadoSelect.appendChild(grp);
   }
 
-  estadoSelect.value = state.estado;
+  // If geo default not yet applied (detection happened after populate), try now
+  _applyGeoEstado();
+  // Fallback: ensure select reflects current state
+  if (estadoSelect.value !== state.estado) estadoSelect.value = state.estado;
 }
 
 // ---------------------------------------------------------------------------

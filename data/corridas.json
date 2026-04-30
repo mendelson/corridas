@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-04-30T03:44:11+00:00",
-  "total": 41,
+  "gerado_em": "2026-04-30T03:54:41+00:00",
+  "total": 42,
   "corridas": [
     {
       "id": "etapa-plano-piloto_df_2026-04-30",
@@ -443,6 +443,52 @@
       "updated_at": "2026-04-30T00:20:21+00:00"
     },
     {
+      "id": "maratona-internacional-de-porto-alegre_rs_2026-04-30",
+      "titulo": "Maratona Internacional de Porto Alegre",
+      "data_evento": "2026-05-31",
+      "horario": "06:00",
+      "localizacao": "Porto Alegre, RS",
+      "cidade": "Porto Alegre",
+      "estado": "RS",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-05-30",
+          "horario": "09:00"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-05-30",
+          "horario": "09:00"
+        },
+        {
+          "km": 21.097,
+          "data": "2026-05-30",
+          "horario": "06:30"
+        },
+        {
+          "km": 42.195,
+          "data": "2026-05-31",
+          "horario": "06:00"
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Maratona de Porto Alegre",
+          "link_evento": "https://maratonadeportoalegre.com.br/",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/41-maratona-internacional-de-porto-alegre-olympikus-2026-72850"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T03:54:41+00:00",
+      "updated_at": "2026-04-30T03:54:41+00:00"
+    },
+    {
       "id": "movimente-se-corrida-e-caminhada-para-saude_df_2026-04-30",
       "titulo": "Movimente-Se: Corrida E Caminhada Para Saúde",
       "data_evento": "2026-06-04",
@@ -834,7 +880,7 @@
           ]
         }
       ],
-      "miss_count": 2,
+      "miss_count": 3,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },
@@ -1309,7 +1355,7 @@
           ]
         }
       ],
-      "miss_count": 2,
+      "miss_count": 3,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },

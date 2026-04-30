@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'corridas-shell-v12';
+const CACHE_NAME = 'corridas-shell-v13';
 const SHELL_ASSETS = [
   './',
   './index.html',
@@ -27,31 +27,22 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch: shell from cache, corridas.json always from network
+// Fetch: network-first for everything — updates deploy immediately.
+// Falls back to cache only when offline.
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
-  // corridas.json: always network, no cache
-  if (url.pathname.endsWith('corridas.json')) {
-    event.respondWith(
-      fetch(event.request).catch(() =>
-        caches.match('./index.html')
-      )
-    );
-    return;
-  }
+  // Only intercept same-origin requests
+  if (url.origin !== self.location.origin) return;
 
-  // Shell assets: cache-first
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(resp => {
-        if (resp && resp.status === 200 && resp.type === 'basic') {
-          const clone = resp.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
-        return resp;
-      });
-    })
+    fetch(event.request).then(resp => {
+      if (resp && resp.status === 200) {
+        const clone = resp.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+      }
+      return resp;
+    }).catch(() => caches.match(event.request))
   );
 });
+

@@ -85,10 +85,11 @@ def _parse_event(el) -> Corrida | None:
     today = today_iso()
     cidade = "Brasília" if estado == "DF" else localizacao.split(",")[0].strip()
 
+    has_link = link != URL
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if link != URL else [],
+        links_inscricao=[link] if has_link else [],
     )
 
     return Corrida(
@@ -101,7 +102,7 @@ def _parse_event(el) -> Corrida | None:
         estado=estado,
         distancias=distancias,
         imagem_url=imagem_url,
-        inscricoes_abertas=None,
+        inscricoes_abertas=True if has_link else None,
         periodo_inscricao=None,
         fontes=[fonte],
         miss_count=0,

@@ -6,7 +6,7 @@ from datetime import datetime, timezone, timedelta
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_titulo, slugify, is_bsb_event, now_iso, today_iso,
+    normalize_titulo, slugify, now_iso, today_iso,
 )
 
 BASE = "https://centraldacorrida.com.br"
@@ -14,13 +14,6 @@ API_URL = "https://tudmqbzxfbrjljpdpili.supabase.co/functions/v1/eventos-publico
 SOURCE_NAME = "Central da Corrida"
 
 BRT = timezone(timedelta(hours=-3))
-
-_MARATONAS_ALVO = [
-    "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
-    "maratona de florianopolis", "maratona de curitiba", "maratona de belo horizonte",
-    "maratona de fortaleza", "maratona de salvador", "maratona de recife",
-    "maratona de manaus", "maratona caixa", "maratona de brasilia",
-]
 
 _OPEN_KW = ("abertas", "aberto", "últimas unidades", "ultimas unidades",
             "pré venda", "pre venda", "pré-venda", "pre-venda")
@@ -61,14 +54,6 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     estado = event.get("Estado") or "??"
     cidade = event.get("Cidade") or ""
     localizacao = f"{cidade}, {estado}" if cidade else estado
-
-    titulo_lower = titulo.lower()
-    is_target = (
-        is_bsb_event(localizacao, titulo)
-        or any(m in titulo_lower for m in _MARATONAS_ALVO)
-    )
-    if not is_target:
-        return None
 
     data_evento, horario = _parse_datetime(event.get("Data_evento") or "")
 

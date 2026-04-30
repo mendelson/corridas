@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_titulo, slugify, is_bsb_event, infer_estado, now_iso, today_iso,
+    normalize_titulo, slugify, infer_estado, now_iso, today_iso,
 )
 
 BASE = "https://www.ticketsports.com.br"
@@ -18,14 +18,6 @@ SOURCE_NAME = "Ticket Sports"
 
 _BATCH = 2000
 _DETAIL_WORKERS = 8
-
-_MARATONAS_ALVO = [
-    "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
-    "maratona de florianopolis", "maratona de curitiba", "maratona de belo horizonte",
-    "maratona de fortaleza", "maratona de salvador", "maratona de recife",
-    "maratona de manaus", "maratona caixa", "maratona de brasilia",
-    "maratona monumental", "maratona banco do brasil",
-]
 
 # Keywords that indicate non-running events (triathlon, swimming, etc.)
 _NON_RUNNING_KW = [
@@ -194,30 +186,6 @@ def _enrich_all_distances(corridas: list[Corrida]) -> None:
             pass  # errors already logged inside
 
 
-_DF_MARKERS = (", df", "brasília", "brasilia", "distrito federal",
-               "taguatinga", "ceilândia", "ceilandia", "sobradinho, df",
-               "samambaia", "plano piloto")
-
-
-def _is_df_event(addr: str) -> bool:
-    """Strict DF check using the address string only.
-
-    Deliberately avoids is_bsb_event() because that function matches
-    'guara' as a substring, causing false positives for cities like
-    Guaratinguetá, Guarapuava, and Guaramirim.
-    """
-    addr_l = addr.lower()
-    return any(marker in addr_l for marker in _DF_MARKERS)
-
-
-def _is_target(addr: str, titulo_lower: str) -> bool:
-    if _is_df_event(addr):
-        return True
-    if any(m in titulo_lower for m in _MARATONAS_ALVO):
-        return True
-    return False
-
-
 def _is_running(titulo_lower: str) -> bool:
     return not any(kw in titulo_lower for kw in _NON_RUNNING_KW)
 
@@ -231,8 +199,6 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     titulo_lower = titulo.lower()
     addr = ev.get("address") or ""
 
-    if not _is_target(addr, titulo_lower):
-        return None
     if not _is_running(titulo_lower):
         return None
 

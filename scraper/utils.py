@@ -173,6 +173,167 @@ def normalize_titulo_merge(titulo: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# City name normalization
+# ---------------------------------------------------------------------------
+
+# Canonical forms for cities whose title-case would drop accents (e.g. BRASILIA → Brasília).
+# Keys are unidecode(name).lower() so they match any casing/accent variant.
+_CIDADE_NORMALIZED: dict[str, str] = {
+    # DF
+    "brasilia": "Brasília",
+    "aguas claras": "Águas Claras",
+    "guara": "Guará",
+    "paranoa": "Paranoá",
+    "candangolandia": "Candangolândia",
+    "nucleo bandeirante": "Núcleo Bandeirante",
+    "sao sebastiao": "São Sebastião",
+    "ceilandia": "Ceilândia",
+    # SP
+    "sao paulo": "São Paulo",
+    "sao bernardo do campo": "São Bernardo do Campo",
+    "sao bernardo": "São Bernardo",
+    "sao jose dos campos": "São José dos Campos",
+    "sao jose": "São José",
+    "ribeirao preto": "Ribeirão Preto",
+    "sao caetano do sul": "São Caetano do Sul",
+    "santo andre": "Santo André",
+    "mogi das cruzes": "Mogi das Cruzes",
+    "mogi mirim": "Mogi Mirim",
+    "sao carlos": "São Carlos",
+    "sao jose do rio preto": "São José do Rio Preto",
+    "sao joao da boa vista": "São João da Boa Vista",
+    "praia grande": "Praia Grande",
+    "sao vicente": "São Vicente",
+    "itanhaem": "Itanhaém",
+    "guaruja": "Guarujá",
+    # RJ
+    "rio de janeiro": "Rio de Janeiro",
+    "petropolis": "Petrópolis",
+    "niteroi": "Niterói",
+    "sao goncalo": "São Gonçalo",
+    "duque de caxias": "Duque de Caxias",
+    "nova iguacu": "Nova Iguaçu",
+    "campos dos goytacazes": "Campos dos Goytacazes",
+    "angra dos reis": "Angra dos Reis",
+    "buzios": "Búzios",
+    "arraial do cabo": "Arraial do Cabo",
+    # MG
+    "belo horizonte": "Belo Horizonte",
+    "uberlandia": "Uberlândia",
+    "contagem": "Contagem",
+    "juiz de fora": "Juiz de Fora",
+    "betim": "Betim",
+    "montes claros": "Montes Claros",
+    "ribeirao das neves": "Ribeirão das Neves",
+    "sete lagoas": "Sete Lagoas",
+    "ipatinga": "Ipatinga",
+    "divinopolis": "Divinópolis",
+    "governador valadares": "Governador Valadares",
+    # RS
+    "porto alegre": "Porto Alegre",
+    "caxias do sul": "Caxias do Sul",
+    "pelotas": "Pelotas",
+    "canoas": "Canoas",
+    "sao leopoldo": "São Leopoldo",
+    "novo hamburgo": "Novo Hamburgo",
+    "santa maria": "Santa Maria",
+    "gravatai": "Gravataí",
+    "viamao": "Viamão",
+    # PR
+    "curitiba": "Curitiba",
+    "londrina": "Londrina",
+    "maringa": "Maringá",
+    "ponta grossa": "Ponta Grossa",
+    "cascavel": "Cascavel",
+    "sao jose dos pinhais": "São José dos Pinhais",
+    "foz do iguacu": "Foz do Iguaçu",
+    # SC
+    "florianopolis": "Florianópolis",
+    "joinville": "Joinville",
+    "blumenau": "Blumenau",
+    "sao jose": "São José",
+    "chapeco": "Chapecó",
+    "itajai": "Itajaí",
+    "criciuma": "Criciúma",
+    "jaragua do sul": "Jaraguá do Sul",
+    # GO
+    "goiania": "Goiânia",
+    "anapolis": "Anápolis",
+    # CE
+    "fortaleza": "Fortaleza",
+    "caucaia": "Caucaia",
+    # BA
+    "salvador": "Salvador",
+    "feira de santana": "Feira de Santana",
+    "vitoria da conquista": "Vitória da Conquista",
+    "camacari": "Camaçari",
+    "lauro de freitas": "Lauro de Freitas",
+    # PE
+    "recife": "Recife",
+    "caruaru": "Caruaru",
+    "olinda": "Olinda",
+    "paulista": "Paulista",
+    # AM
+    "manaus": "Manaus",
+    # PA
+    "belem": "Belém",
+    "ananindeua": "Ananindeua",
+    # MA
+    "sao luis": "São Luís",
+    # PI
+    "teresina": "Teresina",
+    # AL
+    "maceio": "Maceió",
+    # SE
+    "aracaju": "Aracaju",
+    # RN
+    "natal": "Natal",
+    "mossoro": "Mossoró",
+    # PB
+    "joao pessoa": "João Pessoa",
+    "campina grande": "Campina Grande",
+    # ES
+    "vitoria": "Vitória",
+    "vila velha": "Vila Velha",
+    "cariacica": "Cariacica",
+    "serra": "Serra",
+    # MT
+    "cuiaba": "Cuiabá",
+    # MS
+    "campo grande": "Campo Grande",
+    # RO
+    "porto velho": "Porto Velho",
+    # TO
+    "palmas": "Palmas",
+    # AC
+    "rio branco": "Rio Branco",
+    # AP
+    "macapa": "Macapá",
+    # RR
+    "boa vista": "Boa Vista",
+}
+
+
+_LOWER_WORDS = {'de', 'da', 'do', 'das', 'dos', 'e', 'em', 'a', 'o', 'na', 'no', 'para'}
+
+
+def normalize_cidade(raw: str | None) -> str:
+    """Return properly accented, title-cased city name."""
+    if not raw:
+        return raw or ""
+    raw = raw.strip()
+    key = unidecode(raw).lower()
+    if key in _CIDADE_NORMALIZED:
+        return _CIDADE_NORMALIZED[key]
+    # Fallback: title case then lowercase Portuguese articles/prepositions
+    words = raw.title().split()
+    return ' '.join(
+        w if i == 0 else (w.lower() if w.lower() in _LOWER_WORDS else w)
+        for i, w in enumerate(words)
+    )
+
+
+# ---------------------------------------------------------------------------
 # City → State lookup
 # ---------------------------------------------------------------------------
 

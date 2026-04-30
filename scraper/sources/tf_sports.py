@@ -7,7 +7,7 @@ import httpx
 from bs4 import BeautifulSoup
 
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, is_bsb_event, infer_estado, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
@@ -37,13 +37,6 @@ _BR_STATES = {
     "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN",
     "RO", "RR", "RS", "SC", "SE", "SP", "TO",
 }
-
-_MARATONAS_ALVO = [
-    "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
-    "maratona de florianopolis", "maratona de curitiba", "maratona de belo horizonte",
-    "maratona de fortaleza", "maratona de salvador", "maratona de recife",
-    "maratona de brasilia", "maratona caixa",
-]
 
 
 # ---------------------------------------------------------------------------
@@ -292,15 +285,6 @@ def scrape() -> list[Corrida]:
                 state = inferred or "??"
 
             localizacao = f"{city}, {state}" if city else state
-
-            titulo_lower = titulo.lower()
-            from unidecode import unidecode as _ud
-            titulo_ascii = _ud(titulo_lower)
-            if not (
-                is_bsb_event(localizacao, titulo)
-                or any(_ud(m) in titulo_ascii for m in _MARATONAS_ALVO)
-            ):
-                continue
 
             distancias = _get_distances(attrs, slug)
             imagem_url = _extract_image(attrs)

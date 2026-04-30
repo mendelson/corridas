@@ -18,6 +18,7 @@ const state = {
   dateFrom: null,
   dateTo: null,
   estado: _geoEstado || 'todos',
+  fontes: new Set(),
   searchQuery: '',
 };
 
@@ -45,6 +46,10 @@ const distMin = $('distMin');
 const distMax = $('distMax');
 const cardTemplate = $('cardTemplate');
 const searchInput = $('searchInput');
+const fonteFilterWrapper = $('fonteFilterWrapper');
+const fonteFilterBtn = $('fonteFilterBtn');
+const fonteFilterDropdown = $('fonteFilterDropdown');
+const fonteFilterLabel = $('fonteFilterLabel');
 
 // ---------------------------------------------------------------------------
 // Persistence (localStorage)
@@ -59,6 +64,7 @@ function saveFilters() {
       distMin: state.distMin,
       distMax: state.distMax,
       estado: state.estado,
+      fontes: [...state.fontes],
     }));
   } catch (e) { /* ignore */ }
 }
@@ -72,6 +78,7 @@ function loadFilters() {
     state.distMin = saved.distMin;
     state.distMax = saved.distMax;
     state.estado = saved.estado || _geoEstado || 'todos';
+    state.fontes = new Set(saved.fontes || []);
   } catch (e) { /* ignore */ }
   // periodo always resets to default (not persisted)
   state.periodo = 'past15';
@@ -88,6 +95,7 @@ async function fetchData() {
     const json = await resp.json();
     allCorridas = json.corridas || [];
     populateEstadoFilter();
+    populateFontesFilter();
     applyFilters();
   } catch (e) {
     resultCount.textContent = 'Erro ao carregar dados.';
@@ -120,6 +128,7 @@ function _applyGeoEstado() {
   if (![...estadoSelect.options].some(o => o.value === _geoEstado)) return;
   state.estado = _geoEstado;
   estadoSelect.value = _geoEstado;
+  saveFilters();
   applyFilters();
 }
 
@@ -147,11 +156,11 @@ async function detectUserLocation() {
     uf = d1.region_code;
   }
 
-  // ipapi.co: fallback (1000 req/day free)
+  // freeipapi.com: fallback, free, CORS-enabled
   if (!uf) {
-    const d2 = await _tryGeoFetch('https://ipapi.co/json/');
-    if (d2 && !d2.error && d2.country_code === 'BR' && d2.region_code) {
-      uf = d2.region_code;
+    const d2 = await _tryGeoFetch('https://freeipapi.com/api/json');
+    if (d2 && d2.countryCode === 'BR' && d2.regionCode) {
+      uf = d2.regionCode;
     }
   }
 
@@ -219,6 +228,63 @@ function populateEstadoFilter() {
 }
 
 // ---------------------------------------------------------------------------
+// Fonte filter
+// ---------------------------------------------------------------------------
+function populateFontesFilter() {
+  const allNomes = [...new Set(
+    allCorridas.flatMap(c => (c.fontes || []).map(f => f.nome))
+  )].sort();
+
+  fonteFilterDropdown.innerHTML = '';
+  for (const nome of allNomes) {
+    const label = document.createElement('label');
+    label.className = 'fonte-filter-option' + (state.fontes.has(nome) ? ' checked' : '');
+    label.setAttribute('role', 'option');
+    label.setAttribute('aria-selected', String(state.fontes.has(nome)));
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = nome;
+    cb.checked = state.fontes.has(nome);
+
+    const text = document.createTextNode(nome);
+    label.appendChild(cb);
+    label.appendChild(text);
+
+    cb.addEventListener('change', () => {
+      if (cb.checked) {
+        state.fontes.add(nome);
+        label.classList.add('checked');
+        label.setAttribute('aria-selected', 'true');
+      } else {
+        state.fontes.delete(nome);
+        label.classList.remove('checked');
+        label.setAttribute('aria-selected', 'false');
+      }
+      _updateFonteLabel();
+      saveFilters();
+      applyFilters();
+    });
+
+    fonteFilterDropdown.appendChild(label);
+  }
+  _updateFonteLabel();
+}
+
+function _updateFonteLabel() {
+  if (state.fontes.size === 0) {
+    fonteFilterLabel.textContent = 'Todas as fontes';
+    fonteFilterBtn.classList.remove('active');
+  } else if (state.fontes.size === 1) {
+    fonteFilterLabel.textContent = [...state.fontes][0];
+    fonteFilterBtn.classList.add('active');
+  } else {
+    fonteFilterLabel.textContent = `${state.fontes.size} fontes`;
+    fonteFilterBtn.classList.add('active');
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Filtering
 // ---------------------------------------------------------------------------
 function applyFilters() {
@@ -228,6 +294,7 @@ function applyFilters() {
   filteredCorridas = allCorridas.filter(c => {
     if (!searching && !matchesPeriodo(c, today)) return false;
     if (!matchesEstado(c)) return false;
+    if (!matchesFonte(c)) return false;
     if (!matchesDistancia(c)) return false;
     if (!matchesSearch(c)) return false;
     return true;
@@ -267,6 +334,11 @@ function matchesEstado(c) {
     return c.estado === 'INT' && _extractCountry(c.cidade) === country;
   }
   return c.estado === state.estado;
+}
+
+function matchesFonte(c) {
+  if (state.fontes.size === 0) return true;
+  return (c.fontes || []).some(f => state.fontes.has(f.nome));
 }
 
 function matchesDistancia(c) {
@@ -584,6 +656,9 @@ function statusBadge(c) {
   if (c.data_evento && c.data_evento < today) return { label: '🏁 Realizado', cls: 'badge-realized' };
   if (c.inscricoes_abertas === true) return { label: '🟢 Inscrições abertas', cls: 'badge-open' };
   if (c.inscricoes_abertas === false) return { label: '🔴 Inscrições encerradas', cls: 'badge-closed' };
+  // Fallback: presence of inscription links implies open inscriptions
+  const hasInscLink = (c.fontes || []).some(f => (f.links_inscricao || []).length > 0);
+  if (hasInscLink) return { label: '🟢 Inscrições abertas', cls: 'badge-open' };
   return { label: '⚪ Em breve', cls: 'badge-soon' };
 }
 
@@ -619,7 +694,8 @@ function isFiltersActive() {
     state.distMin !== null ||
     state.distMax !== null ||
     state.periodo !== 'past15' ||
-    state.estado !== (_geoEstado || 'todos')
+    state.estado !== (_geoEstado || 'todos') ||
+    state.fontes.size > 0
   );
 }
 
@@ -637,6 +713,7 @@ function clearFilters() {
   state.dateFrom = null;
   state.dateTo = null;
   state.estado = _geoEstado || 'todos';
+  state.fontes.clear();
 
   searchInput.value = '';
 
@@ -653,6 +730,13 @@ function clearFilters() {
   dateFrom.value = '';
   dateTo.value = '';
   setDistMode('select');
+
+  // Reset fonte checkboxes
+  fonteFilterDropdown.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.fonte-filter-option')?.classList.remove('checked');
+  });
+  _updateFonteLabel();
 
   saveFilters();
   applyFilters();
@@ -769,6 +853,28 @@ searchInput.addEventListener('input', () => {
 [btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));
 
 btnRefresh.addEventListener('click', fetchData);
+
+fonteFilterBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const isOpen = !fonteFilterDropdown.classList.contains('hidden');
+  fonteFilterDropdown.classList.toggle('hidden', isOpen);
+  fonteFilterBtn.setAttribute('aria-expanded', String(!isOpen));
+});
+
+document.addEventListener('click', e => {
+  if (!fonteFilterWrapper.contains(e.target)) {
+    fonteFilterDropdown.classList.add('hidden');
+    fonteFilterBtn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && !fonteFilterDropdown.classList.contains('hidden')) {
+    fonteFilterDropdown.classList.add('hidden');
+    fonteFilterBtn.setAttribute('aria-expanded', 'false');
+    fonteFilterBtn.focus();
+  }
+});
 
 // ---------------------------------------------------------------------------
 // Init

@@ -7,20 +7,13 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_titulo, slugify, is_bsb_event, now_iso, today_iso,
+    normalize_titulo, slugify, now_iso, today_iso,
 )
 
 BASE = "https://www.liverun.com.br"
 CALENDAR_URL = f"{BASE}/calendario"
 INSCRICAO_BASE = "https://www.appliveexperience.com.br/evento"
 SOURCE_NAME = "Live Run"
-
-_MARATONAS_ALVO = [
-    "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
-    "maratona de florianopolis", "maratona de curitiba", "maratona de belo horizonte",
-    "maratona de fortaleza", "maratona de salvador", "maratona de recife",
-    "maratona de manaus", "maratona caixa", "maratona de brasilia",
-]
 
 # Matches hydration/interval mentions that generate false km values
 _INTERVAL_RE = re.compile(
@@ -79,13 +72,6 @@ def _parse_card(a, href: str) -> Corrida | None:
 
     localizacao = f"{city}, {state}" if state else city
     titulo = _event_title(slug, city)
-
-    titulo_lower = titulo.lower()
-    if not (
-        is_bsb_event(localizacao, titulo)
-        or any(m in titulo_lower for m in _MARATONAS_ALVO)
-    ):
-        return None
 
     # Date: DD/MM text in the card — no year, infer it
     data_evento = _parse_card_date(a)
@@ -255,6 +241,16 @@ def _enrich_with_schedule(
     result: list[Distancia] = []
     for d in distancias:
         horario = schedule.get(d.km)
+        if horario is None and schedule:
+            # Site uses a generic schedule template that may not list exact km;
+            # map to nearest listed distance.  For longer distances (marathon etc.)
+            # that exceed the template's max, pick the longest listed entry
+            # because it has the earliest start.
+            if d.km > max(schedule):
+                horario = schedule[max(schedule)]
+            else:
+                nearest = min(schedule, key=lambda k: abs(k - d.km))
+                horario = schedule[nearest]
         result.append(Distancia(km=d.km, data=data_evento, horario=horario))
     return result
 

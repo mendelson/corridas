@@ -197,6 +197,91 @@ input { font-family: inherit; }
 }
 .select-wrapper select:focus { outline: 2px solid var(--color-accent); }
 
+/* Fonte multi-select */
+.fonte-filter-wrapper {
+  flex: 1;
+  min-width: 140px;
+  position: relative;
+}
+
+.fonte-filter-btn {
+  width: 100%;
+  padding: 8px 28px 8px 10px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  min-height: var(--touch);
+  display: flex;
+  align-items: center;
+  text-align: left;
+  position: relative;
+  transition: border-color 0.15s, color 0.15s;
+  cursor: pointer;
+}
+.fonte-filter-btn:focus { outline: 2px solid var(--color-accent); }
+.fonte-filter-btn.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.fonte-filter-btn.active .fonte-filter-chevron { color: var(--color-accent); }
+
+#fonteFilterLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fonte-filter-chevron {
+  position: absolute;
+  right: 10px;
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+  transition: transform 0.15s;
+}
+.fonte-filter-btn[aria-expanded="true"] .fonte-filter-chevron { transform: rotate(180deg); }
+
+.fonte-filter-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(320px, 90vw);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  z-index: 200;
+  padding: 4px 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.fonte-filter-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  transition: background 0.1s, color 0.1s;
+  user-select: none;
+}
+.fonte-filter-option:hover { background: var(--color-surface-2); color: var(--color-text); }
+.fonte-filter-option.checked { color: var(--color-text); }
+.fonte-filter-option input[type="checkbox"] {
+  accent-color: var(--color-accent);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 /* Search */
 .filter-row-search { padding-bottom: 2px; }
 .search-input {

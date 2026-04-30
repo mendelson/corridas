@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .merger import are_duplicates, merge_rodada
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
-from .utils import now_iso, today_iso
+from .utils import now_iso, today_iso, normalize_cidade
 from .http_client import get as http_get
 
 # ---------------------------------------------------------------------------
@@ -25,6 +25,7 @@ from .sources import (
     sp_city_marathon,
     tf_sports,
     liverun,
+    iguana_sports,
 )
 from .sources.majors import (
     tokyo,
@@ -44,6 +45,7 @@ SOURCES = [
     sp_city_marathon,
     tf_sports,
     liverun,
+    iguana_sports,
     tokyo,
     boston,
     london,
@@ -109,6 +111,12 @@ def load_existing() -> dict[str, Corrida]:
     except Exception as e:
         print(f"[main] erro ao carregar JSON existente: {e}")
         return {}
+
+
+def _normalize_all_locations(corridas: list[Corrida]) -> None:
+    """Normalize cidade names in-place (handles all-caps, missing accents, etc.)."""
+    for c in corridas:
+        c.cidade = normalize_cidade(c.cidade)
 
 
 def save(corridas: list[Corrida]) -> None:
@@ -371,6 +379,7 @@ def main() -> None:
     final = [c for c in final if _is_valid(c) or (c.data_evento and c.data_evento < _today)]
     print(f"[main] {len(final)} corridas após reconciliação")
 
+    _normalize_all_locations(final)
     save(final)
 
 

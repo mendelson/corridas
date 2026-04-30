@@ -121,10 +121,11 @@ def _parse_row(row) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
+    has_link = link != URL
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if link != URL else [],
+        links_inscricao=[link] if has_link else [],
     )
 
     return Corrida(
@@ -137,7 +138,7 @@ def _parse_row(row) -> Corrida | None:
         estado="DF",
         distancias=distancias,
         imagem_url=None,
-        inscricoes_abertas=None,
+        inscricoes_abertas=True if has_link else None,
         periodo_inscricao=None,
         fontes=[fonte],
         miss_count=0,

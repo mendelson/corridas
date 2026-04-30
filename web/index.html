@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <!-- Period + State -->
+    <!-- Period + State + Fonte -->
     <div class="filter-row filter-row-selects">
       <div class="select-wrapper">
         <select id="periodoSelect" aria-label="Filtrar por período">
@@ -68,6 +68,16 @@
         <select id="estadoSelect" aria-label="Filtrar por localização">
           <option value="todos">Todos</option>
         </select>
+      </div>
+      <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
+        <button class="fonte-filter-btn" id="fonteFilterBtn"
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por fonte">
+          <span id="fonteFilterLabel">Todas as fontes</span>
+          <span class="fonte-filter-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="fonte-filter-dropdown hidden" id="fonteFilterDropdown" role="listbox" aria-multiselectable="true">
+          <!-- populated dynamically -->
+        </div>
       </div>
     </div>
 

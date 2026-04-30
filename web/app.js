@@ -112,43 +112,55 @@ const _ESTADO_LABELS = {
   SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
 };
 
-const _STATE_NAME_MAP = {
-  'Acre': 'AC', 'Alagoas': 'AL', 'Amapá': 'AP', 'Amazonas': 'AM',
-  'Bahia': 'BA', 'Ceará': 'CE', 'Distrito Federal': 'DF',
-  'Espírito Santo': 'ES', 'Goiás': 'GO', 'Maranhão': 'MA',
-  'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS', 'Minas Gerais': 'MG',
-  'Pará': 'PA', 'Paraíba': 'PB', 'Paraná': 'PR', 'Pernambuco': 'PE',
-  'Piauí': 'PI', 'Rio de Janeiro': 'RJ', 'Rio Grande do Norte': 'RN',
-  'Rio Grande do Sul': 'RS', 'Rondônia': 'RO', 'Roraima': 'RR',
-  'Santa Catarina': 'SC', 'São Paulo': 'SP', 'Sergipe': 'SE',
-  'Tocantins': 'TO',
-};
-
 // Apply _geoEstado to the select if the option already exists; called from both
 // detectUserLocation (late resolution) and populateEstadoFilter (early resolution).
 function _applyGeoEstado() {
   if (!_geoEstado || state.estado !== 'todos') return;
+  // Only apply if the option exists — options may not be populated yet
+  if (![...estadoSelect.options].some(o => o.value === _geoEstado)) return;
   state.estado = _geoEstado;
-  if ([...estadoSelect.options].some(o => o.value === _geoEstado)) {
-    estadoSelect.value = _geoEstado;
-    applyFilters();
+  estadoSelect.value = _geoEstado;
+  applyFilters();
+}
+
+async function _tryGeoFetch(url) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), 5000);
+  try {
+    const r = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(tid);
+    return r.ok ? r.json() : null;
+  } catch {
+    clearTimeout(tid);
+    return null;
   }
 }
 
 async function detectUserLocation() {
   if (_geoEstado) { _applyGeoEstado(); return; }
-  try {
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 5000);
-    const resp = await fetch('https://ipapi.co/json/', { signal: ctrl.signal });
-    clearTimeout(tid);
-    const data = await resp.json();
-    if (data.country_code === 'BR' && data.region_code) {
-      _geoEstado = data.region_code;
-      localStorage.setItem('corridas_geo_estado', _geoEstado);
-      _applyGeoEstado();
+
+  let uf = null;
+
+  // ipwho.is: free, HTTPS, CORS, high rate limits
+  const d1 = await _tryGeoFetch('https://ipwho.is/');
+  if (d1?.success && d1.country_code === 'BR' && d1.region_code) {
+    uf = d1.region_code;
+  }
+
+  // ipapi.co: fallback (1000 req/day free)
+  if (!uf) {
+    const d2 = await _tryGeoFetch('https://ipapi.co/json/');
+    if (d2 && !d2.error && d2.country_code === 'BR' && d2.region_code) {
+      uf = d2.region_code;
     }
-  } catch { /* ignore */ }
+  }
+
+  // Validate result is a known BR state before caching
+  if (uf && _ESTADO_LABELS[uf]) {
+    _geoEstado = uf;
+    localStorage.setItem('corridas_geo_estado', uf);
+    _applyGeoEstado();
+  }
 }
 
 function _extractCountry(cidade) {

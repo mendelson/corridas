@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-04-30T12:35:13+00:00",
-  "total": 42,
+  "gerado_em": "2026-04-30T12:51:29+00:00",
+  "total": 41,
   "corridas": [
     {
       "id": "etapa-plano-piloto_df_2026-04-30",
@@ -844,52 +844,6 @@
       "updated_at": "2026-04-30T04:03:19+00:00"
     },
     {
-      "id": "live-42k-brasilia_df_2026-04-30",
-      "titulo": "Live! 42K Brasília",
-      "data_evento": "2026-08-02",
-      "horario": "06:00",
-      "localizacao": "Brasília, DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 42.0,
-          "data": "2026-08-02",
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": "2026-08-02",
-          "horario": "06:00"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-08-02",
-          "horario": "06:30"
-        },
-        {
-          "km": 5.0,
-          "data": "2026-08-02",
-          "horario": "06:30"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/Q2hUKA8pg4InCSG13UmOyE0fI5XrDJQ3gef97xkH.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live42k-brasilia",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live42k-brasilia"
-          ]
-        }
-      ],
-      "miss_count": 9,
-      "first_seen_at": "2026-04-30T00:57:17+00:00",
-      "updated_at": "2026-04-30T00:57:17+00:00"
-    },
-    {
       "id": "9o-corrida-de-olho-na-saude_df_2026-04-30",
       "titulo": "9º Corrida De Olho Na Saúde",
       "data_evento": "2026-08-08",
@@ -1001,6 +955,42 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-04-30T00:20:21+00:00"
+    },
+    {
+      "id": "conjunto-nacional_df_2026-04-30",
+      "titulo": "Conjunto Nacional",
+      "data_evento": "2026-08-16",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TF Sports",
+          "link_evento": "https://www.tfsports.com.br/run-series/conjunto-nacional-2026",
+          "links_inscricao": [
+            "https://www.tfsports.com.br/run-series/conjunto-nacional-2026"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T12:51:26+00:00",
+      "updated_at": "2026-04-30T12:51:26+00:00"
     },
     {
       "id": "quatro-poderes-run-2026_df_2026-04-30",
@@ -1322,47 +1312,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-04-30T00:20:21+00:00"
-    },
-    {
-      "id": "live-run-brasilia-2026_df_2026-04-30",
-      "titulo": "Live! Run Brasília 2026",
-      "data_evento": "2026-12-13",
-      "horario": "06:30",
-      "localizacao": "Brasília, DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-12-13",
-          "horario": "06:30"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-12-13",
-          "horario": "06:30"
-        },
-        {
-          "km": 15.0,
-          "data": "2026-12-13",
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/xifbdubMY6BtWccIYhTgESmdMosh4IQX2SLBlxNl.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-run-braslia-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-run-braslia-2026"
-          ]
-        }
-      ],
-      "miss_count": 9,
-      "first_seen_at": "2026-04-30T00:57:17+00:00",
-      "updated_at": "2026-04-30T00:57:17+00:00"
     },
     {
       "id": "jingle-bells-2026_df_2026-04-30",

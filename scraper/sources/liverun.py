@@ -122,7 +122,6 @@ def _parse_card(a, href: str) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link_evento,
         links_inscricao=links_insc,
-        inscricoes=[],
     )
 
     return Corrida(

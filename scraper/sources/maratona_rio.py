@@ -1,14 +1,14 @@
 """Scraper for maratonadorio.com.br (Maratona do Rio 2026)
 
-Edição 2026 é multi-day (4–7 jun). Dados de distância, horário e preço
-são hardcoded conforme regulamento publicado; apenas a imagem og é
+Edição 2026 é multi-day (4–7 jun). Dados de distância e horário são
+hardcoded conforme regulamento publicado; apenas a imagem og é
 buscada dinamicamente no site oficial.
 """
 from __future__ import annotations
 from bs4 import BeautifulSoup
 
 from ..http_client import get
-from ..models import Corrida, Distancia, FonteInfo, Inscricao
+from ..models import Corrida, Distancia, FonteInfo
 from ..utils import slugify, now_iso, today_iso
 
 URL          = "https://www.maratonadorio.com.br/"
@@ -25,15 +25,6 @@ _DISTANCIAS = [
     Distancia(km=10.0,   data="2026-06-05", horario="07:00"),
     Distancia(km=21.097, data="2026-06-06", horario="05:30"),
     Distancia(km=42.195, data="2026-06-07", horario="05:30"),
-]
-
-# Preços conforme último lote divulgado (GoDream, abril 2026).
-_INSCRICOES = [
-    Inscricao(descricao="5K",               valor=179.00, disponivel=True, link=INSCRICAO_URL),
-    Inscricao(descricao="10K",              valor=199.00, disponivel=True, link=INSCRICAO_URL),
-    Inscricao(descricao="Meia Maratona 21K",valor=319.00, disponivel=True, link=INSCRICAO_URL),
-    Inscricao(descricao="Maratona 42K",     valor=329.00, disponivel=True, link=INSCRICAO_URL),
-    Inscricao(descricao="Desafio 21K+42K",  valor=648.00, disponivel=True, link=INSCRICAO_URL),
 ]
 
 
@@ -64,7 +55,6 @@ def _build(imagem_url: str | None) -> Corrida:
         nome=SOURCE_NAME,
         link_evento=URL,
         links_inscricao=[INSCRICAO_URL],
-        inscricoes=_INSCRICOES,
     )
     return Corrida(
         id=f"{slugify(titulo)}_rj_{today}",

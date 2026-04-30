@@ -434,7 +434,6 @@ function buildExpanded(card, c) {
   const expDist = card.querySelector('.expanded-distances');
   const expPeriod = card.querySelector('.expanded-period');
   const expFontes = card.querySelector('.expanded-fontes');
-  const expInscricoes = card.querySelector('.expanded-inscricoes');
 
   // Distances table (sorted ascending)
   if (c.distancias && c.distancias.length > 0) {
@@ -495,32 +494,6 @@ function buildExpanded(card, c) {
     }
   }
 
-  // Inscricoes table (all sources combined)
-  const allInscricoes = (c.fontes || []).flatMap(f =>
-    (f.inscricoes || []).map(i => ({ ...i, fonte: f.nome }))
-  );
-  if (allInscricoes.length > 0) {
-    const h = document.createElement('p');
-    h.className = 'expanded-section-title';
-    h.textContent = 'Valores';
-    expInscricoes.appendChild(h);
-    const table = document.createElement('table');
-    table.className = 'inscricao-table';
-    table.innerHTML = '<thead><tr><th>Descrição</th><th>Valor</th><th>Status</th><th>Link</th></tr></thead>';
-    const tbody = document.createElement('tbody');
-    for (const i of allInscricoes) {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${i.descricao || '—'}</td>
-        <td class="inscricao-valor">${i.valor != null ? 'R$ ' + i.valor.toFixed(2).replace('.', ',') : '—'}</td>
-        <td>${i.disponivel ? '<span class="tag-open">Aberta</span>' : '<span class="tag-closed">Encerrada</span>'}</td>
-        <td class="inscricao-link">${i.link ? `<a href="${i.link}" target="_blank" rel="noopener">Inscrever →</a>` : '—'}</td>
-      `;
-      tbody.appendChild(tr);
-    }
-    table.appendChild(tbody);
-    expInscricoes.appendChild(table);
-  }
 }
 
 // ---------------------------------------------------------------------------

@@ -9,7 +9,7 @@ from datetime import date
 from pathlib import Path
 
 from .merger import are_duplicates, merge_rodada
-from .models import Corrida, Distancia, FonteInfo, Inscricao, PeriodoInscricao
+from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso
 
 # ---------------------------------------------------------------------------
@@ -64,12 +64,10 @@ def _dict_to_corrida(d: dict) -> Corrida:
     distancias = [Distancia(**dist) for dist in d.get("distancias", [])]
     fontes = []
     for f in d.get("fontes", []):
-        inscricoes = [Inscricao(**i) for i in f.get("inscricoes", [])]
         fontes.append(FonteInfo(
             nome=f["nome"],
             link_evento=f["link_evento"],
             links_inscricao=f.get("links_inscricao", []),
-            inscricoes=inscricoes,
         ))
     pi = d.get("periodo_inscricao")
     periodo = PeriodoInscricao(**pi) if pi else None

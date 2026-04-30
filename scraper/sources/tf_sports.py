@@ -271,7 +271,6 @@ def scrape() -> list[Corrida]:
                 nome=SOURCE_NAME,
                 link_evento=link_evento,
                 links_inscricao=links_insc,
-                inscricoes=[],
             )
             corridas.append(Corrida(
                 id=f"{slugify(titulo)}_{state.lower()}_{today}",

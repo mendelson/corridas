@@ -50,7 +50,6 @@ def scrape_major(
         nome=source_name,
         link_evento=url,
         links_inscricao=[url] if inscricoes_abertas else [],
-        inscricoes=[],
     )
 
     return [Corrida(

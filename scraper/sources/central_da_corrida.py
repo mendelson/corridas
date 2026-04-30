@@ -90,7 +90,6 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link_evento,
         links_inscricao=[link_evento] if inscricoes_abertas is not False else [],
-        inscricoes=[],
     )
 
     return Corrida(

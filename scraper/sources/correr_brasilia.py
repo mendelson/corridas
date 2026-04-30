@@ -4,7 +4,7 @@ import re
 from bs4 import BeautifulSoup
 
 from ..http_client import get
-from ..models import Corrida, Distancia, FonteInfo, Inscricao
+from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_date, normalize_time, normalize_titulo, slugify, now_iso, today_iso
 )
@@ -82,7 +82,6 @@ def _parse_event(el) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link,
         links_inscricao=[link] if link != URL else [],
-        inscricoes=[],
     )
 
     return Corrida(

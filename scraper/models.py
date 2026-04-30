@@ -3,19 +3,10 @@ from dataclasses import dataclass, field
 
 
 @dataclass
-class Inscricao:
-    descricao: str
-    valor: float | None
-    disponivel: bool
-    link: str | None
-
-
-@dataclass
 class FonteInfo:
     nome: str
     link_evento: str
     links_inscricao: list[str]
-    inscricoes: list[Inscricao]
 
 
 @dataclass

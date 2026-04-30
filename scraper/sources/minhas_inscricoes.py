@@ -4,9 +4,9 @@ import re
 from bs4 import BeautifulSoup
 
 from ..http_client import get
-from ..models import Corrida, Distancia, FonteInfo, Inscricao
+from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_date, normalize_time, normalize_titulo, normalize_valor,
+    normalize_date, normalize_time, normalize_titulo,
     slugify, infer_estado, now_iso, today_iso
 )
 
@@ -72,8 +72,11 @@ def _parse_event(el) -> Corrida | None:
     if link.startswith("/"):
         link = BASE + link
 
-    inscricoes = _extract_inscricoes(el)
-    inscricoes_abertas: bool | None = any(i.disponivel for i in inscricoes) if inscricoes else None
+    has_insc_link = any(
+        any(k in btn.get_text(strip=True).lower() for k in ["inscri", "comprar"])
+        for btn in el.find_all("a", href=True)
+    )
+    inscricoes_abertas: bool | None = True if has_insc_link else None
 
     now = now_iso()
     today = today_iso()
@@ -82,7 +85,6 @@ def _parse_event(el) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link,
         links_inscricao=[link] if link != URL else [],
-        inscricoes=inscricoes,
     )
 
     return Corrida(
@@ -137,15 +139,3 @@ def _extract_distances(text: str) -> list[Distancia]:
     return result
 
 
-def _extract_inscricoes(el) -> list[Inscricao]:
-    result = []
-    for btn in el.find_all("a", href=True):
-        btn_text = btn.get_text(strip=True)
-        if any(k in btn_text.lower() for k in ["inscri", "comprar"]):
-            result.append(Inscricao(
-                descricao=btn_text,
-                valor=None,
-                disponivel=True,
-                link=btn["href"],
-            ))
-    return result

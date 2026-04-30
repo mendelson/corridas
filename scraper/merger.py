@@ -80,6 +80,14 @@ def _shared_inscription_link(a: Corrida, b: Corrida) -> bool:
     return bool(la and lb and la & lb)
 
 
+def _title_words_contained(a: Corrida, b: Corrida) -> bool:
+    """True when all words of the shorter title appear in the longer one (≥3 words)."""
+    wa = normalize_titulo_merge(a.titulo).split()
+    wb = normalize_titulo_merge(b.titulo).split()
+    shorter, longer = (wa, wb) if len(wa) <= len(wb) else (wb, wa)
+    return len(shorter) >= 3 and all(w in longer for w in shorter)
+
+
 def are_duplicates(a: Corrida, b: Corrida) -> bool:
     # Shared event-specific inscription link is conclusive — state mismatch is fine
     if _shared_inscription_link(a, b):
@@ -91,9 +99,12 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
         return True
     if sim >= 0.85 and _date_ok(a, b):
         return True
-    # Same exact date + strong overlap catches same-event relisted under slightly different names
-    if sim >= 0.75 and a.data_evento and b.data_evento and a.data_evento == b.data_evento:
-        return True
+    if a.data_evento and b.data_evento and a.data_evento == b.data_evento:
+        # Same exact date: strong similarity or one title contained in the other
+        if sim >= 0.75:
+            return True
+        if _title_words_contained(a, b):
+            return True
     return False
 
 

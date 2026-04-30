@@ -406,6 +406,11 @@ def main() -> None:
     final = [c for c in final if _is_valid(c) or (c.data_evento and c.data_evento < _today)]
     print(f"[main] {len(final)} corridas após reconciliação")
 
+    # Second dedup pass: catches duplicates that survived reconcile (e.g. past events
+    # copied as-is from estado_anterior without cross-checking the full result)
+    final = merge_rodada(final)
+    print(f"[main] {len(final)} corridas após dedup final")
+
     _normalize_all_locations(final)
     save(final)
 

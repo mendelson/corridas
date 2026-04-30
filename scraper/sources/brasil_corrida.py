@@ -1,93 +1,135 @@
-"""Scraper for brasilcorrida.com.br"""
+"""Scraper for brasilcorrida.com.br — AngularJS app backed by REST API."""
 from __future__ import annotations
 import re
-from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ..http_client import get
-from ..models import Corrida, Distancia, FonteInfo
-from ..utils import (
-    normalize_date, normalize_time, normalize_titulo,
-    slugify, infer_estado, now_iso, today_iso
-)
+from ..models import Corrida, Distancia, FonteInfo, PeriodoInscricao
+from ..utils import normalize_titulo, slugify, now_iso, today_iso
 
-URL = "https://brasilcorrida.com.br/"
-BASE = "https://brasilcorrida.com.br"
+API_BASE = "https://brasilcorrida.com.br/api/src/Site"
+CARD_URL = f"{API_BASE}/EventosCard.php"
+DETAIL_URL = f"{API_BASE}/EventoDetalhe.php"
+EVENT_BASE = "https://brasilcorrida.com.br/#/evento"
+INSC_BASE = "https://brasilcorrida.com.br/#/inscricao"
+S3_BASE = "https://midia.recebedigital.com.br/"
 SOURCE_NAME = "Brasil Corrida"
+
+_RUNNING_MODS = {477, 478, 479, 480, 481, 482, 489}  # corrida de rua + kids variants
+_RUNNING_MOD_NAMES = {"corrida de rua", "corrida de montanha", "trail running",
+                      "corrida kids", "corrida", "corrida de revezamento"}
+
+_CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
 
 def scrape() -> list[Corrida]:
+    today = today_iso()
     try:
-        resp = get(URL)
+        resp = get(CARD_URL)
         resp.raise_for_status()
+        data = resp.json()
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro: {e}")
+        print(f"[{SOURCE_NAME}] erro ao buscar API: {e}")
         return []
 
-    soup = BeautifulSoup(resp.text, "lxml")
-    corridas: list[Corrida] = []
+    events = data.get("calendario") or []
+    if not events:
+        print(f"[{SOURCE_NAME}] nenhum evento no calendario")
+        return []
 
-    for el in _find_events(soup):
-        try:
-            corrida = _parse_event(el)
-            if corrida:
-                corridas.append(corrida)
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] erro: {e}")
+    # Filter to running events only, deduplicate by eve_id
+    seen_ids: set[int] = set()
+    to_fetch: list[dict] = []
+    for ev in events:
+        eid = ev.get("eve_id")
+        if eid in seen_ids:
+            continue
+        mod_name = (ev.get("mod_descricao") or "").lower()
+        mod_id = ev.get("eve_mod_id")
+        if mod_name in _RUNNING_MOD_NAMES or mod_id in _RUNNING_MODS:
+            seen_ids.add(eid)
+            to_fetch.append(ev)
+
+    corridas: list[Corrida] = []
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        futures = {ex.submit(_fetch_and_parse, ev, today): ev for ev in to_fetch}
+        for fut in as_completed(futures):
+            try:
+                c = fut.result()
+                if c:
+                    corridas.append(c)
+            except Exception as e:
+                ev = futures[fut]
+                print(f"[{SOURCE_NAME}] erro '{ev.get('eve_nome')}': {e}")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _find_events(soup):
-    for sel in [".event", ".race", ".card", "article", ".post", ".item", "tr", "li"]:
-        els = soup.select(sel)
-        if len(els) > 1:
-            return els
-    return []
-
-
-def _parse_event(el) -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 5:
+def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
+    token = ev_card.get("eve_token", "")
+    if not token:
         return None
 
-    heading = el.find(["h1", "h2", "h3", "h4", "strong"])
-    titulo_raw = heading.get_text(strip=True) if heading else text[:80]
-    titulo = normalize_titulo(titulo_raw)
+    try:
+        resp = get(f"{DETAIL_URL}?eventoToken={token}")
+        resp.raise_for_status()
+        ev = resp.json()
+    except Exception:
+        ev = ev_card  # fall back to card data
+
+    titulo = normalize_titulo(ev.get("eve_nome") or ev_card.get("eve_nome") or "")
     if not titulo or len(titulo) < 3:
         return None
 
-    data = _extract_date(text)
-    localizacao = _extract_localizacao(el, text)
-    estado = infer_estado(localizacao, titulo) or "??"
-    cidade = localizacao.split(",")[0].strip()
+    data_evento = (ev.get("eve_data_evento") or "")[:10]
+    if not data_evento or data_evento < today:
+        return None
 
-    img = el.find("img")
-    imagem_url = (img.get("src") or img.get("data-src")) if img else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = BASE + imagem_url
+    hora_raw = ev.get("eve_hora_largada") or ""
+    horario = hora_raw[:5] if hora_raw else None
 
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
-    if link.startswith("/"):
-        link = BASE + link
+    cidade_raw = (ev.get("cid_descricao") or ev_card.get("cid_descricao") or "").title()
+    estado = (ev.get("eve_end_uf") or ev_card.get("eve_end_uf") or "??").upper()
+    localizacao = f"{cidade_raw}, {estado}" if cidade_raw else estado
+
+    distancias = _parse_distances(ev.get("distancias") or [])
+
+    img_path = ev.get("eve_img_destaque") or ev_card.get("eve_img_destaque")
+    imagem_url = (S3_BASE + img_path) if img_path else None
+
+    insc_status = ev.get("eve_inscricao") or ""
+    inscricoes_abertas: bool | None = True if insc_status == "A" else (
+        False if insc_status in ("E", "C") else None
+    )
+
+    insc_ini = ev.get("eve_data_insc_ini")
+    insc_fim = ev.get("eve_data_insc_fim")
+    periodo = PeriodoInscricao(abertura=insc_ini, encerramento=insc_fim) if (insc_ini or insc_fim) else None
+
+    link_evento = f"{EVENT_BASE}/{token}"
+    link_insc = f"{INSC_BASE}/{token}"
+    links_inscricao = [link_insc] if inscricoes_abertas is not False else [link_evento]
 
     now = now_iso()
-    today = today_iso()
+    fonte = FonteInfo(
+        nome=SOURCE_NAME,
+        link_evento=link_evento,
+        links_inscricao=links_inscricao,
+    )
 
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[])
     return Corrida(
-        id=f"{slugify(titulo)}_{estado.lower()}_{today}",
+        id=f"brasilcorrida_{ev.get('eve_id') or slugify(titulo)}",
         titulo=titulo,
-        data_evento=data or "",
-        horario=normalize_time(text),
+        data_evento=data_evento,
+        horario=horario,
         localizacao=localizacao,
-        cidade=cidade,
+        cidade=cidade_raw,
         estado=estado,
-        distancias=_extract_distances(text),
+        distancias=distancias,
         imagem_url=imagem_url,
-        inscricoes_abertas=None,
-        periodo_inscricao=None,
+        inscricoes_abertas=inscricoes_abertas,
+        periodo_inscricao=periodo,
         fontes=[fonte],
         miss_count=0,
         first_seen_at=now,
@@ -95,36 +137,19 @@ def _parse_event(el) -> Corrida | None:
     )
 
 
-def _extract_date(text: str) -> str | None:
-    m = re.search(r"\d{1,2}/\d{1,2}/\d{4}", text)
-    if m:
-        return normalize_date(m.group(0))
-    m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
-    if m:
-        return normalize_date(m.group(0))
-    return None
-
-
-def _extract_localizacao(el, text: str) -> str:
-    for cls in ["local", "location", "cidade", "place"]:
-        loc = el.find(class_=re.compile(cls, re.IGNORECASE))
-        if loc:
-            val = loc.get_text(strip=True)
-            if val:
-                return val
-    m = re.search(r"([A-Z][a-záéíóúãõâêô]+(?:\s[A-Z][a-záéíóúãõâêô]+)*)\s*[-–]\s*([A-Z]{2})", text)
-    if m:
-        return m.group(0)
-    return ""
-
-
-def _extract_distances(text: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+)\s*[kK][mM]?\b", text)
+def _parse_distances(raw: list[dict]) -> list[Distancia]:
     seen: set[float] = set()
-    result = []
-    for n in nums:
-        km = float(n)
-        if km not in seen and 1 <= km <= 200:
+    result: list[Distancia] = []
+    for item in raw:
+        try:
+            km = float(str(item.get("edt_distancia") or 0).replace(",", "."))
+        except (ValueError, TypeError):
+            continue
+        for canon, lo, hi in _CANONICAL:
+            if lo <= km <= hi:
+                km = canon
+                break
+        if km not in seen and 3 <= km <= 200:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
-    return result
+    return sorted(result, key=lambda d: d.km)

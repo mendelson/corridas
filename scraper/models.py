@@ -39,3 +39,4 @@ class Corrida:
     miss_count: int
     first_seen_at: str
     updated_at: str
+    fotos: list[dict] = field(default_factory=list)

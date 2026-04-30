@@ -121,6 +121,7 @@ def _dict_to_corrida(d: dict) -> Corrida:
         miss_count=d.get("miss_count", 0),
         first_seen_at=d.get("first_seen_at", now_iso()),
         updated_at=d.get("updated_at", now_iso()),
+        fotos=d.get("fotos", []),
     )
 
 
@@ -157,6 +158,46 @@ def _demote_directory_links(corridas: list[Corrida]) -> None:
             for fo in c.fontes:
                 if fo.nome in _DIRECTORY_SOURCES:
                     fo.links_inscricao = []
+
+
+def _find_all_photos(corridas: list[Corrida]) -> None:
+    """Search photo platforms for events that occurred in the last 30 days.
+
+    Events older than 30 days keep whatever fotos were stored previously but
+    are never re-queried. Events in the active window are re-queried every
+    scraping run so newly published photos are picked up promptly.
+    """
+    from datetime import date as _d, timedelta as _td
+    from .fotos import find_event_photos
+
+    today_str = _d.today().isoformat()
+    cutoff_str = (_d.today() - _td(days=30)).isoformat()
+
+    to_check = [
+        c for c in corridas
+        if c.data_evento and cutoff_str <= c.data_evento < today_str
+    ]
+    if not to_check:
+        return
+
+    print(f"[main] buscando fotos em plataformas para {len(to_check)} evento(s)...")
+
+    def _check(c: Corrida) -> tuple[Corrida, list[dict]]:
+        return c, find_event_photos({"titulo": c.titulo, "data_evento": c.data_evento})
+
+    found = 0
+    with ThreadPoolExecutor(max_workers=5) as ex:
+        futs = {ex.submit(_check, c): c for c in to_check}
+        for fut in as_completed(futs):
+            try:
+                c, fotos = fut.result()
+                if fotos:
+                    c.fotos = fotos
+                    found += 1
+            except Exception:
+                pass
+
+    print(f"[main] fotos encontradas para {found}/{len(to_check)} evento(s)")
 
 
 def _normalize_all_locations(corridas: list[Corrida]) -> None:
@@ -499,6 +540,7 @@ def main() -> None:
 
     _demote_directory_links(final)
     _normalize_all_locations(final)
+    _find_all_photos(final)
     _enrich_images(final)
     save(final)
 

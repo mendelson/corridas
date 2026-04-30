@@ -583,6 +583,7 @@ function buildExpanded(card, c) {
   const expDist = card.querySelector('.expanded-distances');
   const expPeriod = card.querySelector('.expanded-period');
   const expFontes = card.querySelector('.expanded-fontes');
+  const expFotos = card.querySelector('.expanded-fotos');
 
   expTitle.textContent = c.titulo;
   expTitle.classList.remove('hidden');
@@ -627,7 +628,7 @@ function buildExpanded(card, c) {
     expPeriod.appendChild(p);
   }
 
-  // Fontes: platform name + inscription button (only when link available)
+  // Fontes
   if (c.fontes && c.fontes.length > 0) {
     const h = document.createElement('p');
     h.className = 'expanded-section-title';
@@ -644,6 +645,26 @@ function buildExpanded(card, c) {
       div.innerHTML = `<span class="fonte-nome-text">${fonte.nome}</span>${btnHtml}`;
       expFontes.appendChild(div);
     }
+  }
+
+  // Photo platforms (only populated by the scraper for past events)
+  if (expFotos && c.fotos && c.fotos.length > 0) {
+    const h = document.createElement('p');
+    h.className = 'expanded-section-title';
+    h.textContent = 'Fotos';
+    expFotos.appendChild(h);
+    const btns = document.createElement('div');
+    btns.className = 'fotos-btns';
+    for (const foto of c.fotos) {
+      const a = document.createElement('a');
+      a.href = foto.url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.className = 'btn-fotos';
+      a.textContent = foto.plataforma + ' →';
+      btns.appendChild(a);
+    }
+    expFotos.appendChild(btns);
   }
 
 }

@@ -26,7 +26,10 @@ def scrape_major(
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
     except Exception as e:
-        print(f"[{source_name}] erro ao buscar página: {e}")
+        # Some sites (e.g. tcssydneymarathon.com.au) block automated access
+        # at the SSL layer; fallback to known_date is handled below.
+        if ssl_verify:
+            print(f"[{source_name}] erro ao buscar página: {e}")
 
     today = today_iso()
     year = known_date[:4]

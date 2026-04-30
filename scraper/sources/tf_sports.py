@@ -48,7 +48,11 @@ _MARATONAS_ALVO = [
 # ---------------------------------------------------------------------------
 
 def _get_bearer_token() -> str | None:
-    """Extract Bearer token from the compiled Next.js app bundle."""
+    """Extract Bearer token from the compiled Next.js app bundle.
+
+    Next.js minifies the Authorization header as:
+      "Bearer ".concat("TOKEN...") — so we need patterns for that form.
+    """
     try:
         resp = httpx.get(
             f"{BASE}/run-series/",
@@ -60,21 +64,27 @@ def _get_bearer_token() -> str | None:
         soup = BeautifulSoup(resp.text, "lxml")
         for script in soup.find_all("script", src=True):
             src = script.get("src", "")
-            if "_app" in src and src.endswith(".js"):
-                bundle_url = src if src.startswith("http") else f"{BASE}{src}"
-                bundle = httpx.get(
-                    bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
-                )
-                bundle.raise_for_status()
-                # "Bearer eyJhbGc..." or Authorization:"Bearer ..."
-                for pat in [
-                    r'["\']Bearer\s+([\w\-_.]+)["\']',
-                    r'Authorization[^:]*:\s*["\']Bearer\s+([\w\-_.]+)["\']',
-                    r'bearer["\s:]+["\']?([\w\-_.]{20,})["\']?',
-                ]:
-                    m = re.search(pat, bundle.text, re.IGNORECASE)
-                    if m:
-                        return m.group(1)
+            if "_app" not in src or not src.endswith(".js"):
+                continue
+            bundle_url = src if src.startswith("http") else f"{BASE}{src}"
+            bundle = httpx.get(
+                bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
+            )
+            bundle.raise_for_status()
+            text = bundle.text
+            for pat in [
+                # "Bearer ".concat("TOKEN") — typical Next.js minified bundle pattern
+                r'"Bearer\s+"\s*\.\s*concat\s*\(\s*"([^"]{20,})"',
+                # Simpler concat form without spaces
+                r'concat\s*\(\s*"([a-f0-9]{40,})"',
+                # Plain "Bearer TOKEN" in a single string
+                r'"Bearer\s+([\w\-_]{20,})"',
+                # JWT (ey... prefix)
+                r'"(ey[\w\-_.]{20,})"',
+            ]:
+                m = re.search(pat, text)
+                if m:
+                    return m.group(1)
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao extrair token: {e}")
     return None
@@ -193,6 +203,12 @@ def _distances_from_title(titulo: str) -> list[Distancia]:
     return result
 
 
+_TF_DEFAULT_DISTANCES = [
+    Distancia(km=5.0, data=None, horario=None),
+    Distancia(km=10.0, data=None, horario=None),
+]
+
+
 def _get_distances(attrs: dict, slug: str) -> list[Distancia]:
     d = _distances_from_api(attrs)
     if d:
@@ -200,7 +216,11 @@ def _get_distances(attrs: dict, slug: str) -> list[Distancia]:
     d = _distances_from_next_data(slug)
     if d:
         return d
-    return _distances_from_title(attrs.get("title", ""))
+    d = _distances_from_title(attrs.get("title", ""))
+    if d:
+        return d
+    # Track&Field Run Series is a standardized circuit — always 5km and 10km
+    return _TF_DEFAULT_DISTANCES
 
 
 # ---------------------------------------------------------------------------

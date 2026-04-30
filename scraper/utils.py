@@ -351,6 +351,11 @@ _CIDADE_UF: dict[str, str] = {
     "sao paulo": "SP", "são paulo": "SP", "campinas": "SP",
     "santos": "SP", "sao bernardo": "SP", "guarulhos": "SP",
     "osasco": "SP", "ribeirao preto": "SP", "sorocaba": "SP",
+    "piracicaba": "SP", "sao roque": "SP", "são roque": "SP",
+    "bauru": "SP", "marilia": "SP", "presidente prudente": "SP",
+    "jundiai": "SP", "indaiatuba": "SP", "limeira": "SP",
+    "sao jose do rio preto": "SP", "sao carlos": "SP",
+    "americana": "SP", "araras": "SP", "botucatu": "SP",
     # RJ
     "rio de janeiro": "RJ", "niteroi": "RJ", "petrópolis": "RJ",
     "petropolis": "RJ",
@@ -362,6 +367,8 @@ _CIDADE_UF: dict[str, str] = {
     "curitiba": "PR", "londrina": "PR",
     # SC
     "florianopolis": "SC", "florianópolis": "SC", "joinville": "SC",
+    "governador celso ramos": "SC", "balneario camboriu": "SC",
+    "itajai": "SC", "blumenau": "SC", "chapeco": "SC",
     # CE
     "fortaleza": "CE",
     # BA

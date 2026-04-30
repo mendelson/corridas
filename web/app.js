@@ -126,6 +126,10 @@ function _applyGeoEstado() {
   if (!_geoEstado || state.estado !== 'todos') return;
   // Only apply if the option exists — options may not be populated yet
   if (![...estadoSelect.options].some(o => o.value === _geoEstado)) return;
+  // Don't apply if it would produce an empty list in the current period
+  const today = todayStr();
+  const wouldMatch = allCorridas.some(c => c.estado === _geoEstado && matchesPeriodo(c, today));
+  if (!wouldMatch) return;
   state.estado = _geoEstado;
   estadoSelect.value = _geoEstado;
   saveFilters();
@@ -146,24 +150,27 @@ async function _tryGeoFetch(url) {
 }
 
 async function detectUserLocation() {
-  let uf = null;
+  // Try three independent APIs concurrently; use the first valid BR state that responds.
+  const fetchers = [
+    () => _tryGeoFetch('https://ipwho.is/').then(d =>
+      (d?.success && d.country_code === 'BR' && _ESTADO_LABELS[d.region_code]) ? d.region_code : null),
+    () => _tryGeoFetch('https://freeipapi.com/api/json').then(d =>
+      (d?.countryCode === 'BR' && _ESTADO_LABELS[d.regionCode]) ? d.regionCode : null),
+    () => _tryGeoFetch('https://api.ip.sb/geoip').then(d =>
+      (d?.country_code === 'BR' && _ESTADO_LABELS[d.region_code]) ? d.region_code : null),
+  ];
 
-  // ipwho.is: free, HTTPS, CORS, high rate limits
-  const d1 = await _tryGeoFetch('https://ipwho.is/');
-  if (d1?.success && d1.country_code === 'BR' && d1.region_code) {
-    uf = d1.region_code;
-  }
-
-  // freeipapi.com: fallback, free, CORS-enabled
-  if (!uf) {
-    const d2 = await _tryGeoFetch('https://freeipapi.com/api/json');
-    if (d2 && d2.countryCode === 'BR' && d2.regionCode) {
-      uf = d2.regionCode;
+  const uf = await new Promise(resolve => {
+    let remaining = fetchers.length;
+    for (const fn of fetchers) {
+      fn().then(r => {
+        if (r) resolve(r);
+        else if (--remaining === 0) resolve(null);
+      }).catch(() => { if (--remaining === 0) resolve(null); });
     }
-  }
+  });
 
-  // Validate result is a known BR state before caching
-  if (uf && _ESTADO_LABELS[uf]) {
+  if (uf) {
     _geoEstado = uf;
     _applyGeoEstado();
   }
@@ -183,7 +190,7 @@ function populateEstadoFilter() {
   while (estadoSelect.options.length > 1) estadoSelect.remove(1);
 
   const brEstados = [...new Set(
-    allCorridas.filter(c => c.estado && c.estado !== 'INT').map(c => c.estado)
+    allCorridas.filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??').map(c => c.estado)
   )].sort();
 
   const intCountries = [...new Set(
@@ -633,7 +640,7 @@ function formatDateShort(iso) {
 }
 
 function formatLocation(cidade, estado) {
-  if (estado === 'INT') return cidade || '';
+  if (estado === 'INT' || estado === '??' || !estado) return cidade || '';
   return [cidade, estado].filter(Boolean).join(' · ');
 }
 

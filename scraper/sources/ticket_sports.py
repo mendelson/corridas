@@ -27,6 +27,25 @@ _NON_RUNNING_KW = [
     "federação de triathlon", "federacao de triathlon",
 ]
 
+# Addresses that indicate a virtual/online event with no fixed location
+_VIRTUAL_ADDR_KW = {
+    "de onde você estiver", "de onde voce estiver",
+    "virtual", "online",
+}
+
+# City/country fragments that conclusively identify an international event
+_INTL_CITY_KW = {
+    "buenos aires", "assunção", "assuncao", "montevideo", "montevidéu",
+    "punta del este", "santiago", "lima", "bogotá", "bogota",
+    "paris", "london", "londres", "berlin", "berlim", "amsterdam",
+    "amsterdam", "rotterdam", "madrid", "barcelona", "rome", "roma",
+    "veneza", "venice", "venezia", "florença", "florence",
+    "colonia agip", "nove colli",
+    "porto", "lisboa", "lisbon",          # Portugal — not Porto Alegre (has ", RS")
+    "new york", "boston", "chicago", "tokyo", "tóquio", "sydney",
+    "patagonia argentina", "patagônia argentina",
+}
+
 
 def scrape() -> list[Corrida]:
     today = today_iso()
@@ -205,7 +224,11 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
 
     cidade, estado = _split_address(addr)
     if not estado:
-        estado = infer_estado(addr, titulo) or "??"
+        combined = (addr + " " + titulo).lower()
+        if any(kw in combined for kw in _INTL_CITY_KW):
+            estado = "INT"
+        else:
+            estado = infer_estado(addr, titulo) or "??"
 
     data_evento = _parse_date(ev.get("date") or "")
     if not data_evento or data_evento < today:

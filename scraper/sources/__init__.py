@@ -15,4 +15,5 @@ from . import (
     portal_das_corridas,
     maratona_rio,
     maratona_porto_alegre,
+    sp_city_marathon,
 )

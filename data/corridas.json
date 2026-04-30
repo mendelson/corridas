@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "gerado_em": "2026-04-30T00:18:59+00:00",
   "total": 37,
+=======
+  "gerado_em": "2026-04-29T21:19:15-03:00",
+  "total": 50,
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
   "corridas": [
     {
       "id": "circuito-da-saude-etapa-ana-neri_df_2026-04-29",
@@ -69,7 +74,11 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
+<<<<<<< HEAD
       "updated_at": "2026-04-30T00:18:59+00:00"
+=======
+      "updated_at": "2026-04-29T21:19:15-03:00"
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
     },
     {
       "id": "1a-corrida-do-bope_df_2026-04-29",
@@ -227,7 +236,11 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
+<<<<<<< HEAD
       "updated_at": "2026-04-30T00:18:59+00:00"
+=======
+      "updated_at": "2026-04-29T21:19:15-03:00"
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
     },
     {
       "id": "corrida-sindjus-36-anos_df_2026-04-29",
@@ -737,7 +750,174 @@
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
     {
+<<<<<<< HEAD
       "id": "9o-corrida-de-olho-na-saude_df_2026-04-30",
+=======
+      "id": "ts_86292",
+      "titulo": "Cats Run DF 2026",
+      "data_evento": "2026-07-12",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/K0NWC1CC1WJHLKWQZTNN7F9T2JM5ASKX6PE87F94O0MD6MICLN.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CATS+RUN+DF+2026-86292",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CATS+RUN+DF+2026-86292"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T20:45:11-03:00"
+    },
+    {
+      "id": "ts_74549",
+      "titulo": "Desafio Das Torres Meia Maratona",
+      "data_evento": "2026-07-19",
+      "horario": "06:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/Y2PLBOA22PEC3BRCAWUKSWBJIMPGHQ4O0K0P4WF33ACUA1WQ8M.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/Desafio+das+torres+meia+maratona-74549",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/Desafio+das+torres+meia+maratona-74549"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T20:45:11-03:00"
+    },
+    {
+      "id": "ts_86042",
+      "titulo": "Asics Run Challenge 2026 - Etapa Brasília",
+      "data_evento": "2026-07-26",
+      "horario": "06:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/N8N0HD9VXT03ZIZKE5302UF7TE1YMXUIT57BXEL8W22PHD8COI.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/ASICS+RUN+CHALLENGE+2026+-+ETAPA+BRAS%C3%8DLIA-86042",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/ASICS+RUN+CHALLENGE+2026+-+ETAPA+BRAS%C3%8DLIA-86042"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T20:45:11-03:00"
+    },
+    {
+      "id": "live-42k-brasilia_df_2026-04-29",
+      "titulo": "Live! 42K Brasília",
+      "data_evento": "2026-08-02",
+      "horario": "06:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 42.0,
+          "data": "2026-08-02",
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": "2026-08-02",
+          "horario": "06:00"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-08-02",
+          "horario": "06:30"
+        },
+        {
+          "km": 5.0,
+          "data": "2026-08-02",
+          "horario": "06:30"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/Q2hUKA8pg4InCSG13UmOyE0fI5XrDJQ3gef97xkH.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live42k-brasilia",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live42k-brasilia"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T21:19:14-03:00",
+      "updated_at": "2026-04-29T21:19:14-03:00"
+    },
+    {
+      "id": "9o-corrida-de-olho-na-saude_df_2026-04-29",
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
       "titulo": "9º Corrida De Olho Na Saúde",
       "data_evento": "2026-08-08",
       "horario": "17:00",
@@ -776,7 +956,11 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
+<<<<<<< HEAD
       "updated_at": "2026-04-30T00:18:59+00:00"
+=======
+      "updated_at": "2026-04-29T21:19:15-03:00"
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
     },
     {
       "id": "corrida-da-policia-federal_df_2026-04-30",
@@ -818,7 +1002,11 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
+<<<<<<< HEAD
       "updated_at": "2026-04-30T00:18:59+00:00"
+=======
+      "updated_at": "2026-04-29T21:19:15-03:00"
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
     },
     {
       "id": "pink-night-run_df_2026-04-29",
@@ -882,7 +1070,48 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
+<<<<<<< HEAD
       "updated_at": "2026-04-30T00:18:59+00:00"
+=======
+      "updated_at": "2026-04-29T21:19:15-03:00"
+    },
+    {
+      "id": "ts_73880",
+      "titulo": "Nutrição Brasil Run 2026",
+      "data_evento": "2026-08-30",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/1AN8F54N0W99KO3RX6V38ISBA0RB1CG0PYMKE6E7MYGUC9VCO4.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/NUTRI%C3%87%C3%83O+BRASIL+RUN+2026-73880",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/NUTRI%C3%87%C3%83O+BRASIL+RUN+2026-73880"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T20:45:11-03:00"
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
     },
     {
       "id": "corre-que-da-bom-pelo-mundo-etapa-franca_df_2026-04-29",
@@ -946,7 +1175,11 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
+<<<<<<< HEAD
       "updated_at": "2026-04-30T00:18:59+00:00"
+=======
+      "updated_at": "2026-04-29T21:19:15-03:00"
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
     },
     {
       "id": "tcs-sydney-marathon_int_2026",
@@ -1184,6 +1417,135 @@
       "updated_at": "2026-04-29T15:56:29-03:00"
     },
     {
+<<<<<<< HEAD
+=======
+      "id": "ts_74828",
+      "titulo": "Maratona Monumental De Brasília 2026",
+      "data_evento": "2026-11-22",
+      "horario": "05:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-11-21",
+          "horario": "18:00"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-11-21",
+          "horario": "18:00"
+        },
+        {
+          "km": 21.097,
+          "data": "2026-11-22",
+          "horario": "06:00"
+        },
+        {
+          "km": 42.195,
+          "data": "2026-11-22",
+          "horario": "05:00"
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/2YU9UAH82Z5GOSP5FY9LD67TZU0G2BBXB4W5RRJE20PTQZWL1H.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/MARATONA+MONUMENTAL+DE+BRAS%C3%8DLIA+2026-74828",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/MARATONA+MONUMENTAL+DE+BRAS%C3%8DLIA+2026-74828"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T20:59:35-03:00"
+    },
+    {
+      "id": "ts_86297",
+      "titulo": "Corrida E Caminhada Inclusão A Toda Prova - DF 2026",
+      "data_evento": "2026-11-29",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/JX5IJ2MR6TT5BJA827HC8RGNL5VGTAACNGUTULQ7OB3AULFPYZ.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+E+CAMINHADA+INCLUS%C3%83O+A+TODA+PROVA+-+DF+2026-86297",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+E+CAMINHADA+INCLUS%C3%83O+A+TODA+PROVA+-+DF+2026-86297"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T16:48:48-03:00",
+      "updated_at": "2026-04-29T20:45:11-03:00"
+    },
+    {
+      "id": "live-run-brasilia-2026_df_2026-04-29",
+      "titulo": "Live! Run Brasília 2026",
+      "data_evento": "2026-12-13",
+      "horario": "06:30",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-12-13",
+          "horario": "06:30"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-12-13",
+          "horario": "06:30"
+        },
+        {
+          "km": 15.0,
+          "data": "2026-12-13",
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/xifbdubMY6BtWccIYhTgESmdMosh4IQX2SLBlxNl.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-run-braslia-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-run-braslia-2026"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-29T21:19:15-03:00",
+      "updated_at": "2026-04-29T21:19:15-03:00"
+    },
+    {
+>>>>>>> f751e97 (feat: add Live Run scraper (liverun.com.br))
       "id": "jingle-bells-2026_df_2026-04-29",
       "titulo": "Jingle Bells 2026",
       "data_evento": "2026-12-19",

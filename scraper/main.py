@@ -176,7 +176,7 @@ def _find_all_photos(corridas: list[Corrida]) -> None:
 
     to_check = [
         c for c in corridas
-        if c.data_evento and cutoff_str <= c.data_evento < today_str
+        if c.data_evento and cutoff_str <= c.data_evento <= today_str
     ]
     if not to_check:
         return

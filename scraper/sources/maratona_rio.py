@@ -37,11 +37,19 @@ def _fetch_og_image() -> str | None:
     for url in [URL, INSCRICAO_URL]:
         try:
             resp = get(url)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "lxml")
-                tag = soup.find("meta", property="og:image")
-                if tag and tag.get("content"):
-                    return tag["content"]
+            if resp.status_code != 200:
+                continue
+            soup = BeautifulSoup(resp.text, "lxml")
+            # og:image (preferred)
+            tag = soup.find("meta", property="og:image")
+            if tag and tag.get("content"):
+                return tag["content"]
+            # Site is Next.js and often lacks og:image — fall back to first
+            # carousel/slide image from the static CDN
+            for img in soup.find_all("img", src=True):
+                src = img.get("src", "")
+                if "static.maratonadorio.com.br/media/upload/slide/" in src:
+                    return src
         except Exception:
             pass
     return None

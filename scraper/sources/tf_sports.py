@@ -13,7 +13,10 @@ BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
 LIST_URL = (
     f"{API_BASE}/run-series"
-    "?publicationState=live&populate=*&pagination[pageSize]=100"
+    "?publicationState=live"
+    "&populate[eventData]=*"
+    "&populate[pageSeo][populate]=*"
+    "&pagination[pageSize]=100"
 )
 SOURCE_NAME = "TF Sports"
 
@@ -224,6 +227,24 @@ def _get_distances(attrs: dict, slug: str) -> list[Distancia]:
 
 
 # ---------------------------------------------------------------------------
+# Image extraction
+# ---------------------------------------------------------------------------
+
+def _extract_image(attrs: dict) -> str | None:
+    """Extract image URL from pageSeo.metaImage (Strapi media format)."""
+    seo = attrs.get("pageSeo") or {}
+    img_data = seo.get("metaImage", {})
+    if isinstance(img_data, dict):
+        inner = img_data.get("data", {})
+        if inner:
+            img_attrs = inner.get("attributes", {})
+            # Prefer small format (700px), fallback to original
+            small = img_attrs.get("formats", {}).get("small", {}).get("url")
+            return small or img_attrs.get("url")
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Main scraper
 # ---------------------------------------------------------------------------
 
@@ -282,6 +303,7 @@ def scrape() -> list[Corrida]:
                 continue
 
             distancias = _get_distances(attrs, slug)
+            imagem_url = _extract_image(attrs)
 
             link_evento = f"{BASE}/run-series/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)
@@ -301,7 +323,7 @@ def scrape() -> list[Corrida]:
                 cidade=city,
                 estado=state,
                 distancias=distancias,
-                imagem_url=None,
+                imagem_url=imagem_url,
                 inscricoes_abertas=inscricoes_abertas,
                 periodo_inscricao=None,
                 fontes=[fonte],

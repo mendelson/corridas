@@ -1,10 +1,18 @@
 """Shared helpers for World Marathon Majors scrapers."""
 from __future__ import annotations
+import re
 from bs4 import BeautifulSoup
 
 from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo
 from ...utils import slugify, now_iso, today_iso, extract_date_from_soup
+
+# Skip logos, icons, sponsors, and thumbnails when hunting for a race photo
+_SKIP_IMG = re.compile(
+    r"logo|icon|sponsor|cropped|favicon|white|_\d+x\d+\.|"
+    r"adidas|schneider|bofa|wawhite|abbottwmm|isolation",
+    re.IGNORECASE,
+)
 
 
 def scrape_major(
@@ -19,6 +27,7 @@ def scrape_major(
     open_kw: list[str],
     closed_kw: list[str],
     ssl_verify: bool = True,
+    known_image: str | None = None,
 ) -> list[Corrida]:
     soup = None
     try:
@@ -27,7 +36,7 @@ def scrape_major(
         soup = BeautifulSoup(resp.text, "lxml")
     except Exception as e:
         # Some sites (e.g. tcssydneymarathon.com.au) block automated access
-        # at the SSL layer; fallback to known_date is handled below.
+        # at the SSL layer; fallback to known_date/known_image below.
         if ssl_verify:
             print(f"[{source_name}] erro ao buscar página: {e}")
 
@@ -40,13 +49,18 @@ def scrape_major(
 
     if soup:
         raw_date = extract_date_from_soup(soup)
-        # Only use scraped date if it's in the future
         if raw_date and raw_date >= today:
             data = raw_date
-        imagem_url = _og_image(soup)
+        # 1. og:image, 2. twitter:image, 3. first non-logo photo in page
+        imagem_url = (
+            _og_image(soup)
+            or _twitter_image(soup)
+            or _first_race_photo(soup)
+        )
         inscricoes_abertas = _check_status(soup, open_kw, closed_kw)
 
     data = data or known_date
+    imagem_url = imagem_url or known_image
 
     now = now_iso()
     fonte = FonteInfo(
@@ -77,6 +91,20 @@ def scrape_major(
 def _og_image(soup) -> str | None:
     tag = soup.find("meta", property="og:image")
     return tag.get("content") if tag else None
+
+
+def _twitter_image(soup) -> str | None:
+    tag = soup.find("meta", attrs={"name": "twitter:image"})
+    return tag.get("content") if tag else None
+
+
+def _first_race_photo(soup) -> str | None:
+    """First non-logo, non-sponsor JPG/PNG found in img tags."""
+    for img in soup.find_all("img", src=True):
+        src = img.get("src", "")
+        if src.lower().endswith((".jpg", ".jpeg", ".png")) and not _SKIP_IMG.search(src):
+            return src if src.startswith("http") else None
+    return None
 
 
 def _check_status(soup, open_kw: list[str], closed_kw: list[str]) -> bool | None:

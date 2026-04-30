@@ -95,19 +95,69 @@ async function fetchData() {
 }
 
 // ---------------------------------------------------------------------------
+// Location filter helpers
+// ---------------------------------------------------------------------------
+const _ESTADO_LABELS = {
+  AC: 'Acre · AC',           AL: 'Alagoas · AL',        AM: 'Amazonas · AM',
+  AP: 'Amapá · AP',          BA: 'Bahia · BA',           CE: 'Ceará · CE',
+  DF: 'Brasília · DF',       ES: 'Espírito Santo · ES',  GO: 'Goiás · GO',
+  MA: 'Maranhão · MA',       MG: 'Minas Gerais · MG',    MS: 'Mato Grosso do Sul · MS',
+  MT: 'Mato Grosso · MT',    PA: 'Pará · PA',             PB: 'Paraíba · PB',
+  PE: 'Pernambuco · PE',     PI: 'Piauí · PI',            PR: 'Paraná · PR',
+  RJ: 'Rio de Janeiro · RJ', RN: 'Rio Grande do Norte · RN', RO: 'Rondônia · RO',
+  RR: 'Roraima · RR',        RS: 'Rio Grande do Sul · RS',   SC: 'Santa Catarina · SC',
+  SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
+};
+
+function _extractCountry(cidade) {
+  if (!cidade) return null;
+  const parts = cidade.split(',');
+  return parts.length > 1 ? parts[parts.length - 1].trim() : null;
+}
+
+// ---------------------------------------------------------------------------
 // Estado filter population
 // ---------------------------------------------------------------------------
 function populateEstadoFilter() {
-  const estados = [...new Set(allCorridas.map(c => c.estado).filter(Boolean))].sort();
-  // Remove existing dynamic options (keep Todos + INT)
-  while (estadoSelect.options.length > 2) estadoSelect.remove(2);
-  for (const uf of estados) {
-    if (uf === 'INT') continue;
-    const opt = document.createElement('option');
-    opt.value = uf;
-    opt.textContent = uf;
-    estadoSelect.appendChild(opt);
+  // Keep only the first "Todos" option
+  while (estadoSelect.options.length > 1) estadoSelect.remove(1);
+
+  const brEstados = [...new Set(
+    allCorridas.filter(c => c.estado && c.estado !== 'INT').map(c => c.estado)
+  )].sort();
+
+  const intCountries = [...new Set(
+    allCorridas.filter(c => c.estado === 'INT').map(c => _extractCountry(c.cidade))
+  )].filter(Boolean).sort();
+
+  if (brEstados.length > 0) {
+    const grp = document.createElement('optgroup');
+    grp.label = 'Brasil';
+    for (const uf of brEstados) {
+      const opt = document.createElement('option');
+      opt.value = uf;
+      opt.textContent = _ESTADO_LABELS[uf] || uf;
+      grp.appendChild(opt);
+    }
+    estadoSelect.appendChild(grp);
   }
+
+  if (intCountries.length > 0) {
+    const grp = document.createElement('optgroup');
+    grp.label = 'Internacional';
+    const allOpt = document.createElement('option');
+    allOpt.value = 'INT';
+    allOpt.textContent = 'Todos internacionais';
+    grp.appendChild(allOpt);
+    for (const country of intCountries) {
+      const opt = document.createElement('option');
+      opt.value = 'INT:' + country;
+      opt.textContent = country;
+      grp.appendChild(opt);
+    }
+    estadoSelect.appendChild(grp);
+  }
+
   estadoSelect.value = state.estado;
 }
 
@@ -154,6 +204,10 @@ function matchesPeriodo(c, today) {
 function matchesEstado(c) {
   if (state.estado === 'todos') return true;
   if (state.estado === 'INT') return c.estado === 'INT';
+  if (state.estado.startsWith('INT:')) {
+    const country = state.estado.slice(4);
+    return c.estado === 'INT' && _extractCountry(c.cidade) === country;
+  }
   return c.estado === state.estado;
 }
 

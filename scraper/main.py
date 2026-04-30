@@ -21,6 +21,7 @@ from .sources import (
     ticket_sports,
     maratona_rio,
     tf_sports,
+    liverun,
 )
 from .sources.majors import (
     tokyo,
@@ -37,6 +38,7 @@ SOURCES = [
     ticket_sports,
     maratona_rio,
     tf_sports,
+    liverun,
     tokyo,
     boston,
     london,

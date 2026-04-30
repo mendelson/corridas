@@ -2,8 +2,7 @@ name: Scrape Corridas
 
 on:
   schedule:
-    - cron: '0 9 * * *'   # 06:00 BRT (UTC-3)
-    - cron: '0 20 * * *'  # 17:00 BRT (UTC-3)
+    - cron: '0 */4 * * *'  # a cada 4 horas
   workflow_dispatch:
   push:
     branches: [main]

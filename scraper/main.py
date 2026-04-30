@@ -27,6 +27,7 @@ from .sources import (
     liverun,
     iguana_sports,
     yescom,
+    ativo,
     corridas_brasil,
     minhas_inscricoes,
     brasil_que_corre,
@@ -54,6 +55,7 @@ SOURCES = [
     liverun,
     iguana_sports,
     yescom,
+    ativo,
     # Calendar pages (nationwide)
     corridas_brasil,
     minhas_inscricoes,

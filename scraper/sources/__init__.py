@@ -17,4 +17,5 @@ from . import (
     maratona_porto_alegre,
     sp_city_marathon,
     yescom,
+    ativo,
 )

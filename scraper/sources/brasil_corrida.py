@@ -7,19 +7,12 @@ from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_date, normalize_time, normalize_titulo,
-    slugify, infer_estado, is_bsb_event, now_iso, today_iso
+    slugify, infer_estado, now_iso, today_iso
 )
 
 URL = "https://brasilcorrida.com.br/"
 BASE = "https://brasilcorrida.com.br"
 SOURCE_NAME = "Brasil Corrida"
-
-_MARATONAS_ALVO = [
-    "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
-    "maratona de florianopolis", "maratona de curitiba", "maratona de belo horizonte",
-    "maratona de fortaleza", "maratona de salvador", "maratona de recife",
-    "maratona de manaus", "maratona caixa", "maratona de brasilia",
-]
 
 
 def scrape() -> list[Corrida]:
@@ -36,11 +29,7 @@ def scrape() -> list[Corrida]:
     for el in _find_events(soup):
         try:
             corrida = _parse_event(el)
-            if not corrida:
-                continue
-            titulo_lower = corrida.titulo.lower()
-            if is_bsb_event(corrida.localizacao, corrida.titulo) or \
-               any(m in titulo_lower for m in _MARATONAS_ALVO):
+            if corrida:
                 corridas.append(corrida)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro: {e}")
@@ -86,7 +75,7 @@ def _parse_event(el) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[], inscricoes=[])
+    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[])
     return Corrida(
         id=f"{slugify(titulo)}_{estado.lower()}_{today}",
         titulo=titulo,

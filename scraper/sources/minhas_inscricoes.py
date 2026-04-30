@@ -123,8 +123,10 @@ def _extract_localizacao(el, text: str) -> str:
             val = loc.get_text(strip=True)
             if val:
                 return val
-    m = re.search(r"(Brasília|São Paulo|Rio de Janeiro|Curitiba|[A-Z][a-z]+-[A-Z]{2})", text)
-    return m.group(1) if m else ""
+    m = re.search(r"([A-Z][a-záéíóúãõâêô]+(?:\s[A-Z][a-záéíóúãõâêô]+)*)\s*[-–]\s*([A-Z]{2})", text)
+    if m:
+        return m.group(0)
+    return ""
 
 
 def _extract_distances(text: str) -> list[Distancia]:

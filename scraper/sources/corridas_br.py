@@ -166,7 +166,7 @@ def _parse_div(el) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[], inscricoes=[])
+    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[])
     return Corrida(
         id=f"{slugify(titulo)}_df_{today}",
         titulo=titulo,

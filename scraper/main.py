@@ -26,6 +26,14 @@ from .sources import (
     tf_sports,
     liverun,
     iguana_sports,
+    corridas_brasil,
+    minhas_inscricoes,
+    brasil_que_corre,
+    correr_brasilia,
+    corridas_br,
+    sesc_df,
+    runner_brasil,
+    brasil_corrida,
 )
 from .sources.majors import (
     tokyo,
@@ -38,14 +46,27 @@ from .sources.majors import (
 )
 
 SOURCES = [
+    # API-based / well-structured (nationwide)
     central_da_corrida,
     ticket_sports,
-    maratona_rio,
-    maratona_porto_alegre,
-    sp_city_marathon,
     tf_sports,
     liverun,
     iguana_sports,
+    # Calendar pages (nationwide)
+    corridas_brasil,
+    minhas_inscricoes,
+    runner_brasil,
+    brasil_corrida,
+    # DF-specific sources
+    brasil_que_corre,
+    correr_brasilia,
+    corridas_br,
+    sesc_df,
+    # Single major events (BR)
+    maratona_rio,
+    maratona_porto_alegre,
+    sp_city_marathon,
+    # World Majors
     tokyo,
     boston,
     london,

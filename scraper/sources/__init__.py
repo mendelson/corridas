@@ -14,4 +14,5 @@ from . import (
     ticket_sports,
     portal_das_corridas,
     maratona_rio,
+    maratona_porto_alegre,
 )

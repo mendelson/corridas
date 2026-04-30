@@ -20,6 +20,7 @@ from .sources import (
     central_da_corrida,
     ticket_sports,
     maratona_rio,
+    maratona_porto_alegre,
     tf_sports,
     liverun,
 )
@@ -37,6 +38,7 @@ SOURCES = [
     central_da_corrida,
     ticket_sports,
     maratona_rio,
+    maratona_porto_alegre,
     tf_sports,
     liverun,
     tokyo,

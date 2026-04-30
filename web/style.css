@@ -258,42 +258,58 @@ input { font-family: inherit; }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 4px 0 2px;
+  padding: 10px 14px;
   width: 100%;
-  background: none;
-  border: none;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   user-select: none;
+  transition: background 0.15s;
 }
 
-.month-separator::before,
-.month-separator::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--color-border);
+.month-separator:hover {
+  background: var(--color-accent-dim);
 }
 
 .month-separator-label {
-  font-size: 0.72rem;
+  flex: 1;
+  text-align: left;
+  font-size: 0.88rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.month-count {
+  font-size: 0.75rem;
+  font-weight: 400;
   color: var(--color-text-secondary);
   white-space: nowrap;
-  padding: 0 4px;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .month-chevron {
-  font-size: 0.8rem;
-  color: var(--color-text-secondary);
-  transition: color 0.15s;
   flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent-dim);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  transition: background 0.15s, color 0.15s;
 }
 
-.month-separator:hover .month-separator-label,
 .month-separator:hover .month-chevron {
-  color: var(--color-accent);
+  background: var(--color-accent);
+  color: #fff;
 }
 
 .month-cards {

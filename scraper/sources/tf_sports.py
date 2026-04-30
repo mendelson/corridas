@@ -1,128 +1,297 @@
-"""Scraper for tfsports.com.br/run-series/"""
+"""Scraper for tfsports.com.br — uses Strapi CMS API (painel-website.tfsports.com.br)."""
 from __future__ import annotations
+import json
 import re
+import unicodedata
+import httpx
 from bs4 import BeautifulSoup
 
-from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import (
-    normalize_date, normalize_time, normalize_titulo,
-    slugify, infer_estado, is_bsb_event, now_iso, today_iso
-)
+from ..utils import normalize_titulo, slugify, is_bsb_event, infer_estado, now_iso, today_iso
 
-URL = "https://www.tfsports.com.br/run-series/"
 BASE = "https://www.tfsports.com.br"
+API_BASE = "https://painel-website.tfsports.com.br/api"
+LIST_URL = (
+    f"{API_BASE}/run-series"
+    "?publicationState=live&populate=*&pagination[pageSize]=100"
+)
 SOURCE_NAME = "TF Sports"
 
+_TIMEOUT = 30
+_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/124.0.0.0 Safari/537.36"
+)
+_HEADERS_HTML = {
+    "User-Agent": _UA,
+    "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+    "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
+}
 
-def scrape() -> list[Corrida]:
+_BR_STATES = {
+    "AC", "AL", "AM", "AP", "BA", "CE", "DF", "ES", "GO", "MA",
+    "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN",
+    "RO", "RR", "RS", "SC", "SE", "SP", "TO",
+}
+
+_MARATONAS_ALVO = [
+    "maratona de sao paulo", "maratona do rio", "maratona de porto alegre",
+    "maratona de florianopolis", "maratona de curitiba", "maratona de belo horizonte",
+    "maratona de fortaleza", "maratona de salvador", "maratona de recife",
+    "maratona de brasilia", "maratona caixa",
+]
+
+
+# ---------------------------------------------------------------------------
+# Token extraction
+# ---------------------------------------------------------------------------
+
+def _get_bearer_token() -> str | None:
+    """Extract Bearer token from the compiled Next.js app bundle."""
     try:
-        resp = get(URL)
+        resp = httpx.get(
+            f"{BASE}/run-series/",
+            headers=_HEADERS_HTML,
+            timeout=_TIMEOUT,
+            follow_redirects=True,
+        )
         resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+        for script in soup.find_all("script", src=True):
+            src = script.get("src", "")
+            if "_app" in src and src.endswith(".js"):
+                bundle_url = src if src.startswith("http") else f"{BASE}{src}"
+                bundle = httpx.get(
+                    bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
+                )
+                bundle.raise_for_status()
+                # "Bearer eyJhbGc..." or Authorization:"Bearer ..."
+                for pat in [
+                    r'["\']Bearer\s+([\w\-_.]+)["\']',
+                    r'Authorization[^:]*:\s*["\']Bearer\s+([\w\-_.]+)["\']',
+                    r'bearer["\s:]+["\']?([\w\-_.]{20,})["\']?',
+                ]:
+                    m = re.search(pat, bundle.text, re.IGNORECASE)
+                    if m:
+                        return m.group(1)
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro: {e}")
-        return []
-
-    soup = BeautifulSoup(resp.text, "lxml")
-    corridas: list[Corrida] = []
-
-    for el in _find_events(soup):
-        try:
-            corrida = _parse_event(el)
-            if corrida:
-                corridas.append(corrida)
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] erro: {e}")
-
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
-    return corridas
-
-
-def _find_events(soup):
-    for sel in [".event", ".race", ".card", "article", ".post", ".run", ".item"]:
-        els = soup.select(sel)
-        if len(els) > 1:
-            return els
-    return []
-
-
-def _parse_event(el) -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 5:
-        return None
-
-    heading = el.find(["h1", "h2", "h3", "h4", "strong"])
-    titulo_raw = heading.get_text(strip=True) if heading else text[:80]
-    titulo = normalize_titulo(titulo_raw)
-    if not titulo or len(titulo) < 3:
-        return None
-
-    data = _extract_date(text)
-    localizacao = _extract_localizacao(el, text)
-    estado = infer_estado(localizacao, titulo) or "??"
-    cidade = localizacao.split(",")[0].strip()
-
-    img = el.find("img")
-    imagem_url = (img.get("src") or img.get("data-src")) if img else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = BASE + imagem_url
-
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
-    if link.startswith("/"):
-        link = BASE + link
-
-    now = now_iso()
-    today = today_iso()
-
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[], inscricoes=[])
-    return Corrida(
-        id=f"{slugify(titulo)}_{estado.lower()}_{today}",
-        titulo=titulo,
-        data_evento=data or "",
-        horario=normalize_time(text),
-        localizacao=localizacao,
-        cidade=cidade,
-        estado=estado,
-        distancias=_extract_distances(text),
-        imagem_url=imagem_url,
-        inscricoes_abertas=None,
-        periodo_inscricao=None,
-        fontes=[fonte],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )
-
-
-def _extract_date(text: str) -> str | None:
-    m = re.search(r"\d{1,2}/\d{1,2}/\d{4}", text)
-    if m:
-        return normalize_date(m.group(0))
-    m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
-    if m:
-        return normalize_date(m.group(0))
+        print(f"[{SOURCE_NAME}] erro ao extrair token: {e}")
     return None
 
 
-def _extract_localizacao(el, text: str) -> str:
-    for cls in ["local", "location", "cidade", "place"]:
-        loc = el.find(class_=re.compile(cls, re.IGNORECASE))
-        if loc:
-            val = loc.get_text(strip=True)
-            if val:
-                return val
-    m = re.search(r"([A-Z][a-záéíóúãõâêô]+(?:\s[A-Z][a-záéíóúãõâêô]+)*)\s*[-–]\s*([A-Z]{2})", text)
-    return m.group(0) if m else ""
+# ---------------------------------------------------------------------------
+# Location parsing
+# ---------------------------------------------------------------------------
+
+def _strip_symbols(text: str) -> str:
+    """Remove emoji and Symbol-Other characters."""
+    return "".join(c for c in text if not unicodedata.category(c).startswith("So")).strip()
 
 
-def _extract_distances(text: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+)\s*[kK][mM]?\b", text)
+def _parse_location(location: str | None) -> tuple[str, str]:
+    """
+    Parse (city, state) from strings like:
+      '📍 Rua X, 123 - Bairro, São Paulo - SP, 04543-011'
+    Splits on comma, looks for 'Cidade - UF' from the end.
+    """
+    if not location:
+        return "", "??"
+    clean = _strip_symbols(location)
+    parts = [p.strip() for p in clean.split(",")]
+    for part in reversed(parts):
+        m = re.match(r"^([A-ZÀ-Ü][A-Za-zÀ-ÿ .]+?)\s*[-–]\s*([A-Z]{2})$", part.strip())
+        if m and m.group(2) in _BR_STATES:
+            return m.group(1).strip(), m.group(2).strip()
+    return clean[:60], "??"
+
+
+# ---------------------------------------------------------------------------
+# Distance extraction
+# ---------------------------------------------------------------------------
+
+def _km_from_val(val) -> float | None:
+    if isinstance(val, (int, float)):
+        km = float(val)
+    elif isinstance(val, str):
+        try:
+            km = float(val.replace(",", ".").strip().rstrip("k").rstrip("m"))
+        except ValueError:
+            return None
+    else:
+        return None
+    return km if 3 <= km <= 100 else None
+
+
+def _distances_from_api(attrs: dict) -> list[Distancia]:
+    """Look for distance data in the Strapi API response."""
+    for key in ("distances", "modalities", "categories", "distancias"):
+        raw = attrs.get(key)
+        if not isinstance(raw, list):
+            ed = attrs.get("eventData") or {}
+            raw = ed.get(key)
+        if isinstance(raw, list) and raw:
+            seen: set[float] = set()
+            result: list[Distancia] = []
+            for item in raw:
+                km_raw = None
+                if isinstance(item, dict):
+                    km_raw = (
+                        item.get("km") or item.get("distance")
+                        or item.get("value") or item.get("distancia")
+                    )
+                else:
+                    km_raw = item
+                km = _km_from_val(km_raw)
+                if km and km not in seen:
+                    seen.add(km)
+                    result.append(Distancia(km=km, data=None, horario=None))
+            if result:
+                return result
+    return []
+
+
+def _distances_from_next_data(slug: str) -> list[Distancia]:
+    """Try to extract distances from __NEXT_DATA__ on the event detail page."""
+    try:
+        resp = httpx.get(
+            f"{BASE}/run-series/{slug}",
+            headers=_HEADERS_HTML,
+            timeout=_TIMEOUT,
+            follow_redirects=True,
+        )
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, "lxml")
+        tag = soup.find("script", id="__NEXT_DATA__")
+        if not tag or not tag.string:
+            return []
+        data = json.loads(tag.string)
+        # Search entire JSON dump for "km" keys
+        text = json.dumps(data)
+        nums = re.findall(r'"km"\s*:\s*(\d+(?:\.\d+)?)', text)
+        seen: set[float] = set()
+        result: list[Distancia] = []
+        for n in nums:
+            km = float(n)
+            if km not in seen and 3 <= km <= 100:
+                seen.add(km)
+                result.append(Distancia(km=km, data=None, horario=None))
+        return result
+    except Exception:
+        return []
+
+
+def _distances_from_title(titulo: str) -> list[Distancia]:
+    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", titulo)
     seen: set[float] = set()
-    result = []
+    result: list[Distancia] = []
     for n in nums:
-        km = float(n)
-        if km not in seen and 1 <= km <= 200:
+        km = float(n.replace(",", "."))
+        if km not in seen and 3 <= km <= 100:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
     return result
+
+
+def _get_distances(attrs: dict, slug: str) -> list[Distancia]:
+    d = _distances_from_api(attrs)
+    if d:
+        return d
+    d = _distances_from_next_data(slug)
+    if d:
+        return d
+    return _distances_from_title(attrs.get("title", ""))
+
+
+# ---------------------------------------------------------------------------
+# Main scraper
+# ---------------------------------------------------------------------------
+
+def scrape() -> list[Corrida]:
+    token = _get_bearer_token()
+    if not token:
+        print(f"[{SOURCE_NAME}] token não encontrado, tentando sem autenticação")
+
+    api_headers = {
+        "User-Agent": _UA,
+        "Accept": "application/json",
+    }
+    if token:
+        api_headers["Authorization"] = f"Bearer {token}"
+
+    try:
+        resp = httpx.get(LIST_URL, headers=api_headers, timeout=_TIMEOUT, follow_redirects=True)
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] erro ao buscar API: {e}")
+        return []
+
+    events = data.get("data", [])
+    now = now_iso()
+    today = today_iso()
+    corridas: list[Corrida] = []
+
+    for event in events:
+        try:
+            attrs = event.get("attributes", {})
+            titulo = normalize_titulo(attrs.get("title", ""))
+            if not titulo or len(titulo) < 3:
+                continue
+            slug = attrs.get("slug", "")
+            ed = attrs.get("eventData") or {}
+
+            data_evento = ed.get("startDate") or ""
+            location_raw = ed.get("location") or ""
+            is_closed = ed.get("isSubscriptionClosed")
+
+            city, state = _parse_location(location_raw)
+            if state == "??":
+                inferred = infer_estado(location_raw + " " + titulo)
+                state = inferred or "??"
+
+            localizacao = f"{city}, {state}" if city else state
+
+            titulo_lower = titulo.lower()
+            from unidecode import unidecode as _ud
+            titulo_ascii = _ud(titulo_lower)
+            if not (
+                is_bsb_event(localizacao, titulo)
+                or any(_ud(m) in titulo_ascii for m in _MARATONAS_ALVO)
+            ):
+                continue
+
+            distancias = _get_distances(attrs, slug)
+
+            link_evento = f"{BASE}/run-series/{slug}"
+            inscricoes_abertas = None if is_closed is None else (not is_closed)
+            links_insc = [link_evento] if inscricoes_abertas is not False else []
+
+            fonte = FonteInfo(
+                nome=SOURCE_NAME,
+                link_evento=link_evento,
+                links_inscricao=links_insc,
+                inscricoes=[],
+            )
+            corridas.append(Corrida(
+                id=f"{slugify(titulo)}_{state.lower()}_{today}",
+                titulo=titulo,
+                data_evento=data_evento,
+                horario=None,
+                localizacao=localizacao,
+                cidade=city,
+                estado=state,
+                distancias=distancias,
+                imagem_url=None,
+                inscricoes_abertas=inscricoes_abertas,
+                periodo_inscricao=None,
+                fontes=[fonte],
+                miss_count=0,
+                first_seen_at=now,
+                updated_at=now,
+            ))
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] erro ao processar '{attrs.get('title', '?')}': {e}")
+
+    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
+    return corridas

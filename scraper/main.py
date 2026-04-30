@@ -29,7 +29,7 @@ from .sources import (
     # brasil_corrida,
     # runner_brasil,
     liverun,
-    # tf_sports,
+    tf_sports,
     # sesc_df,
     # portal_das_corridas,
 )
@@ -63,7 +63,7 @@ SOURCES = [
     # brasil_corrida,
     # runner_brasil,
     liverun,
-    # tf_sports,
+    tf_sports,
     # sesc_df,
     # portal_das_corridas,
 ]

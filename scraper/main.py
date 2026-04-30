@@ -140,6 +140,25 @@ def load_existing() -> dict[str, Corrida]:
         return {}
 
 
+# Sources that are directories/aggregators, not registration platforms.
+# Their inscription links are removed when the event has a better source.
+_DIRECTORY_SOURCES: set[str] = {"Corridas BR"}
+
+
+def _demote_directory_links(corridas: list[Corrida]) -> None:
+    """Clear inscription links from directory-only sources when a real
+    registration platform also covers the event."""
+    for c in corridas:
+        has_real_link = any(
+            fo.nome not in _DIRECTORY_SOURCES and fo.links_inscricao
+            for fo in c.fontes
+        )
+        if has_real_link:
+            for fo in c.fontes:
+                if fo.nome in _DIRECTORY_SOURCES:
+                    fo.links_inscricao = []
+
+
 def _normalize_all_locations(corridas: list[Corrida]) -> None:
     """Normalize cidade names in-place (handles all-caps, missing accents, etc.)."""
     for c in corridas:
@@ -478,6 +497,7 @@ def main() -> None:
     final = merge_rodada(final)
     print(f"[main] {len(final)} corridas após dedup final")
 
+    _demote_directory_links(final)
     _normalize_all_locations(final)
     _enrich_images(final)
     save(final)

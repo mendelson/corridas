@@ -11,6 +11,7 @@ from pathlib import Path
 from .merger import are_duplicates, merge_rodada
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso
+from .http_client import get as http_get
 
 # ---------------------------------------------------------------------------
 # Source registry
@@ -166,6 +167,30 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
     return existing
 
 
+def _check_and_refresh_links(existing: Corrida) -> bool:
+    """Check if any inscription link is still live (HTTP 200).
+    If yes, opportunistically refresh og:image from the page.
+    Returns True if at least one link is reachable."""
+    from bs4 import BeautifulSoup
+    links = [l for fonte in existing.fontes for l in fonte.links_inscricao]
+    if not links:
+        return False
+    for link in links:
+        try:
+            resp = http_get(link, timeout=15)
+            if resp.status_code != 200:
+                continue
+            # Link is live — try to refresh og:image
+            soup = BeautifulSoup(resp.text, "lxml")
+            tag = soup.find("meta", property="og:image")
+            if tag and tag.get("content"):
+                existing.imagem_url = tag["content"]
+            return True
+        except Exception:
+            pass
+    return False
+
+
 def _find_match(incoming: Corrida, estado_anterior: dict[str, Corrida]) -> Corrida | None:
     # Exact id match
     if incoming.id in estado_anterior:
@@ -198,19 +223,39 @@ def reconcile(
             result.append(incoming)
 
     # Handle events not found in current scrape
+    unmatched_future: list[Corrida] = []
     for cid, existing in estado_anterior.items():
         if cid in matched_ids:
             continue
-        # Past events are kept as-is
+        # Past events are kept as-is — no link check needed
         if existing.data_evento and existing.data_evento < today:
             result.append(existing)
             continue
-        # Future events: increment miss_count
-        existing.miss_count += 1
-        if existing.miss_count < 10:
-            result.append(existing)
-        else:
-            print(f"[main] removendo '{existing.titulo}' (miss_count={existing.miss_count})")
+        unmatched_future.append(existing)
+
+    # Check inscription links in parallel for unmatched future events
+    if unmatched_future:
+        print(f"[main] verificando links de {len(unmatched_future)} evento(s) não encontrado(s) no scrape...")
+        with ThreadPoolExecutor(max_workers=8) as executor:
+            futures = {executor.submit(_check_and_refresh_links, ev): ev for ev in unmatched_future}
+            for future in as_completed(futures):
+                existing = futures[future]
+                try:
+                    link_valid = future.result()
+                except Exception:
+                    link_valid = False
+
+                if link_valid:
+                    print(f"[main] '{existing.titulo}' — link válido, miss_count zerado")
+                    existing.miss_count = 0
+                    existing.updated_at = now_iso()
+                    result.append(existing)
+                else:
+                    existing.miss_count += 1
+                    if existing.miss_count < 10:
+                        result.append(existing)
+                    else:
+                        print(f"[main] removendo '{existing.titulo}' (miss_count={existing.miss_count})")
 
     return result
 

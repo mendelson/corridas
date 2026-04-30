@@ -291,7 +291,7 @@ def scrape() -> list[Corrida]:
 
             link_evento = f"{BASE}/run-series/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)
-            links_insc = [link_evento] if inscricoes_abertas is not False else []
+            links_insc = [link_evento]
 
             fonte = FonteInfo(
                 nome=SOURCE_NAME,

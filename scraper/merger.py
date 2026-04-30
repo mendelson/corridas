@@ -61,7 +61,29 @@ def _date_ok_relaxed(a: Corrida, b: Corrida) -> bool:
     return abs((da - db).days) <= 30
 
 
+# Generic/login links that don't identify a specific event
+_GENERIC_LINKS: set[str] = {
+    "https://www.ticketagora.com.br/entrar/participante",
+}
+
+
+def _shared_inscription_link(a: Corrida, b: Corrida) -> bool:
+    """True if both events share at least one event-specific inscription link."""
+    def specific_links(c: Corrida) -> set[str]:
+        return {
+            l.rstrip("/").lower()
+            for f in c.fontes
+            for l in f.links_inscricao
+            if l.rstrip("/").lower() not in _GENERIC_LINKS
+        }
+    la, lb = specific_links(a), specific_links(b)
+    return bool(la and lb and la & lb)
+
+
 def are_duplicates(a: Corrida, b: Corrida) -> bool:
+    # Shared event-specific inscription link is conclusive — state mismatch is fine
+    if _shared_inscription_link(a, b):
+        return True
     if a.estado != b.estado:
         return False
     sim = _titulo_similarity(a.titulo, b.titulo)

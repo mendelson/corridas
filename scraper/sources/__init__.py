@@ -19,4 +19,5 @@ from . import (
     yescom,
     ativo,
     mks_esportes,
+    circuito_das_estacoes,
 )

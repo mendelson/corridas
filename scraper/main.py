@@ -37,6 +37,7 @@ from .sources import (
     sesc_df,
     runner_brasil,
     brasil_corrida,
+    circuito_das_estacoes,
 )
 from .sources.majors import (
     tokyo,
@@ -69,6 +70,8 @@ SOURCES = [
     # corridas_br,  # removido: agrega eventos sem links de inscrição reais;
     #               # 37 eventos DF exclusivos perdem-se (incl. Circuito das Estações)
     sesc_df,
+    # Multi-city circuit events (via dedicated API)
+    circuito_das_estacoes,
     # Single major events (BR)
     maratona_rio,
     maratona_porto_alegre,

@@ -6,15 +6,18 @@
 let allCorridas = [];
 let filteredCorridas = [];
 
+// Geo-detected state abbreviation (cached in localStorage across sessions)
+let _geoEstado = localStorage.getItem('corridas_geo_estado') || null;
+
 const state = {
   distMode: 'select',  // 'select' | 'interval'
   activePills: new Set(),
   distMin: null,
   distMax: null,
-  periodo: 'today',
+  periodo: 'past15',
   dateFrom: null,
   dateTo: null,
-  estado: 'todos',
+  estado: _geoEstado || 'todos',
   searchQuery: '',
 };
 
@@ -68,10 +71,10 @@ function loadFilters() {
     state.distMode = saved.distMode || 'select';
     state.distMin = saved.distMin;
     state.distMax = saved.distMax;
-    state.estado = saved.estado || 'todos';
+    state.estado = saved.estado || _geoEstado || 'todos';
   } catch (e) { /* ignore */ }
-  // periodo always resets to 'today' (not persisted)
-  state.periodo = 'today';
+  // periodo always resets to default (not persisted)
+  state.periodo = 'past15';
 }
 
 // ---------------------------------------------------------------------------
@@ -108,6 +111,47 @@ const _ESTADO_LABELS = {
   RR: 'Roraima · RR',        RS: 'Rio Grande do Sul · RS',   SC: 'Santa Catarina · SC',
   SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
 };
+
+const _STATE_NAME_MAP = {
+  'Acre': 'AC', 'Alagoas': 'AL', 'Amapá': 'AP', 'Amazonas': 'AM',
+  'Bahia': 'BA', 'Ceará': 'CE', 'Distrito Federal': 'DF',
+  'Espírito Santo': 'ES', 'Goiás': 'GO', 'Maranhão': 'MA',
+  'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS', 'Minas Gerais': 'MG',
+  'Pará': 'PA', 'Paraíba': 'PB', 'Paraná': 'PR', 'Pernambuco': 'PE',
+  'Piauí': 'PI', 'Rio de Janeiro': 'RJ', 'Rio Grande do Norte': 'RN',
+  'Rio Grande do Sul': 'RS', 'Rondônia': 'RO', 'Roraima': 'RR',
+  'Santa Catarina': 'SC', 'São Paulo': 'SP', 'Sergipe': 'SE',
+  'Tocantins': 'TO',
+};
+
+function detectUserLocation() {
+  if (_geoEstado) return;
+  if (!navigator.geolocation) return;
+  navigator.geolocation.getCurrentPosition(async pos => {
+    try {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 6000);
+      const resp = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`,
+        { signal: ctrl.signal, headers: { 'Accept-Language': 'pt-BR' } }
+      );
+      clearTimeout(tid);
+      const data = await resp.json();
+      const uf = _STATE_NAME_MAP[data?.address?.state];
+      if (uf) {
+        _geoEstado = uf;
+        localStorage.setItem('corridas_geo_estado', uf);
+        if (state.estado === 'todos') {
+          state.estado = uf;
+          estadoSelect.value = uf;
+          saveFilters();
+          applyFilters();
+        }
+      }
+    } catch { /* ignore */ }
+  }, () => { /* permission denied */ }, { timeout: 5000 });
+}
 
 function _extractCountry(cidade) {
   if (!cidade) return null;
@@ -185,6 +229,7 @@ function matchesPeriodo(c, today) {
   const d = c.data_evento;
   if (!d) return false;  // never show events without a date
   switch (state.periodo) {
+    case 'past15':  return d >= addDays(today, -15);
     case 'today':   return d >= today;
     case '30':      return d >= today && d <= addDays(today, 30);
     case '90':      return d >= today && d <= addDays(today, 90);
@@ -587,8 +632,8 @@ function isFiltersActive() {
     state.activePills.size > 0 ||
     state.distMin !== null ||
     state.distMax !== null ||
-    state.periodo !== 'today' ||
-    state.estado !== 'todos'
+    state.periodo !== 'past15' ||
+    state.estado !== (_geoEstado || 'todos')
   );
 }
 
@@ -602,10 +647,10 @@ function clearFilters() {
   state.distMin = null;
   state.distMax = null;
   state.distMode = 'select';
-  state.periodo = 'today';
+  state.periodo = 'past15';
   state.dateFrom = null;
   state.dateTo = null;
-  state.estado = 'todos';
+  state.estado = _geoEstado || 'todos';
 
   searchInput.value = '';
 
@@ -616,8 +661,8 @@ function clearFilters() {
   });
   distMin.value = '';
   distMax.value = '';
-  periodoSelect.value = 'today';
-  estadoSelect.value = 'todos';
+  periodoSelect.value = 'past15';
+  estadoSelect.value = _geoEstado || 'todos';
   customDateRow.classList.add('hidden');
   dateFrom.value = '';
   dateTo.value = '';
@@ -761,6 +806,7 @@ function init() {
     navigator.serviceWorker.register('./service-worker.js').catch(() => {});
   }
 
+  detectUserLocation();
   fetchData();
 }
 

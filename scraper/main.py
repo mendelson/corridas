@@ -205,7 +205,7 @@ def reconcile(
             continue
         # Future events: increment miss_count
         existing.miss_count += 1
-        if existing.miss_count < 3:
+        if existing.miss_count < 10:
             result.append(existing)
         else:
             print(f"[main] removendo '{existing.titulo}' (miss_count={existing.miss_count})")
@@ -311,7 +311,8 @@ def main() -> None:
     print(f"[main] {len(merged)} corridas após merge")
 
     final = reconcile(estado_anterior, merged)
-    final = [c for c in final if _is_valid(c)]
+    _today = today_iso()
+    final = [c for c in final if _is_valid(c) or (c.data_evento and c.data_evento < _today)]
     print(f"[main] {len(final)} corridas após reconciliação")
 
     save(final)

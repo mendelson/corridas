@@ -28,6 +28,7 @@ from .sources import (
     iguana_sports,
     yescom,
     ativo,
+    mks_esportes,
     corridas_brasil,
     minhas_inscricoes,
     brasil_que_corre,
@@ -56,6 +57,7 @@ SOURCES = [
     iguana_sports,
     yescom,
     ativo,
+    mks_esportes,
     # Calendar pages (nationwide)
     corridas_brasil,
     minhas_inscricoes,

@@ -18,4 +18,5 @@ from . import (
     sp_city_marathon,
     yescom,
     ativo,
+    mks_esportes,
 )

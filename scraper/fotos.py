@@ -1,12 +1,16 @@
 """Search photo platforms for published race photos.
 
 Platforms implemented (requests + BeautifulSoup only, no Playwright):
-  - Foco Radical (focoradical.com.br)  — search via busca= parameter
-  - Fotop        (fotop.com.br)         — parse /?cat=1 event listing
-  - FinisherPix  (finisherpix.com)      — filter[query] search API
+  - Foco Radical  (focoradical.com.br)  — search via busca= parameter
+  - Fotop         (fotop.com.br)         — parse /?cat=1 event listing
+  - FinisherPix   (finisherpix.com)      — filter[query] search API
+  - CorrepraFoto  (correprafoto.com.br)  — parse /categorias.aspx?cat=1
 
 Platforms requiring Playwright (not implemented):
   - Sportograf, Fotto (full SPA, server returns empty shell)
+
+Platforms unreachable from non-Brazilian IPs (connection refused):
+  - Woosat, Doublefocus, Onphoto, ProPhoto Run, Speed4Run
 """
 from __future__ import annotations
 
@@ -223,6 +227,57 @@ def _search_finisherpix(titulo: str, data_evento: str) -> str | None:
 
 
 # ---------------------------------------------------------------------------
+# CorrepraFoto  (correprafoto.com.br)
+# ---------------------------------------------------------------------------
+
+_CPF_BASE = "https://www.correprafoto.com.br"
+_CPF_HREF_RE = re.compile(r"fotos-\d+,")
+
+
+def _search_correprafoto(titulo: str, data_evento: str) -> str | None:
+    """Parse CorrepraFoto's running-events listing (cat=1).
+
+    Cards show "Fotos disponíveis!" when published and "Em breve!" when not —
+    so a single request is enough; no extra event-page fetch needed.
+    """
+    if not titulo:
+        return None
+
+    try:
+        resp = http_get(
+            f"{_CPF_BASE}/categorias.aspx?cat=1", timeout=15
+        )
+        if resp.status_code != 200:
+            return None
+
+        soup = BeautifulSoup(resp.text, "lxml")
+
+        for h5 in soup.find_all("h5"):
+            a = h5.find("a", href=_CPF_HREF_RE)
+            if not a:
+                continue
+
+            title = a.get_text(strip=True)
+            if not _title_match(titulo, title):
+                continue
+
+            # Walk up to the card container to check photo status
+            card = h5.find_parent()
+            if card:
+                card_text = card.get_text(separator=" ", strip=True)
+                if "Em breve" in card_text:
+                    continue  # photos not yet published
+
+            href = a.get("href", "")
+            return f"{_CPF_BASE}/{href}"
+
+    except Exception as exc:
+        print(f"[fotos] correprafoto error: {exc}")
+
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
@@ -241,9 +296,10 @@ def find_event_photos(corrida: dict) -> list[dict]:
     results: list[dict] = []
 
     for search_fn, nome in (
-        (_search_focoradical, "Foco Radical"),
-        (_search_fotop,       "Fotop"),
-        (_search_finisherpix, "FinisherPix"),
+        (_search_focoradical,  "Foco Radical"),
+        (_search_fotop,        "Fotop"),
+        (_search_correprafoto, "CorrepraFoto"),
+        (_search_finisherpix,  "FinisherPix"),
     ):
         try:
             url = search_fn(titulo, data_evento)

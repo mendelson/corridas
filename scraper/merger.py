@@ -21,8 +21,7 @@ def score(c: Corrida) -> int:
         bool(c.inscricoes_abertas is not None) +
         bool(c.periodo_inscricao) +
         bool(c.periodo_inscricao and c.periodo_inscricao.encerramento) +
-        len(c.fontes[0].inscricoes) * 2 +
-        len(c.fontes[0].links_inscricao)
+        len(c.fontes[0].links_inscricao) * 2
     )
 
 
@@ -98,15 +97,9 @@ def _dedup_links(links: list[str]) -> list[str]:
 
 
 def _absorb_fonte(champion: Corrida, fonte: FonteInfo) -> None:
-    # Merge into existing fonte with same name if present
     for existing in champion.fontes:
         if existing.nome == fonte.nome:
             existing.links_inscricao = _dedup_links(existing.links_inscricao + fonte.links_inscricao)
-            seen_descs = {i.descricao for i in existing.inscricoes}
-            for i in fonte.inscricoes:
-                if i.descricao not in seen_descs:
-                    existing.inscricoes.append(i)
-                    seen_descs.add(i.descricao)
             return
     fonte.links_inscricao = _dedup_links(fonte.links_inscricao)
     champion.fontes.append(fonte)

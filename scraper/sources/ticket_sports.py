@@ -1,5 +1,6 @@
 """Scraper for ticketsports.com.br — JSON API"""
 from __future__ import annotations
+import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -32,7 +33,7 @@ def scrape() -> list[Corrida]:
     try:
         resp = get(API_URL, params={"quantity": _BATCH, "atlheteId": 0, "term": ""})
         resp.raise_for_status()
-        events: list[dict] = resp.json()
+        events: list[dict] = json.loads(resp.content.decode("utf-8"))
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar API: {e}")
         return []

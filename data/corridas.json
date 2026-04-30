@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-04-30T01:15:01+00:00",
+  "gerado_em": "2026-04-30T01:37:18+00:00",
   "total": 39,
   "corridas": [
     {
@@ -502,6 +502,84 @@
       "updated_at": "2026-04-30T00:20:21+00:00"
     },
     {
+      "id": "maratona-do-rio_rj_2026-04-30",
+      "titulo": "Maratona do Rio",
+      "data_evento": "2026-06-07",
+      "horario": "05:30",
+      "localizacao": "Rio de Janeiro, RJ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-06-04",
+          "horario": "16:00"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-06-05",
+          "horario": "07:00"
+        },
+        {
+          "km": 21.097,
+          "data": "2026-06-06",
+          "horario": "05:30"
+        },
+        {
+          "km": 42.195,
+          "data": "2026-06-07",
+          "horario": "05:30"
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Maratona do Rio",
+          "link_evento": "https://www.maratonadorio.com.br/",
+          "links_inscricao": [
+            "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+          ],
+          "inscricoes": [
+            {
+              "descricao": "5K",
+              "valor": 179.0,
+              "disponivel": true,
+              "link": "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+            },
+            {
+              "descricao": "10K",
+              "valor": 199.0,
+              "disponivel": true,
+              "link": "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+            },
+            {
+              "descricao": "Meia Maratona 21K",
+              "valor": 319.0,
+              "disponivel": true,
+              "link": "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+            },
+            {
+              "descricao": "Maratona 42K",
+              "valor": 329.0,
+              "disponivel": true,
+              "link": "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+            },
+            {
+              "descricao": "Desafio 21K+42K",
+              "valor": 648.0,
+              "disponivel": true,
+              "link": "https://www.godream.com.br/evento/maratona-do-rio-2026-publico-geral-6808310"
+            }
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T00:20:20+00:00",
+      "updated_at": "2026-04-30T01:37:18+00:00"
+    },
+    {
       "id": "corridona-2026_df_2026-04-30",
       "titulo": "Corridona 2026",
       "data_evento": "2026-06-07",
@@ -607,60 +685,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-04-30T00:20:21+00:00"
-    },
-    {
-      "id": "maratona-do-rio_rj_2026-04-30",
-      "titulo": "Maratona do Rio",
-      "data_evento": "2026-06-21",
-      "horario": "06:00",
-      "localizacao": "Rio de Janeiro, RJ",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Maratona do Rio",
-          "link_evento": "https://www.maratonadorio.com.br/",
-          "links_inscricao": [
-            "https://www.maratonadorio.com.br/"
-          ],
-          "inscricoes": [
-            {
-              "descricao": "Maratona do Rio",
-              "valor": null,
-              "disponivel": false,
-              "link": "https://www.maratonadorio.com.br/"
-            }
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-04-30T00:20:20+00:00"
     },
     {
       "id": "circuito-corre-que-da-bom-pelo-mundo-brasil_df_2026-04-30",
@@ -779,7 +803,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },
@@ -1268,7 +1292,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },

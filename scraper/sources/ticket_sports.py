@@ -61,6 +61,85 @@ def scrape() -> list[Corrida]:
     return corridas
 
 
+_DAY_RE = re.compile(
+    r"(?:^|\n)\s*dia\s+(\d{1,2})\s+de\s+([a-záéíóúãõâêô]+)\s+de\s+(\d{4})",
+    re.IGNORECASE,
+)
+
+_PT_MONTHS = {
+    "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
+    "abril": "04", "maio": "05", "junho": "06", "julho": "07",
+    "agosto": "08", "setembro": "09", "outubro": "10",
+    "novembro": "11", "dezembro": "12",
+}
+
+
+def _extract_schedule(text: str) -> dict[float, tuple[str | None, str | None]]:
+    """Parse multi-day schedule text into {km: (iso_date, horario)}.
+
+    Handles events where different distances race on different days, e.g.:
+      Dia 21 de novembro de 2026
+        Atletas inscritos 5 km e 10 km – largada 18h00
+      Dia 22 de novembro de 2026
+        Atletas inscritos na maratona – PCD 5h00 …
+        Atletas inscritos na meia maratona – PCD 6h00 …
+    """
+    day_hits = list(_DAY_RE.finditer(text))
+    if not day_hits:
+        return {}
+
+    schedule: dict[float, tuple[str | None, str | None]] = {}
+
+    for i, m in enumerate(day_hits):
+        mo = _PT_MONTHS.get(m.group(2).lower())
+        if not mo:
+            continue
+        date = f"{m.group(3)}-{mo}-{m.group(1).zfill(2)}"
+        end = day_hits[i + 1].start() if i + 1 < len(day_hits) else len(text)
+        day_block = text[m.end():end]
+
+        # Split the day block into per-distance sub-sections at "Atletas inscritos"
+        sub_blocks = re.split(r"(?i)atletas inscritos", day_block)
+
+        # If no sub-sections found, treat the whole day as one block
+        if len(sub_blocks) == 1:
+            sub_blocks = [day_block]
+
+        for sub in sub_blocks:
+            if not sub.strip():
+                continue
+
+            # Extract km values from this sub-block
+            sub_lower = sub.lower()
+            raw = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", sub, re.IGNORECASE)
+            kms: list[float] = [float(n.replace(",", ".")) for n in raw]
+            kms = [k for k in kms if 3 <= k <= 200]
+            kms = _canonicalize(kms)
+
+            if "meia maratona" in sub_lower or "half marathon" in sub_lower:
+                if 21.097 not in kms:
+                    kms.append(21.097)
+            if re.search(r"(?<!meia )\bmaratona\b", sub_lower) and 42.195 not in kms:
+                kms.append(42.195)
+
+            if not kms:
+                continue
+
+            # Earliest start time in this sub-block (skip PCD-only entries)
+            times = [
+                f"{int(h):02d}:{mn}"
+                for h, mn in re.findall(r"(\d{1,2})h(\d{2})", sub, re.IGNORECASE)
+                if 4 <= int(h) <= 22
+            ]
+            earliest = min(times) if times else None
+
+            for km in kms:
+                if km not in schedule:
+                    schedule[km] = (date, earliest)
+
+    return schedule
+
+
 def _fetch_detail_distances(corrida: Corrida) -> None:
     event_id = corrida.id.removeprefix("ts_")
     try:
@@ -71,20 +150,31 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
         print(f"[{SOURCE_NAME}] detalhe '{corrida.titulo}' falhou: {e}")
         return
 
-    texts: list[str] = []
+    texts_nl: list[str] = []
+    texts_sp: list[str] = []
     for item in detail.get("eventContents") or []:
         for key in ("description", "content", "text", "value"):
             val = item.get(key)
             if isinstance(val, str) and val:
-                texts.append(BeautifulSoup(val, "lxml").get_text(" "))
+                texts_nl.append(BeautifulSoup(val, "lxml").get_text("\n"))
+                texts_sp.append(BeautifulSoup(val, "lxml").get_text(" "))
     for key in ("description", "details", "eventDescription"):
         val = detail.get(key)
         if isinstance(val, str) and val:
-            texts.append(val)
+            texts_nl.append(val)
+            texts_sp.append(val)
 
-    dists = _extract_distances_from_text(" ".join(texts))
-    if dists:
-        corrida.distancias = dists
+    # Try multi-day schedule extraction first (different distances on different days)
+    schedule = _extract_schedule("\n".join(texts_nl))
+    if schedule:
+        corrida.distancias = [
+            Distancia(km=km, data=date, horario=horario)
+            for km, (date, horario) in sorted(schedule.items())
+        ]
+    else:
+        dists = _extract_distances_from_text(" ".join(texts_sp))
+        if dists:
+            corrida.distancias = dists
 
     # Set event-level horario from per-distance times or realDate fallback
     per_dist_times = [d.horario for d in corrida.distancias if d.horario]

@@ -1,7 +1,91 @@
 {
-  "gerado_em": "2026-04-30T01:37:18+00:00",
-  "total": 39,
+  "gerado_em": "2026-04-30T01:40:34+00:00",
+  "total": 41,
   "corridas": [
+    {
+      "id": "etapa-plano-piloto_df_2026-04-30",
+      "titulo": "Etapa Plano Piloto",
+      "data_evento": "2026-04-12",
+      "horario": "07:05",
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T01:40:07+00:00",
+      "updated_at": "2026-04-30T01:40:07+00:00"
+    },
+    {
+      "id": "inscricoes-abertas-para-circuito-sesc-corridas-etapa-taguatinga_df_2026-04-30",
+      "titulo": "Inscrições Abertas Para Circuito Sesc + Corridas - Etapa Taguatinga",
+      "data_evento": "2026-04-26",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T01:40:07+00:00",
+      "updated_at": "2026-04-30T01:40:07+00:00"
+    },
     {
       "id": "circuito-da-saude-etapa-ana-neri_df_2026-04-30",
       "titulo": "Circuito Da Saúde Etapa Ana Néri",
@@ -803,7 +887,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 2,
+      "miss_count": 0,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },
@@ -1080,38 +1164,6 @@
       "updated_at": "2026-04-30T00:20:21+00:00"
     },
     {
-      "id": "bank-of-america-chicago-marathon_int_2026",
-      "titulo": "Bank of America Chicago Marathon",
-      "data_evento": "2026-10-11",
-      "horario": "07:30",
-      "localizacao": "Chicago, EUA",
-      "cidade": "Chicago, EUA",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://assets-chicagomarathon-com.s3.amazonaws.com/wp-content/uploads/2019/10/2019_ChicagoMarathon-1.jpg",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Bank of America Chicago Marathon",
-          "link_evento": "https://www.chicagomarathon.com/",
-          "links_inscricao": [
-            "https://www.chicagomarathon.com/"
-          ],
-          "inscricoes": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-04-30T00:20:20+00:00"
-    },
-    {
       "id": "cmbrun-2026-3a-edicao_df_2026-04-30",
       "titulo": "Cmbrun 2026 - 3ª Edição",
       "data_evento": "2026-10-11",
@@ -1147,6 +1199,38 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-04-30T00:20:21+00:00"
+    },
+    {
+      "id": "bank-of-america-chicago-marathon_int_2026",
+      "titulo": "Bank of America Chicago Marathon",
+      "data_evento": "2026-10-11",
+      "horario": "07:30",
+      "localizacao": "Chicago, EUA",
+      "cidade": "Chicago, EUA",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://assets-chicagomarathon-com.s3.amazonaws.com/wp-content/uploads/2019/10/2019_ChicagoMarathon-1.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Bank of America Chicago Marathon",
+          "link_evento": "https://www.chicagomarathon.com/",
+          "links_inscricao": [
+            "https://www.chicagomarathon.com/"
+          ],
+          "inscricoes": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T00:20:20+00:00",
+      "updated_at": "2026-04-30T00:20:20+00:00"
     },
     {
       "id": "halloween-night-run_df_2026-04-30",
@@ -1292,7 +1376,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 2,
+      "miss_count": 0,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },

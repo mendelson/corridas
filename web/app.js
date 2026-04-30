@@ -427,9 +427,9 @@ function renderCards() {
     frag.appendChild(section);
   }
 
-  // Past events section (collapsed, most-recent first)
+  // Past events section first (collapsed, most-recent first)
   if (recentPast.length > 0) {
-    frag.appendChild(buildPastSection(recentPast));
+    frag.prepend(buildPastSection(recentPast));
   }
 
   cardsList.appendChild(frag);

@@ -13,4 +13,5 @@ from . import (
     sesc_df,
     ticket_sports,
     portal_das_corridas,
+    maratona_rio,
 )

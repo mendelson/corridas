@@ -22,6 +22,7 @@ from .sources import (
     # correr_brasilia,
     central_da_corrida,
     ticket_sports,
+    maratona_rio,
     # minhas_inscricoes,
     # corridas_brasil,
     # bora_correr,
@@ -45,6 +46,7 @@ from .sources.majors import (
 SOURCES = [
     central_da_corrida,
     ticket_sports,
+    maratona_rio,
     tokyo,
     boston,
     london,

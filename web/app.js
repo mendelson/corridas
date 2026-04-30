@@ -6,8 +6,8 @@
 let allCorridas = [];
 let filteredCorridas = [];
 
-// Geo-detected state abbreviation (cached in localStorage across sessions)
-let _geoEstado = localStorage.getItem('corridas_geo_estado') || null;
+// Geo-detected state abbreviation (in-session only — always refreshed on page load)
+let _geoEstado = null;
 
 const state = {
   distMode: 'select',  // 'select' | 'interval'
@@ -146,8 +146,6 @@ async function _tryGeoFetch(url) {
 }
 
 async function detectUserLocation() {
-  if (_geoEstado) { _applyGeoEstado(); return; }
-
   let uf = null;
 
   // ipwho.is: free, HTTPS, CORS, high rate limits
@@ -167,7 +165,6 @@ async function detectUserLocation() {
   // Validate result is a known BR state before caching
   if (uf && _ESTADO_LABELS[uf]) {
     _geoEstado = uf;
-    localStorage.setItem('corridas_geo_estado', uf);
     _applyGeoEstado();
   }
 }
@@ -521,9 +518,13 @@ function toggleExpand(collapsed, expanded) {
 }
 
 function buildExpanded(card, c) {
+  const expTitle = card.querySelector('.expanded-title');
   const expDist = card.querySelector('.expanded-distances');
   const expPeriod = card.querySelector('.expanded-period');
   const expFontes = card.querySelector('.expanded-fontes');
+
+  expTitle.textContent = c.titulo;
+  expTitle.classList.remove('hidden');
 
   // Distances table (sorted ascending)
   if (c.distancias && c.distancias.length > 0) {

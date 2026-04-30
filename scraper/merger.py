@@ -69,6 +69,9 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
         return True
     if sim >= 0.85 and _date_ok(a, b):
         return True
+    # Same exact date + strong overlap catches same-event relisted under slightly different names
+    if sim >= 0.75 and a.data_evento and b.data_evento and a.data_evento == b.data_evento:
+        return True
     return False
 
 

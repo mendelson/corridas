@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-04-30T00:04:24+00:00",
-  "total": 48,
+  "gerado_em": "2026-04-30T00:13:27+00:00",
+  "total": 49,
   "corridas": [
     {
       "id": "circuito-da-saude-etapa-ana-neri_df_2026-04-29",
@@ -69,7 +69,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
-      "updated_at": "2026-04-30T00:04:24+00:00"
+      "updated_at": "2026-04-30T00:13:27+00:00"
     },
     {
       "id": "1a-corrida-do-bope_df_2026-04-29",
@@ -227,7 +227,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
-      "updated_at": "2026-04-30T00:04:24+00:00"
+      "updated_at": "2026-04-30T00:13:27+00:00"
     },
     {
       "id": "corrida-sindjus-36-anos_df_2026-04-29",
@@ -304,7 +304,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -410,7 +410,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -482,7 +482,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -690,7 +690,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T21:02:41-03:00"
     },
@@ -767,6 +767,60 @@
       "updated_at": "2026-04-29T15:21:07-03:00"
     },
     {
+      "id": "maratona-do-rio_rj_2026-04-30",
+      "titulo": "Maratona do Rio",
+      "data_evento": "2026-06-21",
+      "horario": "06:00",
+      "localizacao": "Rio de Janeiro, RJ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Maratona do Rio",
+          "link_evento": "https://www.maratonadorio.com.br/",
+          "links_inscricao": [
+            "https://www.maratonadorio.com.br/"
+          ],
+          "inscricoes": [
+            {
+              "descricao": "Maratona do Rio",
+              "valor": null,
+              "disponivel": false,
+              "link": "https://www.maratonadorio.com.br/"
+            }
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T00:13:26+00:00",
+      "updated_at": "2026-04-30T00:13:26+00:00"
+    },
+    {
       "id": "circuito-corre-que-da-bom-pelo-mundo-brasil_df_2026-04-29",
       "titulo": "Circuito Corre Que Da Bom Pelo Mundo - Brasil",
       "data_evento": "2026-06-21",
@@ -831,7 +885,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -910,7 +964,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -947,7 +1001,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -989,7 +1043,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -1033,7 +1087,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
-      "updated_at": "2026-04-30T00:04:24+00:00"
+      "updated_at": "2026-04-30T00:13:27+00:00"
     },
     {
       "id": "corrida-da-policia-federal_df_2026-04-30",
@@ -1075,7 +1129,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
-      "updated_at": "2026-04-30T00:04:24+00:00"
+      "updated_at": "2026-04-30T00:13:27+00:00"
     },
     {
       "id": "pink-night-run_df_2026-04-29",
@@ -1139,7 +1193,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
-      "updated_at": "2026-04-30T00:04:24+00:00"
+      "updated_at": "2026-04-30T00:13:27+00:00"
     },
     {
       "id": "ts_73880",
@@ -1174,7 +1228,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -1240,7 +1294,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-29T15:21:07-03:00",
-      "updated_at": "2026-04-30T00:04:24+00:00"
+      "updated_at": "2026-04-30T00:13:27+00:00"
     },
     {
       "id": "tcs-sydney-marathon_int_2026",
@@ -1409,7 +1463,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },
@@ -1562,7 +1616,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:59:35-03:00"
     },
@@ -1599,7 +1653,7 @@
           "inscricoes": []
         }
       ],
-      "miss_count": 1,
+      "miss_count": 2,
       "first_seen_at": "2026-04-29T16:48:48-03:00",
       "updated_at": "2026-04-29T20:45:11-03:00"
     },

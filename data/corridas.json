@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-04-30T09:50:22-03:00",
+  "gerado_em": "2026-04-30T13:05:45+00:00",
   "total": 55,
   "corridas": [
     {
@@ -378,7 +378,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -450,9 +450,38 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
+    },
+    {
+      "id": "corrida-e-caminhada-para-cristo_df_2026-04-30",
+      "titulo": "Corrida E Caminhada Para Cristo",
+      "data_evento": "2026-05-31",
+      "horario": "07:00",
+      "localizacao": "Samambaia-sul, DF",
+      "cidade": "Samambaia-sul",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773888367141x943237141496806700/1000224314.jpg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corrida-e-caminhada-para-cristo",
+          "links_inscricao": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T00:20:21+00:00",
+      "updated_at": "2026-04-30T00:20:21+00:00"
     },
     {
       "id": "maratona-internacional-de-porto-alegre_rs_2026-04-30",
@@ -498,36 +527,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T03:54:41+00:00",
-      "updated_at": "2026-04-30T09:36:33-03:00"
-    },
-    {
-      "id": "corrida-e-caminhada-para-cristo_df_2026-04-30",
-      "titulo": "Corrida E Caminhada Para Cristo",
-      "data_evento": "2026-05-31",
-      "horario": "07:00",
-      "localizacao": "Samambaia-sul, DF",
-      "cidade": "Samambaia-sul",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773888367141x943237141496806700/1000224314.jpg",
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Central da Corrida",
-          "link_evento": "https://centraldacorrida.com.br/evento/corrida-e-caminhada-para-cristo",
-          "links_inscricao": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-04-30T00:20:21+00:00"
+      "updated_at": "2026-04-30T13:05:45+00:00"
     },
     {
       "id": "ts_86595",
@@ -566,7 +566,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -699,40 +699,6 @@
       "updated_at": "2026-04-30T00:20:21+00:00"
     },
     {
-      "id": "corridona-2026_df_2026-04-30",
-      "titulo": "Corridona 2026",
-      "data_evento": "2026-06-07",
-      "horario": "07:00",
-      "localizacao": "Brasília, DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773412237072x600936238864604900/IMG_1802.png",
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Central da Corrida",
-          "link_evento": "https://centraldacorrida.com.br/evento/corridona2026",
-          "links_inscricao": []
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-04-30T00:20:21+00:00"
-    },
-    {
       "id": "maratona-do-rio_rj_2026-04-30",
       "titulo": "Maratona do Rio",
       "data_evento": "2026-06-07",
@@ -779,6 +745,40 @@
       "updated_at": "2026-04-30T01:37:18+00:00"
     },
     {
+      "id": "corridona-2026_df_2026-04-30",
+      "titulo": "Corridona 2026",
+      "data_evento": "2026-06-07",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1773412237072x600936238864604900/IMG_1802.png",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/corridona2026",
+          "links_inscricao": []
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T00:20:21+00:00",
+      "updated_at": "2026-04-30T00:20:21+00:00"
+    },
+    {
       "id": "ts_85346",
       "titulo": "Copa Run 2026",
       "data_evento": "2026-06-13",
@@ -815,7 +815,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -952,7 +952,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1029,7 +1029,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1065,7 +1065,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1103,7 +1103,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T04:03:19+00:00",
-      "updated_at": "2026-04-30T09:36:33-03:00"
+      "updated_at": "2026-04-30T13:05:45+00:00"
     },
     {
       "id": "ts_86042",
@@ -1142,7 +1142,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1188,7 +1188,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },
@@ -1325,7 +1325,7 @@
           "horario": null
         }
       ],
-      "imagem_url": null,
+      "imagem_url": "https://d1au5iau2exwyo.cloudfront.net/small_KV_Run_Series_SOLD_OUT_SEM_FAIXA_8525ba69cd.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
@@ -1339,7 +1339,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T09:48:18-03:00",
-      "updated_at": "2026-04-30T09:48:18-03:00"
+      "updated_at": "2026-04-30T13:05:45+00:00"
     },
     {
       "id": "quatro-poderes-run-2026_df_2026-04-30",
@@ -1404,7 +1404,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1632,7 +1632,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1781,7 +1781,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1817,7 +1817,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T09:36:30-03:00",
       "updated_at": "2026-04-30T09:36:30-03:00"
     },
@@ -1858,7 +1858,7 @@
           ]
         }
       ],
-      "miss_count": 0,
+      "miss_count": 1,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T00:57:17+00:00"
     },
@@ -1970,7 +1970,7 @@
           "horario": null
         }
       ],
-      "imagem_url": null,
+      "imagem_url": "https://www.baa.org/wp-content/uploads/2025/10/4-21-25_129-Boston-Marathon_139.jpg",
       "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
@@ -1984,7 +1984,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-04-30T00:20:20+00:00"
+      "updated_at": "2026-04-30T13:05:45+00:00"
     },
     {
       "id": "tcs-london-marathon_int_2027",

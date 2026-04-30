@@ -26,6 +26,7 @@ from .sources import (
     tf_sports,
     liverun,
     iguana_sports,
+    yescom,
     corridas_brasil,
     minhas_inscricoes,
     brasil_que_corre,
@@ -52,6 +53,7 @@ SOURCES = [
     tf_sports,
     liverun,
     iguana_sports,
+    yescom,
     # Calendar pages (nationwide)
     corridas_brasil,
     minhas_inscricoes,

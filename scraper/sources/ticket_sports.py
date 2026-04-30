@@ -186,6 +186,14 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
     else:
         dists = _extract_distances_from_text(" ".join(texts_sp))
         if dists:
+            # Section-header times are more reliable than inline regex matches
+            # (inline regex can pick up award-ceremony times instead of start times).
+            # When available, section times always win.
+            section_times = _extract_times_from_sections(texts_nl)
+            for d in dists:
+                km_key = next((k for k in section_times if abs(k - d.km) < 0.5), None)
+                if km_key is not None:
+                    d.horario = section_times[km_key]
             corrida.distancias = dists
 
     # Set event-level horario from per-distance times or realDate fallback
@@ -323,6 +331,9 @@ _DIST_TIME_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Matches the first time on a line: "6h55:", "7h00 Largada..."
+_SECTION_TIME_RE = re.compile(r"^\s*(\d{1,2})h(\d{2})\b")
+
 
 def _canonicalize(kms: list[float]) -> list[float]:
     """Replace values near known canonical distances; deduplicate."""
@@ -339,6 +350,50 @@ def _canonicalize(kms: list[float]) -> list[float]:
     return out
 
 
+def _extract_times_from_sections(texts: list[str]) -> dict[float, str]:
+    """Extract distance→time from section-header schedules like:
+
+        Maratona (42km):
+        6h55: Largada...
+
+        Meia Maratona (21km) e 10km:
+        7h00: Largada...
+
+        5km:
+        7h30: Largada...
+    """
+    result: dict[float, str] = {}
+    lines = [ln.strip() for text in texts for ln in text.split("\n") if ln.strip()]
+    for i, line in enumerate(lines):
+        if not line.endswith(":"):
+            continue
+        kms: list[float] = []
+        for m in re.finditer(r"(?<![.,])\b(\d+(?:[.,]\d+)?)\s*km\b", line, re.IGNORECASE):
+            try:
+                km = float(m.group(1).replace(",", "."))
+                for canon, lo, hi in _CANONICAL:
+                    if lo <= km <= hi:
+                        km = canon
+                        break
+                if 3 <= km <= 200:
+                    kms.append(km)
+            except ValueError:
+                pass
+        if not kms:
+            continue
+        for j in range(i + 1, min(i + 5, len(lines))):
+            tm = _SECTION_TIME_RE.match(lines[j])
+            if tm:
+                h, mn = int(tm.group(1)), tm.group(2)
+                if 4 <= h <= 22:
+                    horario = f"{h:02d}:{mn}"
+                    for km in kms:
+                        if km not in result:
+                            result[km] = horario
+                break
+    return result
+
+
 def _extract_distances_from_text(text: str) -> list[Distancia]:
     """Extract distances from a detail description (authoritative source)."""
     # Extract per-distance start times (e.g. "5KM: 07h00 | 3KM: 07h30")
@@ -351,7 +406,8 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
             time_map[km] = f"{h:02d}:{mi}"
 
     clean = _INTERVAL_RE.sub(" ", text)
-    raw = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE)
+    # (?<![.,]) prevents matching mid-number fragments like "097" from "21.097,5 km"
+    raw = re.findall(r"(?<![.,])\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE)
     kms = [float(n.replace(",", ".")) for n in raw]
     kms = [k for k in kms if 3 <= k <= 200]  # ≥3 km: filter walking/kids/hydration noise
     kms = _canonicalize(kms)

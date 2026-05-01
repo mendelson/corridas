@@ -69,6 +69,12 @@ input { font-family: inherit; }
   letter-spacing: -0.02em;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn-refresh {
   min-width: var(--touch);
   min-height: var(--touch);
@@ -85,6 +91,24 @@ input { font-family: inherit; }
 .btn-refresh:hover { color: var(--color-accent); border-color: var(--color-accent); }
 .btn-refresh.spinning { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-lang {
+  min-width: var(--touch);
+  min-height: var(--touch);
+  padding: 0 10px;
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-lang:hover { color: var(--color-accent); border-color: var(--color-accent); }
 
 /* =====================================================================
    Filters Bar

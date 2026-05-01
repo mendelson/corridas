@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FF6B35" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Próxima Corrida" />
-  <meta name="description" content="Corridas de rua no Brasil – Brasília, maratonas nacionais e World Marathon Majors" />
-  <link rel="icon" type="image/png" href="logomendi-favicon.png" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="logomendi-favicon.png" />
-  <title>Próxima Corrida</title>
+  <meta name="apple-mobile-web-app-title" content="Next Race" />
+  <meta name="description" content="Road races in Brazil – Brasília, national marathons and World Marathon Majors" />
+  <link rel="icon" type="image/png" href="../logomendi-favicon.png" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../logomendi-favicon.png" />
+  <title>Next Race</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
   <header class="app-header">
-    <span class="app-title">🏃 Próxima Corrida</span>
+    <span class="app-title">🏃 Next Race</span>
     <div class="header-actions">
-      <button class="btn-lang" id="btnLang" aria-label="Switch to English">EN</button>
-      <button class="btn-refresh" id="btnRefresh" aria-label="Atualizar">↻</button>
+      <button class="btn-lang" id="btnLang" aria-label="Mudar para Português">PT</button>
+      <button class="btn-refresh" id="btnRefresh" aria-label="Refresh">↻</button>
     </div>
   </header>
 
@@ -28,14 +28,14 @@
     <!-- Text search -->
     <div class="filter-row filter-row-search">
       <input type="search" id="searchInput" class="search-input"
-             placeholder="Buscar corrida..." aria-label="Buscar corrida" autocomplete="off" />
+             placeholder="Search race..." aria-label="Search race" autocomplete="off" />
     </div>
 
     <!-- Distance filter -->
     <div class="filter-row" id="distanceFilter">
       <div class="filter-mode-toggle">
-        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Selecionar</button>
-        <button class="mode-btn" id="modeInterval" aria-pressed="false">Intervalo</button>
+        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Select</button>
+        <button class="mode-btn" id="modeInterval" aria-pressed="false">Range</button>
       </div>
       <div id="pillsContainer" class="pills-container">
         <button class="pill" data-km="5" aria-pressed="false">5K</button>
@@ -43,42 +43,42 @@
         <button class="pill" data-km="15" aria-pressed="false">15K</button>
         <button class="pill" data-km="21" aria-pressed="false">21K</button>
         <button class="pill" data-km="42" aria-pressed="false">42K</button>
-        <button class="pill" data-km="outros" aria-pressed="false">Outras</button>
+        <button class="pill" data-km="outros" aria-pressed="false">Other</button>
       </div>
       <div id="intervalContainer" class="interval-container hidden">
         <label class="range-label">
-          <span id="labelDistFrom">De</span>
-          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Distância mínima em km" />
+          <span id="labelDistFrom">From</span>
+          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Minimum distance in km" />
         </label>
         <label class="range-label">
-          <span id="labelDistTo">Até</span>
-          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Distância máxima em km" />
+          <span id="labelDistTo">To</span>
+          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Maximum distance in km" />
         </label>
       </div>
     </div>
 
-    <!-- Period + State + Fonte -->
+    <!-- Period + State + Source -->
     <div class="filter-row filter-row-selects">
       <div class="select-wrapper">
-        <select id="periodoSelect" aria-label="Filtrar por período">
-          <option value="past15">Desde 15 dias atrás</option>
-          <option value="today">A partir de hoje</option>
-          <option value="30">Próximos 30 dias</option>
-          <option value="90">Próximos 3 meses</option>
-          <option value="180">Próximos 6 meses</option>
-          <option value="all">Todo o período</option>
-          <option value="custom">Intervalo personalizado</option>
+        <select id="periodoSelect" aria-label="Filter by period">
+          <option value="past15">Since 15 days ago</option>
+          <option value="today">From today</option>
+          <option value="30">Next 30 days</option>
+          <option value="90">Next 3 months</option>
+          <option value="180">Next 6 months</option>
+          <option value="all">All time</option>
+          <option value="custom">Custom range</option>
         </select>
       </div>
       <div class="select-wrapper">
-        <select id="estadoSelect" aria-label="Filtrar por localização">
-          <option value="todos">Todos</option>
+        <select id="estadoSelect" aria-label="Filter by location">
+          <option value="todos">All</option>
         </select>
       </div>
       <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
         <button class="fonte-filter-btn" id="fonteFilterBtn"
-                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por fonte">
-          <span id="fonteFilterLabel">Todas as fontes</span>
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by source">
+          <span id="fonteFilterLabel">All sources</span>
           <span class="fonte-filter-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="fonte-filter-dropdown hidden" id="fonteFilterDropdown" role="listbox" aria-multiselectable="true">
@@ -90,27 +90,27 @@
     <!-- Custom date range (hidden by default) -->
     <div id="customDateRow" class="filter-row custom-date-row hidden">
       <label class="range-label">
-        <span id="labelDateFrom">De</span>
-        <input type="date" id="dateFrom" aria-label="Data inicial" />
+        <span id="labelDateFrom">From</span>
+        <input type="date" id="dateFrom" aria-label="Start date" />
       </label>
       <label class="range-label">
-        <span id="labelDateTo">Até</span>
-        <input type="date" id="dateTo" aria-label="Data final" />
+        <span id="labelDateTo">To</span>
+        <input type="date" id="dateTo" aria-label="End date" />
       </label>
     </div>
 
     <!-- Results count + clear -->
     <div class="filter-row filter-meta">
-      <span id="resultCount" class="result-count">Carregando...</span>
-      <button class="btn-clear hidden" id="btnClear" aria-label="Limpar filtros">Limpar filtros</button>
+      <span id="resultCount" class="result-count">Loading...</span>
+      <button class="btn-clear hidden" id="btnClear" aria-label="Clear filters">Clear filters</button>
     </div>
   </div>
 
-  <main id="cardsList" class="cards-list" role="list" aria-label="Lista de corridas"></main>
+  <main id="cardsList" class="cards-list" role="list" aria-label="Race list"></main>
 
   <div id="emptyState" class="empty-state hidden">
-    <p>Nenhuma corrida encontrada com os filtros atuais.</p>
-    <button class="btn-clear" id="btnClearEmpty">Limpar filtros</button>
+    <p>No races found with current filters.</p>
+    <button class="btn-clear" id="btnClearEmpty">Clear filters</button>
   </div>
 
   <template id="cardTemplate">
@@ -145,6 +145,6 @@
     </article>
   </template>
 
-  <script src="app.js"></script>
+  <script src="../app.js"></script>
 </body>
 </html>

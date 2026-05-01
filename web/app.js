@@ -1,16 +1,164 @@
 'use strict';
 
 // ---------------------------------------------------------------------------
+// Language detection — runs before anything else
+// ---------------------------------------------------------------------------
+const LANG = (() => {
+  if (window.location.pathname.startsWith('/en')) return 'en';
+  // Respect explicit user choice (prevents redirect loop when user picks PT)
+  if (localStorage.getItem('lang') === 'pt') return 'pt';
+  const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'pt').toLowerCase();
+  if (!bl.startsWith('pt')) {
+    window.location.replace('/en');
+    return 'en';
+  }
+  return 'pt';
+})();
+
+// ---------------------------------------------------------------------------
+// i18n strings
+// ---------------------------------------------------------------------------
+const STRINGS = {
+  pt: {
+    siteTitle: 'Próxima Corrida',
+    headerTitle: '🏃 Próxima Corrida',
+    langSwitch: 'EN',
+    langSwitchAriaLabel: 'Switch to English',
+    searchPlaceholder: 'Buscar corrida...',
+    searchAriaLabel: 'Buscar corrida',
+    modeSelect: 'Selecionar',
+    modeInterval: 'Intervalo',
+    distFrom: 'De',
+    distTo: 'Até',
+    distMinAriaLabel: 'Distância mínima em km',
+    distMaxAriaLabel: 'Distância máxima em km',
+    dateFromAriaLabel: 'Data inicial',
+    dateToAriaLabel: 'Data final',
+    periodoAriaLabel: 'Filtrar por período',
+    estadoAriaLabel: 'Filtrar por localização',
+    fonteFilterAriaLabel: 'Filtrar por fonte',
+    refreshAriaLabel: 'Atualizar',
+    clearFiltersAriaLabel: 'Limpar filtros',
+    allLocations: 'Todos',
+    allSources: 'Todas as fontes',
+    nSources: n => n === 1 ? `${n} fonte` : `${n} fontes`,
+    loading: 'Carregando...',
+    loadError: 'Erro ao carregar dados.',
+    clearFilters: 'Limpar filtros',
+    noRacesMsg: 'Nenhuma corrida encontrada com os filtros atuais.',
+    raceCount: n => n === 1 ? '1 corrida encontrada' : `${n} corridas encontradas`,
+    raceCountLabel: n => n === 1 ? '1 corrida' : `${n} corridas`,
+    dateTBD: 'Data a confirmar',
+    months: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
+    monthsFull: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+    weekdays: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+    dateFullFormat: (wd, d, m, y) => `${wd}, ${d} de ${m} de ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1} a ${d2} de ${m} de ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} de ${m1} a ${d2} de ${m2} de ${y}`,
+    pastSectionLabel: '🏁 Corridas nos últimos 15 dias',
+    distancesHeader: 'Distâncias',
+    dateColHeader: 'Data',
+    timeColHeader: 'Horário',
+    registrationPeriod: 'Período de inscrição',
+    regOpening: 'Abertura',
+    regClosing: 'Encerramento',
+    sourcesSection: 'Fontes',
+    photosSection: 'Fotos',
+    registerBtn: 'Inscrever-se →',
+    statusRealized: '🏁 Realizado',
+    statusOpen: '🟢 Inscrições abertas',
+    statusClosed: '🔴 Inscrições encerradas',
+    statusSoon: '⚪ Em breve',
+    groupBrasil: 'Brasil',
+    groupInternacional: 'Internacional',
+    allInternacional: 'Todos internacionais',
+    periodOptions: [
+      { value: 'past15', label: 'Desde 15 dias atrás' },
+      { value: 'today',  label: 'A partir de hoje' },
+      { value: '30',     label: 'Próximos 30 dias' },
+      { value: '90',     label: 'Próximos 3 meses' },
+      { value: '180',    label: 'Próximos 6 meses' },
+      { value: 'all',    label: 'Todo o período' },
+      { value: 'custom', label: 'Intervalo personalizado' },
+    ],
+  },
+  en: {
+    siteTitle: 'Next Race',
+    headerTitle: '🏃 Next Race',
+    langSwitch: 'PT',
+    langSwitchAriaLabel: 'Mudar para Português',
+    searchPlaceholder: 'Search race...',
+    searchAriaLabel: 'Search race',
+    modeSelect: 'Select',
+    modeInterval: 'Range',
+    distFrom: 'From',
+    distTo: 'To',
+    distMinAriaLabel: 'Minimum distance in km',
+    distMaxAriaLabel: 'Maximum distance in km',
+    dateFromAriaLabel: 'Start date',
+    dateToAriaLabel: 'End date',
+    periodoAriaLabel: 'Filter by period',
+    estadoAriaLabel: 'Filter by location',
+    fonteFilterAriaLabel: 'Filter by source',
+    refreshAriaLabel: 'Refresh',
+    clearFiltersAriaLabel: 'Clear filters',
+    allLocations: 'All',
+    allSources: 'All sources',
+    nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    loading: 'Loading...',
+    loadError: 'Error loading data.',
+    clearFilters: 'Clear filters',
+    noRacesMsg: 'No races found with current filters.',
+    raceCount: n => n === 1 ? '1 race found' : `${n} races found`,
+    raceCountLabel: n => n === 1 ? '1 race' : `${n} races`,
+    dateTBD: 'Date TBD',
+    months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    monthsFull: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    weekdays: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    dateFullFormat: (wd, d, m, y) => `${wd}, ${m} ${d}, ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${m} ${d1}–${d2}, ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${m1} ${d1} – ${m2} ${d2}, ${y}`,
+    pastSectionLabel: '🏁 Races in the last 15 days',
+    distancesHeader: 'Distances',
+    dateColHeader: 'Date',
+    timeColHeader: 'Time',
+    registrationPeriod: 'Registration period',
+    regOpening: 'Opening',
+    regClosing: 'Closing',
+    sourcesSection: 'Sources',
+    photosSection: 'Photos',
+    registerBtn: 'Register →',
+    statusRealized: '🏁 Completed',
+    statusOpen: '🟢 Open registrations',
+    statusClosed: '🔴 Closed registrations',
+    statusSoon: '⚪ Coming soon',
+    groupBrasil: 'Brazil',
+    groupInternacional: 'International',
+    allInternacional: 'All international',
+    periodOptions: [
+      { value: 'past15', label: 'Since 15 days ago' },
+      { value: 'today',  label: 'From today' },
+      { value: '30',     label: 'Next 30 days' },
+      { value: '90',     label: 'Next 3 months' },
+      { value: '180',    label: 'Next 6 months' },
+      { value: 'all',    label: 'All time' },
+      { value: 'custom', label: 'Custom range' },
+    ],
+  },
+};
+
+const T = STRINGS[LANG];
+
+// ---------------------------------------------------------------------------
 // State
 // ---------------------------------------------------------------------------
 let allCorridas = [];
 let filteredCorridas = [];
 
-// Geo-detected state abbreviation (in-session only — always refreshed on page load)
 let _geoEstado = null;
 
 const state = {
-  distMode: 'select',  // 'select' | 'interval'
+  distMode: 'select',
   activePills: new Set(),
   distMin: null,
   distMax: null,
@@ -27,29 +175,106 @@ const state = {
 // ---------------------------------------------------------------------------
 const $ = id => document.getElementById(id);
 
-const cardsList = $('cardsList');
-const emptyState = $('emptyState');
-const resultCount = $('resultCount');
-const btnClear = $('btnClear');
-const btnClearEmpty = $('btnClearEmpty');
-const btnRefresh = $('btnRefresh');
-const estadoSelect = $('estadoSelect');
-const periodoSelect = $('periodoSelect');
-const customDateRow = $('customDateRow');
-const dateFrom = $('dateFrom');
-const dateTo = $('dateTo');
-const pillsContainer = $('pillsContainer');
+const cardsList        = $('cardsList');
+const emptyState       = $('emptyState');
+const resultCount      = $('resultCount');
+const btnClear         = $('btnClear');
+const btnClearEmpty    = $('btnClearEmpty');
+const btnRefresh       = $('btnRefresh');
+const btnLang          = $('btnLang');
+const estadoSelect     = $('estadoSelect');
+const periodoSelect    = $('periodoSelect');
+const customDateRow    = $('customDateRow');
+const dateFrom         = $('dateFrom');
+const dateTo           = $('dateTo');
+const pillsContainer   = $('pillsContainer');
 const intervalContainer = $('intervalContainer');
-const modeSelect = $('modeSelect');
-const modeInterval = $('modeInterval');
-const distMin = $('distMin');
-const distMax = $('distMax');
-const cardTemplate = $('cardTemplate');
-const searchInput = $('searchInput');
-const fonteFilterWrapper = $('fonteFilterWrapper');
-const fonteFilterBtn = $('fonteFilterBtn');
+const modeSelect       = $('modeSelect');
+const modeInterval     = $('modeInterval');
+const distMin          = $('distMin');
+const distMax          = $('distMax');
+const cardTemplate     = $('cardTemplate');
+const searchInput      = $('searchInput');
+const fonteFilterWrapper  = $('fonteFilterWrapper');
+const fonteFilterBtn      = $('fonteFilterBtn');
 const fonteFilterDropdown = $('fonteFilterDropdown');
-const fonteFilterLabel = $('fonteFilterLabel');
+const fonteFilterLabel    = $('fonteFilterLabel');
+
+// ---------------------------------------------------------------------------
+// i18n initialisation — sets all static text from T
+// ---------------------------------------------------------------------------
+function initI18n() {
+  document.title = T.siteTitle;
+  document.querySelector('.app-title').textContent = T.headerTitle;
+
+  if (btnLang) {
+    btnLang.textContent = T.langSwitch;
+    btnLang.setAttribute('aria-label', T.langSwitchAriaLabel);
+  }
+  if (btnRefresh)  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
+  if (searchInput) {
+    searchInput.placeholder = T.searchPlaceholder;
+    searchInput.setAttribute('aria-label', T.searchAriaLabel);
+  }
+  if (modeSelect)   modeSelect.textContent   = T.modeSelect;
+  if (modeInterval) modeInterval.textContent = T.modeInterval;
+
+  const ldf = $('labelDistFrom');
+  const ldt = $('labelDistTo');
+  const ldaf = $('labelDateFrom');
+  const ldat = $('labelDateTo');
+  if (ldf)  ldf.textContent  = T.distFrom;
+  if (ldt)  ldt.textContent  = T.distTo;
+  if (ldaf) ldaf.textContent = T.distFrom;
+  if (ldat) ldat.textContent = T.distTo;
+  if (distMin) distMin.setAttribute('aria-label', T.distMinAriaLabel);
+  if (distMax) distMax.setAttribute('aria-label', T.distMaxAriaLabel);
+  if (dateFrom) dateFrom.setAttribute('aria-label', T.dateFromAriaLabel);
+  if (dateTo)   dateTo.setAttribute('aria-label',   T.dateToAriaLabel);
+
+  if (periodoSelect) {
+    periodoSelect.innerHTML = '';
+    periodoSelect.setAttribute('aria-label', T.periodoAriaLabel);
+    for (const opt of T.periodOptions) {
+      const o = document.createElement('option');
+      o.value = opt.value;
+      o.textContent = opt.label;
+      periodoSelect.appendChild(o);
+    }
+  }
+
+  if (estadoSelect) {
+    estadoSelect.setAttribute('aria-label', T.estadoAriaLabel);
+    if (estadoSelect.options[0]) estadoSelect.options[0].textContent = T.allLocations;
+  }
+
+  if (fonteFilterBtn) fonteFilterBtn.setAttribute('aria-label', T.fonteFilterAriaLabel);
+  if (fonteFilterLabel) fonteFilterLabel.textContent = T.allSources;
+  if (resultCount)  resultCount.textContent  = T.loading;
+  if (btnClear)     btnClear.textContent     = T.clearFilters;
+  if (btnClearEmpty) btnClearEmpty.textContent = T.clearFilters;
+
+  const emptyMsg = emptyState && emptyState.querySelector('p');
+  if (emptyMsg) emptyMsg.textContent = T.noRacesMsg;
+
+  // Keep btnClearEmpty label in sync
+  const emptyBtn = emptyState && emptyState.querySelector('.btn-clear');
+  if (emptyBtn) emptyBtn.textContent = T.clearFilters;
+}
+
+// ---------------------------------------------------------------------------
+// Language switch
+// ---------------------------------------------------------------------------
+if (btnLang) {
+  btnLang.addEventListener('click', () => {
+    if (LANG === 'pt') {
+      window.location.href = '/en';
+    } else {
+      localStorage.setItem('lang', 'pt');
+      window.location.href = '/';
+    }
+  });
+}
 
 // ---------------------------------------------------------------------------
 // Persistence (localStorage)
@@ -74,13 +299,12 @@ function loadFilters() {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
     if (!saved) return;
     state.activePills = new Set(saved.activePills || []);
-    state.distMode = saved.distMode || 'select';
-    state.distMin = saved.distMin;
-    state.distMax = saved.distMax;
-    state.estado = saved.estado || 'todos';
-    state.fontes = new Set(saved.fontes || []);
+    state.distMode    = saved.distMode || 'select';
+    state.distMin     = saved.distMin;
+    state.distMax     = saved.distMax;
+    state.estado      = saved.estado || 'todos';
+    state.fontes      = new Set(saved.fontes || []);
   } catch (e) { /* ignore */ }
-  // periodo always resets to default (not persisted)
   state.periodo = 'past15';
 }
 
@@ -90,7 +314,7 @@ function loadFilters() {
 async function fetchData() {
   btnRefresh.classList.add('spinning');
   try {
-    const resp = await fetch('./corridas.json?t=' + Date.now());
+    const resp = await fetch('/corridas.json?t=' + Date.now());
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
     allCorridas = json.corridas || [];
@@ -98,7 +322,7 @@ async function fetchData() {
     populateFontesFilter();
     applyFilters();
   } catch (e) {
-    resultCount.textContent = 'Erro ao carregar dados.';
+    resultCount.textContent = T.loadError;
     console.error(e);
   } finally {
     btnRefresh.classList.remove('spinning');
@@ -120,13 +344,9 @@ const _ESTADO_LABELS = {
   SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
 };
 
-// Apply _geoEstado to the select if the option already exists; called from both
-// detectUserLocation (late resolution) and populateEstadoFilter (early resolution).
 function _applyGeoEstado() {
   if (!_geoEstado || state.estado !== 'todos') return;
-  // Only apply if the option exists — options may not be populated yet
   if (![...estadoSelect.options].some(o => o.value === _geoEstado)) return;
-  // Don't apply if it would produce an empty list in the current period
   const today = todayStr();
   const wouldMatch = allCorridas.some(c => c.estado === _geoEstado && matchesPeriodo(c, today));
   if (!wouldMatch) return;
@@ -150,7 +370,6 @@ async function _tryGeoFetch(url) {
 }
 
 async function detectUserLocation() {
-  // Try three independent APIs concurrently; use the first valid BR state that responds.
   const fetchers = [
     () => _tryGeoFetch('https://ipwho.is/').then(d =>
       (d?.success && d.country_code === 'BR' && _ESTADO_LABELS[d.region_code]) ? d.region_code : null),
@@ -186,7 +405,6 @@ function _extractCountry(cidade) {
 // Estado filter population
 // ---------------------------------------------------------------------------
 function populateEstadoFilter() {
-  // Keep only the first "Todos" option
   while (estadoSelect.options.length > 1) estadoSelect.remove(1);
 
   const brEstados = [...new Set(
@@ -199,7 +417,7 @@ function populateEstadoFilter() {
 
   if (brEstados.length > 0) {
     const grp = document.createElement('optgroup');
-    grp.label = 'Brasil';
+    grp.label = T.groupBrasil;
     for (const uf of brEstados) {
       const opt = document.createElement('option');
       opt.value = uf;
@@ -211,10 +429,10 @@ function populateEstadoFilter() {
 
   if (intCountries.length > 0) {
     const grp = document.createElement('optgroup');
-    grp.label = 'Internacional';
+    grp.label = T.groupInternacional;
     const allOpt = document.createElement('option');
     allOpt.value = 'INT';
-    allOpt.textContent = 'Todos internacionais';
+    allOpt.textContent = T.allInternacional;
     grp.appendChild(allOpt);
     for (const country of intCountries) {
       const opt = document.createElement('option');
@@ -225,15 +443,12 @@ function populateEstadoFilter() {
     estadoSelect.appendChild(grp);
   }
 
-  // If the saved state has no option in current data, reset to 'todos'
   const availableValues = new Set([...estadoSelect.options].map(o => o.value));
   if (state.estado !== 'todos' && !availableValues.has(state.estado)) {
     state.estado = 'todos';
   }
 
-  // Apply geo default if state is still 'todos'
   _applyGeoEstado();
-  // Ensure select reflects current state
   if (estadoSelect.value !== state.estado) estadoSelect.value = state.estado;
 }
 
@@ -283,13 +498,13 @@ function populateFontesFilter() {
 
 function _updateFonteLabel() {
   if (state.fontes.size === 0) {
-    fonteFilterLabel.textContent = 'Todas as fontes';
+    fonteFilterLabel.textContent = T.allSources;
     fonteFilterBtn.classList.remove('active');
   } else if (state.fontes.size === 1) {
     fonteFilterLabel.textContent = [...state.fontes][0];
     fonteFilterBtn.classList.add('active');
   } else {
-    fonteFilterLabel.textContent = `${state.fontes.size} fontes`;
+    fonteFilterLabel.textContent = T.nSources(state.fontes.size);
     fonteFilterBtn.classList.add('active');
   }
 }
@@ -317,7 +532,7 @@ function applyFilters() {
 
 function matchesPeriodo(c, today) {
   const d = c.data_evento;
-  if (!d) return false;  // never show events without a date
+  if (!d) return false;
   switch (state.periodo) {
     case 'past15':  return d >= addDays(today, -15);
     case 'today':   return d >= today;
@@ -327,9 +542,9 @@ function matchesPeriodo(c, today) {
     case 'all':     return true;
     case 'custom': {
       const from = state.dateFrom;
-      const to = state.dateTo;
+      const to   = state.dateTo;
       if (from && d < from) return false;
-      if (to && d > to) return false;
+      if (to   && d > to)   return false;
       return true;
     }
     default: return true;
@@ -364,9 +579,7 @@ function matchesDistancia(c) {
       } else {
         const target = parseFloat(pill);
         if (kms.some(k => Math.abs(k - target) < 0.5)) return true;
-        // 42K pill also matches 42.195
         if (target === 42 && kms.some(k => Math.abs(k - 42.195) < 0.5)) return true;
-        // 21K pill also matches 21.097
         if (target === 21 && kms.some(k => Math.abs(k - 21.097) < 0.5)) return true;
       }
     }
@@ -403,8 +616,7 @@ function renderCards() {
   const today = todayStr();
   const frag = document.createDocumentFragment();
 
-  // In the default period (past15), split upcoming and past into separate sections
-  let toRender = filteredCorridas;
+  let toRender  = filteredCorridas;
   let recentPast = [];
 
   if (state.periodo === 'past15') {
@@ -412,7 +624,6 @@ function renderCards() {
     toRender   = filteredCorridas.filter(c => !c.data_evento || c.data_evento >= today);
   }
 
-  // Upcoming events grouped by month
   const byMonth = new Map();
   for (const corrida of toRender) {
     const key = corrida.data_evento ? corrida.data_evento.slice(0, 7) : '__sem_data';
@@ -427,7 +638,6 @@ function renderCards() {
     frag.appendChild(section);
   }
 
-  // Past events section first (collapsed, most-recent first)
   if (recentPast.length > 0) {
     frag.prepend(buildPastSection(recentPast));
   }
@@ -436,12 +646,11 @@ function renderCards() {
 }
 
 function buildPastSection(corridas) {
-  // Show most-recently-run events first
   const sorted = [...corridas].sort((a, b) =>
     (b.data_evento || '').localeCompare(a.data_evento || ''));
 
   const n = sorted.length;
-  const countLabel = n === 1 ? '1 corrida' : `${n} corridas`;
+  const countLabel = T.raceCountLabel(n);
 
   const section = document.createElement('div');
   section.className = 'month-section';
@@ -449,9 +658,9 @@ function buildPastSection(corridas) {
   const btn = document.createElement('button');
   btn.className = 'month-separator month-separator--past';
   btn.setAttribute('aria-expanded', 'false');
-  btn.setAttribute('aria-label', `Corridas nos últimos 15 dias, ${countLabel}`);
+  btn.setAttribute('aria-label', `${T.pastSectionLabel.replace(/^[^\s]+ /, '')}, ${countLabel}`);
   btn.innerHTML = `
-    <span class="month-separator-label">🏁 Corridas nos últimos 15 dias</span>
+    <span class="month-separator-label">${T.pastSectionLabel}</span>
     <span class="month-count">${countLabel}</span>
     <span class="month-chevron" aria-hidden="true">▸</span>`;
 
@@ -475,8 +684,8 @@ function buildPastSection(corridas) {
 
 function buildMonthSection(monthKey, count) {
   const [year, month] = monthKey.split('-');
-  const label = PT_MONTHS_FULL[parseInt(month, 10) - 1] + ' ' + year;
-  const countLabel = count === 1 ? '1 corrida' : `${count} corridas`;
+  const label = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
+  const countLabel = T.raceCountLabel(count);
 
   const section = document.createElement('div');
   section.className = 'month-section';
@@ -508,15 +717,14 @@ function buildCard(c) {
   const clone = cardTemplate.content.cloneNode(true);
   const card = clone.querySelector('.card');
   const collapsed = card.querySelector('.card-collapsed');
-  const expanded = card.querySelector('.card-expanded');
+  const expanded  = card.querySelector('.card-expanded');
 
-  // Image
   const img = card.querySelector('.card-img');
   const placeholder = card.querySelector('.card-img-placeholder');
   if (c.imagem_url) {
     img.src = c.imagem_url;
     img.alt = c.titulo;
-    img.onload = () => placeholder.classList.add('hidden');
+    img.onload  = () => placeholder.classList.add('hidden');
     img.onerror = () => { img.classList.add('hidden'); showPlaceholder(placeholder, c.estado); };
     showPlaceholder(placeholder, c.estado);
   } else {
@@ -524,16 +732,10 @@ function buildCard(c) {
     showPlaceholder(placeholder, c.estado);
   }
 
-  // Title
-  card.querySelector('.card-title').textContent = c.titulo;
-
-  // Date
-  card.querySelector('.card-date').textContent = formatDate(c.data_evento, c.horario, c.distancias);
-
-  // Location
+  card.querySelector('.card-title').textContent    = c.titulo;
+  card.querySelector('.card-date').textContent     = formatDate(c.data_evento, c.horario, c.distancias);
   card.querySelector('.card-location').textContent = formatLocation(c.cidade, c.estado);
 
-  // Distances pills (sorted ascending)
   const distContainer = card.querySelector('.card-distances');
   for (const km of formatDistancesPills(c.distancias)) {
     const span = document.createElement('span');
@@ -542,23 +744,19 @@ function buildCard(c) {
     distContainer.appendChild(span);
   }
 
-  // Status badge
   const badge = card.querySelector('.badge-status');
   const { label, cls } = statusBadge(c);
   badge.textContent = label;
-  badge.className = 'badge-status ' + cls;
+  badge.className   = 'badge-status ' + cls;
 
-  // Fontes badge
   const fontesBadge = card.querySelector('.badge-fontes');
   if (c.fontes && c.fontes.length > 1) {
-    fontesBadge.textContent = c.fontes.length + ' fontes';
+    fontesBadge.textContent = T.nSources(c.fontes.length);
     fontesBadge.classList.remove('hidden');
   }
 
-  // Expanded content
   buildExpanded(card, c);
 
-  // Toggle expand
   collapsed.addEventListener('click', () => toggleExpand(collapsed, expanded));
   collapsed.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpand(collapsed, expanded); }
@@ -579,26 +777,25 @@ function toggleExpand(collapsed, expanded) {
 }
 
 function buildExpanded(card, c) {
-  const expTitle = card.querySelector('.expanded-title');
-  const expDist = card.querySelector('.expanded-distances');
+  const expTitle  = card.querySelector('.expanded-title');
+  const expDist   = card.querySelector('.expanded-distances');
   const expPeriod = card.querySelector('.expanded-period');
   const expFontes = card.querySelector('.expanded-fontes');
-  const expFotos = card.querySelector('.expanded-fotos');
+  const expFotos  = card.querySelector('.expanded-fotos');
 
   expTitle.textContent = c.titulo;
   expTitle.classList.remove('hidden');
 
-  // Distances table (sorted ascending)
   if (c.distancias && c.distancias.length > 0) {
-    const sorted = sortDistancias(c.distancias);
+    const sorted     = sortDistancias(c.distancias);
     const hasDate    = sorted.some(d => d.data);
     const hasHorario = sorted.some(d => d.horario);
 
     const table = document.createElement('table');
     table.className = 'dist-table';
-    let thead = '<thead><tr><th>Distâncias</th>';
-    if (hasDate)    thead += '<th>Data</th>';
-    if (hasHorario) thead += '<th>Horário</th>';
+    let thead = `<thead><tr><th>${T.distancesHeader}</th>`;
+    if (hasDate)    thead += `<th>${T.dateColHeader}</th>`;
+    if (hasHorario) thead += `<th>${T.timeColHeader}</th>`;
     thead += '</tr></thead>';
     table.innerHTML = thead;
 
@@ -615,24 +812,22 @@ function buildExpanded(card, c) {
     expDist.appendChild(table);
   }
 
-  // Period
   if (c.periodo_inscricao && (c.periodo_inscricao.abertura || c.periodo_inscricao.encerramento)) {
     const h = document.createElement('p');
     h.className = 'expanded-section-title';
-    h.textContent = 'Período de inscrição';
+    h.textContent = T.registrationPeriod;
     expPeriod.appendChild(h);
     const p = document.createElement('p');
-    const ab = c.periodo_inscricao.abertura ? 'Abertura: ' + formatDateShort(c.periodo_inscricao.abertura) : '';
-    const enc = c.periodo_inscricao.encerramento ? 'Encerramento: ' + formatDateShort(c.periodo_inscricao.encerramento) : '';
+    const ab  = c.periodo_inscricao.abertura     ? `${T.regOpening}: ${formatDateShort(c.periodo_inscricao.abertura)}`     : '';
+    const enc = c.periodo_inscricao.encerramento ? `${T.regClosing}: ${formatDateShort(c.periodo_inscricao.encerramento)}` : '';
     p.textContent = [ab, enc].filter(Boolean).join(' · ');
     expPeriod.appendChild(p);
   }
 
-  // Fontes
   if (c.fontes && c.fontes.length > 0) {
     const h = document.createElement('p');
     h.className = 'expanded-section-title';
-    h.textContent = 'Fontes';
+    h.textContent = T.sourcesSection;
     expFontes.appendChild(h);
     for (const fonte of c.fontes) {
       const div = document.createElement('div');
@@ -640,18 +835,17 @@ function buildExpanded(card, c) {
       const inscLink = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
         ? fonte.links_inscricao[0] : (fonte.link_evento || null);
       const btnHtml = inscLink
-        ? `<a href="${inscLink}" target="_blank" rel="noopener" class="btn-inscricao">Inscrever-se →</a>`
+        ? `<a href="${inscLink}" target="_blank" rel="noopener" class="btn-inscricao">${T.registerBtn}</a>`
         : '';
       div.innerHTML = `<span class="fonte-nome-text">${fonte.nome}</span>${btnHtml}`;
       expFontes.appendChild(div);
     }
   }
 
-  // Photo platforms (only populated by the scraper for past events)
   if (expFotos && c.fotos && c.fotos.length > 0) {
     const h = document.createElement('p');
     h.className = 'expanded-section-title';
-    h.textContent = 'Fotos';
+    h.textContent = T.photosSection;
     expFotos.appendChild(h);
     const btns = document.createElement('div');
     btns.className = 'fotos-btns';
@@ -666,20 +860,14 @@ function buildExpanded(card, c) {
     }
     expFotos.appendChild(btns);
   }
-
 }
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-const PT_MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
-const PT_MONTHS_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const PT_WEEKDAYS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
-
 function formatDate(isoDate, horario, distancias) {
-  if (!isoDate) return 'Data a confirmar';
+  if (!isoDate) return T.dateTBD;
 
-  // Multi-day: at least 2 distinct dates across the distances themselves
   const distDates = [...new Set(
     (distancias || []).map(d => d.data).filter(Boolean)
   )].sort();
@@ -688,14 +876,17 @@ function formatDate(isoDate, horario, distancias) {
     return formatDateRange(distDates[0], distDates[distDates.length - 1]);
   }
 
-  // Single day
   return formatDateFull(isoDate) + (horario ? ` • ${horario.replace(':', 'h')}` : '');
 }
 
 function formatDateFull(iso) {
   const d = new Date(iso + 'T12:00:00');
-  const wd = PT_WEEKDAYS[d.getDay()];
-  return `${wd}, ${d.getDate()} de ${PT_MONTHS[d.getMonth()]} de ${d.getFullYear()}`;
+  return T.dateFullFormat(
+    T.weekdays[d.getDay()],
+    d.getDate(),
+    T.months[d.getMonth()],
+    d.getFullYear()
+  );
 }
 
 function formatDateRange(fromIso, toIso) {
@@ -703,9 +894,9 @@ function formatDateRange(fromIso, toIso) {
   const d2 = new Date(toIso   + 'T12:00:00');
   const sameMonth = d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
   if (sameMonth) {
-    return `${d1.getDate()} a ${d2.getDate()} de ${PT_MONTHS[d1.getMonth()]} de ${d1.getFullYear()}`;
+    return T.dateRangeSameMonth(d1.getDate(), d2.getDate(), T.months[d1.getMonth()], d1.getFullYear());
   }
-  return `${d1.getDate()} de ${PT_MONTHS[d1.getMonth()]} a ${d2.getDate()} de ${PT_MONTHS[d2.getMonth()]} de ${d2.getFullYear()}`;
+  return T.dateRangeDiff(d1.getDate(), T.months[d1.getMonth()], d2.getDate(), T.months[d2.getMonth()], d2.getFullYear());
 }
 
 function formatDateShort(iso) {
@@ -742,13 +933,12 @@ function formatKm(km) {
 
 function statusBadge(c) {
   const today = todayStr();
-  if (c.data_evento && c.data_evento < today) return { label: '🏁 Realizado', cls: 'badge-realized' };
-  if (c.inscricoes_abertas === true) return { label: '🟢 Inscrições abertas', cls: 'badge-open' };
-  if (c.inscricoes_abertas === false) return { label: '🔴 Inscrições encerradas', cls: 'badge-closed' };
-  // Fallback: presence of inscription links implies open inscriptions
+  if (c.data_evento && c.data_evento < today) return { label: T.statusRealized, cls: 'badge-realized' };
+  if (c.inscricoes_abertas === true)  return { label: T.statusOpen,   cls: 'badge-open' };
+  if (c.inscricoes_abertas === false) return { label: T.statusClosed, cls: 'badge-closed' };
   const hasInscLink = (c.fontes || []).some(f => (f.links_inscricao || []).length > 0);
-  if (hasInscLink) return { label: '🟢 Inscrições abertas', cls: 'badge-open' };
-  return { label: '⚪ Em breve', cls: 'badge-soon' };
+  if (hasInscLink) return { label: T.statusOpen, cls: 'badge-open' };
+  return { label: T.statusSoon, cls: 'badge-soon' };
 }
 
 function stateColor(estado) {
@@ -772,8 +962,7 @@ function addDays(isoDate, days) {
 }
 
 function updateCount() {
-  const n = filteredCorridas.length;
-  resultCount.textContent = n === 1 ? '1 corrida encontrada' : `${n} corridas encontradas`;
+  resultCount.textContent = T.raceCount(filteredCorridas.length);
 }
 
 function isFiltersActive() {
@@ -795,18 +984,17 @@ function updateClearButton() {
 function clearFilters() {
   state.searchQuery = '';
   state.activePills.clear();
-  state.distMin = null;
-  state.distMax = null;
+  state.distMin  = null;
+  state.distMax  = null;
   state.distMode = 'select';
-  state.periodo = 'past15';
+  state.periodo  = 'past15';
   state.dateFrom = null;
-  state.dateTo = null;
-  state.estado = _geoEstado || 'todos';
+  state.dateTo   = null;
+  state.estado   = _geoEstado || 'todos';
   state.fontes.clear();
 
   searchInput.value = '';
 
-  // Sync UI
   document.querySelectorAll('.pill').forEach(p => {
     p.classList.remove('active');
     p.setAttribute('aria-pressed', 'false');
@@ -814,13 +1002,12 @@ function clearFilters() {
   distMin.value = '';
   distMax.value = '';
   periodoSelect.value = 'past15';
-  estadoSelect.value = _geoEstado || 'todos';
+  estadoSelect.value  = _geoEstado || 'todos';
   customDateRow.classList.add('hidden');
   dateFrom.value = '';
-  dateTo.value = '';
+  dateTo.value   = '';
   setDistMode('select');
 
-  // Reset fonte checkboxes
   fonteFilterDropdown.querySelectorAll('input[type="checkbox"]').forEach(cb => {
     cb.checked = false;
     cb.closest('.fonte-filter-option')?.classList.remove('checked');
@@ -969,9 +1156,9 @@ document.addEventListener('keydown', e => {
 // Init
 // ---------------------------------------------------------------------------
 function init() {
+  initI18n();
   loadFilters();
 
-  // Restore UI from state
   if (state.distMode === 'interval') setDistMode('interval');
   state.activePills.forEach(km => {
     const pill = document.querySelector(`.pill[data-km="${km}"]`);
@@ -979,12 +1166,11 @@ function init() {
   });
   if (state.distMin !== null) distMin.value = state.distMin;
   if (state.distMax !== null) distMax.value = state.distMax;
-  estadoSelect.value = state.estado;
+  estadoSelect.value  = state.estado;
   periodoSelect.value = state.periodo;
 
-  // Register service worker
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
   }
 
   detectUserLocation();

@@ -407,6 +407,11 @@ def reconcile(
         if existing.data_evento and existing.data_evento < today:
             result.append(existing)
             continue
+        # Drop events that are now known to be non-running (e.g. cycling events
+        # that were added before the filter existed)
+        if not _is_valid(existing):
+            print(f"[main] removendo '{existing.titulo}' (falhou _is_valid)")
+            continue
         unmatched_future.append(existing)
 
     # Check inscription links in parallel for unmatched future events
@@ -464,6 +469,8 @@ _NON_RUNNING_KW = [
     # Cycling
     "pedal", "ciclismo", "ciclista", "bicicleta", " bike ", "mtb",
     "cycling", "cyclist", "pedalada", "gravel", "velódromo", "velodrome",
+    "granfondo", "gran fondo", "gran-fondo", "fondo", "sportive",
+    "uci ", "uci-",
     # Triathlon / multisport
     "triathlon", "triathon", "duathlon", "ironman", "swimrun",
     # Open water swimming & aquatic sports

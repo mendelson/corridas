@@ -201,8 +201,12 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
         for key in ("description", "content", "text", "value"):
             val = item.get(key)
             if isinstance(val, str) and val:
-                texts_nl.append(BeautifulSoup(val, "lxml").get_text("\n"))
-                texts_sp.append(BeautifulSoup(val, "lxml").get_text(" "))
+                if "<" in val:
+                    texts_nl.append(BeautifulSoup(val, "lxml").get_text("\n"))
+                    texts_sp.append(BeautifulSoup(val, "lxml").get_text(" "))
+                else:
+                    texts_nl.append(val)
+                    texts_sp.append(val)
     for key in ("description", "details", "eventDescription"):
         val = detail.get(key)
         if isinstance(val, str) and val:

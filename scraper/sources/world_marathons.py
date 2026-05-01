@@ -1,9 +1,10 @@
 """Scraper for worldsmarathons.com — calendário global de maratonas.
 
 Estratégia:
-  1. Fetch da página de corridas europeias (continent=europe)
-  2. Extração via __NEXT_DATA__ (site Next.js)
-  3. Fallback: parsing de cards HTML
+  1. Fetch da página principal para obter o buildId do Next.js
+  2. Fetch de /_next/data/{buildId}/marathons.json para obter dados server-side
+  3. Fallback: parsing direto de __NEXT_DATA__ no HTML
+  4. Fallback: parsing de cards HTML
 """
 from __future__ import annotations
 import json
@@ -20,11 +21,10 @@ BASE        = "https://worldsmarathons.com"
 SOURCE_NAME = "World Marathons"
 _MIN_KM     = 10.0
 
-_CALENDAR_URLS = [
+# Pages to try if /_next/data/ approach fails
+_FALLBACK_URLS = [
     f"{BASE}/marathons?continent=europe&future=1",
     f"{BASE}/marathons?continent=europe",
-    f"{BASE}/marathons/europe",
-    f"{BASE}/races?continent=europe",
     f"{BASE}/marathons",
 ]
 
@@ -81,43 +81,60 @@ _EN_TO_PT: dict[str, str] = {
 
 _EU_COUNTRIES = set(_EN_TO_PT.keys())
 
+_ISO2_MAP = {
+    "pt": "portugal", "es": "spain", "fr": "france", "it": "italy",
+    "de": "germany", "gb": "united kingdom", "uk": "united kingdom",
+    "nl": "netherlands", "be": "belgium", "ch": "switzerland",
+    "at": "austria", "se": "sweden", "no": "norway", "dk": "denmark",
+    "fi": "finland", "ie": "ireland", "gr": "greece", "cz": "czech republic",
+    "pl": "poland", "hu": "hungary", "hr": "croatia", "ro": "romania",
+    "bg": "bulgaria", "sk": "slovakia", "si": "slovenia", "lu": "luxembourg",
+    "ee": "estonia", "lv": "latvia", "lt": "lithuania", "is": "iceland",
+    "rs": "serbia", "me": "montenegro", "mk": "north macedonia",
+    "al": "albania", "ba": "bosnia", "tr": "turkey", "ua": "ukraine",
+}
+
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
 
 def scrape() -> list[Corrida]:
     today = today_iso()
     raw: list[dict] = []
-    soup_used: BeautifulSoup | None = None
 
-    for url in _CALENDAR_URLS:
-        try:
-            resp = get(url, timeout=15)
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
-            continue
+    # ── Strategy 1: /_next/data/{buildId}/ API ─────────────────────────────
+    raw = _try_next_data_api()
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via /_next/data/")
+    else:
+        # ── Strategy 2: HTML page parsing (fallback) ────────────────────────
+        for url in _FALLBACK_URLS:
+            try:
+                resp = get(url, timeout=15)
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
+                continue
 
-        if resp.status_code != 200:
-            print(f"[{SOURCE_NAME}] HTTP {resp.status_code} para {url}")
-            continue
+            if resp.status_code != 200:
+                print(f"[{SOURCE_NAME}] HTTP {resp.status_code} para {url}")
+                continue
 
-        print(f"[{SOURCE_NAME}] HTTP 200 para {url} ({len(resp.text)} bytes)")
-        soup = BeautifulSoup(resp.text, "lxml")
-        soup_used = soup
+            print(f"[{SOURCE_NAME}] HTTP 200 para {url} ({len(resp.text)} bytes)")
+            soup = BeautifulSoup(resp.text, "lxml")
 
-        raw = _extract_next_data(soup)
-        if raw:
-            print(f"[{SOURCE_NAME}] {len(raw)} candidatos via __NEXT_DATA__")
-            break
+            raw = _extract_from_any_script(soup)
+            if raw:
+                print(f"[{SOURCE_NAME}] {len(raw)} candidatos via script JSON")
+                break
 
-        raw = _extract_html_cards(soup)
-        if raw:
-            print(f"[{SOURCE_NAME}] {len(raw)} candidatos via HTML cards")
-            break
+            raw = _extract_html_cards(soup)
+            if raw:
+                print(f"[{SOURCE_NAME}] {len(raw)} candidatos via HTML cards")
+                break
 
-        print(f"[{SOURCE_NAME}] página acessível mas sem dados reconhecíveis em {url}")
+            print(f"[{SOURCE_NAME}] sem dados reconhecíveis em {url}")
 
     if not raw:
-        print(f"[{SOURCE_NAME}] sem dados — nenhum URL funcionou")
+        print(f"[{SOURCE_NAME}] sem dados — nenhuma estratégia funcionou")
         return []
 
     corridas: list[Corrida] = []
@@ -149,21 +166,137 @@ def scrape() -> list[Corrida]:
 
 
 # ---------------------------------------------------------------------------
-# __NEXT_DATA__ extraction
+# Strategy 1: /_next/data/{buildId}/ — fetches pre-rendered page props
 # ---------------------------------------------------------------------------
-def _extract_next_data(soup) -> list[dict]:
-    tag = soup.find("script", id="__NEXT_DATA__")
-    if not tag:
-        return []
+def _try_next_data_api() -> list[dict]:
+    # First, fetch the main page to find the buildId
     try:
-        data = json.loads(tag.string or "")
-    except Exception:
+        resp = get(f"{BASE}/marathons?continent=europe&future=1", timeout=15)
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] erro ao buscar página principal: {e}")
         return []
-    return _find_race_list(data)
+
+    if resp.status_code != 200:
+        print(f"[{SOURCE_NAME}] HTTP {resp.status_code} na página principal")
+        return []
+
+    soup = BeautifulSoup(resp.text, "lxml")
+    build_id = _get_build_id(soup)
+
+    if not build_id:
+        print(f"[{SOURCE_NAME}] buildId não encontrado")
+        return []
+
+    print(f"[{SOURCE_NAME}] buildId={build_id}")
+
+    # Try several page paths for the /_next/data/ API
+    data_paths = [
+        f"/_next/data/{build_id}/marathons.json?continent=europe&future=1",
+        f"/_next/data/{build_id}/marathons.json?continent=europe",
+        f"/_next/data/{build_id}/marathons.json",
+        f"/_next/data/{build_id}/index.json?continent=europe&future=1",
+        f"/_next/data/{build_id}/races.json?continent=europe&future=1",
+    ]
+
+    for path in data_paths:
+        url = BASE + path
+        try:
+            resp = get(url, timeout=15)
+        except Exception:
+            continue
+
+        if resp.status_code != 200:
+            continue
+
+        try:
+            data = resp.json()
+        except Exception:
+            continue
+
+        print(f"[{SOURCE_NAME}] _next/data OK: {url} ({len(resp.text)} bytes)")
+        raw = _find_race_list(data)
+        if raw:
+            return raw
+        # Log top-level keys to aid debugging if structure not recognized
+        if isinstance(data, dict):
+            pprops = data.get("pageProps", {})
+            print(f"[{SOURCE_NAME}] pageProps keys: {list(pprops.keys())[:10] if isinstance(pprops, dict) else type(pprops)}")
+
+    return []
 
 
+def _get_build_id(soup) -> str | None:
+    # 1. Try __NEXT_DATA__ JSON directly
+    tag = soup.find("script", id="__NEXT_DATA__")
+    if tag:
+        try:
+            data = json.loads(tag.string or "")
+            build_id = data.get("buildId")
+            if build_id:
+                return build_id
+        except Exception:
+            pass
+
+    # 2. Extract from /_next/static/{buildId}/ in script src attrs
+    for script in soup.find_all("script", src=True):
+        m = re.search(r'/_next/static/([^/]+)/', script["src"])
+        if m:
+            return m.group(1)
+
+    # 3. Look in inline scripts
+    for script in soup.find_all("script"):
+        if not script.string:
+            continue
+        m = re.search(r'"buildId"\s*:\s*"([^"]+)"', script.string)
+        if m:
+            return m.group(1)
+
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Strategy 2: look in all script tags for embedded JSON race data
+# ---------------------------------------------------------------------------
+def _extract_from_any_script(soup) -> list[dict]:
+    # Try __NEXT_DATA__ first
+    tag = soup.find("script", id="__NEXT_DATA__")
+    if tag:
+        try:
+            data = json.loads(tag.string or "")
+            result = _find_race_list(data)
+            if result:
+                return result
+            # Log structure for debugging
+            if isinstance(data, dict):
+                pprops = data.get("pageProps", {})
+                print(f"[{SOURCE_NAME}] __NEXT_DATA__ encontrado, pageProps keys: "
+                      f"{list(pprops.keys())[:10] if isinstance(pprops, dict) else type(pprops)}")
+        except Exception:
+            pass
+
+    # Try all other script tags with JSON content
+    for script in soup.find_all("script"):
+        content = script.string or ""
+        if len(content) < 100 or '"name"' not in content:
+            continue
+        # Look for JSON arrays
+        for m in re.finditer(r'\[(\s*\{[^[\]]{20,})\]', content):
+            try:
+                arr = json.loads('[' + m.group(1) + ']')
+                candidates = [x for x in arr if isinstance(x, dict) and _looks_like_race(x)]
+                if len(candidates) >= 2:
+                    return candidates
+            except Exception:
+                pass
+
+    return []
+
+
+# ---------------------------------------------------------------------------
+# __NEXT_DATA__ recursive search
+# ---------------------------------------------------------------------------
 def _find_race_list(obj, depth: int = 0) -> list[dict]:
-    if depth > 10:
+    if depth > 12:
         return []
     if isinstance(obj, list):
         candidates = [x for x in obj if isinstance(x, dict) and _looks_like_race(x)]
@@ -179,25 +312,21 @@ def _find_race_list(obj, depth: int = 0) -> list[dict]:
 
 def _looks_like_race(obj: dict) -> bool:
     keys = {k.lower() for k in obj}
-    has_name = any(k in keys for k in (
-        "name", "title", "race_name", "marathon_name", "event_name", "nome"
+    return any(k in keys for k in (
+        "name", "title", "race_name", "marathon_name", "event_name", "nome",
     ))
-    has_date = any(k in keys for k in (
-        "date", "start_date", "event_date", "race_date", "datetime",
-        "data", "next_date", "nextdate", "next_event_date",
-    ))
-    return has_name and has_date
 
 
 # ---------------------------------------------------------------------------
-# HTML card extraction (fallback)
+# HTML card extraction (last resort fallback)
 # ---------------------------------------------------------------------------
 _CARD_SELECTORS = [
-    ".race-card", ".marathon-card", ".event-card",
+    ".race-card", ".marathon-card", ".event-card", ".race-item",
     "article.race", "article.marathon", "article.event",
     ".races-list .item", ".marathons-list .item",
-    "[class*='race-item']", "[class*='marathon-item']",
-    "li.race", "li.event",
+    "[class*='race-item']", "[class*='marathon-item']", "[class*='event-item']",
+    "li.race", "li.event", "li.marathon",
+    "tr[data-race]", "tr[data-id]",
 ]
 
 _DATE_RE = re.compile(
@@ -254,16 +383,19 @@ def _html_card_to_dict(el) -> dict:
 _FIELD_ALIASES: dict[str, list[str]] = {
     "name":      ["name", "title", "race_name", "marathon_name", "event_name", "Nome"],
     "date":      ["date", "start_date", "event_date", "race_date", "startDate",
-                  "datetime", "data", "next_date", "nextDate", "next_event_date"],
-    "city":      ["city", "cidade", "location", "town", "venue", "place", "city_name"],
-    "country":   ["country", "country_name", "pais", "nation"],
+                  "datetime", "data", "next_date", "nextDate", "next_event_date",
+                  "raceDate", "eventDate"],
+    "city":      ["city", "cidade", "location", "town", "venue", "place", "city_name",
+                  "cityName"],
+    "country":   ["country", "country_name", "pais", "nation", "countryName"],
     "url":       ["url", "website", "link", "href", "registration_url", "entry_url",
-                  "slug", "permalink"],
+                  "slug", "permalink", "raceUrl"],
     "image":     ["image", "logo", "photo", "img", "banner", "cover", "imageUrl",
-                  "image_url", "logoUrl", "thumbnail"],
+                  "image_url", "logoUrl", "thumbnail", "photo_url"],
     "status":    ["status", "registration_status", "entry_status", "state",
                   "registration_state"],
-    "distances": ["distances", "distancias", "categories", "events", "races"],
+    "distances": ["distances", "distancias", "categories", "events", "races",
+                  "race_types", "raceTypes"],
 }
 
 
@@ -276,7 +408,6 @@ def _get(obj: dict, key: str) -> str | None:
             return v.strip()
         if isinstance(v, (int, float)):
             return str(v)
-        # Handle nested dicts like {"name": "Italy", "code": "IT"}
         if isinstance(v, dict):
             for subkey in ("name", "label", "title", "value", "en"):
                 sv = v.get(subkey)
@@ -296,24 +427,16 @@ def _parse_item(item: dict, today: str) -> tuple[Corrida | None, str]:
     if not data_evento or data_evento < today:
         return None, "date"
 
-    # Country: may be a string, a nested dict, or absent
     country_raw = (_get(item, "country") or "").lower().strip()
     if country_raw and country_raw not in _EU_COUNTRIES:
-        # Last chance: check if it's a country code (e.g. "IT", "DE")
-        country_raw = _iso2_to_country_name(country_raw)
-        if country_raw and country_raw not in _EU_COUNTRIES:
+        resolved = _ISO2_MAP.get(country_raw, country_raw)
+        if resolved not in _EU_COUNTRIES:
             return None, "country"
+        country_raw = resolved
 
     country_pt = _EN_TO_PT.get(country_raw, "") if country_raw else ""
     city_raw   = _get(item, "city") or ""
-    if country_pt and city_raw:
-        localizacao = f"{city_raw}, {country_pt}"
-    elif city_raw:
-        localizacao = city_raw
-    else:
-        localizacao = country_pt or "Europa"
-
-    # cidade field used by the JS location filter
+    localizacao = f"{city_raw}, {country_pt}".strip(", ") if city_raw and country_pt else (city_raw or country_pt or "Europa")
     cidade = localizacao
 
     url_raw = _get(item, "url") or ""
@@ -367,27 +490,18 @@ def _parse_item(item: dict, today: str) -> tuple[Corrida | None, str]:
     ), "ok"
 
 
-_ISO2_MAP = {
-    "pt": "portugal", "es": "spain", "fr": "france", "it": "italy",
-    "de": "germany", "gb": "united kingdom", "uk": "united kingdom",
-    "nl": "netherlands", "be": "belgium", "ch": "switzerland",
-    "at": "austria", "se": "sweden", "no": "norway", "dk": "denmark",
-    "fi": "finland", "ie": "ireland", "gr": "greece", "cz": "czech republic",
-    "pl": "poland", "hu": "hungary", "hr": "croatia", "ro": "romania",
-    "bg": "bulgaria", "sk": "slovakia", "si": "slovenia", "lu": "luxembourg",
-    "ee": "estonia", "lv": "latvia", "lt": "lithuania", "is": "iceland",
-    "rs": "serbia", "me": "montenegro", "mk": "north macedonia",
-    "al": "albania", "ba": "bosnia", "tr": "turkey", "ua": "ukraine",
-}
-
-
-def _iso2_to_country_name(code: str) -> str:
-    return _ISO2_MAP.get(code.lower(), code)
-
-
 _ISO_DATE_RE   = re.compile(r"(\d{4})[/\-](\d{1,2})[/\-](\d{1,2})")
 _BR_DATE_RE    = re.compile(r"(\d{1,2})[/\-](\d{1,2})[/\-](\d{4})")
 _WORDS_DATE_RE = re.compile(r"(\d{1,2})\s+(\w+)\s+(\d{4})", re.IGNORECASE)
+
+_MARATHON_KW = re.compile(
+    r"\bmarathon\b|\bmaratona\b|\bmaratón\b|\bmaratonin\b",
+    re.IGNORECASE,
+)
+_HALF_KW = re.compile(
+    r"\bhalf\b|\bmeia\b|\bmedia\b|\bhalbmarathon\b|\bsemi\b",
+    re.IGNORECASE,
+)
 
 
 def _parse_date(raw: str) -> str | None:
@@ -423,17 +537,6 @@ def _canonicalize(km: float) -> float:
     return km
 
 
-# Multi-language marathon/half keywords
-_MARATHON_KW = re.compile(
-    r"\bmarathon\b|\bmaratona\b|\bmaratón\b|\bmaratonin\b|\bmaratonę\b",
-    re.IGNORECASE,
-)
-_HALF_KW = re.compile(
-    r"\bhalf\b|\bmeia\b|\bmedia\b|\bhalbmarathon\b|\bsemi\b",
-    re.IGNORECASE,
-)
-
-
 def _parse_distances(item: dict) -> list[Distancia]:
     seen: set[float] = set()
     result: list[Distancia] = []
@@ -444,10 +547,10 @@ def _parse_distances(item: dict) -> list[Distancia]:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
 
-    # Structured distances list
     raw_dists = (
         item.get("distances") or item.get("categories") or
-        item.get("events") or item.get("races") or []
+        item.get("events") or item.get("races") or
+        item.get("race_types") or []
     )
     if isinstance(raw_dists, list):
         for d in raw_dists:
@@ -458,27 +561,25 @@ def _parse_distances(item: dict) -> list[Distancia]:
                 if m:
                     _add(float(m.group(1).replace(",", ".")))
             elif isinstance(d, dict):
-                for k in ("km", "distance", "length", "distancia", "distance_km"):
+                for k in ("km", "distance", "length", "distancia", "distance_km", "meters"):
                     v = d.get(k)
                     if isinstance(v, (int, float)):
-                        _add(float(v)); break
+                        _add(float(v) / (1000 if k == "meters" else 1)); break
                     if isinstance(v, str):
                         m = re.search(r"(\d+(?:[.,]\d+)?)", v)
                         if m:
                             _add(float(m.group(1).replace(",", "."))); break
 
-    # HTML card raw distances
     for s in item.get("distances_raw") or []:
         try:
             _add(float(str(s).replace(",", ".")))
         except ValueError:
             pass
 
-    # Text/name fallback
     if not result:
         text = (item.get("text") or item.get("name") or item.get("title") or "")
         text_lower = text.lower()
-        has_half = _HALF_KW.search(text)
+        has_half    = _HALF_KW.search(text)
         has_marathon = _MARATHON_KW.search(text)
         if has_half and has_marathon:
             _add(21.097); _add(42.195)
@@ -486,7 +587,6 @@ def _parse_distances(item: dict) -> list[Distancia]:
             _add(21.097)
         elif has_marathon:
             _add(42.195)
-        # explicit km mentions
         for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*km?\b", text, re.IGNORECASE):
             _add(float(m.group(1).replace(",", ".")))
 

@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-05-01T03:00:50+00:00",
-  "total": 1141,
+  "gerado_em": "2026-05-01T03:09:25+00:00",
+  "total": 1142,
   "corridas": [
     {
       "id": "riomar-fortaleza-i_ce_2026-04-30",
@@ -511,7 +511,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -758,6 +758,48 @@
       "fotos": []
     },
     {
+      "id": "etapa-plano-piloto_df_2026-04-30",
+      "titulo": "Etapa Plano Piloto",
+      "data_evento": "2026-04-12",
+      "horario": "07:05",
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T01:40:07+00:00",
+      "updated_at": "2026-04-30T14:52:00+00:00",
+      "fotos": []
+    },
+    {
       "id": "circuito-das-estacoes-salvador-outono",
       "titulo": "Circuito das Estações - Outono - Salvador",
       "data_evento": "2026-04-12",
@@ -837,48 +879,6 @@
       "fotos": []
     },
     {
-      "id": "etapa-plano-piloto_df_2026-04-30",
-      "titulo": "Etapa Plano Piloto",
-      "data_evento": "2026-04-12",
-      "horario": "07:05",
-      "localizacao": "Brasília-DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "SESC DF",
-          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
-          "links_inscricao": [
-            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T01:40:07+00:00",
-      "updated_at": "2026-04-30T14:52:00+00:00",
-      "fotos": []
-    },
-    {
       "id": "circuito-das-estacoes-natal-outono",
       "titulo": "Circuito das Estações - Outono - Natal",
       "data_evento": "2026-04-19",
@@ -913,6 +913,48 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
       "updated_at": "2026-04-30T21:23:44+00:00",
+      "fotos": []
+    },
+    {
+      "id": "inscricoes-abertas-para-circuito-sesc-corridas-etapa-taguatinga_df_2026-04-30",
+      "titulo": "Inscrições Abertas Para Circuito Sesc + Corridas - Etapa Taguatinga",
+      "data_evento": "2026-04-26",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T01:40:07+00:00",
+      "updated_at": "2026-04-30T14:52:00+00:00",
       "fotos": []
     },
     {
@@ -987,48 +1029,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
       "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "inscricoes-abertas-para-circuito-sesc-corridas-etapa-taguatinga_df_2026-04-30",
-      "titulo": "Inscrições Abertas Para Circuito Sesc + Corridas - Etapa Taguatinga",
-      "data_evento": "2026-04-26",
-      "horario": null,
-      "localizacao": "Brasília-DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "SESC DF",
-          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
-          "links_inscricao": [
-            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T01:40:07+00:00",
-      "updated_at": "2026-04-30T14:52:00+00:00",
       "fotos": []
     },
     {
@@ -1201,39 +1201,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85445",
-      "titulo": "15ª Corrida 1º De Maio",
-      "data_evento": "2026-05-01",
-      "horario": "07:20",
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": "07:20"
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/BWNDP85KQ392ZS839ZCTN8ZDE3LR0MN489N4C5VNSI35UL32QK.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/15%C2%AA+Corrida+1%C2%BA+de+Maio-85445",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/15%C2%AA+Corrida+1%C2%BA+de+Maio-85445"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -1266,6 +1234,38 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
       "updated_at": "2026-04-30T15:26:07+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85445",
+      "titulo": "15ª Corrida 1º De Maio",
+      "data_evento": "2026-05-01",
+      "horario": "07:20",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": "07:20"
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/BWNDP85KQ392ZS839ZCTN8ZDE3LR0MN489N4C5VNSI35UL32QK.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/15%C2%AA+Corrida+1%C2%BA+de+Maio-85445",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/15%C2%AA+Corrida+1%C2%BA+de+Maio-85445"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
       "fotos": []
     },
     {
@@ -1438,7 +1438,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -1694,43 +1694,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85295",
-      "titulo": "Corrida Em Casa A Gente Conversa 2ª Edição",
-      "data_evento": "2026-05-03",
-      "horario": "06:00",
-      "localizacao": "Iguaba Grande, RJ",
-      "cidade": "Iguaba Grande",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/BFSZUXHBJ5L3U155KVYA3L7BW2YZ64XFQM6O99VWVTTEN8447W.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+EM+CASA+A+GENTE+CONVERSA++2%C2%AA+EDI%C3%87%C3%83O-85295",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/CORRIDA+EM+CASA+A+GENTE+CONVERSA++2%C2%AA+EDI%C3%87%C3%83O-85295"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_86158",
       "titulo": "Star Girls",
       "data_evento": "2026-05-03",
@@ -1759,7 +1722,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -1912,7 +1875,44 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T17:55:10+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85295",
+      "titulo": "Corrida Em Casa A Gente Conversa 2ª Edição",
+      "data_evento": "2026-05-03",
+      "horario": "06:00",
+      "localizacao": "Iguaba Grande, RJ",
+      "cidade": "Iguaba Grande",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/BFSZUXHBJ5L3U155KVYA3L7BW2YZ64XFQM6O99VWVTTEN8447W.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+EM+CASA+A+GENTE+CONVERSA++2%C2%AA+EDI%C3%87%C3%83O-85295",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+EM+CASA+A+GENTE+CONVERSA++2%C2%AA+EDI%C3%87%C3%83O-85295"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
       "fotos": []
     },
     {
@@ -1949,7 +1949,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -2230,7 +2230,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
       "fotos": []
     },
     {
@@ -2270,7 +2270,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -2312,7 +2312,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -2386,7 +2386,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -3052,7 +3052,39 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85645",
+      "titulo": "Corrida Do Autismo 5Km",
+      "data_evento": "2026-05-10",
+      "horario": "08:30",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/JU9X2DL5JFCS1J4K1MB9Z9LFYYEUJFPC4P3LN7D7NYNW8MDQO0.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DO+AUTISMO+5KM-85645",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+DO+AUTISMO+5KM-85645"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-04-30T15:26:07+00:00",
       "fotos": []
     },
     {
@@ -3089,39 +3121,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85645",
-      "titulo": "Corrida Do Autismo 5Km",
-      "data_evento": "2026-05-10",
-      "horario": "08:30",
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/JU9X2DL5JFCS1J4K1MB9Z9LFYYEUJFPC4P3LN7D7NYNW8MDQO0.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DO+AUTISMO+5KM-85645",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/CORRIDA+DO+AUTISMO+5KM-85645"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
       "fotos": []
     },
     {
@@ -3290,38 +3290,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-04-30T20:06:54+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86323",
-      "titulo": "Desafio Macuco",
-      "data_evento": "2026-05-16",
-      "horario": "09:00",
-      "localizacao": "Bombinhas, SC",
-      "cidade": "Bombinhas",
-      "estado": "SC",
-      "distancias": [
-        {
-          "km": 4.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/M0XBZ13IONY2WJ18C8LFKWQN7HMEN3UI55P4KTXTMTGQTPO2MN.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/DESAFIO+MACUCO-86323",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/DESAFIO+MACUCO-86323"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
       "fotos": []
     },
     {
@@ -3631,6 +3599,75 @@
       "fotos": []
     },
     {
+      "id": "ts_86323",
+      "titulo": "Desafio Macuco",
+      "data_evento": "2026-05-16",
+      "horario": "09:00",
+      "localizacao": "Bombinhas, SC",
+      "cidade": "Bombinhas",
+      "estado": "SC",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/M0XBZ13IONY2WJ18C8LFKWQN7HMEN3UI55P4KTXTMTGQTPO2MN.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/DESAFIO+MACUCO-86323",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/DESAFIO+MACUCO-86323"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ativo_40174",
+      "titulo": "Netshoes Run 2026 - Brasília",
+      "data_evento": "2026-05-17",
+      "horario": null,
+      "localizacao": "Bras&iacute;lia, DF",
+      "cidade": "Bras&Iacute;Lia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://media.ativo.com/upload/evento/40174/img_logo_evento.pqw",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ativo",
+          "link_evento": "https://www.ativo.com/calendario/eventos/america-do-sul/br/df/brasilia/corrida-de-rua/40174/netshoes-run-2026-brasilia",
+          "links_inscricao": [
+            "https://pay.ativo.com/evento/40174"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:05:38+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
+      "fotos": []
+    },
+    {
       "id": "5a-corrida-da-policia-civil-de-formosa_go_2026-04-30",
       "titulo": "5ª Corrida Da Polícia Civil De Formosa",
       "data_evento": "2026-05-17",
@@ -3796,43 +3833,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-04-30T20:06:54+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ativo_40174",
-      "titulo": "Netshoes Run 2026 - Brasília",
-      "data_evento": "2026-05-17",
-      "horario": null,
-      "localizacao": "Bras&iacute;lia, DF",
-      "cidade": "Bras&Iacute;Lia",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://media.ativo.com/upload/evento/40174/img_logo_evento.pqw",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ativo",
-          "link_evento": "https://www.ativo.com/calendario/eventos/america-do-sul/br/df/brasilia/corrida-de-rua/40174/netshoes-run-2026-brasilia",
-          "links_inscricao": [
-            "https://pay.ativo.com/evento/40174"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
       "fotos": []
     },
     {
@@ -4643,38 +4643,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85103",
-      "titulo": "Samba Run SP 2026",
-      "data_evento": "2026-05-17",
-      "horario": "06:30",
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0G4T48WZ3IIXK48AG7DPIMDH8NTI5QSJJ5DGU2W4NWP41KXUXE.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_85703",
       "titulo": "Paulínia 15K 2026",
       "data_evento": "2026-05-17",
@@ -4910,48 +4878,6 @@
           "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+RUMO+AO+HEXA-86022",
           "links_inscricao": [
             "https://www.ticketsports.com.br/e/CORRIDA+RUMO+AO+HEXA-86022"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_72185",
-      "titulo": "Giro D'Italia Ride Like A Pro Brasil 2026 | Edição Campos Do Jordão - SP",
-      "data_evento": "2026-05-17",
-      "horario": "07:00",
-      "localizacao": "Campos do Jordão, SP",
-      "cidade": "Campos do Jordão",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 54.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 85.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 96.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/W0LNKTJSYJZH0GLK0WWLB6ZW1OERFR33LBKTHOWYXCQUUQPXPQ.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/GIRO+D%27ITALIA+RIDE+LIKE+A+PRO+BRASIL+2026+%7C+EDI%C3%87%C3%83O+CAMPOS+DO+JORD%C3%83O+-+SP-72185",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/GIRO+D%27ITALIA+RIDE+LIKE+A+PRO+BRASIL+2026+%7C+EDI%C3%87%C3%83O+CAMPOS+DO+JORD%C3%83O+-+SP-72185"
           ]
         }
       ],
@@ -5877,6 +5803,80 @@
       "fotos": []
     },
     {
+      "id": "ts_72185",
+      "titulo": "Giro D'Italia Ride Like A Pro Brasil 2026 | Edição Campos Do Jordão - SP",
+      "data_evento": "2026-05-17",
+      "horario": "07:00",
+      "localizacao": "Campos do Jordão, SP",
+      "cidade": "Campos do Jordão",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 54.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 85.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 96.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/W0LNKTJSYJZH0GLK0WWLB6ZW1OERFR33LBKTHOWYXCQUUQPXPQ.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/GIRO+D%27ITALIA+RIDE+LIKE+A+PRO+BRASIL+2026+%7C+EDI%C3%87%C3%83O+CAMPOS+DO+JORD%C3%83O+-+SP-72185",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/GIRO+D%27ITALIA+RIDE+LIKE+A+PRO+BRASIL+2026+%7C+EDI%C3%87%C3%83O+CAMPOS+DO+JORD%C3%83O+-+SP-72185"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85103",
+      "titulo": "Samba Run SP 2026",
+      "data_evento": "2026-05-17",
+      "horario": "06:30",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0G4T48WZ3IIXK48AG7DPIMDH8NTI5QSJJ5DGU2W4NWP41KXUXE.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
+      "fotos": []
+    },
+    {
       "id": "onerun-sunset-2026_df_2026-04-30",
       "titulo": "Onerun Sunset 2026",
       "data_evento": "2026-05-23",
@@ -6322,52 +6322,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
-      "fotos": []
-    },
-    {
-      "id": "brasilcorrida_4197",
-      "titulo": "Corrida Da Infantaria 2026",
-      "data_evento": "2026-05-24",
-      "horario": "07:30",
-      "localizacao": "Brasília, DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 4.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://midia.recebedigital.com.br/brasilcorrida/eventos/rszd-8902f8060eded588dae47b590f9ac71c296bafa0.jpeg",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": {
-        "abertura": "2026-02-20",
-        "encerramento": "2026-05-19"
-      },
-      "fontes": [
-        {
-          "nome": "Brasil Corrida",
-          "link_evento": "https://brasilcorrida.com.br/#/evento/corrida-da-infantaria-2026",
-          "links_inscricao": [
-            "https://brasilcorrida.com.br/#/inscricao/corrida-da-infantaria-2026"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T14:51:44+00:00",
-      "updated_at": "2026-04-30T20:06:54+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -6413,6 +6368,51 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:18+00:00",
       "updated_at": "2026-04-30T15:48:18+00:00",
+      "fotos": []
+    },
+    {
+      "id": "brasilcorrida_4197",
+      "titulo": "Corrida Da Infantaria 2026",
+      "data_evento": "2026-05-24",
+      "horario": "07:30",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://midia.recebedigital.com.br/brasilcorrida/eventos/rszd-8902f8060eded588dae47b590f9ac71c296bafa0.jpeg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": {
+        "abertura": "2026-02-20",
+        "encerramento": "2026-05-19"
+      },
+      "fontes": [
+        {
+          "nome": "Brasil Corrida",
+          "link_evento": "https://brasilcorrida.com.br/#/evento/corrida-da-infantaria-2026",
+          "links_inscricao": [
+            "https://brasilcorrida.com.br/#/inscricao/corrida-da-infantaria-2026"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T14:51:44+00:00",
+      "updated_at": "2026-04-30T20:06:54+00:00",
       "fotos": []
     },
     {
@@ -6528,7 +6528,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -7133,7 +7133,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -7708,7 +7708,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -7920,6 +7920,43 @@
           "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+RIO+BOSSA+NOSSA+2026-86735",
           "links_inscricao": [
             "https://www.ticketsports.com.br/e/CORRIDA+RIO+BOSSA+NOSSA+2026-86735"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_74126",
+      "titulo": "Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026",
+      "data_evento": "2026-05-24",
+      "horario": "09:45",
+      "localizacao": "Rio de Janeiro, RJ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": "09:45"
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": "10:30"
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/H66N7PNWB4RAEVKDW37BEQ1HAIYMA8CAQDUQ30MCM5VNBDFDSY.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126"
           ]
         }
       ],
@@ -8220,43 +8257,6 @@
       "fotos": []
     },
     {
-      "id": "ts_74126",
-      "titulo": "Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026",
-      "data_evento": "2026-05-24",
-      "horario": "09:45",
-      "localizacao": "Rio de Janeiro, RJ",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": "09:45"
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": "10:30"
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/H66N7PNWB4RAEVKDW37BEQ1HAIYMA8CAQDUQ30MCM5VNBDFDSY.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_74862",
       "titulo": "Pedra Grande Ultra Trail Challenge 2026",
       "data_evento": "2026-05-29",
@@ -8352,7 +8352,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -8769,7 +8769,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -8838,7 +8838,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -8905,7 +8905,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -9353,43 +9353,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85049",
-      "titulo": "1º Treinão - Senna'S Fitness - Run",
-      "data_evento": "2026-05-31",
-      "horario": "06:00",
-      "localizacao": ", BA",
-      "cidade": "",
-      "estado": "BA",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/G5NUGQBZMYIZR4WUJN0OIFMAER0APQPXF4ELFN1IC8UTDMDWVW.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/1%C2%BA+Trein%C3%A3o+-+SENNA%27S+FITNESS+-+RUN-85049",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/1%C2%BA+Trein%C3%A3o+-+SENNA%27S+FITNESS+-+RUN-85049"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_85264",
       "titulo": "Caixa | Corridas Pelo Nordeste - Juazeiro-Ba",
       "data_evento": "2026-05-31",
@@ -9559,7 +9522,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -9671,54 +9634,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86094",
-      "titulo": "2ª Meia Maratona - Corrida Do Leite",
-      "data_evento": "2026-05-31",
-      "horario": "06:00",
-      "localizacao": "Presidente Getúlio, SC",
-      "cidade": "Presidente Getúlio",
-      "estado": "SC",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/HRPOXUW1XTXD13M2UH10NDF1VDXHI3WGJTRT6WX6SF6E5S35XH.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/2%C2%AA+MEIA+MARATONA+-+CORRIDA+DO+LEITE-86094",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/2%C2%AA+MEIA+MARATONA+-+CORRIDA+DO+LEITE-86094"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -10370,7 +10286,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -10872,6 +10788,90 @@
       "fotos": []
     },
     {
+      "id": "ts_86094",
+      "titulo": "2ª Meia Maratona - Corrida Do Leite",
+      "data_evento": "2026-05-31",
+      "horario": "06:00",
+      "localizacao": "Presidente Getúlio, SC",
+      "cidade": "Presidente Getúlio",
+      "estado": "SC",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/HRPOXUW1XTXD13M2UH10NDF1VDXHI3WGJTRT6WX6SF6E5S35XH.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/2%C2%AA+MEIA+MARATONA+-+CORRIDA+DO+LEITE-86094",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/2%C2%AA+MEIA+MARATONA+-+CORRIDA+DO+LEITE-86094"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85049",
+      "titulo": "1º Treinão - Senna'S Fitness - Run",
+      "data_evento": "2026-05-31",
+      "horario": "06:00",
+      "localizacao": ", BA",
+      "cidade": "",
+      "estado": "BA",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/G5NUGQBZMYIZR4WUJN0OIFMAER0APQPXF4ELFN1IC8UTDMDWVW.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/1%C2%BA+Trein%C3%A3o+-+SENNA%27S+FITNESS+-+RUN-85049",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/1%C2%BA+Trein%C3%A3o+-+SENNA%27S+FITNESS+-+RUN-85049"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
+      "fotos": []
+    },
+    {
       "id": "movimente-se-corrida-e-caminhada-para-saude_df_2026-04-30",
       "titulo": "Movimente-Se: Corrida E Caminhada Para Saúde",
       "data_evento": "2026-06-04",
@@ -10947,7 +10947,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -11286,7 +11286,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -12138,7 +12138,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -12972,7 +12972,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -13157,7 +13157,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -13653,7 +13653,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -13811,7 +13811,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -14339,7 +14339,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -15204,7 +15204,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -15242,6 +15242,46 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
       "updated_at": "2026-04-30T14:18:52+00:00",
+      "fotos": []
+    },
+    {
+      "id": "brasilcorrida_4220",
+      "titulo": "Circuito Corrida Zoo Animal 2026 – Etapa Arara Azul",
+      "data_evento": "2026-06-21",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://midia.recebedigital.com.br/brasilcorrida/eventos/rszd-f81cc7eeb740528e89f69cee0a4d4a33d4ad2ce6.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": {
+        "abertura": "2026-03-15",
+        "encerramento": "2026-06-10"
+      },
+      "fontes": [
+        {
+          "nome": "Brasil Corrida",
+          "link_evento": "https://brasilcorrida.com.br/#/evento/circuito-corrida-zoo-animal-2026-----etapa-arara-azul",
+          "links_inscricao": [
+            "https://brasilcorrida.com.br/#/inscricao/circuito-corrida-zoo-animal-2026-----etapa-arara-azul"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:48:18+00:00",
+      "updated_at": "2026-04-30T15:48:18+00:00",
       "fotos": []
     },
     {
@@ -15288,47 +15328,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
-      "fotos": []
-    },
-    {
-      "id": "brasilcorrida_4220",
-      "titulo": "Circuito Corrida Zoo Animal 2026 – Etapa Arara Azul",
-      "data_evento": "2026-06-21",
-      "horario": "07:00",
-      "localizacao": "Brasília, DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://midia.recebedigital.com.br/brasilcorrida/eventos/rszd-f81cc7eeb740528e89f69cee0a4d4a33d4ad2ce6.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": {
-        "abertura": "2026-03-15",
-        "encerramento": "2026-06-10"
-      },
-      "fontes": [
-        {
-          "nome": "Brasil Corrida",
-          "link_evento": "https://brasilcorrida.com.br/#/evento/circuito-corrida-zoo-animal-2026-----etapa-arara-azul",
-          "links_inscricao": [
-            "https://brasilcorrida.com.br/#/inscricao/circuito-corrida-zoo-animal-2026-----etapa-arara-azul"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:48:18+00:00",
-      "updated_at": "2026-04-30T15:48:18+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -15723,7 +15723,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -17184,7 +17184,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -17835,7 +17835,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -18516,7 +18516,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -18748,7 +18748,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -19134,63 +19134,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85781",
-      "titulo": "Terras Altas Trail Run - 2026",
-      "data_evento": "2026-07-04",
-      "horario": "05:00",
-      "localizacao": "Itamonte, MG",
-      "cidade": "Itamonte",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 7.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 15.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 25.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 26.25,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 35.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 55.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/4H0YUGS7Q4P5PZDNOOXPM22OZTQUDMOKZFC9407X275W6D92S7.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/TERRAS+ALTAS+TRAIL+RUN+-+2026-85781",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/TERRAS+ALTAS+TRAIL+RUN+-+2026-85781"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-04-30T15:26:07+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_85619",
       "titulo": "Srb Paraty 2026",
       "data_evento": "2026-07-04",
@@ -19309,6 +19252,63 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
       "updated_at": "2026-04-30T15:26:07+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85781",
+      "titulo": "Terras Altas Trail Run - 2026",
+      "data_evento": "2026-07-04",
+      "horario": "05:00",
+      "localizacao": "Itamonte, MG",
+      "cidade": "Itamonte",
+      "estado": "MG",
+      "distancias": [
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 25.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 26.25,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 35.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 55.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/4H0YUGS7Q4P5PZDNOOXPM22OZTQUDMOKZFC9407X275W6D92S7.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/TERRAS+ALTAS+TRAIL+RUN+-+2026-85781",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/TERRAS+ALTAS+TRAIL+RUN+-+2026-85781"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T03:09:03+00:00",
       "fotos": []
     },
     {
@@ -19890,7 +19890,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -20322,7 +20322,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -21706,7 +21706,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -22805,7 +22805,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -22852,7 +22852,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -23338,7 +23338,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -23560,7 +23560,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -24207,7 +24207,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -24249,7 +24249,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -24281,7 +24281,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -24979,7 +24979,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -25011,7 +25011,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -25310,7 +25310,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -25485,7 +25485,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -26551,7 +26551,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -26813,7 +26813,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -26882,7 +26882,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -27758,7 +27758,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -28072,7 +28072,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -28240,7 +28240,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -28625,7 +28625,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -29025,7 +29025,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:16+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -29262,7 +29262,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -29489,7 +29489,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -29605,7 +29605,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-01T02:44:51+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -30294,7 +30294,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -30716,7 +30716,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -31138,7 +31138,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -31417,7 +31417,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -32353,7 +32353,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-01T02:44:50+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -32617,7 +32617,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T20:48:24+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -32697,6 +32697,53 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
       "updated_at": "2026-04-30T15:26:07+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_86855",
+      "titulo": "Vale Race 2026 - 2ª Edição",
+      "data_evento": "2026-09-13",
+      "horario": "06:30",
+      "localizacao": "Turvo, SC",
+      "cidade": "Turvo",
+      "estado": "SC",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/06CXP778BL7BMFW67ZWV924U4LEK5EFDIRCHJKA6C2ZC80Z2YB.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/VALE+RACE+2026+-+2%C2%AA+EDI%C3%87%C3%83O+-86855",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/VALE+RACE+2026+-+2%C2%AA+EDI%C3%87%C3%83O+-86855"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-01T03:08:05+00:00",
+      "updated_at": "2026-05-01T03:08:05+00:00",
       "fotos": []
     },
     {
@@ -33131,7 +33178,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -33533,7 +33580,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -33909,7 +33956,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -34057,7 +34104,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -35657,7 +35704,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -36133,7 +36180,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -36769,43 +36816,6 @@
       "fotos": []
     },
     {
-      "id": "41a-corrida-do-cirio-2026_pa_2026-04-30",
-      "titulo": "41ª Corrida Do Círio - 2026",
-      "data_evento": "2026-10-18",
-      "horario": "06:00",
-      "localizacao": "Belém, PA",
-      "cidade": "Belém",
-      "estado": "PA",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1777124125962x611562322867360400/banner_site_inscri%C3%A7%C3%A3o.png",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Central da Corrida",
-          "link_evento": "https://centraldacorrida.com.br/evento/41ª-corrida-do-círio---2026",
-          "links_inscricao": [
-            "https://centraldacorrida.com.br/evento/41ª-corrida-do-círio---2026"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-04-30T14:18:52+00:00",
-      "fotos": []
-    },
-    {
       "id": "ativo_40176",
       "titulo": "Netshoes Run 2026 - Recife",
       "data_evento": "2026-10-18",
@@ -36840,6 +36850,43 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:05:38+00:00",
       "updated_at": "2026-04-30T15:05:38+00:00",
+      "fotos": []
+    },
+    {
+      "id": "41a-corrida-do-cirio-2026_pa_2026-04-30",
+      "titulo": "41ª Corrida Do Círio - 2026",
+      "data_evento": "2026-10-18",
+      "horario": "06:00",
+      "localizacao": "Belém, PA",
+      "cidade": "Belém",
+      "estado": "PA",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://7a4b84bbecb651e655f4d605b8e4da45.cdn.bubble.io/f1777124125962x611562322867360400/banner_site_inscri%C3%A7%C3%A3o.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Central da Corrida",
+          "link_evento": "https://centraldacorrida.com.br/evento/41ª-corrida-do-círio---2026",
+          "links_inscricao": [
+            "https://centraldacorrida.com.br/evento/41ª-corrida-do-círio---2026"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T14:18:52+00:00",
+      "updated_at": "2026-04-30T14:18:52+00:00",
       "fotos": []
     },
     {
@@ -36886,7 +36933,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -36923,7 +36970,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -36960,7 +37007,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -37296,7 +37343,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -38140,7 +38187,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -38172,7 +38219,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -38209,7 +38256,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -38604,7 +38651,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -40019,7 +40066,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -40135,7 +40182,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-01T02:44:47+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -40535,7 +40582,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -40720,7 +40767,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -41130,7 +41177,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -41500,7 +41547,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42647,7 +42694,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42689,7 +42736,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42746,7 +42793,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42803,7 +42850,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42863,7 +42910,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42952,7 +42999,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -42999,7 +43046,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43049,7 +43096,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43091,7 +43138,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43176,7 +43223,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43229,7 +43276,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43276,7 +43323,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43308,7 +43355,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43340,7 +43387,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43372,7 +43419,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43424,7 +43471,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43456,7 +43503,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43493,7 +43540,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43594,7 +43641,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -43982,7 +44029,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-05-01T03:00:19+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -44071,7 +44118,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -44113,7 +44160,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -44155,7 +44202,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -44197,7 +44244,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     },
     {
@@ -44254,7 +44301,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T03:00:20+00:00",
+      "updated_at": "2026-05-01T03:09:02+00:00",
       "fotos": []
     }
   ]

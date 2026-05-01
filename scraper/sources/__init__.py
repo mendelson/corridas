@@ -21,4 +21,5 @@ from . import (
     ativo,
     mks_esportes,
     circuito_das_estacoes,
+    godream,
 )

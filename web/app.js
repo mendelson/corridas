@@ -70,8 +70,7 @@ const STRINGS = {
     statusClosed: '🔴 Inscrições encerradas',
     statusSoon: '⚪ Em breve',
     groupBrasil: 'Brasil',
-    groupInternacional: 'Internacional',
-    worldMajors: 'World Marathon Majors',
+    allCountry: country => `Todo ${country}`,
     periodOptions: [
       { value: 'past15', label: 'Desde 15 dias atrás' },
       { value: 'today',  label: 'A partir de hoje' },
@@ -134,8 +133,7 @@ const STRINGS = {
     statusClosed: '🔴 Closed registrations',
     statusSoon: '⚪ Coming soon',
     groupBrasil: 'Brazil',
-    groupInternacional: 'International',
-    worldMajors: 'World Marathon Majors',
+    allCountry: country => `All ${country}`,
     periodOptions: [
       { value: 'past15', label: 'Since 15 days ago' },
       { value: 'today',  label: 'From today' },
@@ -428,6 +426,11 @@ function _extractCountry(cidade) {
   return _CITY_COUNTRY[cidade.trim()] || null;
 }
 
+function _extractCity(cidade) {
+  if (!cidade) return null;
+  return cidade.split(',')[0].trim() || null;
+}
+
 // ---------------------------------------------------------------------------
 // Geo-detection fallback chain
 // ---------------------------------------------------------------------------
@@ -441,10 +444,14 @@ function _hasFutureEvents(filterValue) {
 // Fallback candidates, in priority order
 function _getFallbackChain(geoValue) {
   if (!geoValue) return [];
-  // INT:Country → MAJORS
-  if (geoValue.startsWith('INT:')) return [geoValue, 'MAJORS'];
-  // BR state → all Brazil → MAJORS
-  return [geoValue, 'BR', 'MAJORS'];
+  // INT:Country:City → INT:Country; INT:Country → todos
+  if (geoValue.startsWith('INT:')) {
+    const rest = geoValue.slice(4);
+    if (rest.includes(':')) return [geoValue, 'INT:' + rest.slice(0, rest.indexOf(':'))];
+    return [geoValue];
+  }
+  // BR state → all Brazil
+  return [geoValue, 'BR'];
 }
 
 function _applyGeoLocation() {
@@ -543,14 +550,6 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
       .map(c => c.estado)
   )].sort();
 
-  const intCountries = [...new Set(
-    base
-      .filter(c => c.estado === 'INT' && c.data_evento >= today)
-      .map(c => _extractCountry(c.cidade))
-  )].filter(Boolean).sort();
-
-  const hasIntEvents = base.some(c => c.estado === 'INT' && c.data_evento >= today);
-
   // Brasil group: "Todo o Brasil" + individual states
   if (brEstados.length > 0) {
     const grp = document.createElement('optgroup');
@@ -570,24 +569,32 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     estadoSelect.appendChild(grp);
   }
 
-  // Internacional group: individual countries + World Majors
-  if (intCountries.length > 0 || hasIntEvents) {
+  // One optgroup per country, with individual cities inside
+  const countryCity = new Map(); // country → Set of cities
+  for (const c of base) {
+    if (c.estado !== 'INT' || c.data_evento < today) continue;
+    const country = _extractCountry(c.cidade);
+    if (!country) continue;
+    const city = _extractCity(c.cidade);
+    if (!countryCity.has(country)) countryCity.set(country, new Set());
+    if (city && city !== country) countryCity.get(country).add(city);
+  }
+  for (const country of [...countryCity.keys()].sort()) {
+    const cities = [...countryCity.get(country)].sort();
     const grp = document.createElement('optgroup');
-    grp.label = T.groupInternacional;
-
-    for (const country of intCountries) {
+    grp.label = country;
+    if (cities.length > 1) {
+      const allOpt = document.createElement('option');
+      allOpt.value = 'INT:' + country;
+      allOpt.textContent = T.allCountry(country);
+      grp.appendChild(allOpt);
+    }
+    for (const city of cities) {
       const opt = document.createElement('option');
-      opt.value = 'INT:' + country;
-      opt.textContent = country;
+      opt.value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
+      opt.textContent = city;
       grp.appendChild(opt);
     }
-
-    // World Majors as a special option (always present when INT events exist)
-    const majorsOpt = document.createElement('option');
-    majorsOpt.value = 'MAJORS';
-    majorsOpt.textContent = T.worldMajors;
-    grp.appendChild(majorsOpt);
-
     estadoSelect.appendChild(grp);
   }
 
@@ -727,8 +734,14 @@ function _matchEstadoValue(c, value) {
   if (value === 'INT')   return c.estado === 'INT';
   if (value === 'MAJORS') return isMajor(c);
   if (value.startsWith('INT:')) {
-    const country = value.slice(4);
-    return c.estado === 'INT' && _extractCountry(c.cidade) === country;
+    const rest = value.slice(4);
+    const sep = rest.indexOf(':');
+    if (sep === -1) {
+      return c.estado === 'INT' && _extractCountry(c.cidade) === rest;
+    }
+    const country = rest.slice(0, sep);
+    const city    = rest.slice(sep + 1);
+    return c.estado === 'INT' && _extractCountry(c.cidade) === country && _extractCity(c.cidade) === city;
   }
   return c.estado === value;
 }

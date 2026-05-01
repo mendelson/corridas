@@ -23,4 +23,5 @@ from . import (
     circuito_das_estacoes,
     godream,
     volta_do_lago,
+    world_marathons,
 )

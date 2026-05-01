@@ -39,6 +39,7 @@ from .sources import (
     runner_brasil,
     brasil_corrida,
     circuito_das_estacoes,
+    volta_do_lago,
 )
 from .sources.majors import (
     tokyo,
@@ -88,6 +89,8 @@ SOURCES = [
     nyc,
     sydney,
     venice,
+    # Single events (DF)
+    volta_do_lago,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

@@ -22,4 +22,5 @@ from . import (
     mks_esportes,
     circuito_das_estacoes,
     godream,
+    volta_do_lago,
 )

@@ -26,11 +26,13 @@ _AWARD_KW = re.compile(
     re.IGNORECASE,
 )
 
-# Keywords that indicate non-running events (triathlon, swimming, etc.)
+# Keywords that indicate non-running events (triathlon, swimming, cycling, etc.)
 _NON_RUNNING_KW = [
     "triathlon", "triathon", "ironman", "duathlon",
     "natação", "natacao", "águas abertas", "aguas abertas", "swimrun",
     "federação de triathlon", "federacao de triathlon",
+    "granfondo", "gran fondo", "granfondo", "gran-fondo",
+    "ciclismo", "pedalada", "bike tour",
 ]
 
 # Addresses that indicate a virtual/online event with no fixed location
@@ -51,6 +53,31 @@ _INTL_CITY_KW = {
     "new york", "boston", "chicago", "tokyo", "tóquio", "sydney",
     "patagonia argentina", "patagônia argentina",
 }
+
+# Maps city keyword → country name (PT) for display in localizacao
+_CITY_TO_COUNTRY: list[tuple[str, str]] = [
+    ("buenos aires", "Argentina"), ("patagonia argentina", "Argentina"),
+    ("patagônia argentina", "Argentina"),
+    ("assunção", "Paraguai"), ("assuncao", "Paraguai"),
+    ("montevideo", "Uruguai"), ("montevidéu", "Uruguai"),
+    ("punta del este", "Uruguai"),
+    ("santiago", "Chile"),
+    ("lima", "Peru"),
+    ("bogotá", "Colômbia"), ("bogota", "Colômbia"),
+    ("paris", "França"),
+    ("london", "Reino Unido"), ("londres", "Reino Unido"),
+    ("berlin", "Alemanha"), ("berlim", "Alemanha"),
+    ("amsterdam", "Holanda"), ("rotterdam", "Holanda"),
+    ("madrid", "Espanha"), ("barcelona", "Espanha"),
+    ("veneza", "Itália"), ("venice", "Itália"), ("venezia", "Itália"),
+    ("florença", "Itália"), ("florence", "Itália"),
+    ("rome", "Itália"), ("roma", "Itália"),
+    ("colonia agip", "Itália"), ("nove colli", "Itália"),
+    ("porto", "Portugal"), ("lisboa", "Portugal"), ("lisbon", "Portugal"),
+    ("new york", "EUA"), ("boston", "EUA"), ("chicago", "EUA"),
+    ("tokyo", "Japão"), ("tóquio", "Japão"),
+    ("sydney", "Austrália"),
+]
 
 
 def scrape() -> list[Corrida]:
@@ -243,6 +270,14 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
             estado = "INT"
         else:
             estado = infer_estado(addr, titulo) or "??"
+
+    # Enrich international locations with country name
+    if estado == "INT" and addr and "," not in addr:
+        addr_lower = addr.lower()
+        for kw, country in _CITY_TO_COUNTRY:
+            if kw in addr_lower:
+                addr = f"{addr}, {country}"
+                break
 
     data_evento = _parse_date(ev.get("date") or "")
     if not data_evento or data_evento < today:

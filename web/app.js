@@ -5,7 +5,6 @@
 // ---------------------------------------------------------------------------
 const LANG = (() => {
   if (window.location.pathname.startsWith('/en')) return 'en';
-  // Respect explicit user choice (prevents redirect loop when user picks PT)
   if (localStorage.getItem('lang') === 'pt') return 'pt';
   const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'pt').toLowerCase();
   if (!bl.startsWith('pt')) {
@@ -40,6 +39,7 @@ const STRINGS = {
     refreshAriaLabel: 'Atualizar',
     clearFiltersAriaLabel: 'Limpar filtros',
     allLocations: 'Todos',
+    allBrazil: 'Todo o Brasil',
     allSources: 'Todas as fontes',
     nSources: n => n === 1 ? `${n} fonte` : `${n} fontes`,
     loading: 'Carregando...',
@@ -71,7 +71,7 @@ const STRINGS = {
     statusSoon: '⚪ Em breve',
     groupBrasil: 'Brasil',
     groupInternacional: 'Internacional',
-    allInternacional: 'Todos internacionais',
+    worldMajors: 'World Marathon Majors',
     periodOptions: [
       { value: 'past15', label: 'Desde 15 dias atrás' },
       { value: 'today',  label: 'A partir de hoje' },
@@ -103,6 +103,7 @@ const STRINGS = {
     refreshAriaLabel: 'Refresh',
     clearFiltersAriaLabel: 'Clear filters',
     allLocations: 'All',
+    allBrazil: 'All Brazil',
     allSources: 'All sources',
     nSources: n => n === 1 ? `${n} source` : `${n} sources`,
     loading: 'Loading...',
@@ -134,7 +135,7 @@ const STRINGS = {
     statusSoon: '⚪ Coming soon',
     groupBrasil: 'Brazil',
     groupInternacional: 'International',
-    allInternacional: 'All international',
+    worldMajors: 'World Marathon Majors',
     periodOptions: [
       { value: 'past15', label: 'Since 15 days ago' },
       { value: 'today',  label: 'From today' },
@@ -155,7 +156,10 @@ const T = STRINGS[LANG];
 let allCorridas = [];
 let filteredCorridas = [];
 
-let _geoEstado = null;
+// Raw geo-detected filter value (e.g. 'DF', 'INT:Japão')
+let _geoDetected = null;
+// Filter value actually applied after fallback chain (may differ from _geoDetected)
+let _geoApplied = null;
 
 const state = {
   distMode: 'select',
@@ -175,33 +179,33 @@ const state = {
 // ---------------------------------------------------------------------------
 const $ = id => document.getElementById(id);
 
-const cardsList        = $('cardsList');
-const emptyState       = $('emptyState');
-const resultCount      = $('resultCount');
-const btnClear         = $('btnClear');
-const btnClearEmpty    = $('btnClearEmpty');
-const btnRefresh       = $('btnRefresh');
-const btnLang          = $('btnLang');
-const estadoSelect     = $('estadoSelect');
-const periodoSelect    = $('periodoSelect');
-const customDateRow    = $('customDateRow');
-const dateFrom         = $('dateFrom');
-const dateTo           = $('dateTo');
-const pillsContainer   = $('pillsContainer');
+const cardsList         = $('cardsList');
+const emptyState        = $('emptyState');
+const resultCount       = $('resultCount');
+const btnClear          = $('btnClear');
+const btnClearEmpty     = $('btnClearEmpty');
+const btnRefresh        = $('btnRefresh');
+const btnLang           = $('btnLang');
+const estadoSelect      = $('estadoSelect');
+const periodoSelect     = $('periodoSelect');
+const customDateRow     = $('customDateRow');
+const dateFrom          = $('dateFrom');
+const dateTo            = $('dateTo');
+const pillsContainer    = $('pillsContainer');
 const intervalContainer = $('intervalContainer');
-const modeSelect       = $('modeSelect');
-const modeInterval     = $('modeInterval');
-const distMin          = $('distMin');
-const distMax          = $('distMax');
-const cardTemplate     = $('cardTemplate');
-const searchInput      = $('searchInput');
+const modeSelect        = $('modeSelect');
+const modeInterval      = $('modeInterval');
+const distMin           = $('distMin');
+const distMax           = $('distMax');
+const cardTemplate      = $('cardTemplate');
+const searchInput       = $('searchInput');
 const fonteFilterWrapper  = $('fonteFilterWrapper');
 const fonteFilterBtn      = $('fonteFilterBtn');
 const fonteFilterDropdown = $('fonteFilterDropdown');
 const fonteFilterLabel    = $('fonteFilterLabel');
 
 // ---------------------------------------------------------------------------
-// i18n initialisation — sets all static text from T
+// i18n initialisation
 // ---------------------------------------------------------------------------
 function initI18n() {
   document.title = T.siteTitle;
@@ -219,8 +223,8 @@ function initI18n() {
   if (modeSelect)   modeSelect.textContent   = T.modeSelect;
   if (modeInterval) modeInterval.textContent = T.modeInterval;
 
-  const ldf = $('labelDistFrom');
-  const ldt = $('labelDistTo');
+  const ldf  = $('labelDistFrom');
+  const ldt  = $('labelDistTo');
   const ldaf = $('labelDateFrom');
   const ldat = $('labelDateTo');
   if (ldf)  ldf.textContent  = T.distFrom;
@@ -248,16 +252,14 @@ function initI18n() {
     if (estadoSelect.options[0]) estadoSelect.options[0].textContent = T.allLocations;
   }
 
-  if (fonteFilterBtn) fonteFilterBtn.setAttribute('aria-label', T.fonteFilterAriaLabel);
+  if (fonteFilterBtn)   fonteFilterBtn.setAttribute('aria-label', T.fonteFilterAriaLabel);
   if (fonteFilterLabel) fonteFilterLabel.textContent = T.allSources;
-  if (resultCount)  resultCount.textContent  = T.loading;
-  if (btnClear)     btnClear.textContent     = T.clearFilters;
+  if (resultCount)   resultCount.textContent  = T.loading;
+  if (btnClear)      btnClear.textContent     = T.clearFilters;
   if (btnClearEmpty) btnClearEmpty.textContent = T.clearFilters;
 
   const emptyMsg = emptyState && emptyState.querySelector('p');
   if (emptyMsg) emptyMsg.textContent = T.noRacesMsg;
-
-  // Keep btnClearEmpty label in sync
   const emptyBtn = emptyState && emptyState.querySelector('.btn-clear');
   if (emptyBtn) emptyBtn.textContent = T.clearFilters;
 }
@@ -286,10 +288,10 @@ function saveFilters() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify({
       activePills: [...state.activePills],
       distMode: state.distMode,
-      distMin: state.distMin,
-      distMax: state.distMax,
-      estado: state.estado,
-      fontes: [...state.fontes],
+      distMin:  state.distMin,
+      distMax:  state.distMax,
+      estado:   state.estado,
+      fontes:   [...state.fontes],
     }));
   } catch (e) { /* ignore */ }
 }
@@ -330,7 +332,7 @@ async function fetchData() {
 }
 
 // ---------------------------------------------------------------------------
-// Location filter helpers
+// Location / geo helpers
 // ---------------------------------------------------------------------------
 const _ESTADO_LABELS = {
   AC: 'Acre · AC',           AL: 'Alagoas · AL',        AM: 'Amazonas · AM',
@@ -344,16 +346,124 @@ const _ESTADO_LABELS = {
   SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
 };
 
-function _applyGeoEstado() {
-  if (!_geoEstado || state.estado !== 'todos') return;
-  if (![...estadoSelect.options].some(o => o.value === _geoEstado)) return;
+// Fallback country for cities that omit the ", Country" suffix
+const _CITY_COUNTRY = {
+  'Buenos Aires': 'Argentina',
+  'Assunção':     'Paraguai',
+  'Punta Del Este': 'Uruguai',
+  'Porto':        'Portugal',
+  'Paris':        'França',
+  'Veneza':       'Itália',
+  'Colonia Agip': 'Itália',
+  'Roma':         'Itália',
+  'Milão':        'Itália',
+  'Madrid':       'Espanha',
+  'Barcelona':    'Espanha',
+  'Amsterdam':    'Países Baixos',
+  'Amsterdã':     'Países Baixos',
+  'Montevidéu':   'Uruguai',
+  'Santiago':     'Chile',
+  'Lima':         'Peru',
+  'Bogotá':       'Colômbia',
+  'Cidade do México': 'México',
+};
+
+// ISO 3166-1 alpha-2 → country name as used in the data (Portuguese)
+const _ISO2_TO_DATA_COUNTRY = {
+  AR: 'Argentina',
+  PY: 'Paraguai',
+  UY: 'Uruguai',
+  PT: 'Portugal',
+  IT: 'Itália',
+  DE: 'Alemanha',
+  FR: 'França',
+  GB: 'Reino Unido',
+  US: 'Eua',
+  JP: 'Japão',
+  AU: 'Austrália',
+  ES: 'Espanha',
+  CL: 'Chile',
+  CO: 'Colômbia',
+  MX: 'México',
+  PE: 'Peru',
+  NL: 'Países Baixos',
+  AT: 'Áustria',
+  CH: 'Suíça',
+  SE: 'Suécia',
+  NO: 'Noruega',
+  DK: 'Dinamarca',
+  FI: 'Finlândia',
+  PL: 'Polônia',
+  CZ: 'República Tcheca',
+  ZA: 'África do Sul',
+  KE: 'Quênia',
+  ET: 'Etiópia',
+  CN: 'China',
+  KR: 'Coreia do Sul',
+  CA: 'Canadá',
+  NZ: 'Nova Zelândia',
+};
+
+// Cities that host World Marathon Majors (lowercase for matching)
+const _MAJOR_CITIES = new Set([
+  'tóquio', 'tokyo',
+  'boston',
+  'londres', 'london',
+  'berlim', 'berlin',
+  'chicago',
+  'nova york', 'new york',
+  'sydney',
+]);
+
+function isMajor(c) {
+  if (c.estado !== 'INT') return false;
+  const city = (c.cidade || '').toLowerCase().split(',')[0].trim();
+  return _MAJOR_CITIES.has(city);
+}
+
+function _extractCountry(cidade) {
+  if (!cidade) return null;
+  const parts = cidade.split(',');
+  if (parts.length > 1) return parts[parts.length - 1].trim();
+  return _CITY_COUNTRY[cidade.trim()] || null;
+}
+
+// ---------------------------------------------------------------------------
+// Geo-detection fallback chain
+// ---------------------------------------------------------------------------
+
+// Returns true if there is at least one future event matching filterValue
+function _hasFutureEvents(filterValue) {
   const today = todayStr();
-  const wouldMatch = allCorridas.some(c => c.estado === _geoEstado && matchesPeriodo(c, today));
-  if (!wouldMatch) return;
-  state.estado = _geoEstado;
-  estadoSelect.value = _geoEstado;
-  saveFilters();
-  applyFilters();
+  return allCorridas.some(c => c.data_evento >= today && _matchEstadoValue(c, filterValue));
+}
+
+// Fallback candidates, in priority order
+function _getFallbackChain(geoValue) {
+  if (!geoValue) return [];
+  // INT:Country → MAJORS
+  if (geoValue.startsWith('INT:')) return [geoValue, 'MAJORS'];
+  // BR state → all Brazil → MAJORS
+  return [geoValue, 'BR', 'MAJORS'];
+}
+
+function _applyGeoLocation() {
+  // Don't override a saved/explicit user filter
+  if (state.estado !== 'todos') return;
+  if (!_geoDetected && !allCorridas.length) return;
+
+  const availableValues = new Set([...estadoSelect.options].map(o => o.value));
+
+  for (const candidate of _getFallbackChain(_geoDetected)) {
+    if (!availableValues.has(candidate)) continue;
+    if (!_hasFutureEvents(candidate)) continue;
+    _geoApplied = candidate;
+    state.estado = candidate;
+    estadoSelect.value = candidate;
+    saveFilters();
+    applyFilters();
+    return;
+  }
 }
 
 async function _tryGeoFetch(url) {
@@ -371,15 +481,27 @@ async function _tryGeoFetch(url) {
 
 async function detectUserLocation() {
   const fetchers = [
-    () => _tryGeoFetch('https://ipwho.is/').then(d =>
-      (d?.success && d.country_code === 'BR' && _ESTADO_LABELS[d.region_code]) ? d.region_code : null),
-    () => _tryGeoFetch('https://freeipapi.com/api/json').then(d =>
-      (d?.countryCode === 'BR' && _ESTADO_LABELS[d.regionCode]) ? d.regionCode : null),
-    () => _tryGeoFetch('https://api.ip.sb/geoip').then(d =>
-      (d?.country_code === 'BR' && _ESTADO_LABELS[d.region_code]) ? d.region_code : null),
+    () => _tryGeoFetch('https://ipwho.is/').then(d => {
+      if (!d?.success || !d.country_code) return null;
+      if (d.country_code === 'BR' && _ESTADO_LABELS[d.region_code])
+        return { iso2: 'BR', region: d.region_code };
+      return { iso2: d.country_code, region: null };
+    }),
+    () => _tryGeoFetch('https://freeipapi.com/api/json').then(d => {
+      if (!d?.countryCode) return null;
+      if (d.countryCode === 'BR' && _ESTADO_LABELS[d.regionCode])
+        return { iso2: 'BR', region: d.regionCode };
+      return { iso2: d.countryCode, region: null };
+    }),
+    () => _tryGeoFetch('https://api.ip.sb/geoip').then(d => {
+      if (!d?.country_code) return null;
+      if (d.country_code === 'BR' && _ESTADO_LABELS[d.region_code])
+        return { iso2: 'BR', region: d.region_code };
+      return { iso2: d.country_code, region: null };
+    }),
   ];
 
-  const uf = await new Promise(resolve => {
+  const result = await new Promise(resolve => {
     let remaining = fetchers.length;
     for (const fn of fetchers) {
       fn().then(r => {
@@ -389,16 +511,17 @@ async function detectUserLocation() {
     }
   });
 
-  if (uf) {
-    _geoEstado = uf;
-    _applyGeoEstado();
-  }
-}
+  if (!result) return;
 
-function _extractCountry(cidade) {
-  if (!cidade) return null;
-  const parts = cidade.split(',');
-  return parts.length > 1 ? parts[parts.length - 1].trim() : null;
+  if (result.iso2 === 'BR') {
+    if (result.region) _geoDetected = result.region;  // e.g. 'DF'
+    else _geoDetected = 'BR';
+  } else {
+    const dataCountry = _ISO2_TO_DATA_COUNTRY[result.iso2];
+    if (dataCountry) _geoDetected = 'INT:' + dataCountry;
+  }
+
+  _applyGeoLocation();
 }
 
 // ---------------------------------------------------------------------------
@@ -407,17 +530,33 @@ function _extractCountry(cidade) {
 function populateEstadoFilter() {
   while (estadoSelect.options.length > 1) estadoSelect.remove(1);
 
+  const today = todayStr();
+
+  // Only include states/countries that have at least one future event
   const brEstados = [...new Set(
-    allCorridas.filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??').map(c => c.estado)
+    allCorridas
+      .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
+      .map(c => c.estado)
   )].sort();
 
   const intCountries = [...new Set(
-    allCorridas.filter(c => c.estado === 'INT').map(c => _extractCountry(c.cidade))
+    allCorridas
+      .filter(c => c.estado === 'INT' && c.data_evento >= today)
+      .map(c => _extractCountry(c.cidade))
   )].filter(Boolean).sort();
 
+  const hasIntEvents = allCorridas.some(c => c.estado === 'INT' && c.data_evento >= today);
+
+  // Brasil group: "Todo o Brasil" + individual states
   if (brEstados.length > 0) {
     const grp = document.createElement('optgroup');
     grp.label = T.groupBrasil;
+
+    const allBrOpt = document.createElement('option');
+    allBrOpt.value = 'BR';
+    allBrOpt.textContent = T.allBrazil;
+    grp.appendChild(allBrOpt);
+
     for (const uf of brEstados) {
       const opt = document.createElement('option');
       opt.value = uf;
@@ -427,28 +566,35 @@ function populateEstadoFilter() {
     estadoSelect.appendChild(grp);
   }
 
-  if (intCountries.length > 0) {
+  // Internacional group: individual countries + World Majors
+  if (intCountries.length > 0 || hasIntEvents) {
     const grp = document.createElement('optgroup');
     grp.label = T.groupInternacional;
-    const allOpt = document.createElement('option');
-    allOpt.value = 'INT';
-    allOpt.textContent = T.allInternacional;
-    grp.appendChild(allOpt);
+
     for (const country of intCountries) {
       const opt = document.createElement('option');
       opt.value = 'INT:' + country;
       opt.textContent = country;
       grp.appendChild(opt);
     }
+
+    // World Majors as a special option (always present when INT events exist)
+    const majorsOpt = document.createElement('option');
+    majorsOpt.value = 'MAJORS';
+    majorsOpt.textContent = T.worldMajors;
+    grp.appendChild(majorsOpt);
+
     estadoSelect.appendChild(grp);
   }
 
+  // Reset to 'todos' if saved value no longer corresponds to a valid option
   const availableValues = new Set([...estadoSelect.options].map(o => o.value));
   if (state.estado !== 'todos' && !availableValues.has(state.estado)) {
     state.estado = 'todos';
   }
 
-  _applyGeoEstado();
+  _applyGeoLocation();
+
   if (estadoSelect.value !== state.estado) estadoSelect.value = state.estado;
 }
 
@@ -551,14 +697,21 @@ function matchesPeriodo(c, today) {
   }
 }
 
-function matchesEstado(c) {
-  if (state.estado === 'todos') return true;
-  if (state.estado === 'INT') return c.estado === 'INT';
-  if (state.estado.startsWith('INT:')) {
-    const country = state.estado.slice(4);
+// Pure helper: test an event against an arbitrary filter value
+function _matchEstadoValue(c, value) {
+  if (value === 'todos') return true;
+  if (value === 'BR')    return c.estado !== 'INT';
+  if (value === 'INT')   return c.estado === 'INT';
+  if (value === 'MAJORS') return isMajor(c);
+  if (value.startsWith('INT:')) {
+    const country = value.slice(4);
     return c.estado === 'INT' && _extractCountry(c.cidade) === country;
   }
-  return c.estado === state.estado;
+  return c.estado === value;
+}
+
+function matchesEstado(c) {
+  return _matchEstadoValue(c, state.estado);
 }
 
 function matchesFonte(c) {
@@ -614,9 +767,9 @@ function renderCards() {
   emptyState.classList.add('hidden');
 
   const today = todayStr();
-  const frag = document.createDocumentFragment();
+  const frag  = document.createDocumentFragment();
 
-  let toRender  = filteredCorridas;
+  let toRender   = filteredCorridas;
   let recentPast = [];
 
   if (state.periodo === 'past15') {
@@ -649,16 +802,14 @@ function buildPastSection(corridas) {
   const sorted = [...corridas].sort((a, b) =>
     (b.data_evento || '').localeCompare(a.data_evento || ''));
 
-  const n = sorted.length;
-  const countLabel = T.raceCountLabel(n);
-
-  const section = document.createElement('div');
+  const countLabel = T.raceCountLabel(sorted.length);
+  const section    = document.createElement('div');
   section.className = 'month-section';
 
   const btn = document.createElement('button');
   btn.className = 'month-separator month-separator--past';
   btn.setAttribute('aria-expanded', 'false');
-  btn.setAttribute('aria-label', `${T.pastSectionLabel.replace(/^[^\s]+ /, '')}, ${countLabel}`);
+  btn.setAttribute('aria-label', `${T.pastSectionLabel}, ${countLabel}`);
   btn.innerHTML = `
     <span class="month-separator-label">${T.pastSectionLabel}</span>
     <span class="month-count">${countLabel}</span>
@@ -684,7 +835,7 @@ function buildPastSection(corridas) {
 
 function buildMonthSection(monthKey, count) {
   const [year, month] = monthKey.split('-');
-  const label = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
+  const label      = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
   const countLabel = T.raceCountLabel(count);
 
   const section = document.createElement('div');
@@ -714,16 +865,16 @@ function buildMonthSection(monthKey, count) {
 }
 
 function buildCard(c) {
-  const clone = cardTemplate.content.cloneNode(true);
-  const card = clone.querySelector('.card');
+  const clone     = cardTemplate.content.cloneNode(true);
+  const card      = clone.querySelector('.card');
   const collapsed = card.querySelector('.card-collapsed');
   const expanded  = card.querySelector('.card-expanded');
 
-  const img = card.querySelector('.card-img');
+  const img         = card.querySelector('.card-img');
   const placeholder = card.querySelector('.card-img-placeholder');
   if (c.imagem_url) {
-    img.src = c.imagem_url;
-    img.alt = c.titulo;
+    img.src    = c.imagem_url;
+    img.alt    = c.titulo;
     img.onload  = () => placeholder.classList.add('hidden');
     img.onerror = () => { img.classList.add('hidden'); showPlaceholder(placeholder, c.estado); };
     showPlaceholder(placeholder, c.estado);
@@ -739,12 +890,12 @@ function buildCard(c) {
   const distContainer = card.querySelector('.card-distances');
   for (const km of formatDistancesPills(c.distancias)) {
     const span = document.createElement('span');
-    span.className = 'dist-pill';
+    span.className   = 'dist-pill';
     span.textContent = km;
     distContainer.appendChild(span);
   }
 
-  const badge = card.querySelector('.badge-status');
+  const badge        = card.querySelector('.badge-status');
   const { label, cls } = statusBadge(c);
   badge.textContent = label;
   badge.className   = 'badge-status ' + cls;
@@ -801,7 +952,7 @@ function buildExpanded(card, c) {
 
     const tbody = document.createElement('tbody');
     for (const d of sorted) {
-      const tr = document.createElement('tr');
+      const tr  = document.createElement('tr');
       let cells = `<td>${formatKm(d.km)}</td>`;
       if (hasDate)    cells += `<td>${d.data ? formatDateShort(d.data) : '—'}</td>`;
       if (hasHorario) cells += `<td>${d.horario || '—'}</td>`;
@@ -814,10 +965,10 @@ function buildExpanded(card, c) {
 
   if (c.periodo_inscricao && (c.periodo_inscricao.abertura || c.periodo_inscricao.encerramento)) {
     const h = document.createElement('p');
-    h.className = 'expanded-section-title';
+    h.className   = 'expanded-section-title';
     h.textContent = T.registrationPeriod;
     expPeriod.appendChild(h);
-    const p = document.createElement('p');
+    const p   = document.createElement('p');
     const ab  = c.periodo_inscricao.abertura     ? `${T.regOpening}: ${formatDateShort(c.periodo_inscricao.abertura)}`     : '';
     const enc = c.periodo_inscricao.encerramento ? `${T.regClosing}: ${formatDateShort(c.periodo_inscricao.encerramento)}` : '';
     p.textContent = [ab, enc].filter(Boolean).join(' · ');
@@ -826,11 +977,11 @@ function buildExpanded(card, c) {
 
   if (c.fontes && c.fontes.length > 0) {
     const h = document.createElement('p');
-    h.className = 'expanded-section-title';
+    h.className   = 'expanded-section-title';
     h.textContent = T.sourcesSection;
     expFontes.appendChild(h);
     for (const fonte of c.fontes) {
-      const div = document.createElement('div');
+      const div    = document.createElement('div');
       div.className = 'fonte-item';
       const inscLink = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
         ? fonte.links_inscricao[0] : (fonte.link_evento || null);
@@ -844,16 +995,16 @@ function buildExpanded(card, c) {
 
   if (expFotos && c.fotos && c.fotos.length > 0) {
     const h = document.createElement('p');
-    h.className = 'expanded-section-title';
+    h.className   = 'expanded-section-title';
     h.textContent = T.photosSection;
     expFotos.appendChild(h);
     const btns = document.createElement('div');
     btns.className = 'fotos-btns';
     for (const foto of c.fotos) {
       const a = document.createElement('a');
-      a.href = foto.url;
-      a.target = '_blank';
-      a.rel = 'noopener';
+      a.href      = foto.url;
+      a.target    = '_blank';
+      a.rel       = 'noopener';
       a.className = 'btn-fotos';
       a.textContent = foto.plataforma + ' →';
       btns.appendChild(a);
@@ -867,33 +1018,22 @@ function buildExpanded(card, c) {
 // ---------------------------------------------------------------------------
 function formatDate(isoDate, horario, distancias) {
   if (!isoDate) return T.dateTBD;
-
   const distDates = [...new Set(
     (distancias || []).map(d => d.data).filter(Boolean)
   )].sort();
-
-  if (distDates.length >= 2) {
-    return formatDateRange(distDates[0], distDates[distDates.length - 1]);
-  }
-
+  if (distDates.length >= 2) return formatDateRange(distDates[0], distDates[distDates.length - 1]);
   return formatDateFull(isoDate) + (horario ? ` • ${horario.replace(':', 'h')}` : '');
 }
 
 function formatDateFull(iso) {
   const d = new Date(iso + 'T12:00:00');
-  return T.dateFullFormat(
-    T.weekdays[d.getDay()],
-    d.getDate(),
-    T.months[d.getMonth()],
-    d.getFullYear()
-  );
+  return T.dateFullFormat(T.weekdays[d.getDay()], d.getDate(), T.months[d.getMonth()], d.getFullYear());
 }
 
 function formatDateRange(fromIso, toIso) {
   const d1 = new Date(fromIso + 'T12:00:00');
   const d2 = new Date(toIso   + 'T12:00:00');
-  const sameMonth = d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear();
-  if (sameMonth) {
+  if (d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear()) {
     return T.dateRangeSameMonth(d1.getDate(), d2.getDate(), T.months[d1.getMonth()], d1.getFullYear());
   }
   return T.dateRangeDiff(d1.getDate(), T.months[d1.getMonth()], d2.getDate(), T.months[d2.getMonth()], d2.getFullYear());
@@ -972,7 +1112,7 @@ function isFiltersActive() {
     state.distMin !== null ||
     state.distMax !== null ||
     state.periodo !== 'past15' ||
-    state.estado !== (_geoEstado || 'todos') ||
+    state.estado !== (_geoApplied || 'todos') ||
     state.fontes.size > 0
   );
 }
@@ -990,7 +1130,7 @@ function clearFilters() {
   state.periodo  = 'past15';
   state.dateFrom = null;
   state.dateTo   = null;
-  state.estado   = _geoEstado || 'todos';
+  state.estado   = _geoApplied || 'todos';
   state.fontes.clear();
 
   searchInput.value = '';
@@ -999,10 +1139,10 @@ function clearFilters() {
     p.classList.remove('active');
     p.setAttribute('aria-pressed', 'false');
   });
-  distMin.value = '';
-  distMax.value = '';
+  distMin.value       = '';
+  distMax.value       = '';
   periodoSelect.value = 'past15';
-  estadoSelect.value  = _geoEstado || 'todos';
+  estadoSelect.value  = _geoApplied || 'todos';
   customDateRow.classList.add('hidden');
   dateFrom.value = '';
   dateTo.value   = '';
@@ -1127,7 +1267,6 @@ searchInput.addEventListener('input', () => {
 });
 
 [btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));
-
 btnRefresh.addEventListener('click', fetchData);
 
 fonteFilterBtn.addEventListener('click', e => {

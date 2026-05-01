@@ -1,6 +1,6 @@
 {
-  "gerado_em": "2026-05-01T13:28:26+00:00",
-  "total": 1145,
+  "gerado_em": "2026-05-01T15:13:10+00:00",
+  "total": 1147,
   "corridas": [
     {
       "id": "riomar-fortaleza-i_ce_2026-04-30",
@@ -511,7 +511,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -758,6 +758,48 @@
       "fotos": []
     },
     {
+      "id": "etapa-plano-piloto_df_2026-04-30",
+      "titulo": "Etapa Plano Piloto",
+      "data_evento": "2026-04-12",
+      "horario": "07:05",
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T01:40:07+00:00",
+      "updated_at": "2026-04-30T14:52:00+00:00",
+      "fotos": []
+    },
+    {
       "id": "circuito-das-estacoes-salvador-outono",
       "titulo": "Circuito das Estações - Outono - Salvador",
       "data_evento": "2026-04-12",
@@ -837,48 +879,6 @@
       "fotos": []
     },
     {
-      "id": "etapa-plano-piloto_df_2026-04-30",
-      "titulo": "Etapa Plano Piloto",
-      "data_evento": "2026-04-12",
-      "horario": "07:05",
-      "localizacao": "Brasília-DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "SESC DF",
-          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
-          "links_inscricao": [
-            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T01:40:07+00:00",
-      "updated_at": "2026-04-30T14:52:00+00:00",
-      "fotos": []
-    },
-    {
       "id": "circuito-das-estacoes-natal-outono",
       "titulo": "Circuito das Estações - Outono - Natal",
       "data_evento": "2026-04-19",
@@ -913,6 +913,48 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
       "updated_at": "2026-04-30T21:23:44+00:00",
+      "fotos": []
+    },
+    {
+      "id": "circuito-sesc-corridas-etapa-taguatinga_df_2026-05-01",
+      "titulo": "Circuito Sesc + Corridas - Etapa Taguatinga",
+      "data_evento": "2026-04-26",
+      "horario": null,
+      "localizacao": "Brasília-DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "SESC DF",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
+          "links_inscricao": [
+            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T01:40:07+00:00",
+      "updated_at": "2026-05-01T12:30:38+00:00",
       "fotos": []
     },
     {
@@ -987,48 +1029,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
       "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-sesc-corridas-etapa-taguatinga_df_2026-05-01",
-      "titulo": "Circuito Sesc + Corridas - Etapa Taguatinga",
-      "data_evento": "2026-04-26",
-      "horario": null,
-      "localizacao": "Brasília-DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "SESC DF",
-          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
-          "links_inscricao": [
-            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T01:40:07+00:00",
-      "updated_at": "2026-05-01T12:30:38+00:00",
       "fotos": []
     },
     {
@@ -1199,7 +1199,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": [
         {
           "plataforma": "Foco Radical",
@@ -1268,8 +1268,13 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
-      "fotos": []
+      "updated_at": "2026-05-01T15:12:41+00:00",
+      "fotos": [
+        {
+          "plataforma": "Foco Radical",
+          "url": "https://www.focoradical.com.br/prova/20260501-corrida-1o-de-maio-sao-joao-da-boa-vista-8669"
+        }
+      ]
     },
     {
       "id": "belem-night-run-etapa-agua-etapa-fogo_pa_2026-04-30",
@@ -1441,7 +1446,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -1649,7 +1654,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -1764,80 +1769,6 @@
       "fotos": []
     },
     {
-      "id": "live-run-sao-jose-do-rio-preto-2026_sp_2026-04-30",
-      "titulo": "Live! Run São José Do Rio Preto 2026",
-      "data_evento": "2026-05-03",
-      "horario": "06:00",
-      "localizacao": "São José do Rio Preto, SP",
-      "cidade": "São José do Rio Preto",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-05-03",
-          "horario": "06:00"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-05-03",
-          "horario": "06:00"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/KmIxOnSDG7roN2IYtnajjnKatHqiPMHKwr4q682H.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-run-so-jos-do-rio-preto-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-run-so-jos-do-rio-preto-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:16+00:00",
-      "updated_at": "2026-04-30T14:59:16+00:00",
-      "fotos": []
-    },
-    {
-      "id": "live-run-sao-luis-2026_ma_2026-04-30",
-      "titulo": "Live! Run São Luís 2026",
-      "data_evento": "2026-05-03",
-      "horario": "06:00",
-      "localizacao": "São Luís, MA",
-      "cidade": "São Luís",
-      "estado": "MA",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-05-03",
-          "horario": "06:00"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-05-03",
-          "horario": "06:00"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/X7emY8zxE7Fc9w1MLSFICTiftUtOlYyyRCSENOh3.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-run-so-lus-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-run-so-lus-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:16+00:00",
-      "updated_at": "2026-04-30T14:59:16+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_85761",
       "titulo": "Lupo Sport Corre Jundiaí",
       "data_evento": "2026-05-03",
@@ -1876,7 +1807,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T17:55:10+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -1913,7 +1844,81 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
+      "fotos": []
+    },
+    {
+      "id": "live-run-sao-jose-do-rio-preto-2026_sp_2026-04-30",
+      "titulo": "Live! Run São José Do Rio Preto 2026",
+      "data_evento": "2026-05-03",
+      "horario": "06:00",
+      "localizacao": "São José do Rio Preto, SP",
+      "cidade": "São José do Rio Preto",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-05-03",
+          "horario": "06:00"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-05-03",
+          "horario": "06:00"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/KmIxOnSDG7roN2IYtnajjnKatHqiPMHKwr4q682H.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-run-so-jos-do-rio-preto-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-run-so-jos-do-rio-preto-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:16+00:00",
+      "updated_at": "2026-04-30T14:59:16+00:00",
+      "fotos": []
+    },
+    {
+      "id": "live-run-sao-luis-2026_ma_2026-04-30",
+      "titulo": "Live! Run São Luís 2026",
+      "data_evento": "2026-05-03",
+      "horario": "06:00",
+      "localizacao": "São Luís, MA",
+      "cidade": "São Luís",
+      "estado": "MA",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-05-03",
+          "horario": "06:00"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-05-03",
+          "horario": "06:00"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/X7emY8zxE7Fc9w1MLSFICTiftUtOlYyyRCSENOh3.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-run-so-lus-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-run-so-lus-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:16+00:00",
+      "updated_at": "2026-04-30T14:59:16+00:00",
       "fotos": []
     },
     {
@@ -1950,7 +1955,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -2231,7 +2236,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -2271,7 +2276,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -2313,7 +2318,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -2385,7 +2390,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -2972,7 +2977,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -3005,6 +3010,43 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
       "updated_at": "2026-04-30T15:26:07+00:00",
+      "fotos": []
+    },
+    {
+      "id": "live-run-campinas-2026_sp_2026-04-30",
+      "titulo": "Live! Run Campinas 2026",
+      "data_evento": "2026-05-10",
+      "horario": "06:30",
+      "localizacao": "Campinas, SP",
+      "cidade": "Campinas",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-05-10",
+          "horario": "06:30"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-05-10",
+          "horario": "06:30"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/LSi79wz7qSszH6PX78oTgX3XT4BrezOTtx9Fs7fW.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-run-campinas-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-run-campinas-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:17+00:00",
+      "updated_at": "2026-04-30T14:59:17+00:00",
       "fotos": []
     },
     {
@@ -3044,44 +3086,7 @@
           ]
         }
       ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:17+00:00",
-      "updated_at": "2026-04-30T14:59:17+00:00",
-      "fotos": []
-    },
-    {
-      "id": "live-run-campinas-2026_sp_2026-04-30",
-      "titulo": "Live! Run Campinas 2026",
-      "data_evento": "2026-05-10",
-      "horario": "06:30",
-      "localizacao": "Campinas, SP",
-      "cidade": "Campinas",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-05-10",
-          "horario": "06:30"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-05-10",
-          "horario": "06:30"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/LSi79wz7qSszH6PX78oTgX3XT4BrezOTtx9Fs7fW.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-run-campinas-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-run-campinas-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:17+00:00",
       "updated_at": "2026-04-30T14:59:17+00:00",
       "fotos": []
@@ -3120,7 +3125,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
+      "updated_at": "2026-05-01T15:12:42+00:00",
       "fotos": []
     },
     {
@@ -3624,44 +3629,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ativo_40174",
-      "titulo": "Netshoes Run 2026 - Brasília",
-      "data_evento": "2026-05-17",
-      "horario": null,
-      "localizacao": "Bras&iacute;lia, DF",
-      "cidade": "Bras&Iacute;Lia",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://media.ativo.com/upload/evento/40174/img_logo_evento.pqw",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ativo",
-          "link_evento": "https://www.ativo.com/calendario/eventos/america-do-sul/br/df/brasilia/corrida-de-rua/40174/netshoes-run-2026-brasilia",
-          "links_inscricao": [
-            "https://pay.ativo.com/evento/40174"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:42+00:00",
       "fotos": []
     },
     {
@@ -3826,6 +3794,43 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
       "updated_at": "2026-05-01T12:33:24+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ativo_40174",
+      "titulo": "Netshoes Run 2026 - Brasília",
+      "data_evento": "2026-05-17",
+      "horario": null,
+      "localizacao": "Bras&iacute;lia, DF",
+      "cidade": "Bras&Iacute;Lia",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://media.ativo.com/upload/evento/40174/img_logo_evento.pqw",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ativo",
+          "link_evento": "https://www.ativo.com/calendario/eventos/america-do-sul/br/df/brasilia/corrida-de-rua/40174/netshoes-run-2026-brasilia",
+          "links_inscricao": [
+            "https://pay.ativo.com/evento/40174"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:05:38+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -5796,38 +5801,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85103",
-      "titulo": "Samba Run SP 2026",
-      "data_evento": "2026-05-17",
-      "horario": "06:30",
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0G4T48WZ3IIXK48AG7DPIMDH8NTI5QSJJ5DGU2W4NWP41KXUXE.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
-      "fotos": []
-    },
-    {
       "id": "live-21k-sao-paulo-2026_sp_2026-04-30",
       "titulo": "Live! 21K São Paulo 2026",
       "data_evento": "2026-05-17",
@@ -5864,9 +5837,41 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:17+00:00",
       "updated_at": "2026-04-30T14:59:17+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85103",
+      "titulo": "Samba Run SP 2026",
+      "data_evento": "2026-05-17",
+      "horario": "06:30",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0G4T48WZ3IIXK48AG7DPIMDH8NTI5QSJJ5DGU2W4NWP41KXUXE.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/SAMBA+RUN+SP+2026-85103"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T15:12:42+00:00",
       "fotos": []
     },
     {
@@ -6315,7 +6320,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -6484,7 +6489,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -7047,7 +7052,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -7664,7 +7669,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -7779,6 +7784,43 @@
       "fotos": []
     },
     {
+      "id": "ts_86349",
+      "titulo": "Festival Vamos Passear - Etapa Belo Horizonte",
+      "data_evento": "2026-05-24",
+      "horario": "07:00",
+      "localizacao": "Belo Horizonte, MG",
+      "cidade": "Belo Horizonte",
+      "estado": "MG",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/8VUDWPFDCKLFS01XDFKHIEYXV609V6LFCQJ6YCA35OJ5HL1QG3.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/FESTIVAL+VAMOS+PASSEAR+-+ETAPA+BELO+HORIZONTE-86349",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/FESTIVAL+VAMOS+PASSEAR+-+ETAPA+BELO+HORIZONTE-86349"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:48:16+00:00",
+      "updated_at": "2026-05-01T13:28:00+00:00",
+      "fotos": []
+    },
+    {
       "id": "ts_86388",
       "titulo": "Circuito De Corridas Caixa 2026 - (5Km E 10Km) Etapa Foz Do Iguaçu",
       "data_evento": "2026-05-24",
@@ -7844,7 +7886,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -8139,80 +8181,6 @@
       "fotos": []
     },
     {
-      "id": "ts_74126",
-      "titulo": "Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026",
-      "data_evento": "2026-05-24",
-      "horario": "09:45",
-      "localizacao": "Rio de Janeiro, RJ",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": "09:45"
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/H66N7PNWB4RAEVKDW37BEQ1HAIYMA8CAQDUQ30MCM5VNBDFDSY.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86349",
-      "titulo": "Festival Vamos Passear - Etapa Belo Horizonte",
-      "data_evento": "2026-05-24",
-      "horario": "07:00",
-      "localizacao": "Belo Horizonte, MG",
-      "cidade": "Belo Horizonte",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 4.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/8VUDWPFDCKLFS01XDFKHIEYXV609V6LFCQJ6YCA35OJ5HL1QG3.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/FESTIVAL+VAMOS+PASSEAR+-+ETAPA+BELO+HORIZONTE-86349",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/FESTIVAL+VAMOS+PASSEAR+-+ETAPA+BELO+HORIZONTE-86349"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:48:16+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
-      "fotos": []
-    },
-    {
       "id": "live-run-recife-2026_pe_2026-04-30",
       "titulo": "Live! Run Recife 2026",
       "data_evento": "2026-05-24",
@@ -8244,7 +8212,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:17+00:00",
       "updated_at": "2026-04-30T14:59:17+00:00",
       "fotos": []
@@ -8288,7 +8256,44 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
+      "updated_at": "2026-05-01T15:12:42+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_74126",
+      "titulo": "Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026",
+      "data_evento": "2026-05-24",
+      "horario": "09:45",
+      "localizacao": "Rio de Janeiro, RJ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": "09:45"
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/H66N7PNWB4RAEVKDW37BEQ1HAIYMA8CAQDUQ30MCM5VNBDFDSY.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/Corrida+Corpo+de+Fuzileiros+Navais+-+Intendentes+da+Marinha+-+2026-74126"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-01T15:12:42+00:00",
       "fotos": []
     },
     {
@@ -8387,7 +8392,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:40+00:00",
       "fotos": []
     },
     {
@@ -8804,7 +8809,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -8873,7 +8878,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -8940,7 +8945,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -9483,7 +9488,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -9595,7 +9600,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -10294,7 +10299,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -10832,39 +10837,7 @@
           ]
         }
       ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:18+00:00",
-      "updated_at": "2026-04-30T14:59:18+00:00",
-      "fotos": []
-    },
-    {
-      "id": "live-experience-trancoso-2026_ba_2026-04-30",
-      "titulo": "Live! Experience Trancoso 2026",
-      "data_evento": "2026-05-31",
-      "horario": "06:30",
-      "localizacao": "Trancoso, BA",
-      "cidade": "Trancoso",
-      "estado": "BA",
-      "distancias": [
-        {
-          "km": 6.0,
-          "data": "2026-05-31",
-          "horario": "06:30"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/Hkdhd0aiCCX75kzTsBqlhI8D9xmRZrkiyejRWrYu.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-experience-trancoso-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-experience-trancoso-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:18+00:00",
       "updated_at": "2026-04-30T14:59:18+00:00",
       "fotos": []
@@ -10901,9 +10874,41 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:19+00:00",
       "updated_at": "2026-04-30T14:59:19+00:00",
+      "fotos": []
+    },
+    {
+      "id": "live-experience-trancoso-2026_ba_2026-04-30",
+      "titulo": "Live! Experience Trancoso 2026",
+      "data_evento": "2026-05-31",
+      "horario": "06:30",
+      "localizacao": "Trancoso, BA",
+      "cidade": "Trancoso",
+      "estado": "BA",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": "2026-05-31",
+          "horario": "06:30"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/Hkdhd0aiCCX75kzTsBqlhI8D9xmRZrkiyejRWrYu.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-experience-trancoso-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-experience-trancoso-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:18+00:00",
+      "updated_at": "2026-04-30T14:59:18+00:00",
       "fotos": []
     },
     {
@@ -10980,7 +10985,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -11319,7 +11324,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:40+00:00",
       "fotos": []
     },
     {
@@ -12134,7 +12139,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -12386,7 +12391,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:20+00:00",
       "updated_at": "2026-04-30T14:59:20+00:00",
       "fotos": []
@@ -13003,7 +13008,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -13188,7 +13193,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -13684,7 +13689,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -13842,7 +13847,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -14370,7 +14375,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -15235,7 +15240,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -15359,7 +15364,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -15675,7 +15680,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -17098,6 +17103,43 @@
       "fotos": []
     },
     {
+      "id": "live-run-indaiatuba-2026_sp_2026-04-30",
+      "titulo": "Live! Run Indaiatuba 2026",
+      "data_evento": "2026-06-21",
+      "horario": "06:30",
+      "localizacao": "Indaiatuba, SP",
+      "cidade": "Indaiatuba",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-06-21",
+          "horario": "06:30"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-06-21",
+          "horario": "06:30"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/dIsfUSqvuxQdgVCS2eTOAlrD4FACReZn6UYMe9Lf.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-run-indaiatuba-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-run-indaiatuba-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:21+00:00",
+      "updated_at": "2026-04-30T14:59:21+00:00",
+      "fotos": []
+    },
+    {
       "id": "live-21k-goiania-2026_go_2026-04-30",
       "titulo": "Live! 21K Goiânia 2026",
       "data_evento": "2026-06-21",
@@ -17134,46 +17176,9 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:22+00:00",
       "updated_at": "2026-04-30T14:59:22+00:00",
-      "fotos": []
-    },
-    {
-      "id": "live-run-indaiatuba-2026_sp_2026-04-30",
-      "titulo": "Live! Run Indaiatuba 2026",
-      "data_evento": "2026-06-21",
-      "horario": "06:30",
-      "localizacao": "Indaiatuba, SP",
-      "cidade": "Indaiatuba",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-06-21",
-          "horario": "06:30"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-06-21",
-          "horario": "06:30"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/dIsfUSqvuxQdgVCS2eTOAlrD4FACReZn6UYMe9Lf.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-run-indaiatuba-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-run-indaiatuba-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:21+00:00",
-      "updated_at": "2026-04-30T14:59:21+00:00",
       "fotos": []
     },
     {
@@ -17215,7 +17220,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -17864,7 +17869,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -18369,6 +18374,43 @@
       "fotos": []
     },
     {
+      "id": "ts_86920",
+      "titulo": "Corridas Sanepar 2026 - Válido Pelo Ranking Corridas Aent - Etapa 3",
+      "data_evento": "2026-06-28",
+      "horario": "06:00",
+      "localizacao": "São José dos Pinhais, PR",
+      "cidade": "São José dos Pinhais",
+      "estado": "PR",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0EU11CCSQEHJ0YJU3UGMVY96OOR1FR3D0IRRHHJW2U7TFD4FUU.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/++CORRIDAS+SANEPAR+2026+-+V%C3%81LIDO+PELO+RANKING+CORRIDAS+AENT+-+ETAPA+3-86920",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/++CORRIDAS+SANEPAR+2026+-+V%C3%81LIDO+PELO+RANKING+CORRIDAS+AENT+-+ETAPA+3-86920"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-01T15:11:33+00:00",
+      "updated_at": "2026-05-01T15:11:33+00:00",
+      "fotos": []
+    },
+    {
       "id": "ts_85938",
       "titulo": "Minions Run - Rio De Janeiro",
       "data_evento": "2026-06-28",
@@ -18508,7 +18550,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -18740,7 +18782,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -19078,7 +19120,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:22+00:00",
       "updated_at": "2026-04-30T14:59:22+00:00",
       "fotos": []
@@ -19337,7 +19379,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:00+00:00",
+      "updated_at": "2026-05-01T15:12:42+00:00",
       "fotos": []
     },
     {
@@ -19808,7 +19850,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -20240,7 +20282,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -20635,44 +20677,7 @@
           ]
         }
       ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:22+00:00",
-      "updated_at": "2026-04-30T14:59:22+00:00",
-      "fotos": []
-    },
-    {
-      "id": "live-run-rio-de-janeiro-2026_rj_2026-04-30",
-      "titulo": "Live! Run Rio De Janeiro 2026",
-      "data_evento": "2026-07-05",
-      "horario": "06:30",
-      "localizacao": "Rio de Janeiro, RJ",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-07-05",
-          "horario": "06:30"
-        },
-        {
-          "km": 10.0,
-          "data": "2026-07-05",
-          "horario": "06:30"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/sLfpADV6NpjG3AqkSsZ1AYu0OQox3QVNFBYHvVxM.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live-run-rio-de-janeiro-iiii-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live-run-rio-de-janeiro-iiii-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:22+00:00",
       "updated_at": "2026-04-30T14:59:22+00:00",
       "fotos": []
@@ -20709,9 +20714,46 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:23+00:00",
       "updated_at": "2026-04-30T14:59:23+00:00",
+      "fotos": []
+    },
+    {
+      "id": "live-run-rio-de-janeiro-2026_rj_2026-04-30",
+      "titulo": "Live! Run Rio De Janeiro 2026",
+      "data_evento": "2026-07-05",
+      "horario": "06:30",
+      "localizacao": "Rio de Janeiro, RJ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-07-05",
+          "horario": "06:30"
+        },
+        {
+          "km": 10.0,
+          "data": "2026-07-05",
+          "horario": "06:30"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/sLfpADV6NpjG3AqkSsZ1AYu0OQox3QVNFBYHvVxM.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live-run-rio-de-janeiro-iiii-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live-run-rio-de-janeiro-iiii-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:22+00:00",
+      "updated_at": "2026-04-30T14:59:22+00:00",
       "fotos": []
     },
     {
@@ -21661,7 +21703,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -22076,7 +22118,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:23+00:00",
       "updated_at": "2026-04-30T14:59:23+00:00",
       "fotos": []
@@ -22113,7 +22155,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:24+00:00",
       "updated_at": "2026-04-30T14:59:24+00:00",
       "fotos": []
@@ -22795,7 +22837,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -22842,7 +22884,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -23328,7 +23370,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -23548,7 +23590,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:24+00:00",
       "updated_at": "2026-04-30T14:59:24+00:00",
       "fotos": []
@@ -23587,7 +23629,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -24229,7 +24271,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -24271,7 +24313,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -24303,7 +24345,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -24999,7 +25041,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:24+00:00",
       "updated_at": "2026-04-30T14:59:24+00:00",
       "fotos": []
@@ -25038,7 +25080,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -25070,7 +25112,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -25322,7 +25364,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -25497,7 +25539,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -26043,7 +26085,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T21:06:22+00:00",
       "fotos": []
@@ -26608,7 +26650,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -26870,7 +26912,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -26939,7 +26981,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:40+00:00",
       "fotos": []
     },
     {
@@ -27778,7 +27820,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -27845,7 +27887,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:25+00:00",
       "updated_at": "2026-04-30T14:59:25+00:00",
       "fotos": []
@@ -28129,7 +28171,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -28297,7 +28339,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -28645,7 +28687,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -29045,7 +29087,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:16+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -29275,7 +29317,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:25+00:00",
       "updated_at": "2026-04-30T14:59:25+00:00",
       "fotos": []
@@ -29319,7 +29361,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -29546,7 +29588,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -30314,7 +30356,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -30736,7 +30778,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -30904,7 +30946,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-05-01T02:44:51+00:00",
       "updated_at": "2026-05-01T03:46:52+00:00",
       "fotos": []
@@ -31195,7 +31237,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -31357,6 +31399,43 @@
       "fotos": []
     },
     {
+      "id": "ts_86908",
+      "titulo": "3º Corre Corinthians",
+      "data_evento": "2026-09-06",
+      "horario": "06:30",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": "06:40"
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": "06:30"
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/7PZEQOW40NH7NWFI3HZD7QLH49WQJCF04J07X7FRPZ20TOZDIS.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/3%C2%BA+CORRE+CORINTHIANS-86908",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/3%C2%BA+CORRE+CORINTHIANS-86908"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-01T15:11:33+00:00",
+      "updated_at": "2026-05-01T15:11:33+00:00",
+      "fotos": []
+    },
+    {
       "id": "ts_74319",
       "titulo": "Maratona De Punta Del Este 2026",
       "data_evento": "2026-09-06",
@@ -31400,7 +31479,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -31635,7 +31714,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:25+00:00",
       "updated_at": "2026-04-30T14:59:25+00:00",
       "fotos": []
@@ -31672,7 +31751,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:25+00:00",
       "updated_at": "2026-04-30T14:59:25+00:00",
       "fotos": []
@@ -32599,7 +32678,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T20:48:24+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -33101,7 +33180,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -33139,7 +33218,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-05-01T02:44:50+00:00",
       "updated_at": "2026-05-01T03:46:52+00:00",
       "fotos": []
@@ -33235,7 +33314,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -33637,7 +33716,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -34013,7 +34092,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -34161,7 +34240,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -35687,7 +35766,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -35791,7 +35870,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -35828,7 +35907,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -36269,7 +36348,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -36610,7 +36689,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -36647,7 +36726,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -36905,43 +36984,6 @@
       "fotos": []
     },
     {
-      "id": "ativo_40176",
-      "titulo": "Netshoes Run 2026 - Recife",
-      "data_evento": "2026-10-18",
-      "horario": null,
-      "localizacao": "Recife, PE",
-      "cidade": "Recife",
-      "estado": "PE",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://media.ativo.com/upload/evento/40176/img_logo_evento.aoe",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ativo",
-          "link_evento": "https://www.ativo.com/calendario/eventos/america-do-sul/br/pe/recife/corrida-de-rua/40176/netshoes-run-2026-recife",
-          "links_inscricao": [
-            "https://pay.ativo.com/evento/40176"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-04-30T15:05:38+00:00",
-      "fotos": []
-    },
-    {
       "id": "41a-corrida-do-cirio-2026_pa_2026-04-30",
       "titulo": "41ª Corrida Do Círio - 2026",
       "data_evento": "2026-10-18",
@@ -36976,6 +37018,43 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
       "updated_at": "2026-04-30T14:18:52+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ativo_40176",
+      "titulo": "Netshoes Run 2026 - Recife",
+      "data_evento": "2026-10-18",
+      "horario": null,
+      "localizacao": "Recife, PE",
+      "cidade": "Recife",
+      "estado": "PE",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://media.ativo.com/upload/evento/40176/img_logo_evento.aoe",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ativo",
+          "link_evento": "https://www.ativo.com/calendario/eventos/america-do-sul/br/pe/recife/corrida-de-rua/40176/netshoes-run-2026-recife",
+          "links_inscricao": [
+            "https://pay.ativo.com/evento/40176"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:05:38+00:00",
+      "updated_at": "2026-04-30T15:05:38+00:00",
       "fotos": []
     },
     {
@@ -37022,7 +37101,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -37059,7 +37138,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -37096,7 +37175,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -37390,7 +37469,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -37694,7 +37773,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -38276,7 +38355,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -38308,7 +38387,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -38345,7 +38424,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -38659,7 +38738,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:27+00:00",
       "updated_at": "2026-04-30T14:59:27+00:00",
       "fotos": []
@@ -38696,7 +38775,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:26+00:00",
       "updated_at": "2026-04-30T14:59:26+00:00",
       "fotos": []
@@ -38740,7 +38819,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -39352,7 +39431,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:28:01+00:00",
+      "updated_at": "2026-05-01T15:12:43+00:00",
       "fotos": []
     },
     {
@@ -39864,7 +39943,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:27+00:00",
       "updated_at": "2026-04-30T14:59:27+00:00",
       "fotos": []
@@ -39906,7 +39985,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:27+00:00",
       "updated_at": "2026-04-30T14:59:27+00:00",
       "fotos": []
@@ -40027,7 +40106,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:27+00:00",
       "updated_at": "2026-04-30T14:59:27+00:00",
       "fotos": []
@@ -40155,7 +40234,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -40511,7 +40590,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:27+00:00",
       "updated_at": "2026-04-30T14:59:27+00:00",
       "fotos": []
@@ -40553,7 +40632,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-05-01T02:44:47+00:00",
       "updated_at": "2026-05-01T03:46:52+00:00",
       "fotos": []
@@ -40671,7 +40750,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -40856,7 +40935,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -41266,7 +41345,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -41636,7 +41715,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -41908,7 +41987,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:27+00:00",
       "updated_at": "2026-04-30T14:59:27+00:00",
       "fotos": []
@@ -42396,6 +42475,43 @@
       "fotos": []
     },
     {
+      "id": "live-21k-itaipu-2026_pr_2026-04-30",
+      "titulo": "Live! 21K Itaipu 2026",
+      "data_evento": "2026-12-13",
+      "horario": "06:00",
+      "localizacao": "Itaipu, PR",
+      "cidade": "Itaipu",
+      "estado": "PR",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": "2026-12-13",
+          "horario": "06:30"
+        },
+        {
+          "km": 21.0,
+          "data": "2026-12-13",
+          "horario": "06:00"
+        }
+      ],
+      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/uPDFjJyJV3X9k5h4LsaTsaZ3lRvaZxUWXrk2k5ky.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Live Run",
+          "link_evento": "https://www.liverun.com.br/etapa/live21k-foz-do-iguau-2026",
+          "links_inscricao": [
+            "https://www.appliveexperience.com.br/evento/live21k-foz-do-iguau-2026"
+          ]
+        }
+      ],
+      "miss_count": 9,
+      "first_seen_at": "2026-04-30T14:59:28+00:00",
+      "updated_at": "2026-04-30T14:59:28+00:00",
+      "fotos": []
+    },
+    {
       "id": "live-run-brasilia-2026_df_2026-04-30",
       "titulo": "Live! Run Brasília 2026",
       "data_evento": "2026-12-13",
@@ -42432,46 +42548,9 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T00:57:17+00:00",
       "updated_at": "2026-04-30T14:59:29+00:00",
-      "fotos": []
-    },
-    {
-      "id": "live-21k-itaipu-2026_pr_2026-04-30",
-      "titulo": "Live! 21K Itaipu 2026",
-      "data_evento": "2026-12-13",
-      "horario": "06:00",
-      "localizacao": "Itaipu, PR",
-      "cidade": "Itaipu",
-      "estado": "PR",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": "2026-12-13",
-          "horario": "06:30"
-        },
-        {
-          "km": 21.0,
-          "data": "2026-12-13",
-          "horario": "06:00"
-        }
-      ],
-      "imagem_url": "https://imagens.liveoficial.com.br/app-experience/events/uPDFjJyJV3X9k5h4LsaTsaZ3lRvaZxUWXrk2k5ky.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Live Run",
-          "link_evento": "https://www.liverun.com.br/etapa/live21k-foz-do-iguau-2026",
-          "links_inscricao": [
-            "https://www.appliveexperience.com.br/evento/live21k-foz-do-iguau-2026"
-          ]
-        }
-      ],
-      "miss_count": 8,
-      "first_seen_at": "2026-04-30T14:59:28+00:00",
-      "updated_at": "2026-04-30T14:59:28+00:00",
       "fotos": []
     },
     {
@@ -42690,7 +42769,7 @@
           ]
         }
       ],
-      "miss_count": 8,
+      "miss_count": 9,
       "first_seen_at": "2026-04-30T14:59:28+00:00",
       "updated_at": "2026-04-30T14:59:28+00:00",
       "fotos": []
@@ -42781,7 +42860,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -42823,7 +42902,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -42880,7 +42959,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -42937,7 +43016,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -42997,7 +43076,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43086,7 +43165,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43133,7 +43212,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43183,7 +43262,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43225,7 +43304,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43310,7 +43389,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43363,7 +43442,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43410,7 +43489,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43442,7 +43521,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43474,7 +43553,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43506,7 +43585,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43558,7 +43637,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43590,7 +43669,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43627,7 +43706,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -43728,7 +43807,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -44116,7 +44195,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -44205,7 +44284,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -44247,7 +44326,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -44289,7 +44368,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -44331,7 +44410,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     },
     {
@@ -44388,7 +44467,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-01T13:27:59+00:00",
+      "updated_at": "2026-05-01T15:12:41+00:00",
       "fotos": []
     }
   ]

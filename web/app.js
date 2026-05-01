@@ -527,25 +527,29 @@ async function detectUserLocation() {
 // ---------------------------------------------------------------------------
 // Estado filter population
 // ---------------------------------------------------------------------------
-function populateEstadoFilter() {
+function populateEstadoFilter({ skipGeo = false } = {}) {
   while (estadoSelect.options.length > 1) estadoSelect.remove(1);
 
   const today = todayStr();
 
-  // Only include states/countries that have at least one future event
+  // When fontes are selected, only show locations that have events from those fontes
+  const base = state.fontes.size === 0
+    ? allCorridas
+    : allCorridas.filter(c => matchesFonte(c));
+
   const brEstados = [...new Set(
-    allCorridas
+    base
       .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
       .map(c => c.estado)
   )].sort();
 
   const intCountries = [...new Set(
-    allCorridas
+    base
       .filter(c => c.estado === 'INT' && c.data_evento >= today)
       .map(c => _extractCountry(c.cidade))
   )].filter(Boolean).sort();
 
-  const hasIntEvents = allCorridas.some(c => c.estado === 'INT' && c.data_evento >= today);
+  const hasIntEvents = base.some(c => c.estado === 'INT' && c.data_evento >= today);
 
   // Brasil group: "Todo o Brasil" + individual states
   if (brEstados.length > 0) {
@@ -587,13 +591,14 @@ function populateEstadoFilter() {
     estadoSelect.appendChild(grp);
   }
 
-  // Reset to 'todos' if saved value no longer corresponds to a valid option
+  // Reset to 'todos' if saved value no longer valid under current fonte filter
   const availableValues = new Set([...estadoSelect.options].map(o => o.value));
   if (state.estado !== 'todos' && !availableValues.has(state.estado)) {
     state.estado = 'todos';
+    saveFilters();
   }
 
-  _applyGeoLocation();
+  if (!skipGeo) _applyGeoLocation();
 
   if (estadoSelect.value !== state.estado) estadoSelect.value = state.estado;
 }
@@ -602,12 +607,25 @@ function populateEstadoFilter() {
 // Fonte filter
 // ---------------------------------------------------------------------------
 function populateFontesFilter() {
-  const allNomes = [...new Set(
-    allCorridas.flatMap(c => (c.fontes || []).map(f => f.nome))
-  )].sort();
+  const today = todayStr();
+  // When a location is selected, only show fontes that have events there
+  const base = allCorridas.filter(c =>
+    c.data_evento >= today && _matchEstadoValue(c, state.estado)
+  );
+  const availableNomes = new Set(base.flatMap(c => (c.fontes || []).map(f => f.nome)));
+
+  // Auto-uncheck fontes no longer available in the selected location
+  let stateChanged = false;
+  for (const nome of [...state.fontes]) {
+    if (!availableNomes.has(nome)) {
+      state.fontes.delete(nome);
+      stateChanged = true;
+    }
+  }
+  if (stateChanged) saveFilters();
 
   fonteFilterDropdown.innerHTML = '';
-  for (const nome of allNomes) {
+  for (const nome of [...availableNomes].sort()) {
     const label = document.createElement('label');
     label.className = 'fonte-filter-option' + (state.fontes.has(nome) ? ' checked' : '');
     label.setAttribute('role', 'option');
@@ -634,6 +652,11 @@ function populateFontesFilter() {
       }
       _updateFonteLabel();
       saveFilters();
+      // Update available locations based on new fonte selection
+      const prevEstado = state.estado;
+      populateEstadoFilter({ skipGeo: true });
+      // If estado was reset (no longer valid), refresh fontes for new 'todos' scope
+      if (state.estado !== prevEstado) populateFontesFilter();
       applyFilters();
     });
 
@@ -1254,6 +1277,7 @@ dateTo.addEventListener('change', () => {
 estadoSelect.addEventListener('change', () => {
   state.estado = estadoSelect.value;
   saveFilters();
+  populateFontesFilter(); // update available fontes for new location
   applyFilters();
 });
 

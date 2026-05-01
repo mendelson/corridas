@@ -1,35 +1,65 @@
-"""Scraper for SP City Marathon 2026 (Iguana Sports / Nike)
+"""Scraper for SP City Marathon (Nike / Iguana Sports)
 
-10ª edição, 26 jul 2026. Apenas 42K e 21K, largada única às 05:15
-na Praça Charles Miller (Pacaembu). Dados hardcoded conforme
-regulamento publicado; imagem og buscada dinamicamente no site.
+Data e link de inscrição buscados dinamicamente via Shopify JSON API
+(iguanasports.com.br/products/sp-city-marathon-{year}.json).
+Distâncias fixas (21K + 42K); horário do regulamento mais recente como
+referência enquanto o novo regulamento não é publicado.
 """
 from __future__ import annotations
+import re
+from datetime import date
+
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import slugify, now_iso, today_iso
+from ..utils import normalize_date, now_iso, today_iso
 
-URL           = "https://iguanasports.com.br/blogs/calendario-corridas-de-rua/sp-city-marathon-2026"
-INSCRICAO_URL = "https://iguanasports.com.br/products/sp-city-marathon-2026"
-SOURCE_NAME   = "SP City Marathon"
+BASE_URL    = "https://iguanasports.com.br"
+BLOG_BASE   = f"{BASE_URL}/blogs/calendario-corridas-de-rua"
+SOURCE_NAME = "SP City Marathon"
 
-_DATA_EVENTO = "2026-07-26"
+_REF_HORARIO = "05:15"  # referência do regulamento 2026
+_DISTANCES   = [21.097, 42.195]
 
-_DISTANCIAS = [
-    Distancia(km=21.097, data="2026-07-26", horario="05:15"),
-    Distancia(km=42.195, data="2026-07-26", horario="05:15"),
-]
-
-
-def scrape() -> list[Corrida]:
-    imagem_url = _fetch_og_image()
-    return [_build(imagem_url)]
+# Fallback: última edição conhecida
+_FALLBACK_YEAR = 2026
+_FALLBACK_DATA = "2026-07-26"
+_FALLBACK_INSC = f"{BASE_URL}/products/sp-city-marathon-2026"
+_FALLBACK_BLOG = f"{BLOG_BASE}/sp-city-marathon-2026"
 
 
-def _fetch_og_image() -> str | None:
-    for url in [URL, INSCRICAO_URL]:
+def _target_year() -> int:
+    today = date.today()
+    # Evento tipicamente em julho; após setembro busca o próximo ano
+    if today < date(today.year, 9, 1):
+        return today.year
+    return today.year + 1
+
+
+def _fetch_shopify(year: int) -> dict | None:
+    try:
+        resp = get(f"{BASE_URL}/products/sp-city-marathon-{year}.json")
+        if resp.status_code == 200:
+            return resp.json().get("product")
+    except Exception:
+        pass
+    return None
+
+
+def _extract_date(body_html: str) -> str | None:
+    text = BeautifulSoup(body_html, "lxml").get_text(" ")
+    m = re.search(r'\d{1,2}\s+de\s+\w+\s+de\s+\d{4}', text, re.IGNORECASE)
+    if m:
+        return normalize_date(m.group(0))
+    m = re.search(r'\d{1,2}/\d{1,2}/\d{4}', text)
+    if m:
+        return normalize_date(m.group(0))
+    return None
+
+
+def _fetch_og_image(urls: list[str]) -> str | None:
+    for url in urls:
         try:
             resp = get(url)
             if resp.status_code == 200:
@@ -42,29 +72,46 @@ def _fetch_og_image() -> str | None:
     return None
 
 
-def _build(imagem_url: str | None) -> Corrida:
+def scrape() -> list[Corrida]:
+    year = _target_year()
+    product = _fetch_shopify(year)
+
+    if product:
+        data_evento = _extract_date(product.get("body_html", "")) or _FALLBACK_DATA
+        inscricao_url = f"{BASE_URL}/products/sp-city-marathon-{year}"
+        blog_url = f"{BLOG_BASE}/sp-city-marathon-{year}"
+        titulo = product.get("title") or f"SP City Marathon {year}"
+        inscricoes_abertas: bool | None = True
+    else:
+        data_evento = _FALLBACK_DATA
+        inscricao_url = _FALLBACK_INSC
+        blog_url = _FALLBACK_BLOG
+        titulo = f"SP City Marathon {year}"
+        inscricoes_abertas = None
+
+    imagem_url = _fetch_og_image([blog_url, inscricao_url])
+    distancias = [Distancia(km=km, data=data_evento, horario=_REF_HORARIO) for km in _DISTANCES]
+
     now = now_iso()
-    today = today_iso()
-    titulo = "SP City Marathon"
     fonte = FonteInfo(
         nome=SOURCE_NAME,
-        link_evento=URL,
-        links_inscricao=[INSCRICAO_URL],
+        link_evento=blog_url,
+        links_inscricao=[inscricao_url],
     )
-    return Corrida(
-        id=f"{slugify(titulo)}_sp_{today}",
+    return [Corrida(
+        id=f"sp-city-marathon-sp-{year}",
         titulo=titulo,
-        data_evento=_DATA_EVENTO,
-        horario="05:15",
+        data_evento=data_evento,
+        horario=_REF_HORARIO,
         localizacao="São Paulo, SP",
         cidade="São Paulo",
         estado="SP",
-        distancias=_DISTANCIAS,
+        distancias=distancias,
         imagem_url=imagem_url,
-        inscricoes_abertas=True,
+        inscricoes_abertas=inscricoes_abertas,
         periodo_inscricao=None,
         fontes=[fonte],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
-    )
+    )]

@@ -48,6 +48,7 @@ from .sources.majors import (
     chicago,
     nyc,
     sydney,
+    venice,
 )
 
 SOURCES = [
@@ -86,6 +87,7 @@ SOURCES = [
     chicago,
     nyc,
     sydney,
+    venice,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

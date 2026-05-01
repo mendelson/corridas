@@ -20,6 +20,12 @@ SOURCE_NAME = "Ticket Sports"
 _BATCH = 2000
 _DETAIL_WORKERS = 8
 
+# Keywords that indicate award/ceremony context — not a race start time
+_AWARD_KW = re.compile(
+    r"premia[çc]|cerim[oô]n|trof[eé]u|award|entrega\s+de\s+kits?",
+    re.IGNORECASE,
+)
+
 # Keywords that indicate non-running events (triathlon, swimming, etc.)
 _NON_RUNNING_KW = [
     "triathlon", "triathon", "ironman", "duathlon",
@@ -367,6 +373,8 @@ def _extract_times_from_sections(texts: list[str]) -> dict[float, str]:
     for i, line in enumerate(lines):
         if not line.endswith(":"):
             continue
+        if _AWARD_KW.search(line):
+            continue
         kms: list[float] = []
         for m in re.finditer(r"(?<![.,])\b(\d+(?:[.,]\d+)?)\s*km\b", line, re.IGNORECASE):
             try:
@@ -399,6 +407,9 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
     # Extract per-distance start times (e.g. "5KM: 07h00 | 3KM: 07h30")
     time_map: dict[float, str] = {}
     for m in _DIST_TIME_RE.finditer(text):
+        ctx = text[max(0, m.start() - 80): m.end() + 20]
+        if _AWARD_KW.search(ctx):
+            continue
         km = float(m.group(1).replace(",", "."))
         h = int(m.group(2))
         mi = m.group(3)

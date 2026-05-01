@@ -14,6 +14,11 @@ URL = "https://www.sescdf.com.br/corridas"
 BASE = "https://www.sescdf.com.br"
 SOURCE_NAME = "SESC DF"
 
+_ANNC_PREFIX = re.compile(
+    r"^inscri[çc][oõ]es?\s+abertas?\s*(?:para\s+|:\s*)",
+    re.IGNORECASE,
+)
+
 
 def scrape() -> list[Corrida]:
     try:
@@ -53,7 +58,7 @@ def _parse_event(el) -> Corrida | None:
 
     heading = el.find(["h1", "h2", "h3", "h4", "strong"])
     titulo_raw = heading.get_text(strip=True) if heading else text[:80]
-    titulo = normalize_titulo(titulo_raw)
+    titulo = normalize_titulo(_ANNC_PREFIX.sub("", titulo_raw).strip())
     if not titulo or len(titulo) < 3:
         return None
 

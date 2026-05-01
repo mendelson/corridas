@@ -117,16 +117,16 @@ def _parse_image(raw: str | None) -> str | None:
 
 def _parse_inscricoes_abertas(event: dict) -> bool | None:
     ba = (event.get("botao_aberto") or "").lower().strip()
-    be = (event.get("bota_encerrado") or "").lower().strip()
+    # API field has a typo; try both spellings
+    be = (event.get("botao_encerrado") or event.get("bota_encerrado") or "").lower().strip()
 
-    # botao_aberto is authoritative: if it signals open, trust it
+    # Closed signal always wins — events can close after the open button was set
+    if be and be != "null" and any(kw in be for kw in _CLOSED_KW):
+        return False
+
     if ba and ba != "null":
         if any(kw in ba for kw in _OPEN_KW):
             return True
-
-    # No open button + closed signal → closed
-    if (not ba or ba == "null") and any(kw in be for kw in _CLOSED_KW):
-        return False
 
     return None
 

@@ -184,7 +184,11 @@ const btnClear          = $('btnClear');
 const btnClearEmpty     = $('btnClearEmpty');
 const btnRefresh        = $('btnRefresh');
 const btnLang           = $('btnLang');
-const estadoSelect      = $('estadoSelect');
+const estadoFilterWrapper  = $('estadoFilterWrapper');
+const estadoFilterBtn      = $('estadoFilterBtn');
+const estadoFilterDropdown = $('estadoFilterDropdown');
+const estadoFilterLabel    = $('estadoFilterLabel');
+let _estadoAvailableValues = new Set(['todos']);
 const periodoSelect     = $('periodoSelect');
 const customDateRow     = $('customDateRow');
 const dateFrom          = $('dateFrom');
@@ -245,10 +249,7 @@ function initI18n() {
     }
   }
 
-  if (estadoSelect) {
-    estadoSelect.setAttribute('aria-label', T.estadoAriaLabel);
-    if (estadoSelect.options[0]) estadoSelect.options[0].textContent = T.allLocations;
-  }
+  if (estadoFilterBtn) estadoFilterBtn.setAttribute('aria-label', T.estadoAriaLabel);
 
   if (fonteFilterBtn)   fonteFilterBtn.setAttribute('aria-label', T.fonteFilterAriaLabel);
   if (fonteFilterLabel) fonteFilterLabel.textContent = T.allSources;
@@ -459,15 +460,13 @@ function _applyGeoLocation() {
   if (state.estado !== 'todos') return;
   if (!_geoDetected && !allCorridas.length) return;
 
-  const availableValues = new Set([...estadoSelect.options].map(o => o.value));
-
   for (const candidate of _getFallbackChain(_geoDetected)) {
-    if (!availableValues.has(candidate)) continue;
+    if (!_estadoAvailableValues.has(candidate)) continue;
     if (!_hasFutureEvents(candidate)) continue;
     _geoApplied = candidate;
     state.estado = candidate;
-    estadoSelect.value = candidate;
     saveFilters();
+    _updateEstadoLabel();
     applyFilters();
     return;
   }
@@ -532,45 +531,112 @@ async function detectUserLocation() {
 }
 
 // ---------------------------------------------------------------------------
-// Estado filter population
+// Estado filter — custom accordion dropdown
 // ---------------------------------------------------------------------------
-function populateEstadoFilter({ skipGeo = false } = {}) {
-  while (estadoSelect.options.length > 1) estadoSelect.remove(1);
+function _updateEstadoLabel() {
+  const v = state.estado;
+  if (v === 'todos') {
+    estadoFilterLabel.textContent = T.allLocations;
+    estadoFilterBtn.classList.remove('active');
+    return;
+  }
+  const opt = estadoFilterDropdown.querySelector(`.estado-option[data-value="${CSS.escape(v)}"]`);
+  estadoFilterLabel.textContent = opt ? opt.textContent : v;
+  estadoFilterBtn.classList.add('active');
+}
 
+function _closeEstadoDropdown() {
+  estadoFilterDropdown.classList.add('hidden');
+  estadoFilterBtn.setAttribute('aria-expanded', 'false');
+}
+
+function _makeAccordionGroup(label, initiallyOpen) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'estado-group';
+
+  const header = document.createElement('div');
+  header.className = 'estado-group-header';
+  const labelSpan = document.createElement('span');
+  labelSpan.textContent = label;
+  const chevron = document.createElement('span');
+  chevron.className = 'estado-group-chevron';
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.textContent = initiallyOpen ? '▾' : '▸';
+  header.appendChild(labelSpan);
+  header.appendChild(chevron);
+
+  const body = document.createElement('div');
+  body.className = 'estado-group-body';
+  if (!initiallyOpen) body.classList.add('collapsed');
+
+  header.addEventListener('click', () => {
+    const isOpen = !body.classList.contains('collapsed');
+    if (!isOpen) {
+      // Accordion: close every other open group
+      estadoFilterDropdown.querySelectorAll('.estado-group-body').forEach(b => {
+        if (b !== body && !b.classList.contains('collapsed')) {
+          b.classList.add('collapsed');
+          b.previousElementSibling.querySelector('.estado-group-chevron').textContent = '▸';
+        }
+      });
+    }
+    body.classList.toggle('collapsed', isOpen);
+    chevron.textContent = isOpen ? '▸' : '▾';
+  });
+
+  wrapper.appendChild(header);
+  wrapper.appendChild(body);
+  return { wrapper, body };
+}
+
+function populateEstadoFilter({ skipGeo = false } = {}) {
+  estadoFilterDropdown.innerHTML = '';
+  _estadoAvailableValues = new Set(['todos']);
   const today = todayStr();
 
-  // When fontes are selected, only show locations that have events from those fontes
   const base = state.fontes.size === 0
     ? allCorridas
     : allCorridas.filter(c => matchesFonte(c));
 
+  function makeOption(value, text) {
+    _estadoAvailableValues.add(value);
+    const el = document.createElement('div');
+    el.className = 'estado-option' + (state.estado === value ? ' selected' : '');
+    el.setAttribute('role', 'option');
+    el.setAttribute('aria-selected', String(state.estado === value));
+    el.dataset.value = value;
+    el.textContent = text;
+    el.addEventListener('click', () => {
+      state.estado = value;
+      saveFilters();
+      _closeEstadoDropdown();
+      _updateEstadoLabel();
+      populateFontesFilter();
+      applyFilters();
+    });
+    return el;
+  }
+
+  // "Todos" at top level
+  estadoFilterDropdown.appendChild(makeOption('todos', T.allLocations));
+
+  // Brasil group
   const brEstados = [...new Set(
     base
       .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
       .map(c => c.estado)
   )].sort();
 
-  // Brasil group: "Todo o Brasil" + individual states
   if (brEstados.length > 0) {
-    const grp = document.createElement('optgroup');
-    grp.label = T.groupBrasil;
-
-    const allBrOpt = document.createElement('option');
-    allBrOpt.value = 'BR';
-    allBrOpt.textContent = T.allBrazil;
-    grp.appendChild(allBrOpt);
-
-    for (const uf of brEstados) {
-      const opt = document.createElement('option');
-      opt.value = uf;
-      opt.textContent = _ESTADO_LABELS[uf] || uf;
-      grp.appendChild(opt);
-    }
-    estadoSelect.appendChild(grp);
+    const brActive = state.estado === 'BR' || brEstados.includes(state.estado);
+    const { wrapper, body } = _makeAccordionGroup(T.groupBrasil, brActive);
+    body.appendChild(makeOption('BR', T.allBrazil));
+    for (const uf of brEstados) body.appendChild(makeOption(uf, _ESTADO_LABELS[uf] || uf));
+    estadoFilterDropdown.appendChild(wrapper);
   }
 
-  // One optgroup per country, with individual cities inside
-  const countryCity = new Map(); // country → Set of cities
+  // One accordion group per country
+  const countryCity = new Map();
   for (const c of base) {
     if (c.estado !== 'INT' || c.data_evento < today) continue;
     const country = _extractCountry(c.cidade);
@@ -581,33 +647,25 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
   }
   for (const country of [...countryCity.keys()].sort()) {
     const cities = [...countryCity.get(country)].sort();
-    const grp = document.createElement('optgroup');
-    grp.label = country;
-    if (cities.length > 1) {
-      const allOpt = document.createElement('option');
-      allOpt.value = 'INT:' + country;
-      allOpt.textContent = T.allCountry(country);
-      grp.appendChild(allOpt);
-    }
+    const isActive = state.estado === 'INT:' + country ||
+                     cities.some(city => state.estado === 'INT:' + country + ':' + city);
+    const { wrapper, body } = _makeAccordionGroup(country, isActive);
+    if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
     for (const city of cities) {
-      const opt = document.createElement('option');
-      opt.value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
-      opt.textContent = city;
-      grp.appendChild(opt);
+      const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
+      body.appendChild(makeOption(value, city));
     }
-    estadoSelect.appendChild(grp);
+    estadoFilterDropdown.appendChild(wrapper);
   }
 
-  // Reset to 'todos' if saved value no longer valid under current fonte filter
-  const availableValues = new Set([...estadoSelect.options].map(o => o.value));
-  if (state.estado !== 'todos' && !availableValues.has(state.estado)) {
+  // Reset to 'todos' if saved value no longer valid
+  if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {
     state.estado = 'todos';
     saveFilters();
   }
 
   if (!skipGeo) _applyGeoLocation();
-
-  if (estadoSelect.value !== state.estado) estadoSelect.value = state.estado;
+  _updateEstadoLabel();
 }
 
 // ---------------------------------------------------------------------------
@@ -1178,7 +1236,8 @@ function clearFilters() {
   distMin.value       = '';
   distMax.value       = '';
   periodoSelect.value = 'past15';
-  estadoSelect.value  = _geoApplied || 'todos';
+  state.estado = _geoApplied || 'todos';
+  _updateEstadoLabel();
   customDateRow.classList.add('hidden');
   dateFrom.value = '';
   dateTo.value   = '';
@@ -1287,11 +1346,17 @@ dateTo.addEventListener('change', () => {
   applyFilters();
 });
 
-estadoSelect.addEventListener('change', () => {
-  state.estado = estadoSelect.value;
-  saveFilters();
-  populateFontesFilter(); // update available fontes for new location
-  applyFilters();
+estadoFilterBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const isOpen = !estadoFilterDropdown.classList.contains('hidden');
+  estadoFilterDropdown.classList.toggle('hidden', isOpen);
+  estadoFilterBtn.setAttribute('aria-expanded', String(!isOpen));
+});
+
+document.addEventListener('click', e => {
+  if (estadoFilterWrapper && !estadoFilterWrapper.contains(e.target)) {
+    _closeEstadoDropdown();
+  }
 });
 
 let _searchTimer = null;
@@ -1321,10 +1386,16 @@ document.addEventListener('click', e => {
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && !fonteFilterDropdown.classList.contains('hidden')) {
-    fonteFilterDropdown.classList.add('hidden');
-    fonteFilterBtn.setAttribute('aria-expanded', 'false');
-    fonteFilterBtn.focus();
+  if (e.key === 'Escape') {
+    if (!fonteFilterDropdown.classList.contains('hidden')) {
+      fonteFilterDropdown.classList.add('hidden');
+      fonteFilterBtn.setAttribute('aria-expanded', 'false');
+      fonteFilterBtn.focus();
+    }
+    if (!estadoFilterDropdown.classList.contains('hidden')) {
+      _closeEstadoDropdown();
+      estadoFilterBtn.focus();
+    }
   }
 });
 
@@ -1342,7 +1413,7 @@ function init() {
   });
   if (state.distMin !== null) distMin.value = state.distMin;
   if (state.distMax !== null) distMax.value = state.distMax;
-  estadoSelect.value  = state.estado;
+  _updateEstadoLabel();
   periodoSelect.value = state.periodo;
 
   if ('serviceWorker' in navigator) {

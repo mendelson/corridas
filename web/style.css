@@ -223,6 +223,105 @@ input { font-family: inherit; }
 }
 .select-wrapper select:focus { outline: 2px solid var(--color-accent); }
 
+/* Estado accordion dropdown */
+.estado-filter-wrapper {
+  flex: 1;
+  min-width: 140px;
+  position: relative;
+}
+.estado-filter-btn {
+  width: 100%;
+  padding: 8px 28px 8px 10px;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  min-height: var(--touch);
+  display: flex;
+  align-items: center;
+  text-align: left;
+  position: relative;
+  transition: border-color 0.15s, color 0.15s;
+  cursor: pointer;
+}
+.estado-filter-btn:focus { outline: 2px solid var(--color-accent); }
+.estado-filter-btn.active {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+.estado-filter-btn.active .estado-filter-chevron { color: var(--color-accent); }
+#estadoFilterLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.estado-filter-chevron {
+  position: absolute;
+  right: 10px;
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+  transition: transform 0.15s;
+}
+.estado-filter-btn[aria-expanded="true"] .estado-filter-chevron { transform: rotate(180deg); }
+.estado-filter-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  width: max-content;
+  max-width: min(280px, 90vw);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  z-index: 200;
+  padding: 4px 0;
+  max-height: 340px;
+  overflow-y: auto;
+}
+/* "Todos" flat option + individual city options */
+.estado-option {
+  padding: 9px 14px;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+  user-select: none;
+  white-space: nowrap;
+}
+.estado-option:hover { background: var(--color-surface-2); color: var(--color-text); }
+.estado-option.selected {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+/* Country / Brasil group header */
+.estado-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+.estado-group-header:hover { background: var(--color-surface-2); }
+.estado-group-chevron {
+  font-size: 0.65rem;
+  color: var(--color-text-secondary);
+}
+/* Options inside a group are indented */
+.estado-group-body .estado-option { padding-left: 22px; }
+/* Collapsed group body */
+.estado-group-body.collapsed { display: none; }
+
 /* Fonte multi-select */
 .fonte-filter-wrapper {
   flex: 1;

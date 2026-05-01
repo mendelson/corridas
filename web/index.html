@@ -70,10 +70,15 @@
           <option value="custom">Intervalo personalizado</option>
         </select>
       </div>
-      <div class="select-wrapper">
-        <select id="estadoSelect" aria-label="Filtrar por localização">
-          <option value="todos">Todos</option>
-        </select>
+      <div class="estado-filter-wrapper" id="estadoFilterWrapper">
+        <button class="estado-filter-btn" id="estadoFilterBtn"
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por localização">
+          <span id="estadoFilterLabel">Todos</span>
+          <span class="estado-filter-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="estado-filter-dropdown hidden" id="estadoFilterDropdown" role="listbox">
+          <!-- populated dynamically -->
+        </div>
       </div>
       <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
         <button class="fonte-filter-btn" id="fonteFilterBtn"

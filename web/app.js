@@ -5,20 +5,15 @@
 // ---------------------------------------------------------------------------
 const LANG = (() => {
   const path = window.location.pathname;
+  if (path.startsWith('/pt')) return 'pt';
+  if (path.startsWith('/en')) return 'en';
   if (path.startsWith('/es')) return 'es';
   if (path.startsWith('/de')) return 'de';
   if (path.startsWith('/fr')) return 'fr';
-  if (path.startsWith('/en')) return 'en';
-  if (localStorage.getItem('lang') === 'pt') return 'pt';
-  const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'pt').toLowerCase();
-  if (bl.startsWith('es')) { window.location.replace('/es'); return 'es'; }
-  if (bl.startsWith('de')) { window.location.replace('/de'); return 'de'; }
-  if (bl.startsWith('fr')) { window.location.replace('/fr'); return 'fr'; }
-  if (!bl.startsWith('pt')) { window.location.replace('/en'); return 'en'; }
   return 'pt';
 })();
 
-const LANG_URLS = { pt: '/', en: '/en', es: '/es', de: '/de', fr: '/fr' };
+const LANG_URLS = { pt: '/pt', en: '/en', es: '/es', de: '/de', fr: '/fr' };
 
 // ---------------------------------------------------------------------------
 // i18n strings
@@ -433,8 +428,8 @@ function initI18n() {
 if (langSelect) {
   langSelect.addEventListener('change', () => {
     const target = langSelect.value;
-    if (target === 'pt') localStorage.setItem('lang', 'pt');
-    window.location.href = LANG_URLS[target] || '/';
+    localStorage.setItem('lang', target);
+    window.location.href = LANG_URLS[target] || '/pt';
   });
 }
 

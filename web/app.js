@@ -214,7 +214,7 @@ const STRINGS = {
       'Reino Unido': 'Reino Unido', 'EUA': 'EE.UU.', 'Estados Unidos': 'EE.UU.',
       'Japão': 'Japón', 'Alemanha': 'Alemania', 'França': 'Francia',
       'Austrália': 'Australia', 'Países Baixos': 'Países Bajos', 'Itália': 'Italia',
-      'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Espanha': 'España', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
       'Dinamarca': 'Dinamarca', 'Suécia': 'Suecia', 'Noruega': 'Noruega',
       'Irlanda': 'Irlanda', 'República Tcheca': 'República Checa',
       'Grécia': 'Grecia', 'Colômbia': 'Colombia', 'México': 'México',
@@ -286,7 +286,7 @@ const STRINGS = {
     ],
     places: {
       'Reino Unido': 'Vereinigtes Königreich', 'EUA': 'USA', 'Estados Unidos': 'USA',
-      'Japão': 'Japan', 'França': 'Frankreich',
+      'Japão': 'Japan', 'Alemanha': 'Deutschland', 'França': 'Frankreich',
       'Austrália': 'Australien', 'Países Baixos': 'Niederlande', 'Itália': 'Italien',
       'Espanha': 'Spanien', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
       'Dinamarca': 'Dänemark', 'Suécia': 'Schweden', 'Noruega': 'Norwegen',
@@ -360,7 +360,7 @@ const STRINGS = {
     ],
     places: {
       'Reino Unido': 'Royaume-Uni', 'EUA': 'États-Unis', 'Estados Unidos': 'États-Unis',
-      'Japão': 'Japon', 'Alemanha': 'Allemagne',
+      'Japão': 'Japon', 'Alemanha': 'Allemagne', 'França': 'France',
       'Austrália': 'Australie', 'Países Baixos': 'Pays-Bas', 'Itália': 'Italie',
       'Espanha': 'Espagne', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
       'Dinamarca': 'Danemark', 'Suécia': 'Suède', 'Noruega': 'Norvège',

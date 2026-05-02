@@ -65,10 +65,6 @@ const STRINGS = {
     sourcesSection: 'Fontes',
     photosSection: 'Fotos',
     registerBtn: 'Inscrever-se →',
-    statusRealized: '🏁 Realizado',
-    statusOpen: '🟢 Inscrições abertas',
-    statusClosed: '🔴 Inscrições encerradas',
-    statusSoon: '⚪ Em breve',
     groupBrasil: 'Brasil',
     allCountry: country => `Todo ${country}`,
     periodOptions: [
@@ -128,10 +124,6 @@ const STRINGS = {
     sourcesSection: 'Sources',
     photosSection: 'Photos',
     registerBtn: 'Register →',
-    statusRealized: '🏁 Completed',
-    statusOpen: '🟢 Open registrations',
-    statusClosed: '🔴 Closed registrations',
-    statusSoon: '⚪ Coming soon',
     groupBrasil: 'Brazil',
     allCountry: country => `All ${country}`,
     periodOptions: [
@@ -1010,10 +1002,6 @@ function buildCard(c) {
     distContainer.appendChild(span);
   }
 
-  const badge        = card.querySelector('.badge-status');
-  const { label, cls } = statusBadge(c);
-  badge.textContent = label;
-  badge.className   = 'badge-status ' + cls;
 
   const fontesBadge = card.querySelector('.badge-fontes');
   if (c.fontes && c.fontes.length > 1) {
@@ -1186,15 +1174,6 @@ function formatKm(km) {
   return km + 'K';
 }
 
-function statusBadge(c) {
-  const today = todayStr();
-  if (c.data_evento && c.data_evento < today) return { label: T.statusRealized, cls: 'badge-realized' };
-  if (c.inscricoes_abertas === true)  return { label: T.statusOpen,   cls: 'badge-open' };
-  if (c.inscricoes_abertas === false) return { label: T.statusClosed, cls: 'badge-closed' };
-  const hasInscLink = (c.fontes || []).some(f => (f.links_inscricao || []).length > 0);
-  if (hasInscLink) return { label: T.statusOpen, cls: 'badge-open' };
-  return { label: T.statusSoon, cls: 'badge-soon' };
-}
 
 function stateColor(estado) {
   const map = {

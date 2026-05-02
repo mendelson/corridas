@@ -662,19 +662,6 @@ input { font-family: inherit; }
   color: var(--color-text-secondary);
 }
 
-/* Status badges */
-.badge-status {
-  font-size: 0.72rem;
-  font-weight: 600;
-  white-space: nowrap;
-  padding: 3px 8px;
-  border-radius: 10px;
-  flex-shrink: 0;
-}
-.badge-open { background: rgba(76,175,80,.15); color: #4caf50; }
-.badge-closed { background: rgba(239,83,80,.15); color: #ef5350; }
-.badge-realized { background: rgba(158,158,158,.12); color: #9e9e9e; }
-.badge-soon { background: rgba(158,158,158,.1); color: #9e9e9e; }
 
 .badge-fontes {
   font-size: 0.72rem;

@@ -10,109 +10,112 @@ GitHub Actions.
 
 ---
 
-## Fontes
+## Fontes ativas
 
-### Nota sobre WAF / Cloudflare
+### Fontes brasileiras — calendários gerais
 
-Muitos sites de corridas utilizam Cloudflare ou WAF similar. O bloqueio opera em dois
-níveis distintos:
-
-- **Nível de IP ("Host not in allowlist"):** A requisição é rejeitada antes de chegar ao
-  servidor. Playwright não resolve — o IP do runner ainda é bloqueado. GoDream e Ahotu
-  operam nesse nível.
-- **Nível de fingerprint de browser (bot detection):** O servidor responde, mas requer
-  JavaScript e cookies de um browser real. Playwright resolve esses casos.
-
----
-
-### Fontes Brasileiras — Ativas
-
-| Fonte | Método | Eventos | Observações |
+| Fonte | Em uso | URL de busca | Método |
 |---|---|---|---|
-| Ticket Sports | JSON API | **~844** | Maior fonte; usa API interna do app. |
-| Circuito das Estações | API dedicada | **~97** | API própria do evento; estável. |
-| Central da Corrida | HTML | **~74** | |
-| TF Sports | HTML | **~51** | |
-| Live Run | HTML | **~44** | |
-| Yescom | HTML | **~10** | |
-| Brasil Corrida | HTML | **~7** | |
-| Iguana Sports | HTML | **~6** | |
-| Ativo | HTML | **~3** | |
-| MKS Esportes | HTML | **~3** | |
-| SESC DF | HTML | **~2** | Específico DF. |
-| Corridas Brasil | HTML | — | |
-| Minhas Inscrições | HTML | — | |
-| Runner Brasil | HTML | — | |
-| Brasil que Corre | HTML | — | Específico DF. |
-| Correr Brasília | HTML | — | Específico DF. |
-| Portal das Corridas | Playwright | — | SPA; requer renderização JS. |
-| GoDream | HTML + Next.js | — | **Sempre bloqueado (IP-level WAF).** Registrado mas nunca retorna eventos. |
+| Ticket Sports | ✅ | `ticketsports.app/api/events/list` | JSON API |
+| Circuito das Estações | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada |
+| Central da Corrida | ✅ | `centraldacorrida.com.br/calendario` | HTML |
+| TF Sports | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML |
+| Live Run | ✅ | `liverun.com.br/calendario` | HTML |
+| Yescom | ✅ | `yescom.com.br` | HTML |
+| Brasil Corrida | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API |
+| Iguana Sports | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML |
+| Ativo | ✅ | `ativo.com/eventos.json` | JSON API |
+| MKS Esportes | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML |
+| Corridas Brasil | ✅ | `corridasbrasil.com.br/calendario/` | HTML |
+| Minhas Inscrições | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML |
+| Runner Brasil | ✅ | `runnerbrasil.com.br` | HTML |
+| Portal das Corridas | ✅ | `portaldascorridas.com.br` | Playwright (SPA) |
 
-### Fontes Brasileiras — Eventos Específicos
+### Fontes brasileiras — específicas Brasília-DF
 
-| Fonte | Site |
-|---|---|
-| Maratona do Rio | maratona.rio |
-| Maratona de Porto Alegre | maratonadeportoalegre.com.br |
-| SP City Marathon | spcitymarathon.com.br |
-| São Silvestre | saosilvestre.com.br |
-| Volta do Lago | voltadolago.com.br |
+| Fonte | Em uso | URL de busca | Método |
+|---|---|---|---|
+| Brasil que Corre | ✅ | `brasilquecorre.com/distritofederal` | HTML |
+| Correr Brasília | ✅ | `correrbrasilia.com.br/calendario/` | HTML |
+| SESC DF | ✅ | `sescdf.com.br/corridas` | HTML |
 
-### Fontes Internacionais
+### Fontes brasileiras — eventos específicos
 
-| Fonte | Cobertura |
-|---|---|
-| Let's Do This | Calendário UK |
-| World Marathons | Calendário mundial |
-
-### World Marathon Majors (22 scrapers dedicados)
-
-Cada evento tem scraper próprio em `scraper/sources/majors/`. Retornam 1–2 edições futuras
-com projeção automática para o ano seguinte quando todas as datas conhecidas já passaram.
-
-| Evento | Próximas edições |
-|---|---|
-| Tokyo Marathon | 2027-03-07 |
-| Boston Marathon | 2027-04-19 |
-| Brighton Marathon | 2027-04-04 |
-| Paris Marathon | 2027-04-11 |
-| TCS London Marathon | 2027-04-25 |
-| Manchester Marathon | 2027-04-18 |
-| Prague Marathon | 2026-05-03 · 2027-05-09 |
-| Copenhagen Marathon | 2026-05-17 · 2027-05-16 |
-| Edinburgh Marathon Festival | 2026-05-24 · 2027-05-30 |
-| Stockholm Marathon | 2026-05-30 · 2027-05-30 |
-| TCS Sydney Marathon | 2026-08-30 · 2027-08-29 |
-| Great North Run | 2026-09-06 · 2027-09-12 |
-| BMW Berlin Marathon | 2026-09-27 · 2027-09-26 |
-| Cardiff Half Marathon | 2026-10-04 · 2027-10-03 |
-| Manchester Half Marathon | 2026-10-04 · 2027-10-03 |
-| Bank of America Chicago Marathon | 2026-10-11 · 2027-10-10 |
-| Amsterdam Marathon | 2026-10-18 · 2027-10-17 |
-| Venice Marathon | 2026-10-25 · 2027-10-24 |
-| Dublin City Marathon | 2026-10-25 · 2027-10-31 |
-| TCS New York City Marathon | 2026-11-01 · 2027-11-07 |
-| Athens Classic Marathon | 2026-11-08 · 2027-11-14 |
-| Valencia Marathon | 2026-12-06 · 2027-12-05 |
-
----
-
-## Fontes Desativadas
-
-| Fonte | Arquivo | Motivo |
+| Fonte | Em uso | URL de busca |
 |---|---|---|
-| Corridas BR | `corridas_br.py` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. |
-| Bora Correr | `bora_correr.py` | Arquivo existe mas nunca foi ativado. Retorna 403 no CI. |
+| Maratona do Rio | ✅ | `maratonadorio.com.br` |
+| Maratona de Porto Alegre | ✅ | `maratonadeportoalegre.com.br` |
+| SP City Marathon | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` |
+| São Silvestre | ✅ | `saosilvestre.com.br` |
+| Volta do Lago | ✅ | `voltadolago.com.br` |
 
-## Fontes Testadas e Inviáveis
+### Plataformas brasileiras com WAF intransponível
 
-| Fonte | Motivo |
-|---|---|
-| **Ahotu** (ahotu.com) | `403 "Host not in allowlist"` em todos os endpoints. WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. |
+| Fonte | Em uso | Motivo |
+|---|---|---|
+| GoDream | ✅¹ | `godream.com.br/corrida-de-rua` — `403 Host not in allowlist` mesmo no CI |
+
+> ¹ Registrada em SOURCES, nunca retorna eventos. O bloqueio é em nível de IP de datacenter;
+> Playwright não resolve.
+
+### Fontes internacionais
+
+| Fonte | Em uso | URL de busca |
+|---|---|---|
+| Let's Do This | ✅ | `letsdothis.com` (calendário UK) |
+| World Marathons | ✅ | `worldsmarathons.com` (calendário mundial) |
 
 ---
 
-## Estrutura
+## World Marathon Majors
+
+22 scrapers dedicados em `scraper/sources/majors/`. Retornam 1–2 edições futuras com
+projeção automática para o ano seguinte quando todas as datas conhecidas já passaram.
+
+| Evento | Em uso | URL oficial |
+|---|---|---|
+| Tokyo Marathon | ✅ | `marathon.tokyo/en` |
+| Boston Marathon | ✅ | `baa.org/races/boston-marathon` |
+| Brighton Marathon | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` |
+| Paris Marathon | ✅ | `schneiderelectricparismarathon.com/en` |
+| TCS London Marathon | ✅ | `tcslondonmarathon.com` |
+| Prague Marathon | ✅ | `runczech.com/en/events/prague-international-marathon-2026` |
+| Copenhagen Marathon | ✅ | `copenhagenmarathon.dk/en` |
+| Edinburgh Marathon Festival | ✅ | `edinburghmarathon.com` |
+| Stockholm Marathon | ✅ | `stockholmmarathon.se/eng` |
+| Manchester Marathon | ✅ | `manchestermarathon.co.uk` |
+| TCS Sydney Marathon | ✅ | `tcssydneymarathon.com` |
+| Great North Run | ✅ | `greatrun.org/events/great-north-run` |
+| BMW Berlin Marathon | ✅ | `bmw-berlin-marathon.com/en` |
+| Cardiff Half Marathon | ✅ | `cardiffhalfmarathon.co.uk` |
+| Manchester Half Marathon | ✅ | `manchesterhalfmarathon.com` |
+| Bank of America Chicago Marathon | ✅ | `chicagomarathon.com` |
+| Amsterdam Marathon | ✅ | `tcsamsterdammarathon.eu/en` |
+| Venice Marathon | ✅ | `venicemarathon.it/en` |
+| Dublin City Marathon | ✅ | `irishlifedublinmarathon.ie` |
+| TCS New York City Marathon | ✅ | `nyrr.org/races/tcsnycmarathon` |
+| Athens Classic Marathon | ✅ | `athensauthenticmarathon.gr/en` |
+| Valencia Marathon | ✅ | `valenciaciudaddelrunning.com/en/marathon` |
+
+---
+
+## Fontes desativadas
+
+| Fonte | Em uso | URL | Motivo |
+|---|---|---|---|
+| Corridas BR | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Também retorna 403 no CI. |
+| Bora Correr | ❌ | `coelhodeprograma.com.br/boracorrer` | Scraper implementado mas nunca ativado. Retorna 403 no CI. |
+
+## Fontes testadas e inviáveis
+
+| Fonte | URL | Motivo |
+|---|---|---|
+| Ahotu | `ahotu.com/pt-br/races` | `403 Host not in allowlist` em todos os endpoints. WAF bloqueia IPs de datacenter em nível de rede; Playwright não resolve. |
+| Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio de IP que Ahotu. Estrutura HTML desconhecida — não foi possível inspecionar o site para escrever o scraper. |
+
+---
+
+## Estrutura do repositório
 
 ```
 corridas/

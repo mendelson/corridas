@@ -35,9 +35,13 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método |
 |---|---|---|---|
-| Brasil que Corre | ✅ | `brasilquecorre.com/distritofederal` | HTML |
+| Brasil que Corre | ✅¹ | `brasilquecorre.com/distritofederal` | HTML |
 | Correr Brasília | ✅ | `correrbrasilia.com.br/calendario/` | HTML |
 | SESC DF | ✅ | `sescdf.com.br/corridas` | HTML |
+
+> ¹ Registrada em SOURCES mas retorna 0 eventos — `brasilquecorre.com` bloqueia
+> IPs de datacenter (403) inclusive no CI. O site possui calendários por estado
+> além do DF, mas não é possível acessá-los sem IP residencial ou parceria com o site.
 
 ### Fontes brasileiras — eventos específicos
 

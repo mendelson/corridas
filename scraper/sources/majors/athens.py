@@ -2,7 +2,7 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Athens Classic Marathon"
-URL         = "https://www.athensclassicmarathon.gr/en/"
+URL         = "https://www.athensauthenticmarathon.gr/en/"
 KNOWN_DATE  = "2026-11-08"
 HORARIO     = "09:00"
 LOCALIZACAO = "Atenas, Grécia"

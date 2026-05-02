@@ -2,7 +2,7 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Dublin City Marathon"
-URL         = "https://www.dublincitymarathon.ie/"
+URL         = "https://www.irishlifedublinmarathon.ie/"
 KNOWN_DATE  = "2026-10-25"
 HORARIO     = "09:00"
 LOCALIZACAO = "Dublin, Irlanda"

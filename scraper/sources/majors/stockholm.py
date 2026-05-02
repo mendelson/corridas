@@ -2,7 +2,7 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Stockholm Marathon"
-URL         = "https://www.stockholmmarathon.se/en/"
+URL         = "https://www.stockholmmarathon.se/eng/"
 KNOWN_DATE  = "2026-06-06"
 HORARIO     = "12:00"
 LOCALIZACAO = "Estocolmo, Suécia"

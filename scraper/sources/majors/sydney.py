@@ -2,7 +2,7 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "TCS Sydney Marathon"
-URL = "https://www.tcssydneymarathon.com.au/"
+URL = "https://www.tcssydneymarathon.com/"
 KNOWN_DATE = "2026-09-20"
 HORARIO = "07:00"
 LOCALIZACAO = "Sydney, Austrália"

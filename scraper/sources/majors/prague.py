@@ -2,7 +2,7 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Prague Marathon"
-URL         = "https://runczech.com/en/running/prague-marathon/"
+URL         = "https://www.runczech.com/en/events/prague-international-marathon-2026"
 KNOWN_DATE  = "2026-05-10"
 HORARIO     = "09:00"
 LOCALIZACAO = "Praga, República Tcheca"

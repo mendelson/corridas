@@ -39,6 +39,7 @@ from .sources import (
     runner_brasil,
     brasil_corrida,
     circuito_das_estacoes,
+    godream,
     volta_do_lago,
     world_marathons,
     lets_do_this,
@@ -91,6 +92,8 @@ SOURCES = [
     sesc_df,
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
+    # Brazilian running event platforms
+    godream,
     # Single major events (BR)
     maratona_rio,
     maratona_porto_alegre,

@@ -132,6 +132,23 @@ const STRINGS = {
       { value: 'all',    label: 'All time' },
       { value: 'custom', label: 'Custom range' },
     ],
+    places: {
+      'Reino Unido': 'United Kingdom', 'EUA': 'USA', 'Estados Unidos': 'USA',
+      'Japão': 'Japan', 'Alemanha': 'Germany', 'França': 'France',
+      'Austrália': 'Australia', 'Países Baixos': 'Netherlands', 'Itália': 'Italy',
+      'Espanha': 'Spain', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Denmark', 'Suécia': 'Sweden', 'Noruega': 'Norway',
+      'Irlanda': 'Ireland', 'República Tcheca': 'Czech Republic',
+      'Grécia': 'Greece', 'Colômbia': 'Colombia', 'México': 'Mexico',
+      'África do Sul': 'South Africa', 'Quênia': 'Kenya', 'Etiópia': 'Ethiopia',
+      'Coreia do Sul': 'South Korea', 'Canadá': 'Canada', 'Nova Zelândia': 'New Zealand',
+      'Áustria': 'Austria', 'Suíça': 'Switzerland', 'Polônia': 'Poland',
+      'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokyo', 'Londres': 'London',
+      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhagen',
+      'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athens',
+      'Milão': 'Milan', 'Veneza': 'Venice', 'Assunção': 'Asunción',
+      'Lisboa': 'Lisbon', 'Moscou': 'Moscow',
+    },
   },
   es: {
     siteTitle: 'Próxima Carrera',
@@ -189,6 +206,23 @@ const STRINGS = {
       { value: 'all',    label: 'Todo el período' },
       { value: 'custom', label: 'Intervalo personalizado' },
     ],
+    places: {
+      'Reino Unido': 'Reino Unido', 'EUA': 'EE.UU.', 'Estados Unidos': 'EE.UU.',
+      'Japão': 'Japón', 'Alemanha': 'Alemania', 'França': 'Francia',
+      'Austrália': 'Australia', 'Países Baixos': 'Países Bajos', 'Itália': 'Italia',
+      'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Dinamarca', 'Suécia': 'Suecia', 'Noruega': 'Noruega',
+      'Irlanda': 'Irlanda', 'República Tcheca': 'República Checa',
+      'Grécia': 'Grecia', 'Colômbia': 'Colombia', 'México': 'México',
+      'África do Sul': 'Sudáfrica', 'Quênia': 'Kenia', 'Etiópia': 'Etiopía',
+      'Coreia do Sul': 'Corea del Sur', 'Canadá': 'Canadá', 'Nova Zelândia': 'Nueva Zelanda',
+      'Áustria': 'Austria', 'Suíça': 'Suiza', 'Polônia': 'Polonia',
+      'Edimburgo': 'Edimburgo', 'Tóquio': 'Tokio', 'Londres': 'Londres',
+      'Nova York': 'Nueva York', 'Amsterdã': 'Ámsterdam', 'Copenhague': 'Copenhague',
+      'Estocolmo': 'Estocolmo', 'Praga': 'Praga', 'Atenas': 'Atenas',
+      'Milão': 'Milán', 'Veneza': 'Venecia', 'Assunção': 'Asunción',
+      'Lisboa': 'Lisboa', 'Moscou': 'Moscú',
+    },
   },
   de: {
     siteTitle: 'Nächstes Rennen',
@@ -246,6 +280,23 @@ const STRINGS = {
       { value: 'all',    label: 'Gesamter Zeitraum' },
       { value: 'custom', label: 'Benutzerdefinierter Zeitraum' },
     ],
+    places: {
+      'Reino Unido': 'Vereinigtes Königreich', 'EUA': 'USA', 'Estados Unidos': 'USA',
+      'Japão': 'Japan', 'França': 'Frankreich',
+      'Austrália': 'Australien', 'Países Baixos': 'Niederlande', 'Itália': 'Italien',
+      'Espanha': 'Spanien', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Dänemark', 'Suécia': 'Schweden', 'Noruega': 'Norwegen',
+      'Irlanda': 'Irland', 'República Tcheca': 'Tschechien',
+      'Grécia': 'Griechenland', 'Colômbia': 'Kolumbien', 'México': 'Mexiko',
+      'África do Sul': 'Südafrika', 'Quênia': 'Kenia', 'Etiópia': 'Äthiopien',
+      'Coreia do Sul': 'Südkorea', 'Canadá': 'Kanada', 'Nova Zelândia': 'Neuseeland',
+      'Áustria': 'Österreich', 'Suíça': 'Schweiz', 'Polônia': 'Polen',
+      'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokio', 'Londres': 'London',
+      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
+      'Estocolmo': 'Stockholm', 'Praga': 'Prag', 'Atenas': 'Athen',
+      'Milão': 'Mailand', 'Veneza': 'Venedig', 'Assunção': 'Asunción',
+      'Lisboa': 'Lissabon', 'Moscou': 'Moskau',
+    },
   },
   fr: {
     siteTitle: 'Prochaine Course',
@@ -303,6 +354,23 @@ const STRINGS = {
       { value: 'all',    label: 'Toute la période' },
       { value: 'custom', label: 'Période personnalisée' },
     ],
+    places: {
+      'Reino Unido': 'Royaume-Uni', 'EUA': 'États-Unis', 'Estados Unidos': 'États-Unis',
+      'Japão': 'Japon', 'Alemanha': 'Allemagne',
+      'Austrália': 'Australie', 'Países Baixos': 'Pays-Bas', 'Itália': 'Italie',
+      'Espanha': 'Espagne', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Danemark', 'Suécia': 'Suède', 'Noruega': 'Norvège',
+      'Irlanda': 'Irlande', 'República Tcheca': 'République Tchèque',
+      'Grécia': 'Grèce', 'Colômbia': 'Colombie', 'México': 'Mexique',
+      'África do Sul': 'Afrique du Sud', 'Quênia': 'Kenya', 'Etiópia': 'Éthiopie',
+      'Coreia do Sul': 'Corée du Sud', 'Canadá': 'Canada', 'Nova Zelândia': 'Nouvelle-Zélande',
+      'Áustria': 'Autriche', 'Suíça': 'Suisse', 'Polônia': 'Pologne',
+      'Edimburgo': 'Édimbourg', 'Tóquio': 'Tokyo', 'Londres': 'Londres',
+      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhague',
+      'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athènes',
+      'Milão': 'Milan', 'Veneza': 'Venise', 'Assunção': 'Asunción',
+      'Lisboa': 'Lisbonne', 'Moscou': 'Moscou',
+    },
   },
 };
 
@@ -427,9 +495,7 @@ function initI18n() {
 // ---------------------------------------------------------------------------
 if (langSelect) {
   langSelect.addEventListener('change', () => {
-    const target = langSelect.value;
-    localStorage.setItem('lang', target);
-    window.location.href = LANG_URLS[target] || '/pt';
+    window.location.href = LANG_URLS[langSelect.value] || '/pt';
   });
 }
 
@@ -496,6 +562,20 @@ async function fetchData(triggeredByUser = false) {
 // ---------------------------------------------------------------------------
 // Location / geo helpers
 // ---------------------------------------------------------------------------
+
+// Translate a Portuguese place string (city, country, or "City, Country")
+// to the current language. PT is already the base, other langs use T.places.
+function translatePlace(str) {
+  if (!str || LANG === 'pt' || !T.places) return str || '';
+  // Sort entries longest-first so "Estados Unidos" matches before "Estados"
+  const entries = Object.entries(T.places).sort((a, b) => b[0].length - a[0].length);
+  let out = str;
+  for (const [pt, local] of entries) {
+    if (out.includes(pt)) out = out.split(pt).join(local);
+  }
+  return out;
+}
+
 const _ESTADO_LABELS = {
   AC: 'Acre · AC',           AL: 'Alagoas · AL',        AM: 'Amazonas · AM',
   AP: 'Amapá · AP',          BA: 'Bahia · BA',           CE: 'Ceará · CE',
@@ -704,7 +784,7 @@ function _updateEstadoLabel() {
     return;
   }
   const opt = estadoFilterDropdown.querySelector(`.estado-option[data-value="${CSS.escape(v)}"]`);
-  estadoFilterLabel.textContent = opt ? opt.textContent : v;
+  estadoFilterLabel.textContent = opt ? opt.textContent : translatePlace(v.replace(/^INT:/, '').replace(/:/g, ', '));
   estadoFilterBtn.classList.add('active');
 }
 
@@ -816,15 +896,16 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
   }
 
   for (const country of countryCity.keys()) {
-    allGroups.push({ label: country, build: () => {
+    const countryLabel = translatePlace(country);
+    allGroups.push({ label: countryLabel, build: () => {
       const cities = [...countryCity.get(country)].sort();
       const isActive = state.estado === 'INT:' + country ||
                        cities.some(city => state.estado === 'INT:' + country + ':' + city);
-      const { wrapper, body } = _makeAccordionGroup(country, isActive);
-      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
+      const { wrapper, body } = _makeAccordionGroup(countryLabel, isActive);
+      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(countryLabel)));
       for (const city of cities) {
         const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
-        body.appendChild(makeOption(value, city));
+        body.appendChild(makeOption(value, translatePlace(city)));
       }
       return wrapper;
     }});
@@ -1311,7 +1392,7 @@ function formatDateShort(iso) {
 }
 
 function formatLocation(cidade, estado) {
-  if (estado === 'INT' || estado === '??' || !estado) return cidade || '';
+  if (estado === 'INT' || estado === '??' || !estado) return translatePlace(cidade || '');
   return [cidade, estado].filter(Boolean).join(' · ');
 }
 

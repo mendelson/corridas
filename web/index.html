@@ -5,11 +5,6 @@
   <title>Redirecting…</title>
   <script>
     (function () {
-      var saved = localStorage.getItem('lang');
-      if (saved && /^(pt|en|es|de|fr)$/.test(saved)) {
-        window.location.replace('/' + saved);
-        return;
-      }
       var bl = (navigator.language || (navigator.languages && navigator.languages[0]) || '').toLowerCase();
       if (bl.startsWith('pt')) { window.location.replace('/pt'); return; }
       if (bl.startsWith('es')) { window.location.replace('/es'); return; }

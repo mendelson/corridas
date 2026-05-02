@@ -1,6 +1,7 @@
 """Shared helpers for World Marathon Majors scrapers."""
 from __future__ import annotations
 import re
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from ...http_client import get
@@ -13,6 +14,20 @@ _SKIP_IMG = re.compile(
     r"adidas|schneider|bofa|wawhite|abbottwmm|isolation",
     re.IGNORECASE,
 )
+
+
+def _same_domain(img_url: str, page_url: str) -> bool:
+    """Return True if img_url is from the same registered domain as page_url."""
+    try:
+        img_host  = urlparse(img_url).hostname or ''
+        page_host = urlparse(page_url).hostname or ''
+        # Accept same host, www. variants, and common CDN subdomains of the same base
+        def base(h: str) -> str:
+            parts = h.lstrip('www.').split('.')
+            return '.'.join(parts[-2:]) if len(parts) >= 2 else h
+        return base(img_host) == base(page_host)
+    except Exception:
+        return False
 
 
 def scrape_major(
@@ -52,11 +67,11 @@ def scrape_major(
         raw_date = extract_date_from_soup(soup)
         if raw_date and raw_date >= today:
             data = raw_date
-        # 1. og:image, 2. twitter:image, 3. first non-logo photo in page
+        # 1. og:image, 2. twitter:image, 3. first non-logo photo — all restricted to same domain
         imagem_url = (
-            _og_image(soup)
-            or _twitter_image(soup)
-            or _first_race_photo(soup)
+            _og_image(soup, url)
+            or _twitter_image(soup, url)
+            or _first_race_photo(soup, url)
         )
         inscricoes_abertas = _check_status(soup, open_kw, closed_kw)
 
@@ -89,22 +104,27 @@ def scrape_major(
     )]
 
 
-def _og_image(soup) -> str | None:
+def _og_image(soup, page_url: str) -> str | None:
     tag = soup.find("meta", property="og:image")
-    return tag.get("content") if tag else None
+    src = tag.get("content") if tag else None
+    return src if src and _same_domain(src, page_url) else None
 
 
-def _twitter_image(soup) -> str | None:
+def _twitter_image(soup, page_url: str) -> str | None:
     tag = soup.find("meta", attrs={"name": "twitter:image"})
-    return tag.get("content") if tag else None
+    src = tag.get("content") if tag else None
+    return src if src and _same_domain(src, page_url) else None
 
 
-def _first_race_photo(soup) -> str | None:
-    """First non-logo, non-sponsor JPG/PNG found in img tags."""
+def _first_race_photo(soup, page_url: str) -> str | None:
+    """First non-logo, non-sponsor JPG/PNG from the same domain as the scraped page."""
     for img in soup.find_all("img", src=True):
         src = img.get("src", "")
-        if src.lower().endswith((".jpg", ".jpeg", ".png")) and not _SKIP_IMG.search(src):
-            return src if src.startswith("http") else None
+        if (src.startswith("http")
+                and src.lower().endswith((".jpg", ".jpeg", ".png"))
+                and not _SKIP_IMG.search(src)
+                and _same_domain(src, page_url)):
+            return src
     return None
 
 

@@ -1276,7 +1276,26 @@ function showPlaceholder(el, estado) {
   el.textContent = '🏃';
 }
 
+function _collapseAllCards(anchor) {
+  const others = document.querySelectorAll('.card-expanded:not(.hidden)');
+  if (!others.length) return;
+  const anchorTop = anchor.getBoundingClientRect().top;
+  others.forEach(exp => {
+    exp.classList.add('hidden');
+    exp.setAttribute('aria-hidden', 'true');
+    exp.closest('.card').querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
+  });
+  const shift = anchor.getBoundingClientRect().top - anchorTop;
+  if (shift !== 0) window.scrollBy({ top: shift, behavior: 'instant' });
+}
+
 function toggleExpand(collapsed, expanded) {
+  const opening = expanded.classList.contains('hidden');
+  if (opening) {
+    _closeEstadoDropdown();
+    _closeFonteDropdown();
+    _collapseAllCards(collapsed.closest('.card'));
+  }
   const open = expanded.classList.toggle('hidden');
   collapsed.setAttribute('aria-expanded', String(!open));
   expanded.setAttribute('aria-hidden', String(open));
@@ -1603,7 +1622,10 @@ dateTo.addEventListener('change', () => {
 estadoFilterBtn.addEventListener('click', e => {
   e.stopPropagation();
   const isOpen = !estadoFilterDropdown.classList.contains('hidden');
-  if (!isOpen) _closeFonteDropdown();
+  if (!isOpen) {
+    _closeFonteDropdown();
+    _collapseAllCards(estadoFilterBtn);
+  }
   estadoFilterDropdown.classList.toggle('hidden', isOpen);
   estadoFilterBtn.setAttribute('aria-expanded', String(!isOpen));
 });

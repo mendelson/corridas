@@ -28,7 +28,9 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
 
       - name: Run scraper
         run: python -m scraper.main 2>&1 | tee scraper.log

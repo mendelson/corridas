@@ -620,22 +620,14 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
   // "Todos" at top level
   estadoFilterDropdown.appendChild(makeOption('todos', T.allLocations));
 
-  // Brasil group
+  // Build Brasil group entry
   const brEstados = [...new Set(
     base
       .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
       .map(c => c.estado)
   )].sort();
 
-  if (brEstados.length > 0) {
-    const brActive = state.estado === 'BR' || brEstados.includes(state.estado);
-    const { wrapper, body } = _makeAccordionGroup(T.groupBrasil, brActive);
-    body.appendChild(makeOption('BR', T.allBrazil));
-    for (const uf of brEstados) body.appendChild(makeOption(uf, _ESTADO_LABELS[uf] || uf));
-    estadoFilterDropdown.appendChild(wrapper);
-  }
-
-  // One accordion group per country
+  // Build per-country entries
   const countryCity = new Map();
   for (const c of base) {
     if (c.estado !== 'INT' || c.data_evento < today) continue;
@@ -645,18 +637,37 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     if (!countryCity.has(country)) countryCity.set(country, new Set());
     if (city && city !== country) countryCity.get(country).add(city);
   }
-  for (const country of [...countryCity.keys()].sort()) {
-    const cities = [...countryCity.get(country)].sort();
-    const isActive = state.estado === 'INT:' + country ||
-                     cities.some(city => state.estado === 'INT:' + country + ':' + city);
-    const { wrapper, body } = _makeAccordionGroup(country, isActive);
-    if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
-    for (const city of cities) {
-      const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
-      body.appendChild(makeOption(value, city));
-    }
-    estadoFilterDropdown.appendChild(wrapper);
+
+  // Merge into a single sorted list and append in alphabetical order
+  const allGroups = [];
+
+  if (brEstados.length > 0) {
+    allGroups.push({ label: T.groupBrasil, build: () => {
+      const brActive = state.estado === 'BR' || brEstados.includes(state.estado);
+      const { wrapper, body } = _makeAccordionGroup(T.groupBrasil, brActive);
+      body.appendChild(makeOption('BR', T.allBrazil));
+      for (const uf of brEstados) body.appendChild(makeOption(uf, _ESTADO_LABELS[uf] || uf));
+      return wrapper;
+    }});
   }
+
+  for (const country of countryCity.keys()) {
+    allGroups.push({ label: country, build: () => {
+      const cities = [...countryCity.get(country)].sort();
+      const isActive = state.estado === 'INT:' + country ||
+                       cities.some(city => state.estado === 'INT:' + country + ':' + city);
+      const { wrapper, body } = _makeAccordionGroup(country, isActive);
+      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
+      for (const city of cities) {
+        const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
+        body.appendChild(makeOption(value, city));
+      }
+      return wrapper;
+    }});
+  }
+
+  allGroups.sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+  for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
 
   // Reset to 'todos' if saved value no longer valid
   if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {

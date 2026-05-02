@@ -1288,9 +1288,10 @@ function buildExpanded(card, c) {
   expTitle.classList.remove('hidden');
 
   if (c.distancias && c.distancias.length > 0) {
-    const sorted     = sortDistancias(c.distancias);
-    const hasDate    = sorted.some(d => d.data);
-    const hasHorario = sorted.some(d => d.horario);
+    const sorted      = sortDistancias(c.distancias);
+    const hasDate     = sorted.some(d => d.data);
+    const uniqueTimes = new Set(sorted.map(d => d.horario || null).filter(Boolean));
+    const hasHorario  = uniqueTimes.size > 1;
 
     const table = document.createElement('table');
     table.className = 'dist-table';

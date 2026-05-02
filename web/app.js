@@ -312,8 +312,14 @@ function loadFilters() {
 // ---------------------------------------------------------------------------
 // Data fetch
 // ---------------------------------------------------------------------------
-async function fetchData() {
+let _fetchTriggeredByUser = false;
+
+async function fetchData(triggeredByUser = false) {
+  _fetchTriggeredByUser = triggeredByUser;
   btnRefresh.classList.add('spinning');
+  // Check before data loads whether filter is still at the geo-applied value
+  const shouldReapplyGeo = triggeredByUser &&
+    (state.estado === 'todos' || state.estado === _geoApplied);
   try {
     const resp = await fetch('/corridas.json?t=' + Date.now());
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -321,7 +327,14 @@ async function fetchData() {
     allCorridas = json.corridas || [];
     populateEstadoFilter();
     populateFontesFilter();
-    applyFilters();
+    if (shouldReapplyGeo) {
+      state.estado = 'todos';
+      _geoApplied  = null;
+      await detectUserLocation();
+      if (state.estado === 'todos') applyFilters(); // fallback if geo failed
+    } else {
+      applyFilters();
+    }
   } catch (e) {
     resultCount.textContent = T.loadError;
     console.error(e);
@@ -1380,7 +1393,7 @@ searchInput.addEventListener('input', () => {
 });
 
 [btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));
-btnRefresh.addEventListener('click', fetchData);
+btnRefresh.addEventListener('click', () => fetchData(true));
 
 fonteFilterBtn.addEventListener('click', e => {
   e.stopPropagation();

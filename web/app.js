@@ -7,16 +7,18 @@ const LANG = (() => {
   const path = window.location.pathname;
   if (path.startsWith('/es')) return 'es';
   if (path.startsWith('/de')) return 'de';
+  if (path.startsWith('/fr')) return 'fr';
   if (path.startsWith('/en')) return 'en';
   if (localStorage.getItem('lang') === 'pt') return 'pt';
   const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'pt').toLowerCase();
   if (bl.startsWith('es')) { window.location.replace('/es'); return 'es'; }
   if (bl.startsWith('de')) { window.location.replace('/de'); return 'de'; }
+  if (bl.startsWith('fr')) { window.location.replace('/fr'); return 'fr'; }
   if (!bl.startsWith('pt')) { window.location.replace('/en'); return 'en'; }
   return 'pt';
 })();
 
-const LANG_URLS = { pt: '/', en: '/en', es: '/es', de: '/de' };
+const LANG_URLS = { pt: '/', en: '/en', es: '/es', de: '/de', fr: '/fr' };
 
 // ---------------------------------------------------------------------------
 // i18n strings
@@ -248,6 +250,63 @@ const STRINGS = {
       { value: '180',    label: 'Nächste 6 Monate' },
       { value: 'all',    label: 'Gesamter Zeitraum' },
       { value: 'custom', label: 'Benutzerdefinierter Zeitraum' },
+    ],
+  },
+  fr: {
+    siteTitle: 'Prochaine Course',
+    headerTitle: '🏃 Prochaine Course',
+    searchPlaceholder: 'Rechercher une course...',
+    searchAriaLabel: 'Rechercher une course',
+    modeSelect: 'Sélectionner',
+    modeInterval: 'Intervalle',
+    distFrom: 'De',
+    distTo: 'À',
+    distMinAriaLabel: 'Distance minimale en km',
+    distMaxAriaLabel: 'Distance maximale en km',
+    dateFromAriaLabel: 'Date de début',
+    dateToAriaLabel: 'Date de fin',
+    periodoAriaLabel: 'Filtrer par période',
+    estadoAriaLabel: 'Filtrer par lieu',
+    fonteFilterAriaLabel: 'Filtrer par source',
+    refreshAriaLabel: 'Actualiser',
+    clearFiltersAriaLabel: 'Effacer les filtres',
+    allLocations: 'Tous',
+    allBrazil: 'Tout le Brésil',
+    allSources: 'Toutes les sources',
+    nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    loading: 'Chargement...',
+    loadError: 'Erreur lors du chargement des données.',
+    clearFilters: 'Effacer les filtres',
+    noRacesMsg: 'Aucune course trouvée avec les filtres actuels.',
+    raceCount: n => n === 1 ? '1 course trouvée' : `${n} courses trouvées`,
+    raceCountLabel: n => n === 1 ? '1 course' : `${n} courses`,
+    dateTBD: 'Date à confirmer',
+    months: ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'],
+    monthsFull: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    weekdays: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    dateFullFormat: (wd, d, m, y) => `${wd} ${d} ${m} ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1}–${d2} ${m} ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} ${m1} – ${d2} ${m2} ${y}`,
+    pastSectionLabel: '🏁 Courses des 15 derniers jours',
+    distancesHeader: 'Distances',
+    dateColHeader: 'Date',
+    timeColHeader: 'Heure',
+    registrationPeriod: "Période d'inscription",
+    regOpening: 'Ouverture',
+    regClosing: 'Clôture',
+    sourcesSection: 'Sources',
+    photosSection: 'Photos',
+    registerBtn: "S'inscrire →",
+    groupBrasil: 'Brésil',
+    allCountry: country => `Tout ${country}`,
+    periodOptions: [
+      { value: 'past15', label: 'Depuis 15 jours' },
+      { value: 'today',  label: "À partir d'aujourd'hui" },
+      { value: '30',     label: '30 prochains jours' },
+      { value: '90',     label: '3 prochains mois' },
+      { value: '180',    label: '6 prochains mois' },
+      { value: 'all',    label: 'Toute la période' },
+      { value: 'custom', label: 'Période personnalisée' },
     ],
   },
 };

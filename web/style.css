@@ -110,20 +110,32 @@ input { font-family: inherit; }
 }
 .btn-apps:hover { color: var(--color-accent); border-color: var(--color-accent); }
 
-.lang-select {
+.lang-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   min-height: var(--touch);
-  padding: 0 6px;
-  background: none;
+  padding: 0 8px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text-secondary);
   font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 }
-.lang-select:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.lang-wrap:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.lang-wrap .lang-icon { font-size: 0.9rem; line-height: 1; pointer-events: none; }
+.lang-select {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
 
 /* =====================================================================
    Filters Bar

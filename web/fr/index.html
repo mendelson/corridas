@@ -1,29 +1,29 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FF6B35" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Nächstes Rennen" />
-  <meta name="description" content="Straßenläufe in Brasilien – Brasília, nationale Marathons und World Marathon Majors" />
+  <meta name="apple-mobile-web-app-title" content="Prochaine Course" />
+  <meta name="description" content="Courses à pied au Brésil – Brasília, marathons nationaux et World Marathon Majors" />
   <link rel="icon" type="image/png" href="../logomendi-favicon.png" />
   <link rel="manifest" href="../manifest.json" />
   <link rel="apple-touch-icon" href="../logomendi-favicon.png" />
-  <title>Nächstes Rennen</title>
+  <title>Prochaine Course</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
   <header class="app-header">
-    <span class="app-title">🏃 Nächstes Rennen</span>
+    <span class="app-title">🏃 Prochaine Course</span>
     <div class="header-actions">
       <a href="https://apps.mmendelson.com" target="_blank" rel="noopener"
-         class="btn-apps" aria-label="Apps für Garmin">⌚ Apps</a>
+         class="btn-apps" aria-label="Applications Garmin">⌚ Apps</a>
       <div class="lang-wrap">
         <span class="lang-icon" aria-hidden="true">🌐</span>
-        <select class="lang-select" id="langSelect" aria-label="Sprache">
+        <select class="lang-select" id="langSelect" aria-label="Langue">
           <option value="pt">Português</option>
           <option value="en">English</option>
           <option value="es">Español</option>
@@ -31,7 +31,7 @@
           <option value="fr">Français</option>
         </select>
       </div>
-      <button class="btn-refresh" id="btnRefresh" aria-label="Aktualisieren">↻</button>
+      <button class="btn-refresh" id="btnRefresh" aria-label="Actualiser">↻</button>
     </div>
   </header>
 
@@ -39,14 +39,14 @@
     <!-- Text search -->
     <div class="filter-row filter-row-search">
       <input type="search" id="searchInput" class="search-input"
-             placeholder="Rennen suchen..." aria-label="Rennen suchen" autocomplete="off" />
+             placeholder="Rechercher une course..." aria-label="Rechercher une course" autocomplete="off" />
     </div>
 
     <!-- Distance filter -->
     <div class="filter-row" id="distanceFilter">
       <div class="filter-mode-toggle">
-        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Auswählen</button>
-        <button class="mode-btn" id="modeInterval" aria-pressed="false">Bereich</button>
+        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Sélectionner</button>
+        <button class="mode-btn" id="modeInterval" aria-pressed="false">Intervalle</button>
       </div>
       <div id="pillsContainer" class="pills-container">
         <button class="pill" data-km="5" aria-pressed="false">5K</button>
@@ -54,16 +54,16 @@
         <button class="pill" data-km="15" aria-pressed="false">15K</button>
         <button class="pill" data-km="21" aria-pressed="false">21K</button>
         <button class="pill" data-km="42" aria-pressed="false">42K</button>
-        <button class="pill" data-km="outros" aria-pressed="false">Andere</button>
+        <button class="pill" data-km="outros" aria-pressed="false">Autres</button>
       </div>
       <div id="intervalContainer" class="interval-container hidden">
         <label class="range-label">
-          <span id="labelDistFrom">Von</span>
-          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Mindestdistanz in km" />
+          <span id="labelDistFrom">De</span>
+          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Distance minimale en km" />
         </label>
         <label class="range-label">
-          <span id="labelDistTo">Bis</span>
-          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Maximaldistanz in km" />
+          <span id="labelDistTo">À</span>
+          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Distance maximale en km" />
         </label>
       </div>
     </div>
@@ -71,20 +71,20 @@
     <!-- Period + Location + Source -->
     <div class="filter-row filter-row-selects">
       <div class="select-wrapper">
-        <select id="periodoSelect" aria-label="Nach Zeitraum filtern">
-          <option value="past15">Seit 15 Tagen</option>
-          <option value="today">Ab heute</option>
-          <option value="30">Nächste 30 Tage</option>
-          <option value="90">Nächste 3 Monate</option>
-          <option value="180">Nächste 6 Monate</option>
-          <option value="all">Gesamter Zeitraum</option>
-          <option value="custom">Benutzerdefinierter Zeitraum</option>
+        <select id="periodoSelect" aria-label="Filtrer par période">
+          <option value="past15">Depuis 15 jours</option>
+          <option value="today">À partir d'aujourd'hui</option>
+          <option value="30">30 prochains jours</option>
+          <option value="90">3 prochains mois</option>
+          <option value="180">6 prochains mois</option>
+          <option value="all">Toute la période</option>
+          <option value="custom">Période personnalisée</option>
         </select>
       </div>
       <div class="estado-filter-wrapper" id="estadoFilterWrapper">
         <button class="estado-filter-btn" id="estadoFilterBtn"
-                aria-haspopup="listbox" aria-expanded="false" aria-label="Nach Ort filtern">
-          <span id="estadoFilterLabel">Alle</span>
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrer par lieu">
+          <span id="estadoFilterLabel">Tous</span>
           <span class="estado-filter-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="estado-filter-dropdown hidden" id="estadoFilterDropdown" role="listbox">
@@ -93,8 +93,8 @@
       </div>
       <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
         <button class="fonte-filter-btn" id="fonteFilterBtn"
-                aria-haspopup="listbox" aria-expanded="false" aria-label="Nach Quelle filtern">
-          <span id="fonteFilterLabel">Alle Quellen</span>
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrer par source">
+          <span id="fonteFilterLabel">Toutes les sources</span>
           <span class="fonte-filter-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="fonte-filter-dropdown hidden" id="fonteFilterDropdown" role="listbox" aria-multiselectable="true">
@@ -106,27 +106,27 @@
     <!-- Custom date range (hidden by default) -->
     <div id="customDateRow" class="filter-row custom-date-row hidden">
       <label class="range-label">
-        <span id="labelDateFrom">Von</span>
-        <input type="date" id="dateFrom" aria-label="Startdatum" />
+        <span id="labelDateFrom">De</span>
+        <input type="date" id="dateFrom" aria-label="Date de début" />
       </label>
       <label class="range-label">
-        <span id="labelDateTo">Bis</span>
-        <input type="date" id="dateTo" aria-label="Enddatum" />
+        <span id="labelDateTo">À</span>
+        <input type="date" id="dateTo" aria-label="Date de fin" />
       </label>
     </div>
 
     <!-- Results count + clear -->
     <div class="filter-row filter-meta">
-      <span id="resultCount" class="result-count">Laden...</span>
-      <button class="btn-clear hidden" id="btnClear" aria-label="Filter löschen">Filter löschen</button>
+      <span id="resultCount" class="result-count">Chargement...</span>
+      <button class="btn-clear hidden" id="btnClear" aria-label="Effacer les filtres">Effacer les filtres</button>
     </div>
   </div>
 
-  <main id="cardsList" class="cards-list" role="list" aria-label="Rennenliste"></main>
+  <main id="cardsList" class="cards-list" role="list" aria-label="Liste des courses"></main>
 
   <div id="emptyState" class="empty-state hidden">
-    <p>Keine Rennen mit den aktuellen Filtern gefunden.</p>
-    <button class="btn-clear" id="btnClearEmpty">Filter löschen</button>
+    <p>Aucune course trouvée avec les filtres actuels.</p>
+    <button class="btn-clear" id="btnClearEmpty">Effacer les filtres</button>
   </div>
 
   <template id="cardTemplate">

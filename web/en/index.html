@@ -21,12 +21,16 @@
     <div class="header-actions">
       <a href="https://apps.mmendelson.com" target="_blank" rel="noopener"
          class="btn-apps" aria-label="Apps for Garmin">⌚ Apps</a>
-      <select class="lang-select" id="langSelect" aria-label="Language">
-        <option value="pt">PT</option>
-        <option value="en">EN</option>
-        <option value="es">ES</option>
-        <option value="de">DE</option>
-      </select>
+      <div class="lang-wrap">
+        <span class="lang-icon" aria-hidden="true">🌐</span>
+        <select class="lang-select" id="langSelect" aria-label="Language">
+          <option value="pt">Português</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="de">Deutsch</option>
+          <option value="fr">Français</option>
+        </select>
+      </div>
       <button class="btn-refresh" id="btnRefresh" aria-label="Refresh">↻</button>
     </div>
   </header>

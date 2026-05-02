@@ -64,6 +64,7 @@ from .sources.majors import (
     great_north_run,
     cardiff_half,
     manchester,
+    manchester_half,
     brighton,
 )
 
@@ -118,6 +119,7 @@ SOURCES = [
     great_north_run,
     cardiff_half,
     manchester,
+    manchester_half,
     brighton,
     # Single events (DF)
     volta_do_lago,

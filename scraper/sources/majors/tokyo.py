@@ -14,7 +14,8 @@ _CLOSED = ["entry closed", "registration closed", "entry period has ended"]
 def scrape():
     return scrape_major(
         source_name=SOURCE_NAME, titulo="Tokyo Marathon",
-        url=URL, known_date=KNOWN_DATE, horario=HORARIO,
+        url=URL, known_date=KNOWN_DATE,
+        known_dates=[KNOWN_DATE], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
     )

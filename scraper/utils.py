@@ -443,8 +443,7 @@ _DATE_PATTERNS = [
 ]
 
 
-def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
-    """Scan BeautifulSoup tree for any recognisable date, return ISO 8601 or None."""
+def _collect_date_candidates(soup) -> list[str]:
     candidates: list[str] = []
     for tag in soup.find_all(True, limit=300):
         for text in [tag.get_text(' ', strip=True), tag.get('content', ''), tag.get('datetime', '')]:
@@ -459,20 +458,30 @@ def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
                             candidates.append(parsed.strftime('%Y-%m-%d'))
                     except Exception:
                         pass
+    return candidates
 
+
+def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
+    """Return the single best date from a page (earliest future, or latest past)."""
+    candidates = _collect_date_candidates(soup)
     if not candidates:
         return None
-
-    # Prefer dates matching year_hint, otherwise pick the earliest future date
     today = date.today().isoformat()
     if year_hint:
         year_str = str(year_hint)
         same_year = [d for d in candidates if d.startswith(year_str)]
         if same_year:
             return sorted(same_year)[0]
-
     future = [d for d in candidates if d >= today]
     return sorted(future)[0] if future else sorted(candidates)[-1]
+
+
+def extract_all_future_dates(soup, today: str | None = None) -> list[str]:
+    """Return all unique future dates found on a page, sorted ascending."""
+    if today is None:
+        today = date.today().isoformat()
+    candidates = _collect_date_candidates(soup)
+    return sorted(set(d for d in candidates if d >= today))
 
 
 # ---------------------------------------------------------------------------

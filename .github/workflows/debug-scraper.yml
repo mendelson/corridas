@@ -1,0 +1,74 @@
+name: Debug Scraper
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: >
+          Source module to debug (e.g. "london", "manchester", "all").
+          Leave empty or use "all" to run the full pipeline.
+        required: false
+        default: 'all'
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper (full pipeline)
+        if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == '' }}
+        run: python -m scraper.main 2>&1 | tee debug.log
+
+      - name: Run single source
+        if: ${{ github.event.inputs.source != 'all' && github.event.inputs.source != '' }}
+        run: |
+          python - << 'EOF'
+          import sys, importlib, json
+          source = "${{ github.event.inputs.source }}"
+          # Try majors first, then top-level sources
+          for mod_path in [f"scraper.sources.majors.{source}", f"scraper.sources.{source}"]:
+              try:
+                  mod = importlib.import_module(mod_path)
+                  print(f"Loaded: {mod_path}")
+                  results = mod.scrape()
+                  print(f"\n=== {len(results)} event(s) returned ===")
+                  for r in results:
+                      print(json.dumps({
+                          "id": r.id,
+                          "titulo": r.titulo,
+                          "data_evento": r.data_evento,
+                          "distancias": [d.km for d in r.distancias],
+                          "inscricoes_abertas": r.inscricoes_abertas,
+                          "link_evento": r.fontes[0].link_evento if r.fontes else None,
+                      }, ensure_ascii=False, indent=2))
+                  sys.exit(0)
+              except ModuleNotFoundError:
+                  continue
+          print(f"Source '{source}' not found. Available majors:")
+          import pkgutil, scraper.sources.majors as m
+          for info in pkgutil.iter_modules(m.__path__):
+              if not info.name.startswith('_'):
+                  print(f"  {info.name}")
+          sys.exit(1)
+          EOF
+        shell: bash
+
+      - name: Upload debug log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-log-${{ github.event.inputs.source || 'all' }}
+          path: |
+            debug.log
+            data/corridas.json
+          retention-days: 3

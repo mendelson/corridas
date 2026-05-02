@@ -4,6 +4,7 @@ from ._base import scrape_major
 SOURCE_NAME = "BMW Berlin Marathon"
 URL = "https://www.bmw-berlin-marathon.com/en/"
 KNOWN_DATE = "2026-09-27"
+KNOWN_DATE_NEXT = "2027-09-26"
 HORARIO = "09:15"
 LOCALIZACAO = "Berlim, Alemanha"
 
@@ -14,7 +15,8 @@ _CLOSED = ["registration closed", "sold out", "entry closed", "anmeldung geschlo
 def scrape():
     return scrape_major(
         source_name=SOURCE_NAME, titulo="BMW Berlin Marathon",
-        url=URL, known_date=KNOWN_DATE, horario=HORARIO,
+        url=URL, known_date=KNOWN_DATE,
+        known_dates=[KNOWN_DATE, KNOWN_DATE_NEXT], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
     )

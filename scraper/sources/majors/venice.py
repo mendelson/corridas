@@ -4,9 +4,6 @@ Edição 2026: 25 de outubro. Inclui as três distâncias do fim-de-semana:
   - Full Marathon (42km): saída em Stra/Padova → chegada em Veneza
   - Half Marathon (21km): saída na Villa Pisani
   - 10 km Run: saída em Veneza
-
-Horários de referência das edições recentes; o scraper tenta buscar dados ao
-vivo mas aceita falha silenciosa (o site retorna 403 para bots).
 """
 from __future__ import annotations
 
@@ -14,21 +11,20 @@ from bs4 import BeautifulSoup
 
 from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo
-from ...utils import now_iso, today_iso, extract_date_from_soup
+from ...utils import now_iso, today_iso, extract_all_future_dates, extract_date_from_soup
 
 SOURCE_NAME   = "Venice Marathon"
 URL           = "https://www.venicemarathon.it/en/"
 URL_TIMETABLE = "https://www.venicemarathon.it/en/race/timetable/"
 
-# ── Fallback values (from 2025 edition) ─────────────────────────────────────
-KNOWN_DATE  = "2026-10-25"
-LOCALIZACAO = "Veneza, Itália"
+KNOWN_DATE      = "2026-10-25"
+KNOWN_DATE_NEXT = "2027-10-24"   # 4th Sunday of October 2027
+LOCALIZACAO     = "Veneza, Itália"
 
-# Per-distance reference start times (Venice local time, UTC+1 in October)
 _DISTANCES: list[tuple[float, str]] = [
-    (42.195, "09:15"),  # Marathon — start in Stra/Padova
-    (21.097, "09:30"),  # Half marathon — start at Villa Pisani
-    (10.0,   "08:45"),  # 10 km run — start in Venice
+    (42.195, "09:15"),
+    (21.097, "09:30"),
+    (10.0,   "08:45"),
 ]
 
 _OPEN_KW   = ["register", "registration open", "sign up", "enter now",
@@ -39,14 +35,12 @@ _CLOSED_KW = ["sold out", "registration closed", "registrations closed",
 
 def scrape() -> list[Corrida]:
     today = today_iso()
-    if KNOWN_DATE < today:
-        return []
+    all_known = sorted({KNOWN_DATE, KNOWN_DATE_NEXT})
 
-    data:              str        = KNOWN_DATE
-    imagem_url:        str | None = None
+    dates_to_use: list[str] = []
+    imagem_url: str | None = None
     inscricoes_abertas: bool | None = None
 
-    # Best-effort live fetch — silently fall through on network errors / 403
     for url in (URL_TIMETABLE, URL):
         try:
             resp = get(url, timeout=10)
@@ -54,9 +48,13 @@ def scrape() -> list[Corrida]:
                 continue
             soup = BeautifulSoup(resp.text, "lxml")
 
-            raw_date = extract_date_from_soup(soup)
-            if raw_date and raw_date >= today:
-                data = raw_date
+            live_dates = extract_all_future_dates(soup, today)
+            if not live_dates:
+                single = extract_date_from_soup(soup)
+                if single and single >= today:
+                    live_dates = [single]
+            if live_dates:
+                dates_to_use = live_dates
 
             tag = soup.find("meta", property="og:image")
             if tag and tag.get("content"):
@@ -72,34 +70,41 @@ def scrape() -> list[Corrida]:
         except Exception:
             continue
 
-    year = data[:4]
-    now  = now_iso()
+    if not dates_to_use:
+        future = sorted(d for d in all_known if d >= today)
+        if future:
+            dates_to_use = future
+        else:
+            last = sorted(all_known)[-1]
+            y, m, d = last.split('-')
+            dates_to_use = [f"{int(y) + 1}-{m}-{d}"]
 
-    distancias = [
-        Distancia(km=km, data=None, horario=horario)
-        for km, horario in _DISTANCES
-    ]
-
+    now = now_iso()
+    distancias = [Distancia(km=km, data=None, horario=h) for km, h in _DISTANCES]
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=URL,
         links_inscricao=[URL] if inscricoes_abertas else [],
     )
 
-    return [Corrida(
-        id=f"venice-marathon_int_{year}",
-        titulo="Maratona de Veneza",
-        data_evento=data,
-        horario=_DISTANCES[0][1],  # marathon start time as event horario
-        localizacao=LOCALIZACAO,
-        cidade=LOCALIZACAO,
-        estado="INT",
-        distancias=distancias,
-        imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
-        periodo_inscricao=None,
-        fontes=[fonte],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )]
+    results = []
+    for data in dates_to_use:
+        year = data[:4]
+        results.append(Corrida(
+            id=f"venice-marathon_int_{year}",
+            titulo="Maratona de Veneza",
+            data_evento=data,
+            horario=_DISTANCES[0][1],
+            localizacao=LOCALIZACAO,
+            cidade=LOCALIZACAO,
+            estado="INT",
+            distancias=distancias,
+            imagem_url=imagem_url,
+            inscricoes_abertas=inscricoes_abertas,
+            periodo_inscricao=None,
+            fontes=[fonte],
+            miss_count=0,
+            first_seen_at=now,
+            updated_at=now,
+        ))
+    return results

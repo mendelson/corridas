@@ -18,7 +18,8 @@ _CLOSED = ["registration closed", "sold out", "inscriptions fermées", "complet"
 def scrape():
     return scrape_major(
         source_name=SOURCE_NAME, titulo="Schneider Electric Paris Marathon",
-        url=URL, known_date=KNOWN_DATE, horario=HORARIO,
+        url=URL, known_date=KNOWN_DATE,
+        known_dates=[KNOWN_DATE], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
     )

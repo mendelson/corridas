@@ -158,6 +158,8 @@ let filteredCorridas = [];
 let _geoDetected = null;
 // Filter value actually applied after fallback chain (may differ from _geoDetected)
 let _geoApplied = null;
+// True when user manually picked a location (suppresses geo re-apply on refresh)
+let _userChoseLocation = false;
 
 const state = {
   distMode: 'select',
@@ -312,26 +314,20 @@ function loadFilters() {
 // ---------------------------------------------------------------------------
 // Data fetch
 // ---------------------------------------------------------------------------
-let _fetchTriggeredByUser = false;
-
 async function fetchData(triggeredByUser = false) {
-  _fetchTriggeredByUser = triggeredByUser;
   btnRefresh.classList.add('spinning');
-  // Check before data loads whether filter is still at the geo-applied value
-  const shouldReapplyGeo = triggeredByUser &&
-    (state.estado === 'todos' || state.estado === _geoApplied);
   try {
     const resp = await fetch('/corridas.json?t=' + Date.now());
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
     allCorridas = json.corridas || [];
-    populateEstadoFilter();
+    populateEstadoFilter({ skipGeo: true });
     populateFontesFilter();
-    if (shouldReapplyGeo) {
+    if (triggeredByUser && !_userChoseLocation) {
       state.estado = 'todos';
       _geoApplied  = null;
       await detectUserLocation();
-      if (state.estado === 'todos') applyFilters(); // fallback if geo failed
+      if (state.estado === 'todos') applyFilters();
     } else {
       applyFilters();
     }
@@ -620,6 +616,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     el.dataset.value = value;
     el.textContent = text;
     el.addEventListener('click', () => {
+      _userChoseLocation = (value !== 'todos');
       state.estado = value;
       saveFilters();
       _closeEstadoDropdown();
@@ -1240,6 +1237,7 @@ function updateClearButton() {
 }
 
 function clearFilters() {
+  _userChoseLocation = false;
   state.searchQuery = '';
   state.activePills.clear();
   state.distMin  = null;

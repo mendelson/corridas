@@ -31,7 +31,15 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run scraper
-        run: python -m scraper.main
+        run: python -m scraper.main 2>&1 | tee scraper.log
+
+      - name: Upload scraper log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraper-log
+          path: scraper.log
+          retention-days: 7
 
       - name: Copy JSON to web folder
         run: cp data/corridas.json web/corridas.json

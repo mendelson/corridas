@@ -28,6 +28,7 @@ def scrape_major(
     closed_kw: list[str],
     ssl_verify: bool = True,
     known_image: str | None = None,
+    distances_km: list[float] | None = None,
 ) -> list[Corrida]:
     soup = None
     try:
@@ -77,7 +78,7 @@ def scrape_major(
         localizacao=localizacao,
         cidade=cidade,
         estado="INT",
-        distancias=[Distancia(km=42.195, data=None, horario=None)],
+        distancias=[Distancia(km=km, data=None, horario=None) for km in (distances_km or [42.195])],
         imagem_url=imagem_url,
         inscricoes_abertas=inscricoes_abertas,
         periodo_inscricao=None,

@@ -60,6 +60,11 @@ from .sources.majors import (
     athens,
     valencia,
     paris,
+    edinburgh,
+    great_north_run,
+    cardiff_half,
+    manchester,
+    brighton,
 )
 
 SOURCES = [
@@ -108,6 +113,12 @@ SOURCES = [
     athens,
     valencia,
     paris,
+    # UK Events
+    edinburgh,
+    great_north_run,
+    cardiff_half,
+    manchester,
+    brighton,
     # Single events (DF)
     volta_do_lago,
     # European calendar

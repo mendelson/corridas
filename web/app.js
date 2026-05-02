@@ -3,14 +3,18 @@
 // ---------------------------------------------------------------------------
 // Language detection — runs before anything else
 // ---------------------------------------------------------------------------
+const BROWSER_LANG = (() => {
+  const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || '').toLowerCase();
+  if (bl.startsWith('pt')) return 'pt';
+  if (bl.startsWith('es')) return 'es';
+  if (bl.startsWith('de')) return 'de';
+  if (bl.startsWith('fr')) return 'fr';
+  return 'en';
+})();
+
 const LANG = (() => {
   const path = window.location.pathname;
-  if (path.startsWith('/pt')) return 'pt';
-  if (path.startsWith('/en')) return 'en';
-  if (path.startsWith('/es')) return 'es';
-  if (path.startsWith('/de')) return 'de';
-  if (path.startsWith('/fr')) return 'fr';
-  return 'pt';
+  return ['pt','en','es','de','fr'].find(l => path.startsWith('/' + l)) || BROWSER_LANG;
 })();
 
 const LANG_URLS = { pt: '/pt', en: '/en', es: '/es', de: '/de', fr: '/fr' };
@@ -1613,7 +1617,9 @@ searchInput.addEventListener('input', () => {
 });
 
 [btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));
-btnRefresh.addEventListener('click', () => fetchData(true));
+btnRefresh.addEventListener('click', () => {
+  window.location.replace(LANG_URLS[BROWSER_LANG] || '/pt');
+});
 
 fonteFilterBtn.addEventListener('click', e => {
   e.stopPropagation();

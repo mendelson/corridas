@@ -4,15 +4,19 @@
 // Language detection — runs before anything else
 // ---------------------------------------------------------------------------
 const LANG = (() => {
-  if (window.location.pathname.startsWith('/en')) return 'en';
+  const path = window.location.pathname;
+  if (path.startsWith('/es')) return 'es';
+  if (path.startsWith('/de')) return 'de';
+  if (path.startsWith('/en')) return 'en';
   if (localStorage.getItem('lang') === 'pt') return 'pt';
   const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'pt').toLowerCase();
-  if (!bl.startsWith('pt')) {
-    window.location.replace('/en');
-    return 'en';
-  }
+  if (bl.startsWith('es')) { window.location.replace('/es'); return 'es'; }
+  if (bl.startsWith('de')) { window.location.replace('/de'); return 'de'; }
+  if (!bl.startsWith('pt')) { window.location.replace('/en'); return 'en'; }
   return 'pt';
 })();
+
+const LANG_URLS = { pt: '/', en: '/en', es: '/es', de: '/de' };
 
 // ---------------------------------------------------------------------------
 // i18n strings
@@ -21,8 +25,6 @@ const STRINGS = {
   pt: {
     siteTitle: 'Próxima Corrida',
     headerTitle: '🏃 Próxima Corrida',
-    langSwitch: 'EN',
-    langSwitchAriaLabel: 'Switch to English',
     searchPlaceholder: 'Buscar corrida...',
     searchAriaLabel: 'Buscar corrida',
     modeSelect: 'Selecionar',
@@ -80,8 +82,6 @@ const STRINGS = {
   en: {
     siteTitle: 'Next Race',
     headerTitle: '🏃 Next Race',
-    langSwitch: 'PT',
-    langSwitchAriaLabel: 'Mudar para Português',
     searchPlaceholder: 'Search race...',
     searchAriaLabel: 'Search race',
     modeSelect: 'Select',
@@ -136,6 +136,120 @@ const STRINGS = {
       { value: 'custom', label: 'Custom range' },
     ],
   },
+  es: {
+    siteTitle: 'Próxima Carrera',
+    headerTitle: '🏃 Próxima Carrera',
+    searchPlaceholder: 'Buscar carrera...',
+    searchAriaLabel: 'Buscar carrera',
+    modeSelect: 'Seleccionar',
+    modeInterval: 'Intervalo',
+    distFrom: 'Desde',
+    distTo: 'Hasta',
+    distMinAriaLabel: 'Distancia mínima en km',
+    distMaxAriaLabel: 'Distancia máxima en km',
+    dateFromAriaLabel: 'Fecha inicial',
+    dateToAriaLabel: 'Fecha final',
+    periodoAriaLabel: 'Filtrar por período',
+    estadoAriaLabel: 'Filtrar por ubicación',
+    fonteFilterAriaLabel: 'Filtrar por fuente',
+    refreshAriaLabel: 'Actualizar',
+    clearFiltersAriaLabel: 'Limpiar filtros',
+    allLocations: 'Todos',
+    allBrazil: 'Todo Brasil',
+    allSources: 'Todas las fuentes',
+    nSources: n => n === 1 ? `${n} fuente` : `${n} fuentes`,
+    loading: 'Cargando...',
+    loadError: 'Error al cargar datos.',
+    clearFilters: 'Limpiar filtros',
+    noRacesMsg: 'No se encontraron carreras con los filtros actuales.',
+    raceCount: n => n === 1 ? '1 carrera encontrada' : `${n} carreras encontradas`,
+    raceCountLabel: n => n === 1 ? '1 carrera' : `${n} carreras`,
+    dateTBD: 'Fecha por confirmar',
+    months: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+    monthsFull: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    weekdays: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    dateFullFormat: (wd, d, m, y) => `${wd}, ${d} de ${m} de ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1} al ${d2} de ${m} de ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} de ${m1} al ${d2} de ${m2} de ${y}`,
+    pastSectionLabel: '🏁 Carreras en los últimos 15 días',
+    distancesHeader: 'Distancias',
+    dateColHeader: 'Fecha',
+    timeColHeader: 'Hora',
+    registrationPeriod: 'Período de inscripción',
+    regOpening: 'Apertura',
+    regClosing: 'Cierre',
+    sourcesSection: 'Fuentes',
+    photosSection: 'Fotos',
+    registerBtn: 'Inscribirse →',
+    groupBrasil: 'Brasil',
+    allCountry: country => `Todo ${country}`,
+    periodOptions: [
+      { value: 'past15', label: 'Desde hace 15 días' },
+      { value: 'today',  label: 'Desde hoy' },
+      { value: '30',     label: 'Próximos 30 días' },
+      { value: '90',     label: 'Próximos 3 meses' },
+      { value: '180',    label: 'Próximos 6 meses' },
+      { value: 'all',    label: 'Todo el período' },
+      { value: 'custom', label: 'Intervalo personalizado' },
+    ],
+  },
+  de: {
+    siteTitle: 'Nächstes Rennen',
+    headerTitle: '🏃 Nächstes Rennen',
+    searchPlaceholder: 'Rennen suchen...',
+    searchAriaLabel: 'Rennen suchen',
+    modeSelect: 'Auswählen',
+    modeInterval: 'Bereich',
+    distFrom: 'Von',
+    distTo: 'Bis',
+    distMinAriaLabel: 'Mindestdistanz in km',
+    distMaxAriaLabel: 'Maximaldistanz in km',
+    dateFromAriaLabel: 'Startdatum',
+    dateToAriaLabel: 'Enddatum',
+    periodoAriaLabel: 'Nach Zeitraum filtern',
+    estadoAriaLabel: 'Nach Ort filtern',
+    fonteFilterAriaLabel: 'Nach Quelle filtern',
+    refreshAriaLabel: 'Aktualisieren',
+    clearFiltersAriaLabel: 'Filter löschen',
+    allLocations: 'Alle',
+    allBrazil: 'Ganz Brasilien',
+    allSources: 'Alle Quellen',
+    nSources: n => n === 1 ? `${n} Quelle` : `${n} Quellen`,
+    loading: 'Laden...',
+    loadError: 'Fehler beim Laden der Daten.',
+    clearFilters: 'Filter löschen',
+    noRacesMsg: 'Keine Rennen mit den aktuellen Filtern gefunden.',
+    raceCount: n => n === 1 ? '1 Rennen gefunden' : `${n} Rennen gefunden`,
+    raceCountLabel: n => n === 1 ? '1 Rennen' : `${n} Rennen`,
+    dateTBD: 'Datum noch offen',
+    months: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+    monthsFull: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    weekdays: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+    dateFullFormat: (wd, d, m, y) => `${wd}, ${d}. ${m} ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1}.–${d2}. ${m} ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1}. ${m1} – ${d2}. ${m2} ${y}`,
+    pastSectionLabel: '🏁 Rennen der letzten 15 Tage',
+    distancesHeader: 'Distanzen',
+    dateColHeader: 'Datum',
+    timeColHeader: 'Uhrzeit',
+    registrationPeriod: 'Anmeldezeitraum',
+    regOpening: 'Öffnung',
+    regClosing: 'Schließung',
+    sourcesSection: 'Quellen',
+    photosSection: 'Fotos',
+    registerBtn: 'Anmelden →',
+    groupBrasil: 'Brasilien',
+    allCountry: country => `Ganz ${country}`,
+    periodOptions: [
+      { value: 'past15', label: 'Seit 15 Tagen' },
+      { value: 'today',  label: 'Ab heute' },
+      { value: '30',     label: 'Nächste 30 Tage' },
+      { value: '90',     label: 'Nächste 3 Monate' },
+      { value: '180',    label: 'Nächste 6 Monate' },
+      { value: 'all',    label: 'Gesamter Zeitraum' },
+      { value: 'custom', label: 'Benutzerdefinierter Zeitraum' },
+    ],
+  },
 };
 
 const T = STRINGS[LANG];
@@ -177,7 +291,7 @@ const resultCount       = $('resultCount');
 const btnClear          = $('btnClear');
 const btnClearEmpty     = $('btnClearEmpty');
 const btnRefresh        = $('btnRefresh');
-const btnLang           = $('btnLang');
+const langSelect        = $('langSelect');
 const estadoFilterWrapper  = $('estadoFilterWrapper');
 const estadoFilterBtn      = $('estadoFilterBtn');
 const estadoFilterDropdown = $('estadoFilterDropdown');
@@ -207,10 +321,7 @@ function initI18n() {
   document.title = T.siteTitle;
   document.querySelector('.app-title').textContent = T.headerTitle;
 
-  if (btnLang) {
-    btnLang.textContent = T.langSwitch;
-    btnLang.setAttribute('aria-label', T.langSwitchAriaLabel);
-  }
+  if (langSelect) langSelect.value = LANG;
   if (btnRefresh)  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
   if (searchInput) {
     searchInput.placeholder = T.searchPlaceholder;
@@ -260,14 +371,11 @@ function initI18n() {
 // ---------------------------------------------------------------------------
 // Language switch
 // ---------------------------------------------------------------------------
-if (btnLang) {
-  btnLang.addEventListener('click', () => {
-    if (LANG === 'pt') {
-      window.location.href = '/en';
-    } else {
-      localStorage.setItem('lang', 'pt');
-      window.location.href = '/';
-    }
+if (langSelect) {
+  langSelect.addEventListener('change', () => {
+    const target = langSelect.value;
+    if (target === 'pt') localStorage.setItem('lang', 'pt');
+    window.location.href = LANG_URLS[target] || '/';
   });
 }
 

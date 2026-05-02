@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FF6B35" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Próxima Corrida" />
-  <meta name="description" content="Corridas de rua no Brasil – Brasília, maratonas nacionais e World Marathon Majors" />
-  <link rel="icon" type="image/png" href="logomendi-favicon.png" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="logomendi-favicon.png" />
-  <title>Próxima Corrida</title>
+  <meta name="apple-mobile-web-app-title" content="Próxima Carrera" />
+  <meta name="description" content="Carreras de calle en Brasil – Brasília, maratones nacionales y World Marathon Majors" />
+  <link rel="icon" type="image/png" href="../logomendi-favicon.png" />
+  <link rel="manifest" href="../manifest.json" />
+  <link rel="apple-touch-icon" href="../logomendi-favicon.png" />
+  <title>Próxima Carrera</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
   <header class="app-header">
-    <span class="app-title">🏃 Próxima Corrida</span>
+    <span class="app-title">🏃 Próxima Carrera</span>
     <div class="header-actions">
       <a href="https://apps.mmendelson.com" target="_blank" rel="noopener"
          class="btn-apps" aria-label="Apps para Garmin">⌚ Apps</a>
-      <select class="lang-select" id="langSelect" aria-label="Language">
+      <select class="lang-select" id="langSelect" aria-label="Idioma">
         <option value="pt">PT</option>
         <option value="en">EN</option>
         <option value="es">ES</option>
         <option value="de">DE</option>
       </select>
-      <button class="btn-refresh" id="btnRefresh" aria-label="Atualizar">↻</button>
+      <button class="btn-refresh" id="btnRefresh" aria-label="Actualizar">↻</button>
     </div>
   </header>
 
@@ -35,13 +35,13 @@
     <!-- Text search -->
     <div class="filter-row filter-row-search">
       <input type="search" id="searchInput" class="search-input"
-             placeholder="Buscar corrida..." aria-label="Buscar corrida" autocomplete="off" />
+             placeholder="Buscar carrera..." aria-label="Buscar carrera" autocomplete="off" />
     </div>
 
     <!-- Distance filter -->
     <div class="filter-row" id="distanceFilter">
       <div class="filter-mode-toggle">
-        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Selecionar</button>
+        <button class="mode-btn active" id="modeSelect" aria-pressed="true">Seleccionar</button>
         <button class="mode-btn" id="modeInterval" aria-pressed="false">Intervalo</button>
       </div>
       <div id="pillsContainer" class="pills-container">
@@ -50,36 +50,36 @@
         <button class="pill" data-km="15" aria-pressed="false">15K</button>
         <button class="pill" data-km="21" aria-pressed="false">21K</button>
         <button class="pill" data-km="42" aria-pressed="false">42K</button>
-        <button class="pill" data-km="outros" aria-pressed="false">Outras</button>
+        <button class="pill" data-km="outros" aria-pressed="false">Otras</button>
       </div>
       <div id="intervalContainer" class="interval-container hidden">
         <label class="range-label">
-          <span id="labelDistFrom">De</span>
-          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Distância mínima em km" />
+          <span id="labelDistFrom">Desde</span>
+          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="Distancia mínima en km" />
         </label>
         <label class="range-label">
-          <span id="labelDistTo">Até</span>
-          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Distância máxima em km" />
+          <span id="labelDistTo">Hasta</span>
+          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="Distancia máxima en km" />
         </label>
       </div>
     </div>
 
-    <!-- Period + State + Fonte -->
+    <!-- Period + Location + Source -->
     <div class="filter-row filter-row-selects">
       <div class="select-wrapper">
         <select id="periodoSelect" aria-label="Filtrar por período">
-          <option value="past15">Desde 15 dias atrás</option>
-          <option value="today">A partir de hoje</option>
-          <option value="30">Próximos 30 dias</option>
+          <option value="past15">Desde hace 15 días</option>
+          <option value="today">Desde hoy</option>
+          <option value="30">Próximos 30 días</option>
           <option value="90">Próximos 3 meses</option>
           <option value="180">Próximos 6 meses</option>
-          <option value="all">Todo o período</option>
+          <option value="all">Todo el período</option>
           <option value="custom">Intervalo personalizado</option>
         </select>
       </div>
       <div class="estado-filter-wrapper" id="estadoFilterWrapper">
         <button class="estado-filter-btn" id="estadoFilterBtn"
-                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por localização">
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por ubicación">
           <span id="estadoFilterLabel">Todos</span>
           <span class="estado-filter-chevron" aria-hidden="true">▾</span>
         </button>
@@ -89,8 +89,8 @@
       </div>
       <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
         <button class="fonte-filter-btn" id="fonteFilterBtn"
-                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por fonte">
-          <span id="fonteFilterLabel">Todas as fontes</span>
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filtrar por fuente">
+          <span id="fonteFilterLabel">Todas las fuentes</span>
           <span class="fonte-filter-chevron" aria-hidden="true">▾</span>
         </button>
         <div class="fonte-filter-dropdown hidden" id="fonteFilterDropdown" role="listbox" aria-multiselectable="true">
@@ -102,27 +102,27 @@
     <!-- Custom date range (hidden by default) -->
     <div id="customDateRow" class="filter-row custom-date-row hidden">
       <label class="range-label">
-        <span id="labelDateFrom">De</span>
-        <input type="date" id="dateFrom" aria-label="Data inicial" />
+        <span id="labelDateFrom">Desde</span>
+        <input type="date" id="dateFrom" aria-label="Fecha inicial" />
       </label>
       <label class="range-label">
-        <span id="labelDateTo">Até</span>
-        <input type="date" id="dateTo" aria-label="Data final" />
+        <span id="labelDateTo">Hasta</span>
+        <input type="date" id="dateTo" aria-label="Fecha final" />
       </label>
     </div>
 
     <!-- Results count + clear -->
     <div class="filter-row filter-meta">
-      <span id="resultCount" class="result-count">Carregando...</span>
-      <button class="btn-clear hidden" id="btnClear" aria-label="Limpar filtros">Limpar filtros</button>
+      <span id="resultCount" class="result-count">Cargando...</span>
+      <button class="btn-clear hidden" id="btnClear" aria-label="Limpiar filtros">Limpiar filtros</button>
     </div>
   </div>
 
-  <main id="cardsList" class="cards-list" role="list" aria-label="Lista de corridas"></main>
+  <main id="cardsList" class="cards-list" role="list" aria-label="Lista de carreras"></main>
 
   <div id="emptyState" class="empty-state hidden">
-    <p>Nenhuma corrida encontrada com os filtros atuais.</p>
-    <button class="btn-clear" id="btnClearEmpty">Limpar filtros</button>
+    <p>No se encontraron carreras con los filtros actuales.</p>
+    <button class="btn-clear" id="btnClearEmpty">Limpiar filtros</button>
   </div>
 
   <template id="cardTemplate">
@@ -156,6 +156,6 @@
     </article>
   </template>
 
-  <script src="app.js"></script>
+  <script src="../app.js"></script>
 </body>
 </html>

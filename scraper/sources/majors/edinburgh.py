@@ -3,7 +3,7 @@ from ._base import scrape_major
 
 SOURCE_NAME = "Edinburgh Marathon Festival"
 URL         = "https://www.edinburghmarathon.com/"
-KNOWN_DATE  = "2026-05-31"
+KNOWN_DATE  = "2026-05-24"
 HORARIO     = "10:00"
 LOCALIZACAO = "Edimburgo, Reino Unido"
 

@@ -3,7 +3,7 @@ from ._base import scrape_major
 
 SOURCE_NAME = "Great North Run"
 URL         = "https://www.greatrun.org/events/great-north-run/"
-KNOWN_DATE  = "2026-09-06"
+KNOWN_DATE  = "2026-09-13"
 HORARIO     = "10:57"
 LOCALIZACAO = "Newcastle, Reino Unido"
 

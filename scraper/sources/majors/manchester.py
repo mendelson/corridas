@@ -2,8 +2,8 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Manchester Marathon"
-URL         = "https://www.manchestermarathon.com/"
-KNOWN_DATE  = "2027-04-25"
+URL         = "https://www.manchestermarathon.co.uk/"
+KNOWN_DATE  = "2027-04-18"
 HORARIO     = "09:00"
 LOCALIZACAO = "Manchester, Reino Unido"
 

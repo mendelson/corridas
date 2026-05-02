@@ -797,6 +797,11 @@ function _closeEstadoDropdown() {
   estadoFilterBtn.setAttribute('aria-expanded', 'false');
 }
 
+function _closeFonteDropdown() {
+  fonteFilterDropdown.classList.add('hidden');
+  fonteFilterBtn.setAttribute('aria-expanded', 'false');
+}
+
 function _makeAccordionGroup(label, initiallyOpen) {
   const wrapper = document.createElement('div');
   wrapper.className = 'estado-group';
@@ -1598,6 +1603,7 @@ dateTo.addEventListener('change', () => {
 estadoFilterBtn.addEventListener('click', e => {
   e.stopPropagation();
   const isOpen = !estadoFilterDropdown.classList.contains('hidden');
+  if (!isOpen) _closeFonteDropdown();
   estadoFilterDropdown.classList.toggle('hidden', isOpen);
   estadoFilterBtn.setAttribute('aria-expanded', String(!isOpen));
 });
@@ -1625,22 +1631,19 @@ btnRefresh.addEventListener('click', () => {
 fonteFilterBtn.addEventListener('click', e => {
   e.stopPropagation();
   const isOpen = !fonteFilterDropdown.classList.contains('hidden');
+  if (!isOpen) _closeEstadoDropdown();
   fonteFilterDropdown.classList.toggle('hidden', isOpen);
   fonteFilterBtn.setAttribute('aria-expanded', String(!isOpen));
 });
 
 document.addEventListener('click', e => {
-  if (!fonteFilterWrapper.contains(e.target)) {
-    fonteFilterDropdown.classList.add('hidden');
-    fonteFilterBtn.setAttribute('aria-expanded', 'false');
-  }
+  if (!fonteFilterWrapper.contains(e.target)) _closeFonteDropdown();
 });
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (!fonteFilterDropdown.classList.contains('hidden')) {
-      fonteFilterDropdown.classList.add('hidden');
-      fonteFilterBtn.setAttribute('aria-expanded', 'false');
+      _closeFonteDropdown();
       fonteFilterBtn.focus();
     }
     if (!estadoFilterDropdown.classList.contains('hidden')) {

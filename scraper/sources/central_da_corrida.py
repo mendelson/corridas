@@ -7,6 +7,7 @@ from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, slugify, now_iso, today_iso,
+    validate_image_url,
 )
 
 BASE = "https://centraldacorrida.com.br"
@@ -111,8 +112,8 @@ def _parse_image(raw: str | None) -> str | None:
     if not raw or raw in ("null", ""):
         return None
     if raw.startswith("//"):
-        return "https:" + raw
-    return raw
+        raw = "https:" + raw
+    return validate_image_url(raw)
 
 
 def _parse_inscricoes_abertas(event: dict) -> bool | None:

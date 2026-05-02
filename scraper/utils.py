@@ -473,3 +473,41 @@ def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
 
     future = [d for d in candidates if d >= today]
     return sorted(future)[0] if future else sorted(candidates)[-1]
+
+
+# ---------------------------------------------------------------------------
+# Image URL validation
+# ---------------------------------------------------------------------------
+import re as _re
+from urllib.parse import urlparse as _urlparse
+
+_SUSPICIOUS_HOST = _re.compile(
+    r"casino|silver|gold|crypto|bet|poker|loan|forex|pharma|"
+    r"adult|xxx|porn|drug|pill|slot|wager|clickad|doubleclick|"
+    r"adserv|tracker|analytics",
+    _re.IGNORECASE,
+)
+
+
+def validate_image_url(url: str | None, source_domain: str | None = None) -> str | None:
+    """Return url if it passes safety checks, else None.
+
+    Rejects: non-http, suspicious host keywords, and (if source_domain given)
+    images from a different registered domain than the source page.
+    """
+    if not url or not url.startswith("http"):
+        return None
+    try:
+        host = _urlparse(url).hostname or ""
+    except Exception:
+        return None
+    if _SUSPICIOUS_HOST.search(host):
+        return None
+    if source_domain:
+        def base(h: str) -> str:
+            parts = h.lstrip("www.").split(".")
+            return ".".join(parts[-2:]) if len(parts) >= 2 else h
+        src_base = base(_urlparse(source_domain).hostname or source_domain)
+        if base(host) != src_base:
+            return None
+    return url

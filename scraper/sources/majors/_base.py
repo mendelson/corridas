@@ -16,12 +16,22 @@ _SKIP_IMG = re.compile(
 )
 
 
+# Keywords that indicate a non-sport domain (ads, gambling, finance, etc.)
+_SUSPICIOUS_HOST = re.compile(
+    r"casino|silver|gold|crypto|bet|poker|loan|forex|pharma|"
+    r"adult|xxx|porn|drug|pill|slot|wager|clickad|doubleclick|"
+    r"adserv|tracker|analytics",
+    re.IGNORECASE,
+)
+
+
 def _same_domain(img_url: str, page_url: str) -> bool:
     """Return True if img_url is from the same registered domain as page_url."""
     try:
         img_host  = urlparse(img_url).hostname or ''
         page_host = urlparse(page_url).hostname or ''
-        # Accept same host, www. variants, and common CDN subdomains of the same base
+        if _SUSPICIOUS_HOST.search(img_host):
+            return False
         def base(h: str) -> str:
             parts = h.lstrip('www.').split('.')
             return '.'.join(parts[-2:]) if len(parts) >= 2 else h

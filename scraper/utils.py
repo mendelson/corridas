@@ -488,12 +488,30 @@ _SUSPICIOUS_HOST = _re.compile(
     _re.IGNORECASE,
 )
 
+# CDNs / hosting platforms that legitimately serve images for any event
+_TRUSTED_CDN = frozenset({
+    "cloudfront.net", "amazonaws.com", "bubble.io", "wixstatic.com",
+    "imgix.net", "fastly.net", "akamaized.net", "cloudinary.com",
+    "staticflickr.com", "cdn.jsdelivr.net",
+    # Verified race organization domains that serve images for multiple sites
+    "londonmarathonevents.co.uk",
+})
+
+
+def _reg_domain(host: str) -> str:
+    """Registered domain, handling ccSLDs like .co.uk and .com.br."""
+    parts = host.lstrip("www.").split(".")
+    if len(parts) >= 3 and parts[-2] in ("co", "com", "org", "net", "gov", "edu"):
+        return ".".join(parts[-3:])
+    return ".".join(parts[-2:]) if len(parts) >= 2 else host
+
 
 def validate_image_url(url: str | None, source_domain: str | None = None) -> str | None:
     """Return url if it passes safety checks, else None.
 
-    Rejects: non-http, suspicious host keywords, and (if source_domain given)
-    images from a different registered domain than the source page.
+    Always rejects suspicious host keywords.
+    With source_domain: also rejects images from unrelated domains,
+    unless the image host is a known trusted CDN.
     """
     if not url or not url.startswith("http"):
         return None
@@ -501,13 +519,16 @@ def validate_image_url(url: str | None, source_domain: str | None = None) -> str
         host = _urlparse(url).hostname or ""
     except Exception:
         return None
+    if not host:
+        return None
     if _SUSPICIOUS_HOST.search(host):
         return None
     if source_domain:
-        def base(h: str) -> str:
-            parts = h.lstrip("www.").split(".")
-            return ".".join(parts[-2:]) if len(parts) >= 2 else h
-        src_base = base(_urlparse(source_domain).hostname or source_domain)
-        if base(host) != src_base:
+        img_base = _reg_domain(host)
+        # Trusted CDNs are always allowed regardless of source
+        if img_base in _TRUSTED_CDN or any(host.endswith("." + cdn) for cdn in _TRUSTED_CDN):
+            return url
+        src_host = _urlparse(source_domain).hostname or source_domain
+        if _reg_domain(src_host) != img_base:
             return None
     return url

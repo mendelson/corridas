@@ -92,6 +92,24 @@ input { font-family: inherit; }
 .btn-refresh.spinning { animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+.btn-apps {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  height: var(--touch);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-apps:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
 .btn-lang {
   min-width: var(--touch);
   min-height: var(--touch);
@@ -816,6 +834,12 @@ input { font-family: inherit; }
 /* =====================================================================
    Responsive
    ===================================================================== */
+/* On very small screens hide the "Apps" text, keep just the watch icon */
+@media (max-width: 380px) {
+  .btn-apps { font-size: 0; gap: 0; padding: 0 8px; }
+  .btn-apps::before { content: '⌚'; font-size: 1rem; }
+}
+
 @media (min-width: 500px) {
   .card-img-wrap { width: 130px; min-width: 130px; }
   .card-title { font-size: 1rem; }

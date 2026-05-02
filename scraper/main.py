@@ -51,6 +51,14 @@ from .sources.majors import (
     nyc,
     sydney,
     venice,
+    prague,
+    copenhagen,
+    stockholm,
+    amsterdam,
+    dublin,
+    athens,
+    valencia,
+    paris,
 )
 
 SOURCES = [
@@ -90,6 +98,15 @@ SOURCES = [
     nyc,
     sydney,
     venice,
+    # European Marathons
+    prague,
+    copenhagen,
+    stockholm,
+    amsterdam,
+    dublin,
+    athens,
+    valencia,
+    paris,
     # Single events (DF)
     volta_do_lago,
     # European calendar

@@ -185,61 +185,73 @@ def _fetch_via_playwright() -> "str | None":
             page.add_init_script(_STEALTH_JS)
             page.on("response", _handle_response)
 
-            # Navigate to homepage — API calls will be intercepted
+            # Navigate to homepage — event detail JSONs are intercepted automatically
             print(f"[{SOURCE_NAME}] Playwright navegando para homepage: {BASE}")
             page.goto(BASE, timeout=30000)
             try:
                 page.wait_for_load_state("networkidle", timeout=20000)
             except Exception:
                 pass
-
-            # Scroll to trigger lazy-loaded content
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(2000)
+
+            # Collect slugs from index.json so we can fetch any events not
+            # pre-loaded by the homepage
+            already_captured: set[str] = set()
+            index_slugs: list[str] = []
+            for url, body in captured:
+                if '/evento/' in url:
+                    slug = url.split('/evento/')[-1].split('?')[0].split('.json')[0]
+                    already_captured.add(slug)
+                elif 'index.json' in url:
+                    try:
+                        d = json.loads(body)
+                        pp = d.get("pageProps") or {}
+                        for item in (pp.get("events") or {}).get("content") or []:
+                            s = item.get("slug", "")
+                            if s:
+                                index_slugs.append(s)
+                    except Exception:
+                        pass
+
+            # Navigate to event pages not yet captured
+            for slug in index_slugs:
+                if slug not in already_captured:
+                    ev_url = f"{BASE}/evento/{slug}"
+                    try:
+                        page.goto(ev_url, timeout=20000)
+                        page.wait_for_load_state("networkidle", timeout=15000)
+                    except Exception:
+                        pass
 
             html = page.content()
             browser.close()
 
-        # Process captured JSONs: parse event detail pages individually,
-        # and try list pages for bulk event data
+        # Process captured JSONs
         if captured:
-            print(f"[{SOURCE_NAME}] {len(captured)} respostas JSON capturadas")
             all_events: list[dict] = []
+            seen_slugs: set[str] = set()
             for url, body in captured:
                 try:
                     data = json.loads(body)
                 except Exception:
                     continue
                 if '/evento/' in url:
-                    # GoDream event detail page: pageProps.event has title, eventAppointment, address
                     ev = _parse_godream_event_json(data)
                     if ev:
-                        name = ev.get("title", "?")
-                        print(f"[{SOURCE_NAME}] evento extraído: {name}")
-                        all_events.append(ev)
-                    else:
-                        slug = url.split('/')[-1].split('?')[0]
-                        print(f"[{SOURCE_NAME}] falhou ao parsear evento: {slug}")
+                        slug = ev.get("slug", "")
+                        if slug not in seen_slugs:
+                            seen_slugs.add(slug)
+                            all_events.append(ev)
                 elif 'index.json' in url:
-                    # index.json: pageProps.events.content = list of upcoming events
-                    page_props = data.get("pageProps") or {}
-                    content = (page_props.get("events") or {}).get("content") or []
-                    if content:
-                        parsed = [_parse_godream_index_item(c) for c in content]
-                        found = [e for e in parsed if e]
-                        print(f"[{SOURCE_NAME}] index.json: {len(content)} items → {len(found)} eventos")
-                        all_events.extend(found)
-                    else:
-                        print(f"[{SOURCE_NAME}] index.json sem events.content — keys: {list((data.get('pageProps') or {}).keys())}")
+                    # index.json items have no date — handled by navigating event pages above
+                    pass
                 else:
-                    # Possible list page
                     events = _find_events_in_json(data)
-                    if events:
-                        print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
-                        all_events.extend(events)
+                    all_events.extend(events)
 
+            print(f"[{SOURCE_NAME}] {len(all_events)} eventos extraídos via Playwright")
             if all_events:
-                print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")
                 synthetic = (
                     f'<html><body>'
                     f'<script id="__NEXT_DATA__" type="application/json">'
@@ -270,7 +282,6 @@ def _parse_godream_event_json(data: dict) -> dict | None:
         )
         ev = props.get("event")
         if not ev or not isinstance(ev, dict):
-            print(f"[{SOURCE_NAME}] event não encontrado — props keys: {list(props.keys())[:8]}")
             return None
 
         title = ev.get("title") or ev.get("name")

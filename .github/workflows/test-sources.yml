@@ -15,11 +15,61 @@ on:
   workflow_dispatch:
     inputs:
       source:
-        description: >
-          Fonte a testar (ex: "godream", "majors/london", "all").
-          "all" testa todas as fontes. Padrão: all.
+        description: 'Fonte a testar ("all" testa todas)'
         required: false
         default: 'all'
+        type: choice
+        options:
+          - all
+          - godream
+          - ativo
+          - bora_correr
+          - brasil_corrida
+          - brasil_que_corre
+          - central_da_corrida
+          - circuito_das_estacoes
+          - correr_brasilia
+          - corridas_br
+          - corridas_brasil
+          - iguana_sports
+          - lets_do_this
+          - liverun
+          - maratona_porto_alegre
+          - maratona_rio
+          - minhas_inscricoes
+          - mks_esportes
+          - portal_das_corridas
+          - runner_brasil
+          - sao_silvestre
+          - sesc_df
+          - sp_city_marathon
+          - tf_sports
+          - ticket_sports
+          - volta_do_lago
+          - world_marathons
+          - yescom
+          - majors/amsterdam
+          - majors/athens
+          - majors/berlin
+          - majors/boston
+          - majors/brighton
+          - majors/cardiff_half
+          - majors/chicago
+          - majors/copenhagen
+          - majors/dublin
+          - majors/edinburgh
+          - majors/great_north_run
+          - majors/london
+          - majors/manchester
+          - majors/manchester_half
+          - majors/nyc
+          - majors/paris
+          - majors/prague
+          - majors/stockholm
+          - majors/sydney
+          - majors/tokyo
+          - majors/valencia
+          - majors/venice
 
 jobs:
   # ── Step 1: decide which sources to test ────────────────────────────────────
@@ -92,6 +142,8 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     runs-on: ubuntu-latest
+    # Always complete — never cancel sibling jobs on failure
+    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v4

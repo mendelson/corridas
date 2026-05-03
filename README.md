@@ -28,6 +28,7 @@ GitHub Actions.
 | Corridas Brasil | ✅ | `corridasbrasil.com.br/calendario/` | HTML |
 | Minhas Inscrições | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML |
 | Runner Brasil | ✅ | `runnerbrasil.com.br` | HTML |
+| GoDream | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) |
 | Portal das Corridas | ✅ | `portaldascorridas.com.br` | Playwright (SPA) |
 
 ### Fontes brasileiras — específicas Brasília-DF
@@ -56,7 +57,6 @@ Estas fontes estão registradas no código mas retornam 0 eventos. O bloqueio oc
 
 | Fonte | URL | Situação |
 |---|---|---|
-| GoDream | `godream.com.br/corrida-de-rua` | 403 → proxies falham → Playwright retorna página mínima (53KB), sem eventos |
 | Live Run | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado |
 | Let's Do This | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side |
 | World Marathons | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright |
@@ -137,7 +137,8 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 corridas/
 ├── .github/workflows/
 │   ├── scrape.yml           # CI: roda a cada 4h, commita JSON atualizado
-│   └── debug-scraper.yml    # Workflow manual para debug de fonte individual
+│   ├── test-sources.yml     # CI/manual: testa cada fonte como job independente (matrix com dropdown)
+│   └── debug-scraper.yml    # Workflow manual para diagnóstico de fonte individual (com artefato de log)
 ├── scraper/
 │   ├── main.py              # Orquestrador: executa scrapers, merge, persistência
 │   ├── models.py            # Dataclasses: Corrida, Distancia, FonteInfo, etc.

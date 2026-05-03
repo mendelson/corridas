@@ -186,9 +186,16 @@ def _parse_godream_event_json(data: dict) -> dict | None:
       props.pageProps.event  → { title, slug, eventAppointment, address, coverImage, ... }
     """
     try:
-        props = data.get("props", {}).get("pageProps", {})
+        # /_next/data/ API returns { "pageProps": {...} } directly (no "props" wrapper)
+        # __NEXT_DATA__ in HTML returns { "props": { "pageProps": {...} } }
+        props = (
+            data.get("pageProps")
+            or data.get("props", {}).get("pageProps")
+            or {}
+        )
         ev = props.get("event")
         if not ev or not isinstance(ev, dict):
+            print(f"[{SOURCE_NAME}] event não encontrado — props keys: {list(props.keys())[:8]}")
             return None
 
         title = ev.get("title") or ev.get("name")

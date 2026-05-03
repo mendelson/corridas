@@ -625,7 +625,7 @@ def main() -> None:
 
     _demote_directory_links(final)
     _normalize_all_locations(final)
-    _find_all_photos(final)
+    # _find_all_photos(final)
     _enrich_images(final)
     _sanitize_images(final)
     save(final)

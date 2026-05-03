@@ -28,7 +28,7 @@ GitHub Actions.
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-03 21:41 | ✅ | 2026-05-03 21:41 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-03 21:40 | ✅ | 2026-05-03 21:40 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-03 21:41 | ✅ | 2026-05-03 21:41 |
-| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-03 21:43 | ❌ | — |
+| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-03 22:38 | ❌ | — |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | 2026-05-03 21:42 | ❌ | — |
 
 ### Fontes brasileiras — específicas Brasília-DF

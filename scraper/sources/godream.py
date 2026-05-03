@@ -46,27 +46,44 @@ _PT_MONTHS = {
 # Entry point
 # ---------------------------------------------------------------------------
 
-def _find_date_in_obj(obj, path: str = "", _depth: int = 0) -> tuple[str, str] | None:
-    """Recursively search for a YYYY-MM-DD date string anywhere in the JSON tree.
-    Returns (date_string, path) or None.
+_DMYYYY_RE = re.compile(r"\b(\d{1,2})[/\-\.](\d{1,2})[/\-\.](20\d{2})\b")
+
+def _find_future_dates_in_obj(obj, today: str, path: str = "", _depth: int = 0,
+                               results: list | None = None) -> list[tuple[str, str]]:
+    """Collect all future dates (ISO or DD/MM/YYYY) found anywhere in the JSON tree.
+    Returns list of (date_iso, path).
     """
-    if _depth > 8:
-        return None
+    if results is None:
+        results = []
+    if _depth > 10:
+        return results
     if isinstance(obj, str):
-        m = _DATE_ISO_RE.search(obj)
-        if m:
-            return m.group(1), path
+        # ISO format
+        for m in _DATE_ISO_RE.finditer(obj):
+            d = m.group(1)
+            if d >= today:
+                results.append((d, path))
+        # DD/MM/YYYY or DD-MM-YYYY
+        for m in _DMYYYY_RE.finditer(obj):
+            d = f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
+            if d >= today:
+                results.append((d, path))
+    elif isinstance(obj, int) and obj > 1_700_000_000:
+        # Unix timestamp (seconds) — check if future
+        import datetime
+        try:
+            d = datetime.datetime.utcfromtimestamp(obj).strftime("%Y-%m-%d")
+            if d >= today:
+                results.append((d, path + "[unix]"))
+        except Exception:
+            pass
     elif isinstance(obj, dict):
         for k, v in obj.items():
-            result = _find_date_in_obj(v, f"{path}.{k}", _depth + 1)
-            if result:
-                return result
+            _find_future_dates_in_obj(v, today, f"{path}.{k}", _depth + 1, results)
     elif isinstance(obj, list):
-        for i, item in enumerate(obj[:5]):
-            result = _find_date_in_obj(item, f"{path}[{i}]", _depth + 1)
-            if result:
-                return result
-    return None
+        for i, item in enumerate(obj[:10]):
+            _find_future_dates_in_obj(item, today, f"{path}[{i}]", _depth + 1, results)
+    return results
 
 
 def scrape() -> list[Corrida]:
@@ -258,23 +275,26 @@ def _parse_godream_event_json(data: dict) -> dict | None:
                     break
 
         if not date_raw:
-            # Recursive search across the full event object and pageProps
-            found = _find_date_in_obj(ev)
-            if not found:
-                found = _find_date_in_obj(props)
-            if found:
-                date_raw, date_path = found
-                print(f"[{SOURCE_NAME}] data encontrada em '{date_path}': {date_raw}")
+            today = today_iso()
+            # Search for future dates in event + full pageProps
+            hits = _find_future_dates_in_obj(ev, today)
+            if not hits:
+                hits = _find_future_dates_in_obj(props, today)
+            if hits:
+                # Sort by date ascending — pick the earliest future date
+                hits.sort(key=lambda x: x[0])
+                date_raw, date_path = hits[0]
+                print(f"[{SOURCE_NAME}] {len(hits)} datas futuras — usando '{date_path}': {date_raw}")
             else:
-                # Dump all top-level keys + values to locate the date field
+                # Nothing found — dump all fields so we can locate the date format
                 print(f"[{SOURCE_NAME}] ev.keys(): {list(ev.keys())}")
                 for k, v in ev.items():
                     if isinstance(v, (dict, list)):
-                        print(f"[{SOURCE_NAME}]   ev['{k}']: {json.dumps(v)[:400]}")
+                        print(f"[{SOURCE_NAME}]   ev['{k}']: {json.dumps(v)[:500]}")
                     else:
                         print(f"[{SOURCE_NAME}]   ev['{k}']: {str(v)[:200]}")
                 print(f"[{SOURCE_NAME}] pageProps.keys(): {list(props.keys())}")
-                print(f"[{SOURCE_NAME}] sem data para '{ev.get('title')}'")
+                print(f"[{SOURCE_NAME}] sem data futura para '{ev.get('title')}'")
                 return None
 
         date = normalize_date(date_raw)

@@ -1269,7 +1269,7 @@ function buildCard(c) {
 
 
   const novoBadge = card.querySelector('.badge-novo');
-  if (c.first_seen_at) {
+  if (novoBadge && c.first_seen_at) {
     const age = Date.now() - new Date(c.first_seen_at).getTime();
     if (age < 24 * 60 * 60 * 1000) {
       novoBadge.textContent = T.badgeNovo;

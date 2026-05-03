@@ -147,35 +147,21 @@ def _fetch_via_playwright() -> "str | None":
                 except Exception:
                     continue
                 if '/evento/' in url:
-                    # Individual event page — extract the single event object
-                    ev = _find_single_event_in_json(data)
+                    # GoDream event detail page: pageProps.event has title, eventAppointment, address
+                    ev = _parse_godream_event_json(data)
                     if ev:
-                        print(f"[{SOURCE_NAME}] evento extraído de: {url.split('/')[-1].split('?')[0]}")
+                        name = ev.get("title", "?")
+                        print(f"[{SOURCE_NAME}] evento extraído: {name}")
                         all_events.append(ev)
+                    else:
+                        slug = url.split('/')[-1].split('?')[0]
+                        print(f"[{SOURCE_NAME}] falhou ao parsear evento: {slug}")
                 else:
-                    # Possible list page — try to find an event array
+                    # Possible list page
                     events = _find_events_in_json(data)
                     if events:
                         print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
                         all_events.extend(events)
-
-            if not all_events:
-                # Log structure to diagnose GoDream field names
-                for url, body in captured:
-                    if '/evento/' in url:
-                        try:
-                            data = json.loads(body)
-                            props = data.get("props", {}).get("pageProps", data.get("pageProps", data))
-                            ev = props.get("event", props)
-                            print(f"[{SOURCE_NAME}] event keys ({len(ev)}): {list(ev.keys())}")
-                            # Find keys likely to contain name or date
-                            for k, v in ev.items():
-                                kl = k.lower()
-                                if any(x in kl for x in ("name","title","nome","date","data","inicio","start","city","cidad")):
-                                    print(f"[{SOURCE_NAME}]   event['{k}'] = {str(v)[:120]}")
-                        except Exception as exc:
-                            print(f"[{SOURCE_NAME}] erro ao inspecionar JSON: {exc}")
-                        break
 
             if all_events:
                 print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")
@@ -190,6 +176,79 @@ def _fetch_via_playwright() -> "str | None":
         return html
     except Exception as e:
         print(f"[{SOURCE_NAME}] Playwright falhou: {e}")
+        return None
+
+
+def _parse_godream_event_json(data: dict) -> dict | None:
+    """Extract a normalised event dict from a GoDream /_next/data/evento/*.json page.
+
+    GoDream's event structure:
+      props.pageProps.event  → { title, slug, eventAppointment, address, coverImage, ... }
+    """
+    try:
+        props = data.get("props", {}).get("pageProps", {})
+        ev = props.get("event")
+        if not ev or not isinstance(ev, dict):
+            return None
+
+        title = ev.get("title") or ev.get("name")
+        if not title:
+            return None
+
+        # Date: inside eventAppointment (may be a dict or list of dicts)
+        appt = ev.get("eventAppointment") or {}
+        if isinstance(appt, list):
+            appt = appt[0] if appt else {}
+        date_raw = None
+        for k in ("startDate", "start_date", "date", "data", "dtInicio", "startAt", "beginAt"):
+            v = appt.get(k)
+            if v:
+                date_raw = str(v)
+                break
+        if not date_raw:
+            # Fallback: look for date keys in the event itself
+            for k in ("startDate", "start_date", "date", "data", "dtInicio"):
+                v = ev.get(k)
+                if v:
+                    date_raw = str(v)
+                    break
+
+        if not date_raw:
+            # Log nested keys to help next iteration
+            print(f"[{SOURCE_NAME}] eventAppointment keys: {list(appt.keys()) if isinstance(appt, dict) else appt}")
+            return None
+
+        date = normalize_date(date_raw)
+        if not date:
+            return None
+
+        # Address
+        addr = ev.get("address") or ev.get("eventAddress") or {}
+        if isinstance(addr, list):
+            addr = addr[0] if addr else {}
+        city  = (addr.get("city")  or addr.get("cidade") or "").strip()
+        state = (addr.get("state") or addr.get("uf")     or "").strip().upper()
+
+        # Image
+        img = ev.get("coverImage") or ev.get("logoImage")
+        if isinstance(img, dict):
+            img = img.get("url") or img.get("src") or img.get("path")
+        image_url = img if isinstance(img, str) else None
+
+        slug = ev.get("slug") or ""
+        link = f"{BASE}/evento/{slug}" if slug else BASE
+
+        return {
+            "title":  title,
+            "date":   date,
+            "city":   city,
+            "state":  state,
+            "url":    link,
+            "image":  image_url,
+            "slug":   slug,
+        }
+    except Exception as exc:
+        print(f"[{SOURCE_NAME}] _parse_godream_event_json erro: {exc}")
         return None
 
 

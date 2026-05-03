@@ -29,7 +29,10 @@ _NON_RUNNING_KW = [
     "triathlon", "triathon", "ironman", "duathlon",
     "natação", "natacao", "swimrun", "ciclismo", "bike", "pedalada",
     "caminhada", "trekking", "track and field", "atletismo",
+    "beach tennis", "tênis", "tenis", "padel", "paddle",
 ]
+
+_DATE_ISO_RE = re.compile(r"(20\d{2}-\d{2}-\d{2})")
 
 _PT_MONTHS = {
     "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
@@ -42,6 +45,29 @@ _PT_MONTHS = {
 # ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
+
+def _find_date_in_obj(obj, path: str = "", _depth: int = 0) -> tuple[str, str] | None:
+    """Recursively search for a YYYY-MM-DD date string anywhere in the JSON tree.
+    Returns (date_string, path) or None.
+    """
+    if _depth > 8:
+        return None
+    if isinstance(obj, str):
+        m = _DATE_ISO_RE.search(obj)
+        if m:
+            return m.group(1), path
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            result = _find_date_in_obj(v, f"{path}.{k}", _depth + 1)
+            if result:
+                return result
+    elif isinstance(obj, list):
+        for i, item in enumerate(obj[:5]):
+            result = _find_date_in_obj(item, f"{path}[{i}]", _depth + 1)
+            if result:
+                return result
+    return None
+
 
 def scrape() -> list[Corrida]:
     today = today_iso()
@@ -232,16 +258,24 @@ def _parse_godream_event_json(data: dict) -> dict | None:
                     break
 
         if not date_raw:
-            tickets = ev.get("tickets") or []
-            if isinstance(tickets, list) and tickets:
-                t0 = tickets[0] if isinstance(tickets[0], dict) else {}
-                batch = t0.get("activeBatch") or {}
-                print(f"[{SOURCE_NAME}] tickets[0].activeBatch: {str(batch)[:300]}")
-                stocks = t0.get("stocks") or []
-                if isinstance(stocks, list) and stocks:
-                    print(f"[{SOURCE_NAME}] tickets[0].stocks[0]: {str(stocks[0])[:300]}")
-            print(f"[{SOURCE_NAME}] sem data encontrada para evento '{ev.get('title')}'")
-            return None
+            # Recursive search across the full event object and pageProps
+            found = _find_date_in_obj(ev)
+            if not found:
+                found = _find_date_in_obj(props)
+            if found:
+                date_raw, date_path = found
+                print(f"[{SOURCE_NAME}] data encontrada em '{date_path}': {date_raw}")
+            else:
+                # Dump all top-level keys + values to locate the date field
+                print(f"[{SOURCE_NAME}] ev.keys(): {list(ev.keys())}")
+                for k, v in ev.items():
+                    if isinstance(v, (dict, list)):
+                        print(f"[{SOURCE_NAME}]   ev['{k}']: {json.dumps(v)[:400]}")
+                    else:
+                        print(f"[{SOURCE_NAME}]   ev['{k}']: {str(v)[:200]}")
+                print(f"[{SOURCE_NAME}] pageProps.keys(): {list(props.keys())}")
+                print(f"[{SOURCE_NAME}] sem data para '{ev.get('title')}'")
+                return None
 
         date = normalize_date(date_raw)
         if not date:

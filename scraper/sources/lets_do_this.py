@@ -62,7 +62,7 @@ def scrape() -> list[Corrida]:
     # ── Strategy 1: __NEXT_DATA__ / embedded JSON ──────────────────────────
     for url in _CALENDAR_URLS:
         try:
-            resp = get(url, timeout=15)
+            resp = get(url, source=SOURCE_NAME)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
             continue
@@ -91,7 +91,11 @@ def scrape() -> list[Corrida]:
 
         print(f"[{SOURCE_NAME}] sem dados reconhecíveis em {url}")
 
-    # ── Strategy 2: GraphQL ────────────────────────────────────────────────
+    # ── Strategy 2: Playwright ─────────────────────────────────────────────
+    if not raw:
+        raw = _try_playwright()
+
+    # ── Strategy 3: GraphQL ────────────────────────────────────────────────
     if not raw:
         raw = _try_graphql()
 
@@ -178,9 +182,38 @@ def _extract_html_cards(soup) -> list[dict]:
     return []
 
 
+def _try_playwright() -> list[dict]:
+    from ..playwright_client import get_page_html
+
+    url = _CALENDAR_URLS[0]
+    print(f"[{SOURCE_NAME}] tentando Playwright para {url}")
+    html = get_page_html(url)
+    if not html:
+        print(f"[{SOURCE_NAME}] Playwright não retornou HTML")
+        return []
+
+    print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes renderizados")
+    soup = BeautifulSoup(html, "lxml")
+
+    raw = _extract_next_data(soup)
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright + __NEXT_DATA__")
+        return raw
+
+    raw = _extract_from_scripts(soup)
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright + script JSON")
+        return raw
+
+    raw = _extract_html_cards(soup)
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright + HTML cards")
+    return raw
+
+
 def _try_graphql() -> list[dict]:
     try:
-        resp = get(_GRAPHQL_URL, timeout=15)
+        resp = get(_GRAPHQL_URL, source=SOURCE_NAME)
         if resp.status_code == 200:
             data = resp.json()
             print(f"[{SOURCE_NAME}] GraphQL OK: {list(data.keys())[:5]}")

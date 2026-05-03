@@ -106,10 +106,16 @@ def scrape() -> list[Corrida]:
     if raw:
         print(f"[{SOURCE_NAME}] {len(raw)} candidatos via /_next/data/")
     else:
-        # ── Strategy 2: HTML page parsing (fallback) ────────────────────────
+        # ── Strategy 2: Playwright (renders JS / bypasses bot-detection) ────
+        raw = _try_playwright()
+        if raw:
+            print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright")
+
+    if not raw:
+        # ── Strategy 3: HTML page parsing (last resort) ─────────────────────
         for url in _FALLBACK_URLS:
             try:
-                resp = get(url, timeout=15)
+                resp = get(url, source=SOURCE_NAME)
             except Exception as e:
                 print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
                 continue
@@ -166,12 +172,33 @@ def scrape() -> list[Corrida]:
 
 
 # ---------------------------------------------------------------------------
+# Strategy 2: Playwright — renders JS and bypasses bot-detection pages
+# ---------------------------------------------------------------------------
+def _try_playwright() -> list[dict]:
+    from ..playwright_client import get_page_html
+
+    url = f"{BASE}/marathons?continent=europe&future=1"
+    print(f"[{SOURCE_NAME}] tentando Playwright para {url}")
+    html = get_page_html(url)
+    if not html:
+        print(f"[{SOURCE_NAME}] Playwright não retornou HTML")
+        return []
+
+    print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes renderizados")
+    soup = BeautifulSoup(html, "lxml")
+    raw = _extract_from_any_script(soup)
+    if raw:
+        return raw
+    return _extract_html_cards(soup)
+
+
+# ---------------------------------------------------------------------------
 # Strategy 1: /_next/data/{buildId}/ — fetches pre-rendered page props
 # ---------------------------------------------------------------------------
 def _try_next_data_api() -> list[dict]:
     # First, fetch the main page to find the buildId
     try:
-        resp = get(f"{BASE}/marathons?continent=europe&future=1", timeout=15)
+        resp = get(f"{BASE}/marathons?continent=europe&future=1", source=SOURCE_NAME)
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar página principal: {e}")
         return []

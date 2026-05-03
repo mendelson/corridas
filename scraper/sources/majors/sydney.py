@@ -2,8 +2,9 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "TCS Sydney Marathon"
-URL = "https://www.tcssydneymarathon.com.au/"
-KNOWN_DATE = "2026-09-20"
+URL = "https://www.tcssydneymarathon.com/"
+KNOWN_DATE      = "2026-08-30"
+KNOWN_DATE_NEXT = "2027-08-29"   # last Sunday of August 2027 (est.)
 HORARIO = "07:00"
 LOCALIZACAO = "Sydney, Austrália"
 
@@ -15,7 +16,8 @@ def scrape():
     # Site has SSL issues — disable verification
     return scrape_major(
         source_name=SOURCE_NAME, titulo="TCS Sydney Marathon",
-        url=URL, known_date=KNOWN_DATE, horario=HORARIO,
+        url=URL, known_date=KNOWN_DATE,
+        known_dates=[KNOWN_DATE, KNOWN_DATE_NEXT], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
         ssl_verify=False,

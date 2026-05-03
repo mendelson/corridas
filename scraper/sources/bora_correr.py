@@ -7,7 +7,8 @@ from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_date, normalize_time, normalize_titulo,
-    slugify, infer_estado, is_bsb_event, now_iso, today_iso
+    slugify, infer_estado, is_bsb_event, now_iso, today_iso,
+    validate_image_url,
 )
 
 URL = "https://coelhodeprograma.com.br/boracorrer/"
@@ -66,6 +67,7 @@ def _parse_event(el) -> Corrida | None:
     imagem_url = (img.get("src") or img.get("data-src")) if img else None
     if imagem_url and imagem_url.startswith("/"):
         imagem_url = BASE + imagem_url
+    imagem_url = validate_image_url(imagem_url)
 
     link_tag = el.find("a", href=True)
     link = link_tag["href"] if link_tag else URL

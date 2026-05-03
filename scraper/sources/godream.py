@@ -1,4 +1,8 @@
-"""Scraper for godream.com.br — Brazilian running events platform."""
+"""Scraper for godream.com.br — Brazilian running events platform.
+
+Playwright navigates the /corrida-de-rua category page, paginates through
+all listing pages, and intercepts Next.js JSON for each event.
+"""
 from __future__ import annotations
 import json
 import re
@@ -29,7 +33,10 @@ _NON_RUNNING_KW = [
     "triathlon", "triathon", "ironman", "duathlon",
     "natação", "natacao", "swimrun", "ciclismo", "bike", "pedalada",
     "caminhada", "trekking", "track and field", "atletismo",
+    "beach tennis", "tênis", "tenis", "padel", "paddle",
 ]
+
+_DATE_ISO_RE = re.compile(r"(20\d{2}-\d{2}-\d{2})")
 
 _PT_MONTHS = {
     "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
@@ -43,16 +50,72 @@ _PT_MONTHS = {
 # Entry point
 # ---------------------------------------------------------------------------
 
+_DMYYYY_RE = re.compile(r"\b(\d{1,2})[/\-\.](\d{1,2})[/\-\.](20\d{2})\b")
+
+def _find_future_dates_in_obj(obj, today: str, path: str = "", _depth: int = 0,
+                               results: list | None = None) -> list[tuple[str, str]]:
+    """Collect all future dates (ISO or DD/MM/YYYY) found anywhere in the JSON tree.
+    Returns list of (date_iso, path).
+    """
+    if results is None:
+        results = []
+    if _depth > 10:
+        return results
+    if isinstance(obj, str):
+        # ISO format
+        for m in _DATE_ISO_RE.finditer(obj):
+            d = m.group(1)
+            if d >= today:
+                results.append((d, path))
+        # DD/MM/YYYY or DD-MM-YYYY
+        for m in _DMYYYY_RE.finditer(obj):
+            d = f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
+            if d >= today:
+                results.append((d, path))
+    elif isinstance(obj, int) and obj > 1_700_000_000:
+        # Unix timestamp (seconds) — check if future
+        import datetime
+        try:
+            d = datetime.datetime.utcfromtimestamp(obj).strftime("%Y-%m-%d")
+            if d >= today:
+                results.append((d, path + "[unix]"))
+        except Exception:
+            pass
+    elif isinstance(obj, dict):
+        for k, v in obj.items():
+            _find_future_dates_in_obj(v, today, f"{path}.{k}", _depth + 1, results)
+    elif isinstance(obj, list):
+        for i, item in enumerate(obj[:10]):
+            _find_future_dates_in_obj(item, today, f"{path}[{i}]", _depth + 1, results)
+    return results
+
+
+def _extract_date_from_text(text: str) -> str | None:
+    """Extract the first plausible future event date from a text/HTML snippet."""
+    text = re.sub(r"<[^>]+>", " ", text)  # strip HTML tags
+    # "16 de maio de 2026" / "16 e 17 de maio de 2026"
+    m = re.search(r"(\d{1,2})(?:\s+e\s+\d{1,2})?\s+de\s+([a-záéíóúâêôãõç]+)\s+de\s+(20\d{2})",
+                  text, re.IGNORECASE)
+    if m:
+        mo = _PT_MONTHS.get(m.group(2).lower())
+        if mo:
+            return f"{m.group(3)}-{mo}-{m.group(1).zfill(2)}"
+    # DD/MM/YYYY or DD-MM-YYYY
+    m = re.search(r"\b(\d{1,2})[/\-](\d{1,2})[/\-](20\d{2})\b", text)
+    if m:
+        return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
+    # ISO YYYY-MM-DD
+    m = _DATE_ISO_RE.search(text)
+    if m:
+        return m.group(1)
+    return None
+
+
 def scrape() -> list[Corrida]:
     today = today_iso()
-    try:
-        resp = get(CALENDAR_URL)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {CALENDAR_URL}: {e}")
+    soup, via_playwright = _fetch_soup()
+    if soup is None:
         return []
-
-    soup = BeautifulSoup(resp.text, "lxml")
 
     # Strategy 1: __NEXT_DATA__ JSON (Next.js SSR — most complete data)
     corridas = _parse_next_data(soup, today)
@@ -60,10 +123,380 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] {len(corridas)} corridas (via __NEXT_DATA__)")
         return corridas
 
+    if via_playwright:
+        _debug_playwright_page(soup)
+
     # Strategy 2: Parse HTML event cards
     corridas = _parse_html_cards(soup, today)
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
+
+
+def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
+    """Fetch calendar via HTTP, falling back to Playwright. Returns (soup, via_playwright)."""
+    try:
+        resp = get(CALENDAR_URL, source=SOURCE_NAME)
+        resp.raise_for_status()
+        return BeautifulSoup(resp.text, "lxml"), False
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] HTTP falhou ({e}), tentando Playwright...")
+
+    html = _fetch_via_playwright()
+    if html:
+        print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes")
+        return BeautifulSoup(html, "lxml"), True
+
+    print(f"[{SOURCE_NAME}] todas as estratégias falharam")
+    return None, False
+
+
+def _extract_all_slugs(obj, depth: int = 0) -> set[str]:
+    """Recursively find all event slugs in a JSON structure.
+
+    A slug is accepted when its sibling dict also has a title/name field,
+    indicating it belongs to an event object rather than an unrelated JSON key.
+    """
+    slugs: set[str] = set()
+    if depth > 10:
+        return slugs
+    if isinstance(obj, dict):
+        slug = obj.get("slug")
+        has_title = any(obj.get(k) for k in ("title", "name", "nome", "titulo"))
+        if slug and has_title and isinstance(slug, str) and len(slug) > 3:
+            slugs.add(slug)
+        for v in obj.values():
+            slugs |= _extract_all_slugs(v, depth + 1)
+    elif isinstance(obj, list):
+        for item in obj:
+            slugs |= _extract_all_slugs(item, depth + 1)
+    return slugs
+
+
+def _fetch_via_playwright() -> "str | None":
+    """Navigate GoDream via Playwright, intercepting Next.js JSON to capture events.
+
+    Strategy:
+      1. Navigate to the /corrida-de-rua category page (not the homepage).
+      2. Paginate through it (?page=N) until no new slugs appear.
+      3. Visit any event pages whose JSON was not pre-intercepted.
+    """
+    try:
+        from playwright.sync_api import sync_playwright
+        from ..playwright_client import _STEALTH_JS, _USER_AGENT
+    except ImportError:
+        return None
+
+    captured: list[tuple[str, str]] = []
+    seen_urls: set[str] = set()
+
+    def _handle_response(response):
+        url = response.url
+        if url in seen_urls:
+            return
+        ct = (response.headers.get("content-type") or "").lower()
+        if "json" not in ct:
+            return
+        try:
+            body = response.body()
+            if body and body[0:1] in (b"{", b"[") and len(body) > 200:
+                seen_urls.add(url)
+                captured.append((url, body.decode("utf-8", errors="replace")))
+                print(f"[{SOURCE_NAME}] JSON interceptado: {url} ({len(body)} bytes)")
+        except Exception:
+            pass
+
+    def _slugs_from_captured() -> set[str]:
+        slugs: set[str] = set()
+        for url, body in captured:
+            if '/evento/' in url:
+                slug = url.split('/evento/')[-1].split('?')[0].rstrip('.json')
+                slugs.add(slug)
+            else:
+                try:
+                    slugs |= _extract_all_slugs(json.loads(body))
+                except Exception:
+                    pass
+        return slugs
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+            ctx = browser.new_context(
+                user_agent=_USER_AGENT,
+                viewport={"width": 1280, "height": 720},
+                locale="pt-BR",
+                extra_http_headers={"Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8"},
+            )
+            page = ctx.new_page()
+            page.add_init_script(_STEALTH_JS)
+            page.on("response", _handle_response)
+
+            # ── Page 1: category listing ─────────────────────────────────────
+            print(f"[{SOURCE_NAME}] Playwright navegando para: {CALENDAR_URL}")
+            page.goto(CALENDAR_URL, timeout=30000)
+            try:
+                page.wait_for_load_state("networkidle", timeout=20000)
+            except Exception:
+                pass
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(2000)
+
+            # ── Paginate through the category listing ────────────────────────
+            for page_num in range(2, 20):
+                prev_count = len(_slugs_from_captured())
+                try:
+                    page.goto(f"{CALENDAR_URL}?page={page_num}", timeout=15000)
+                    try:
+                        page.wait_for_load_state("networkidle", timeout=10000)
+                    except Exception:
+                        pass
+                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+                    page.wait_for_timeout(1500)
+                except Exception:
+                    break
+                if len(_slugs_from_captured()) == prev_count:
+                    print(f"[{SOURCE_NAME}] sem novos slugs na página {page_num} — parando paginação")
+                    break
+
+            all_slugs = _slugs_from_captured()
+            captured_event_slugs = {
+                url.split('/evento/')[-1].split('?')[0].rstrip('.json')
+                for url, _ in captured if '/evento/' in url
+            }
+            missing = all_slugs - captured_event_slugs
+            print(f"[{SOURCE_NAME}] {len(all_slugs)} slugs coletados, {len(missing)} sem JSON ainda")
+
+            # ── Visit event pages not yet intercepted ────────────────────────
+            for slug in missing:
+                try:
+                    page.goto(f"{BASE}/evento/{slug}", timeout=20000)
+                    try:
+                        page.wait_for_load_state("networkidle", timeout=15000)
+                    except Exception:
+                        pass
+                except Exception:
+                    pass
+
+            html = page.content()
+            browser.close()
+
+        # ── Build result from captured event JSONs ───────────────────────────
+        all_events: list[dict] = []
+        seen_slugs: set[str] = set()
+        for url, body in captured:
+            if '/evento/' not in url:
+                continue
+            try:
+                data = json.loads(body)
+            except Exception:
+                continue
+            ev = _parse_godream_event_json(data)
+            if ev:
+                slug = ev.get("slug", "")
+                if slug not in seen_slugs:
+                    seen_slugs.add(slug)
+                    all_events.append(ev)
+
+        print(f"[{SOURCE_NAME}] {len(all_events)} eventos extraídos via Playwright")
+        if all_events:
+            synthetic = (
+                '<html><body>'
+                '<script id="__NEXT_DATA__" type="application/json">'
+                f'{{"props":{{"pageProps":{{"data":{json.dumps(all_events)}}}}}}}'
+                '</script></body></html>'
+            )
+            return synthetic
+
+        return html
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] Playwright falhou: {e}")
+        return None
+
+
+def _parse_godream_event_json(data: dict) -> dict | None:
+    """Extract a normalised event dict from a GoDream /_next/data/evento/*.json page.
+
+    GoDream's event structure:
+      props.pageProps.event  → { title, slug, eventAppointment, address, coverImage, ... }
+    """
+    try:
+        # /_next/data/ API returns { "pageProps": {...} } directly (no "props" wrapper)
+        # __NEXT_DATA__ in HTML returns { "props": { "pageProps": {...} } }
+        props = (
+            data.get("pageProps")
+            or data.get("props", {}).get("pageProps")
+            or {}
+        )
+        ev = props.get("event")
+        if not ev or not isinstance(ev, dict):
+            return None
+
+        title = ev.get("title") or ev.get("name")
+        if not title:
+            return None
+
+        # Date: inside eventAppointment (may be a dict or list of dicts)
+        appt = ev.get("eventAppointment") or {}
+        if isinstance(appt, list):
+            appt = appt[0] if appt else {}
+        date_raw = None
+        for k in ("startDate", "start_date", "date", "data", "dtInicio", "startAt", "beginAt"):
+            v = appt.get(k)
+            if v:
+                date_raw = str(v)
+                break
+        if not date_raw:
+            # Fallback: look for date keys in the event itself
+            for k in ("startDate", "start_date", "date", "data", "dtInicio"):
+                v = ev.get(k)
+                if v:
+                    date_raw = str(v)
+                    break
+
+        if not date_raw:
+            # Priority 1: parse the 'about' HTML — contains human-readable date like
+            # "📅 16 de maio de 2026" or "07/06/2026"
+            about = str(ev.get("about") or "")
+            if about:
+                date_raw = _extract_date_from_text(about)
+
+        if not date_raw:
+            today = today_iso()
+            # Priority 2: recursive search, but skip 'tickets' subtree to avoid
+            # picking up stock/batch expiry dates embedded in size-name strings
+            ev_no_tickets = {k: v for k, v in ev.items() if k != "tickets"}
+            hits = _find_future_dates_in_obj(ev_no_tickets, today)
+            if hits:
+                hits.sort(key=lambda x: x[0])
+                date_raw, date_path = hits[0]
+                print(f"[{SOURCE_NAME}] {len(hits)} datas futuras (sem tickets) — '{date_path}': {date_raw}")
+
+        if not date_raw:
+            print(f"[{SOURCE_NAME}] sem data para '{ev.get('title')}' — about: {about[:120]!r}")
+            return None
+
+        date = normalize_date(date_raw)
+        if not date:
+            return None
+
+        # Address — GoDream nests city as {name, state:{acronym}}
+        addr = ev.get("address") or ev.get("eventAddress") or {}
+        if isinstance(addr, list):
+            addr = addr[0] if addr else {}
+        city_raw = addr.get("city") or addr.get("cidade") or {}
+        if isinstance(city_raw, dict):
+            city  = (city_raw.get("name") or "").strip()
+            state_raw = city_raw.get("state") or {}
+            state = (state_raw.get("acronym") or state_raw.get("uf") or "").strip().upper()
+        else:
+            city  = str(city_raw).strip()
+            state = (addr.get("state") or addr.get("uf") or "").strip().upper()
+
+        # Image
+        img = ev.get("coverImage") or ev.get("logoImage")
+        if isinstance(img, dict):
+            img = img.get("url") or img.get("src") or img.get("path")
+        image_url = img if isinstance(img, str) else None
+
+        slug = ev.get("slug") or ""
+        link = f"{BASE}/evento/{slug}" if slug else BASE
+
+        return {
+            "title":  title,
+            "date":   date,
+            "city":   city,
+            "state":  state,
+            "url":    link,
+            "image":  image_url,
+            "slug":   slug,
+        }
+    except Exception as exc:
+        print(f"[{SOURCE_NAME}] _parse_godream_event_json erro: {exc}")
+        return None
+
+
+def _parse_godream_index_item(item: dict) -> dict | None:
+    """Extract a normalised event dict from a GoDream index.json events.content item."""
+    try:
+        title = item.get("title") or item.get("name") or item.get("titulo")
+        if not title:
+            return None
+
+        # Try all common date field names (camelCase and snake_case)
+        date_raw = None
+        for k in ("startDate", "start_date", "date", "data", "eventDate",
+                  "event_date", "dtInicio", "dt_inicio", "beginAt", "begin_at",
+                  "startAt", "start_at", "dataEvento"):
+            v = item.get(k)
+            if v:
+                date_raw = str(v)
+                break
+
+        # Nested appointment object
+        if not date_raw:
+            appt = item.get("eventAppointment") or item.get("appointment") or {}
+            if isinstance(appt, list):
+                appt = appt[0] if appt else {}
+            if isinstance(appt, dict):
+                for k in ("startDate", "start_date", "date", "data", "startAt"):
+                    v = appt.get(k)
+                    if v:
+                        date_raw = str(v)
+                        break
+
+        date = normalize_date(date_raw) if date_raw else None
+        if not date:
+            print(f"[{SOURCE_NAME}] item sem data — slug={item.get('slug')}, keys={list(item.keys())}")
+            return None
+
+        # Address — GoDream nests city as {name, state:{acronym}}
+        addr = item.get("address") or item.get("eventAddress") or {}
+        if isinstance(addr, list):
+            addr = addr[0] if addr else {}
+        city_raw = (addr.get("city") or addr.get("cidade")) if isinstance(addr, dict) else None
+        if isinstance(city_raw, dict):
+            city = (city_raw.get("name") or "").strip()
+            state_d = city_raw.get("state") or {}
+            state = ((state_d.get("acronym") or state_d.get("uf") or "").strip().upper()
+                     if isinstance(state_d, dict) else str(state_d).strip().upper())
+        elif isinstance(city_raw, str):
+            city = city_raw.strip()
+            state_raw = (addr.get("state") or addr.get("uf")) if isinstance(addr, dict) else ""
+            state = (state_raw.get("acronym") or "").strip().upper() if isinstance(state_raw, dict) else str(state_raw or "").strip().upper()
+        else:
+            city = str(item.get("city") or item.get("cidade") or "").strip()
+            state = str(item.get("state") or item.get("estado") or item.get("uf") or "").strip().upper()
+
+        img = item.get("coverImage") or item.get("image") or item.get("thumbnail")
+        if isinstance(img, dict):
+            img = img.get("url") or img.get("src") or img.get("path")
+        image_url = img if isinstance(img, str) else None
+
+        slug = str(item.get("slug") or "")
+        link = f"{BASE}/evento/{slug}" if slug else BASE
+
+        return {
+            "title":  str(title),
+            "date":   date,
+            "city":   city,
+            "state":  state,
+            "url":    link,
+            "image":  image_url,
+            "slug":   slug,
+        }
+    except Exception as exc:
+        print(f"[{SOURCE_NAME}] _parse_godream_index_item erro: {exc}")
+        return None
+
+
+def _debug_playwright_page(soup: BeautifulSoup) -> None:
+    title = soup.find("title")
+    print(f"[{SOURCE_NAME}] page title: {title.get_text(strip=True) if title else '(none)'}")
+    text = soup.get_text(" ", strip=True)[:500]
+    print(f"[{SOURCE_NAME}] texto inicial: {text}")
 
 
 # ---------------------------------------------------------------------------

@@ -8,6 +8,7 @@ from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, slugify, now_iso, today_iso,
+    validate_image_url,
 )
 
 BASE = "https://www.liverun.com.br"
@@ -98,7 +99,7 @@ def _parse_card(a, href: str) -> Corrida | None:
     img = a.find("img")
     imagem_url = None
     if img:
-        imagem_url = img.get("src") or img.get("data-src")
+        imagem_url = validate_image_url(img.get("src") or img.get("data-src"))
 
     now = now_iso()
     today = today_iso()

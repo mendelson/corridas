@@ -3,16 +3,21 @@
 // ---------------------------------------------------------------------------
 // Language detection — runs before anything else
 // ---------------------------------------------------------------------------
-const LANG = (() => {
-  if (window.location.pathname.startsWith('/en')) return 'en';
-  if (localStorage.getItem('lang') === 'pt') return 'pt';
-  const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || 'pt').toLowerCase();
-  if (!bl.startsWith('pt')) {
-    window.location.replace('/en');
-    return 'en';
-  }
-  return 'pt';
+const BROWSER_LANG = (() => {
+  const bl = (navigator.language || (navigator.languages && navigator.languages[0]) || '').toLowerCase();
+  if (bl.startsWith('pt')) return 'pt';
+  if (bl.startsWith('es')) return 'es';
+  if (bl.startsWith('de')) return 'de';
+  if (bl.startsWith('fr')) return 'fr';
+  return 'en';
 })();
+
+const LANG = (() => {
+  const path = window.location.pathname;
+  return ['pt','en','es','de','fr'].find(l => path.startsWith('/' + l)) || BROWSER_LANG;
+})();
+
+const LANG_URLS = { pt: '/pt', en: '/en', es: '/es', de: '/de', fr: '/fr' };
 
 // ---------------------------------------------------------------------------
 // i18n strings
@@ -21,8 +26,6 @@ const STRINGS = {
   pt: {
     siteTitle: 'Próxima Corrida',
     headerTitle: '🏃 Próxima Corrida',
-    langSwitch: 'EN',
-    langSwitchAriaLabel: 'Switch to English',
     searchPlaceholder: 'Buscar corrida...',
     searchAriaLabel: 'Buscar corrida',
     modeSelect: 'Selecionar',
@@ -42,6 +45,7 @@ const STRINGS = {
     allBrazil: 'Todo o Brasil',
     allSources: 'Todas as fontes',
     nSources: n => n === 1 ? `${n} fonte` : `${n} fontes`,
+    badgeNovo: 'novo',
     loading: 'Carregando...',
     loadError: 'Erro ao carregar dados.',
     clearFilters: 'Limpar filtros',
@@ -65,10 +69,6 @@ const STRINGS = {
     sourcesSection: 'Fontes',
     photosSection: 'Fotos',
     registerBtn: 'Inscrever-se →',
-    statusRealized: '🏁 Realizado',
-    statusOpen: '🟢 Inscrições abertas',
-    statusClosed: '🔴 Inscrições encerradas',
-    statusSoon: '⚪ Em breve',
     groupBrasil: 'Brasil',
     allCountry: country => `Todo ${country}`,
     periodOptions: [
@@ -84,8 +84,6 @@ const STRINGS = {
   en: {
     siteTitle: 'Next Race',
     headerTitle: '🏃 Next Race',
-    langSwitch: 'PT',
-    langSwitchAriaLabel: 'Mudar para Português',
     searchPlaceholder: 'Search race...',
     searchAriaLabel: 'Search race',
     modeSelect: 'Select',
@@ -105,6 +103,7 @@ const STRINGS = {
     allBrazil: 'All Brazil',
     allSources: 'All sources',
     nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    badgeNovo: 'new',
     loading: 'Loading...',
     loadError: 'Error loading data.',
     clearFilters: 'Clear filters',
@@ -128,10 +127,6 @@ const STRINGS = {
     sourcesSection: 'Sources',
     photosSection: 'Photos',
     registerBtn: 'Register →',
-    statusRealized: '🏁 Completed',
-    statusOpen: '🟢 Open registrations',
-    statusClosed: '🔴 Closed registrations',
-    statusSoon: '⚪ Coming soon',
     groupBrasil: 'Brazil',
     allCountry: country => `All ${country}`,
     periodOptions: [
@@ -143,6 +138,252 @@ const STRINGS = {
       { value: 'all',    label: 'All time' },
       { value: 'custom', label: 'Custom range' },
     ],
+    places: {
+      'Reino Unido': 'United Kingdom', 'EUA': 'USA', 'Estados Unidos': 'USA',
+      'Japão': 'Japan', 'Alemanha': 'Germany', 'França': 'France',
+      'Austrália': 'Australia', 'Países Baixos': 'Netherlands', 'Itália': 'Italy',
+      'Espanha': 'Spain', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Denmark', 'Suécia': 'Sweden', 'Noruega': 'Norway',
+      'Irlanda': 'Ireland', 'República Tcheca': 'Czech Republic',
+      'Grécia': 'Greece', 'Colômbia': 'Colombia', 'México': 'Mexico',
+      'África do Sul': 'South Africa', 'Quênia': 'Kenya', 'Etiópia': 'Ethiopia',
+      'Coreia do Sul': 'South Korea', 'Canadá': 'Canada', 'Nova Zelândia': 'New Zealand',
+      'Áustria': 'Austria', 'Suíça': 'Switzerland', 'Polônia': 'Poland',
+      'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokyo', 'Londres': 'London',
+      'Berlim': 'Berlin', 'Valência': 'Valencia',
+      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhagen',
+      'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athens',
+      'Milão': 'Milan', 'Veneza': 'Venice', 'Assunção': 'Asunción',
+      'Lisboa': 'Lisbon', 'Moscou': 'Moscow',
+    },
+  },
+  es: {
+    siteTitle: 'Próxima Carrera',
+    headerTitle: '🏃 Próxima Carrera',
+    searchPlaceholder: 'Buscar carrera...',
+    searchAriaLabel: 'Buscar carrera',
+    modeSelect: 'Seleccionar',
+    modeInterval: 'Intervalo',
+    distFrom: 'Desde',
+    distTo: 'Hasta',
+    distMinAriaLabel: 'Distancia mínima en km',
+    distMaxAriaLabel: 'Distancia máxima en km',
+    dateFromAriaLabel: 'Fecha inicial',
+    dateToAriaLabel: 'Fecha final',
+    periodoAriaLabel: 'Filtrar por período',
+    estadoAriaLabel: 'Filtrar por ubicación',
+    fonteFilterAriaLabel: 'Filtrar por fuente',
+    refreshAriaLabel: 'Actualizar',
+    clearFiltersAriaLabel: 'Limpiar filtros',
+    allLocations: 'Todos',
+    allBrazil: 'Todo Brasil',
+    allSources: 'Todas las fuentes',
+    nSources: n => n === 1 ? `${n} fuente` : `${n} fuentes`,
+    badgeNovo: 'nuevo',
+    loading: 'Cargando...',
+    loadError: 'Error al cargar datos.',
+    clearFilters: 'Limpiar filtros',
+    noRacesMsg: 'No se encontraron carreras con los filtros actuales.',
+    raceCount: n => n === 1 ? '1 carrera encontrada' : `${n} carreras encontradas`,
+    raceCountLabel: n => n === 1 ? '1 carrera' : `${n} carreras`,
+    dateTBD: 'Fecha por confirmar',
+    months: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
+    monthsFull: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    weekdays: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    dateFullFormat: (wd, d, m, y) => `${wd}, ${d} de ${m} de ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1} al ${d2} de ${m} de ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} de ${m1} al ${d2} de ${m2} de ${y}`,
+    pastSectionLabel: '🏁 Carreras en los últimos 15 días',
+    distancesHeader: 'Distancias',
+    dateColHeader: 'Fecha',
+    timeColHeader: 'Hora',
+    registrationPeriod: 'Período de inscripción',
+    regOpening: 'Apertura',
+    regClosing: 'Cierre',
+    sourcesSection: 'Fuentes',
+    photosSection: 'Fotos',
+    registerBtn: 'Inscribirse →',
+    groupBrasil: 'Brasil',
+    allCountry: country => `Todo ${country}`,
+    periodOptions: [
+      { value: 'past15', label: 'Desde hace 15 días' },
+      { value: 'today',  label: 'Desde hoy' },
+      { value: '30',     label: 'Próximos 30 días' },
+      { value: '90',     label: 'Próximos 3 meses' },
+      { value: '180',    label: 'Próximos 6 meses' },
+      { value: 'all',    label: 'Todo el período' },
+      { value: 'custom', label: 'Intervalo personalizado' },
+    ],
+    places: {
+      'Reino Unido': 'Reino Unido', 'EUA': 'EE.UU.', 'Estados Unidos': 'EE.UU.',
+      'Japão': 'Japón', 'Alemanha': 'Alemania', 'França': 'Francia',
+      'Austrália': 'Australia', 'Países Baixos': 'Países Bajos', 'Itália': 'Italia',
+      'Espanha': 'España', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Dinamarca', 'Suécia': 'Suecia', 'Noruega': 'Noruega',
+      'Irlanda': 'Irlanda', 'República Tcheca': 'República Checa',
+      'Grécia': 'Grecia', 'Colômbia': 'Colombia', 'México': 'México',
+      'África do Sul': 'Sudáfrica', 'Quênia': 'Kenia', 'Etiópia': 'Etiopía',
+      'Coreia do Sul': 'Corea del Sur', 'Canadá': 'Canadá', 'Nova Zelândia': 'Nueva Zelanda',
+      'Áustria': 'Austria', 'Suíça': 'Suiza', 'Polônia': 'Polonia',
+      'Edimburgo': 'Edimburgo', 'Tóquio': 'Tokio', 'Londres': 'Londres',
+      'Berlim': 'Berlín', 'Valência': 'Valencia', 'Dublin': 'Dublín',
+      'Nova York': 'Nueva York', 'Amsterdã': 'Ámsterdam', 'Copenhague': 'Copenhague',
+      'Estocolmo': 'Estocolmo', 'Praga': 'Praga', 'Atenas': 'Atenas',
+      'Milão': 'Milán', 'Veneza': 'Venecia', 'Assunção': 'Asunción',
+      'Lisboa': 'Lisboa', 'Moscou': 'Moscú',
+    },
+  },
+  de: {
+    siteTitle: 'Nächstes Rennen',
+    headerTitle: '🏃 Nächstes Rennen',
+    searchPlaceholder: 'Rennen suchen...',
+    searchAriaLabel: 'Rennen suchen',
+    modeSelect: 'Auswählen',
+    modeInterval: 'Bereich',
+    distFrom: 'Von',
+    distTo: 'Bis',
+    distMinAriaLabel: 'Mindestdistanz in km',
+    distMaxAriaLabel: 'Maximaldistanz in km',
+    dateFromAriaLabel: 'Startdatum',
+    dateToAriaLabel: 'Enddatum',
+    periodoAriaLabel: 'Nach Zeitraum filtern',
+    estadoAriaLabel: 'Nach Ort filtern',
+    fonteFilterAriaLabel: 'Nach Quelle filtern',
+    refreshAriaLabel: 'Aktualisieren',
+    clearFiltersAriaLabel: 'Filter löschen',
+    allLocations: 'Alle',
+    allBrazil: 'Ganz Brasilien',
+    allSources: 'Alle Quellen',
+    nSources: n => n === 1 ? `${n} Quelle` : `${n} Quellen`,
+    badgeNovo: 'neu',
+    loading: 'Laden...',
+    loadError: 'Fehler beim Laden der Daten.',
+    clearFilters: 'Filter löschen',
+    noRacesMsg: 'Keine Rennen mit den aktuellen Filtern gefunden.',
+    raceCount: n => n === 1 ? '1 Rennen gefunden' : `${n} Rennen gefunden`,
+    raceCountLabel: n => n === 1 ? '1 Rennen' : `${n} Rennen`,
+    dateTBD: 'Datum noch offen',
+    months: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+    monthsFull: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    weekdays: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+    dateFullFormat: (wd, d, m, y) => `${wd}, ${d}. ${m} ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1}.–${d2}. ${m} ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1}. ${m1} – ${d2}. ${m2} ${y}`,
+    pastSectionLabel: '🏁 Rennen der letzten 15 Tage',
+    distancesHeader: 'Distanzen',
+    dateColHeader: 'Datum',
+    timeColHeader: 'Uhrzeit',
+    registrationPeriod: 'Anmeldezeitraum',
+    regOpening: 'Öffnung',
+    regClosing: 'Schließung',
+    sourcesSection: 'Quellen',
+    photosSection: 'Fotos',
+    registerBtn: 'Anmelden →',
+    groupBrasil: 'Brasilien',
+    allCountry: country => `Ganz ${country}`,
+    periodOptions: [
+      { value: 'past15', label: 'Seit 15 Tagen' },
+      { value: 'today',  label: 'Ab heute' },
+      { value: '30',     label: 'Nächste 30 Tage' },
+      { value: '90',     label: 'Nächste 3 Monate' },
+      { value: '180',    label: 'Nächste 6 Monate' },
+      { value: 'all',    label: 'Gesamter Zeitraum' },
+      { value: 'custom', label: 'Benutzerdefinierter Zeitraum' },
+    ],
+    places: {
+      'Reino Unido': 'Vereinigtes Königreich', 'EUA': 'USA', 'Estados Unidos': 'USA',
+      'Japão': 'Japan', 'Alemanha': 'Deutschland', 'França': 'Frankreich',
+      'Austrália': 'Australien', 'Países Baixos': 'Niederlande', 'Itália': 'Italien',
+      'Espanha': 'Spanien', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Dänemark', 'Suécia': 'Schweden', 'Noruega': 'Norwegen',
+      'Irlanda': 'Irland', 'República Tcheca': 'Tschechien',
+      'Grécia': 'Griechenland', 'Colômbia': 'Kolumbien', 'México': 'Mexiko',
+      'África do Sul': 'Südafrika', 'Quênia': 'Kenia', 'Etiópia': 'Äthiopien',
+      'Coreia do Sul': 'Südkorea', 'Canadá': 'Kanada', 'Nova Zelândia': 'Neuseeland',
+      'Áustria': 'Österreich', 'Suíça': 'Schweiz', 'Polônia': 'Polen',
+      'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokio', 'Londres': 'London',
+      'Berlim': 'Berlin', 'Valência': 'Valencia',
+      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
+      'Estocolmo': 'Stockholm', 'Praga': 'Prag', 'Atenas': 'Athen',
+      'Milão': 'Mailand', 'Veneza': 'Venedig', 'Assunção': 'Asunción',
+      'Lisboa': 'Lissabon', 'Moscou': 'Moskau',
+    },
+  },
+  fr: {
+    siteTitle: 'Prochaine Course',
+    headerTitle: '🏃 Prochaine Course',
+    searchPlaceholder: 'Rechercher une course...',
+    searchAriaLabel: 'Rechercher une course',
+    modeSelect: 'Sélectionner',
+    modeInterval: 'Intervalle',
+    distFrom: 'De',
+    distTo: 'À',
+    distMinAriaLabel: 'Distance minimale en km',
+    distMaxAriaLabel: 'Distance maximale en km',
+    dateFromAriaLabel: 'Date de début',
+    dateToAriaLabel: 'Date de fin',
+    periodoAriaLabel: 'Filtrer par période',
+    estadoAriaLabel: 'Filtrer par lieu',
+    fonteFilterAriaLabel: 'Filtrer par source',
+    refreshAriaLabel: 'Actualiser',
+    clearFiltersAriaLabel: 'Effacer les filtres',
+    allLocations: 'Tous',
+    allBrazil: 'Tout le Brésil',
+    allSources: 'Toutes les sources',
+    nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    badgeNovo: 'nouveau',
+    loading: 'Chargement...',
+    loadError: 'Erreur lors du chargement des données.',
+    clearFilters: 'Effacer les filtres',
+    noRacesMsg: 'Aucune course trouvée avec les filtres actuels.',
+    raceCount: n => n === 1 ? '1 course trouvée' : `${n} courses trouvées`,
+    raceCountLabel: n => n === 1 ? '1 course' : `${n} courses`,
+    dateTBD: 'Date à confirmer',
+    months: ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'],
+    monthsFull: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    weekdays: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    dateFullFormat: (wd, d, m, y) => `${wd} ${d} ${m} ${y}`,
+    dateRangeSameMonth: (d1, d2, m, y) => `${d1}–${d2} ${m} ${y}`,
+    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} ${m1} – ${d2} ${m2} ${y}`,
+    pastSectionLabel: '🏁 Courses des 15 derniers jours',
+    distancesHeader: 'Distances',
+    dateColHeader: 'Date',
+    timeColHeader: 'Heure',
+    registrationPeriod: "Période d'inscription",
+    regOpening: 'Ouverture',
+    regClosing: 'Clôture',
+    sourcesSection: 'Sources',
+    photosSection: 'Photos',
+    registerBtn: "S'inscrire →",
+    groupBrasil: 'Brésil',
+    allCountry: country => `Tout ${country}`,
+    periodOptions: [
+      { value: 'past15', label: 'Depuis 15 jours' },
+      { value: 'today',  label: "À partir d'aujourd'hui" },
+      { value: '30',     label: '30 prochains jours' },
+      { value: '90',     label: '3 prochains mois' },
+      { value: '180',    label: '6 prochains mois' },
+      { value: 'all',    label: 'Toute la période' },
+      { value: 'custom', label: 'Période personnalisée' },
+    ],
+    places: {
+      'Reino Unido': 'Royaume-Uni', 'EUA': 'États-Unis', 'Estados Unidos': 'États-Unis',
+      'Japão': 'Japon', 'Alemanha': 'Allemagne', 'França': 'France',
+      'Austrália': 'Australie', 'Países Baixos': 'Pays-Bas', 'Itália': 'Italie',
+      'Espanha': 'Espagne', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
+      'Dinamarca': 'Danemark', 'Suécia': 'Suède', 'Noruega': 'Norvège',
+      'Irlanda': 'Irlande', 'República Tcheca': 'République Tchèque',
+      'Grécia': 'Grèce', 'Colômbia': 'Colombie', 'México': 'Mexique',
+      'África do Sul': 'Afrique du Sud', 'Quênia': 'Kenya', 'Etiópia': 'Éthiopie',
+      'Coreia do Sul': 'Corée du Sud', 'Canadá': 'Canada', 'Nova Zelândia': 'Nouvelle-Zélande',
+      'Áustria': 'Autriche', 'Suíça': 'Suisse', 'Polônia': 'Pologne',
+      'Edimburgo': 'Édimbourg', 'Tóquio': 'Tokyo', 'Londres': 'Londres',
+      'Berlim': 'Berlin', 'Valência': 'Valence',
+      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhague',
+      'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athènes',
+      'Milão': 'Milan', 'Veneza': 'Venise', 'Assunção': 'Asunción',
+      'Lisboa': 'Lisbonne', 'Moscou': 'Moscou',
+    },
   },
 };
 
@@ -158,6 +399,8 @@ let filteredCorridas = [];
 let _geoDetected = null;
 // Filter value actually applied after fallback chain (may differ from _geoDetected)
 let _geoApplied = null;
+// True when user manually picked a location (suppresses geo re-apply on refresh)
+let _userChoseLocation = false;
 
 const state = {
   distMode: 'select',
@@ -183,7 +426,7 @@ const resultCount       = $('resultCount');
 const btnClear          = $('btnClear');
 const btnClearEmpty     = $('btnClearEmpty');
 const btnRefresh        = $('btnRefresh');
-const btnLang           = $('btnLang');
+const langSelect        = $('langSelect');
 const estadoFilterWrapper  = $('estadoFilterWrapper');
 const estadoFilterBtn      = $('estadoFilterBtn');
 const estadoFilterDropdown = $('estadoFilterDropdown');
@@ -213,10 +456,7 @@ function initI18n() {
   document.title = T.siteTitle;
   document.querySelector('.app-title').textContent = T.headerTitle;
 
-  if (btnLang) {
-    btnLang.textContent = T.langSwitch;
-    btnLang.setAttribute('aria-label', T.langSwitchAriaLabel);
-  }
+  if (langSelect) langSelect.value = LANG;
   if (btnRefresh)  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
   if (searchInput) {
     searchInput.placeholder = T.searchPlaceholder;
@@ -266,14 +506,9 @@ function initI18n() {
 // ---------------------------------------------------------------------------
 // Language switch
 // ---------------------------------------------------------------------------
-if (btnLang) {
-  btnLang.addEventListener('click', () => {
-    if (LANG === 'pt') {
-      window.location.href = '/en';
-    } else {
-      localStorage.setItem('lang', 'pt');
-      window.location.href = '/';
-    }
+if (langSelect) {
+  langSelect.addEventListener('change', () => {
+    window.location.href = LANG_URLS[langSelect.value] || '/pt';
   });
 }
 
@@ -312,16 +547,23 @@ function loadFilters() {
 // ---------------------------------------------------------------------------
 // Data fetch
 // ---------------------------------------------------------------------------
-async function fetchData() {
+async function fetchData(triggeredByUser = false) {
   btnRefresh.classList.add('spinning');
   try {
     const resp = await fetch('/corridas.json?t=' + Date.now());
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
     allCorridas = json.corridas || [];
-    populateEstadoFilter();
+    populateEstadoFilter({ skipGeo: true });
     populateFontesFilter();
-    applyFilters();
+    if (triggeredByUser && !_userChoseLocation) {
+      state.estado = 'todos';
+      _geoApplied  = null;
+      await detectUserLocation();
+      if (state.estado === 'todos') applyFilters();
+    } else {
+      applyFilters();
+    }
   } catch (e) {
     resultCount.textContent = T.loadError;
     console.error(e);
@@ -333,6 +575,20 @@ async function fetchData() {
 // ---------------------------------------------------------------------------
 // Location / geo helpers
 // ---------------------------------------------------------------------------
+
+// Translate a Portuguese place string (city, country, or "City, Country")
+// to the current language. PT is already the base, other langs use T.places.
+function translatePlace(str) {
+  if (!str || LANG === 'pt' || !T.places) return str || '';
+  // Sort entries longest-first so "Estados Unidos" matches before "Estados"
+  const entries = Object.entries(T.places).sort((a, b) => b[0].length - a[0].length);
+  let out = str;
+  for (const [pt, local] of entries) {
+    if (out.includes(pt)) out = out.split(pt).join(local);
+  }
+  return out;
+}
+
 const _ESTADO_LABELS = {
   AC: 'Acre · AC',           AL: 'Alagoas · AL',        AM: 'Amazonas · AM',
   AP: 'Amapá · AP',          BA: 'Bahia · BA',           CE: 'Ceará · CE',
@@ -377,7 +633,7 @@ const _ISO2_TO_DATA_COUNTRY = {
   DE: 'Alemanha',
   FR: 'França',
   GB: 'Reino Unido',
-  US: 'Eua',
+  US: 'EUA',
   JP: 'Japão',
   AU: 'Austrália',
   ES: 'Espanha',
@@ -541,13 +797,18 @@ function _updateEstadoLabel() {
     return;
   }
   const opt = estadoFilterDropdown.querySelector(`.estado-option[data-value="${CSS.escape(v)}"]`);
-  estadoFilterLabel.textContent = opt ? opt.textContent : v;
+  estadoFilterLabel.textContent = opt ? opt.textContent : translatePlace(v.replace(/^INT:/, '').replace(/:/g, ', '));
   estadoFilterBtn.classList.add('active');
 }
 
 function _closeEstadoDropdown() {
   estadoFilterDropdown.classList.add('hidden');
   estadoFilterBtn.setAttribute('aria-expanded', 'false');
+}
+
+function _closeFonteDropdown() {
+  fonteFilterDropdown.classList.add('hidden');
+  fonteFilterBtn.setAttribute('aria-expanded', 'false');
 }
 
 function _makeAccordionGroup(label, initiallyOpen) {
@@ -607,6 +868,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     el.dataset.value = value;
     el.textContent = text;
     el.addEventListener('click', () => {
+      _userChoseLocation = (value !== 'todos');
       state.estado = value;
       saveFilters();
       _closeEstadoDropdown();
@@ -652,15 +914,16 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
   }
 
   for (const country of countryCity.keys()) {
-    allGroups.push({ label: country, build: () => {
+    const countryLabel = translatePlace(country);
+    allGroups.push({ label: countryLabel, build: () => {
       const cities = [...countryCity.get(country)].sort();
       const isActive = state.estado === 'INT:' + country ||
                        cities.some(city => state.estado === 'INT:' + country + ':' + city);
-      const { wrapper, body } = _makeAccordionGroup(country, isActive);
-      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
+      const { wrapper, body } = _makeAccordionGroup(countryLabel, isActive);
+      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(countryLabel)));
       for (const city of cities) {
         const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
-        body.appendChild(makeOption(value, city));
+        body.appendChild(makeOption(value, translatePlace(city)));
       }
       return wrapper;
     }});
@@ -888,8 +1151,12 @@ function renderCards() {
     if (!byMonth.has(key)) byMonth.set(key, []);
     byMonth.get(key).push(corrida);
   }
+  let firstFutureMonthFound = false;
   for (const [monthKey, corridas] of byMonth) {
-    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length);
+    const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
+    const expand = hasFuture && !firstFutureMonthFound;
+    if (expand) firstFutureMonthFound = true;
+    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand);
     for (const corrida of corridas) {
       cardsContainer.appendChild(buildCard(corrida));
     }
@@ -938,7 +1205,7 @@ function buildPastSection(corridas) {
   return section;
 }
 
-function buildMonthSection(monthKey, count) {
+function buildMonthSection(monthKey, count, expanded = false) {
   const [year, month] = monthKey.split('-');
   const label      = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
   const countLabel = T.raceCountLabel(count);
@@ -948,15 +1215,15 @@ function buildMonthSection(monthKey, count) {
 
   const btn = document.createElement('button');
   btn.className = 'month-separator';
-  btn.setAttribute('aria-expanded', 'true');
+  btn.setAttribute('aria-expanded', String(expanded));
   btn.setAttribute('aria-label', `${label}, ${countLabel}`);
   btn.innerHTML = `
     <span class="month-separator-label">${label}</span>
     <span class="month-count">${countLabel}</span>
-    <span class="month-chevron" aria-hidden="true">▾</span>`;
+    <span class="month-chevron" aria-hidden="true">${expanded ? '▾' : '▸'}</span>`;
 
   const cardsContainer = document.createElement('div');
-  cardsContainer.className = 'month-cards';
+  cardsContainer.className = expanded ? 'month-cards' : 'month-cards month-cards--collapsed';
 
   btn.addEventListener('click', () => {
     const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
@@ -1000,10 +1267,15 @@ function buildCard(c) {
     distContainer.appendChild(span);
   }
 
-  const badge        = card.querySelector('.badge-status');
-  const { label, cls } = statusBadge(c);
-  badge.textContent = label;
-  badge.className   = 'badge-status ' + cls;
+
+  const novoBadge = card.querySelector('.badge-novo');
+  if (novoBadge && c.first_seen_at) {
+    const age = Date.now() - new Date(c.first_seen_at).getTime();
+    if (age < 24 * 60 * 60 * 1000) {
+      novoBadge.textContent = T.badgeNovo;
+      novoBadge.classList.remove('hidden');
+    }
+  }
 
   const fontesBadge = card.querySelector('.badge-fontes');
   if (c.fontes && c.fontes.length > 1) {
@@ -1026,7 +1298,26 @@ function showPlaceholder(el, estado) {
   el.textContent = '🏃';
 }
 
+function _collapseAllCards(anchor) {
+  const others = document.querySelectorAll('.card-expanded:not(.hidden)');
+  if (!others.length) return;
+  const anchorTop = anchor.getBoundingClientRect().top;
+  others.forEach(exp => {
+    exp.classList.add('hidden');
+    exp.setAttribute('aria-hidden', 'true');
+    exp.closest('.card').querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
+  });
+  const shift = anchor.getBoundingClientRect().top - anchorTop;
+  if (shift !== 0) window.scrollBy({ top: shift, behavior: 'instant' });
+}
+
 function toggleExpand(collapsed, expanded) {
+  const opening = expanded.classList.contains('hidden');
+  if (opening) {
+    _closeEstadoDropdown();
+    _closeFonteDropdown();
+    _collapseAllCards(collapsed.closest('.card'));
+  }
   const open = expanded.classList.toggle('hidden');
   collapsed.setAttribute('aria-expanded', String(!open));
   expanded.setAttribute('aria-hidden', String(open));
@@ -1043,9 +1334,10 @@ function buildExpanded(card, c) {
   expTitle.classList.remove('hidden');
 
   if (c.distancias && c.distancias.length > 0) {
-    const sorted     = sortDistancias(c.distancias);
-    const hasDate    = sorted.some(d => d.data);
-    const hasHorario = sorted.some(d => d.horario);
+    const sorted      = sortDistancias(c.distancias);
+    const hasDate     = sorted.some(d => d.data);
+    const uniqueTimes = new Set(sorted.map(d => d.horario || null).filter(Boolean));
+    const hasHorario  = uniqueTimes.size > 1;
 
     const table = document.createElement('table');
     table.className = 'dist-table';
@@ -1151,7 +1443,7 @@ function formatDateShort(iso) {
 }
 
 function formatLocation(cidade, estado) {
-  if (estado === 'INT' || estado === '??' || !estado) return cidade || '';
+  if (estado === 'INT' || estado === '??' || !estado) return translatePlace(cidade || '');
   return [cidade, estado].filter(Boolean).join(' · ');
 }
 
@@ -1176,15 +1468,6 @@ function formatKm(km) {
   return km + 'K';
 }
 
-function statusBadge(c) {
-  const today = todayStr();
-  if (c.data_evento && c.data_evento < today) return { label: T.statusRealized, cls: 'badge-realized' };
-  if (c.inscricoes_abertas === true)  return { label: T.statusOpen,   cls: 'badge-open' };
-  if (c.inscricoes_abertas === false) return { label: T.statusClosed, cls: 'badge-closed' };
-  const hasInscLink = (c.fontes || []).some(f => (f.links_inscricao || []).length > 0);
-  if (hasInscLink) return { label: T.statusOpen, cls: 'badge-open' };
-  return { label: T.statusSoon, cls: 'badge-soon' };
-}
 
 function stateColor(estado) {
   const map = {
@@ -1227,6 +1510,7 @@ function updateClearButton() {
 }
 
 function clearFilters() {
+  _userChoseLocation = false;
   state.searchQuery = '';
   state.activePills.clear();
   state.distMin  = null;
@@ -1360,6 +1644,10 @@ dateTo.addEventListener('change', () => {
 estadoFilterBtn.addEventListener('click', e => {
   e.stopPropagation();
   const isOpen = !estadoFilterDropdown.classList.contains('hidden');
+  if (!isOpen) {
+    _closeFonteDropdown();
+    _collapseAllCards(estadoFilterBtn);
+  }
   estadoFilterDropdown.classList.toggle('hidden', isOpen);
   estadoFilterBtn.setAttribute('aria-expanded', String(!isOpen));
 });
@@ -1380,27 +1668,26 @@ searchInput.addEventListener('input', () => {
 });
 
 [btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));
-btnRefresh.addEventListener('click', fetchData);
+btnRefresh.addEventListener('click', () => {
+  window.location.replace(LANG_URLS[BROWSER_LANG] || '/pt');
+});
 
 fonteFilterBtn.addEventListener('click', e => {
   e.stopPropagation();
   const isOpen = !fonteFilterDropdown.classList.contains('hidden');
+  if (!isOpen) _closeEstadoDropdown();
   fonteFilterDropdown.classList.toggle('hidden', isOpen);
   fonteFilterBtn.setAttribute('aria-expanded', String(!isOpen));
 });
 
 document.addEventListener('click', e => {
-  if (!fonteFilterWrapper.contains(e.target)) {
-    fonteFilterDropdown.classList.add('hidden');
-    fonteFilterBtn.setAttribute('aria-expanded', 'false');
-  }
+  if (!fonteFilterWrapper.contains(e.target)) _closeFonteDropdown();
 });
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (!fonteFilterDropdown.classList.contains('hidden')) {
-      fonteFilterDropdown.classList.add('hidden');
-      fonteFilterBtn.setAttribute('aria-expanded', 'false');
+      _closeFonteDropdown();
       fonteFilterBtn.focus();
     }
     if (!estadoFilterDropdown.classList.contains('hidden')) {

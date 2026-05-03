@@ -2,8 +2,9 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Stockholm Marathon"
-URL         = "https://www.stockholmmarathon.se/en/"
+URL         = "https://www.stockholmmarathon.se/eng/"
 KNOWN_DATE  = "2026-06-06"
+KNOWN_DATE_NEXT = "2027-05-30"   # announced
 HORARIO     = "12:00"
 LOCALIZACAO = "Estocolmo, Suécia"
 
@@ -14,7 +15,8 @@ _CLOSED = ["anmälan stängd", "sold out", "registration closed"]
 def scrape():
     return scrape_major(
         source_name=SOURCE_NAME, titulo="Asics Stockholm Marathon",
-        url=URL, known_date=KNOWN_DATE, horario=HORARIO,
+        url=URL, known_date=KNOWN_DATE,
+        known_dates=[KNOWN_DATE, KNOWN_DATE_NEXT], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
     )

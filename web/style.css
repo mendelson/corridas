@@ -110,23 +110,32 @@ input { font-family: inherit; }
 }
 .btn-apps:hover { color: var(--color-accent); border-color: var(--color-accent); }
 
-.btn-lang {
-  min-width: var(--touch);
+.lang-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   min-height: var(--touch);
-  padding: 0 10px;
-  background: none;
+  padding: 0 8px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text-secondary);
   font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: color 0.2s, border-color 0.2s;
 }
-.btn-lang:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.lang-wrap:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.lang-wrap .lang-icon { font-size: 0.9rem; line-height: 1; pointer-events: none; }
+.lang-select {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
 
 /* =====================================================================
    Filters Bar
@@ -662,19 +671,18 @@ input { font-family: inherit; }
   color: var(--color-text-secondary);
 }
 
-/* Status badges */
-.badge-status {
-  font-size: 0.72rem;
-  font-weight: 600;
-  white-space: nowrap;
-  padding: 3px 8px;
+
+.badge-novo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--color-accent);
   border-radius: 10px;
-  flex-shrink: 0;
+  padding: 2px 7px;
+  white-space: nowrap;
 }
-.badge-open { background: rgba(76,175,80,.15); color: #4caf50; }
-.badge-closed { background: rgba(239,83,80,.15); color: #ef5350; }
-.badge-realized { background: rgba(158,158,158,.12); color: #9e9e9e; }
-.badge-soon { background: rgba(158,158,158,.1); color: #9e9e9e; }
 
 .badge-fontes {
   font-size: 0.72rem;

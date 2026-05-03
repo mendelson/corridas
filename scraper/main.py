@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .merger import are_duplicates, merge_rodada
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
-from .utils import now_iso, today_iso, normalize_cidade
+from .utils import now_iso, today_iso, normalize_cidade, validate_image_url
 from .http_client import get as http_get
 
 # ---------------------------------------------------------------------------
@@ -39,6 +39,8 @@ from .sources import (
     runner_brasil,
     brasil_corrida,
     circuito_das_estacoes,
+    godream,
+    portal_das_corridas,
     volta_do_lago,
     world_marathons,
     lets_do_this,
@@ -60,6 +62,12 @@ from .sources.majors import (
     athens,
     valencia,
     paris,
+    edinburgh,
+    great_north_run,
+    cardiff_half,
+    manchester,
+    manchester_half,
+    brighton,
 )
 
 SOURCES = [
@@ -85,6 +93,9 @@ SOURCES = [
     sesc_df,
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
+    # Brazilian running event platforms
+    godream,
+    portal_das_corridas,
     # Single major events (BR)
     maratona_rio,
     maratona_porto_alegre,
@@ -108,6 +119,13 @@ SOURCES = [
     athens,
     valencia,
     paris,
+    # UK Events
+    edinburgh,
+    great_north_run,
+    cardiff_half,
+    manchester,
+    manchester_half,
+    brighton,
     # Single events (DF)
     volta_do_lago,
     # European calendar
@@ -148,7 +166,7 @@ def _dict_to_corrida(d: dict) -> Corrida:
         cidade=d.get("cidade", ""),
         estado=d.get("estado", "??"),
         distancias=distancias,
-        imagem_url=d.get("imagem_url"),
+        imagem_url=validate_image_url(d.get("imagem_url")),
         inscricoes_abertas=d.get("inscricoes_abertas"),
         periodo_inscricao=periodo,
         fontes=fontes,
@@ -320,7 +338,7 @@ def _og_image_from_url(url: str) -> str | None:
         if tag:
             content = tag.get("content", "")
             if content and not _is_generic_image(content):
-                return content
+                return validate_image_url(content, source_domain=url)
     except Exception:
         pass
     return None
@@ -345,7 +363,7 @@ def _check_and_refresh_links(existing: Corrida) -> bool:
                 if tag:
                     content = tag.get("content", "")
                     if content and not _is_generic_image(content):
-                        existing.imagem_url = content
+                        existing.imagem_url = validate_image_url(content, source_domain=link)
             return True
         except Exception:
             pass
@@ -555,6 +573,32 @@ def run_all_scrapers() -> list[Corrida]:
     return all_corridas
 
 
+def _sanitize_images(corridas: list[Corrida]) -> None:
+    """Validate imagem_url for all events.
+
+    For international events (estado='INT'): image must come from the same
+    registered domain as the event source OR a known trusted CDN.
+    For Brazilian events: only reject images with suspicious host keywords.
+    """
+    cleared = 0
+    for c in corridas:
+        if not c.imagem_url:
+            continue
+        if c.estado == 'INT':
+            source_domains = [f.link_evento for f in c.fontes if f.link_evento]
+            valid = any(validate_image_url(c.imagem_url, source_domain=d) for d in source_domains) \
+                    if source_domains else bool(validate_image_url(c.imagem_url))
+        else:
+            # BR events: only check for suspicious keywords, CDNs/image hosts are trusted
+            valid = bool(validate_image_url(c.imagem_url))
+        if not valid:
+            print(f"[main] removendo imagem inválida de '{c.titulo}': {c.imagem_url[:60]}")
+            c.imagem_url = None
+            cleared += 1
+    if cleared:
+        print(f"[main] {cleared} imagem(ns) inválida(s) removida(s)")
+
+
 def main() -> None:
     print("[main] iniciando scraping...")
     estado_anterior = load_existing()
@@ -581,8 +625,9 @@ def main() -> None:
 
     _demote_directory_links(final)
     _normalize_all_locations(final)
-    _find_all_photos(final)
+    # _find_all_photos(final)
     _enrich_images(final)
+    _sanitize_images(final)
     save(final)
 
 

@@ -7,7 +7,8 @@ from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_date, normalize_time, normalize_titulo, slugify,
-    infer_estado, now_iso, today_iso
+    infer_estado, now_iso, today_iso,
+    validate_image_url,
 )
 
 URL = "https://brasilquecorre.com/distritofederal"
@@ -16,7 +17,7 @@ SOURCE_NAME = "Brasil que Corre"
 
 def scrape() -> list[Corrida]:
     try:
-        resp = get(URL)
+        resp = get(URL, source=SOURCE_NAME)
         resp.raise_for_status()
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
@@ -73,6 +74,7 @@ def _parse_event(el) -> Corrida | None:
     imagem_url = img.get("src") or img.get("data-src") if img else None
     if imagem_url and imagem_url.startswith("/"):
         imagem_url = "https://brasilquecorre.com" + imagem_url
+    imagem_url = validate_image_url(imagem_url)
 
     link_tag = el.find("a", href=True)
     link = link_tag["href"] if link_tag else URL

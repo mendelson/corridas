@@ -443,8 +443,7 @@ _DATE_PATTERNS = [
 ]
 
 
-def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
-    """Scan BeautifulSoup tree for any recognisable date, return ISO 8601 or None."""
+def _collect_date_candidates(soup) -> list[str]:
     candidates: list[str] = []
     for tag in soup.find_all(True, limit=300):
         for text in [tag.get_text(' ', strip=True), tag.get('content', ''), tag.get('datetime', '')]:
@@ -459,17 +458,86 @@ def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
                             candidates.append(parsed.strftime('%Y-%m-%d'))
                     except Exception:
                         pass
+    return candidates
 
+
+def extract_date_from_soup(soup, year_hint: int | None = None) -> str | None:
+    """Return the single best date from a page (earliest future, or latest past)."""
+    candidates = _collect_date_candidates(soup)
     if not candidates:
         return None
-
-    # Prefer dates matching year_hint, otherwise pick the earliest future date
     today = date.today().isoformat()
     if year_hint:
         year_str = str(year_hint)
         same_year = [d for d in candidates if d.startswith(year_str)]
         if same_year:
             return sorted(same_year)[0]
-
     future = [d for d in candidates if d >= today]
     return sorted(future)[0] if future else sorted(candidates)[-1]
+
+
+def extract_all_future_dates(soup, today: str | None = None) -> list[str]:
+    """Return all unique future dates found on a page, sorted ascending."""
+    if today is None:
+        today = date.today().isoformat()
+    candidates = _collect_date_candidates(soup)
+    return sorted(set(d for d in candidates if d >= today))
+
+
+# ---------------------------------------------------------------------------
+# Image URL validation
+# ---------------------------------------------------------------------------
+import re as _re
+from urllib.parse import urlparse as _urlparse
+
+_SUSPICIOUS_HOST = _re.compile(
+    r"casino|silver|gold|crypto|bet|poker|loan|forex|pharma|"
+    r"adult|xxx|porn|drug|pill|slot|wager|clickad|doubleclick|"
+    r"adserv|tracker|analytics",
+    _re.IGNORECASE,
+)
+
+# CDNs / hosting platforms that legitimately serve images for any event
+_TRUSTED_CDN = frozenset({
+    "cloudfront.net", "amazonaws.com", "bubble.io", "wixstatic.com",
+    "imgix.net", "fastly.net", "akamaized.net", "cloudinary.com",
+    "staticflickr.com", "cdn.jsdelivr.net",
+    # Verified race organization domains that serve images for multiple sites
+    "londonmarathonevents.co.uk",
+})
+
+
+def _reg_domain(host: str) -> str:
+    """Registered domain, handling ccSLDs like .co.uk and .com.br."""
+    parts = host.lstrip("www.").split(".")
+    if len(parts) >= 3 and parts[-2] in ("co", "com", "org", "net", "gov", "edu"):
+        return ".".join(parts[-3:])
+    return ".".join(parts[-2:]) if len(parts) >= 2 else host
+
+
+def validate_image_url(url: str | None, source_domain: str | None = None) -> str | None:
+    """Return url if it passes safety checks, else None.
+
+    Always rejects suspicious host keywords.
+    With source_domain: also rejects images from unrelated domains,
+    unless the image host is a known trusted CDN.
+    """
+    if not url or not url.startswith("http"):
+        return None
+    try:
+        host = _urlparse(url).hostname or ""
+    except Exception:
+        return None
+    if not host:
+        return None
+    if _SUSPICIOUS_HOST.search(host):
+        return None
+    if source_domain:
+        img_base = _reg_domain(host)
+        # Trusted CDNs are always allowed regardless of source
+        if img_base in _TRUSTED_CDN or any(host.endswith("." + cdn) for cdn in _TRUSTED_CDN):
+            return url
+        src_host = _urlparse(source_domain).hostname or source_domain
+        if _reg_domain(src_host) != img_base:
+            return None
+    return url

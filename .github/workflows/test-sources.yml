@@ -1,0 +1,228 @@
+name: Test Sources
+
+# Triggered automatically when any source file changes, or manually.
+# Each source runs as an independent job — visible as separate checks in GitHub.
+# After all jobs finish (pass or fail), a final job updates the README with
+# per-source timestamps and status.
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scraper/sources/**'
+      - 'scraper/models.py'
+      - 'scraper/utils.py'
+      - 'scraper/http_client.py'
+      - 'scraper/playwright_client.py'
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Fonte a testar ("all" testa todas)'
+        required: false
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - godream
+          - ativo
+          - bora_correr
+          - brasil_corrida
+          - brasil_que_corre
+          - central_da_corrida
+          - circuito_das_estacoes
+          - correr_brasilia
+          - corridas_br
+          - corridas_brasil
+          - iguana_sports
+          - lets_do_this
+          - liverun
+          - maratona_porto_alegre
+          - maratona_rio
+          - minhas_inscricoes
+          - mks_esportes
+          - portal_das_corridas
+          - runner_brasil
+          - sao_silvestre
+          - sesc_df
+          - sp_city_marathon
+          - tf_sports
+          - ticket_sports
+          - volta_do_lago
+          - world_marathons
+          - yescom
+          - majors/amsterdam
+          - majors/athens
+          - majors/berlin
+          - majors/boston
+          - majors/brighton
+          - majors/cardiff_half
+          - majors/chicago
+          - majors/copenhagen
+          - majors/dublin
+          - majors/edinburgh
+          - majors/great_north_run
+          - majors/london
+          - majors/manchester
+          - majors/manchester_half
+          - majors/nyc
+          - majors/paris
+          - majors/prague
+          - majors/stockholm
+          - majors/sydney
+          - majors/tokyo
+          - majors/valencia
+          - majors/venice
+
+jobs:
+  # ── Step 1: decide which sources to test ────────────────────────────────────
+  prepare:
+    name: Prepare matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      empty:  ${{ steps.build.outputs.empty }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Build source list
+        id: build
+        run: |
+          ALL_SOURCES=$(
+            find scraper/sources -name "*.py" \
+              ! -name "__init__*" \
+              ! -name "_base*" \
+              ! -name "test_*" \
+            | sed 's|scraper/sources/||; s|\.py$||' \
+            | sort
+          )
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            INPUT="${{ github.event.inputs.source }}"
+            if [ -z "$INPUT" ] || [ "$INPUT" = "all" ]; then
+              SOURCES="$ALL_SOURCES"
+            else
+              SOURCES="$INPUT"
+            fi
+          else
+            # Push: only test changed source files
+            CHANGED=$(git diff --name-only HEAD~1 HEAD \
+              | grep '^scraper/sources/.*\.py$' \
+              | grep -v '__init__\|_base\|test_' \
+              | sed 's|scraper/sources/||; s|\.py$||')
+
+            # If shared infra changed, test everything
+            INFRA=$(git diff --name-only HEAD~1 HEAD \
+              -- 'scraper/models.py' 'scraper/utils.py' \
+              'scraper/http_client.py' 'scraper/playwright_client.py')
+
+            if [ -n "$INFRA" ]; then
+              echo "Shared infra changed — testing all sources"
+              SOURCES="$ALL_SOURCES"
+            else
+              SOURCES="$CHANGED"
+            fi
+          fi
+
+          if [ -z "$SOURCES" ]; then
+            echo "empty=true"  >> $GITHUB_OUTPUT
+            echo "matrix={\"source\":[]}" >> $GITHUB_OUTPUT
+          else
+            JSON=$(printf '%s\n' "$SOURCES" | jq -Rsc 'split("\n") | map(select(length > 0))')
+            echo "empty=false" >> $GITHUB_OUTPUT
+            printf 'matrix={"source":%s}\n' "$JSON" >> $GITHUB_OUTPUT
+            echo "Sources to test: $JSON"
+          fi
+
+  # ── Step 2: test each source as an independent job ──────────────────────────
+  test:
+    name: ${{ matrix.source }}
+    needs: prepare
+    if: needs.prepare.outputs.empty == 'false'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    # Always complete — never cancel sibling jobs on failure
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
+
+      - name: Test ${{ matrix.source }}
+        id: run_test
+        continue-on-error: true
+        env:
+          SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
+        run: python -m scraper.test_source "${{ matrix.source }}"
+
+      - name: Save result
+        id: save
+        if: always()
+        run: |
+          SOURCE="${{ matrix.source }}"
+          SLUG=$(echo "$SOURCE" | tr '/' '-')
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          mkdir -p test-results
+          STATUS=$([ "${{ steps.run_test.outcome }}" = "success" ] && echo "ok" || echo "fail")
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          printf '{"source":"%s","status":"%s","tested_at":"%s"}\n' \
+            "$SOURCE" "$STATUS" "$TIMESTAMP" > "test-results/${SLUG}.json"
+          echo "Result: $SOURCE → $STATUS"
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-result-${{ steps.save.outputs.slug }}
+          path: test-results/
+          retention-days: 7
+
+  # ── Step 3: update README with per-source status ─────────────────────────────
+  update-readme:
+    name: Update README status
+    needs: [prepare, test]
+    if: always() && needs.prepare.outputs.empty == 'false'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-result-*
+          merge-multiple: true
+          path: test-results/
+
+      - name: Update README
+        run: python scripts/update_source_status.py test-results/
+
+      - name: Commit README update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md data/source-status.json
+          git diff --cached --quiet || git commit -m "ci: update source status in README [skip ci]"
+          git pull --rebase origin main
+          git push

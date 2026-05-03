@@ -1,11 +1,12 @@
 """Shared helpers for World Marathon Majors scrapers."""
 from __future__ import annotations
 import re
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo
-from ...utils import slugify, now_iso, today_iso, extract_date_from_soup
+from ...utils import slugify, now_iso, today_iso, extract_date_from_soup, extract_all_future_dates
 
 # Skip logos, icons, sponsors, and thumbnails when hunting for a race photo
 _SKIP_IMG = re.compile(
@@ -14,6 +15,37 @@ _SKIP_IMG = re.compile(
     re.IGNORECASE,
 )
 
+_SUSPICIOUS_HOST = re.compile(
+    r"casino|silver|gold|crypto|bet|poker|loan|forex|pharma|"
+    r"adult|xxx|porn|drug|pill|slot|wager|clickad|doubleclick|"
+    r"adserv|tracker|analytics",
+    re.IGNORECASE,
+)
+
+
+def _same_domain(img_url: str, page_url: str) -> bool:
+    try:
+        img_host  = urlparse(img_url).hostname or ''
+        page_host = urlparse(page_url).hostname or ''
+        if _SUSPICIOUS_HOST.search(img_host):
+            return False
+        def base(h: str) -> str:
+            parts = h.lstrip('www.').split('.')
+            return '.'.join(parts[-2:]) if len(parts) >= 2 else h
+        return base(img_host) == base(page_host)
+    except Exception:
+        return False
+
+
+def _resolve_dates(known_dates: list[str], today: str) -> list[str]:
+    """Return future known dates; if all are past, project the most recent one +1 year."""
+    future = sorted(d for d in known_dates if d >= today)
+    if future:
+        return future
+    last = sorted(known_dates)[-1]
+    y, m, d = last.split('-')
+    return [f"{int(y) + 1}-{m}-{d}"]
+
 
 def scrape_major(
     *,
@@ -21,6 +53,7 @@ def scrape_major(
     titulo: str,
     url: str,
     known_date: str,
+    known_dates: list[str] | None = None,
     horario: str,
     localizacao: str,
     cidade: str,
@@ -28,40 +61,43 @@ def scrape_major(
     closed_kw: list[str],
     ssl_verify: bool = True,
     known_image: str | None = None,
+    distances_km: list[float] | None = None,
 ) -> list[Corrida]:
     soup = None
     try:
-        resp = get(url, verify=ssl_verify)
+        resp = get(url, source=source_name, verify=ssl_verify)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
     except Exception as e:
-        # Some sites (e.g. tcssydneymarathon.com.au) block automated access
-        # at the SSL layer; fallback to known_date/known_image below.
         if ssl_verify:
             print(f"[{source_name}] erro ao buscar página: {e}")
 
     today = today_iso()
-    year = known_date[:4]
+    all_known = sorted(set(known_dates or []) | {known_date})
 
-    data = None
     imagem_url = None
     inscricoes_abertas = None
 
     if soup:
-        raw_date = extract_date_from_soup(soup)
-        if raw_date and raw_date >= today:
-            data = raw_date
-        # 1. og:image, 2. twitter:image, 3. first non-logo photo in page
+        # Try to extract all future editions directly from the page
+        live_dates = extract_all_future_dates(soup, today)
+        if not live_dates:
+            # Fall back to single-date extraction (catches dates slightly in the past too)
+            single = extract_date_from_soup(soup)
+            if single and single >= today:
+                live_dates = [single]
+        dates_to_use = live_dates if live_dates else _resolve_dates(all_known, today)
+
         imagem_url = (
-            _og_image(soup)
-            or _twitter_image(soup)
-            or _first_race_photo(soup)
+            _og_image(soup, url)
+            or _twitter_image(soup, url)
+            or _first_race_photo(soup, url)
         )
         inscricoes_abertas = _check_status(soup, open_kw, closed_kw)
+    else:
+        dates_to_use = _resolve_dates(all_known, today)
 
-    data = data or known_date
     imagem_url = imagem_url or known_image
-
     now = now_iso()
     fonte = FonteInfo(
         nome=source_name,
@@ -69,41 +105,53 @@ def scrape_major(
         links_inscricao=[url] if inscricoes_abertas else [],
     )
 
-    return [Corrida(
-        id=f"{slugify(titulo)}_int_{year}",
-        titulo=titulo,
-        data_evento=data,
-        horario=horario,
-        localizacao=localizacao,
-        cidade=cidade,
-        estado="INT",
-        distancias=[Distancia(km=42.195, data=None, horario=None)],
-        imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
-        periodo_inscricao=None,
-        fontes=[fonte],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )]
+    results = []
+    for data in dates_to_use:
+        year = data[:4]
+        results.append(Corrida(
+            id=f"{slugify(titulo)}_int_{year}",
+            titulo=titulo,
+            data_evento=data,
+            horario=horario,
+            localizacao=localizacao,
+            cidade=cidade,
+            estado="INT",
+            distancias=[Distancia(km=km, data=None, horario=None) for km in (distances_km or [42.195])],
+            imagem_url=imagem_url,
+            inscricoes_abertas=inscricoes_abertas,
+            periodo_inscricao=None,
+            fontes=[fonte],
+            miss_count=0,
+            first_seen_at=now,
+            updated_at=now,
+        ))
+
+    if not results:
+        print(f"[{source_name}] nenhuma edição futura identificada")
+
+    return results
 
 
-def _og_image(soup) -> str | None:
+def _og_image(soup, page_url: str) -> str | None:
     tag = soup.find("meta", property="og:image")
-    return tag.get("content") if tag else None
+    src = tag.get("content") if tag else None
+    return src if src and _same_domain(src, page_url) else None
 
 
-def _twitter_image(soup) -> str | None:
+def _twitter_image(soup, page_url: str) -> str | None:
     tag = soup.find("meta", attrs={"name": "twitter:image"})
-    return tag.get("content") if tag else None
+    src = tag.get("content") if tag else None
+    return src if src and _same_domain(src, page_url) else None
 
 
-def _first_race_photo(soup) -> str | None:
-    """First non-logo, non-sponsor JPG/PNG found in img tags."""
+def _first_race_photo(soup, page_url: str) -> str | None:
     for img in soup.find_all("img", src=True):
         src = img.get("src", "")
-        if src.lower().endswith((".jpg", ".jpeg", ".png")) and not _SKIP_IMG.search(src):
-            return src if src.startswith("http") else None
+        if (src.startswith("http")
+                and src.lower().endswith((".jpg", ".jpeg", ".png"))
+                and not _SKIP_IMG.search(src)
+                and _same_domain(src, page_url)):
+            return src
     return None
 
 

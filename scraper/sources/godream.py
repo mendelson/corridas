@@ -90,19 +90,20 @@ def _fetch_via_playwright() -> "str | None":
     except ImportError:
         return None
 
-    captured: list[str] = []
+    captured: list[tuple[str, str]] = []  # (url, body)
 
     def _handle_response(response):
         url = response.url
-        # Capture JSON responses from API endpoints that look like event listings
-        if any(kw in url for kw in ("/api/", "/events", "/corrida", "/calendario", "graphql")):
-            try:
-                body = response.body()
-                if body and body[0:1] in (b"{", b"["):
-                    captured.append(body.decode("utf-8", errors="replace"))
-                    print(f"[{SOURCE_NAME}] API interceptada: {url} ({len(body)} bytes)")
-            except Exception:
-                pass
+        ct = (response.headers.get("content-type") or "").lower()
+        if "json" not in ct:
+            return
+        try:
+            body = response.body()
+            if body and body[0:1] in (b"{", b"[") and len(body) > 200:
+                captured.append((url, body.decode("utf-8", errors="replace")))
+                print(f"[{SOURCE_NAME}] JSON interceptado: {url} ({len(body)} bytes)")
+        except Exception:
+            pass
 
     try:
         with sync_playwright() as p:
@@ -120,7 +121,7 @@ def _fetch_via_playwright() -> "str | None":
             page.add_init_script(_STEALTH_JS)
             page.on("response", _handle_response)
 
-            # Navigate to homepage to discover the real URL structure
+            # Navigate to homepage — API calls will be intercepted
             print(f"[{SOURCE_NAME}] Playwright navegando para homepage: {BASE}")
             page.goto(BASE, timeout=30000)
             try:
@@ -128,47 +129,23 @@ def _fetch_via_playwright() -> "str | None":
             except Exception:
                 pass
 
-            # Find and follow the running events link
-            nav_url = None
-            for selector in [
-                "a[href*='corrida']",
-                "a[href*='running']",
-                "a[href*='esporte']",
-                "a[href*='categoria']",
-            ]:
-                el = page.query_selector(selector)
-                if el:
-                    nav_url = el.get_attribute("href")
-                    if nav_url and not nav_url.startswith("http"):
-                        nav_url = BASE + nav_url
-                    print(f"[{SOURCE_NAME}] link encontrado via '{selector}': {nav_url}")
-                    break
-
-            if not nav_url:
-                # Log all links found for diagnosis
-                links = page.eval_on_selector_all("a[href]", "els => els.map(e => e.href).slice(0,30)")
-                print(f"[{SOURCE_NAME}] links na homepage: {links}")
-
-            if nav_url and nav_url != BASE:
-                page.goto(nav_url, timeout=30000)
-                try:
-                    page.wait_for_load_state("networkidle", timeout=20000)
-                except Exception:
-                    pass
+            # Scroll to trigger lazy-loaded content
+            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
+            page.wait_for_timeout(2000)
 
             html = page.content()
             browser.close()
 
         # If we captured API JSON responses, embed them in a synthetic HTML
-        # so _parse_next_data / _find_events_in_json can process them
         if captured:
-            print(f"[{SOURCE_NAME}] {len(captured)} respostas de API capturadas")
-            # Wrap largest JSON in a fake __NEXT_DATA__ script for the existing parser
-            biggest = max(captured, key=len)
+            print(f"[{SOURCE_NAME}] {len(captured)} respostas JSON capturadas")
+            # Pick the one most likely to be an event list (biggest body)
+            biggest_url, biggest_body = max(captured, key=lambda x: len(x[1]))
+            print(f"[{SOURCE_NAME}] usando: {biggest_url}")
             synthetic = (
                 f'<html><body>'
                 f'<script id="__NEXT_DATA__" type="application/json">'
-                f'{{"props":{{"pageProps":{{"data":{biggest}}}}}}}'
+                f'{{"props":{{"pageProps":{{"data":{biggest_body}}}}}}}'
                 f'</script></body></html>'
             )
             return synthetic

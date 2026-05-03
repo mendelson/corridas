@@ -672,6 +672,18 @@ input { font-family: inherit; }
 }
 
 
+.badge-novo {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--color-accent);
+  border-radius: 10px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
 .badge-fontes {
   font-size: 0.72rem;
   color: var(--color-accent);

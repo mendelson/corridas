@@ -45,6 +45,7 @@ const STRINGS = {
     allBrazil: 'Todo o Brasil',
     allSources: 'Todas as fontes',
     nSources: n => n === 1 ? `${n} fonte` : `${n} fontes`,
+    badgeNovo: 'novo',
     loading: 'Carregando...',
     loadError: 'Erro ao carregar dados.',
     clearFilters: 'Limpar filtros',
@@ -102,6 +103,7 @@ const STRINGS = {
     allBrazil: 'All Brazil',
     allSources: 'All sources',
     nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    badgeNovo: 'new',
     loading: 'Loading...',
     loadError: 'Error loading data.',
     clearFilters: 'Clear filters',
@@ -177,6 +179,7 @@ const STRINGS = {
     allBrazil: 'Todo Brasil',
     allSources: 'Todas las fuentes',
     nSources: n => n === 1 ? `${n} fuente` : `${n} fuentes`,
+    badgeNovo: 'nuevo',
     loading: 'Cargando...',
     loadError: 'Error al cargar datos.',
     clearFilters: 'Limpiar filtros',
@@ -252,6 +255,7 @@ const STRINGS = {
     allBrazil: 'Ganz Brasilien',
     allSources: 'Alle Quellen',
     nSources: n => n === 1 ? `${n} Quelle` : `${n} Quellen`,
+    badgeNovo: 'neu',
     loading: 'Laden...',
     loadError: 'Fehler beim Laden der Daten.',
     clearFilters: 'Filter löschen',
@@ -327,6 +331,7 @@ const STRINGS = {
     allBrazil: 'Tout le Brésil',
     allSources: 'Toutes les sources',
     nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    badgeNovo: 'nouveau',
     loading: 'Chargement...',
     loadError: 'Erreur lors du chargement des données.',
     clearFilters: 'Effacer les filtres',
@@ -1258,6 +1263,15 @@ function buildCard(c) {
     distContainer.appendChild(span);
   }
 
+
+  const novoBadge = card.querySelector('.badge-novo');
+  if (c.first_seen_at) {
+    const age = Date.now() - new Date(c.first_seen_at).getTime();
+    if (age < 24 * 60 * 60 * 1000) {
+      novoBadge.textContent = T.badgeNovo;
+      novoBadge.classList.remove('hidden');
+    }
+  }
 
   const fontesBadge = card.querySelector('.badge-fontes');
   if (c.fontes && c.fontes.length > 1) {

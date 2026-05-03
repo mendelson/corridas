@@ -221,37 +221,33 @@ def _parse_godream_event_json(data: dict) -> dict | None:
                     break
 
         if not date_raw:
-            # Log nested structures to find where date lives
-            print(f"[{SOURCE_NAME}] eventAppointment: {appt}")
             tickets = ev.get("tickets") or []
             if isinstance(tickets, list) and tickets:
                 t0 = tickets[0] if isinstance(tickets[0], dict) else {}
-                print(f"[{SOURCE_NAME}] tickets[0] keys: {list(t0.keys())}")
-                for k, v in t0.items():
-                    kl = k.lower()
-                    if any(x in kl for x in ("date","data","inicio","start","session","begin","dt")):
-                        print(f"[{SOURCE_NAME}]   tickets[0]['{k}'] = {str(v)[:120]}")
-            product = ev.get("product") or {}
-            if isinstance(product, dict):
-                print(f"[{SOURCE_NAME}] product keys: {list(product.keys())[:12]}")
-                for k, v in product.items():
-                    kl = k.lower()
-                    if any(x in kl for x in ("date","data","inicio","start","session","begin","dt")):
-                        print(f"[{SOURCE_NAME}]   product['{k}'] = {str(v)[:120]}")
-            addr = ev.get("address") or {}
-            print(f"[{SOURCE_NAME}] address: {str(addr)[:200]}")
+                batch = t0.get("activeBatch") or {}
+                print(f"[{SOURCE_NAME}] tickets[0].activeBatch: {str(batch)[:300]}")
+                stocks = t0.get("stocks") or []
+                if isinstance(stocks, list) and stocks:
+                    print(f"[{SOURCE_NAME}] tickets[0].stocks[0]: {str(stocks[0])[:300]}")
+            print(f"[{SOURCE_NAME}] sem data encontrada para evento '{ev.get('title')}'")
             return None
 
         date = normalize_date(date_raw)
         if not date:
             return None
 
-        # Address
+        # Address — GoDream nests city as {name, state:{acronym}}
         addr = ev.get("address") or ev.get("eventAddress") or {}
         if isinstance(addr, list):
             addr = addr[0] if addr else {}
-        city  = (addr.get("city")  or addr.get("cidade") or "").strip()
-        state = (addr.get("state") or addr.get("uf")     or "").strip().upper()
+        city_raw = addr.get("city") or addr.get("cidade") or {}
+        if isinstance(city_raw, dict):
+            city  = (city_raw.get("name") or "").strip()
+            state_raw = city_raw.get("state") or {}
+            state = (state_raw.get("acronym") or state_raw.get("uf") or "").strip().upper()
+        else:
+            city  = str(city_raw).strip()
+            state = (addr.get("state") or addr.get("uf") or "").strip().upper()
 
         # Image
         img = ev.get("coverImage") or ev.get("logoImage")

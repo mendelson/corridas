@@ -1,51 +1,60 @@
 [main] iniciando scraping...
 [main] 1172 corridas no estado anterior
 [proxy] www.liverun.com.br bloqueado (403), tentando Scrapestack...
-[Central da Corrida] 80 corridas encontradas
-[MKS Esportes] 3 corridas encontradas
-[Ativo] 5 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
+[Ativo] 5 corridas encontradas
+[Central da Corrida] 80 corridas encontradas
 [proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
 [Live Run] erro ao buscar calendário: todos os métodos falharam para https://www.liverun.com.br/calendario
+[MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 21 corridas encontradas
-[Iguana Sports] 8 corridas encontradas
 [Brasil Corrida] 9 corridas encontradas
-[Brasil que Corre] 0 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
+[Brasil que Corre] 0 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
 [proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
-[Correr Brasília] 1 corridas encontradas
-[proxy] Scrapestack retornou 500 para www.godream.com.br, tentando Apify...
+[proxy] Scrapestack retornou 429 para www.godream.com.br, tentando Apify...
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
 [GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
 [SESC DF] 9 corridas encontradas
+[GoDream] Playwright via Apify residential proxy
+[Correr Brasília] 1 corridas encontradas
+[GoDream] Playwright → https://www.godream.com.br
+[GoDream] Playwright falhou: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://www.godream.com.br/
+Call log:
+  - navigating to "https://www.godream.com.br/", waiting until "load"
+
+[GoDream] todas as estratégias falharam
 [Circuito das Estações] 104 corridas encontradas
-[GoDream] Playwright navegando para: https://www.godream.com.br/corrida-de-rua
-[GoDream] JSON interceptado: https://api.afilaanda.co/queue/69d3b05ba2af53000249220b (1600 bytes)
 [Yescom] 14 corridas encontradas
-[GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/index.json (6430 bytes)
-[GoDream] sem novos slugs na página 2 — parando paginação
-[GoDream] 19 slugs coletados, 19 sem JSON ainda
 [Portal das Corridas] 0 corridas encontradas
-[Corridas Brasil] 2947 corridas encontradas
-[GoDream] JSON interceptado: https://api.godream.com.br/graphql (353 bytes)
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[Corridas Brasil] 2947 corridas encontradas
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[Volta do Lago] site acessível mas sem dados reconhecíveis
 [World Marathons] buildId não encontrado
 [World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
+[Volta do Lago] site acessível mas sem dados reconhecíveis
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running?distanceMin=10: todos os métodos falharam para https://www.letsdothis.com/gb/e/running?distanceMin=10
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [TF Sports] 51 corridas encontradas
+[World Marathons] Playwright: 376035 bytes renderizados
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370526 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370527 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370225 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
+[World Marathons] sem dados — nenhuma estratégia funcionou
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/marathon
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
@@ -53,60 +62,45 @@
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/half-marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/half-marathon
 [Let's Do This] tentando Playwright para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[World Marathons] Playwright: 376104 bytes renderizados
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370246 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370418 bytes)
-[Let's Do This] Playwright: 992514 bytes renderizados
+[Let's Do This] Playwright: 992260 bytes renderizados
 [Let's Do This] classes relevantes na página: ['after:pointer-events-none']
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[GoDream] JSON interceptado: https://www.stay22.com/i22n/en (12137 bytes)
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] GraphQL erro: todos os métodos falharam para https://www.letsdothis.com/api/graphql
 [Let's Do This] sem dados — nenhuma estratégia funcionou
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370154 bytes)
-[GoDream] JSON interceptado: https://id.h2.stay22.com/thumbmark (985 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
-[World Marathons] sem dados — nenhuma estratégia funcionou
-[GoDream] 0 eventos extraídos via Playwright
-[GoDream] Playwright: 53915 bytes
-[GoDream] page title: 
-[GoDream] texto inicial: Aprimoramos a sua experiência com a utilização de cookies. Para obter informações sobre o uso de cookies pela GO Dream, acesse Política de Privacidade e Cookies . Aceitar todos os Cookies Entrar 500 Erro no servidor GODREAM Grupo Dreamers Dream Factory Carreiras Bilheteria Digital AJUDA / CONTATO atendimento@godream.com.br CNPJ: 44.359.101/0001-29 TERMOS Política de Privacidade Termos de Uso FORMAS DE PAGAMENTO visa master a p PIX SEGURANÇA REDES SOCIAIS ASSINE NOSSA NEWSLETTER Assinar © 2026 Go
-[GoDream] 0 corridas encontradas
-[Ticket Sports] 965 corridas encontradas
-[main] 4267 registros coletados (antes do merge)
-[main] 1139 registros após validação
-[main] 1097 corridas após merge
-[main] verificando links de 66 evento(s) não encontrado(s) no scrape...
-[main] 'Star Girls' — link válido, miss_count zerado
+[Ticket Sports] 966 corridas encontradas
+[main] 4268 registros coletados (antes do merge)
+[main] 1140 registros após validação
+[main] 1100 corridas após merge
+[main] verificando links de 64 evento(s) não encontrado(s) no scrape...
 [main] 'Bike Fest 2026' — link válido, miss_count zerado
+[main] 'Corrida Em Casa A Gente Conversa 2ª Edição' — link válido, miss_count zerado
+[main] 'Star Girls' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Jundiaí' — link válido, miss_count zerado
 [main] 'Cats Run AL 2026' — link válido, miss_count zerado
 [main] '15ª Corrida Eco Run Verde' — link válido, miss_count zerado
-[main] 'Corrida Em Casa A Gente Conversa 2ª Edição' — link válido, miss_count zerado
-[main] 'Lupo Sport Corre Jundiaí' — link válido, miss_count zerado
-[main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
-[main] 'Vila Velha Night Run' — link válido, miss_count zerado
+[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
 [main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
+[main] 'Vila Velha Night Run' — link válido, miss_count zerado
+[main] 'Desafio Macuco' — link válido, miss_count zerado
 [main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
 [main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
 [main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
-[main] 'Desafio Macuco' — link válido, miss_count zerado
-[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
-[main] 'Corrida Noturna De Campo Do Tenente' — link válido, miss_count zerado
-[proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
 [main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
+[main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
+[proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
+[main] 'Corrida Noturna De Campo Do Tenente' — link válido, miss_count zerado
 [main] '1ª Corrida Da Romu' — link válido, miss_count zerado
-[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
 [main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
 [proxy] Scrapestack retornou 429 para www.godream.com.br, tentando Apify...
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
-[main] 1172 corridas após reconciliação
-[main] 1172 corridas após dedup final
+[main] 1173 corridas após reconciliação
+[main] 1173 corridas após dedup final
 [main] buscando imagens para 130 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [main] 0/130 imagens encontradas
-[main] 1172 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 1173 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

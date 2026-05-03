@@ -3,28 +3,28 @@
 [proxy] www.liverun.com.br bloqueado (403), tentando Scrapestack...
 [Central da Corrida] 80 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
-[MKS Esportes] 3 corridas encontradas
+[Ativo] 5 corridas encontradas
 [proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
 [Live Run] erro ao buscar calendário: todos os métodos falharam para https://www.liverun.com.br/calendario
-[Ativo] 5 corridas encontradas
-[Iguana Sports] 8 corridas encontradas
+[MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 21 corridas encontradas
-[Correr Brasília] 1 corridas encontradas
-[Minhas Inscrições] 14 corridas encontradas
 [Brasil Corrida] 9 corridas encontradas
-[proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
+[Minhas Inscrições] 14 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
 [Brasil que Corre] 0 corridas encontradas
+[proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 500 para www.godream.com.br, tentando Apify...
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
 [GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
 [SESC DF] 9 corridas encontradas
-[GoDream] Playwright navegando para homepage: https://www.godream.com.br
+[Correr Brasília] 1 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
+[GoDream] Playwright navegando para homepage: https://www.godream.com.br
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/evento/af-sunset-open-4827511.json?slug=af-sunset-open-4827511 (21762 bytes)
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/evento/maratona-do-rio-2026-raspa-do-tacho-8027828.json?slug=maratona-do-rio-2026-raspa-do-tacho-8027828 (83929 bytes)
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/evento/corridona-2026-4492261.json?slug=corridona-2026-4492261 (27290 bytes)
-[GoDream] JSON interceptado: https://api.afilaanda.co/queue/69d3b05ba2af53000249220b (1600 bytes)
 [Yescom] 14 corridas encontradas
+[GoDream] JSON interceptado: https://api.afilaanda.co/queue/69d3b05ba2af53000249220b (1600 bytes)
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/index.json (6430 bytes)
 [GoDream] 5 respostas JSON capturadas
 [GoDream] tickets[0].activeBatch: {'id': 3068, 'name': '', 'order': 1, 'prices': [{'id': 11177, 'price': 120, 'quantity': 21, 'soldOut': False, 'cataloguePrice': 0, 'stockBalance': 17, 'hidden': False, 'type': {'id': 351, 'name': '\u2060Inscrição individual de BEACH TENNIS - categoria DUPLA FEMININA + 1 kit sunset', 'description': '
@@ -39,42 +39,29 @@
 [GoDream] tickets[0].stocks[0]: {'id': 1184, 'name': 'Selecione o tamanho da camisa abaixo:', 'stockItems': [{'id': 9975, 'name': 'P - Feminino', 'stock': 0, 'quantity': 112, 'soldOff': True, 'hidden': False}, {'id': 9976, 'name': 'M - Feminino', 'stock': 0, 'quantity': 150, 'soldOff': True, 'hidden': True}, {'id': 9977, 'name': '
 [GoDream] sem data encontrada para evento 'Corridona 2026'
 [GoDream] falhou ao parsear evento: corridona-2026-4492261.json
-[GoDream] index.json: 6 evento(s) em events.content
-[GoDream] content[0] keys: ['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
-[GoDream]   content[0]['slug']: af-sunset-open-4827511
-[GoDream]   content[0]['coverImage']: {'url': 'https://godream-ticketing-production.s3.amazonaws.com/800x600-awtfi.webp'}
-[GoDream]   content[0]['featuredImage']: {'url': 'https://godream-ticketing-production.s3.amazonaws.com/2560x1000-m81nj.webp'}
-[GoDream]   content[0]['title']: AF SUNSET OPEN
-[GoDream]   content[0]['lowestTicketPrice']: 120
-[GoDream]   content[0]['lowestExtraPrice']: 50
-[GoDream]   content[0]['isServiceStore']: False
-[GoDream] Playwright: 84838 bytes
-[Corridas Brasil] 2947 corridas encontradas
+[GoDream] item sem data — slug=af-sunset-open-4827511, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
+[GoDream] item sem data — slug=maratona-do-rio-2026-raspa-do-tacho-8027828, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
+[GoDream] item sem data — slug=corridona-2026-4492261, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
+[GoDream] item sem data — slug=desafio-da-ponte-2026-4714257, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
+[GoDream] item sem data — slug=maratona-do-rio-2026-loja-de-plugins-767300, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
+[GoDream] item sem data — slug=entre-maes-run-2026-6707772, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
+[GoDream] index.json: 6 items → 0 eventos
+[GoDream] Playwright: 84727 bytes
 [GoDream] page title: GO dream
 [GoDream] texto inicial: GO dream Aprimoramos a sua experiência com a utilização de cookies. Para obter informações sobre o uso de cookies pela GO Dream, acesse Política de Privacidade e Cookies . Aceitar todos os Cookies Entrar Procurar eventos Próximos Eventos AF SUNSET OPEN A partir de R$ 120 Maratona do Rio 2026 - Raspa do Tacho A partir de R$ 139 Corridona 2026 A partir de R$ 99 Desafio da Ponte 2026 A partir de R$ 249 Maratona do Rio 2026 - Loja de Plug-ins A partir de R$ 49,90 Entre Mães Run 2026 A partir de R$ 5
 [GoDream] 0 corridas encontradas
+[Corridas Brasil] 2947 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[TF Sports] 51 corridas encontradas
+[Volta do Lago] site acessível mas sem dados reconhecíveis
 [World Marathons] buildId não encontrado
 [World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
-[Volta do Lago] site acessível mas sem dados reconhecíveis
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running?distanceMin=10: todos os métodos falharam para https://www.letsdothis.com/gb/e/running?distanceMin=10
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[proxy] www.cardiffhalfmarathon.co.uk obtido via Scrapestack
-[TF Sports] 51 corridas encontradas
-[World Marathons] Playwright: 407052 bytes renderizados
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370075 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370076 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370076 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
-[World Marathons] sem dados — nenhuma estratégia funcionou
-[Portal das Corridas] erro playwright: Timeout 30000ms exceeded.
-[Portal das Corridas] 0 corridas encontradas
-[proxy] Scrapestack falhou para www.letsdothis.com: timed out
+[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
@@ -83,42 +70,58 @@
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/marathon
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
+[World Marathons] Playwright: 376391 bytes renderizados
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/half-marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/half-marathon
 [Let's Do This] tentando Playwright para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[Let's Do This] Playwright: 992139 bytes renderizados
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370185 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370103 bytes)
+[Let's Do This] Playwright: 992341 bytes renderizados
 [Let's Do This] classes relevantes na página: ['after:pointer-events-none']
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370585 bytes)
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] GraphQL erro: todos os métodos falharam para https://www.letsdothis.com/api/graphql
 [Let's Do This] sem dados — nenhuma estratégia funcionou
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
+[World Marathons] sem dados — nenhuma estratégia funcionou
+[Portal das Corridas] erro playwright: Timeout 30000ms exceeded.
+[Portal das Corridas] 0 corridas encontradas
 [Ticket Sports] 965 corridas encontradas
-[main] 4266 registros coletados (antes do merge)
-[main] 1138 registros após validação
-[main] 1098 corridas após merge
-[main] verificando links de 63 evento(s) não encontrado(s) no scrape...
+[main] 4267 registros coletados (antes do merge)
+[main] 1139 registros após validação
+[main] 1097 corridas após merge
+[main] verificando links de 65 evento(s) não encontrado(s) no scrape...
+[main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
 [main] 'Star Girls' — link válido, miss_count zerado
-[main] 'Bike Fest 2026' — link válido, miss_count zerado
 [main] 'Lupo Sport Corre Jundiaí' — link válido, miss_count zerado
-[main] 'Cats Run AL 2026' — link válido, miss_count zerado
 [main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
 [main] 'Corrida Em Casa A Gente Conversa 2ª Edição' — link válido, miss_count zerado
-[main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
-[main] '15ª Corrida Eco Run Verde' — link válido, miss_count zerado
 [main] 'Vila Velha Night Run' — link válido, miss_count zerado
+[main] '15ª Corrida Eco Run Verde' — link válido, miss_count zerado
+[main] 'Bike Fest 2026' — link válido, miss_count zerado
+[main] 'Cats Run AL 2026' — link válido, miss_count zerado
+[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
 [main] 'Desafio Macuco' — link válido, miss_count zerado
-[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
-[main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
-[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
-[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
 [main] 'Corrida Noturna De Campo Do Tenente' — link válido, miss_count zerado
+[main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
+[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
 [main] '1ª Corrida Da Romu' — link válido, miss_count zerado
 [main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
-[main] 1170 corridas após reconciliação
-[main] 1170 corridas após dedup final
-[main] buscando imagens para 129 evento(s) sem foto...
-[main] 0/129 imagens encontradas
-[main] 1170 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 1171 corridas após reconciliação
+[main] 1171 corridas após dedup final
+[main] buscando imagens para 130 evento(s) sem foto...
+[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[main] 0/130 imagens encontradas
+[main] 1171 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

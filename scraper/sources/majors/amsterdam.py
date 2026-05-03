@@ -2,7 +2,7 @@
 from ._base import scrape_major
 
 SOURCE_NAME = "Amsterdam Marathon"
-URL         = "https://www.tcsamsterdammarathon.eu/en/"
+URL         = "https://www.tcsamsterdammarathon.nl/en/"
 KNOWN_DATE  = "2026-10-18"
 KNOWN_DATE_NEXT = "2027-10-17"
 HORARIO     = "09:15"

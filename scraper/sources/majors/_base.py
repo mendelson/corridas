@@ -4,7 +4,7 @@ import re
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
-from ...http_client import get
+from ...http_client import get_with_fallback
 from ...models import Corrida, Distancia, FonteInfo
 from ...utils import slugify, now_iso, today_iso, extract_date_from_soup, extract_all_future_dates
 
@@ -65,7 +65,7 @@ def scrape_major(
 ) -> list[Corrida]:
     soup = None
     try:
-        resp = get(url, verify=ssl_verify)
+        resp = get_with_fallback(url, source=source_name, verify=ssl_verify)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
     except Exception as e:

@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get
+from ..http_client import get, get_with_fallback
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 
@@ -109,7 +109,7 @@ def scrape() -> list[Corrida]:
         # ── Strategy 2: HTML page parsing (fallback) ────────────────────────
         for url in _FALLBACK_URLS:
             try:
-                resp = get(url, timeout=15)
+                resp = get_with_fallback(url, source=SOURCE_NAME)
             except Exception as e:
                 print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
                 continue
@@ -171,7 +171,7 @@ def scrape() -> list[Corrida]:
 def _try_next_data_api() -> list[dict]:
     # First, fetch the main page to find the buildId
     try:
-        resp = get(f"{BASE}/marathons?continent=europe&future=1", timeout=15)
+        resp = get_with_fallback(f"{BASE}/marathons?continent=europe&future=1", source=SOURCE_NAME)
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar página principal: {e}")
         return []

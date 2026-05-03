@@ -111,8 +111,8 @@ jobs:
           else
             # Push: only test changed source files
             CHANGED=$(git diff --name-only HEAD~1 HEAD \
-              -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
-              | grep '\.py$' | grep -v '__init__\|_base\|test_' \
+              | grep '^scraper/sources/.*\.py$' \
+              | grep -v '__init__\|_base\|test_' \
               | sed 's|scraper/sources/||; s|\.py$||')
 
             # If shared infra changed, test everything
@@ -132,9 +132,9 @@ jobs:
             echo "empty=true"  >> $GITHUB_OUTPUT
             echo "matrix={\"source\":[]}" >> $GITHUB_OUTPUT
           else
-            JSON=$(echo "$SOURCES" | jq -R -s 'split("\n") | map(select(length > 0))')
+            JSON=$(printf '%s\n' "$SOURCES" | jq -Rsc 'split("\n") | map(select(length > 0))')
             echo "empty=false" >> $GITHUB_OUTPUT
-            echo "matrix={\"source\":$JSON}" >> $GITHUB_OUTPUT
+            printf 'matrix={"source":%s}\n' "$JSON" >> $GITHUB_OUTPUT
             echo "Sources to test: $JSON"
           fi
 
@@ -222,7 +222,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
           git add README.md data/source-status.json
           git diff --cached --quiet || git commit -m "ci: update source status in README [skip ci]"
+          git pull --rebase origin main
           git push

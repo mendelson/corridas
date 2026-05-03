@@ -20,7 +20,6 @@ GitHub Actions.
 | Circuito das Estações | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada |
 | Central da Corrida | ✅ | `centraldacorrida.com.br/calendario` | HTML |
 | TF Sports | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML |
-| Live Run | ✅ | `liverun.com.br/calendario` | HTML |
 | Yescom | ✅ | `yescom.com.br` | HTML |
 | Brasil Corrida | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API |
 | Iguana Sports | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML |
@@ -39,9 +38,7 @@ GitHub Actions.
 | Correr Brasília | ✅ | `correrbrasilia.com.br/calendario/` | HTML |
 | SESC DF | ✅ | `sescdf.com.br/corridas` | HTML |
 
-> ¹ Registrada em SOURCES mas retorna 0 eventos — `brasilquecorre.com` bloqueia
-> IPs de datacenter (403) inclusive no CI. O site possui calendários por estado
-> além do DF, mas não é possível acessá-los sem IP residencial ou parceria com o site.
+> ¹ Retorna 0 eventos — `brasilquecorre.com` bloqueia IPs de datacenter (403). Playwright não bypassa.
 
 ### Fontes brasileiras — eventos específicos
 
@@ -53,21 +50,22 @@ GitHub Actions.
 | São Silvestre | ✅ | `saosilvestre.com.br` |
 | Volta do Lago | ✅ | `voltadolago.com.br` |
 
-### Plataformas brasileiras com WAF intransponível
+### Fontes com WAF intransponível
 
-| Fonte | Em uso | Motivo |
+Estas fontes estão registradas no código mas retornam 0 eventos. O bloqueio ocorre em nível de IP de datacenter — Scrapestack e Apify (datacenter) também são bloqueados, e Playwright headless não bypassa o Cloudflare dessas propriedades.
+
+| Fonte | URL | Situação |
 |---|---|---|
-| GoDream | ✅¹ | `godream.com.br/corrida-de-rua` — `403 Host not in allowlist` mesmo no CI |
-
-> ¹ Registrada em SOURCES, nunca retorna eventos. O bloqueio é em nível de IP de datacenter;
-> Playwright não resolve.
+| GoDream | `godream.com.br/corrida-de-rua` | 403 → proxies falham → Playwright retorna página mínima (53KB), sem eventos |
+| Live Run | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado |
+| Let's Do This | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side |
+| World Marathons | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright |
 
 ### Fontes internacionais
 
-| Fonte | Em uso | URL de busca |
-|---|---|---|
-| Let's Do This | ✅ | `letsdothis.com` (calendário UK) |
-| World Marathons | ✅ | `worldsmarathons.com` (calendário mundial) |
+| Fonte | Em uso | URL de busca | Observação |
+|---|---|---|---|
+| Cardiff Half Marathon | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack |
 
 ---
 
@@ -94,7 +92,7 @@ projeção automática para o ano seguinte quando todas as datas conhecidas já 
 | Cardiff Half Marathon | ✅ | `cardiffhalfmarathon.co.uk` |
 | Manchester Half Marathon | ✅ | `manchesterhalfmarathon.com` |
 | Bank of America Chicago Marathon | ✅ | `chicagomarathon.com` |
-| Amsterdam Marathon | ✅ | `tcsamsterdammarathon.eu/en` |
+| Amsterdam Marathon | ✅ | `tcsamsterdammarathon.nl/en` |
 | Venice Marathon | ✅ | `venicemarathon.it/en` |
 | Dublin City Marathon | ✅ | `irishlifedublinmarathon.ie` |
 | TCS New York City Marathon | ✅ | `nyrr.org/races/tcsnycmarathon` |
@@ -103,19 +101,33 @@ projeção automática para o ano seguinte quando todas as datas conhecidas já 
 
 ---
 
+## Estratégia de acesso
+
+Cada requisição HTTP passa pela cadeia de fallback implementada em `http_client.py`:
+
+1. **Direto** — request padrão com headers de browser realista
+2. **Scrapestack** — proxy reverso (100 req/mês no plano gratuito); ativado via `SCRAPESTACK_KEY`
+3. **Apify proxy** — proxy de datacenter; ativado via `APIFY_PROXY_PASSWORD`
+
+Se todos falharem (403/429), o scraper da fonte tenta **Playwright headless** com configurações básicas anti-detecção (desativa `navigator.webdriver`, simula `window.chrome`). Isso funciona para alguns WAFs, mas não para Cloudflare em modo estrito.
+
+Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não consumir créditos do Scrapestack.
+
+---
+
 ## Fontes desativadas
 
 | Fonte | Em uso | URL | Motivo |
 |---|---|---|---|
-| Corridas BR | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Também retorna 403 no CI. |
-| Bora Correr | ❌ | `coelhodeprograma.com.br/boracorrer` | Scraper implementado mas nunca ativado. Retorna 403 no CI. |
+| Corridas BR | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. |
+| Bora Correr | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 403 no CI. |
 
 ## Fontes testadas e inviáveis
 
 | Fonte | URL | Motivo |
 |---|---|---|
-| Ahotu | `ahotu.com/pt-br/races` | `403 Host not in allowlist` em todos os endpoints. WAF bloqueia IPs de datacenter em nível de rede; Playwright não resolve. |
-| Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio de IP que Ahotu. Estrutura HTML desconhecida — não foi possível inspecionar o site para escrever o scraper. |
+| Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. |
+| Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. |
 
 ---
 
@@ -124,23 +136,26 @@ projeção automática para o ano seguinte quando todas as datas conhecidas já 
 ```
 corridas/
 ├── .github/workflows/
-│   ├── scrape.yml          # CI: roda a cada 4h, commita JSON atualizado
-│   └── debug-scraper.yml   # Workflow manual para debug de fonte individual
+│   ├── scrape.yml           # CI: roda a cada 4h, commita JSON atualizado
+│   └── debug-scraper.yml    # Workflow manual para debug de fonte individual
 ├── scraper/
-│   ├── main.py             # Orquestrador: executa scrapers, merge, persistência
-│   ├── models.py           # Dataclasses: Corrida, Distancia, FonteInfo, etc.
-│   ├── merger.py           # Deduplicação e merge entre fontes
-│   ├── utils.py            # Normalização de datas, strings, slugify, cidade→estado
-│   ├── http_client.py      # httpx com headers de browser
+│   ├── main.py              # Orquestrador: executa scrapers, merge, persistência
+│   ├── models.py            # Dataclasses: Corrida, Distancia, FonteInfo, etc.
+│   ├── merger.py            # Deduplicação e merge entre fontes
+│   ├── utils.py             # Normalização de datas, strings, slugify, cidade→estado
+│   ├── http_client.py       # GET com fallback: direto → Scrapestack → Apify
+│   ├── playwright_client.py # Playwright headless com evasão básica de bot-detection
+│   ├── fotos.py             # Busca de fotos em plataformas (desativada temporariamente)
 │   └── sources/
-│       ├── *.py            # Scrapers brasileiros
-│       └── majors/         # Scrapers dos World Marathon Majors
+│       ├── *.py             # Scrapers brasileiros
+│       └── majors/          # Scrapers dos World Marathon Majors
 ├── data/
-│   └── corridas.json       # Base acumulativa (versionada no repo)
+│   ├── corridas.json        # Base acumulativa (versionada no repo)
+│   └── last-scraper.log     # Log da última execução do CI
 └── web/
-    ├── index.html          # Redirect para /pt ou /en conforme idioma do browser
-    ├── pt/ en/ es/ de/ fr/ # Páginas por idioma
-    ├── app.js              # Lógica do app (filtros, cards, i18n)
+    ├── index.html           # Redirect para /pt ou /en conforme idioma do browser
+    ├── pt/ en/ es/ de/ fr/  # Páginas por idioma
+    ├── app.js               # Lógica do app (filtros, cards, i18n)
     ├── style.css
-    └── manifest.json       # PWA
+    └── manifest.json        # PWA
 ```

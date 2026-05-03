@@ -222,7 +222,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
           git add README.md data/source-status.json
           git diff --cached --quiet || git commit -m "ci: update source status in README [skip ci]"
+          git pull --rebase origin main
           git push

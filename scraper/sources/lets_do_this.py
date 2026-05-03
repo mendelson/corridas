@@ -91,7 +91,11 @@ def scrape() -> list[Corrida]:
 
         print(f"[{SOURCE_NAME}] sem dados reconhecíveis em {url}")
 
-    # ── Strategy 2: GraphQL ────────────────────────────────────────────────
+    # ── Strategy 2: Playwright ─────────────────────────────────────────────
+    if not raw:
+        raw = _try_playwright()
+
+    # ── Strategy 3: GraphQL ────────────────────────────────────────────────
     if not raw:
         raw = _try_graphql()
 
@@ -176,6 +180,35 @@ def _extract_html_cards(soup) -> list[dict]:
     if classes:
         print(f"[{SOURCE_NAME}] classes relevantes na página: {sorted(classes)[:20]}")
     return []
+
+
+def _try_playwright() -> list[dict]:
+    from ..playwright_client import get_page_html
+
+    url = _CALENDAR_URLS[0]
+    print(f"[{SOURCE_NAME}] tentando Playwright para {url}")
+    html = get_page_html(url)
+    if not html:
+        print(f"[{SOURCE_NAME}] Playwright não retornou HTML")
+        return []
+
+    print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes renderizados")
+    soup = BeautifulSoup(html, "lxml")
+
+    raw = _extract_next_data(soup)
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright + __NEXT_DATA__")
+        return raw
+
+    raw = _extract_from_scripts(soup)
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright + script JSON")
+        return raw
+
+    raw = _extract_html_cards(soup)
+    if raw:
+        print(f"[{SOURCE_NAME}] {len(raw)} candidatos via Playwright + HTML cards")
+    return raw
 
 
 def _try_graphql() -> list[dict]:

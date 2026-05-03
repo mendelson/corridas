@@ -175,34 +175,21 @@ def scrape() -> list[Corrida]:
 # Strategy 2: Playwright — renders JS and bypasses bot-detection pages
 # ---------------------------------------------------------------------------
 def _try_playwright() -> list[dict]:
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
-        return []
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
-            page = browser.new_page()
-            page.set_extra_http_headers({
-                "User-Agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/124.0.0.0 Safari/537.36"
-                )
-            })
-            page.goto(f"{BASE}/marathons?continent=europe&future=1", timeout=30000)
-            page.wait_for_load_state("networkidle", timeout=30000)
-            html = page.content()
-            browser.close()
+    from ..playwright_client import get_page_html
 
-        soup = BeautifulSoup(html, "lxml")
-        raw = _extract_from_any_script(soup)
-        if raw:
-            return raw
-        return _extract_html_cards(soup)
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] Playwright falhou: {e}")
+    url = f"{BASE}/marathons?continent=europe&future=1"
+    print(f"[{SOURCE_NAME}] tentando Playwright para {url}")
+    html = get_page_html(url)
+    if not html:
+        print(f"[{SOURCE_NAME}] Playwright não retornou HTML")
         return []
+
+    print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes renderizados")
+    soup = BeautifulSoup(html, "lxml")
+    raw = _extract_from_any_script(soup)
+    if raw:
+        return raw
+    return _extract_html_cards(soup)
 
 
 # ---------------------------------------------------------------------------

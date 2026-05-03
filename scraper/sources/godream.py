@@ -45,14 +45,9 @@ _PT_MONTHS = {
 
 def scrape() -> list[Corrida]:
     today = today_iso()
-    try:
-        resp = get(CALENDAR_URL, source=SOURCE_NAME)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {CALENDAR_URL}: {e}")
+    soup = _fetch_soup()
+    if soup is None:
         return []
-
-    soup = BeautifulSoup(resp.text, "lxml")
 
     # Strategy 1: __NEXT_DATA__ JSON (Next.js SSR — most complete data)
     corridas = _parse_next_data(soup, today)
@@ -64,6 +59,27 @@ def scrape() -> list[Corrida]:
     corridas = _parse_html_cards(soup, today)
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
+
+
+def _fetch_soup() -> "BeautifulSoup | None":
+    """Fetch CALENDAR_URL via HTTP, falling back to Playwright on WAF block."""
+    # HTTP (with proxy fallback built into get())
+    try:
+        resp = get(CALENDAR_URL, source=SOURCE_NAME)
+        resp.raise_for_status()
+        return BeautifulSoup(resp.text, "lxml")
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] HTTP falhou ({e}), tentando Playwright...")
+
+    # Playwright fallback
+    from ..playwright_client import get_page_html
+    html = get_page_html(CALENDAR_URL)
+    if html:
+        print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes")
+        return BeautifulSoup(html, "lxml")
+
+    print(f"[{SOURCE_NAME}] todas as estratégias falharam")
+    return None
 
 
 # ---------------------------------------------------------------------------

@@ -172,51 +172,47 @@ def _extract_all_slugs(obj, depth: int = 0) -> set[str]:
     return slugs
 
 
+_FETCH_JS = """
+async (url) => {
+    try {
+        const r = await fetch(url, {
+            credentials: 'include',
+            headers: {'Accept': 'application/json, text/plain, */*', 'x-nextjs-data': '1'}
+        });
+        if (!r.ok) return JSON.stringify({__error__: r.status});
+        return await r.text();
+    } catch(e) {
+        return JSON.stringify({__error__: String(e)});
+    }
+}
+"""
+
+_READ_NEXT_DATA_JS = """
+() => {
+    const el = document.getElementById('__NEXT_DATA__');
+    return el ? el.textContent : null;
+}
+"""
+
+
 def _fetch_via_playwright() -> "str | None":
-    """Navigate GoDream via Playwright, intercepting Next.js JSON to capture events.
+    """Navigate GoDream via Playwright using DOM + same-origin fetch.
 
     Strategy:
-      1. Navigate to the /corrida-de-rua category page (not the homepage).
-      2. Paginate through it (?page=N) until no new slugs appear.
-      3. Visit any event pages whose JSON was not pre-intercepted.
+      1. Navigate to the homepage (lenient WAF path).
+      2. Read __NEXT_DATA__ from the DOM → extract buildId.
+      3. Use same-origin fetch() (runs inside the authenticated browser context)
+         to retrieve /_next/data/{buildId}/corrida-de-rua.json?page=N for every
+         page until no new slugs appear.
+      4. Fetch each event via /_next/data/{buildId}/evento/{slug}.json the same way.
+      5. Fall back to the raw homepage HTML for traditional __NEXT_DATA__ parsing
+         if any step above yields nothing.
     """
     try:
         from playwright.sync_api import sync_playwright
         from ..playwright_client import _STEALTH_JS, _USER_AGENT
     except ImportError:
         return None
-
-    captured: list[tuple[str, str]] = []
-    seen_urls: set[str] = set()
-
-    def _handle_response(response):
-        url = response.url
-        if url in seen_urls:
-            return
-        ct = (response.headers.get("content-type") or "").lower()
-        if "json" not in ct:
-            return
-        try:
-            body = response.body()
-            if body and body[0:1] in (b"{", b"[") and len(body) > 200:
-                seen_urls.add(url)
-                captured.append((url, body.decode("utf-8", errors="replace")))
-                print(f"[{SOURCE_NAME}] JSON interceptado: {url} ({len(body)} bytes)")
-        except Exception:
-            pass
-
-    def _slugs_from_captured() -> set[str]:
-        slugs: set[str] = set()
-        for url, body in captured:
-            if '/evento/' in url:
-                slug = re.sub(r'\.json$', '', url.split('/evento/')[-1].split('?')[0])
-                slugs.add(slug)
-            else:
-                try:
-                    slugs |= _extract_all_slugs(json.loads(body))
-                except Exception:
-                    pass
-        return slugs
 
     try:
         with sync_playwright() as p:
@@ -232,112 +228,109 @@ def _fetch_via_playwright() -> "str | None":
             )
             page = ctx.new_page()
             page.add_init_script(_STEALTH_JS)
-            page.on("response", _handle_response)
 
-            # ── Page 1: category listing ─────────────────────────────────────
-            print(f"[{SOURCE_NAME}] Playwright navegando para: {CALENDAR_URL}")
-            page.goto(CALENDAR_URL, timeout=30000)
+            # ── Step 1: navigate to homepage ─────────────────────────────────
+            print(f"[{SOURCE_NAME}] Playwright → {BASE}")
+            page.goto(BASE, timeout=30000)
             try:
                 page.wait_for_load_state("networkidle", timeout=20000)
             except Exception:
                 pass
-            page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-            page.wait_for_timeout(2000)
 
-            _title = page.title()
-            _url_after = page.url
-            print(f"[{SOURCE_NAME}] página carregada: title={_title!r} url={_url_after}")
-            print(f"[{SOURCE_NAME}] {len(captured)} respostas JSON interceptadas após pág. 1")
+            print(f"[{SOURCE_NAME}] title={page.title()!r} url={page.url}")
 
-            # ── Paginate through the category listing ────────────────────────
-            for page_num in range(2, 20):
-                prev_count = len(_slugs_from_captured())
-                try:
-                    page.goto(f"{CALENDAR_URL}?page={page_num}", timeout=15000)
-                    try:
-                        page.wait_for_load_state("networkidle", timeout=10000)
-                    except Exception:
-                        pass
-                    page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
-                    page.wait_for_timeout(1500)
-                except Exception:
+            # ── Step 2: extract buildId from __NEXT_DATA__ ───────────────────
+            next_data_str = page.evaluate(_READ_NEXT_DATA_JS)
+            if not next_data_str:
+                print(f"[{SOURCE_NAME}] __NEXT_DATA__ ausente — retornando HTML bruto")
+                html = page.content()
+                browser.close()
+                return html
+
+            try:
+                next_data = json.loads(next_data_str)
+            except Exception as exc:
+                print(f"[{SOURCE_NAME}] __NEXT_DATA__ inválido: {exc}")
+                html = page.content()
+                browser.close()
+                return html
+
+            build_id = next_data.get("buildId", "")
+            print(f"[{SOURCE_NAME}] buildId={build_id!r}")
+
+            if not build_id:
+                print(f"[{SOURCE_NAME}] buildId vazio — retornando HTML bruto")
+                html = page.content()
+                browser.close()
+                return html
+
+            # ── Step 3: paginate category listing via same-origin fetch ───────
+            all_event_data: list[dict] = []
+            seen_slugs: set[str] = set()
+
+            for page_num in range(1, 20):
+                qs = "" if page_num == 1 else f"?page={page_num}"
+                api_url = f"/_next/data/{build_id}/corrida-de-rua.json{qs}"
+                raw = page.evaluate(_FETCH_JS, api_url)
+                if not raw:
+                    print(f"[{SOURCE_NAME}] pág. {page_num}: sem resposta")
                     break
-                if len(_slugs_from_captured()) == prev_count:
-                    print(f"[{SOURCE_NAME}] sem novos slugs na página {page_num} — parando paginação")
+                try:
+                    data = json.loads(raw)
+                except Exception:
+                    print(f"[{SOURCE_NAME}] pág. {page_num}: JSON inválido")
+                    break
+                if "__error__" in data:
+                    print(f"[{SOURCE_NAME}] pág. {page_num}: erro {data['__error__']}")
                     break
 
-            all_slugs = _slugs_from_captured()
-            captured_event_slugs = {
-                re.sub(r'\.json$', '', url.split('/evento/')[-1].split('?')[0])
-                for url, _ in captured if '/evento/' in url
-            }
-            missing = all_slugs - captured_event_slugs
-            print(f"[{SOURCE_NAME}] {len(all_slugs)} slugs coletados, "
-                  f"{len(captured_event_slugs)} com JSON, {len(missing)} sem JSON ainda")
-            for u, b in captured[:5]:
-                print(f"[{SOURCE_NAME}]   interceptado: {u[:120]} ({len(b)}B)")
+                page_slugs = _extract_all_slugs(data)
+                new_slugs = page_slugs - seen_slugs
+                print(f"[{SOURCE_NAME}] pág. {page_num}: {len(page_slugs)} slugs "
+                      f"({len(new_slugs)} novos)")
+                if not new_slugs:
+                    break
 
-            # ── If no slugs found, also try homepage (may have featured events) ──
-            if not all_slugs:
-                print(f"[{SOURCE_NAME}] nenhum slug na listagem — tentando homepage")
-                try:
-                    page.goto(BASE, timeout=20000)
+                # ── Step 4: fetch each event page ────────────────────────────
+                for slug in sorted(new_slugs):
+                    seen_slugs.add(slug)
+                    ev_url = f"/_next/data/{build_id}/evento/{slug}.json"
+                    ev_raw = page.evaluate(_FETCH_JS, ev_url)
+                    if not ev_raw:
+                        continue
                     try:
-                        page.wait_for_load_state("networkidle", timeout=15000)
+                        ev_data = json.loads(ev_raw)
                     except Exception:
-                        pass
-                    all_slugs = _slugs_from_captured()
-                    captured_event_slugs = {
-                        re.sub(r'\.json$', '', url.split('/evento/')[-1].split('?')[0])
-                        for url, _ in captured if '/evento/' in url
-                    }
-                    missing = all_slugs - captured_event_slugs
-                    print(f"[{SOURCE_NAME}] homepage: {len(all_slugs)} slugs, {len(missing)} sem JSON")
-                except Exception:
-                    pass
+                        continue
+                    if "__error__" in ev_data:
+                        continue
+                    ev = _parse_godream_event_json(ev_data)
+                    if ev:
+                        all_event_data.append(ev)
 
-            # ── Visit event pages not yet intercepted ────────────────────────
-            for slug in missing:
-                try:
-                    page.goto(f"{BASE}/evento/{slug}", timeout=20000)
-                    try:
-                        page.wait_for_load_state("networkidle", timeout=15000)
-                    except Exception:
-                        pass
-                except Exception:
-                    pass
+            print(f"[{SOURCE_NAME}] {len(all_event_data)} eventos via same-origin fetch")
 
-            html = page.content()
             browser.close()
 
-        # ── Build result from captured event JSONs ───────────────────────────
-        all_events: list[dict] = []
-        seen_slugs: set[str] = set()
-        for url, body in captured:
-            if '/evento/' not in url:
-                continue
-            try:
-                data = json.loads(body)
-            except Exception:
-                continue
-            ev = _parse_godream_event_json(data)
-            if ev:
-                slug = ev.get("slug", "")
-                if slug not in seen_slugs:
-                    seen_slugs.add(slug)
-                    all_events.append(ev)
-
-        print(f"[{SOURCE_NAME}] {len(all_events)} eventos extraídos via Playwright")
-        if all_events:
+        if all_event_data:
             synthetic = (
                 '<html><body>'
                 '<script id="__NEXT_DATA__" type="application/json">'
-                f'{{"props":{{"pageProps":{{"data":{json.dumps(all_events)}}}}}}}'
+                f'{{"props":{{"pageProps":{{"data":{json.dumps(all_event_data)}}}}}}}'
                 '</script></body></html>'
             )
             return synthetic
 
-        return html
+        # Fallback: return homepage HTML; _parse_next_data will try __NEXT_DATA__
+        # (homepage pre-renders featured events that may survive WAF checks)
+        print(f"[{SOURCE_NAME}] same-origin fetch vazio — retornando HTML da homepage")
+        return next_data_str and (
+            '<html><body>'
+            '<script id="__NEXT_DATA__" type="application/json">'
+            f'{next_data_str}'
+            '</script></body></html>'
+        )
+
     except Exception as e:
         print(f"[{SOURCE_NAME}] Playwright falhou: {e}")
         return None

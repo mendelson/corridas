@@ -78,41 +78,49 @@ return that real HTML (properly server-escaped) instead of reconstructing
 synthetic HTML with raw textContent.
 Result: still 0 eventos (pending CI run at time of writing this file).
 
-== Remaining hypotheses ==
+--- Attempt 4 (commit 548c288) ---
+Root cause identified: Scrapestack was already in the HTTP fallback chain
+(http_client.get()), but without &render_js=1. Cloudflare serves a
+JS-challenge page with HTTP 200. Since status 200 passes raise_for_status(),
+we silently accepted the challenge HTML as the real page, found no __NEXT_DATA__,
+and returned 0 eventos — never reaching Playwright.
 
-1. Playwright is blocked entirely by WAF
-   The page.goto(BASE) returns a Cloudflare challenge page or a bot-detection
-   redirect. In that case __NEXT_DATA__ is absent (confirmed absent → we return
-   page.content() which is the challenge HTML → _parse_next_data finds nothing).
-   Symptom would be: "title=..." prints something like "Just a moment…" or
-   "Attention Required" in the CI log. We haven't been able to read CI logs
-   directly.
+Fix:
+  - http_client.get() gains render_js kwarg (default False); when True, appends
+    &render_js=1 to the Scrapestack URL.
+  - godream._fetch_soup() passes render_js=True to ensure Scrapestack executes
+    JS before returning HTML.
+  - Added a validation check: only accept the HTTP response if it contains
+    __NEXT_DATA__ or "corrida" in the body; otherwise fall through to Playwright.
 
-2. Same-origin fetch is blocked
-   Cloudflare may block the fetch() inside the browser too if it detects that
-   the Chromium fingerprint looks like a bot (missing GPU, missing fonts, etc.).
-   In that case page.evaluate(_FETCH_JS, api_url) returns {__error__: 403}.
+Expected result: Scrapestack renders the page, passes the CF challenge, returns
+real HTML with __NEXT_DATA__ intact → _parse_next_data extracts events directly.
 
-3. buildId extraction fails for challenge page
-   If the challenge page has no __NEXT_DATA__, buildId is empty → we fall back
-   to returning page.content() (challenge HTML) which has no events.
+== Remaining hypotheses (if attempt 4 still fails) ==
 
-== Next steps to try ==
+1. Scrapestack render_js is also blocked by GoDream's WAF
+   Some WAFs detect Scrapestack's headless Chromium fingerprint. In that case
+   the response body still won't contain __NEXT_DATA__.
 
-A. Add residential/mobile proxy to Playwright (Apify proxy or SCRAPESTACK).
-   playwright_client.py currently has no proxy support. A real residential IP
-   would likely bypass the WAF entirely.
+2. Scrapestack account doesn't have render_js feature enabled
+   The render_js parameter may be a paid add-on. If not enabled, the &render_js=1
+   param is silently ignored and we get the same challenge page.
 
-B. Read the actual CI job log to see what page title Playwright reports and
-   whether same-origin fetch returns 0 slugs or an error code. This would
-   distinguish "WAF blocks everything" from "scraper logic issue".
+3. Playwright (datacenter IP + no residential proxy) is the only remaining path
+   If both HTTP+Scrapestack and Playwright are blocked, we need to add the Apify
+   residential proxy to the Playwright context.
 
-C. Try navigating directly to /corrida-de-rua instead of BASE (homepage).
-   The homepage may have stricter WAF rules than the calendar page.
+== Next steps to try (if attempt 4 fails) ==
 
-D. Use SCRAPESTACK (key already in CI secrets) as an HTTP proxy with httpx
-   to bypass the 403 on the initial HTTP attempt, avoiding Playwright entirely.
-   SCRAPESTACK supports JS rendering so __NEXT_DATA__ should be present.
+A. Add Apify residential proxy to the Playwright context:
+   ctx = browser.new_context(proxy={"server": "http://proxy.apify.com:8000",
+       "username": "auto", "password": APIFY_PROXY_PASSWORD}, ...)
+   playwright_client.py currently has no proxy support — add it to godream's
+   _fetch_via_playwright() directly.
+
+B. Read the actual CI job log (via GitHub API) to see what Scrapestack returned
+   and what page title Playwright reports — distinguish "still blocked" from
+   "parsing issue".
 
 == File reference ==
 scraper/sources/godream.py — full scraper implementation

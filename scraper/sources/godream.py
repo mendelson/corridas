@@ -221,8 +221,25 @@ def _parse_godream_event_json(data: dict) -> dict | None:
                     break
 
         if not date_raw:
-            # Log nested keys to help next iteration
-            print(f"[{SOURCE_NAME}] eventAppointment keys: {list(appt.keys()) if isinstance(appt, dict) else appt}")
+            # Log nested structures to find where date lives
+            print(f"[{SOURCE_NAME}] eventAppointment: {appt}")
+            tickets = ev.get("tickets") or []
+            if isinstance(tickets, list) and tickets:
+                t0 = tickets[0] if isinstance(tickets[0], dict) else {}
+                print(f"[{SOURCE_NAME}] tickets[0] keys: {list(t0.keys())}")
+                for k, v in t0.items():
+                    kl = k.lower()
+                    if any(x in kl for x in ("date","data","inicio","start","session","begin","dt")):
+                        print(f"[{SOURCE_NAME}]   tickets[0]['{k}'] = {str(v)[:120]}")
+            product = ev.get("product") or {}
+            if isinstance(product, dict):
+                print(f"[{SOURCE_NAME}] product keys: {list(product.keys())[:12]}")
+                for k, v in product.items():
+                    kl = k.lower()
+                    if any(x in kl for x in ("date","data","inicio","start","session","begin","dt")):
+                        print(f"[{SOURCE_NAME}]   product['{k}'] = {str(v)[:120]}")
+            addr = ev.get("address") or {}
+            print(f"[{SOURCE_NAME}] address: {str(addr)[:200]}")
             return None
 
         date = normalize_date(date_raw)

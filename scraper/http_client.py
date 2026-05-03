@@ -29,38 +29,45 @@ APIFY_PROXY_PASSWORD = os.getenv("APIFY_PROXY_PASSWORD", "") or os.getenv("APIFY
 
 
 def get(url: str, **kwargs) -> httpx.Response:
-    kwargs.setdefault("timeout", TIMEOUT)
-    return httpx.get(url, headers=HEADERS, follow_redirects=True, **kwargs)
+    """HTTP GET with automatic WAF fallback: direct → Scrapestack → Apify proxy.
 
+    All scrapers use this function. Fallback is transparent and requires no
+    per-scraper configuration. New scrapers get it automatically.
+    """
+    # Pop kwargs that are not httpx-native
+    kwargs.pop("source", None)
+    verify  = kwargs.pop("verify", True)
+    timeout = kwargs.pop("timeout", TIMEOUT)
 
-def get_with_fallback(url: str, source: str = "", verify: bool = True) -> httpx.Response:
-    """Direct request first; on WAF block (403/429) falls back to Scrapestack then Apify."""
-    tag = f"[{source}] " if source else ""
+    _domain = urllib.parse.urlparse(url).netloc
 
-    # 1. Direct
+    # 1. Direct request
     try:
-        resp = get(url, verify=verify)
+        resp = httpx.get(
+            url, headers=HEADERS, follow_redirects=True,
+            verify=verify, timeout=timeout, **kwargs,
+        )
         if resp.status_code not in _WAF_STATUSES:
             return resp
-        print(f"{tag}bloqueado ({resp.status_code}), tentando proxies...")
+        print(f"[proxy] {_domain} bloqueado ({resp.status_code}), tentando Scrapestack...")
     except (httpx.TimeoutException, httpx.ConnectError, httpx.NetworkError):
         raise
 
     # 2. Scrapestack
     if SCRAPESTACK_KEY:
         try:
-            proxy_url = (
+            ss_url = (
                 "http://api.scrapestack.com/scrape"
                 f"?access_key={SCRAPESTACK_KEY}"
                 f"&url={urllib.parse.quote(url, safe='')}"
             )
-            resp = get(proxy_url)
+            resp = httpx.get(ss_url, headers=HEADERS, follow_redirects=True, timeout=timeout)
             if resp.status_code < 400:
-                print(f"{tag}obtido via Scrapestack")
+                print(f"[proxy] {_domain} obtido via Scrapestack")
                 return resp
-            print(f"{tag}Scrapestack retornou {resp.status_code}")
+            print(f"[proxy] Scrapestack retornou {resp.status_code} para {_domain}, tentando Apify...")
         except Exception as e:
-            print(f"{tag}Scrapestack falhou: {e}")
+            print(f"[proxy] Scrapestack falhou para {_domain}: {e}")
 
     # 3. Apify proxy
     if APIFY_PROXY_PASSWORD:
@@ -69,18 +76,22 @@ def get_with_fallback(url: str, source: str = "", verify: bool = True) -> httpx.
                 url,
                 headers=HEADERS,
                 follow_redirects=True,
-                timeout=TIMEOUT,
+                timeout=timeout,
                 proxy=f"http://auto:{APIFY_PROXY_PASSWORD}@proxy.apify.com:8000",
             )
             if resp.status_code < 400:
-                print(f"{tag}obtido via Apify")
+                print(f"[proxy] {_domain} obtido via Apify")
                 return resp
-            print(f"{tag}Apify proxy retornou {resp.status_code}")
+            print(f"[proxy] Apify retornou {resp.status_code} para {_domain}")
         except Exception as e:
-            print(f"{tag}Apify proxy falhou: {e}")
+            print(f"[proxy] Apify falhou para {_domain}: {e}")
 
     raise httpx.HTTPStatusError(
         f"todos os métodos falharam para {url}",
         request=httpx.Request("GET", url),
         response=httpx.Response(503),
     )
+
+
+# Kept for backward compatibility — get() already includes fallback
+get_with_fallback = get

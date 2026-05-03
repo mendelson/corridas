@@ -5,7 +5,7 @@ on:
     inputs:
       source:
         description: >
-          Source module to debug (e.g. "london", "manchester", "all").
+          Source module to debug (e.g. "london", "godream", "all").
           Leave empty or use "all" to run the full pipeline.
         required: false
         default: 'all'
@@ -23,19 +23,28 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
 
       - name: Run scraper (full pipeline)
         if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == '' }}
+        env:
+          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: python -m scraper.main 2>&1 | tee debug.log
 
       - name: Run single source
         if: ${{ github.event.inputs.source != 'all' && github.event.inputs.source != '' }}
+        env:
+          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: |
           python - << 'EOF'
           import sys, importlib, json
           source = "${{ github.event.inputs.source }}"
-          # Try majors first, then top-level sources
           for mod_path in [f"scraper.sources.majors.{source}", f"scraper.sources.{source}"]:
               try:
                   mod = importlib.import_module(mod_path)
@@ -54,11 +63,15 @@ jobs:
                   sys.exit(0)
               except ModuleNotFoundError:
                   continue
-          print(f"Source '{source}' not found. Available majors:")
-          import pkgutil, scraper.sources.majors as m
-          for info in pkgutil.iter_modules(m.__path__):
+          print(f"Source '{source}' not found. Available sources:")
+          import pkgutil, scraper.sources as s, scraper.sources.majors as m
+          for info in pkgutil.iter_modules(s.__path__):
               if not info.name.startswith('_'):
                   print(f"  {info.name}")
+          print("  majors/:")
+          for info in pkgutil.iter_modules(m.__path__):
+              if not info.name.startswith('_'):
+                  print(f"    {info.name}")
           sys.exit(1)
           EOF
         shell: bash

@@ -15,7 +15,7 @@ from datetime import date
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get, get_with_fallback
+from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 
@@ -62,7 +62,7 @@ def scrape() -> list[Corrida]:
     # ── Strategy 1: __NEXT_DATA__ / embedded JSON ──────────────────────────
     for url in _CALENDAR_URLS:
         try:
-            resp = get_with_fallback(url, source=SOURCE_NAME)
+            resp = get(url, source=SOURCE_NAME)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao buscar {url}: {e}")
             continue
@@ -180,7 +180,7 @@ def _extract_html_cards(soup) -> list[dict]:
 
 def _try_graphql() -> list[dict]:
     try:
-        resp = get_with_fallback(_GRAPHQL_URL, source=SOURCE_NAME)
+        resp = get(_GRAPHQL_URL, source=SOURCE_NAME)
         if resp.status_code == 200:
             data = resp.json()
             print(f"[{SOURCE_NAME}] GraphQL OK: {list(data.keys())[:5]}")

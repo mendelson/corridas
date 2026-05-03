@@ -1,0 +1,121 @@
+GoDream scraper — discovery log
+================================
+Site: https://www.godream.com.br
+Module: scraper/sources/godream.py
+
+== Site architecture ==
+
+GoDream is a Next.js (SSR) site. Every page ships a <script id="__NEXT_DATA__">
+tag with serialised React props. Running events live at /corrida-de-rua.
+
+The Next.js internal API is accessible at:
+  /_next/data/{buildId}/corrida-de-rua.json?page=N   (listing)
+  /_next/data/{buildId}/evento/{slug}.json            (event detail)
+
+The buildId changes with every deployment. It must be read from __NEXT_DATA__
+of any page before querying the listing API.
+
+Data shape:
+  Listing item:
+    { title, slug, eventAppointment: [{startDate: "YYYY-MM-DD"}], address: { city: {name, state: {acronym}} }, coverImage: {url} }
+  Event detail (pageProps.event):
+    same shape plus: about (HTML text), tickets, distances/modalities
+
+Key gotcha — all date fields are camelCase:
+  - Date lives in  item.eventAppointment[0].startDate  — NOT item.startDate
+  - City lives in  item.address.city.name  (city is an object, not a string)
+  - State lives in item.address.city.state.acronym
+
+== WAF behaviour in CI ==
+
+Direct HTTP (httpx) → 403 Forbidden from the CDN/WAF on every request.
+Playwright (headless Chromium, datacenter IP) → also blocked or returns
+a Cloudflare challenge page with no __NEXT_DATA__ present.
+
+We cannot confirm whether the challenge page is served or whether data is
+absent for a different reason, because the CI log only prints "0 eventos".
+
+== Attempts ==
+
+--- Attempt 1 (commit 2b8d653) ---
+Strategy: network interception — Playwright intercepts /_next/data/ XHR
+requests automatically triggered by the category page navigation.
+Result: 0 eventos
+Diagnosed issues found after the run:
+  a) _looks_like_event() checked lowercase key names but "eventAppointment"
+     lowercases to "eventappointment" which was missing from the has_date set.
+  b) _parse_json_event() only looked for date at top-level fields; the actual
+     date is nested at eventAppointment[0].startDate.
+  c) str.rstrip('.json') strips any individual char from the set {.,j,s,o,n}
+     corrupting slugs like "corrida-os" → bug in slug→URL reconstruction.
+
+--- Attempt 2 (commit ab51d88) ---
+Strategy: DOM extraction + same-origin fetch
+  1. Navigate homepage (lenient WAF path).
+  2. Read __NEXT_DATA__ via page.evaluate (returns textContent of the script tag).
+  3. Parse buildId from that JSON.
+  4. For each page N: page.evaluate(_FETCH_JS, api_url) — the fetch() runs
+     inside the browser context, same origin, with cookies → bypasses IP WAF.
+  5. For each slug found: fetch event detail the same way.
+Also fixed the three bugs from Attempt 1.
+Result: 0 eventos
+Suspected remaining issue: the fallback synthetic HTML reconstruction placed
+the raw next_data_str (from page.evaluate textContent) back inside a
+<script>...</script> tag. If the JSON contains the literal string </script>
+(which it may in "about" HTML fields), BeautifulSoup truncates the tag and
+tag.string returns null/truncated content, so _parse_next_data finds 0 events.
+Note: this fallback only runs when same-origin fetch itself returns nothing.
+
+--- Attempt 3 (commit 8f6c4ff) ---
+Kept same-origin fetch strategy.
+Added _parse_godream_index_item() to parse listing items directly (date +
+address available without needing event detail pages).
+Extended _extract_all_slugs() to accept eventTitle/eventName/startDate/
+eventAppointment as event-presence signals.
+Fixed _parse_godream_event_json() to check eventAppointment[0].startDate.
+Fixed the fallback path: save page.content() before browser.close() and
+return that real HTML (properly server-escaped) instead of reconstructing
+synthetic HTML with raw textContent.
+Result: still 0 eventos (pending CI run at time of writing this file).
+
+== Remaining hypotheses ==
+
+1. Playwright is blocked entirely by WAF
+   The page.goto(BASE) returns a Cloudflare challenge page or a bot-detection
+   redirect. In that case __NEXT_DATA__ is absent (confirmed absent → we return
+   page.content() which is the challenge HTML → _parse_next_data finds nothing).
+   Symptom would be: "title=..." prints something like "Just a moment…" or
+   "Attention Required" in the CI log. We haven't been able to read CI logs
+   directly.
+
+2. Same-origin fetch is blocked
+   Cloudflare may block the fetch() inside the browser too if it detects that
+   the Chromium fingerprint looks like a bot (missing GPU, missing fonts, etc.).
+   In that case page.evaluate(_FETCH_JS, api_url) returns {__error__: 403}.
+
+3. buildId extraction fails for challenge page
+   If the challenge page has no __NEXT_DATA__, buildId is empty → we fall back
+   to returning page.content() (challenge HTML) which has no events.
+
+== Next steps to try ==
+
+A. Add residential/mobile proxy to Playwright (Apify proxy or SCRAPESTACK).
+   playwright_client.py currently has no proxy support. A real residential IP
+   would likely bypass the WAF entirely.
+
+B. Read the actual CI job log to see what page title Playwright reports and
+   whether same-origin fetch returns 0 slugs or an error code. This would
+   distinguish "WAF blocks everything" from "scraper logic issue".
+
+C. Try navigating directly to /corrida-de-rua instead of BASE (homepage).
+   The homepage may have stricter WAF rules than the calendar page.
+
+D. Use SCRAPESTACK (key already in CI secrets) as an HTTP proxy with httpx
+   to bypass the 403 on the initial HTTP attempt, avoiding Playwright entirely.
+   SCRAPESTACK supports JS rendering so __NEXT_DATA__ should be present.
+
+== File reference ==
+scraper/sources/godream.py — full scraper implementation
+scraper/playwright_client.py — Playwright helpers (_STEALTH_JS, _USER_AGENT)
+scraper/http_client.py — httpx wrapper (get/post)
+data/source-status.json — CI test results history

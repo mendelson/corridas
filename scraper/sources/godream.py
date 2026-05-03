@@ -1,4 +1,8 @@
-"""Scraper for godream.com.br — Brazilian running events platform."""
+"""Scraper for godream.com.br — Brazilian running events platform.
+
+Playwright navigates the /corrida-de-rua category page, paginates through
+all listing pages, and intercepts Next.js JSON for each event.
+"""
 from __future__ import annotations
 import json
 import re

@@ -19,7 +19,7 @@ import unicodedata
 
 from bs4 import BeautifulSoup
 
-from .http_client import get as http_get
+from .http_client import get_direct as http_get
 
 # ---------------------------------------------------------------------------
 # Shared text-normalisation helpers

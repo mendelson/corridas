@@ -163,12 +163,18 @@ def _fetch_via_playwright() -> "str | None":
                         print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
                         all_events.extend(events)
                     elif 'index.json' in url:
-                        # Log index.json to find event date structure
-                        print(f"[{SOURCE_NAME}] index.json keys: {list(data.keys())[:10]}")
+                        # index.json: pageProps.events.content = list of upcoming events
                         page_props = data.get("pageProps") or {}
-                        print(f"[{SOURCE_NAME}] index.json pageProps keys: {list(page_props.keys())[:15]}")
-                        for k, v in page_props.items():
-                            print(f"[{SOURCE_NAME}]   pageProps['{k}']: {str(v)[:200]}")
+                        content = (page_props.get("events") or {}).get("content") or []
+                        if content:
+                            print(f"[{SOURCE_NAME}] index.json: {len(content)} evento(s) em events.content")
+                            # Log first item's full structure to see all available fields
+                            c0 = content[0]
+                            print(f"[{SOURCE_NAME}] content[0] keys: {list(c0.keys())}")
+                            for k, v in c0.items():
+                                print(f"[{SOURCE_NAME}]   content[0]['{k}']: {str(v)[:200]}")
+                        else:
+                            print(f"[{SOURCE_NAME}] index.json pageProps keys: {list(page_props.keys())}")
 
             if all_events:
                 print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")

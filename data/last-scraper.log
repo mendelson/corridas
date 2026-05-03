@@ -1,82 +1,30 @@
 [main] iniciando scraping...
-[main] 1171 corridas no estado anterior
+[main] 1172 corridas no estado anterior
 [Central da Corrida] 80 corridas encontradas
 [Ativo] 5 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 21 corridas encontradas
-[Iguana Sports] 8 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
-[Brasil que Corre] 0 corridas encontradas
 [Brasil Corrida] 9 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
+[Brasil que Corre] 0 corridas encontradas
 [SESC DF] 9 corridas encontradas
-[Correr Brasília] 1 corridas encontradas
 [proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
 [Circuito das Estações] 104 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.godream.com.br, tentando Apify...
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
 [GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
-[Yescom] 14 corridas encontradas
+[Correr Brasília] 1 corridas encontradas
 [GoDream] Playwright navegando para homepage: https://www.godream.com.br
+[Yescom] 14 corridas encontradas
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/evento/af-sunset-open-4827511.json?slug=af-sunset-open-4827511 (21762 bytes)
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/evento/corridona-2026-4492261.json?slug=corridona-2026-4492261 (27290 bytes)
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/evento/maratona-do-rio-2026-raspa-do-tacho-8027828.json?slug=maratona-do-rio-2026-raspa-do-tacho-8027828 (83929 bytes)
 [GoDream] JSON interceptado: https://api.afilaanda.co/queue/69d3b05ba2af53000249220b (1600 bytes)
 [GoDream] JSON interceptado: https://www.godream.com.br/_next/data/B4J5pt9D8xg_bExecVriy/index.json (6430 bytes)
 [GoDream] 5 respostas JSON capturadas
-[GoDream] ev.keys(): ['slug', 'active', 'activeAccessCode', 'activeRealizedEvent', 'activeInternational', 'isPaymentOptionBoleto', 'isPaymentOptionCreditCard', 'isPaymentOptionPix', 'isPaymentOptionPayPal', 'providersSettings', 'couponOnly', 'logoImage', 'coverImage', 'gallery', 'title', 'about', 'maxCpfEvent', 'maxTicketsPerSession', 'taxaEvent', 'hasProcessingTax', 'processingTaxRate', 'includeTaxOnFinalPrice', 'cartTicketText', 'participantTitle', 'participantDescription', 'participantMessage', 'regulationUrl', 'termsUrl', 'labelInTicket', 'address', 'eventAddress', 'embedMap', 'lowestTicketPrice', 'highestTicketPrice', 'tickets', 'product', 'eventAppointment', 'ticketTransfer', 'ticketTransferCustomName', 'ticketTransferPayment', 'ticketTransferValue', 'isServiceStore', 'fileUploadTitle', 'uploadDescription']
-[GoDream]   ev['slug']: af-sunset-open-4827511
-[GoDream]   ev['active']: True
-[GoDream]   ev['activeAccessCode']: False
-[GoDream]   ev['activeRealizedEvent']: False
-[GoDream]   ev['activeInternational']: False
-[GoDream]   ev['isPaymentOptionBoleto']: False
-[GoDream]   ev['isPaymentOptionCreditCard']: True
-[GoDream]   ev['isPaymentOptionPix']: True
-[GoDream]   ev['isPaymentOptionPayPal']: False
-[GoDream]   ev['providersSettings']: [{"paymentOption": "CreditCard", "provider": "PagSeguro", "splitId": "", "bins": [], "binsName": ""}, {"paymentOption": "Pix", "provider": "PagSeguro", "splitId": "99c8b2f8-313b-4110-b611-fb8ff02d07c91c8537ee4e428d3419495875e02868966eae-074d-48f3-bf12-fd826edb59fe", "bins": [], "binsName": null}]
-[GoDream]   ev['couponOnly']: False
-[GoDream]   ev['logoImage']: {"url": "https://godream-ticketing-production.s3.amazonaws.com/120x120-sa73y.webp"}
-[GoDream]   ev['coverImage']: {"url": "https://godream-ticketing-production.s3.amazonaws.com/800x600-awtfi.webp"}
-[GoDream]   ev['gallery']: []
-[GoDream]   ev['title']: AF SUNSET OPEN
-[GoDream]   ev['about']: <h2><strong>🌅 AF Sunset Open – 2ª Edição</strong></h2><p><br></p><p>📍 AirFit Academia – Cadima Shopping</p><p>📅 16 e 17 de maio de 2026</p><p>🕖 Das 7h às 20h (portões abrem às 6h50)</p><p>📌 Rua Moisés
-[GoDream]   ev['maxCpfEvent']: 4
-[GoDream]   ev['maxTicketsPerSession']: 4
-[GoDream]   ev['taxaEvent']: 10
-[GoDream]   ev['hasProcessingTax']: False
-[GoDream]   ev['processingTaxRate']: 0
-[GoDream]   ev['includeTaxOnFinalPrice']: True
-[GoDream]   ev['cartTicketText']: ⚠️Adicione inicialmente a modalidade principal ao carrinho e, posteriormente, inclua a modalidade extra, se desejar.
-[GoDream]   ev['participantTitle']: Participantes
-[GoDream]   ev['participantDescription']: Preencha o formulário ou faça login:
-[GoDream]   ev['participantMessage']: Informativo de Participação – Modalidades em Equipe
-Dupla: será permitido no máximo 1 participante de fora da academia.
-Quarteto: será permitido no máximo 3 participantes de fora da academia.
-A equipe
-[GoDream]   ev['regulationUrl']: None
-[GoDream]   ev['termsUrl']: None
-[GoDream]   ev['labelInTicket']: 
-[GoDream]   ev['address']: {"city": {"name": "Nova Friburgo", "state": {"acronym": "RJ", "name": "Rio de Janeiro"}}, "street": "", "number": "", "neighborhood": "", "complement": "", "postalcode": "", "latitude": 0, "longitude": 0, "gmapsZoom": 1}
-[GoDream]   ev['eventAddress']: AIRFIT Academia - Cadima Shopping - Centro  - Nova Friburgo
-[GoDream]   ev['embedMap']: https://www.stay22.com/embed/69e0ef9e4d607cd67c1153cd
-[GoDream]   ev['lowestTicketPrice']: 120
-[GoDream]   ev['highestTicketPrice']: 120
-[GoDream]   ev['tickets']: [{"id": 1505, "slug": "af-sunset-open-inscricao-+-kit-sunset-individual", "name": "AF SUNSET OPEN - Inscri\u00e7\u00e3o + Kit Sunset - Individual", "location": "\ud83d\udcc5 16/05 - S\u00e1bado: \ud83c\udfbe Beach Tennis  | \u26bd Futev\u00f4lei | \ud83d\udcc5 17/05 - Domingo: \ud83c\udfd0 V\u00f4lei", "description": "<p>\ud83c\udf9f\ufe0f <strong>Inscri\u00e7\u00e3o + Kit Sunset: camiseta do evento, bon\u00e9 personalizado e medalha de participa\u00e7\u00e3o.</strong></p><p><strong>\u2795 Modal
-[GoDream]   ev['product']: [{"id": 357, "active": true, "title": "Clique em \u2018Adicionar\u2019 para escolher a modalidade extra individual \u2013 BEACH TENNIS", "description": "Op\u00e7\u00e3o de participa\u00e7\u00e3o em modalidade extra. N\u00c3O inclui novo Kit Sunset.", "eventId": 376, "typeProduct": "Servico", "shipmentType": [], "localPickUpInformation": null, "applyOn": "ALL", "applyOnValue": null, "coverImage": {"id": "008d4b98-a7ee-4356-a7a6-02ac6062f9fc", "url": "https://godream-ticketing-production.s3.amazon
-[GoDream]   ev['eventAppointment']: []
-[GoDream]   ev['ticketTransfer']: False
-[GoDream]   ev['ticketTransferCustomName']: None
-[GoDream]   ev['ticketTransferPayment']: False
-[GoDream]   ev['ticketTransferValue']: None
-[GoDream]   ev['isServiceStore']: False
-[GoDream]   ev['fileUploadTitle']: 
-[GoDream]   ev['uploadDescription']: 
-[GoDream] pageProps.keys(): ['event']
-[GoDream] sem data futura para 'AF SUNSET OPEN'
-[GoDream] falhou ao parsear evento: af-sunset-open-4827511.json
-[GoDream] 2 datas futuras — usando '.about': 2026-06-07
+[GoDream] evento extraído: AF SUNSET OPEN
 [GoDream] evento extraído: Corridona 2026
-[GoDream] 23 datas futuras — usando '.tickets[1].stocks[1].stockItems[0].name': 2026-06-03
 [GoDream] evento extraído: Maratona do Rio 2026 - Raspa do Tacho
 [GoDream] item sem data — slug=af-sunset-open-4827511, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
 [GoDream] item sem data — slug=maratona-do-rio-2026-raspa-do-tacho-8027828, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
@@ -85,25 +33,35 @@ A equipe
 [GoDream] item sem data — slug=maratona-do-rio-2026-loja-de-plugins-767300, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
 [GoDream] item sem data — slug=entre-maes-run-2026-6707772, keys=['slug', 'coverImage', 'featuredImage', 'title', 'lowestTicketPrice', 'lowestExtraPrice', 'isServiceStore']
 [GoDream] index.json: 6 items → 0 eventos
-[GoDream] total: 2 eventos nos JSONs capturados
-[GoDream] Playwright: 771 bytes
-[GoDream] 2 corridas (via __NEXT_DATA__)
+[GoDream] total: 3 eventos nos JSONs capturados
+[GoDream] Playwright: 1048 bytes
+[GoDream] 3 corridas (via __NEXT_DATA__)
+[Portal das Corridas] 0 corridas encontradas
 [Corridas Brasil] 2947 corridas encontradas
+[TF Sports] 51 corridas encontradas
 [Live Run] 48 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
 [Volta do Lago] site acessível mas sem dados reconhecíveis
+[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [World Marathons] buildId não encontrado
 [World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[TF Sports] 51 corridas encontradas
-[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running?distanceMin=10: todos os métodos falharam para https://www.letsdothis.com/gb/e/running?distanceMin=10
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[World Marathons] Playwright: 376521 bytes renderizados
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370185 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370219 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370076 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
+[World Marathons] sem dados — nenhuma estratégia funcionou
+[proxy] Scrapestack falhou para www.letsdothis.com: timed out
+[Ticket Sports] 966 corridas encontradas
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
@@ -111,51 +69,39 @@ A equipe
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/marathon
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[World Marathons] Playwright: 376521 bytes renderizados
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370527 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370154 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370585 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
-[World Marathons] sem dados — nenhuma estratégia funcionou
-[Portal das Corridas] erro playwright: Timeout 30000ms exceeded.
-[Portal das Corridas] 0 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/half-marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/half-marathon
 [Let's Do This] tentando Playwright para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[Let's Do This] Playwright: 992135 bytes renderizados
+[Let's Do This] Playwright: 992335 bytes renderizados
 [Let's Do This] classes relevantes na página: ['after:pointer-events-none']
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[Ticket Sports] 965 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] GraphQL erro: todos os métodos falharam para https://www.letsdothis.com/api/graphql
 [Let's Do This] sem dados — nenhuma estratégia funcionou
-[main] 4317 registros coletados (antes do merge)
-[main] 1188 registros após validação
-[main] 1145 corridas após merge
-[main] verificando links de 21 evento(s) não encontrado(s) no scrape...
+[main] 4319 registros coletados (antes do merge)
+[main] 1189 registros após validação
+[main] 1146 corridas após merge
+[main] verificando links de 20 evento(s) não encontrado(s) no scrape...
+[main] 'Star Girls' — link válido, miss_count zerado
+[main] 'Cats Run AL 2026' — link válido, miss_count zerado
 [main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
 [main] 'Lupo Sport Corre Jundiaí' — link válido, miss_count zerado
-[main] 'Vila Velha Night Run' — link válido, miss_count zerado
-[main] 'Star Girls' — link válido, miss_count zerado
 [main] 'Corrida Em Casa A Gente Conversa 2ª Edição' — link válido, miss_count zerado
-[main] 'Bike Fest 2026' — link válido, miss_count zerado
-[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
-[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
-[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
-[main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
-[main] 'Cats Run AL 2026' — link válido, miss_count zerado
-[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
-[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] '15ª Corrida Eco Run Verde' — link válido, miss_count zerado
-[main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
-[main] '1ª Corrida Da Romu' — link válido, miss_count zerado
-[main] 'Desafio Macuco' — link válido, miss_count zerado
-[main] 'Corrida Noturna De Campo Do Tenente' — link válido, miss_count zerado
+[main] 'Vila Velha Night Run' — link válido, miss_count zerado
+[main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
 [main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
+[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
+[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
+[main] 'Desafio Macuco' — link válido, miss_count zerado
+[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
+[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
+[main] '1ª Corrida Da Romu' — link válido, miss_count zerado
+[main] 'Bike Fest 2026' — link válido, miss_count zerado
+[main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
 [main] 1175 corridas após reconciliação
 [main] 1172 corridas após dedup final
 [main] buscando imagens para 130 evento(s) sem foto...

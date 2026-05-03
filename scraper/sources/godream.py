@@ -140,10 +140,12 @@ def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
         resp = get(CALENDAR_URL, source=SOURCE_NAME, render_js=True)
         resp.raise_for_status()
         html = resp.text
-        # Scrapestack sometimes returns a challenge page with 200; detect and skip it
-        if "<script id=\"__NEXT_DATA__\"" in html or "corrida" in html.lower():
+        # Only accept the response if it contains __NEXT_DATA__ — a Cloudflare
+        # challenge page with HTTP 200 will not have it.
+        if '<script id="__NEXT_DATA__"' in html:
+            print(f"[{SOURCE_NAME}] HTTP: __NEXT_DATA__ encontrado ({len(html)} bytes)")
             return BeautifulSoup(html, "lxml"), False
-        print(f"[{SOURCE_NAME}] HTTP retornou página sem dados (challenge?), tentando Playwright...")
+        print(f"[{SOURCE_NAME}] HTTP retornou página sem __NEXT_DATA__ (challenge?), tentando Playwright...")
     except Exception as e:
         print(f"[{SOURCE_NAME}] HTTP falhou ({e}), tentando Playwright...")
 
@@ -221,18 +223,29 @@ def _fetch_via_playwright() -> "str | None":
     except ImportError:
         return None
 
+    import os
+    apify_pw = os.getenv("APIFY_PROXY_PASSWORD") or os.getenv("APIFY_TOKEN")
+
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(
                 headless=True,
                 args=["--disable-blink-features=AutomationControlled"],
             )
-            ctx = browser.new_context(
-                user_agent=_USER_AGENT,
-                viewport={"width": 1280, "height": 720},
-                locale="pt-BR",
-                extra_http_headers={"Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8"},
-            )
+            ctx_kwargs: dict = {
+                "user_agent": _USER_AGENT,
+                "viewport": {"width": 1280, "height": 720},
+                "locale": "pt-BR",
+                "extra_http_headers": {"Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8"},
+            }
+            if apify_pw:
+                ctx_kwargs["proxy"] = {
+                    "server": "http://proxy.apify.com:8000",
+                    "username": "auto",
+                    "password": apify_pw,
+                }
+                print(f"[{SOURCE_NAME}] Playwright via Apify residential proxy")
+            ctx = browser.new_context(**ctx_kwargs)
             page = ctx.new_page()
             page.add_init_script(_STEALTH_JS)
 

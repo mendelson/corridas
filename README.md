@@ -35,7 +35,7 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Brasil que Corre<!--brasil_que_corre--> | ✅¹ | `brasilquecorre.com/distritofederal` | HTML | 2026-05-03 21:40 | ❌ | — |
+| Brasil que Corre<!--brasil_que_corre--> | ✅¹ | `brasilquecorre.com/distritofederal` | HTML | 2026-05-03 21:40 | ❌ 403 no CI | — |
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-03 21:42 | ✅ | 2026-05-03 21:42 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-03 21:42 | ✅ | 2026-05-03 21:42 |
 
@@ -57,9 +57,9 @@ Estas fontes estão registradas no código mas retornam 0 eventos. O bloqueio oc
 
 | Fonte | URL | Situação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- |
-| Live Run<!--liverun--> | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado | 2026-05-03 21:41 | ❌ | — |
-| Let's Do This<!--lets_do_this--> | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side | 2026-05-03 21:41 | ❌ | — |
-| World Marathons<!--world_marathons--> | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright | 2026-05-03 21:42 | ❌ | — |
+| Live Run<!--liverun--> | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado | 2026-05-03 21:41 | ❌ 403 | — |
+| Let's Do This<!--lets_do_this--> | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side | 2026-05-03 21:41 | ❌ Cloudflare | — |
+| World Marathons<!--world_marathons--> | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright | 2026-05-03 21:42 | ❌ Cloudflare | — |
 
 ### Fontes internacionais
 
@@ -120,7 +120,7 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-03 21:40 | ✅ | 2026-05-03 21:40 |
-| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 403 no CI. | 2026-05-03 21:40 | ❌ | — |
+| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 403 no CI. | 2026-05-03 21:40 | ❌ 403 no CI | — |
 
 ## Fontes testadas e inviáveis
 

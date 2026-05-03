@@ -209,7 +209,7 @@ def _fetch_via_playwright() -> "str | None":
         slugs: set[str] = set()
         for url, body in captured:
             if '/evento/' in url:
-                slug = url.split('/evento/')[-1].split('?')[0].rstrip('.json')
+                slug = re.sub(r'\.json$', '', url.split('/evento/')[-1].split('?')[0])
                 slugs.add(slug)
             else:
                 try:
@@ -244,6 +244,11 @@ def _fetch_via_playwright() -> "str | None":
             page.evaluate("window.scrollTo(0, document.body.scrollHeight)")
             page.wait_for_timeout(2000)
 
+            _title = page.title()
+            _url_after = page.url
+            print(f"[{SOURCE_NAME}] página carregada: title={_title!r} url={_url_after}")
+            print(f"[{SOURCE_NAME}] {len(captured)} respostas JSON interceptadas após pág. 1")
+
             # ── Paginate through the category listing ────────────────────────
             for page_num in range(2, 20):
                 prev_count = len(_slugs_from_captured())
@@ -263,11 +268,33 @@ def _fetch_via_playwright() -> "str | None":
 
             all_slugs = _slugs_from_captured()
             captured_event_slugs = {
-                url.split('/evento/')[-1].split('?')[0].rstrip('.json')
+                re.sub(r'\.json$', '', url.split('/evento/')[-1].split('?')[0])
                 for url, _ in captured if '/evento/' in url
             }
             missing = all_slugs - captured_event_slugs
-            print(f"[{SOURCE_NAME}] {len(all_slugs)} slugs coletados, {len(missing)} sem JSON ainda")
+            print(f"[{SOURCE_NAME}] {len(all_slugs)} slugs coletados, "
+                  f"{len(captured_event_slugs)} com JSON, {len(missing)} sem JSON ainda")
+            for u, b in captured[:5]:
+                print(f"[{SOURCE_NAME}]   interceptado: {u[:120]} ({len(b)}B)")
+
+            # ── If no slugs found, also try homepage (may have featured events) ──
+            if not all_slugs:
+                print(f"[{SOURCE_NAME}] nenhum slug na listagem — tentando homepage")
+                try:
+                    page.goto(BASE, timeout=20000)
+                    try:
+                        page.wait_for_load_state("networkidle", timeout=15000)
+                    except Exception:
+                        pass
+                    all_slugs = _slugs_from_captured()
+                    captured_event_slugs = {
+                        re.sub(r'\.json$', '', url.split('/evento/')[-1].split('?')[0])
+                        for url, _ in captured if '/evento/' in url
+                    }
+                    missing = all_slugs - captured_event_slugs
+                    print(f"[{SOURCE_NAME}] homepage: {len(all_slugs)} slugs, {len(missing)} sem JSON")
+                except Exception:
+                    pass
 
             # ── Visit event pages not yet intercepted ────────────────────────
             for slug in missing:
@@ -558,8 +585,14 @@ def _find_events_in_json(obj, _depth: int = 0) -> list[dict]:
 def _looks_like_event(obj: dict) -> bool:
     """True if the dict has fields typical of a running event."""
     keys_lower = {k.lower() for k in obj}
-    has_title = any(k in keys_lower for k in ("title", "titulo", "nome", "name", "event_name"))
-    has_date  = any(k in keys_lower for k in ("date", "data", "data_evento", "dt_inicio", "start_date", "event_date"))
+    has_title = any(k in keys_lower for k in (
+        "title", "titulo", "nome", "name", "event_name", "eventname", "eventtitle",
+    ))
+    has_date = any(k in keys_lower for k in (
+        "date", "data", "data_evento", "dt_inicio", "start_date", "event_date",
+        "startdate", "eventdate", "dtinicio", "beginat", "startat",
+        "startdatetime", "eventappointment",
+    ))
     return has_title and has_date
 
 

@@ -88,6 +88,16 @@ _NAME_TO_MODULE: dict[str, str] = {v: k for k, v in _MODULE_TO_NAME.items()}
 _STATUS_HEADERS = ("Testado em", "Status", "Últ. sucesso")
 _COMMENT_RE = re.compile(r"<!--([a-z_/]+)-->")
 
+# Known failure reasons for sources that predictably fail in CI
+_STATIC_NOTES: dict[str, str] = {
+    "bora_correr":      "403 no CI",
+    "brasil_que_corre": "403 no CI",
+    "corridas_br":      "403 no CI",
+    "liverun":          "403",
+    "lets_do_this":     "Cloudflare",
+    "world_marathons":  "Cloudflare",
+}
+
 
 # ---------------------------------------------------------------------------
 # Status JSON helpers
@@ -118,9 +128,13 @@ def _apply_results(status: dict, results_dir: Path) -> dict:
             tested_at = r["tested_at"]
             ok = r.get("status") == "ok"
             prev = status.get(source, {})
+            note = None
+            if not ok:
+                note = r.get("note") or _STATIC_NOTES.get(source)
             status[source] = {
                 "tested_at": tested_at,
                 "status": "ok" if ok else "fail",
+                "failure_note": note,
                 "last_success": tested_at if ok else prev.get("last_success"),
             }
         except Exception as e:
@@ -220,16 +234,20 @@ def _process_table(rows: list[str], status: dict) -> list[str]:
                 # Only update if we have fresh data for this source
                 if module and module in status:
                     s = status[module]
+                    ok = s.get("status") == "ok"
+                    note = (s.get("failure_note") or _STATIC_NOTES.get(module)) if not ok else None
                     cells[-3] = _fmt(s.get("tested_at"))
-                    cells[-2] = "✅" if s.get("status") == "ok" else "❌"
+                    cells[-2] = f"❌ {note}" if note else ("✅" if ok else "❌")
                     cells[-1] = _fmt(s.get("last_success"))
                 # else: preserve whatever is already in cells[-3:-1]
             else:
                 # First run: append new cells
                 if module and module in status:
                     s = status[module]
+                    ok = s.get("status") == "ok"
+                    note = (s.get("failure_note") or _STATIC_NOTES.get(module)) if not ok else None
                     cells += [_fmt(s.get("tested_at")),
-                               "✅" if s.get("status") == "ok" else "❌",
+                               f"❌ {note}" if note else ("✅" if ok else "❌"),
                                _fmt(s.get("last_success"))]
                 else:
                     cells += ["—", "—", "—"]

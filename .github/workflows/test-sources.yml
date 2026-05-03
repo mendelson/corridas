@@ -170,7 +170,13 @@ jobs:
           SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
           APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
           APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
-        run: python -m scraper.test_source "${{ matrix.source }}"
+        run: |
+          OUTPUT=$(python -m scraper.test_source "${{ matrix.source }}" 2>&1)
+          EXIT=$?
+          echo "$OUTPUT"
+          NOTE=$(printf '%s\n' "$OUTPUT" | grep '^FAILURE_NOTE:' | tail -1 | sed 's/^FAILURE_NOTE://')
+          echo "note=$NOTE" >> $GITHUB_OUTPUT
+          exit $EXIT
 
       - name: Save result
         id: save
@@ -182,9 +188,10 @@ jobs:
           mkdir -p test-results
           STATUS=$([ "${{ steps.run_test.outcome }}" = "success" ] && echo "ok" || echo "fail")
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          printf '{"source":"%s","status":"%s","tested_at":"%s"}\n' \
-            "$SOURCE" "$STATUS" "$TIMESTAMP" > "test-results/${SLUG}.json"
-          echo "Result: $SOURCE → $STATUS"
+          NOTE="${{ steps.run_test.outputs.note }}"
+          printf '{"source":"%s","status":"%s","tested_at":"%s","note":"%s"}\n' \
+            "$SOURCE" "$STATUS" "$TIMESTAMP" "$NOTE" > "test-results/${SLUG}.json"
+          echo "Result: $SOURCE → $STATUS${NOTE:+ ($NOTE)}"
 
       - name: Upload result
         if: always()

@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from bs4 import BeautifulSoup
 
-from ..http_client import get
+from ..http_client import get_with_fallback
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_date, normalize_time, normalize_titulo, slugify,
@@ -17,7 +17,7 @@ SOURCE_NAME = "Brasil que Corre"
 
 def scrape() -> list[Corrida]:
     try:
-        resp = get(URL)
+        resp = get_with_fallback(URL, source=SOURCE_NAME)
         resp.raise_for_status()
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")

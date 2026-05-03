@@ -6,7 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get
+from ..http_client import get, get_with_fallback
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, normalize_date, slugify,
@@ -46,7 +46,7 @@ _PT_MONTHS = {
 def scrape() -> list[Corrida]:
     today = today_iso()
     try:
-        resp = get(CALENDAR_URL)
+        resp = get_with_fallback(CALENDAR_URL, source=SOURCE_NAME)
         resp.raise_for_status()
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar {CALENDAR_URL}: {e}")

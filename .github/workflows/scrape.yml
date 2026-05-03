@@ -33,6 +33,9 @@ jobs:
           playwright install chromium --with-deps
 
       - name: Run scraper
+        env:
+          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: python -m scraper.main 2>&1 | tee scraper.log
 
       - name: Upload scraper log

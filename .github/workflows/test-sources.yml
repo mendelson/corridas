@@ -132,9 +132,9 @@ jobs:
             echo "empty=true"  >> $GITHUB_OUTPUT
             echo "matrix={\"source\":[]}" >> $GITHUB_OUTPUT
           else
-            JSON=$(echo "$SOURCES" | jq -R -s 'split("\n") | map(select(length > 0))')
+            JSON=$(printf '%s\n' "$SOURCES" | jq -Rsc 'split("\n") | map(select(length > 0))')
             echo "empty=false" >> $GITHUB_OUTPUT
-            echo "matrix={\"source\":$JSON}" >> $GITHUB_OUTPUT
+            printf 'matrix={"source":%s}\n' "$JSON" >> $GITHUB_OUTPUT
             echo "Sources to test: $JSON"
           fi
 

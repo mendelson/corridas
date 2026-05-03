@@ -1151,8 +1151,12 @@ function renderCards() {
     if (!byMonth.has(key)) byMonth.set(key, []);
     byMonth.get(key).push(corrida);
   }
+  let firstFutureMonthFound = false;
   for (const [monthKey, corridas] of byMonth) {
-    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length);
+    const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
+    const expand = hasFuture && !firstFutureMonthFound;
+    if (expand) firstFutureMonthFound = true;
+    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand);
     for (const corrida of corridas) {
       cardsContainer.appendChild(buildCard(corrida));
     }
@@ -1201,7 +1205,7 @@ function buildPastSection(corridas) {
   return section;
 }
 
-function buildMonthSection(monthKey, count) {
+function buildMonthSection(monthKey, count, expanded = false) {
   const [year, month] = monthKey.split('-');
   const label      = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
   const countLabel = T.raceCountLabel(count);
@@ -1211,15 +1215,15 @@ function buildMonthSection(monthKey, count) {
 
   const btn = document.createElement('button');
   btn.className = 'month-separator';
-  btn.setAttribute('aria-expanded', 'true');
+  btn.setAttribute('aria-expanded', String(expanded));
   btn.setAttribute('aria-label', `${label}, ${countLabel}`);
   btn.innerHTML = `
     <span class="month-separator-label">${label}</span>
     <span class="month-count">${countLabel}</span>
-    <span class="month-chevron" aria-hidden="true">▾</span>`;
+    <span class="month-chevron" aria-hidden="true">${expanded ? '▾' : '▸'}</span>`;
 
   const cardsContainer = document.createElement('div');
-  cardsContainer.className = 'month-cards';
+  cardsContainer.className = expanded ? 'month-cards' : 'month-cards month-cards--collapsed';
 
   btn.addEventListener('click', () => {
     const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');

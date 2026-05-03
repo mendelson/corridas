@@ -136,19 +136,38 @@ def _fetch_via_playwright() -> "str | None":
             html = page.content()
             browser.close()
 
-        # If we captured API JSON responses, embed them in a synthetic HTML
+        # Process captured JSONs: parse event detail pages individually,
+        # and try list pages for bulk event data
         if captured:
             print(f"[{SOURCE_NAME}] {len(captured)} respostas JSON capturadas")
-            # Pick the one most likely to be an event list (biggest body)
-            biggest_url, biggest_body = max(captured, key=lambda x: len(x[1]))
-            print(f"[{SOURCE_NAME}] usando: {biggest_url}")
-            synthetic = (
-                f'<html><body>'
-                f'<script id="__NEXT_DATA__" type="application/json">'
-                f'{{"props":{{"pageProps":{{"data":{biggest_body}}}}}}}'
-                f'</script></body></html>'
-            )
-            return synthetic
+            all_events: list[dict] = []
+            for url, body in captured:
+                try:
+                    data = json.loads(body)
+                except Exception:
+                    continue
+                if '/evento/' in url:
+                    # Individual event page — extract the single event object
+                    ev = _find_single_event_in_json(data)
+                    if ev:
+                        print(f"[{SOURCE_NAME}] evento extraído de: {url.split('/')[-1].split('?')[0]}")
+                        all_events.append(ev)
+                else:
+                    # Possible list page — try to find an event array
+                    events = _find_events_in_json(data)
+                    if events:
+                        print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
+                        all_events.extend(events)
+
+            if all_events:
+                print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")
+                synthetic = (
+                    f'<html><body>'
+                    f'<script id="__NEXT_DATA__" type="application/json">'
+                    f'{{"props":{{"pageProps":{{"data":{json.dumps(all_events)}}}}}}}'
+                    f'</script></body></html>'
+                )
+                return synthetic
 
         return html
     except Exception as e:

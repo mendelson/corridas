@@ -14,58 +14,58 @@ GitHub Actions.
 
 ### Fontes brasileiras — calendários gerais
 
-| Fonte | Em uso | URL de busca | Método |
-|---|---|---|---|
-| Ticket Sports | ✅ | `ticketsports.app/api/events/list` | JSON API |
-| Circuito das Estações | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada |
-| Central da Corrida | ✅ | `centraldacorrida.com.br/calendario` | HTML |
-| TF Sports | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML |
-| Yescom | ✅ | `yescom.com.br` | HTML |
-| Brasil Corrida | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API |
-| Iguana Sports | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML |
-| Ativo | ✅ | `ativo.com/eventos.json` | JSON API |
-| MKS Esportes | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML |
-| Corridas Brasil | ✅ | `corridasbrasil.com.br/calendario/` | HTML |
-| Minhas Inscrições | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML |
-| Runner Brasil | ✅ | `runnerbrasil.com.br` | HTML |
-| GoDream | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) |
-| Portal das Corridas | ✅ | `portaldascorridas.com.br` | Playwright (SPA) |
+| Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- | --- |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-03 12:01 | ❌ | — |
+| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | — | — | — |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | — | — | — |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | — | — | — |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | — | — | — |
+| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | — | — | — |
+| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | — | — | — |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | — | — | — |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | — | — | — |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | — | — | — |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | — | — | — |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | — | — | — |
+| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-03 12:00 | ✅ | 2026-05-03 12:00 |
+| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | — | — | — |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
-| Fonte | Em uso | URL de busca | Método |
-|---|---|---|---|
-| Brasil que Corre | ✅¹ | `brasilquecorre.com/distritofederal` | HTML |
-| Correr Brasília | ✅ | `correrbrasilia.com.br/calendario/` | HTML |
-| SESC DF | ✅ | `sescdf.com.br/corridas` | HTML |
+| Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- | --- |
+| Brasil que Corre<!--brasil_que_corre--> | ✅¹ | `brasilquecorre.com/distritofederal` | HTML | — | — | — |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | — | — | — |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | — | — | — |
 
 > ¹ Retorna 0 eventos — `brasilquecorre.com` bloqueia IPs de datacenter (403). Playwright não bypassa.
 
 ### Fontes brasileiras — eventos específicos
 
-| Fonte | Em uso | URL de busca |
-|---|---|---|
-| Maratona do Rio | ✅ | `maratonadorio.com.br` |
-| Maratona de Porto Alegre | ✅ | `maratonadeportoalegre.com.br` |
-| SP City Marathon | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` |
-| São Silvestre | ✅ | `saosilvestre.com.br` |
-| Volta do Lago | ✅ | `voltadolago.com.br` |
+| Fonte | Em uso | URL de busca | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- |
+| Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | — | — | — |
+| Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | — | — | — |
+| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | — | — | — |
+| São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | — | — | — |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `voltadolago.com.br` | — | — | — |
 
 ### Fontes com WAF intransponível
 
 Estas fontes estão registradas no código mas retornam 0 eventos. O bloqueio ocorre em nível de IP de datacenter — Scrapestack e Apify (datacenter) também são bloqueados, e Playwright headless não bypassa o Cloudflare dessas propriedades.
 
-| Fonte | URL | Situação |
-|---|---|---|
-| Live Run | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado |
-| Let's Do This | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side |
-| World Marathons | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright |
+| Fonte | URL | Situação | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- |
+| Live Run<!--liverun--> | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado | — | — | — |
+| Let's Do This<!--lets_do_this--> | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side | — | — | — |
+| World Marathons<!--world_marathons--> | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright | — | — | — |
 
 ### Fontes internacionais
 
-| Fonte | Em uso | URL de busca | Observação |
-|---|---|---|---|
-| Cardiff Half Marathon | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack |
+| Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- | --- |
+| Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | — | — | — |
 
 ---
 
@@ -74,30 +74,30 @@ Estas fontes estão registradas no código mas retornam 0 eventos. O bloqueio oc
 22 scrapers dedicados em `scraper/sources/majors/`. Retornam 1–2 edições futuras com
 projeção automática para o ano seguinte quando todas as datas conhecidas já passaram.
 
-| Evento | Em uso | URL oficial |
-|---|---|---|
-| Tokyo Marathon | ✅ | `marathon.tokyo/en` |
-| Boston Marathon | ✅ | `baa.org/races/boston-marathon` |
-| Brighton Marathon | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` |
-| Paris Marathon | ✅ | `schneiderelectricparismarathon.com/en` |
-| TCS London Marathon | ✅ | `tcslondonmarathon.com` |
-| Prague Marathon | ✅ | `runczech.com/en/events/prague-international-marathon-2026` |
-| Copenhagen Marathon | ✅ | `copenhagenmarathon.dk/en` |
-| Edinburgh Marathon Festival | ✅ | `edinburghmarathon.com` |
-| Stockholm Marathon | ✅ | `stockholmmarathon.se/eng` |
-| Manchester Marathon | ✅ | `manchestermarathon.co.uk` |
-| TCS Sydney Marathon | ✅ | `tcssydneymarathon.com` |
-| Great North Run | ✅ | `greatrun.org/events/great-north-run` |
-| BMW Berlin Marathon | ✅ | `bmw-berlin-marathon.com/en` |
-| Cardiff Half Marathon | ✅ | `cardiffhalfmarathon.co.uk` |
-| Manchester Half Marathon | ✅ | `manchesterhalfmarathon.com` |
-| Bank of America Chicago Marathon | ✅ | `chicagomarathon.com` |
-| Amsterdam Marathon | ✅ | `tcsamsterdammarathon.nl/en` |
-| Venice Marathon | ✅ | `venicemarathon.it/en` |
-| Dublin City Marathon | ✅ | `irishlifedublinmarathon.ie` |
-| TCS New York City Marathon | ✅ | `nyrr.org/races/tcsnycmarathon` |
-| Athens Classic Marathon | ✅ | `athensauthenticmarathon.gr/en` |
-| Valencia Marathon | ✅ | `valenciaciudaddelrunning.com/en/marathon` |
+| Evento | Em uso | URL oficial | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- |
+| Tokyo Marathon<!--majors/tokyo--> | ✅ | `marathon.tokyo/en` | — | — | — |
+| Boston Marathon<!--majors/boston--> | ✅ | `baa.org/races/boston-marathon` | — | — | — |
+| Brighton Marathon<!--majors/brighton--> | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | — | — | — |
+| Paris Marathon<!--majors/paris--> | ✅ | `schneiderelectricparismarathon.com/en` | — | — | — |
+| TCS London Marathon<!--majors/london--> | ✅ | `tcslondonmarathon.com` | — | — | — |
+| Prague Marathon<!--majors/prague--> | ✅ | `runczech.com/en/events/prague-international-marathon-2026` | — | — | — |
+| Copenhagen Marathon<!--majors/copenhagen--> | ✅ | `copenhagenmarathon.dk/en` | — | — | — |
+| Edinburgh Marathon Festival<!--majors/edinburgh--> | ✅ | `edinburghmarathon.com` | — | — | — |
+| Stockholm Marathon<!--majors/stockholm--> | ✅ | `stockholmmarathon.se/eng` | — | — | — |
+| Manchester Marathon<!--majors/manchester--> | ✅ | `manchestermarathon.co.uk` | — | — | — |
+| TCS Sydney Marathon<!--majors/sydney--> | ✅ | `tcssydneymarathon.com` | — | — | — |
+| Great North Run<!--majors/great_north_run--> | ✅ | `greatrun.org/events/great-north-run` | — | — | — |
+| BMW Berlin Marathon<!--majors/berlin--> | ✅ | `bmw-berlin-marathon.com/en` | — | — | — |
+| Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | — | — | — |
+| Manchester Half Marathon<!--majors/manchester_half--> | ✅ | `manchesterhalfmarathon.com` | — | — | — |
+| Bank of America Chicago Marathon<!--majors/chicago--> | ✅ | `chicagomarathon.com` | — | — | — |
+| Amsterdam Marathon<!--majors/amsterdam--> | ✅ | `tcsamsterdammarathon.nl/en` | — | — | — |
+| Venice Marathon<!--majors/venice--> | ✅ | `venicemarathon.it/en` | — | — | — |
+| Dublin City Marathon<!--majors/dublin--> | ✅ | `irishlifedublinmarathon.ie` | — | — | — |
+| TCS New York City Marathon<!--majors/nyc--> | ✅ | `nyrr.org/races/tcsnycmarathon` | — | — | — |
+| Athens Classic Marathon<!--majors/athens--> | ✅ | `athensauthenticmarathon.gr/en` | — | — | — |
+| Valencia Marathon<!--majors/valencia--> | ✅ | `valenciaciudaddelrunning.com/en/marathon` | — | — | — |
 
 ---
 
@@ -117,10 +117,10 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 
 ## Fontes desativadas
 
-| Fonte | Em uso | URL | Motivo |
-|---|---|---|---|
-| Corridas BR | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. |
-| Bora Correr | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 403 no CI. |
+| Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- | --- |
+| Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | — | — | — |
+| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 403 no CI. | — | — | — |
 
 ## Fontes testadas e inviáveis
 

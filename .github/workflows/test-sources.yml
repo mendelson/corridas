@@ -2,6 +2,8 @@ name: Test Sources
 
 # Triggered automatically when any source file changes, or manually.
 # Each source runs as an independent job — visible as separate checks in GitHub.
+# After all jobs finish (pass or fail), a final job updates the README with
+# per-source timestamps and status.
 
 on:
   push:
@@ -159,8 +161,65 @@ jobs:
           playwright install chromium --with-deps
 
       - name: Test ${{ matrix.source }}
+        id: run_test
+        continue-on-error: true
         env:
           SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
           APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
           APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
         run: python -m scraper.test_source "${{ matrix.source }}"
+
+      - name: Save result
+        id: save
+        if: always()
+        run: |
+          SOURCE="${{ matrix.source }}"
+          SLUG=$(echo "$SOURCE" | tr '/' '-')
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          mkdir -p test-results
+          STATUS=$([ "${{ steps.run_test.outcome }}" = "success" ] && echo "ok" || echo "fail")
+          TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          printf '{"source":"%s","status":"%s","tested_at":"%s"}\n' \
+            "$SOURCE" "$STATUS" "$TIMESTAMP" > "test-results/${SLUG}.json"
+          echo "Result: $SOURCE → $STATUS"
+
+      - name: Upload result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-result-${{ steps.save.outputs.slug }}
+          path: test-results/
+          retention-days: 7
+
+  # ── Step 3: update README with per-source status ─────────────────────────────
+  update-readme:
+    name: Update README status
+    needs: [prepare, test]
+    if: always() && needs.prepare.outputs.empty == 'false'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Download all test results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-result-*
+          merge-multiple: true
+          path: test-results/
+
+      - name: Update README
+        run: python scripts/update_source_status.py test-results/
+
+      - name: Commit README update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          git add README.md data/source-status.json
+          git diff --cached --quiet || git commit -m "ci: update source status in README [skip ci]"
+          git push

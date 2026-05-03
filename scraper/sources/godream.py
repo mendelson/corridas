@@ -156,25 +156,23 @@ def _fetch_via_playwright() -> "str | None":
                     else:
                         slug = url.split('/')[-1].split('?')[0]
                         print(f"[{SOURCE_NAME}] falhou ao parsear evento: {slug}")
+                elif 'index.json' in url:
+                    # index.json: pageProps.events.content = list of upcoming events
+                    page_props = data.get("pageProps") or {}
+                    content = (page_props.get("events") or {}).get("content") or []
+                    if content:
+                        parsed = [_parse_godream_index_item(c) for c in content]
+                        found = [e for e in parsed if e]
+                        print(f"[{SOURCE_NAME}] index.json: {len(content)} items → {len(found)} eventos")
+                        all_events.extend(found)
+                    else:
+                        print(f"[{SOURCE_NAME}] index.json sem events.content — keys: {list((data.get('pageProps') or {}).keys())}")
                 else:
                     # Possible list page
                     events = _find_events_in_json(data)
                     if events:
                         print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
                         all_events.extend(events)
-                    elif 'index.json' in url:
-                        # index.json: pageProps.events.content = list of upcoming events
-                        page_props = data.get("pageProps") or {}
-                        content = (page_props.get("events") or {}).get("content") or []
-                        if content:
-                            print(f"[{SOURCE_NAME}] index.json: {len(content)} evento(s) em events.content")
-                            # Log first item's full structure to see all available fields
-                            c0 = content[0]
-                            print(f"[{SOURCE_NAME}] content[0] keys: {list(c0.keys())}")
-                            for k, v in c0.items():
-                                print(f"[{SOURCE_NAME}]   content[0]['{k}']: {str(v)[:200]}")
-                        else:
-                            print(f"[{SOURCE_NAME}] index.json pageProps keys: {list(page_props.keys())}")
 
             if all_events:
                 print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")
@@ -282,6 +280,80 @@ def _parse_godream_event_json(data: dict) -> dict | None:
         }
     except Exception as exc:
         print(f"[{SOURCE_NAME}] _parse_godream_event_json erro: {exc}")
+        return None
+
+
+def _parse_godream_index_item(item: dict) -> dict | None:
+    """Extract a normalised event dict from a GoDream index.json events.content item."""
+    try:
+        title = item.get("title") or item.get("name") or item.get("titulo")
+        if not title:
+            return None
+
+        # Try all common date field names (camelCase and snake_case)
+        date_raw = None
+        for k in ("startDate", "start_date", "date", "data", "eventDate",
+                  "event_date", "dtInicio", "dt_inicio", "beginAt", "begin_at",
+                  "startAt", "start_at", "dataEvento"):
+            v = item.get(k)
+            if v:
+                date_raw = str(v)
+                break
+
+        # Nested appointment object
+        if not date_raw:
+            appt = item.get("eventAppointment") or item.get("appointment") or {}
+            if isinstance(appt, list):
+                appt = appt[0] if appt else {}
+            if isinstance(appt, dict):
+                for k in ("startDate", "start_date", "date", "data", "startAt"):
+                    v = appt.get(k)
+                    if v:
+                        date_raw = str(v)
+                        break
+
+        date = normalize_date(date_raw) if date_raw else None
+        if not date:
+            print(f"[{SOURCE_NAME}] item sem data — slug={item.get('slug')}, keys={list(item.keys())}")
+            return None
+
+        # Address — GoDream nests city as {name, state:{acronym}}
+        addr = item.get("address") or item.get("eventAddress") or {}
+        if isinstance(addr, list):
+            addr = addr[0] if addr else {}
+        city_raw = (addr.get("city") or addr.get("cidade")) if isinstance(addr, dict) else None
+        if isinstance(city_raw, dict):
+            city = (city_raw.get("name") or "").strip()
+            state_d = city_raw.get("state") or {}
+            state = ((state_d.get("acronym") or state_d.get("uf") or "").strip().upper()
+                     if isinstance(state_d, dict) else str(state_d).strip().upper())
+        elif isinstance(city_raw, str):
+            city = city_raw.strip()
+            state_raw = (addr.get("state") or addr.get("uf")) if isinstance(addr, dict) else ""
+            state = (state_raw.get("acronym") or "").strip().upper() if isinstance(state_raw, dict) else str(state_raw or "").strip().upper()
+        else:
+            city = str(item.get("city") or item.get("cidade") or "").strip()
+            state = str(item.get("state") or item.get("estado") or item.get("uf") or "").strip().upper()
+
+        img = item.get("coverImage") or item.get("image") or item.get("thumbnail")
+        if isinstance(img, dict):
+            img = img.get("url") or img.get("src") or img.get("path")
+        image_url = img if isinstance(img, str) else None
+
+        slug = str(item.get("slug") or "")
+        link = f"{BASE}/evento/{slug}" if slug else BASE
+
+        return {
+            "title":  str(title),
+            "date":   date,
+            "city":   city,
+            "state":  state,
+            "url":    link,
+            "image":  image_url,
+            "slug":   slug,
+        }
+    except Exception as exc:
+        print(f"[{SOURCE_NAME}] _parse_godream_index_item erro: {exc}")
         return None
 
 

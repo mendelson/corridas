@@ -45,7 +45,7 @@ _PT_MONTHS = {
 
 def scrape() -> list[Corrida]:
     today = today_iso()
-    soup = _fetch_soup()
+    soup, via_playwright = _fetch_soup()
     if soup is None:
         return []
 
@@ -55,31 +55,42 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] {len(corridas)} corridas (via __NEXT_DATA__)")
         return corridas
 
+    if via_playwright:
+        _debug_playwright_page(soup)
+
     # Strategy 2: Parse HTML event cards
     corridas = _parse_html_cards(soup, today)
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _fetch_soup() -> "BeautifulSoup | None":
-    """Fetch CALENDAR_URL via HTTP, falling back to Playwright on WAF block."""
-    # HTTP (with proxy fallback built into get())
+def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
+    """Fetch CALENDAR_URL via HTTP, falling back to Playwright. Returns (soup, via_playwright)."""
     try:
         resp = get(CALENDAR_URL, source=SOURCE_NAME)
         resp.raise_for_status()
-        return BeautifulSoup(resp.text, "lxml")
+        return BeautifulSoup(resp.text, "lxml"), False
     except Exception as e:
         print(f"[{SOURCE_NAME}] HTTP falhou ({e}), tentando Playwright...")
 
-    # Playwright fallback
     from ..playwright_client import get_page_html
     html = get_page_html(CALENDAR_URL)
     if html:
         print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes")
-        return BeautifulSoup(html, "lxml")
+        return BeautifulSoup(html, "lxml"), True
 
     print(f"[{SOURCE_NAME}] todas as estratégias falharam")
-    return None
+    return None, False
+
+
+def _debug_playwright_page(soup: BeautifulSoup) -> None:
+    title = soup.find("title")
+    print(f"[{SOURCE_NAME}] Playwright page title: {title.get_text(strip=True) if title else '(none)'}")
+    has_next = bool(soup.find("script", id="__NEXT_DATA__"))
+    print(f"[{SOURCE_NAME}] __NEXT_DATA__ presente: {has_next}")
+    # Print first 800 chars of visible text to diagnose what page was returned
+    text = soup.get_text(" ", strip=True)[:800]
+    print(f"[{SOURCE_NAME}] Playwright texto inicial: {text}")
 
 
 # ---------------------------------------------------------------------------

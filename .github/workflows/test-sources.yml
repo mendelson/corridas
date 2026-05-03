@@ -111,8 +111,8 @@ jobs:
           else
             # Push: only test changed source files
             CHANGED=$(git diff --name-only HEAD~1 HEAD \
-              -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
-              | grep '\.py$' | grep -v '__init__\|_base\|test_' \
+              | grep '^scraper/sources/.*\.py$' \
+              | grep -v '__init__\|_base\|test_' \
               | sed 's|scraper/sources/||; s|\.py$||')
 
             # If shared infra changed, test everything

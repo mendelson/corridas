@@ -1,0 +1,114 @@
+name: Test Sources
+
+# Triggered automatically when any source file changes, or manually.
+# Each source runs as an independent job — visible as separate checks in GitHub.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scraper/sources/**'
+      - 'scraper/models.py'
+      - 'scraper/utils.py'
+      - 'scraper/http_client.py'
+      - 'scraper/playwright_client.py'
+  workflow_dispatch:
+    inputs:
+      source:
+        description: >
+          Fonte a testar (ex: "godream", "majors/london", "all").
+          "all" testa todas as fontes. Padrão: all.
+        required: false
+        default: 'all'
+
+jobs:
+  # ── Step 1: decide which sources to test ────────────────────────────────────
+  prepare:
+    name: Prepare matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build.outputs.matrix }}
+      empty:  ${{ steps.build.outputs.empty }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Build source list
+        id: build
+        run: |
+          ALL_SOURCES=$(
+            find scraper/sources -name "*.py" \
+              ! -name "__init__*" \
+              ! -name "_base*" \
+              ! -name "test_*" \
+            | sed 's|scraper/sources/||; s|\.py$||' \
+            | sort
+          )
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            INPUT="${{ github.event.inputs.source }}"
+            if [ -z "$INPUT" ] || [ "$INPUT" = "all" ]; then
+              SOURCES="$ALL_SOURCES"
+            else
+              SOURCES="$INPUT"
+            fi
+          else
+            # Push: only test changed source files
+            CHANGED=$(git diff --name-only HEAD~1 HEAD \
+              -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+              | grep '\.py$' | grep -v '__init__\|_base\|test_' \
+              | sed 's|scraper/sources/||; s|\.py$||')
+
+            # If shared infra changed, test everything
+            INFRA=$(git diff --name-only HEAD~1 HEAD \
+              -- 'scraper/models.py' 'scraper/utils.py' \
+              'scraper/http_client.py' 'scraper/playwright_client.py')
+
+            if [ -n "$INFRA" ]; then
+              echo "Shared infra changed — testing all sources"
+              SOURCES="$ALL_SOURCES"
+            else
+              SOURCES="$CHANGED"
+            fi
+          fi
+
+          if [ -z "$SOURCES" ]; then
+            echo "empty=true"  >> $GITHUB_OUTPUT
+            echo "matrix={\"source\":[]}" >> $GITHUB_OUTPUT
+          else
+            JSON=$(echo "$SOURCES" | jq -R -s 'split("\n") | map(select(length > 0))')
+            echo "empty=false" >> $GITHUB_OUTPUT
+            echo "matrix={\"source\":$JSON}" >> $GITHUB_OUTPUT
+            echo "Sources to test: $JSON"
+          fi
+
+  # ── Step 2: test each source as an independent job ──────────────────────────
+  test:
+    name: ${{ matrix.source }}
+    needs: prepare
+    if: needs.prepare.outputs.empty == 'false'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          playwright install chromium --with-deps
+
+      - name: Test ${{ matrix.source }}
+        env:
+          SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
+        run: python -m scraper.test_source "${{ matrix.source }}"

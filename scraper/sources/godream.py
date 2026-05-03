@@ -162,6 +162,13 @@ def _fetch_via_playwright() -> "str | None":
                     if events:
                         print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
                         all_events.extend(events)
+                    elif 'index.json' in url:
+                        # Log index.json to find event date structure
+                        print(f"[{SOURCE_NAME}] index.json keys: {list(data.keys())[:10]}")
+                        page_props = data.get("pageProps") or {}
+                        print(f"[{SOURCE_NAME}] index.json pageProps keys: {list(page_props.keys())[:15]}")
+                        for k, v in page_props.items():
+                            print(f"[{SOURCE_NAME}]   pageProps['{k}']: {str(v)[:200]}")
 
             if all_events:
                 print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")

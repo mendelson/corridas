@@ -135,9 +135,15 @@ def scrape() -> list[Corrida]:
 def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
     """Fetch calendar via HTTP, falling back to Playwright. Returns (soup, via_playwright)."""
     try:
-        resp = get(CALENDAR_URL, source=SOURCE_NAME)
+        # render_js=True: Scrapestack will execute JS before returning the page,
+        # which is required to pass Cloudflare JS-challenge pages that GoDream uses.
+        resp = get(CALENDAR_URL, source=SOURCE_NAME, render_js=True)
         resp.raise_for_status()
-        return BeautifulSoup(resp.text, "lxml"), False
+        html = resp.text
+        # Scrapestack sometimes returns a challenge page with 200; detect and skip it
+        if "<script id=\"__NEXT_DATA__\"" in html or "corrida" in html.lower():
+            return BeautifulSoup(html, "lxml"), False
+        print(f"[{SOURCE_NAME}] HTTP retornou página sem dados (challenge?), tentando Playwright...")
     except Exception as e:
         print(f"[{SOURCE_NAME}] HTTP falhou ({e}), tentando Playwright...")
 

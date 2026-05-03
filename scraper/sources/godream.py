@@ -86,6 +86,27 @@ def _find_future_dates_in_obj(obj, today: str, path: str = "", _depth: int = 0,
     return results
 
 
+def _extract_date_from_text(text: str) -> str | None:
+    """Extract the first plausible future event date from a text/HTML snippet."""
+    text = re.sub(r"<[^>]+>", " ", text)  # strip HTML tags
+    # "16 de maio de 2026" / "16 e 17 de maio de 2026"
+    m = re.search(r"(\d{1,2})(?:\s+e\s+\d{1,2})?\s+de\s+([a-záéíóúâêôãõç]+)\s+de\s+(20\d{2})",
+                  text, re.IGNORECASE)
+    if m:
+        mo = _PT_MONTHS.get(m.group(2).lower())
+        if mo:
+            return f"{m.group(3)}-{mo}-{m.group(1).zfill(2)}"
+    # DD/MM/YYYY or DD-MM-YYYY
+    m = re.search(r"\b(\d{1,2})[/\-](\d{1,2})[/\-](20\d{2})\b", text)
+    if m:
+        return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
+    # ISO YYYY-MM-DD
+    m = _DATE_ISO_RE.search(text)
+    if m:
+        return m.group(1)
+    return None
+
+
 def scrape() -> list[Corrida]:
     today = today_iso()
     soup, via_playwright = _fetch_soup()
@@ -275,27 +296,26 @@ def _parse_godream_event_json(data: dict) -> dict | None:
                     break
 
         if not date_raw:
+            # Priority 1: parse the 'about' HTML — contains human-readable date like
+            # "📅 16 de maio de 2026" or "07/06/2026"
+            about = str(ev.get("about") or "")
+            if about:
+                date_raw = _extract_date_from_text(about)
+
+        if not date_raw:
             today = today_iso()
-            # Search for future dates in event + full pageProps
-            hits = _find_future_dates_in_obj(ev, today)
-            if not hits:
-                hits = _find_future_dates_in_obj(props, today)
+            # Priority 2: recursive search, but skip 'tickets' subtree to avoid
+            # picking up stock/batch expiry dates embedded in size-name strings
+            ev_no_tickets = {k: v for k, v in ev.items() if k != "tickets"}
+            hits = _find_future_dates_in_obj(ev_no_tickets, today)
             if hits:
-                # Sort by date ascending — pick the earliest future date
                 hits.sort(key=lambda x: x[0])
                 date_raw, date_path = hits[0]
-                print(f"[{SOURCE_NAME}] {len(hits)} datas futuras — usando '{date_path}': {date_raw}")
-            else:
-                # Nothing found — dump all fields so we can locate the date format
-                print(f"[{SOURCE_NAME}] ev.keys(): {list(ev.keys())}")
-                for k, v in ev.items():
-                    if isinstance(v, (dict, list)):
-                        print(f"[{SOURCE_NAME}]   ev['{k}']: {json.dumps(v)[:500]}")
-                    else:
-                        print(f"[{SOURCE_NAME}]   ev['{k}']: {str(v)[:200]}")
-                print(f"[{SOURCE_NAME}] pageProps.keys(): {list(props.keys())}")
-                print(f"[{SOURCE_NAME}] sem data futura para '{ev.get('title')}'")
-                return None
+                print(f"[{SOURCE_NAME}] {len(hits)} datas futuras (sem tickets) — '{date_path}': {date_raw}")
+
+        if not date_raw:
+            print(f"[{SOURCE_NAME}] sem data para '{ev.get('title')}' — about: {about[:120]!r}")
+            return None
 
         date = normalize_date(date_raw)
         if not date:

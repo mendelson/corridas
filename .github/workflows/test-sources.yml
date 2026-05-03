@@ -171,10 +171,9 @@ jobs:
           APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
           APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
         run: |
-          OUTPUT=$(python -m scraper.test_source "${{ matrix.source }}" 2>&1)
-          EXIT=$?
-          echo "$OUTPUT"
-          NOTE=$(printf '%s\n' "$OUTPUT" | grep '^FAILURE_NOTE:' | tail -1 | sed 's/^FAILURE_NOTE://')
+          python -m scraper.test_source "${{ matrix.source }}" 2>&1 | tee /tmp/test-out.txt
+          EXIT=${PIPESTATUS[0]}
+          NOTE=$(grep '^FAILURE_NOTE:' /tmp/test-out.txt | tail -1 | sed 's/^FAILURE_NOTE://')
           echo "note=$NOTE" >> $GITHUB_OUTPUT
           exit $EXIT
 

@@ -151,18 +151,19 @@ def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
 
 
 def _extract_all_slugs(obj, depth: int = 0) -> set[str]:
-    """Recursively find all event slugs in a JSON structure.
-
-    A slug is accepted when its sibling dict also has a title/name field,
-    indicating it belongs to an event object rather than an unrelated JSON key.
-    """
+    """Recursively find all event slugs in a JSON structure."""
     slugs: set[str] = set()
     if depth > 10:
         return slugs
     if isinstance(obj, dict):
         slug = obj.get("slug")
-        has_title = any(obj.get(k) for k in ("title", "name", "nome", "titulo"))
-        if slug and has_title and isinstance(slug, str) and len(slug) > 3:
+        # Accept slug if the dict also has any title-like or date-like field,
+        # indicating it's an event object (not an unrelated JSON key)
+        has_event_field = any(obj.get(k) for k in (
+            "title", "name", "nome", "titulo", "eventTitle", "eventName",
+            "startDate", "start_date", "eventAppointment", "eventDate",
+        ))
+        if slug and has_event_field and isinstance(slug, str) and len(slug) > 3:
             slugs.add(slug)
         for v in obj.values():
             slugs |= _extract_all_slugs(v, depth + 1)
@@ -286,13 +287,28 @@ def _fetch_via_playwright() -> "str | None":
 
                 page_slugs = _extract_all_slugs(data)
                 new_slugs = page_slugs - seen_slugs
+
+                # Also try to parse listing items directly (date + address may be
+                # available in the listing response without needing event detail pages)
+                listing_events = _find_events_in_json(data)
                 print(f"[{SOURCE_NAME}] pág. {page_num}: {len(page_slugs)} slugs "
-                      f"({len(new_slugs)} novos)")
-                if not new_slugs:
+                      f"({len(new_slugs)} novos), {len(listing_events)} eventos na listagem")
+
+                if not new_slugs and not listing_events:
                     break
 
-                # ── Step 4: fetch each event page ────────────────────────────
-                for slug in sorted(new_slugs):
+                # ── Step 4a: parse events directly from listing ───────────────
+                today_str = today_iso()
+                for item in listing_events:
+                    slug = item.get("slug", "")
+                    if slug and slug not in seen_slugs:
+                        ev = _parse_godream_index_item(item)
+                        if ev:
+                            seen_slugs.add(slug)
+                            all_event_data.append(ev)
+
+                # ── Step 4b: fetch event detail for any remaining slugs ────────
+                for slug in sorted(new_slugs - seen_slugs):
                     seen_slugs.add(slug)
                     ev_url = f"/_next/data/{build_id}/evento/{slug}.json"
                     ev_raw = page.evaluate(_FETCH_JS, ev_url)
@@ -603,12 +619,22 @@ def _parse_json_event(ev: dict, today: str) -> Corrida | None:
     if any(kw in titulo_lower for kw in _NON_RUNNING_KW):
         return None
 
-    # Date
+    # Date — check direct fields first, then nested eventAppointment
     date_raw = (
         ev.get("date") or ev.get("data") or ev.get("data_evento") or
         ev.get("dtInicio") or ev.get("dt_inicio") or ev.get("startDate") or
         ev.get("start_date") or ev.get("eventDate") or ev.get("event_date") or ""
     )
+    if not date_raw:
+        appt = ev.get("eventAppointment") or ev.get("appointment") or {}
+        if isinstance(appt, list):
+            appt = appt[0] if appt else {}
+        if isinstance(appt, dict):
+            for k in ("startDate", "start_date", "date", "data", "startAt", "beginAt"):
+                v = appt.get(k)
+                if v:
+                    date_raw = str(v)
+                    break
     data_evento = normalize_date(str(date_raw)) if date_raw else None
     if not data_evento or data_evento < today:
         return None

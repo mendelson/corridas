@@ -1,248 +1,296 @@
 {
   "ativo": {
-    "tested_at": "2026-05-03T21:40:50Z",
+    "tested_at": "2026-05-03T22:57:13Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:50Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:13Z"
   },
   "bora_correr": {
-    "tested_at": "2026-05-03T21:40:42Z",
+    "tested_at": "2026-05-03T22:57:00Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "brasil_corrida": {
-    "tested_at": "2026-05-03T21:40:50Z",
+    "tested_at": "2026-05-03T22:57:06Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:50Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:06Z"
   },
   "brasil_que_corre": {
-    "tested_at": "2026-05-03T21:40:43Z",
+    "tested_at": "2026-05-03T22:56:57Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "central_da_corrida": {
-    "tested_at": "2026-05-03T21:40:48Z",
+    "tested_at": "2026-05-03T22:56:58Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:48Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:56:58Z"
   },
   "circuito_das_estacoes": {
-    "tested_at": "2026-05-03T21:40:50Z",
+    "tested_at": "2026-05-03T22:57:09Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:50Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:09Z"
   },
   "correr_brasilia": {
-    "tested_at": "2026-05-03T21:42:19Z",
+    "tested_at": "2026-05-03T22:57:42Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:19Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:42Z"
   },
   "corridas_br": {
-    "tested_at": "2026-05-03T21:40:53Z",
+    "tested_at": "2026-05-03T22:57:52Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:53Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:52Z"
   },
   "corridas_brasil": {
-    "tested_at": "2026-05-03T21:41:46Z",
+    "tested_at": "2026-05-03T22:57:02Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:46Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:02Z"
   },
   "godream": {
-    "tested_at": "2026-05-03T22:48:24Z",
+    "tested_at": "2026-05-03T22:57:05Z",
     "status": "fail",
     "failure_note": "0 eventos",
     "last_success": null
   },
   "iguana_sports": {
-    "tested_at": "2026-05-03T21:40:47Z",
+    "tested_at": "2026-05-03T22:57:01Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:47Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:01Z"
   },
   "lets_do_this": {
-    "tested_at": "2026-05-03T21:41:39Z",
+    "tested_at": "2026-05-03T22:57:54Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "liverun": {
-    "tested_at": "2026-05-03T21:41:44Z",
+    "tested_at": "2026-05-03T22:57:00Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "majors/amsterdam": {
-    "tested_at": "2026-05-03T21:41:35Z",
+    "tested_at": "2026-05-03T22:57:09Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:35Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:09Z"
   },
   "majors/athens": {
-    "tested_at": "2026-05-03T21:40:49Z",
+    "tested_at": "2026-05-03T22:57:03Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:49Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:03Z"
   },
   "majors/berlin": {
-    "tested_at": "2026-05-03T21:40:49Z",
+    "tested_at": "2026-05-03T22:57:50Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:49Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:50Z"
   },
   "majors/boston": {
-    "tested_at": "2026-05-03T21:40:43Z",
+    "tested_at": "2026-05-03T22:56:59Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:43Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:56:59Z"
   },
   "majors/brighton": {
-    "tested_at": "2026-05-03T21:41:32Z",
+    "tested_at": "2026-05-03T22:57:50Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:32Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:50Z"
   },
   "majors/cardiff_half": {
-    "tested_at": "2026-05-03T21:40:52Z",
+    "tested_at": "2026-05-03T22:57:59Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:52Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:59Z"
   },
   "majors/chicago": {
-    "tested_at": "2026-05-03T21:41:36Z",
+    "tested_at": "2026-05-03T22:57:54Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:36Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:54Z"
   },
   "majors/copenhagen": {
-    "tested_at": "2026-05-03T21:40:37Z",
+    "tested_at": "2026-05-03T22:57:44Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:37Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:44Z"
   },
   "majors/dublin": {
-    "tested_at": "2026-05-03T21:40:49Z",
+    "tested_at": "2026-05-03T22:57:37Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:49Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:37Z"
   },
   "majors/edinburgh": {
-    "tested_at": "2026-05-03T21:41:46Z",
+    "tested_at": "2026-05-03T22:57:59Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:46Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:59Z"
   },
   "majors/great_north_run": {
-    "tested_at": "2026-05-03T21:41:29Z",
+    "tested_at": "2026-05-03T22:56:58Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:29Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:56:58Z"
   },
   "majors/london": {
-    "tested_at": "2026-05-03T21:41:31Z",
+    "tested_at": "2026-05-03T22:57:48Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:31Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:48Z"
   },
   "majors/manchester": {
-    "tested_at": "2026-05-03T21:41:43Z",
+    "tested_at": "2026-05-03T22:57:04Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:43Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:04Z"
   },
   "majors/manchester_half": {
-    "tested_at": "2026-05-03T21:40:41Z",
+    "tested_at": "2026-05-03T22:57:48Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:41Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:48Z"
   },
   "majors/nyc": {
-    "tested_at": "2026-05-03T21:40:40Z",
+    "tested_at": "2026-05-03T22:57:56Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:40Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:56Z"
   },
   "majors/paris": {
-    "tested_at": "2026-05-03T21:41:28Z",
+    "tested_at": "2026-05-03T22:56:58Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:28Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:56:58Z"
   },
   "majors/prague": {
-    "tested_at": "2026-05-03T21:41:41Z",
+    "tested_at": "2026-05-03T22:57:13Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:41Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:13Z"
   },
   "majors/stockholm": {
-    "tested_at": "2026-05-03T21:40:51Z",
+    "tested_at": "2026-05-03T22:57:58Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:51Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:58Z"
   },
   "majors/sydney": {
-    "tested_at": "2026-05-03T21:41:34Z",
+    "tested_at": "2026-05-03T22:58:40Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:34Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:40Z"
   },
   "majors/tokyo": {
-    "tested_at": "2026-05-03T21:40:48Z",
+    "tested_at": "2026-05-03T22:58:38Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:48Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:38Z"
   },
   "majors/valencia": {
-    "tested_at": "2026-05-03T21:42:19Z",
+    "tested_at": "2026-05-03T22:58:38Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:19Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:38Z"
   },
   "majors/venice": {
-    "tested_at": "2026-05-03T21:42:19Z",
+    "tested_at": "2026-05-03T22:57:51Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:19Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:51Z"
   },
   "maratona_porto_alegre": {
-    "tested_at": "2026-05-03T21:40:56Z",
+    "tested_at": "2026-05-03T22:58:38Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:56Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:38Z"
   },
   "maratona_rio": {
-    "tested_at": "2026-05-03T21:41:33Z",
+    "tested_at": "2026-05-03T22:57:07Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:33Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:07Z"
   },
   "minhas_inscricoes": {
-    "tested_at": "2026-05-03T21:40:45Z",
+    "tested_at": "2026-05-03T22:58:36Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:40:45Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:36Z"
   },
   "mks_esportes": {
-    "tested_at": "2026-05-03T21:41:30Z",
+    "tested_at": "2026-05-03T22:57:39Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:30Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:39Z"
   },
   "portal_das_corridas": {
-    "tested_at": "2026-05-03T21:42:52Z",
+    "tested_at": "2026-05-03T22:58:47Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "runner_brasil": {
-    "tested_at": "2026-05-03T21:41:39Z",
+    "tested_at": "2026-05-03T22:57:50Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:39Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:50Z"
   },
   "sao_silvestre": {
-    "tested_at": "2026-05-03T21:41:32Z",
+    "tested_at": "2026-05-03T22:58:33Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:32Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:33Z"
   },
   "sesc_df": {
-    "tested_at": "2026-05-03T21:42:48Z",
+    "tested_at": "2026-05-03T22:57:05Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:48Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:05Z"
   },
   "sp_city_marathon": {
-    "tested_at": "2026-05-03T21:41:35Z",
+    "tested_at": "2026-05-03T22:58:20Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:41:35Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:20Z"
   },
   "tf_sports": {
-    "tested_at": "2026-05-03T21:42:05Z",
+    "tested_at": "2026-05-03T22:58:42Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:05Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:58:42Z"
   },
   "ticket_sports": {
-    "tested_at": "2026-05-03T21:42:57Z",
+    "tested_at": "2026-05-03T22:59:13Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:57Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:59:13Z"
   },
   "volta_do_lago": {
-    "tested_at": "2026-05-03T21:42:18Z",
+    "tested_at": "2026-05-03T22:58:34Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "world_marathons": {
-    "tested_at": "2026-05-03T21:42:29Z",
+    "tested_at": "2026-05-03T22:58:10Z",
     "status": "fail",
+    "failure_note": "0 eventos",
     "last_success": null
   },
   "yescom": {
-    "tested_at": "2026-05-03T21:42:32Z",
+    "tested_at": "2026-05-03T22:57:46Z",
     "status": "ok",
-    "last_success": "2026-05-03T21:42:32Z"
+    "failure_note": null,
+    "last_success": "2026-05-03T22:57:46Z"
   }
 }

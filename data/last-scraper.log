@@ -1,33 +1,40 @@
 [main] iniciando scraping...
-[main] 1172 corridas no estado anterior
+[main] 1170 corridas no estado anterior
+[proxy] www.liverun.com.br bloqueado (403), tentando Scrapestack...
 [Central da Corrida] 80 corridas encontradas
-[MKS Esportes] 3 corridas encontradas
 [Ativo] 5 corridas encontradas
+[MKS Esportes] 3 corridas encontradas
+[proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
+[proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
+[Live Run] erro ao buscar calendário: todos os métodos falharam para https://www.liverun.com.br/calendario
 [Runner Brasil] 21 corridas encontradas
-[Iguana Sports] 8 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
 [Brasil Corrida] 9 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
 [Brasil que Corre] 0 corridas encontradas
-[SESC DF] 9 corridas encontradas
 [proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
-[Correr Brasília] 1 corridas encontradas
+[SESC DF] 9 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.godream.com.br, tentando Apify...
+[Correr Brasília] 1 corridas encontradas
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
-[GoDream] erro ao buscar https://www.godream.com.br/corrida-de-rua: todos os métodos falharam para https://www.godream.com.br/corrida-de-rua
-[Yescom] 14 corridas encontradas
+[GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
 [Circuito das Estações] 104 corridas encontradas
+[Yescom] 14 corridas encontradas
+[GoDream] Playwright: 53792 bytes
+[GoDream] 0 corridas encontradas
 [Corridas Brasil] 2947 corridas encontradas
 [Portal das Corridas] 0 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[proxy] www.cardiffhalfmarathon.co.uk obtido via Scrapestack
 [Volta do Lago] site acessível mas sem dados reconhecíveis
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
-[TF Sports] 51 corridas encontradas
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running?distanceMin=10: todos os métodos falharam para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[World Marathons] buildId não encontrado
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[TF Sports] 51 corridas encontradas
+[World Marathons] buildId não encontrado
+[World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
+[proxy] www.cardiffhalfmarathon.co.uk obtido via Scrapestack
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
@@ -36,49 +43,50 @@
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/marathon
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[Live Run] 48 corridas encontradas
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370376 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370103 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370418 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
-[World Marathons] sem dados — nenhuma estratégia funcionou
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/half-marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/half-marathon
+[Let's Do This] tentando Playwright para https://www.letsdothis.com/gb/e/running?distanceMin=10
+[World Marathons] Playwright: 376035 bytes renderizados
+[Let's Do This] Playwright: 992141 bytes renderizados
+[Let's Do This] classes relevantes na página: ['after:pointer-events-none']
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] GraphQL erro: todos os métodos falharam para https://www.letsdothis.com/api/graphql
 [Let's Do This] sem dados — nenhuma estratégia funcionou
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370130 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370462 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370572 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
+[World Marathons] sem dados — nenhuma estratégia funcionou
 [Ticket Sports] 965 corridas encontradas
-[main] 4314 registros coletados (antes do merge)
-[main] 1186 registros após validação
-[main] 1143 corridas após merge
-[main] verificando links de 23 evento(s) não encontrado(s) no scrape...
-[main] 'Corrida Em Casa A Gente Conversa 2ª Edição' — link válido, miss_count zerado
-[main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
-[main] 'Bike Fest 2026' — link válido, miss_count zerado
+[main] 4266 registros coletados (antes do merge)
+[main] 1138 registros após validação
+[main] 1096 corridas após merge
+[main] verificando links de 65 evento(s) não encontrado(s) no scrape...
 [main] '15ª Corrida Eco Run Verde' — link válido, miss_count zerado
-[main] 'Cats Run AL 2026' — link válido, miss_count zerado
-[main] 'Lupo Sport Corre Jundiaí' — link válido, miss_count zerado
-[main] 'Star Girls' — link válido, miss_count zerado
+[main] 'Corrida O Tempo 2026' — link válido, miss_count zerado
+[main] 'Corrida Em Casa A Gente Conversa 2ª Edição' — link válido, miss_count zerado
 [main] 'Vila Velha Night Run' — link válido, miss_count zerado
+[main] 'Bike Fest 2026' — link válido, miss_count zerado
+[main] 'Star Girls' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Jundiaí' — link válido, miss_count zerado
+[main] 'Cats Run AL 2026' — link válido, miss_count zerado
+[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
+[main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
 [main] 'Desafio Macuco' — link válido, miss_count zerado
-[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
-[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
-[main] removendo 'Cardiff Half Marathon' (miss_count=10)
-[main] removendo 'TCS Amsterdam Marathon' (miss_count=10)
 [main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
+[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] 'Corrida Noturna De Campo Do Tenente' — link válido, miss_count zerado
 [main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
 [main] '1ª Corrida Da Romu' — link válido, miss_count zerado
 [main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
-[main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
-[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
-[main] 1173 corridas após reconciliação
+[main] 1170 corridas após reconciliação
 [main] 1170 corridas após dedup final
 [main] buscando imagens para 129 evento(s) sem foto...
 [main] 0/129 imagens encontradas

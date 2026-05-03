@@ -159,6 +159,22 @@ def _fetch_via_playwright() -> "str | None":
                         print(f"[{SOURCE_NAME}] {len(events)} eventos via lista: {url.split('/')[-1].split('?')[0]}")
                         all_events.extend(events)
 
+            if not all_events:
+                # Log structure of first evento JSON to diagnose field names
+                for url, body in captured:
+                    if '/evento/' in url:
+                        try:
+                            data = json.loads(body)
+                            props = data.get("props", {}).get("pageProps", data.get("pageProps", data))
+                            print(f"[{SOURCE_NAME}] estrutura pageProps de {url.split('/')[-1].split('?')[0]}: {list(props.keys())[:10]}")
+                            # Go one level deeper
+                            for k, v in props.items():
+                                if isinstance(v, dict):
+                                    print(f"[{SOURCE_NAME}]   props['{k}']: {list(v.keys())[:10]}")
+                        except Exception as exc:
+                            print(f"[{SOURCE_NAME}] erro ao inspecionar JSON: {exc}")
+                        break  # only inspect one
+
             if all_events:
                 print(f"[{SOURCE_NAME}] total: {len(all_events)} eventos nos JSONs capturados")
                 synthetic = (

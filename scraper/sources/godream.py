@@ -65,7 +65,7 @@ def scrape() -> list[Corrida]:
 
 
 def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
-    """Fetch CALENDAR_URL via HTTP, falling back to Playwright. Returns (soup, via_playwright)."""
+    """Fetch calendar via HTTP, falling back to Playwright. Returns (soup, via_playwright)."""
     try:
         resp = get(CALENDAR_URL, source=SOURCE_NAME)
         resp.raise_for_status()
@@ -73,8 +73,7 @@ def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
     except Exception as e:
         print(f"[{SOURCE_NAME}] HTTP falhou ({e}), tentando Playwright...")
 
-    from ..playwright_client import get_page_html
-    html = get_page_html(CALENDAR_URL)
+    html = _fetch_via_playwright()
     if html:
         print(f"[{SOURCE_NAME}] Playwright: {len(html)} bytes")
         return BeautifulSoup(html, "lxml"), True
@@ -83,14 +82,108 @@ def _fetch_soup() -> "tuple[BeautifulSoup | None, bool]":
     return None, False
 
 
+def _fetch_via_playwright() -> "str | None":
+    """Navigate GoDream via Playwright, intercepting API calls to capture event data."""
+    try:
+        from playwright.sync_api import sync_playwright
+        from ..playwright_client import _STEALTH_JS, _USER_AGENT
+    except ImportError:
+        return None
+
+    captured: list[str] = []
+
+    def _handle_response(response):
+        url = response.url
+        # Capture JSON responses from API endpoints that look like event listings
+        if any(kw in url for kw in ("/api/", "/events", "/corrida", "/calendario", "graphql")):
+            try:
+                body = response.body()
+                if body and body[0:1] in (b"{", b"["):
+                    captured.append(body.decode("utf-8", errors="replace"))
+                    print(f"[{SOURCE_NAME}] API interceptada: {url} ({len(body)} bytes)")
+            except Exception:
+                pass
+
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=["--disable-blink-features=AutomationControlled"],
+            )
+            ctx = browser.new_context(
+                user_agent=_USER_AGENT,
+                viewport={"width": 1280, "height": 720},
+                locale="pt-BR",
+                extra_http_headers={"Accept-Language": "pt-BR,pt;q=0.9,en-US;q=0.8"},
+            )
+            page = ctx.new_page()
+            page.add_init_script(_STEALTH_JS)
+            page.on("response", _handle_response)
+
+            # Navigate to homepage to discover the real URL structure
+            print(f"[{SOURCE_NAME}] Playwright navegando para homepage: {BASE}")
+            page.goto(BASE, timeout=30000)
+            try:
+                page.wait_for_load_state("networkidle", timeout=20000)
+            except Exception:
+                pass
+
+            # Find and follow the running events link
+            nav_url = None
+            for selector in [
+                "a[href*='corrida']",
+                "a[href*='running']",
+                "a[href*='esporte']",
+                "a[href*='categoria']",
+            ]:
+                el = page.query_selector(selector)
+                if el:
+                    nav_url = el.get_attribute("href")
+                    if nav_url and not nav_url.startswith("http"):
+                        nav_url = BASE + nav_url
+                    print(f"[{SOURCE_NAME}] link encontrado via '{selector}': {nav_url}")
+                    break
+
+            if not nav_url:
+                # Log all links found for diagnosis
+                links = page.eval_on_selector_all("a[href]", "els => els.map(e => e.href).slice(0,30)")
+                print(f"[{SOURCE_NAME}] links na homepage: {links}")
+
+            if nav_url and nav_url != BASE:
+                page.goto(nav_url, timeout=30000)
+                try:
+                    page.wait_for_load_state("networkidle", timeout=20000)
+                except Exception:
+                    pass
+
+            html = page.content()
+            browser.close()
+
+        # If we captured API JSON responses, embed them in a synthetic HTML
+        # so _parse_next_data / _find_events_in_json can process them
+        if captured:
+            print(f"[{SOURCE_NAME}] {len(captured)} respostas de API capturadas")
+            # Wrap largest JSON in a fake __NEXT_DATA__ script for the existing parser
+            biggest = max(captured, key=len)
+            synthetic = (
+                f'<html><body>'
+                f'<script id="__NEXT_DATA__" type="application/json">'
+                f'{{"props":{{"pageProps":{{"data":{biggest}}}}}}}'
+                f'</script></body></html>'
+            )
+            return synthetic
+
+        return html
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] Playwright falhou: {e}")
+        return None
+
+
 def _debug_playwright_page(soup: BeautifulSoup) -> None:
     title = soup.find("title")
-    print(f"[{SOURCE_NAME}] Playwright page title: {title.get_text(strip=True) if title else '(none)'}")
-    has_next = bool(soup.find("script", id="__NEXT_DATA__"))
-    print(f"[{SOURCE_NAME}] __NEXT_DATA__ presente: {has_next}")
-    # Print first 800 chars of visible text to diagnose what page was returned
-    text = soup.get_text(" ", strip=True)[:800]
-    print(f"[{SOURCE_NAME}] Playwright texto inicial: {text}")
+    print(f"[{SOURCE_NAME}] page title: {title.get_text(strip=True) if title else '(none)'}")
+    text = soup.get_text(" ", strip=True)[:500]
+    print(f"[{SOURCE_NAME}] texto inicial: {text}")
 
 
 # ---------------------------------------------------------------------------

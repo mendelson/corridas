@@ -502,6 +502,18 @@ def _parse_godream_index_item(item: dict) -> dict | None:
                         date_raw = str(v)
                         break
 
+        if not date_raw:
+            about = str(item.get("about") or item.get("description") or "")
+            if about:
+                date_raw = _extract_date_from_text(about)
+
+        if not date_raw:
+            today = today_iso()
+            hits = _find_future_dates_in_obj(item, today)
+            if hits:
+                hits.sort(key=lambda x: x[0])
+                date_raw = hits[0][0]
+
         date = normalize_date(date_raw) if date_raw else None
         if not date:
             print(f"[{SOURCE_NAME}] item sem data — slug={item.get('slug')}, keys={list(item.keys())}")
@@ -639,17 +651,20 @@ def _find_events_in_json(obj, _depth: int = 0, _acc: list[dict] | None = None) -
 
 
 def _looks_like_event(obj: dict) -> bool:
-    """True if the dict has fields typical of a running event."""
+    """True if the dict resembles a GoDream event payload."""
     keys_lower = {k.lower() for k in obj}
-    has_title = any(k in keys_lower for k in (
-        "title", "titulo", "nome", "name", "event_name", "eventname", "eventtitle",
-    ))
-    has_date = any(k in keys_lower for k in (
+    has_title = any(k in keys_lower for k in ("title", "titulo", "nome", "name", "event_name"))
+    has_direct_date = any(k in keys_lower for k in (
         "date", "data", "data_evento", "dt_inicio", "start_date", "event_date",
-        "startdate", "eventdate", "dtinicio", "beginat", "startat",
-        "startdatetime", "eventappointment",
+        "startdate", "startat", "eventdate",
     ))
-    return has_title and has_date
+
+    # GoDream index items often carry date only under eventAppointment
+    appt = obj.get("eventAppointment") or obj.get("appointment")
+    has_appt_date = isinstance(appt, (dict, list))
+
+    has_identity = bool(obj.get("slug") or obj.get("id") or obj.get("eventId"))
+    return has_title and (has_direct_date or has_appt_date or has_identity)
 
 
 def _parse_json_event(ev: dict, today: str) -> Corrida | None:

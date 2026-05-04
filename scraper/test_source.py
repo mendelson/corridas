@@ -25,12 +25,22 @@ def run(source: str) -> int:
     try:
         results = mod.scrape()
     except Exception as exc:
+        msg = str(exc)
         print(f"❌  {source}: exceção durante scrape()\n    {exc}")
+        if "403" in msg or "Forbidden" in msg:
+            print("FAILURE_NOTE:HTTP 403")
+        elif "timeout" in msg.lower() or "timed out" in msg.lower():
+            print("FAILURE_NOTE:timeout")
+        elif "cloudflare" in msg.lower():
+            print("FAILURE_NOTE:Cloudflare")
+        else:
+            print("FAILURE_NOTE:exceção")
         return 1
 
     n = len(results)
     if n == 0:
         print(f"⚠️   {source}: 0 eventos retornados")
+        print("FAILURE_NOTE:0 eventos")
         return 1
 
     print(f"✅  {source}: {n} evento(s)")

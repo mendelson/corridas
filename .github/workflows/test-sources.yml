@@ -111,8 +111,8 @@ jobs:
           else
             # Push: only test changed source files
             CHANGED=$(git diff --name-only HEAD~1 HEAD \
-              -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
-              | grep '\.py$' | grep -v '__init__\|_base\|test_' \
+              | grep '^scraper/sources/.*\.py$' \
+              | grep -v '__init__\|_base\|test_' \
               | sed 's|scraper/sources/||; s|\.py$||')
 
             # If shared infra changed, test everything
@@ -132,9 +132,9 @@ jobs:
             echo "empty=true"  >> $GITHUB_OUTPUT
             echo "matrix={\"source\":[]}" >> $GITHUB_OUTPUT
           else
-            JSON=$(echo "$SOURCES" | jq -R -s 'split("\n") | map(select(length > 0))')
+            JSON=$(printf '%s\n' "$SOURCES" | jq -Rsc 'split("\n") | map(select(length > 0))')
             echo "empty=false" >> $GITHUB_OUTPUT
-            echo "matrix={\"source\":$JSON}" >> $GITHUB_OUTPUT
+            printf 'matrix={"source":%s}\n' "$JSON" >> $GITHUB_OUTPUT
             echo "Sources to test: $JSON"
           fi
 
@@ -170,7 +170,12 @@ jobs:
           SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
           APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
           APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
-        run: python -m scraper.test_source "${{ matrix.source }}"
+        run: |
+          python -m scraper.test_source "${{ matrix.source }}" 2>&1 | tee /tmp/test-out.txt
+          EXIT=${PIPESTATUS[0]}
+          NOTE=$(grep '^FAILURE_NOTE:' /tmp/test-out.txt | tail -1 | sed 's/^FAILURE_NOTE://')
+          echo "note=$NOTE" >> $GITHUB_OUTPUT
+          exit $EXIT
 
       - name: Save result
         id: save
@@ -182,9 +187,10 @@ jobs:
           mkdir -p test-results
           STATUS=$([ "${{ steps.run_test.outcome }}" = "success" ] && echo "ok" || echo "fail")
           TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-          printf '{"source":"%s","status":"%s","tested_at":"%s"}\n' \
-            "$SOURCE" "$STATUS" "$TIMESTAMP" > "test-results/${SLUG}.json"
-          echo "Result: $SOURCE → $STATUS"
+          NOTE="${{ steps.run_test.outputs.note }}"
+          printf '{"source":"%s","status":"%s","tested_at":"%s","note":"%s"}\n' \
+            "$SOURCE" "$STATUS" "$TIMESTAMP" "$NOTE" > "test-results/${SLUG}.json"
+          echo "Result: $SOURCE → $STATUS${NOTE:+ ($NOTE)}"
 
       - name: Upload result
         if: always()
@@ -222,7 +228,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
           git add README.md data/source-status.json
           git diff --cached --quiet || git commit -m "ci: update source status in README [skip ci]"
+          git pull --rebase origin main
           git push

@@ -33,11 +33,15 @@ def get(url: str, **kwargs) -> httpx.Response:
 
     All scrapers use this function. Fallback is transparent and requires no
     per-scraper configuration. New scrapers get it automatically.
+
+    render_js=True passes &render_js=1 to Scrapestack so it executes JavaScript
+    before returning the page — needed for Cloudflare-protected JS-challenge sites.
     """
     # Pop kwargs that are not httpx-native
     kwargs.pop("source", None)
-    verify  = kwargs.pop("verify", True)
-    timeout = kwargs.pop("timeout", TIMEOUT)
+    verify     = kwargs.pop("verify", True)
+    timeout    = kwargs.pop("timeout", TIMEOUT)
+    render_js  = kwargs.pop("render_js", False)
 
     _domain = urllib.parse.urlparse(url).netloc
 
@@ -60,6 +64,7 @@ def get(url: str, **kwargs) -> httpx.Response:
                 "http://api.scrapestack.com/scrape"
                 f"?access_key={SCRAPESTACK_KEY}"
                 f"&url={urllib.parse.quote(url, safe='')}"
+                + ("&render_js=1" if render_js else "")
             )
             resp = httpx.get(ss_url, headers=HEADERS, follow_redirects=True, timeout=timeout)
             if resp.status_code < 400:

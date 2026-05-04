@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Next Race" />
   <meta name="description" content="Road races in Brazil – Brasília, national marathons and World Marathon Majors" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link rel="icon" type="image/png" sizes="any" href="../logomendi-favicon.png" />
   <link rel="manifest" href="../manifest.json" />
   <link rel="apple-touch-icon" href="../logomendi-favicon.png" />
@@ -20,18 +20,7 @@
   <header class="app-header">
     <span class="app-title">🏃 Next Race</span>
     <div class="header-actions">
-      <a href="https://apps.mmendelson.com" target="_blank" rel="noopener"
-         class="btn-apps" aria-label="Apps for Garmin">⌚ Apps</a>
-      <div class="lang-wrap">
-        <span class="lang-icon" aria-hidden="true">🌐</span>
-        <select class="lang-select" id="langSelect" aria-label="Language">
-          <option value="pt">Português</option>
-          <option value="en">English</option>
-          <option value="es">Español</option>
-          <option value="de">Deutsch</option>
-          <option value="fr">Français</option>
-        </select>
-      </div>
+      <button class="btn-lang" id="btnLang" aria-label="Mudar para Português">PT</button>
       <button class="btn-refresh" id="btnRefresh" aria-label="Refresh">↻</button>
     </div>
   </header>
@@ -69,7 +58,7 @@
       </div>
     </div>
 
-    <!-- Period + Location + Source -->
+    <!-- Period + State + Source -->
     <div class="filter-row filter-row-selects">
       <div class="select-wrapper">
         <select id="periodoSelect" aria-label="Filter by period">
@@ -82,15 +71,10 @@
           <option value="custom">Custom range</option>
         </select>
       </div>
-      <div class="estado-filter-wrapper" id="estadoFilterWrapper">
-        <button class="estado-filter-btn" id="estadoFilterBtn"
-                aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by location">
-          <span id="estadoFilterLabel">All</span>
-          <span class="estado-filter-chevron" aria-hidden="true">▾</span>
-        </button>
-        <div class="estado-filter-dropdown hidden" id="estadoFilterDropdown" role="listbox">
-          <!-- populated dynamically -->
-        </div>
+      <div class="select-wrapper">
+        <select id="estadoSelect" aria-label="Filter by location">
+          <option value="todos">All</option>
+        </select>
       </div>
       <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
         <button class="fonte-filter-btn" id="fonteFilterBtn"
@@ -140,6 +124,7 @@
         <div class="card-body">
           <div class="card-top">
             <h2 class="card-title"></h2>
+            <span class="badge-status"></span>
           </div>
           <div class="card-meta">
             <span class="card-date"></span>
@@ -147,7 +132,6 @@
           </div>
           <div class="card-footer">
             <div class="card-distances"></div>
-            <span class="badge-novo hidden"></span>
             <span class="badge-fontes hidden"></span>
           </div>
         </div>

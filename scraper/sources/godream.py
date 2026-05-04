@@ -572,10 +572,27 @@ def _parse_next_data(soup: BeautifulSoup, today: str) -> list[Corrida]:
         return []
 
     corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
     for ev in events:
         try:
             corrida = _parse_json_event(ev, today)
-            if corrida:
+            if corrida is None:
+                normalized = _parse_godream_index_item(ev)
+                if normalized:
+                    corrida = _parse_json_event(
+                        {
+                            "title": normalized["title"],
+                            "date": normalized["date"],
+                            "city": normalized["city"],
+                            "state": normalized["state"],
+                            "slug": normalized["slug"],
+                            "url": normalized["url"],
+                            "imageUrl": normalized["image"],
+                        },
+                        today,
+                    )
+            if corrida and corrida.id not in seen_ids:
+                seen_ids.add(corrida.id)
                 corridas.append(corrida)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao parsear evento JSON: {e}")
@@ -583,31 +600,42 @@ def _parse_next_data(soup: BeautifulSoup, today: str) -> list[Corrida]:
     return corridas
 
 
-def _find_events_in_json(obj, _depth: int = 0) -> list[dict]:
-    """Recursively search for an array of event-like dicts in the JSON tree."""
-    if _depth > 8:
-        return []
+def _find_events_in_json(obj, _depth: int = 0, _acc: list[dict] | None = None) -> list[dict]:
+    """Collect event-like dicts recursively from the JSON tree.
+
+    GoDream often exposes multiple arrays (featured + listing + pagination data).
+    Returning only the first match can truncate results to a small subset.
+    """
+    if _acc is None:
+        _acc = []
+    if _depth > 10:
+        return _acc
 
     if isinstance(obj, list) and obj and isinstance(obj[0], dict):
-        # Heuristic: the list of events has dicts with at least title/date/city
-        if any(_looks_like_event(item) for item in obj[:3]):
-            return obj
+        if any(_looks_like_event(item) for item in obj[: min(5, len(obj))]):
+            _acc.extend(item for item in obj if isinstance(item, dict))
 
     if isinstance(obj, dict):
-        # Check well-known keys first
-        for key in ("events", "eventos", "corridas", "items", "data", "results",
-                    "races", "content", "list", "records"):
-            val = obj.get(key)
-            if isinstance(val, list) and val and isinstance(val[0], dict):
-                if any(_looks_like_event(item) for item in val[:3]):
-                    return val
-        # Recurse into values
         for val in obj.values():
-            result = _find_events_in_json(val, _depth + 1)
-            if result:
-                return result
+            _find_events_in_json(val, _depth + 1, _acc)
 
-    return []
+    # de-duplicate by slug/id/title-date key while preserving order
+    if _depth == 0:
+        dedup: list[dict] = []
+        seen: set[str] = set()
+        for item in _acc:
+            key = str(
+                item.get("slug")
+                or item.get("id")
+                or f"{item.get('title')}-{item.get('date')}-{item.get('startDate')}"
+            )
+            if key in seen:
+                continue
+            seen.add(key)
+            dedup.append(item)
+        return dedup
+
+    return _acc
 
 
 def _looks_like_event(obj: dict) -> bool:

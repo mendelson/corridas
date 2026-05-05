@@ -40,6 +40,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrar por localização',
     fonteFilterAriaLabel: 'Filtrar por fonte',
     refreshAriaLabel: 'Atualizar',
+    homeAriaLabel: 'Minha localização e idioma',
+    langAriaLabel: 'Idioma',
     clearFiltersAriaLabel: 'Limpar filtros',
     allLocations: 'Todos',
     allBrazil: 'Todo o Brasil',
@@ -98,6 +100,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filter by location',
     fonteFilterAriaLabel: 'Filter by source',
     refreshAriaLabel: 'Refresh',
+    homeAriaLabel: 'My location and language',
+    langAriaLabel: 'Language',
     clearFiltersAriaLabel: 'Clear filters',
     allLocations: 'All',
     allBrazil: 'All Brazil',
@@ -174,6 +178,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrar por ubicación',
     fonteFilterAriaLabel: 'Filtrar por fuente',
     refreshAriaLabel: 'Actualizar',
+    homeAriaLabel: 'Mi ubicación e idioma',
+    langAriaLabel: 'Idioma',
     clearFiltersAriaLabel: 'Limpiar filtros',
     allLocations: 'Todos',
     allBrazil: 'Todo Brasil',
@@ -250,6 +256,8 @@ const STRINGS = {
     estadoAriaLabel: 'Nach Ort filtern',
     fonteFilterAriaLabel: 'Nach Quelle filtern',
     refreshAriaLabel: 'Aktualisieren',
+    homeAriaLabel: 'Mein Standort und Sprache',
+    langAriaLabel: 'Sprache',
     clearFiltersAriaLabel: 'Filter löschen',
     allLocations: 'Alle',
     allBrazil: 'Ganz Brasilien',
@@ -326,6 +334,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrer par lieu',
     fonteFilterAriaLabel: 'Filtrer par source',
     refreshAriaLabel: 'Actualiser',
+    homeAriaLabel: 'Ma localisation et langue',
+    langAriaLabel: 'Langue',
     clearFiltersAriaLabel: 'Effacer les filtres',
     allLocations: 'Tous',
     allBrazil: 'Tout le Brésil',
@@ -426,7 +436,8 @@ const resultCount       = $('resultCount');
 const btnClear          = $('btnClear');
 const btnClearEmpty     = $('btnClearEmpty');
 const btnRefresh        = $('btnRefresh');
-const langSelect        = $('langSelect');
+const btnLang           = $('btnLang');
+const btnHome           = $('btnHome');
 const estadoFilterWrapper  = $('estadoFilterWrapper');
 const estadoFilterBtn      = $('estadoFilterBtn');
 const estadoFilterDropdown = $('estadoFilterDropdown');
@@ -456,7 +467,8 @@ function initI18n() {
   document.title = T.siteTitle;
   document.querySelector('.app-title').textContent = T.headerTitle;
 
-  if (langSelect) langSelect.value = LANG;
+  if (btnLang)     btnLang.setAttribute('aria-label', T.langAriaLabel);
+  if (btnHome)     btnHome.setAttribute('aria-label', T.homeAriaLabel);
   if (btnRefresh)  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
   if (searchInput) {
     searchInput.placeholder = T.searchPlaceholder;
@@ -504,11 +516,54 @@ function initI18n() {
 }
 
 // ---------------------------------------------------------------------------
-// Language switch
+// Language switch (custom dropdown)
 // ---------------------------------------------------------------------------
-if (langSelect) {
-  langSelect.addEventListener('change', () => {
-    window.location.href = LANG_URLS[langSelect.value] || '/pt';
+const _LANG_LABELS = { pt: 'Português', en: 'English', es: 'Español', de: 'Deutsch', fr: 'Français' };
+let _langDropdown = null;
+
+function _closeLangDropdown() {
+  if (_langDropdown) { _langDropdown.remove(); _langDropdown = null; }
+}
+
+if (btnLang) {
+  btnLang.addEventListener('click', e => {
+    e.stopPropagation();
+    if (_langDropdown) { _closeLangDropdown(); return; }
+
+    const dd = document.createElement('div');
+    dd.className = 'lang-dropdown';
+    for (const [code, label] of Object.entries(_LANG_LABELS)) {
+      const btn = document.createElement('button');
+      btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');
+      btn.textContent = label;
+      btn.addEventListener('click', () => {
+        _closeLangDropdown();
+        if (code !== LANG) window.location.href = LANG_URLS[code] || '/pt';
+      });
+      dd.appendChild(btn);
+    }
+    _langDropdown = dd;
+    document.body.appendChild(dd);
+
+    const r = btnLang.getBoundingClientRect();
+    dd.style.top   = (r.bottom + 4) + 'px';
+    dd.style.right = (window.innerWidth - r.right) + 'px';
+    dd.style.position = 'fixed';
+
+    setTimeout(() => document.addEventListener('click', _closeLangDropdown, { once: true }), 0);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Home button — reset to browser language + geo-detected location
+// ---------------------------------------------------------------------------
+if (btnHome) {
+  btnHome.addEventListener('click', () => {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved) { delete saved.estado; localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }
+    } catch (e) { /* ignore */ }
+    window.location.href = LANG_URLS[BROWSER_LANG] || '/pt';
   });
 }
 

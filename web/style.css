@@ -110,6 +110,50 @@ input { font-family: inherit; }
 }
 .btn-apps:hover { color: var(--color-accent); border-color: var(--color-accent); }
 
+.btn-lang,
+.btn-home {
+  min-width: var(--touch);
+  min-height: var(--touch);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-lang:hover,
+.btn-home:hover { color: var(--color-accent); border-color: var(--color-accent); }
+
+/* Language dropdown */
+.lang-dropdown {
+  position: fixed;
+  z-index: 9999;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  display: flex;
+  flex-direction: column;
+  min-width: 130px;
+  overflow: hidden;
+}
+.lang-option {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 0.88rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.lang-option:hover { background: var(--color-bg); }
+.lang-option-active { font-weight: 700; color: var(--color-accent); }
+
 .lang-wrap {
   display: flex;
   align-items: center;

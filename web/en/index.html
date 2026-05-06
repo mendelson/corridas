@@ -20,6 +20,8 @@
   <header class="app-header">
     <span class="app-title">🏃 Next Race</span>
     <div class="header-actions">
+      <a href="https://apps.mmendelson.com" target="_blank" rel="noopener"
+         class="btn-apps" aria-label="Apps for Garmin">⌚ Apps</a>
       <button class="btn-home" id="btnHome">📍</button>
       <button class="btn-lang" id="btnLang">🌐</button>
       <button class="btn-refresh" id="btnRefresh" aria-label="Refresh">↻</button>
@@ -72,10 +74,15 @@
           <option value="custom">Custom range</option>
         </select>
       </div>
-      <div class="select-wrapper">
-        <select id="estadoSelect" aria-label="Filter by location">
-          <option value="todos">All</option>
-        </select>
+      <div class="estado-filter-wrapper" id="estadoFilterWrapper">
+        <button class="estado-filter-btn" id="estadoFilterBtn"
+                aria-haspopup="listbox" aria-expanded="false" aria-label="Filter by location">
+          <span id="estadoFilterLabel">All</span>
+          <span class="estado-filter-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="estado-filter-dropdown hidden" id="estadoFilterDropdown" role="listbox">
+          <!-- populated dynamically -->
+        </div>
       </div>
       <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
         <button class="fonte-filter-btn" id="fonteFilterBtn"
@@ -125,7 +132,6 @@
         <div class="card-body">
           <div class="card-top">
             <h2 class="card-title"></h2>
-            <span class="badge-status"></span>
           </div>
           <div class="card-meta">
             <span class="card-date"></span>

@@ -518,7 +518,7 @@ function initI18n() {
 // ---------------------------------------------------------------------------
 // Language switch (custom dropdown)
 // ---------------------------------------------------------------------------
-const _LANG_LABELS = { pt: 'Português', en: 'English', es: 'Español', de: 'Deutsch', fr: 'Français' };
+const _LANG_LABELS = { de: 'Deutsch', en: 'English', es: 'Español', fr: 'Français', pt: 'Português' };
 let _langDropdown = null;
 
 function _closeLangDropdown() {
@@ -559,11 +559,31 @@ if (btnLang) {
 // ---------------------------------------------------------------------------
 if (btnHome) {
   btnHome.addEventListener('click', () => {
+    const targetLang = BROWSER_LANG;
+
+    if (targetLang === LANG) {
+      // Same language: reset location inline — no navigation, no extra API calls.
+      _userChoseLocation = false;
+      state.estado = 'todos';
+      _geoApplied  = null;
+      if (_geoDetected) {
+        _applyGeoLocation();
+      } else {
+        detectUserLocation();
+      }
+      return;
+    }
+
+    // Language change: carry already-detected geo to the new page via sessionStorage
+    // so populateEstadoFilter() can apply it immediately without waiting for API calls.
+    if (_geoDetected) {
+      try { sessionStorage.setItem('_geoCache', _geoDetected); } catch (e) {}
+    }
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
       if (saved) { delete saved.estado; localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }
-    } catch (e) { /* ignore */ }
-    window.location.href = LANG_URLS[BROWSER_LANG] || '/pt';
+    } catch (e) {}
+    window.location.href = LANG_URLS[targetLang] || '/pt';
   });
 }
 
@@ -609,7 +629,7 @@ async function fetchData(triggeredByUser = false) {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
     allCorridas = json.corridas || [];
-    populateEstadoFilter({ skipGeo: true });
+    populateEstadoFilter();
     populateFontesFilter();
     if (triggeredByUser && !_userChoseLocation) {
       state.estado = 'todos';
@@ -1772,6 +1792,12 @@ function init() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js').catch(() => {});
   }
+
+  // Restore geo value carried from previous page via 📍 language-change navigation.
+  try {
+    const cached = sessionStorage.getItem('_geoCache');
+    if (cached) { _geoDetected = cached; sessionStorage.removeItem('_geoCache'); }
+  } catch (e) {}
 
   detectUserLocation();
   fetchData();

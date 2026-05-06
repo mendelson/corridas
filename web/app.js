@@ -532,7 +532,9 @@ if (btnLang) {
 
     const dd = document.createElement('div');
     dd.className = 'lang-dropdown';
-    for (const [code, label] of Object.entries(_LANG_LABELS)) {
+    const _sortedLangs = [[LANG, _LANG_LABELS[LANG]],
+      ...Object.entries(_LANG_LABELS).filter(([c]) => c !== LANG)];
+    for (const [code, label] of _sortedLangs) {
       const btn = document.createElement('button');
       btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');
       btn.textContent = label;

@@ -1,22 +1,22 @@
 [main] iniciando scraping...
-[main] 1203 corridas no estado anterior
+[main] 1207 corridas no estado anterior
 [proxy] www.liverun.com.br bloqueado (403), tentando Scrapestack...
-[Ativo] 6 corridas encontradas
-[proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
 [Central da Corrida] 81 corridas encontradas
+[proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
+[Ativo] 6 corridas encontradas
 [proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
 [Live Run] erro ao buscar calendário: todos os métodos falharam para https://www.liverun.com.br/calendario
-[Iguana Sports] 8 corridas encontradas
 [Runner Brasil] 21 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
+[MKS Esportes] 4 corridas encontradas
 [Brasil Corrida] 9 corridas encontradas
 [Brasil que Corre] 0 corridas encontradas
-[MKS Esportes] 4 corridas encontradas
 [proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
+[Correr Brasília] 1 corridas encontradas
 [proxy] Scrapestack retornou 429 para www.godream.com.br, tentando Apify...
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
 [GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
-[Correr Brasília] 1 corridas encontradas
 [SESC DF] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
 [GoDream] Playwright via Apify residential proxy
@@ -32,6 +32,8 @@ Call log:
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
 [Volta do Lago] site acessível mas sem dados reconhecíveis
+[World Marathons] buildId não encontrado
+[World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
@@ -39,17 +41,6 @@ Call log:
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[World Marathons] buildId não encontrado
-[World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
-[TF Sports] 50 corridas encontradas
-[World Marathons] Playwright: 376038 bytes renderizados
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370420 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370318 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370105 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
-[World Marathons] sem dados — nenhuma estratégia funcionou
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
@@ -58,62 +49,82 @@ Call log:
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/marathon
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[TF Sports] 50 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/half-marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/half-marathon
 [Let's Do This] tentando Playwright para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[Let's Do This] Playwright: 944620 bytes renderizados
+[World Marathons] Playwright: 407229 bytes renderizados
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370391 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
+[Let's Do This] Playwright: 1004113 bytes renderizados
+[Let's Do This] classes relevantes na página: ['after:pointer-events-none']
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (369970 bytes)
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370420 bytes)
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
+[World Marathons] sem dados — nenhuma estratégia funcionou
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] GraphQL erro: todos os métodos falharam para https://www.letsdothis.com/api/graphql
 [Let's Do This] sem dados — nenhuma estratégia funcionou
-[Ticket Sports] 977 corridas encontradas
-[main] 4419 registros coletados (antes do merge)
-[main] 1149 registros após validação
-[main] 1104 corridas após merge
-[main] verificando links de 81 evento(s) não encontrado(s) no scrape...
+[Ticket Sports] 972 corridas encontradas
+[main] 4414 registros coletados (antes do merge)
+[main] 1144 registros após validação
+[main] 1099 corridas após merge
+[main] verificando links de 91 evento(s) não encontrado(s) no scrape...
+[main] 'Circuito Caixa Sunset Run - Etapa Boa Vista' — link válido, miss_count zerado
 [main] '2ª Corrida Do Médico Veterinário E Zootecnista' — link válido, miss_count zerado
 [main] 'Vila Velha Night Run' — link válido, miss_count zerado
-[main] 'Corrida Trail Run Brisa Do Sol-Campina Grande Do Sul' — link válido, miss_count zerado
-[main] 'Circuito Caixa Sunset Run - Etapa Boa Vista' — link válido, miss_count zerado
-[main] '2ª Corrida Do Café De Santos 2026' — link válido, miss_count zerado
+[main] 'Etapa Dia Das Mães | Maratona Kids Boulevard' — link válido, miss_count zerado
+[main] '2ª Corrida Santa Casa Araraquara 2026' — link válido, miss_count zerado
 [main] 'Corrida Clinica Bem Estar' — link válido, miss_count zerado
 [main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
-[main] 'Ami Run - Corrida Pela Inclusão' — link válido, miss_count zerado
 [main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
+[main] 'Ami Run - Corrida Pela Inclusão' — link válido, miss_count zerado
 [main] '5ª Corrida Do Paulista' — link válido, miss_count zerado
-[main] 'B. Day 186 Anos - Piedade - SP' — link válido, miss_count zerado
+[main] 'Corrida Maçônica Cidade De Vitória' — link válido, miss_count zerado
+[main] 'Meia Do Porto Maravilha' — link válido, miss_count zerado
+[main] 'Itatiba Night Run - 2ª Edição' — link válido, miss_count zerado
+[main] 'Desafio Da Floresta' — link válido, miss_count zerado
+[main] 'Desafio Macuco' — link válido, miss_count zerado
+[main] '2ª Corrida Do Café De Santos 2026' — link válido, miss_count zerado
+[main] 'Corrida Trail Run Brisa Do Sol-Campina Grande Do Sul' — link válido, miss_count zerado
 [main] '6ª Corrida Da Uva - Etapa Estima' — link válido, miss_count zerado
 [main] '7ª Corrida Xanxerê Cidade Do Coração' — link válido, miss_count zerado
-[main] '5º Cross Country Calipal' — link válido, miss_count zerado
+[main] 'Giro D'Italia Ride Like A Pro Brasil 2026 | Edição Campos Do Jordão - SP' — link válido, miss_count zerado
+[main] 'Corrida Do Colégio Novo Alvo' — link válido, miss_count zerado
+[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
+[main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
 [main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
 [main] '2ª Corrida Tribunal De Contas De Santa Catarina' — link válido, miss_count zerado
+[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
+[main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
+[main] 'B. Day 186 Anos - Piedade - SP' — link válido, miss_count zerado
+[main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
+[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
+[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
 [main] '9ª Corrida Vencendo As Cefaleias' — link válido, miss_count zerado
 [main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
-[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
-[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
-[main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
-[main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
-[main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
-[main] 'Corrida Maçônica Cidade De Vitória' — link válido, miss_count zerado
-[main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
-[main] 'Desafio Macuco' — link válido, miss_count zerado
-[main] 'Meia Do Porto Maravilha' — link válido, miss_count zerado
+[main] 'Corrida - Betty Boop' — link válido, miss_count zerado
+[main] '5º Cross Country Calipal' — link válido, miss_count zerado
 [main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
 [main] '1ª Corrida Da Romu' — link válido, miss_count zerado
-[main] 'Circuito Pela Vida' — link válido, miss_count zerado
-[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
-[main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
-[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
-[main] '#Dicaticket' — link válido, miss_count zerado
 [main] '6ª Corrida Capitão Running' — link válido, miss_count zerado
+[main] 'Circuito Pela Vida' — link válido, miss_count zerado
+[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
+[main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
+[main] '#Dicaticket' — link válido, miss_count zerado
 [main] 'Bemol Run Manaus 2026' — link válido, miss_count zerado
-[main] 1207 corridas após reconciliação
-[main] 1207 corridas após dedup final
-[main] buscando imagens para 129 evento(s) sem foto...
+[main] 'Go.Run' — link válido, miss_count zerado
+[main] 1212 corridas após reconciliação
+[main] 1212 corridas após dedup final
+[main] buscando imagens para 128 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[main] 1/129 imagens encontradas
-[main] 1207 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 0/128 imagens encontradas
+[main] 1212 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

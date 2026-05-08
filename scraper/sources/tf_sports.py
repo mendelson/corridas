@@ -11,10 +11,11 @@ from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
+# Deep-populate eventData so modalities/distances/times come back inline.
 LIST_URL = (
     f"{API_BASE}/run-series"
     "?publicationState=live"
-    "&populate[eventData]=*"
+    "&populate[eventData][populate]=*"
     "&populate[pageSeo][populate]=*"
     "&pagination[pageSize]=100"
 )
@@ -37,6 +38,35 @@ _BR_STATES = {
     "MG", "MS", "MT", "PA", "PB", "PE", "PI", "PR", "RJ", "RN",
     "RO", "RR", "RS", "SC", "SE", "SP", "TO",
 }
+
+# CEP first-5-digits → UF (Correios postal-code ranges).
+_CEP_RANGES: list[tuple[int, int, str]] = [
+    (1000,  19999, "SP"), (20000, 28999, "RJ"), (29000, 29999, "ES"),
+    (30000, 39999, "MG"), (40000, 48999, "BA"), (49000, 49999, "SE"),
+    (50000, 56999, "PE"), (57000, 57999, "AL"), (58000, 58999, "PB"),
+    (59000, 59999, "RN"), (60000, 63999, "CE"), (64000, 64999, "PI"),
+    (65000, 65999, "MA"), (66000, 68899, "PA"), (68900, 68999, "AP"),
+    (69000, 69299, "AM"), (69300, 69399, "RR"), (69400, 69899, "AM"),
+    (69900, 69999, "AC"), (70000, 72799, "DF"), (72800, 72999, "GO"),
+    (73000, 73699, "DF"), (73700, 76799, "GO"), (76800, 76999, "RO"),
+    (77000, 77999, "TO"), (78000, 78899, "MT"), (78900, 78999, "RO"),
+    (79000, 79999, "MS"), (80000, 87999, "PR"), (88000, 89999, "SC"),
+    (90000, 99999, "RS"),
+]
+
+
+def _state_from_cep(text: str) -> str | None:
+    """Find a CEP in the text and return its UF (state)."""
+    if not text:
+        return None
+    m = re.search(r"\b(\d{5})-?\d{3}\b", text)
+    if not m:
+        return None
+    cep = int(m.group(1))
+    for low, high, uf in _CEP_RANGES:
+        if low <= cep <= high:
+            return uf
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -95,21 +125,90 @@ def _strip_symbols(text: str) -> str:
     return "".join(c for c in text if not unicodedata.category(c).startswith("So")).strip()
 
 
-def _parse_location(location: str | None) -> tuple[str, str]:
+_STATE_FULL_TO_UF = {
+    "acre": "AC", "alagoas": "AL", "amazonas": "AM", "amapá": "AP", "amapa": "AP",
+    "bahia": "BA", "ceará": "CE", "ceara": "CE", "distrito federal": "DF",
+    "espírito santo": "ES", "espirito santo": "ES", "goiás": "GO", "goias": "GO",
+    "maranhão": "MA", "maranhao": "MA", "minas gerais": "MG",
+    "mato grosso do sul": "MS", "mato grosso": "MT",
+    "pará": "PA", "para": "PA", "paraíba": "PB", "paraiba": "PB",
+    "pernambuco": "PE", "piauí": "PI", "piaui": "PI",
+    "paraná": "PR", "parana": "PR", "rio de janeiro": "RJ",
+    "rio grande do norte": "RN", "rondônia": "RO", "rondonia": "RO",
+    "roraima": "RR", "rio grande do sul": "RS",
+    "santa catarina": "SC", "sergipe": "SE", "são paulo": "SP", "sao paulo": "SP",
+    "tocantins": "TO",
+}
+
+
+def _parse_location(location: str | None, titulo: str = "") -> tuple[str, str]:
     """
-    Parse (city, state) from strings like:
-      '📍 Rua X, 123 - Bairro, São Paulo - SP, 04543-011'
-    Splits on comma, looks for 'Cidade - UF' from the end.
+    Parse (city, state) from address strings.
+
+    Priority:
+      1. CEP → UF mapping (most reliable; addresses are often malformed).
+      2. "City - UF" pattern in any comma-separated part.
+      3. "City - FullStateName" pattern.
+      4. Title fallback for city (e.g. "Aracaju I" → city "Aracaju").
     """
     if not location:
-        return "", "??"
+        return _city_from_titulo(titulo), "??"
     clean = _strip_symbols(location)
     parts = [p.strip() for p in clean.split(",")]
-    for part in reversed(parts):
-        m = re.match(r"^([A-ZÀ-Ü][A-Za-zÀ-ÿ .]+?)\s*[-–]\s*([A-Z]{2})$", part.strip())
+
+    cep_state = _state_from_cep(clean)
+
+    # Find a "City - UF" or "City - StateName" anywhere in the address
+    addr_city, addr_state = "", ""
+    for part in parts:
+        # City - UF
+        m = re.match(r"^(.*?[A-Za-zÀ-ÿ])\s*[-–]\s*([A-Z]{2})$", part.strip())
         if m and m.group(2) in _BR_STATES:
-            return m.group(1).strip(), m.group(2).strip()
-    return clean[:60], "??"
+            addr_city, addr_state = m.group(1).strip(), m.group(2).strip()
+            break
+        # City - FullStateName (or "-City - FullStateName")
+        for full, uf in _STATE_FULL_TO_UF.items():
+            pat = re.compile(rf"([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ .]+?)\s*[-–]\s*{re.escape(full)}\b",
+                             re.IGNORECASE)
+            mm = pat.search(part)
+            if mm:
+                addr_city, addr_state = mm.group(1).strip(), uf
+                break
+        if addr_state:
+            break
+
+    # CEP wins if it disagrees with the address-extracted UF
+    if cep_state and addr_state and cep_state != addr_state:
+        return (addr_city or _city_from_titulo(titulo)), cep_state
+    if addr_state:
+        return addr_city, addr_state
+    if cep_state:
+        return _city_from_titulo(titulo), cep_state
+
+    return "", "??"
+
+
+_TITULO_CITY_STRIP = re.compile(
+    r"\s*\b(i{1,3}|iv|v|vi{0,3}|ix|x|\d+|run|race|series)\b\s*$",
+    re.IGNORECASE,
+)
+
+
+def _city_from_titulo(titulo: str) -> str:
+    """Best-effort city extraction from event title, e.g. 'Aracaju I' → 'Aracaju'.
+
+    Run Series titles use the city name plus a roman numeral or edition number.
+    """
+    if not titulo:
+        return ""
+    t = titulo.strip()
+    # Strip trailing edition tokens
+    while True:
+        new = _TITULO_CITY_STRIP.sub("", t).strip(" -")
+        if new == t:
+            break
+        t = new
+    return t
 
 
 # ---------------------------------------------------------------------------
@@ -120,45 +219,86 @@ def _km_from_val(val) -> float | None:
     if isinstance(val, (int, float)):
         km = float(val)
     elif isinstance(val, str):
+        s = val.replace(",", ".").strip().lower()
+        # Strip trailing "km", "k", " m" while keeping numeric core
+        s = re.sub(r"\s*(km|k|m)\s*$", "", s)
         try:
-            km = float(val.replace(",", ".").strip().rstrip("k").rstrip("m"))
+            km = float(s)
         except ValueError:
             return None
     else:
         return None
-    return km if 3 <= km <= 100 else None
+    return km if 0.5 <= km <= 200 else None
+
+
+_TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::\d{2})?")
+
+
+def _time_from_val(val) -> str | None:
+    """Extract HH:MM from a time/datetime value."""
+    if val is None:
+        return None
+    if isinstance(val, str):
+        m = _TIME_RE.search(val)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                return f"{h:02d}:{mi:02d}"
+        # ISO datetime "2026-05-10T07:00:00.000Z"
+        m = re.search(r"T(\d{2}):(\d{2})", val)
+        if m:
+            return f"{m.group(1)}:{m.group(2)}"
+    return None
+
+
+def _walk_modalities(obj, results: list[Distancia], seen: set[float]) -> None:
+    """Recursively walk a JSON tree, capturing objects that look like a
+    modality entry — i.e. having a km/distance field. Capture associated
+    start time when present.
+    """
+    if isinstance(obj, list):
+        for item in obj:
+            _walk_modalities(item, results, seen)
+        return
+    if not isinstance(obj, dict):
+        return
+
+    # Detect a modality-like dict — require explicit distance key
+    km_raw = obj.get("km") or obj.get("distance") or obj.get("distancia")
+    name = obj.get("name") or obj.get("title") or obj.get("modality") or ""
+    # Only fall back to name-extraction when the dict already looks like a
+    # modality (has time field) — avoids matching unrelated objects.
+    has_time_field = any(
+        obj.get(k) for k in ("startTime", "start_time", "horario", "hora")
+    )
+    if km_raw is None and has_time_field and isinstance(name, str):
+        m = re.search(r"(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", name)
+        if m:
+            km_raw = m.group(1).replace(",", ".")
+
+    km = _km_from_val(km_raw) if km_raw is not None else None
+    if km is not None and km not in seen:
+        seen.add(km)
+        time_raw = (obj.get("startTime") or obj.get("start_time")
+                    or obj.get("horario") or obj.get("hora")
+                    or obj.get("time") or obj.get("schedule"))
+        horario = _time_from_val(time_raw)
+        results.append(Distancia(km=km, data=None, horario=horario))
+
+    for v in obj.values():
+        _walk_modalities(v, results, seen)
 
 
 def _distances_from_api(attrs: dict) -> list[Distancia]:
-    """Look for distance data in the Strapi API response."""
-    for key in ("distances", "modalities", "categories", "distancias"):
-        raw = attrs.get(key)
-        if not isinstance(raw, list):
-            ed = attrs.get("eventData") or {}
-            raw = ed.get(key)
-        if isinstance(raw, list) and raw:
-            seen: set[float] = set()
-            result: list[Distancia] = []
-            for item in raw:
-                km_raw = None
-                if isinstance(item, dict):
-                    km_raw = (
-                        item.get("km") or item.get("distance")
-                        or item.get("value") or item.get("distancia")
-                    )
-                else:
-                    km_raw = item
-                km = _km_from_val(km_raw)
-                if km and km not in seen:
-                    seen.add(km)
-                    result.append(Distancia(km=km, data=None, horario=None))
-            if result:
-                return result
-    return []
+    """Walk the entire API response looking for modality-like objects."""
+    seen: set[float] = set()
+    result: list[Distancia] = []
+    _walk_modalities(attrs, result, seen)
+    return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
 
 
 def _distances_from_next_data(slug: str) -> list[Distancia]:
-    """Try to extract distances from __NEXT_DATA__ on the event detail page."""
+    """Fall back to the event detail page's __NEXT_DATA__ for modalities."""
     try:
         resp = httpx.get(
             f"{BASE}/run-series/{slug}",
@@ -172,17 +312,10 @@ def _distances_from_next_data(slug: str) -> list[Distancia]:
         if not tag or not tag.string:
             return []
         data = json.loads(tag.string)
-        # Search entire JSON dump for "km" keys
-        text = json.dumps(data)
-        nums = re.findall(r'"km"\s*:\s*(\d+(?:\.\d+)?)', text)
         seen: set[float] = set()
         result: list[Distancia] = []
-        for n in nums:
-            km = float(n)
-            if km not in seen and 3 <= km <= 100:
-                seen.add(km)
-                result.append(Distancia(km=km, data=None, horario=None))
-        return result
+        _walk_modalities(data, result, seen)
+        return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
     except Exception:
         return []
 
@@ -279,15 +412,21 @@ def scrape() -> list[Corrida]:
             location_raw = ed.get("location") or ""
             is_closed = ed.get("isSubscriptionClosed")
 
-            city, state = _parse_location(location_raw)
+            city, state = _parse_location(location_raw, titulo)
             if state == "??":
                 inferred = infer_estado(location_raw + " " + titulo)
                 state = inferred or "??"
+            if not city:
+                city = _city_from_titulo(titulo)
 
             localizacao = f"{city}, {state}" if city else state
 
             distancias = _get_distances(attrs, slug)
             imagem_url = _extract_image(attrs)
+
+            # Earliest distance horario becomes the event-level start time
+            horarios_dist = [d.horario for d in distancias if d.horario]
+            horario_evento = min(horarios_dist) if horarios_dist else None
 
             link_evento = f"{BASE}/run-series/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)
@@ -302,7 +441,7 @@ def scrape() -> list[Corrida]:
                 id=f"{slugify(titulo)}_{state.lower()}_{today}",
                 titulo=titulo,
                 data_evento=data_evento,
-                horario=None,
+                horario=horario_evento,
                 localizacao=localizacao,
                 cidade=city,
                 estado=state,

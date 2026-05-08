@@ -29,6 +29,7 @@ _AWARD_KW = re.compile(
 # Keywords that indicate non-running events (triathlon, swimming, cycling, etc.)
 _NON_RUNNING_KW = [
     "triathlon", "triathon", "ironman", "duathlon",
+    "aquabike", "aqua bike", "aquathlon",
     "natação", "natacao", "águas abertas", "aguas abertas", "swimrun",
     "federação de triathlon", "federacao de triathlon",
     "granfondo", "gran fondo", "granfondo", "gran-fondo",
@@ -120,15 +121,6 @@ _PT_MONTHS = {
 
 
 def _extract_schedule(text: str) -> dict[float, tuple[str | None, str | None]]:
-    """Parse multi-day schedule text into {km: (iso_date, horario)}.
-
-    Handles events where different distances race on different days, e.g.:
-      Dia 21 de novembro de 2026
-        Atletas inscritos 5 km e 10 km – largada 18h00
-      Dia 22 de novembro de 2026
-        Atletas inscritos na maratona – PCD 5h00 …
-        Atletas inscritos na meia maratona – PCD 6h00 …
-    """
     day_hits = list(_DAY_RE.finditer(text))
     if not day_hits:
         return {}
@@ -143,10 +135,8 @@ def _extract_schedule(text: str) -> dict[float, tuple[str | None, str | None]]:
         end = day_hits[i + 1].start() if i + 1 < len(day_hits) else len(text)
         day_block = text[m.end():end]
 
-        # Split the day block into per-distance sub-sections at "Atletas inscritos"
         sub_blocks = re.split(r"(?i)atletas inscritos", day_block)
 
-        # If no sub-sections found, treat the whole day as one block
         if len(sub_blocks) == 1:
             sub_blocks = [day_block]
 
@@ -154,7 +144,6 @@ def _extract_schedule(text: str) -> dict[float, tuple[str | None, str | None]]:
             if not sub.strip():
                 continue
 
-            # Extract km values from this sub-block
             sub_lower = sub.lower()
             raw = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", sub, re.IGNORECASE)
             kms: list[float] = [float(n.replace(",", ".")) for n in raw]
@@ -170,7 +159,6 @@ def _extract_schedule(text: str) -> dict[float, tuple[str | None, str | None]]:
             if not kms:
                 continue
 
-            # Earliest start time in this sub-block (skip PCD-only entries)
             times = [
                 f"{int(h):02d}:{mn}"
                 for h, mn in re.findall(r"(\d{1,2})h(\d{2})", sub, re.IGNORECASE)
@@ -213,7 +201,6 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
             texts_nl.append(val)
             texts_sp.append(val)
 
-    # Try multi-day schedule extraction first (different distances on different days)
     schedule = _extract_schedule("\n".join(texts_nl))
     if schedule:
         corrida.distancias = [
@@ -223,9 +210,6 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
     else:
         dists = _extract_distances_from_text(" ".join(texts_sp))
         if dists:
-            # Section-header times are more reliable than inline regex matches
-            # (inline regex can pick up award-ceremony times instead of start times).
-            # When available, section times always win.
             section_times = _extract_times_from_sections(texts_nl)
             for d in dists:
                 km_key = next((k for k in section_times if abs(k - d.km) < 0.5), None)
@@ -233,7 +217,6 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
                     d.horario = section_times[km_key]
             corrida.distancias = dists
 
-    # Set event-level horario from per-distance times or realDate fallback
     per_dist_times = [d.horario for d in corrida.distancias if d.horario]
     if per_dist_times:
         corrida.horario = min(per_dist_times)
@@ -275,7 +258,6 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         else:
             estado = infer_estado(addr, titulo) or "??"
 
-    # Enrich international locations with country name
     if estado == "INT" and addr and "," not in addr:
         addr_lower = addr.lower()
         for kw, country in _CITY_TO_COUNTRY:
@@ -328,7 +310,6 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
 
 
 def _split_address(addr: str) -> tuple[str, str]:
-    """'São Paulo, SP' → ('São Paulo', 'SP')"""
     parts = addr.rsplit(",", 1)
     if len(parts) == 2:
         state = parts[1].strip()
@@ -338,15 +319,12 @@ def _split_address(addr: str) -> tuple[str, str]:
 
 
 def _parse_date(raw: str) -> str | None:
-    """Extract the earliest date from raw string (handles 'DD e DD/MM/YYYY' etc.)."""
     if not raw:
         return None
-    # Try all DD/MM/YYYY occurrences and return the earliest future-leaning one
     matches = re.findall(r"(\d{1,2})/(\d{1,2})/(\d{4})", raw)
     if matches:
         dates = [f"{y}-{m.zfill(2)}-{d.zfill(2)}" for d, m, y in matches]
         return sorted(dates)[0]
-    # Portuguese long form: "18 DE ABRIL DE 2027"
     _MONTHS = {
         "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
         "abril": "04", "maio": "05", "junho": "06", "julho": "07",
@@ -370,18 +348,15 @@ _INTERVAL_RE = re.compile(
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
-# Matches "5KM: 07h00", "10km - 08:30" etc. to extract per-distance start times
 _DIST_TIME_RE = re.compile(
     r"(\d+(?:[.,]\d+)?)\s*k(?:m)?\b\s*[:\-–]?\s*(\d{1,2})[h:](\d{2})",
     re.IGNORECASE,
 )
 
-# Matches the first time on a line: "6h55:", "7h00 Largada..."
 _SECTION_TIME_RE = re.compile(r"^\s*(\d{1,2})h(\d{2})\b")
 
 
 def _canonicalize(kms: list[float]) -> list[float]:
-    """Replace values near known canonical distances; deduplicate."""
     out: list[float] = []
     seen: set[float] = set()
     for km in kms:
@@ -396,17 +371,6 @@ def _canonicalize(kms: list[float]) -> list[float]:
 
 
 def _extract_times_from_sections(texts: list[str]) -> dict[float, str]:
-    """Extract distance→time from section-header schedules like:
-
-        Maratona (42km):
-        6h55: Largada...
-
-        Meia Maratona (21km) e 10km:
-        7h00: Largada...
-
-        5km:
-        7h30: Largada...
-    """
     result: dict[float, str] = {}
     lines = [ln.strip() for text in texts for ln in text.split("\n") if ln.strip()]
     for i, line in enumerate(lines):
@@ -442,8 +406,6 @@ def _extract_times_from_sections(texts: list[str]) -> dict[float, str]:
 
 
 def _extract_distances_from_text(text: str) -> list[Distancia]:
-    """Extract distances from a detail description (authoritative source)."""
-    # Extract per-distance start times (e.g. "5KM: 07h00 | 3KM: 07h30")
     time_map: dict[float, str] = {}
     for m in _DIST_TIME_RE.finditer(text):
         ctx = text[max(0, m.start() - 80): m.end() + 20]
@@ -452,14 +414,13 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
         km = float(m.group(1).replace(",", "."))
         h = int(m.group(2))
         mi = m.group(3)
-        if 5 <= h <= 22:  # sanity: event start times, not completion times like 1h30
+        if 5 <= h <= 22:
             time_map[km] = f"{h:02d}:{mi}"
 
     clean = _INTERVAL_RE.sub(" ", text)
-    # (?<![.,]) prevents matching mid-number fragments like "097" from "21.097,5 km"
     raw = re.findall(r"(?<![.,])\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE)
     kms = [float(n.replace(",", ".")) for n in raw]
-    kms = [k for k in kms if 3 <= k <= 200]  # ≥3 km: filter walking/kids/hydration noise
+    kms = [k for k in kms if 3 <= k <= 200]
     kms = _canonicalize(kms)
 
     result = []
@@ -475,22 +436,18 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
 
 
 def _extract_distances(titulo_lower: str) -> list[Distancia]:
-    """Title-based fallback — used only when detail API returns nothing."""
     seen: set[float] = set()
     result: list[Distancia] = []
 
-    # Half marathon must be checked before full to avoid "maratona" false-matching
     if "meia maratona" in titulo_lower or "half marathon" in titulo_lower:
         seen.add(21.097)
         result.append(Distancia(km=21.097, data=None, horario=None))
 
-    # Full marathon: "maratona"/"marathon" only when NOT preceded by "meia"/"half"
     if re.search(r"(?<!meia )\bmaratona\b|(?<!half )\bmarathon\b", titulo_lower):
         if 42.195 not in seen:
             seen.add(42.195)
             result.append(Distancia(km=42.195, data=None, horario=None))
 
-    # Numeric: "5k", "10km", "42 km"
     for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", titulo_lower):
         km = float(m.group(1).replace(",", "."))
         km_c = next((c for c, lo, hi in _CANONICAL if lo <= km <= hi), km)

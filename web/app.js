@@ -1233,7 +1233,8 @@ function renderCards() {
     const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
     const expand = hasFuture && !firstFutureMonthFound;
     if (expand) firstFutureMonthFound = true;
-    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand);
+    const hasNovo = corridas.some(c => _isNovo(c));
+    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNovo);
     for (const corrida of corridas) {
       cardsContainer.appendChild(buildCard(corrida));
     }
@@ -1282,10 +1283,16 @@ function buildPastSection(corridas) {
   return section;
 }
 
-function buildMonthSection(monthKey, count, expanded = false) {
+function _isNovo(c) {
+  if (!c || !c.first_seen_at) return false;
+  return (Date.now() - new Date(c.first_seen_at).getTime()) < 24 * 60 * 60 * 1000;
+}
+
+function buildMonthSection(monthKey, count, expanded = false, hasNovo = false) {
   const [year, month] = monthKey.split('-');
   const label      = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
   const countLabel = T.raceCountLabel(count);
+  const novoBadge  = hasNovo ? `<span class="badge-novo">${T.badgeNovo}</span>` : '';
 
   const section = document.createElement('div');
   section.className = 'month-section';
@@ -1296,6 +1303,7 @@ function buildMonthSection(monthKey, count, expanded = false) {
   btn.setAttribute('aria-label', `${label}, ${countLabel}`);
   btn.innerHTML = `
     <span class="month-separator-label">${label}</span>
+    ${novoBadge}
     <span class="month-count">${countLabel}</span>
     <span class="month-chevron" aria-hidden="true">${expanded ? '▾' : '▸'}</span>`;
 

@@ -1420,8 +1420,11 @@ function buildExpanded(card, c) {
 
   if (c.distancias && c.distancias.length > 0) {
     const sorted      = sortDistancias(c.distancias);
-    const hasDate     = sorted.some(d => d.data);
+    const uniqueDates = new Set(sorted.map(d => d.data || null).filter(Boolean));
     const uniqueTimes = new Set(sorted.map(d => d.horario || null).filter(Boolean));
+    // Only show per-distance columns when values differ across distances —
+    // otherwise the date/time is redundant with what's already on the card.
+    const hasDate     = uniqueDates.size > 1;
     const hasHorario  = uniqueTimes.size > 1;
 
     const table = document.createElement('table');

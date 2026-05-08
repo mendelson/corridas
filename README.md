@@ -28,7 +28,6 @@ GitHub Actions.
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
-| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-05 00:40 | ❌ 0 eventos | — |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | 2026-05-05 00:42 | ❌ 0 eventos | — |
 
 ### Fontes brasileiras — específicas Brasília-DF
@@ -50,16 +49,6 @@ GitHub Actions.
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-05 00:42 | ✅ | 2026-05-05 00:42 |
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
 | Volta do Lago<!--volta_do_lago--> | ✅ | `voltadolago.com.br` | 2026-05-05 00:42 | ❌ 0 eventos | — |
-
-### Fontes com WAF intransponível
-
-Estas fontes estão registradas no código mas retornam 0 eventos. O bloqueio ocorre em nível de IP de datacenter — Scrapestack e Apify (datacenter) também são bloqueados, e Playwright headless não bypassa o Cloudflare dessas propriedades.
-
-| Fonte | URL | Situação | Testado em | Status | Últ. sucesso |
-| --- | --- | --- | --- | --- | --- |
-| Live Run<!--liverun--> | `liverun.com.br/calendario` | 403 → proxies falham → sem fallback implementado | 2026-05-05 00:41 | ❌ 0 eventos | — |
-| Let's Do This<!--lets_do_this--> | `letsdothis.com` (calendário UK) | 403 → proxies falham → Playwright renderiza 992KB mas eventos carregam via API client-side | 2026-05-05 00:41 | ❌ 0 eventos | — |
-| World Marathons<!--world_marathons--> | `worldsmarathons.com` | Cloudflare retorna challenge page (370KB) tanto via HTTP quanto via Playwright | 2026-05-05 00:42 | ❌ 0 eventos | — |
 
 ### Fontes internacionais
 

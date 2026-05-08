@@ -28,7 +28,6 @@ on:
         type: choice
         options:
           - all
-          - godream
           - ativo
           - bora_correr
           - brasil_corrida
@@ -39,14 +38,11 @@ on:
           - corridas_br
           - corridas_brasil
           - iguana_sports
-          - lets_do_this
-          - liverun
           - maratona_porto_alegre
           - maratona_rio
           - minhas_inscricoes
           - mks_esportes
           - portal_das_corridas
-          - road_runners
           - runner_brasil
           - runsignup
           - sao_silvestre
@@ -56,7 +52,6 @@ on:
           - tf_sports
           - ticket_sports
           - volta_do_lago
-          - world_marathons
           - yescom
           - majors/amsterdam
           - majors/athens

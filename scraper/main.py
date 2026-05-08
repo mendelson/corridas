@@ -25,7 +25,6 @@ from .sources import (
     sp_city_marathon,
     sao_silvestre,
     tf_sports,
-    liverun,
     iguana_sports,
     yescom,
     ativo,
@@ -39,12 +38,8 @@ from .sources import (
     runner_brasil,
     brasil_corrida,
     circuito_das_estacoes,
-    godream,
     portal_das_corridas,
     volta_do_lago,
-    world_marathons,
-    lets_do_this,
-    road_runners,
     runsignup,
     sympla,
 )
@@ -78,7 +73,6 @@ SOURCES = [
     central_da_corrida,
     ticket_sports,
     tf_sports,
-    liverun,
     iguana_sports,
     yescom,
     ativo,
@@ -97,7 +91,6 @@ SOURCES = [
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
     # Brazilian running event platforms
-    godream,
     portal_das_corridas,
     # Single major events (BR)
     maratona_rio,
@@ -131,16 +124,10 @@ SOURCES = [
     brighton,
     # Single events (DF)
     volta_do_lago,
-    # European calendar
-    world_marathons,
-    # UK running calendar
-    lets_do_this,
     # US/global running calendar
     runsignup,
     # Brazilian event platform (Sympla)
     sympla,
-    # Brazilian state-aggregated calendar
-    road_runners,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

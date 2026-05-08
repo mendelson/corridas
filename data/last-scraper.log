@@ -1,9 +1,9 @@
 [main] iniciando scraping...
-[main] 1226 corridas no estado anterior
+[main] 1224 corridas no estado anterior
 [proxy] www.liverun.com.br bloqueado (403), tentando Scrapestack...
+[Central da Corrida] 81 corridas encontradas
 [Ativo] 7 corridas encontradas
 [proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
-[Central da Corrida] 81 corridas encontradas
 [proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
 [Live Run] erro ao buscar calendário: todos os métodos falharam para https://www.liverun.com.br/calendario
 [MKS Esportes] 4 corridas encontradas
@@ -13,10 +13,10 @@
 [Brasil que Corre] 0 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
 [proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
-[SESC DF] 9 corridas encontradas
 [proxy] Scrapestack retornou 429 para www.godream.com.br, tentando Apify...
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
 [GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
+[SESC DF] 9 corridas encontradas
 [GoDream] Playwright via Apify residential proxy
 [GoDream] Playwright → https://www.godream.com.br
 [GoDream] Playwright falhou: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://www.godream.com.br/
@@ -24,135 +24,249 @@ Call log:
   - navigating to "https://www.godream.com.br/", waiting until "load"
 
 [GoDream] todas as estratégias falharam
+[Correr Brasília] 1 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
 [Yescom] 14 corridas encontradas
 [Portal das Corridas] 0 corridas encontradas
-[Corridas Brasil] 3083 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[Corridas Brasil] 3083 corridas encontradas
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
-[proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
-[Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running?distanceMin=10: todos os métodos falharam para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[TF Sports] 50 corridas encontradas
 [RunSignup] nenhuma corrida retornada pela API
-[World Marathons] buildId não encontrado
-[World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
-[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
-[proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
-[Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
-[proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[Volta do Lago] site acessível mas sem dados reconhecíveis
 [Sympla] HTTP 404 'corrida de rua' pág 1
 [Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua&page=1
+[proxy] Scrapestack retornou 429 para roadrunners.run, tentando Apify...
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
+[World Marathons] buildId não encontrado
+[World Marathons] tentando Playwright para https://worldsmarathons.com/marathons?continent=europe&future=1
+[proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
+[Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running?distanceMin=10: todos os métodos falharam para https://www.letsdothis.com/gb/e/running?distanceMin=10
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/: todos os métodos falharam para https://roadrunners.run/
+[Road Runners] descoberta falhou — tentando todos os 27 UFs
+[proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ac: todos os métodos falharam para https://roadrunners.run/ac
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
+[TF Sports] 50 corridas encontradas
+[proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
+[Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/running: todos os métodos falharam para https://www.letsdothis.com/gb/e/running
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/al: todos os métodos falharam para https://roadrunners.run/al
+[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/marathon
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[World Marathons] Playwright: 407081 bytes renderizados
-[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: [Errno 101] Network is unreachable
 [proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] erro ao buscar https://www.letsdothis.com/gb/e/half-marathon: todos os métodos falharam para https://www.letsdothis.com/gb/e/half-marathon
 [Let's Do This] tentando Playwright para https://www.letsdothis.com/gb/e/running?distanceMin=10
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370326 bytes)
-[Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
-[Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua' pág 1
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/am: todos os métodos falharam para https://roadrunners.run/am
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[World Marathons] Playwright: 407313 bytes renderizados
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ap: todos os métodos falharam para https://roadrunners.run/ap
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe&future=1 (370435 bytes)
 [World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe&future=1
-[Sympla] HTTP 404 'corrida de rua brasilia' pág 1
-[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua+brasilia&page=1
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370391 bytes)
-[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
-[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370162 bytes)
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ba: todos os métodos falharam para https://roadrunners.run/ba
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons?continent=europe (370436 bytes)
 [Let's Do This] Playwright: 1002102 bytes renderizados
+[World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons?continent=europe
 [Let's Do This] classes relevantes na página: ['after:pointer-events-none']
 [proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
+[World Marathons] HTTP 200 para https://worldsmarathons.com/marathons (370391 bytes)
+[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [World Marathons] sem dados reconhecíveis em https://worldsmarathons.com/marathons
 [World Marathons] sem dados — nenhuma estratégia funcionou
-[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
 [proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
 [Let's Do This] GraphQL erro: todos os métodos falharam para https://www.letsdothis.com/api/graphql
 [Let's Do This] sem dados — nenhuma estratégia funcionou
+[Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
+[Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua' pág 1
+[Sympla] HTTP 404 'corrida de rua brasilia' pág 1
+[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua+brasilia&page=1
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ce: todos os métodos falharam para https://roadrunners.run/ce
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/df: todos os métodos falharam para https://roadrunners.run/df
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Scrapestack falhou para www.cardiffhalfmarathon.co.uk: timed out
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/es: todos os métodos falharam para https://roadrunners.run/es
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
 [Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua brasilia' pág 1
 [Sympla] HTTP 404 'maratona' pág 1
 [Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=maratona&page=1
-[Ticket Sports] 983 corridas encontradas
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/go: todos os métodos falharam para https://roadrunners.run/go
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ma: todos os métodos falharam para https://roadrunners.run/ma
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/mg: todos os métodos falharam para https://roadrunners.run/mg
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ms: todos os métodos falharam para https://roadrunners.run/ms
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/mt: todos os métodos falharam para https://roadrunners.run/mt
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/pa: todos os métodos falharam para https://roadrunners.run/pa
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/pb: todos os métodos falharam para https://roadrunners.run/pb
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/pe: todos os métodos falharam para https://roadrunners.run/pe
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
 [Sympla] sem __NEXT_DATA__ nem cards em 'maratona' pág 1
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/pi: todos os métodos falharam para https://roadrunners.run/pi
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
 [Sympla] HTTP 404 'trail run' pág 1
 [Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=trail+run&page=1
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/pr: todos os métodos falharam para https://roadrunners.run/pr
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/rj: todos os métodos falharam para https://roadrunners.run/rj
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/rn: todos os métodos falharam para https://roadrunners.run/rn
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[Ticket Sports] 982 corridas encontradas
 [Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
 [Sympla] sem __NEXT_DATA__ nem cards em 'trail run' pág 1
 [Sympla] HTTP 404 'corrida noturna' pág 1
 [Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+noturna&page=1
-[Volta do Lago] site inacessível, sem dados para retornar
 [Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
 [Sympla] sem __NEXT_DATA__ nem cards em 'corrida noturna' pág 1
 [Sympla] 0 corridas encontradas no total
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/ro: todos os métodos falharam para https://roadrunners.run/ro
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/rr: todos os métodos falharam para https://roadrunners.run/rr
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/rs: todos os métodos falharam para https://roadrunners.run/rs
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/sc: todos os métodos falharam para https://roadrunners.run/sc
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/se: todos os métodos falharam para https://roadrunners.run/se
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/sp: todos os métodos falharam para https://roadrunners.run/sp
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
+[proxy] Apify falhou para roadrunners.run: 403 Forbidden
+[Road Runners] erro HTTP https://roadrunners.run/to: todos os métodos falharam para https://roadrunners.run/to
+[Road Runners] 0 corridas no total
 [main] 4425 registros coletados (antes do merge)
-[main] 1155 registros após validação
-[main] 1110 corridas após merge
+[main] 1154 registros após validação
+[main] 1109 corridas após merge
 [main] verificando links de 94 evento(s) não encontrado(s) no scrape...
-[main] 'Etapa Dia Das Mães | Maratona Kids Boulevard' — link válido, miss_count zerado
-[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
 [main] 'Braza Run' — link válido, miss_count zerado
-[main] 'Circuito Caixa Sunset Run - Etapa Boa Vista' — link válido, miss_count zerado
-[main] '2ª Corrida Do Médico Veterinário E Zootecnista' — link válido, miss_count zerado
 [main] 'Vila Velha Night Run' — link válido, miss_count zerado
-[main] 'Corrida Clube Da Alice - 2ª Etapa Do Circuito Procorrer 2026' — link válido, miss_count zerado
+[main] '2ª Corrida Do Médico Veterinário E Zootecnista' — link válido, miss_count zerado
+[main] 'Circuito Caixa Sunset Run - Etapa Boa Vista' — link válido, miss_count zerado
 [main] 'Corrida Clinica Bem Estar' — link válido, miss_count zerado
+[main] 'Etapa Dia Das Mães | Maratona Kids Boulevard' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Elas No Corre' — link válido, miss_count zerado
+[main] 'Corrida Clube Da Alice - 2ª Etapa Do Circuito Procorrer 2026' — link válido, miss_count zerado
+[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
 [main] 'Corrida Maçônica Cidade De Vitória' — link válido, miss_count zerado
-[main] 'Corrida Trail Run Brisa Do Sol-Campina Grande Do Sul' — link válido, miss_count zerado
-[main] 'Ami Run - Corrida Pela Inclusão' — link válido, miss_count zerado
-[main] '2ª Corrida Do Café De Santos 2026' — link válido, miss_count zerado
 [main] 'B. Day 186 Anos - Piedade - SP' — link válido, miss_count zerado
 [main] '7ª Corrida Xanxerê Cidade Do Coração' — link válido, miss_count zerado
 [main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
+[main] 'Corrida Trail Run Brisa Do Sol-Campina Grande Do Sul' — link válido, miss_count zerado
+[main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
+[main] '2ª Corrida Do Café De Santos 2026' — link válido, miss_count zerado
 [main] 'Meia Do Porto Maravilha' — link válido, miss_count zerado
 [main] '24ª Corrida E Caminhada Comexport Graacc' — link válido, miss_count zerado
-[main] 'Desafio Da Floresta' — link válido, miss_count zerado
-[main] 'Desafio Macuco' — link válido, miss_count zerado
 [main] '5ª Corrida Do Paulista' — link válido, miss_count zerado
-[main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
+[main] 'Ami Run - Corrida Pela Inclusão' — link válido, miss_count zerado
 [main] '2ª Corrida Santa Casa Araraquara 2026' — link válido, miss_count zerado
+[main] 'Desafio Da Floresta' — link válido, miss_count zerado
+[main] 'Corrida Time Brasil 2026' — link válido, miss_count zerado
 [main] 'Giro D'Italia Ride Like A Pro Brasil 2026 | Edição Campos Do Jordão - SP' — link válido, miss_count zerado
-[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
 [main] '2ª Corrida Tribunal De Contas De Santa Catarina' — link válido, miss_count zerado
-[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
+[main] 'Desafio Macuco' — link válido, miss_count zerado
 [main] '9ª Corrida Vencendo As Cefaleias' — link válido, miss_count zerado
-[main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
+[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
+[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
+[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
 [main] 'Corrida Do Colégio Novo Alvo' — link válido, miss_count zerado
 [main] 'Corrida Da Cooperação 2026' — link válido, miss_count zerado
-[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
+[main] '1ª Ananin Runner 2026' — link válido, miss_count zerado
+[main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
 [main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
-[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
 [main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
+[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
 [main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
 [main] 'Corrida - Betty Boop' — link válido, miss_count zerado
 [main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
 [main] 'Mons Ultra Trail Urubici 2026' — link válido, miss_count zerado
-[main] 'Time Praia Grande Run' — link válido, miss_count zerado
 [main] '1ª Corrida Da Romu' — link válido, miss_count zerado
+[main] 'Time Praia Grande Run' — link válido, miss_count zerado
 [main] 'Campeonato E Circuito Brasileiro Aquathlon (Juazeiro - Ba)' — link válido, miss_count zerado
 [main] 'Circuito Pela Vida' — link válido, miss_count zerado
 [main] '#Dicaticket' — link válido, miss_count zerado
 [main] '6ª Corrida Capitão Running' — link válido, miss_count zerado
-[main] '1ª Ananin Runner 2026' — link válido, miss_count zerado
 [main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
 [main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
 [main] 'Bemol Run Manaus 2026' — link válido, miss_count zerado
 [main] 'Corrida Marechal Do Ar Eduardo Gomes' — link válido, miss_count zerado
-[main] removendo 'Maratona de Veneza' (miss_count=10)
-[main] removendo 'Dublin City Marathon' (miss_count=10)
 [main] 'Go.Run' — link válido, miss_count zerado
-[main] 1224 corridas após reconciliação
-[main] 1224 corridas após dedup final
+[main] 1225 corridas após reconciliação
+[main] 1225 corridas após dedup final
 [main] buscando imagens para 126 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [main] 0/126 imagens encontradas
-[main] 1224 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 1225 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

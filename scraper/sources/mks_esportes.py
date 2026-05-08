@@ -37,6 +37,12 @@ _SKIP_SLUGS = {
     "aguasabertasbuzios", "aguasabertasbrasilia", "calendário", "calendario",
 }
 
+_NON_RUNNING_TITLE = re.compile(
+    r"\btriathlon\b|\bduathlon\b|\baquabike\b|\baquathlon\b"
+    r"|\bnatação\b|\bciclismo\b|\bpedalada\b|\bswinrun\b|\bswimsrun\b",
+    re.IGNORECASE,
+)
+
 _PT_MONTHS = {
     "janeiro": "01", "fevereiro": "02", "março": "03", "marco": "03",
     "abril": "04", "maio": "05", "junho": "06", "julho": "07",
@@ -155,6 +161,8 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
     raw_title = re.sub(r"\s*[|\-]\s*Mksesportes.*$", "", raw_title, flags=re.IGNORECASE).strip()
     titulo = normalize_titulo(raw_title)
     if not titulo or len(titulo) < 3:
+        return None
+    if _NON_RUNNING_TITLE.search(titulo):
         return None
 
     # Body text (Wix SSR pre-renders rich text content)

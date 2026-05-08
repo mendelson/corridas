@@ -50,7 +50,7 @@ _NON_RUNNING_KW = re.compile(
     r"|\bworkshop\b|\bpalestra\b|\bwebinar\b|\bcurso\b|\baula\b"
     r"|\bteatro\b|\bespetáculo\b|\bpeça\b"
     r"|\bfeira\b|\bexposição\b|\bexpo\b|\bcongresso\b|\bseminário\b"
-    r"|\bnatação\b|\bciclismo\b|\bpedalada\b|\btriathlon\b|\bduathlon\b"
+    r"|\bnatação\b|\bciclismo\b|\bpedalada\b|\btriathlon\b|\bduathlon\b|\baquabike\b|\baquathlon\b"
     r"|\bfutebol\b|\bvolei\b|\btênis\b|\bbasquete\b"
     r"|\bparty\b|\bfesta\b|\bcarnaval\b|\bréveillon\b"
     r"|\bwrestling\b|\bmma\b|\bjiu.jitsu\b|\bboxe\b|\bkaratê\b"

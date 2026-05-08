@@ -31,6 +31,7 @@ _INTERVAL_RE = re.compile(
 
 _NON_RUNNING_KW = [
     "triathlon", "triathon", "ironman", "duathlon",
+    "aquabike", "aqua bike", "aquathlon",
     "natação", "natacao", "swimrun", "ciclismo", "bike", "pedalada",
     "caminhada", "trekking", "track and field", "atletismo",
     "beach tennis", "tênis", "tenis", "padel", "paddle",
@@ -249,7 +250,7 @@ def _fetch_via_playwright() -> "str | None":
             page = ctx.new_page()
             page.add_init_script(_STEALTH_JS)
 
-            # ── Step 1: navigate to homepage ─────────────────────────────────
+            # ── Step 1: navigate to homepage ────────────────────────────────
             print(f"[{SOURCE_NAME}] Playwright → {BASE}")
             page.goto(BASE, timeout=30000)
             try:
@@ -259,7 +260,7 @@ def _fetch_via_playwright() -> "str | None":
 
             print(f"[{SOURCE_NAME}] title={page.title()!r} url={page.url}")
 
-            # ── Step 2: extract buildId from __NEXT_DATA__ ───────────────────
+            # ── Step 2: extract buildId from __NEXT_DATA__ ───────────────────────
             next_data_str = page.evaluate(_READ_NEXT_DATA_JS)
             if not next_data_str:
                 print(f"[{SOURCE_NAME}] __NEXT_DATA__ ausente — retornando HTML bruto")
@@ -284,7 +285,7 @@ def _fetch_via_playwright() -> "str | None":
                 browser.close()
                 return html
 
-            # ── Step 3: paginate category listing via same-origin fetch ───────
+            # ── Step 3: paginate category listing via same-origin fetch ─────────
             all_event_data: list[dict] = []
             seen_slugs: set[str] = set()
 
@@ -316,7 +317,7 @@ def _fetch_via_playwright() -> "str | None":
                 if not new_slugs and not listing_events:
                     break
 
-                # ── Step 4a: parse events directly from listing ───────────────
+                # ── Step 4a: parse events directly from listing ─────────────────
                 today_str = today_iso()
                 for item in listing_events:
                     slug = item.get("slug", "")
@@ -326,7 +327,7 @@ def _fetch_via_playwright() -> "str | None":
                             seen_slugs.add(slug)
                             all_event_data.append(ev)
 
-                # ── Step 4b: fetch event detail for any remaining slugs ────────
+                # ── Step 4b: fetch event detail for any remaining slugs ──────────
                 for slug in sorted(new_slugs - seen_slugs):
                     seen_slugs.add(slug)
                     ev_url = f"/_next/data/{build_id}/evento/{slug}.json"

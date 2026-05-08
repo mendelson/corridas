@@ -1285,7 +1285,7 @@ function buildPastSection(corridas) {
 
 function _isNovo(c) {
   if (!c || !c.first_seen_at) return false;
-  return (Date.now() - new Date(c.first_seen_at).getTime()) < 24 * 60 * 60 * 1000;
+  return (Date.now() - new Date(c.first_seen_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
 }
 
 function buildMonthSection(monthKey, count, expanded = false, hasNovo = false) {
@@ -1356,7 +1356,7 @@ function buildCard(c) {
   const novoBadge = card.querySelector('.badge-novo');
   if (novoBadge && c.first_seen_at) {
     const age = Date.now() - new Date(c.first_seen_at).getTime();
-    if (age < 24 * 60 * 60 * 1000) {
+    if (age < 7 * 24 * 60 * 60 * 1000) {
       novoBadge.textContent = T.badgeNovo;
       novoBadge.classList.remove('hidden');
     }

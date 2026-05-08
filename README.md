@@ -24,7 +24,7 @@ GitHub Actions.
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-08 19:12 | ✅ | 2026-05-08 19:12 |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |

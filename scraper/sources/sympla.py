@@ -109,23 +109,33 @@ def scrape() -> list[Corrida]:
 def _fetch_search(term: str) -> list[dict]:
     raw: list[dict] = []
     for page in range(1, _MAX_PAGES + 1):
-        url = f"{BASE}/busca/?q={term.replace(' ', '+')}&page={page}"
+        # Sympla search URL — no trailing slash before query string
+        url = f"{BASE}/busca?q={term.replace(' ', '+')}&page={page}"
+        soup = None
+
         try:
             resp = get(url, source=SOURCE_NAME, timeout=30)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, "lxml")
+            else:
+                print(f"[{SOURCE_NAME}] HTTP {resp.status_code} '{term}' pág {page}")
         except Exception as e:
-            print(f"[{SOURCE_NAME}] erro '{term}' pág {page}: {e}")
-            break
-        if resp.status_code != 200:
-            print(f"[{SOURCE_NAME}] HTTP {resp.status_code} '{term}' pág {page}")
+            print(f"[{SOURCE_NAME}] erro HTTP '{term}' pág {page}: {e}")
+
+        # Playwright fallback on first page if HTTP failed or returned nothing useful
+        if soup is None or (page == 1 and not _has_event_signals(soup)):
+            pl_soup = _playwright_soup(url)
+            if pl_soup:
+                soup = pl_soup
+
+        if soup is None:
             break
 
-        soup = BeautifulSoup(resp.text, "lxml")
         page_raw = _extract_next_data(soup)
-        if not page_raw and page == 1:
+        if not page_raw:
             page_raw = _extract_html_cards(soup)
         if not page_raw:
             if page == 1:
-                # Log page keys for diagnostics
                 tag = soup.find("script", id="__NEXT_DATA__")
                 if tag:
                     try:
@@ -135,38 +145,36 @@ def _fetch_search(term: str) -> list[dict]:
                     except Exception:
                         pass
                 else:
-                    print(f"[{SOURCE_NAME}] sem __NEXT_DATA__ em '{term}' pág {page}")
+                    print(f"[{SOURCE_NAME}] sem __NEXT_DATA__ nem cards em '{term}' pág {page}")
             break
 
         raw.extend(page_raw)
         if len(page_raw) < 10:   # last page has fewer items
             break
 
-    if not raw and _search_terms_needing_playwright(term):
-        raw = _try_playwright(term)
-
     return raw
 
 
-def _search_terms_needing_playwright(term: str) -> bool:
-    return True   # always try Playwright if HTTP returned nothing
+def _has_event_signals(soup) -> bool:
+    """True if the page has any markers suggesting events were rendered."""
+    if soup.find("script", id="__NEXT_DATA__"):
+        return True
+    return bool(soup.select_one(
+        ".btn-event, [class*='EventCard'], [class*='event-card'], "
+        "a[href*='/evento/'], [data-testid*='event']"
+    ))
 
 
-def _try_playwright(term: str) -> list[dict]:
+def _playwright_soup(url: str):
     try:
         from ..playwright_client import get_page_html
     except ImportError:
-        return []
-    url = f"{BASE}/busca/?q={term.replace(' ', '+')}"
-    print(f"[{SOURCE_NAME}] tentando Playwright para '{term}'")
+        return None
+    print(f"[{SOURCE_NAME}] tentando Playwright para {url}")
     html = get_page_html(url)
     if not html:
-        return []
-    soup = BeautifulSoup(html, "lxml")
-    result = _extract_next_data(soup) or _extract_html_cards(soup)
-    if result:
-        print(f"[{SOURCE_NAME}] Playwright: {len(result)} itens para '{term}'")
-    return result
+        return None
+    return BeautifulSoup(html, "lxml")
 
 
 # ---------------------------------------------------------------------------
@@ -210,9 +218,12 @@ def _looks_like_event(obj: dict) -> bool:
 
 def _extract_html_cards(soup) -> list[dict]:
     selectors = [
-        "[data-testid*='event']", ".sympla-card", ".event-card",
-        "article[class*='event']", "a[href*='/evento/']",
-        "[class*='EventCard']", "[class*='Card__']",
+        # Sympla uses "btn-event" class on event anchor/button elements
+        ".btn-event",
+        "a[href*='/evento/']",
+        "[data-testid*='event']",
+        "[class*='EventCard']", "[class*='event-card']", "[class*='Card__']",
+        "article[class*='event']", ".sympla-card",
     ]
     for sel in selectors:
         cards = soup.select(sel)
@@ -223,7 +234,7 @@ def _extract_html_cards(soup) -> list[dict]:
     classes = set()
     for el in soup.find_all(class_=True)[:300]:
         for c in (el.get("class") or []):
-            if any(kw in c.lower() for kw in ("event", "card", "result", "item", "listing")):
+            if any(kw in c.lower() for kw in ("event", "card", "result", "item", "listing", "btn")):
                 classes.add(c)
     if classes:
         print(f"[{SOURCE_NAME}] classes relevantes: {sorted(classes)[:20]}")
@@ -232,12 +243,31 @@ def _extract_html_cards(soup) -> list[dict]:
 
 def _card_to_dict(el) -> dict:
     text = el.get_text(" ", strip=True)
-    heading = el.find(["h2", "h3", "h4", "strong"])
-    name = heading.get_text(strip=True) if heading else text[:80]
-    link = el.find("a", href=True)
-    href = link["href"] if link else ""
+    # Sympla btn-event elements are <a> tags themselves
+    if el.name == "a" and el.get("href"):
+        href = el["href"]
+    else:
+        link = el.find("a", href=True)
+        href = link["href"] if link else ""
     if href and not href.startswith("http"):
         href = BASE + href
+
+    # Title: heading tag or img alt or first meaningful text chunk
+    heading = el.find(["h2", "h3", "h4", "strong", "p"])
+    img = el.find("img", alt=True)
+    if heading and len(heading.get_text(strip=True)) > 3:
+        name = heading.get_text(strip=True)
+    elif img and len(img.get("alt", "").strip()) > 3:
+        name = img["alt"].strip()
+    else:
+        name = text[:100]
+
+    # Sympla event slug sometimes contains the event name
+    if not name or len(name) < 4:
+        slug_m = re.search(r"/evento/([^/]+)/", href)
+        if slug_m:
+            name = slug_m.group(1).replace("-", " ").title()
+
     return {"name": name, "url": href, "_text": text}
 
 

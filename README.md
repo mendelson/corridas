@@ -28,7 +28,7 @@ GitHub Actions.
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
-| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-08 15:55 | ❌ 0 eventos | — |
+| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-08 19:18 | ❌ 0 eventos | — |
 | Road Runners<!--road_runners--> | ✅ | `roadrunners.run` (por estado) | __NEXT_DATA__ / HTML / Playwright | 2026-05-08 19:15 | ❌ 0 eventos | — |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | 2026-05-05 00:42 | ❌ 0 eventos | — |
 

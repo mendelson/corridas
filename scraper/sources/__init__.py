@@ -26,4 +26,5 @@ from . import (
     world_marathons,
     lets_do_this,
     runsignup,
+    sympla,
 )

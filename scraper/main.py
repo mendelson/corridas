@@ -45,6 +45,7 @@ from .sources import (
     world_marathons,
     lets_do_this,
     runsignup,
+    sympla,
 )
 from .sources.majors import (
     tokyo,
@@ -135,6 +136,8 @@ SOURCES = [
     lets_do_this,
     # US/global running calendar
     runsignup,
+    # Brazilian event platform (Sympla)
+    sympla,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

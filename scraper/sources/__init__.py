@@ -20,7 +20,9 @@ from . import (
     ativo,
     mks_esportes,
     circuito_das_estacoes,
+    godream,
     volta_do_lago,
+    road_runners,
     runsignup,
     sympla,
 )

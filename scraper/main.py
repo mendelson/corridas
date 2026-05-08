@@ -38,8 +38,10 @@ from .sources import (
     runner_brasil,
     brasil_corrida,
     circuito_das_estacoes,
+    godream,
     portal_das_corridas,
     volta_do_lago,
+    road_runners,
     runsignup,
     sympla,
 )
@@ -91,6 +93,7 @@ SOURCES = [
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
     # Brazilian running event platforms
+    godream,
     portal_das_corridas,
     # Single major events (BR)
     maratona_rio,
@@ -124,6 +127,8 @@ SOURCES = [
     brighton,
     # Single events (DF)
     volta_do_lago,
+    # Brazilian state-aggregated calendar
+    road_runners,
     # US/global running calendar
     runsignup,
     # Brazilian event platform (Sympla)

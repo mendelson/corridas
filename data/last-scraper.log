@@ -1,21 +1,21 @@
 [main] iniciando scraping...
-[main] 1226 corridas no estado anterior
+[main] 1229 corridas no estado anterior
 [Ativo] 7 corridas encontradas
 [Central da Corrida] 81 corridas encontradas
-[MKS Esportes] 4 corridas encontradas
+[MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
 [Brasil Corrida] 10 corridas encontradas
-[Minhas Inscrições] 14 corridas encontradas
 [Brasil que Corre] 0 corridas encontradas
+[Minhas Inscrições] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
 [proxy] www.godream.com.br bloqueado (403), tentando Scrapestack...
+[SESC DF] 9 corridas encontradas
 [proxy] Scrapestack retornou 429 para www.godream.com.br, tentando Apify...
+[Circuito das Estações] 104 corridas encontradas
 [proxy] Apify falhou para www.godream.com.br: 403 Forbidden
 [GoDream] HTTP falhou (todos os métodos falharam para https://www.godream.com.br/corrida-de-rua), tentando Playwright...
 [Correr Brasília] 1 corridas encontradas
-[SESC DF] 9 corridas encontradas
 [GoDream] Playwright via Apify residential proxy
-[Circuito das Estações] 104 corridas encontradas
 [GoDream] Playwright → https://www.godream.com.br
 [GoDream] Playwright falhou: Page.goto: net::ERR_TUNNEL_CONNECTION_FAILED at https://www.godream.com.br/
 Call log:
@@ -23,17 +23,17 @@ Call log:
 
 [GoDream] todas as estratégias falharam
 [Yescom] 14 corridas encontradas
-[Corridas Brasil] 3083 corridas encontradas
 [Portal das Corridas] 0 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[Corridas Brasil] 3083 corridas encontradas
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
 [RunSignup] nenhuma corrida retornada pela API
-[Volta do Lago] site acessível mas sem dados reconhecíveis
-[Sympla] HTTP 404 'corrida de rua' pág 1
-[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua&page=1
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[Volta do Lago] site acessível mas sem dados reconhecíveis
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Sympla] HTTP 404 'corrida de rua' pág 1
+[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua&page=1
 [proxy] Scrapestack retornou 429 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/: todos os métodos falharam para https://roadrunners.run/
@@ -42,8 +42,8 @@ Call log:
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/ac: todos os métodos falharam para https://roadrunners.run/ac
-[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
 [TF Sports] 50 corridas encontradas
+[proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/al: todos os métodos falharam para https://roadrunners.run/al
@@ -68,14 +68,14 @@ Call log:
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/df: todos os métodos falharam para https://roadrunners.run/df
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
-[Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
-[Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua' pág 1
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
-[Sympla] HTTP 404 'corrida de rua brasilia' pág 1
-[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua+brasilia&page=1
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/es: todos os métodos falharam para https://roadrunners.run/es
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
+[Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua' pág 1
+[Sympla] HTTP 404 'corrida de rua brasilia' pág 1
+[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=corrida+de+rua+brasilia&page=1
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/go: todos os métodos falharam para https://roadrunners.run/go
@@ -92,15 +92,18 @@ Call log:
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/ms: todos os métodos falharam para https://roadrunners.run/ms
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
-[Ticket Sports] 980 corridas encontradas
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/mt: todos os métodos falharam para https://roadrunners.run/mt
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
+[Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua brasilia' pág 1
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/pa: todos os métodos falharam para https://roadrunners.run/pa
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[Sympla] HTTP 404 'maratona' pág 1
+[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=maratona&page=1
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/pb: todos os métodos falharam para https://roadrunners.run/pb
@@ -137,6 +140,7 @@ Call log:
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/rs: todos os métodos falharam para https://roadrunners.run/rs
 [proxy] roadrunners.run bloqueado (403), tentando Scrapestack...
+[Ticket Sports] 983 corridas encontradas
 [proxy] Scrapestack retornou 500 para roadrunners.run, tentando Apify...
 [proxy] Apify falhou para roadrunners.run: 403 Forbidden
 [Road Runners] erro HTTP https://roadrunners.run/sc: todos os métodos falharam para https://roadrunners.run/sc
@@ -154,10 +158,6 @@ Call log:
 [Road Runners] erro HTTP https://roadrunners.run/to: todos os métodos falharam para https://roadrunners.run/to
 [Road Runners] 0 corridas no total
 [Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
-[Sympla] sem __NEXT_DATA__ nem cards em 'corrida de rua brasilia' pág 1
-[Sympla] HTTP 404 'maratona' pág 1
-[Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=maratona&page=1
-[Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
 [Sympla] sem __NEXT_DATA__ nem cards em 'maratona' pág 1
 [Sympla] HTTP 404 'trail run' pág 1
 [Sympla] tentando Playwright para https://www.sympla.com.br/busca?q=trail+run&page=1
@@ -168,32 +168,31 @@ Call log:
 [Sympla] classes relevantes: ['btn', 'btn-block', 'btn-danger', 'btn-dark-transparent', 'btn-event', 'btn-fb', 'btn-fill-white', 'btn-outline', 'btn-submit']
 [Sympla] sem __NEXT_DATA__ nem cards em 'corrida noturna' pág 1
 [Sympla] 0 corridas encontradas no total
-[main] 4423 registros coletados (antes do merge)
-[main] 1153 registros após validação
-[main] 1109 corridas após merge
-[main] verificando links de 98 evento(s) não encontrado(s) no scrape...
-[main] '2ª Corrida Do Médico Veterinário E Zootecnista' — link válido, miss_count zerado
+[main] 4425 registros coletados (antes do merge)
+[main] 1155 registros após validação
+[main] 1111 corridas após merge
+[main] verificando links de 99 evento(s) não encontrado(s) no scrape...
 [main] 'Circuito Caixa Sunset Run - Etapa Boa Vista' — link válido, miss_count zerado
+[main] '2ª Corrida Do Médico Veterinário E Zootecnista' — link válido, miss_count zerado
 [main] 'Corrida E Caminhada Elas No Corre' — link válido, miss_count zerado
-[main] 'Vila Velha Night Run' — link válido, miss_count zerado
-[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
-[main] '7ª Corrida Xanxerê Cidade Do Coração' — link válido, miss_count zerado
 [main] 'Etapa Dia Das Mães | Maratona Kids Boulevard' — link válido, miss_count zerado
 [main] 'Corrida Clinica Bem Estar' — link válido, miss_count zerado
+[main] 'Vila Velha Night Run' — link válido, miss_count zerado
 [main] 'Braza Run' — link válido, miss_count zerado
+[main] '20ª Corrida Noturna Unimed Curitiba' — link válido, miss_count zerado
+[main] '7ª Corrida Xanxerê Cidade Do Coração' — link válido, miss_count zerado
+[main] 'Malacara Festival' — link válido, miss_count zerado
 [main] '5ª Corrida Do Paulista' — link válido, miss_count zerado
-[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] 'Corrida Clube Da Alice - 2ª Etapa Do Circuito Procorrer 2026' — link válido, miss_count zerado
 [main] '24ª Corrida E Caminhada Comexport Graacc' — link válido, miss_count zerado
+[main] '5ª Corrida Da Polícia Civil' — link válido, miss_count zerado
 [main] '2ª Corrida Santa Casa Araraquara 2026' — link válido, miss_count zerado
 [main] 'Ami Run - Corrida Pela Inclusão' — link válido, miss_count zerado
-[main] '2ª Corrida Do Café De Santos 2026' — link válido, miss_count zerado
-[main] 'Meia Do Porto Maravilha' — link válido, miss_count zerado
 [main] 'B. Day 186 Anos - Piedade - SP' — link válido, miss_count zerado
 [main] 'Corrida Trail Run Brisa Do Sol-Campina Grande Do Sul' — link válido, miss_count zerado
 [main] 'Circuito Mata Atlântica - Etapa Mar' — link válido, miss_count zerado
+[main] 'Desafio Da Floresta' — link válido, miss_count zerado
 [main] 'Corrida Maçônica Cidade De Vitória' — link válido, miss_count zerado
-[main] '17ª Meia Maratona Das Cataratas' — link válido, miss_count zerado
 [main] 'Desafio Macuco' — link válido, miss_count zerado
 [main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
 [main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
@@ -203,36 +202,38 @@ Call log:
 [main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
 [main] 'Corrida Do Colégio Novo Alvo' — link válido, miss_count zerado
 [main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
-[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
-[main] 'Desafio Da Floresta' — link válido, miss_count zerado
-[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
 [main] '9ª Corrida Vencendo As Cefaleias' — link válido, miss_count zerado
-[main] 'Corrida Da Cooperação 2026' — link válido, miss_count zerado
-[main] 'Corrida - Betty Boop' — link válido, miss_count zerado
+[main] 'Corrida Corpo De Fuzileiros Navais - Intendentes Da Marinha - 2026' — link válido, miss_count zerado
+[main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
 [main] '1ª Corrida Da Romu' — link válido, miss_count zerado
-[main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
+[main] '2ª Corrida Do Café De Santos 2026' — link válido, miss_count zerado
+[main] 'Corrida - Betty Boop' — link válido, miss_count zerado
+[main] 'Corrida Da Cooperação 2026' — link válido, miss_count zerado
+[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
 [main] 'Mons Ultra Trail Urubici 2026' — link válido, miss_count zerado
+[main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
+[main] 'Campeonato E Circuito Brasileiro Aquathlon (Juazeiro - Ba)' — link válido, miss_count zerado
 [main] 'Circuito Pela Vida' — link válido, miss_count zerado
 [main] 'Ii Aquathlon Ribeirinho 2026' — link válido, miss_count zerado
-[main] '#Dicaticket' — link válido, miss_count zerado
-[main] 'Campeonato E Circuito Brasileiro Aquathlon (Juazeiro - Ba)' — link válido, miss_count zerado
 [main] 'Time Praia Grande Run' — link válido, miss_count zerado
+[main] 'Meia Do Porto Maravilha' — link válido, miss_count zerado
+[main] '#Dicaticket' — link válido, miss_count zerado
 [main] '6ª Corrida Capitão Running' — link válido, miss_count zerado
-[main] 'Correndo Pelo Hexa' — link válido, miss_count zerado
-[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
 [main] 'Campeonato Estadual De Aquathlon - 2026' — link válido, miss_count zerado
-[main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
+[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
+[main] 'Correndo Pelo Hexa' — link válido, miss_count zerado
 [main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
 [main] 'Corrida Do Chaves' — link válido, miss_count zerado
+[main] 'Campeonato Brasileiro Aquathlon Itaparica (Ba) 2026' — link válido, miss_count zerado
 [main] 'Bemol Run Manaus 2026' — link válido, miss_count zerado
 [main] 'Corrida Marechal Do Ar Eduardo Gomes' — link válido, miss_count zerado
-[main] 'Campeonato Brasileiro Aquathlon Itaparica (Ba) 2026' — link válido, miss_count zerado
 [main] 'Go.Run' — link válido, miss_count zerado
-[main] 1229 corridas após reconciliação
-[main] 1229 corridas após dedup final
+[main] 'Aquabike 205' — link válido, miss_count zerado
+[main] 1232 corridas após reconciliação
+[main] 1232 corridas após dedup final
 [main] buscando imagens para 127 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [main] 0/127 imagens encontradas
-[main] 1229 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 1232 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

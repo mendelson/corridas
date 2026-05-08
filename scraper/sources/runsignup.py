@@ -185,19 +185,36 @@ def _parse_distances(events: list[dict]) -> list[Distancia]:
             continue
         if _NON_RUNNING.search((ev.get("name") or "")):
             continue
-        # "distance" first (cleaner), then "name" as fallback.
-        for field in ("distance", "name"):
-            raw = ev.get(field)
-            if not raw:
-                continue
-            km = _parse_distance(str(raw))
-            if km is None:
-                continue
-            if km in seen:
-                break
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-            break
+        # Try structured distance + units fields first, then fall back to name.
+        raw_dist  = ev.get("distance")
+        raw_units = (ev.get("distance_units") or "").strip().upper()
+        km: float | str | None = None
+        if raw_dist:
+            num_str = str(raw_dist).strip()
+            if raw_units == "M":
+                # RunSignup uses "M" for miles
+                try:
+                    km = _format_miles(float(num_str))
+                except ValueError:
+                    pass
+            elif raw_units in ("K", "KM", ""):
+                try:
+                    num = float(num_str)
+                    km = num if 1 <= num <= 200 else None
+                except ValueError:
+                    pass
+        if km is None:
+            for field in ("distance", "name"):
+                raw = ev.get(field)
+                if not raw:
+                    continue
+                km = _parse_distance(str(raw))
+                if km is not None:
+                    break
+        if km is None or km in seen:
+            continue
+        seen.add(km)
+        result.append(Distancia(km=km, data=None, horario=None))
     return result
 
 
@@ -249,7 +266,7 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     if _NON_RUNNING.search(titulo):
         return None
 
-    events = race.get("events") or []
+    events = race.get("race_events") or race.get("events") or []
     if not isinstance(events, list):
         events = []
 

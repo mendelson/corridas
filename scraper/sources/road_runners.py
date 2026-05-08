@@ -65,7 +65,7 @@ def scrape() -> list[Corrida]:
     state_urls = _discover_state_urls(home_soup) if home_soup else []
     if not state_urls:
         print(f"[{SOURCE_NAME}] descoberta falhou — tentando todos os 27 UFs")
-        state_urls = [(uf, f"{BASE}/{uf.lower()}") for uf in _BR_STATES]
+        state_urls = [(uf, f"{BASE}/estado/{uf.lower()}/") for uf in _BR_STATES]
     else:
         print(f"[{SOURCE_NAME}] {len(state_urls)} estados descobertos")
 
@@ -147,8 +147,8 @@ def _discover_state_urls(soup) -> list[tuple[str, str]]:
     found: dict[str, str] = {}
     for a in soup.find_all("a", href=True):
         href = a["href"].strip()
-        # Only path-style links of the form /xx or /xx/
-        m = re.match(r"^/([a-z]{2})/?$", href)
+        # Only path-style links of the form /estado/xx or /estado/xx/
+        m = re.match(r"^/estado/([a-z]{2})/?$", href)
         if m and m.group(1).upper() in _BR_STATES:
             uf = m.group(1).upper()
             full = urljoin(BASE, href)
@@ -370,7 +370,7 @@ def _parse_event(item: dict, uf_default: str, today: str) -> Corrida | None:
     elif url_raw.startswith("/"):
         link = urljoin(BASE, url_raw)
     else:
-        link = f"{BASE}/{uf_default.lower()}"
+        link = f"{BASE}/estado/{uf_default.lower()}/"
 
     image = _get(item, "image") or None
 

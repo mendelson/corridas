@@ -21,6 +21,7 @@ from . import (
     mks_esportes,
     circuito_das_estacoes,
     godream,
+    largada_esportiva,
     volta_do_lago,
     road_runners,
     runsignup,

@@ -1428,11 +1428,43 @@ document.addEventListener('DOMContentLoaded', () => {
     loadData();
   });
 
-  btnLang.addEventListener('click', () => {
-    const langs = Object.keys(LANG_URLS);
-    const next  = langs[(langs.indexOf(LANG) + 1) % langs.length];
-    sessionStorage.setItem('_geoCache', sessionStorage.getItem('_geoCache') || 'null');
-    window.location.href = LANG_URLS[next];
+  const _LANG_LABELS = { pt: 'Português', en: 'English', es: 'Español', de: 'Deutsch', fr: 'Français' };
+  let _langDropdown = null;
+
+  function _closeLangDropdown() {
+    if (_langDropdown) { _langDropdown.remove(); _langDropdown = null; }
+  }
+
+  btnLang.addEventListener('click', e => {
+    e.stopPropagation();
+    if (_langDropdown) { _closeLangDropdown(); return; }
+
+    const dd = document.createElement('div');
+    dd.className = 'lang-dropdown';
+
+    const sorted = [[LANG, _LANG_LABELS[LANG]],
+      ...Object.entries(_LANG_LABELS).filter(([c]) => c !== LANG)];
+    for (const [code, label] of sorted) {
+      const btn = document.createElement('button');
+      btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');
+      btn.textContent = label;
+      btn.addEventListener('click', () => {
+        _closeLangDropdown();
+        if (code !== LANG) {
+          sessionStorage.setItem('_geoCache', sessionStorage.getItem('_geoCache') || 'null');
+          window.location.href = LANG_URLS[code];
+        }
+      });
+      dd.appendChild(btn);
+    }
+
+    _langDropdown = dd;
+    document.body.appendChild(dd);
+    const r = btnLang.getBoundingClientRect();
+    dd.style.top   = (r.bottom + 4) + 'px';
+    dd.style.right = (window.innerWidth - r.right) + 'px';
+
+    setTimeout(() => document.addEventListener('click', _closeLangDropdown, { once: true }), 0);
   });
 
   btnHome.addEventListener('click', async () => {

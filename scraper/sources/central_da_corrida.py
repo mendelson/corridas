@@ -75,7 +75,7 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link_evento,
-        links_inscricao=[link_evento] if inscricoes_abertas is not False else [],
+        links_inscricao=[link_evento],
     )
 
     return Corrida(
@@ -145,6 +145,9 @@ _INTERVAL_RE = re.compile(
 )
 
 
+_CANON_KM: dict[int, float] = {21: 21.097, 42: 42.195}
+
+
 def _extract_distances(text: str) -> list[Distancia]:
     # Strip Bubble rich-text markup
     text = re.sub(r"\[.*?\]", " ", text)
@@ -153,11 +156,13 @@ def _extract_distances(text: str) -> list[Distancia]:
     # Strip hydration/supply interval mentions ("a cada 2,5km")
     text = _INTERVAL_RE.sub(" ", text)
     nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
-    seen: set[float] = set()
+    seen: set[int] = set()
     result: list[Distancia] = []
     for n in nums:
         km = float(n.replace(",", "."))
-        if km not in seen and 3 <= km <= 200:  # ≥3 km: exclude walks/kids/hydration noise
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
+        key = round(km)
+        if key not in seen and 3 <= km <= 200:  # ≥3 km: exclude walks/kids/hydration noise
+            seen.add(key)
+            canonical = _CANON_KM.get(key, km)
+            result.append(Distancia(km=canonical, data=None, horario=None))
     return result

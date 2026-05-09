@@ -112,13 +112,21 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
 # Merge two corridas (champion absorbs extra)
 # ---------------------------------------------------------------------------
 
+def _km_key(km) -> object:
+    """Normalize km for deduplication: 21.0 and 21.097 are the same distance."""
+    if isinstance(km, str):
+        return km
+    return round(km)
+
+
 def _merge_distancias(base: list[Distancia], extra: list[Distancia]) -> list[Distancia]:
-    existing_kms = {d.km for d in base}
+    existing_keys = {_km_key(d.km) for d in base}
     result = list(base)
     for d in extra:
-        if d.km not in existing_kms:
+        key = _km_key(d.km)
+        if key not in existing_keys:
             result.append(d)
-            existing_kms.add(d.km)
+            existing_keys.add(key)
     return result
 
 

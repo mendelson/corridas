@@ -783,12 +783,6 @@ input { font-family: inherit; }
 }
 .dist-table tr:last-child td { border-bottom: none; }
 
-.expanded-period p {
-  color: var(--color-text-secondary);
-  font-size: 0.85rem;
-  font-family: var(--font-mono);
-}
-
 .fonte-item {
   display: flex;
   align-items: center;

@@ -98,18 +98,12 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
     img_path = ev.get("eve_img_destaque") or ev_card.get("eve_img_destaque")
     imagem_url = (S3_BASE + img_path) if img_path else None
 
-    insc_status = ev.get("eve_inscricao") or ""
-    inscricoes_abertas: bool | None = True if insc_status == "A" else (
-        False if insc_status in ("E", "C") else None
-    )
-
     insc_ini = ev.get("eve_data_insc_ini")
     insc_fim = ev.get("eve_data_insc_fim")
     periodo = PeriodoInscricao(abertura=insc_ini, encerramento=insc_fim) if (insc_ini or insc_fim) else None
 
     link_evento = f"{EVENT_BASE}/{token}"
-    link_insc = f"{INSC_BASE}/{token}"
-    links_inscricao = [link_insc] if inscricoes_abertas is not False else [link_evento]
+    links_inscricao = [link_evento]
 
     now = now_iso()
     fonte = FonteInfo(
@@ -128,7 +122,7 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
         estado=estado,
         distancias=distancias,
         imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
+        inscricoes_abertas=None,
         periodo_inscricao=periodo,
         fontes=[fonte],
         miss_count=0,

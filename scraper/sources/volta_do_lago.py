@@ -41,7 +41,7 @@ def scrape() -> list[Corrida]:
     final_url = BASE + "/"
     for url in _PAGES:
         try:
-            resp = get(url, timeout=10)
+            resp = get(url, source=SOURCE_NAME, render_js=True, timeout=30)
             if resp.status_code == 200 and len(resp.text) > 500:
                 soup = BeautifulSoup(resp.text, "lxml")
                 final_url = url
@@ -100,10 +100,9 @@ def _try_next_data(soup, page_url: str) -> list[Corrida] | None:
     if not distancias:
         distancias = _guess_distances(titulo)
 
-    inscricoes_abertas = _check_status_str(text.lower())
     link = _find_insc_link(soup) or page_url
 
-    return [_build(titulo, data_evento, distancias, inscricoes_abertas, link, None)]
+    return [_build(titulo, data_evento, distancias, link, None)]
 
 
 # ---------------------------------------------------------------------------
@@ -120,12 +119,10 @@ def _try_html(soup, text_full: str, page_url: str) -> list[Corrida] | None:
         distancias = _guess_distances(titulo)
 
     horario_str = normalize_time(text_full)
-    inscricoes_abertas = _check_status_str(text_full.lower())
     imagem_url = _extract_image(soup)
     link = _find_insc_link(soup) or page_url
 
-    return [_build(titulo, data_evento, distancias, inscricoes_abertas, link,
-                   imagem_url, horario_str)]
+    return [_build(titulo, data_evento, distancias, link, imagem_url, horario_str)]
 
 
 # ---------------------------------------------------------------------------
@@ -207,14 +204,6 @@ def _guess_distances(titulo: str) -> list[Distancia]:
     ]
 
 
-def _check_status_str(text_lower: str) -> bool | None:
-    if any(k in text_lower for k in _CLOSED_KW):
-        return False
-    if any(k in text_lower for k in _OPEN_KW):
-        return True
-    return None
-
-
 def _extract_titulo(soup) -> str | None:
     for sel in ["h1", "h2", ".event-title", ".titulo", ".title", "title"]:
         tag = soup.select_one(sel)
@@ -264,12 +253,10 @@ def _build(
     titulo: str,
     data_evento: str,
     distancias: list[Distancia],
-    inscricoes_abertas: bool | None,
     link: str,
     imagem_url: str | None,
     horario: str | None = None,
 ) -> Corrida:
-    today = today_iso()
     now   = now_iso()
     return Corrida(
         id=f"volta-do-lago_df_{data_evento[:4]}",
@@ -281,12 +268,12 @@ def _build(
         estado="DF",
         distancias=distancias,
         imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
+        inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[FonteInfo(
             nome=SOURCE_NAME,
             link_evento=link,
-            links_inscricao=[link] if inscricoes_abertas else [],
+            links_inscricao=[link],
         )],
         miss_count=0,
         first_seen_at=now,

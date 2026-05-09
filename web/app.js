@@ -1471,6 +1471,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fonteFilterBtn.setAttribute('aria-expanded', 'true');
     }
   });
+  estadoFilterDropdown.addEventListener('click', e => e.stopPropagation());
   fonteFilterDropdown.addEventListener('click', e => e.stopPropagation());
 
   document.addEventListener('click', closeAllDropdowns);

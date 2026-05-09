@@ -513,10 +513,15 @@ const _ISO2_TO_DATA_COUNTRY = {
   NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
 };
 
+const _COUNTRY_NORMALIZE = { 'Eua': 'EUA', 'eua': 'EUA', 'EuA': 'EUA' };
+
 function _extractCountry(cidade) {
   if (!cidade) return null;
   const parts = cidade.split(',');
-  if (parts.length > 1) return parts[parts.length - 1].trim();
+  if (parts.length > 1) {
+    const raw = parts[parts.length - 1].trim();
+    return _COUNTRY_NORMALIZE[raw] || raw;
+  }
   return _CITY_COUNTRY[cidade.trim()] || null;
 }
 

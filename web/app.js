@@ -51,34 +51,32 @@ const STRINGS = {
     loading: 'Carregando...',
     loadError: 'Erro ao carregar dados.',
     clearFilters: 'Limpar filtros',
-    noRacesMsg: 'Nenhuma corrida encontrada com os filtros atuais.',
-    raceCount: n => n === 1 ? '1 corrida encontrada' : `${n} corridas encontradas`,
-    raceCountLabel: n => n === 1 ? '1 corrida' : `${n} corridas`,
-    dateTBD: 'Data a confirmar',
-    months: ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'],
-    monthsFull: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-    weekdays: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
-    dateFullFormat: (wd, d, m, y) => `${wd}, ${d} de ${m} de ${y}`,
-    dateRangeSameMonth: (d1, d2, m, y) => `${d1} a ${d2} de ${m} de ${y}`,
-    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} de ${m1} a ${d2} de ${m2} de ${y}`,
-    pastSectionLabel: '🏁 Corridas nos últimos 15 dias',
+    noResults: 'Nenhuma corrida encontrada com os filtros atuais.',
+    raceCount: n => n === 1 ? `${n} corrida` : `${n} corridas`,
+    past15: 'Desde 15 dias atrás',
+    today: 'A partir de hoje',
+    next30: 'Próximos 30 dias',
+    next90: 'Próximos 3 meses',
+    next180: 'Próximos 6 meses',
+    allTime: 'Todo o período',
+    custom: 'Intervalo personalizado',
     distancesHeader: 'Distâncias',
     dateColHeader: 'Data',
     timeColHeader: 'Horário',
-    sourcesSection: 'Fontes',
-    photosSection: 'Fotos',
-    registerBtn: 'Inscrever-se →',
-    groupBrasil: 'Brasil',
-    allCountry: country => `Todo ${country}`,
-    periodOptions: [
-      { value: 'past15', label: 'Desde 15 dias atrás' },
-      { value: 'today',  label: 'A partir de hoje' },
-      { value: '30',     label: 'Próximos 30 dias' },
-      { value: '90',     label: 'Próximos 3 meses' },
-      { value: '180',    label: 'Próximos 6 meses' },
-      { value: 'all',    label: 'Todo o período' },
-      { value: 'custom', label: 'Intervalo personalizado' },
-    ],
+    sourcesHeader: 'Fontes',
+    registerBtn: 'Inscreva-se',
+    noImage: 'Sem imagem',
+    labelDateFrom: 'De',
+    labelDateTo: 'Até',
+    labelDistFrom: 'De',
+    labelDistTo: 'Até',
+    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+    dayNames: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+    today_label: 'Hoje',
+    tomorrow_label: 'Amanhã',
+    yesterday_label: 'Ontem',
+    pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Outras' },
+    periodoSelect: 'Filtrar por período',
   },
   en: {
     siteTitle: 'Next Race',
@@ -108,52 +106,32 @@ const STRINGS = {
     loading: 'Loading...',
     loadError: 'Error loading data.',
     clearFilters: 'Clear filters',
-    noRacesMsg: 'No races found with current filters.',
-    raceCount: n => n === 1 ? '1 race found' : `${n} races found`,
-    raceCountLabel: n => n === 1 ? '1 race' : `${n} races`,
-    dateTBD: 'Date TBD',
-    months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
-    monthsFull: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-    weekdays: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-    dateFullFormat: (wd, d, m, y) => `${wd}, ${m} ${d}, ${y}`,
-    dateRangeSameMonth: (d1, d2, m, y) => `${m} ${d1}–${d2}, ${y}`,
-    dateRangeDiff: (d1, m1, d2, m2, y) => `${m1} ${d1} – ${m2} ${d2}, ${y}`,
-    pastSectionLabel: '🏁 Races in the last 15 days',
+    noResults: 'No races found with current filters.',
+    raceCount: n => n === 1 ? `${n} race` : `${n} races`,
+    past15: 'Since 15 days ago',
+    today: 'From today',
+    next30: 'Next 30 days',
+    next90: 'Next 3 months',
+    next180: 'Next 6 months',
+    allTime: 'All time',
+    custom: 'Custom range',
     distancesHeader: 'Distances',
     dateColHeader: 'Date',
     timeColHeader: 'Time',
-    sourcesSection: 'Sources',
-    photosSection: 'Photos',
-    registerBtn: 'Register →',
-    groupBrasil: 'Brazil',
-    allCountry: country => `All ${country}`,
-    periodOptions: [
-      { value: 'past15', label: 'Since 15 days ago' },
-      { value: 'today',  label: 'From today' },
-      { value: '30',     label: 'Next 30 days' },
-      { value: '90',     label: 'Next 3 months' },
-      { value: '180',    label: 'Next 6 months' },
-      { value: 'all',    label: 'All time' },
-      { value: 'custom', label: 'Custom range' },
-    ],
-    places: {
-      'Reino Unido': 'United Kingdom', 'EUA': 'USA', 'Estados Unidos': 'USA',
-      'Japão': 'Japan', 'Alemanha': 'Germany', 'França': 'France',
-      'Austrália': 'Australia', 'Países Baixos': 'Netherlands', 'Itália': 'Italy',
-      'Espanha': 'Spain', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
-      'Dinamarca': 'Denmark', 'Suécia': 'Sweden', 'Noruega': 'Norway',
-      'Irlanda': 'Ireland', 'República Tcheca': 'Czech Republic',
-      'Grécia': 'Greece', 'Colômbia': 'Colombia', 'México': 'Mexico',
-      'África do Sul': 'South Africa', 'Quênia': 'Kenya', 'Etiópia': 'Ethiopia',
-      'Coreia do Sul': 'South Korea', 'Canadá': 'Canada', 'Nova Zelândia': 'New Zealand',
-      'Áustria': 'Austria', 'Suíça': 'Switzerland', 'Polônia': 'Poland',
-      'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokyo', 'Londres': 'London',
-      'Berlim': 'Berlin', 'Valência': 'Valencia',
-      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Copenhagen',
-      'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athens',
-      'Milão': 'Milan', 'Veneza': 'Venice', 'Assunção': 'Asunción',
-      'Lisboa': 'Lisbon', 'Moscou': 'Moscow',
-    },
+    sourcesHeader: 'Sources',
+    registerBtn: 'Register',
+    noImage: 'No image',
+    labelDateFrom: 'From',
+    labelDateTo: 'To',
+    labelDistFrom: 'From',
+    labelDistTo: 'To',
+    monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    dayNames: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    today_label: 'Today',
+    tomorrow_label: 'Tomorrow',
+    yesterday_label: 'Yesterday',
+    pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Other' },
+    periodoSelect: 'Filter by period',
   },
   es: {
     siteTitle: 'Próxima Carrera',
@@ -183,52 +161,32 @@ const STRINGS = {
     loading: 'Cargando...',
     loadError: 'Error al cargar datos.',
     clearFilters: 'Limpiar filtros',
-    noRacesMsg: 'No se encontraron carreras con los filtros actuales.',
-    raceCount: n => n === 1 ? '1 carrera encontrada' : `${n} carreras encontradas`,
-    raceCountLabel: n => n === 1 ? '1 carrera' : `${n} carreras`,
-    dateTBD: 'Fecha por confirmar',
-    months: ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'],
-    monthsFull: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-    weekdays: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
-    dateFullFormat: (wd, d, m, y) => `${wd}, ${d} de ${m} de ${y}`,
-    dateRangeSameMonth: (d1, d2, m, y) => `${d1} al ${d2} de ${m} de ${y}`,
-    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} de ${m1} al ${d2} de ${m2} de ${y}`,
-    pastSectionLabel: '🏁 Carreras en los últimos 15 días',
+    noResults: 'No se encontraron carreras con los filtros actuales.',
+    raceCount: n => n === 1 ? `${n} carrera` : `${n} carreras`,
+    past15: 'Desde hace 15 días',
+    today: 'Desde hoy',
+    next30: 'Próximos 30 días',
+    next90: 'Próximos 3 meses',
+    next180: 'Próximos 6 meses',
+    allTime: 'Todo el período',
+    custom: 'Intervalo personalizado',
     distancesHeader: 'Distancias',
     dateColHeader: 'Fecha',
     timeColHeader: 'Hora',
-    sourcesSection: 'Fuentes',
-    photosSection: 'Fotos',
-    registerBtn: 'Inscribirse →',
-    groupBrasil: 'Brasil',
-    allCountry: country => `Todo ${country}`,
-    periodOptions: [
-      { value: 'past15', label: 'Desde hace 15 días' },
-      { value: 'today',  label: 'Desde hoy' },
-      { value: '30',     label: 'Próximos 30 días' },
-      { value: '90',     label: 'Próximos 3 meses' },
-      { value: '180',    label: 'Próximos 6 meses' },
-      { value: 'all',    label: 'Todo el período' },
-      { value: 'custom', label: 'Intervalo personalizado' },
-    ],
-    places: {
-      'Reino Unido': 'Reino Unido', 'EUA': 'EE.UU.', 'Estados Unidos': 'EE.UU.',
-      'Japão': 'Japón', 'Alemanha': 'Alemania', 'França': 'Francia',
-      'Austrália': 'Australia', 'Países Baixos': 'Países Bajos', 'Itália': 'Italia',
-      'Espanha': 'España', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
-      'Dinamarca': 'Dinamarca', 'Suécia': 'Suecia', 'Noruega': 'Noruega',
-      'Irlanda': 'Irlanda', 'República Tcheca': 'República Checa',
-      'Grécia': 'Grecia', 'Colômbia': 'Colombia', 'México': 'México',
-      'África do Sul': 'Sudáfrica', 'Quênia': 'Kenia', 'Etiópia': 'Etiopía',
-      'Coreia do Sul': 'Corea del Sur', 'Canadá': 'Canadá', 'Nova Zelândia': 'Nueva Zelanda',
-      'Áustria': 'Austria', 'Suíça': 'Suiza', 'Polônia': 'Polonia',
-      'Edimburgo': 'Edimburgo', 'Tóquio': 'Tokio', 'Londres': 'Londres',
-      'Berlim': 'Berlín', 'Valência': 'Valencia', 'Dublin': 'Dublín',
-      'Nova York': 'Nueva York', 'Amstã': 'Ámsterdam', 'Copenhague': 'Copenhague',
-      'Estocolmo': 'Estocolmo', 'Praga': 'Praga', 'Atenas': 'Atenas',
-      'Milão': 'Milán', 'Veneza': 'Venecia', 'Assunção': 'Asunción',
-      'Lisboa': 'Lisboa', 'Moscou': 'Moscú',
-    },
+    sourcesHeader: 'Fuentes',
+    registerBtn: 'Inscribirse',
+    noImage: 'Sin imagen',
+    labelDateFrom: 'Desde',
+    labelDateTo: 'Hasta',
+    labelDistFrom: 'Desde',
+    labelDistTo: 'Hasta',
+    monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    dayNames: ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],
+    today_label: 'Hoy',
+    tomorrow_label: 'Mañana',
+    yesterday_label: 'Ayer',
+    pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Otras' },
+    periodoSelect: 'Filtrar por período',
   },
   de: {
     siteTitle: 'Nächstes Rennen',
@@ -258,52 +216,32 @@ const STRINGS = {
     loading: 'Laden...',
     loadError: 'Fehler beim Laden der Daten.',
     clearFilters: 'Filter löschen',
-    noRacesMsg: 'Keine Rennen mit den aktuellen Filtern gefunden.',
-    raceCount: n => n === 1 ? '1 Rennen gefunden' : `${n} Rennen gefunden`,
-    raceCountLabel: n => n === 1 ? '1 Rennen' : `${n} Rennen`,
-    dateTBD: 'Datum noch offen',
-    months: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
-    monthsFull: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
-    weekdays: ['So','Mo','Di','Mi','Do','Fr','Sa'],
-    dateFullFormat: (wd, d, m, y) => `${wd}, ${d}. ${m} ${y}`,
-    dateRangeSameMonth: (d1, d2, m, y) => `${d1}.–${d2}. ${m} ${y}`,
-    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1}. ${m1} – ${d2}. ${m2} ${y}`,
-    pastSectionLabel: '🏁 Rennen der letzten 15 Tage',
+    noResults: 'Keine Rennen mit den aktuellen Filtern gefunden.',
+    raceCount: n => n === 1 ? `${n} Rennen` : `${n} Rennen`,
+    past15: 'Seit 15 Tagen',
+    today: 'Ab heute',
+    next30: 'Nächste 30 Tage',
+    next90: 'Nächste 3 Monate',
+    next180: 'Nächste 6 Monate',
+    allTime: 'Gesamter Zeitraum',
+    custom: 'Benutzerdefinierter Zeitraum',
     distancesHeader: 'Distanzen',
     dateColHeader: 'Datum',
-    timeColHeader: 'Uhrzeit',
-    sourcesSection: 'Quellen',
-    photosSection: 'Fotos',
-    registerBtn: 'Anmelden →',
-    groupBrasil: 'Brasilien',
-    allCountry: country => `Ganz ${country}`,
-    periodOptions: [
-      { value: 'past15', label: 'Seit 15 Tagen' },
-      { value: 'today',  label: 'Ab heute' },
-      { value: '30',     label: 'Nächste 30 Tage' },
-      { value: '90',     label: 'Nächste 3 Monate' },
-      { value: '180',    label: 'Nächste 6 Monate' },
-      { value: 'all',    label: 'Gesamter Zeitraum' },
-      { value: 'custom', label: 'Benutzerdefinierter Zeitraum' },
-    ],
-    places: {
-      'Reino Unido': 'Vereinigtes Königreich', 'EUA': 'USA', 'Estados Unidos': 'USA',
-      'Japão': 'Japan', 'Alemanha': 'Deutschland', 'França': 'Frankreich',
-      'Austrália': 'Australien', 'Países Baixos': 'Niederlande', 'Itália': 'Italien',
-      'Espanha': 'Spanien', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
-      'Dinamarca': 'Dänemark', 'Suécia': 'Schweden', 'Noruega': 'Norwegen',
-      'Irlanda': 'Irland', 'República Tcheca': 'Tschechien',
-      'Grécia': 'Griechenland', 'Colômbia': 'Kolumbien', 'México': 'Mexiko',
-      'África do Sul': 'Südafrika', 'Quênia': 'Kenia', 'Etiópia': 'Äthiopien',
-      'Coreia do Sul': 'Südkorea', 'Canadá': 'Kanada', 'Nova Zelândia': 'Neuseeland',
-      'Áustria': 'Österreich', 'Suíça': 'Schweiz', 'Polônia': 'Polen',
-      'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokio', 'Londres': 'London',
-      'Berlim': 'Berlin', 'Valência': 'Valencia',
-      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
-      'Estocolmo': 'Stockholm', 'Praga': 'Prag', 'Atenas': 'Athen',
-      'Milão': 'Mailand', 'Veneza': 'Venedig', 'Assunção': 'Asunción',
-      'Lisboa': 'Lissabon', 'Moscou': 'Moskau',
-    },
+    timeColHeader: 'Zeit',
+    sourcesHeader: 'Quellen',
+    registerBtn: 'Anmelden',
+    noImage: 'Kein Bild',
+    labelDateFrom: 'Von',
+    labelDateTo: 'Bis',
+    labelDistFrom: 'Von',
+    labelDistTo: 'Bis',
+    monthNames: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+    dayNames: ['So','Mo','Di','Mi','Do','Fr','Sa'],
+    today_label: 'Heute',
+    tomorrow_label: 'Morgen',
+    yesterday_label: 'Gestern',
+    pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Andere' },
+    periodoSelect: 'Nach Zeitraum filtern',
   },
   fr: {
     siteTitle: 'Prochaine Course',
@@ -322,7 +260,7 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrer par lieu',
     fonteFilterAriaLabel: 'Filtrer par source',
     refreshAriaLabel: 'Actualiser',
-    homeAriaLabel: 'Ma localisation et langue',
+    homeAriaLabel: 'Ma position et langue',
     langAriaLabel: 'Langue',
     clearFiltersAriaLabel: 'Effacer les filtres',
     allLocations: 'Tous',
@@ -333,815 +271,370 @@ const STRINGS = {
     loading: 'Chargement...',
     loadError: 'Erreur lors du chargement des données.',
     clearFilters: 'Effacer les filtres',
-    noRacesMsg: 'Aucune course trouvée avec les filtres actuels.',
-    raceCount: n => n === 1 ? '1 course trouvée' : `${n} courses trouvées`,
-    raceCountLabel: n => n === 1 ? '1 course' : `${n} courses`,
-    dateTBD: 'Date à confirmer',
-    months: ['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'],
-    monthsFull: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-    weekdays: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
-    dateFullFormat: (wd, d, m, y) => `${wd} ${d} ${m} ${y}`,
-    dateRangeSameMonth: (d1, d2, m, y) => `${d1}–${d2} ${m} ${y}`,
-    dateRangeDiff: (d1, m1, d2, m2, y) => `${d1} ${m1} – ${d2} ${m2} ${y}`,
-    pastSectionLabel: '🏁 Courses des 15 derniers jours',
+    noResults: 'Aucune course trouvée avec les filtres actuels.',
+    raceCount: n => n === 1 ? `${n} course` : `${n} courses`,
+    past15: 'Depuis 15 jours',
+    today: "À partir d'aujourd'hui",
+    next30: '30 prochains jours',
+    next90: '3 prochains mois',
+    next180: '6 prochains mois',
+    allTime: 'Toute la période',
+    custom: 'Période personnalisée',
     distancesHeader: 'Distances',
     dateColHeader: 'Date',
     timeColHeader: 'Heure',
-    sourcesSection: 'Sources',
-    photosSection: 'Photos',
-    registerBtn: "S'inscrire →",
-    groupBrasil: 'Brésil',
-    allCountry: country => `Tout ${country}`,
-    periodOptions: [
-      { value: 'past15', label: 'Depuis 15 jours' },
-      { value: 'today',  label: "À partir d'aujourd'hui" },
-      { value: '30',     label: '30 prochains jours' },
-      { value: '90',     label: '3 prochains mois' },
-      { value: '180',    label: '6 prochains mois' },
-      { value: 'all',    label: 'Toute la période' },
-      { value: 'custom', label: 'Période personnalisée' },
-    ],
-    places: {
-      'Reino Unido': 'Royaume-Uni', 'EUA': 'États-Unis', 'Estados Unidos': 'États-Unis',
-      'Japão': 'Japon', 'Alemanha': 'Allemagne', 'França': 'France',
-      'Austrália': 'Australie', 'Países Baixos': 'Pays-Bas', 'Itália': 'Italie',
-      'Espanha': 'Espagne', 'Paraguai': 'Paraguay', 'Uruguai': 'Uruguay',
-      'Dinamarca': 'Danemark', 'Suécia': 'Suède', 'Noruega': 'Norvège',
-      'Irlanda': 'Irlande', 'República Tcheca': 'République Tchèque',
-      'Grécia': 'Grèce', 'Colômbia': 'Colombie', 'México': 'Mexique',
-      'África do Sul': 'Afrique du Sud', 'Quênia': 'Kenya', 'Etiópia': 'Éthiopie',
-      'Coreia do Sul': 'Corée du Sud', 'Canadá': 'Canada', 'Nova Zelândia': 'Nouvelle-Zélande',
-      'Áustria': 'Autriche', 'Suíça': 'Suisse', 'Polônia': 'Pologne',
-      'Edimburgo': 'Édimbourg', 'Tóquio': 'Tokyo', 'Londres': 'Londres',
-      'Berlim': 'Berlin', 'Valência': 'Valence',
-      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Copenhague',
-      'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athènes',
-      'Milão': 'Milan', 'Veneza': 'Venise', 'Assunção': 'Asunción',
-      'Lisboa': 'Lisbonne', 'Moscou': 'Moscou',
-    },
+    sourcesHeader: 'Sources',
+    registerBtn: "S'inscrire",
+    noImage: 'Sans image',
+    labelDateFrom: 'De',
+    labelDateTo: 'À',
+    labelDistFrom: 'De',
+    labelDistTo: 'À',
+    monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    dayNames: ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'],
+    today_label: "Aujourd'hui",
+    tomorrow_label: 'Demain',
+    yesterday_label: 'Hier',
+    pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Autres' },
+    periodoSelect: 'Filtrer par période',
   },
 };
 
-const T = STRINGS[LANG];
+const T = STRINGS[LANG] || STRINGS.en;
 
 // ---------------------------------------------------------------------------
-// State
+// DOM references (populated after DOMContentLoaded)
 // ---------------------------------------------------------------------------
-let allCorridas = [];
-let filteredCorridas = [];
+let searchInput, cardsList, emptyState, btnClear, btnClearEmpty,
+    periodoSelect, estadoFilterBtn, estadoFilterLabel, estadoFilterDropdown,
+    fonteFilterBtn, fonteFilterLabel, fonteFilterDropdown,
+    resultCount, filtersBar, btnRefresh, btnLang, btnHome,
+    modeSelect, modeInterval, pillsContainer, intervalContainer,
+    distMin, distMax, customDateRow, dateFrom, dateTo;
 
-// Raw geo-detected filter value (e.g. 'DF', 'INT:Japão')
-let _geoDetected = null;
-// Filter value actually applied after fallback chain (may differ from _geoDetected)
-let _geoApplied = null;
-// True when user manually picked a location (suppresses geo re-apply on refresh)
-let _userChoseLocation = false;
-
+// ---------------------------------------------------------------------------
+// App state
+// ---------------------------------------------------------------------------
 const state = {
-  distMode: 'select',
-  activePills: new Set(),
-  distMin: null,
-  distMax: null,
-  periodo: 'past15',
-  dateFrom: null,
-  dateTo: null,
-  estado: 'todos',
-  fontes: new Set(),
   searchQuery: '',
+  activePills:  new Set(),
+  distMode:     'select',
+  distMin:      null,
+  distMax:      null,
+  periodo:      'past15',
+  dateFrom:     null,
+  dateTo:       null,
+  estado:       'todos',
+  fontes:       new Set(),
 };
 
-// ---------------------------------------------------------------------------
-// DOM refs
-// ---------------------------------------------------------------------------
-const $ = id => document.getElementById(id);
-
-const cardsList         = $('cardsList');
-const emptyState        = $('emptyState');
-const resultCount       = $('resultCount');
-const btnClear          = $('btnClear');
-const btnClearEmpty     = $('btnClearEmpty');
-const btnRefresh        = $('btnRefresh');
-const btnLang           = $('btnLang');
-const btnHome           = $('btnHome');
-const estadoFilterWrapper  = $('estadoFilterWrapper');
-const estadoFilterBtn      = $('estadoFilterBtn');
-const estadoFilterDropdown = $('estadoFilterDropdown');
-const estadoFilterLabel    = $('estadoFilterLabel');
-let _estadoAvailableValues = new Set(['todos']);
-const periodoSelect     = $('periodoSelect');
-const customDateRow     = $('customDateRow');
-const dateFrom          = $('dateFrom');
-const dateTo            = $('dateTo');
-const pillsContainer    = $('pillsContainer');
-const intervalContainer = $('intervalContainer');
-const modeSelect        = $('modeSelect');
-const modeInterval      = $('modeInterval');
-const distMin           = $('distMin');
-const distMax           = $('distMax');
-const cardTemplate      = $('cardTemplate');
-const searchInput       = $('searchInput');
-const fonteFilterWrapper  = $('fonteFilterWrapper');
-const fonteFilterBtn      = $('fonteFilterBtn');
-const fonteFilterDropdown = $('fonteFilterDropdown');
-const fonteFilterLabel    = $('fonteFilterLabel');
+let allCorridas      = [];
+let filteredCorridas = [];
+let _geoApplied      = null;  // estado code applied from geolocation
 
 // ---------------------------------------------------------------------------
-// i18n initialisation
+// Geolocation pipeline
 // ---------------------------------------------------------------------------
-function initI18n() {
-  document.title = T.siteTitle;
-  document.querySelector('.app-title').textContent = T.headerTitle;
+async function detectGeoEstado() {
+  const cached = sessionStorage.getItem('_geoCache');
+  if (cached) return cached === 'null' ? null : cached;
 
-  if (btnLang)     btnLang.setAttribute('aria-label', T.langAriaLabel);
-  if (btnHome)     btnHome.setAttribute('aria-label', T.homeAriaLabel);
-  if (btnRefresh)  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
-  if (searchInput) {
-    searchInput.placeholder = T.searchPlaceholder;
-    searchInput.setAttribute('aria-label', T.searchAriaLabel);
-  }
-  if (modeSelect)   modeSelect.textContent   = T.modeSelect;
-  if (modeInterval) modeInterval.textContent = T.modeInterval;
-
-  const ldf  = $('labelDistFrom');
-  const ldt  = $('labelDistTo');
-  const ldaf = $('labelDateFrom');
-  const ldat = $('labelDateTo');
-  if (ldf)  ldf.textContent  = T.distFrom;
-  if (ldt)  ldt.textContent  = T.distTo;
-  if (ldaf) ldaf.textContent = T.distFrom;
-  if (ldat) ldat.textContent = T.distTo;
-  if (distMin) distMin.setAttribute('aria-label', T.distMinAriaLabel);
-  if (distMax) distMax.setAttribute('aria-label', T.distMaxAriaLabel);
-  if (dateFrom) dateFrom.setAttribute('aria-label', T.dateFromAriaLabel);
-  if (dateTo)   dateTo.setAttribute('aria-label',   T.dateToAriaLabel);
-
-  if (periodoSelect) {
-    periodoSelect.innerHTML = '';
-    periodoSelect.setAttribute('aria-label', T.periodoAriaLabel);
-    for (const opt of T.periodOptions) {
-      const o = document.createElement('option');
-      o.value = opt.value;
-      o.textContent = opt.label;
-      periodoSelect.appendChild(o);
-    }
-  }
-
-  if (estadoFilterBtn) estadoFilterBtn.setAttribute('aria-label', T.estadoAriaLabel);
-
-  if (fonteFilterBtn)   fonteFilterBtn.setAttribute('aria-label', T.fonteFilterAriaLabel);
-  if (fonteFilterLabel) fonteFilterLabel.textContent = T.allSources;
-  if (resultCount)   resultCount.textContent  = T.loading;
-  if (btnClear)      btnClear.textContent     = T.clearFilters;
-  if (btnClearEmpty) btnClearEmpty.textContent = T.clearFilters;
-
-  const emptyMsg = emptyState && emptyState.querySelector('p');
-  if (emptyMsg) emptyMsg.textContent = T.noRacesMsg;
-  const emptyBtn = emptyState && emptyState.querySelector('.btn-clear');
-  if (emptyBtn) emptyBtn.textContent = T.clearFilters;
-}
-
-// ---------------------------------------------------------------------------
-// Language switch (custom dropdown)
-// ---------------------------------------------------------------------------
-const _LANG_LABELS = { de: 'Deutsch', en: 'English', es: 'Español', fr: 'Français', pt: 'Português' };
-let _langDropdown = null;
-
-function _closeLangDropdown() {
-  if (_langDropdown) { _langDropdown.remove(); _langDropdown = null; }
-}
-
-if (btnLang) {
-  btnLang.addEventListener('click', e => {
-    e.stopPropagation();
-    if (_langDropdown) { _closeLangDropdown(); return; }
-
-    const dd = document.createElement('div');
-    dd.className = 'lang-dropdown';
-    const _sortedLangs = [[LANG, _LANG_LABELS[LANG]],
-      ...Object.entries(_LANG_LABELS).filter(([c]) => c !== LANG)];
-    for (const [code, label] of _sortedLangs) {
-      const btn = document.createElement('button');
-      btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');
-      btn.textContent = label;
-      btn.addEventListener('click', () => {
-        _closeLangDropdown();
-        if (code !== LANG) window.location.href = LANG_URLS[code] || '/pt';
-      });
-      dd.appendChild(btn);
-    }
-    _langDropdown = dd;
-    document.body.appendChild(dd);
-
-    const r = btnLang.getBoundingClientRect();
-    dd.style.top   = (r.bottom + 4) + 'px';
-    dd.style.right = (window.innerWidth - r.right) + 'px';
-    dd.style.position = 'fixed';
-
-    setTimeout(() => document.addEventListener('click', _closeLangDropdown, { once: true }), 0);
-  });
-}
-
-// ---------------------------------------------------------------------------
-// Home button — reset to browser language + geo-detected location
-// ---------------------------------------------------------------------------
-if (btnHome) {
-  btnHome.addEventListener('click', () => {
-    const targetLang = BROWSER_LANG;
-
-    if (targetLang === LANG) {
-      // Same language: reset location inline — no navigation, no extra API calls.
-      _userChoseLocation = false;
-      state.estado = 'todos';
-      _geoApplied  = null;
-      if (_geoDetected) {
-        _applyGeoLocation();
-      } else {
-        detectUserLocation();
-      }
-      return;
-    }
-
-    // Language change: carry already-detected geo to the new page via sessionStorage
-    // so populateEstadoFilter() can apply it immediately without waiting for API calls.
-    if (_geoDetected) {
-      try { sessionStorage.setItem('_geoCache', _geoDetected); } catch (e) {}
-    }
+  const apis = [
+    () => fetch('https://ipwho.is/').then(r => r.json()).then(d => d.country_code === 'BR' ? d.region_code : null),
+    () => fetch('https://freeipapi.com/api/json').then(r => r.json()).then(d => d.countryCode === 'BR' ? d.regionCode : null),
+    () => fetch('https://api.ip.sb/geoip').then(r => r.json()).then(d => d.country_code === 'BR' ? d.region_code : null),
+  ];
+  for (const fn of apis) {
     try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-      if (saved) { delete saved.estado; localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }
-    } catch (e) {}
-    window.location.href = LANG_URLS[targetLang] || '/pt';
-  });
+      const code = await fn();
+      if (code) {
+        sessionStorage.setItem('_geoCache', code);
+        return code;
+      }
+    } catch (_) {}
+  }
+  sessionStorage.setItem('_geoCache', 'null');
+  return null;
 }
 
 // ---------------------------------------------------------------------------
-// Persistence (localStorage)
+// Data loading
 // ---------------------------------------------------------------------------
-const STORAGE_KEY = 'corridas_filters';
-
-function saveFilters() {
+async function loadData() {
+  resultCount.textContent = T.loading;
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      activePills: [...state.activePills],
-      distMode: state.distMode,
-      distMin:  state.distMin,
-      distMax:  state.distMax,
-      estado:   state.estado,
-      fontes:   [...state.fontes],
-    }));
-  } catch (e) { /* ignore */ }
-}
-
-function loadFilters() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (!saved) return;
-    state.activePills = new Set(saved.activePills || []);
-    state.distMode    = saved.distMode || 'select';
-    state.distMin     = saved.distMin;
-    state.distMax     = saved.distMax;
-    state.estado      = saved.estado || 'todos';
-    state.fontes      = new Set(saved.fontes || []);
-  } catch (e) { /* ignore */ }
-  state.periodo = 'past15';
-}
-
-// ---------------------------------------------------------------------------
-// Data fetch
-// ---------------------------------------------------------------------------
-async function fetchData(triggeredByUser = false) {
-  btnRefresh.classList.add('spinning');
-  try {
-    const resp = await fetch('/corridas.json?t=' + Date.now());
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const json = await resp.json();
-    allCorridas = json.corridas || [];
-    populateEstadoFilter();
-    populateFontesFilter();
-    if (triggeredByUser && !_userChoseLocation) {
-      state.estado = 'todos';
-      _geoApplied  = null;
-      await detectUserLocation();
-      if (state.estado === 'todos') applyFilters();
-    } else {
-      applyFilters();
-    }
+    const res = await fetch('/corridas.json');
+    if (!res.ok) throw new Error(res.status);
+    allCorridas = await res.json();
+    await initFilters();
   } catch (e) {
     resultCount.textContent = T.loadError;
-    console.error(e);
-  } finally {
-    btnRefresh.classList.remove('spinning');
+    console.error('loadData error', e);
   }
 }
 
 // ---------------------------------------------------------------------------
-// Location / geo helpers
+// Filter initialisation
 // ---------------------------------------------------------------------------
+async function initFilters() {
+  restoreFilters();
 
-// Translate a Portuguese place string (city, country, or "City, Country")
-// to the current language. PT is already the base, other langs use T.places.
-function translatePlace(str) {
-  if (!str || LANG === 'pt' || !T.places) return str || '';
-  // Sort entries longest-first so "Estados Unidos" matches before "Estados"
-  const entries = Object.entries(T.places).sort((a, b) => b[0].length - a[0].length);
-  let out = str;
-  for (const [pt, local] of entries) {
-    if (out.includes(pt)) out = out.split(pt).join(local);
+  // Build estado dropdown
+  const estadoSet = new Set();
+  for (const c of allCorridas) {
+    if (c.estado) estadoSet.add(c.estado);
   }
-  return out;
-}
+  const estados = [...estadoSet].sort();
+  buildEstadoDropdown(estados);
 
-const _ESTADO_LABELS = {
-  AC: 'Acre · AC',           AL: 'Alagoas · AL',        AM: 'Amazonas · AM',
-  AP: 'Amapá · AP',          BA: 'Bahia · BA',           CE: 'Ceará · CE',
-  DF: 'Brasília · DF',       ES: 'Espírito Santo · ES',  GO: 'Goiás · GO',
-  MA: 'Maranhão · MA',       MG: 'Minas Gerais · MG',    MS: 'Mato Grosso do Sul · MS',
-  MT: 'Mato Grosso · MT',    PA: 'Pará · PA',             PB: 'Paraíba · PB',
-  PE: 'Pernambuco · PE',     PI: 'Piauí · PI',            PR: 'Paraná · PR',
-  RJ: 'Rio de Janeiro · RJ', RN: 'Rio Grande do Norte · RN', RO: 'Rondônia · RO',
-  RR: 'Roraima · RR',        RS: 'Rio Grande do Sul · RS',   SC: 'Santa Catarina · SC',
-  SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
-};
-
-// Fallback country for cities that omit the ", Country" suffix
-const _CITY_COUNTRY = {
-  'Buenos Aires': 'Argentina',
-  'Assunção':     'Paraguai',
-  'Punta Del Este': 'Uruguai',
-  'Porto':        'Portugal',
-  'Paris':        'França',
-  'Veneza':       'Itália',
-  'Colonia Agip': 'Itália',
-  'Roma':         'Itália',
-  'Milão':        'Itália',
-  'Madrid':       'Espanha',
-  'Barcelona':    'Espanha',
-  'Amsterdam':    'Países Baixos',
-  'Amstã':     'Países Baixos',
-  'Montevidéu':   'Uruguai',
-  'Santiago':     'Chile',
-  'Lima':         'Peru',
-  'Bogotá':       'Colômbia',
-  'Cidade do México': 'México',
-};
-
-// ISO 3166-1 alpha-2 → country name as used in the data (Portuguese)
-const _ISO2_TO_DATA_COUNTRY = {
-  AR: 'Argentina',
-  PY: 'Paraguai',
-  UY: 'Uruguai',
-  PT: 'Portugal',
-  IT: 'Itália',
-  DE: 'Alemanha',
-  FR: 'França',
-  GB: 'Reino Unido',
-  US: 'EUA',
-  JP: 'Japão',
-  AU: 'Austrália',
-  ES: 'Espanha',
-  CL: 'Chile',
-  CO: 'Colômbia',
-  MX: 'México',
-  PE: 'Peru',
-  NL: 'Países Baixos',
-  AT: 'Áustria',
-  CH: 'Suíça',
-  SE: 'Suécia',
-  NO: 'Noruega',
-  DK: 'Dinamarca',
-  FI: 'Finlândia',
-  PL: 'Polônia',
-  CZ: 'República Tcheca',
-  ZA: 'África do Sul',
-  KE: 'Quênia',
-  ET: 'Etiópia',
-  CN: 'China',
-  KR: 'Coreia do Sul',
-  CA: 'Canadá',
-  NZ: 'Nova Zelândia',
-};
-
-// Cities that host World Marathon Majors (lowercase for matching)
-const _MAJOR_CITIES = new Set([
-  'tóquio', 'tokyo',
-  'boston',
-  'londres', 'london',
-  'berlim', 'berlin',
-  'chicago',
-  'nova york', 'new york',
-  'sydney',
-]);
-
-function isMajor(c) {
-  if (c.estado !== 'INT') return false;
-  const city = (c.cidade || '').toLowerCase().split(',')[0].trim();
-  return _MAJOR_CITIES.has(city);
-}
-
-function _extractCountry(cidade) {
-  if (!cidade) return null;
-  const parts = cidade.split(',');
-  if (parts.length > 1) return parts[parts.length - 1].trim();
-  return _CITY_COUNTRY[cidade.trim()] || null;
-}
-
-function _extractCity(cidade) {
-  if (!cidade) return null;
-  return cidade.split(',')[0].trim() || null;
-}
-
-// ---------------------------------------------------------------------------
-// Geo-detection fallback chain
-// ---------------------------------------------------------------------------
-
-// Returns true if there is at least one future event matching filterValue
-function _hasFutureEvents(filterValue) {
-  const today = todayStr();
-  return allCorridas.some(c => c.data_evento >= today && _matchEstadoValue(c, filterValue));
-}
-
-// Fallback candidates, in priority order
-function _getFallbackChain(geoValue) {
-  if (!geoValue) return [];
-  // INT:Country:City → INT:Country; INT:Country → todos
-  if (geoValue.startsWith('INT:')) {
-    const rest = geoValue.slice(4);
-    if (rest.includes(':')) return [geoValue, 'INT:' + rest.slice(0, rest.indexOf(':'))];
-    return [geoValue];
-  }
-  // BR state → all Brazil
-  return [geoValue, 'BR'];
-}
-
-function _applyGeoLocation() {
-  // Don't override a saved/explicit user filter
-  if (state.estado !== 'todos') return;
-  if (!_geoDetected && !allCorridas.length) return;
-
-  for (const candidate of _getFallbackChain(_geoDetected)) {
-    if (!_estadoAvailableValues.has(candidate)) continue;
-    if (!_hasFutureEvents(candidate)) continue;
-    _geoApplied = candidate;
-    state.estado = candidate;
-    saveFilters();
-    _updateEstadoLabel();
-    applyFilters();
-    return;
-  }
-}
-
-async function _tryGeoFetch(url) {
-  const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), 5000);
-  try {
-    const r = await fetch(url, { signal: ctrl.signal });
-    clearTimeout(tid);
-    return r.ok ? r.json() : null;
-  } catch {
-    clearTimeout(tid);
-    return null;
-  }
-}
-
-async function detectUserLocation() {
-  const fetchers = [
-    () => _tryGeoFetch('https://ipwho.is/').then(d => {
-      if (!d?.success || !d.country_code) return null;
-      if (d.country_code === 'BR' && _ESTADO_LABELS[d.region_code])
-        return { iso2: 'BR', region: d.region_code };
-      return { iso2: d.country_code, region: null };
-    }),
-    () => _tryGeoFetch('https://freeipapi.com/api/json').then(d => {
-      if (!d?.countryCode) return null;
-      if (d.countryCode === 'BR' && _ESTADO_LABELS[d.regionCode])
-        return { iso2: 'BR', region: d.regionCode };
-      return { iso2: d.countryCode, region: null };
-    }),
-    () => _tryGeoFetch('https://api.ip.sb/geoip').then(d => {
-      if (!d?.country_code) return null;
-      if (d.country_code === 'BR' && _ESTADO_LABELS[d.region_code])
-        return { iso2: 'BR', region: d.region_code };
-      return { iso2: d.country_code, region: null };
-    }),
-  ];
-
-  const result = await new Promise(resolve => {
-    let remaining = fetchers.length;
-    for (const fn of fetchers) {
-      fn().then(r => {
-        if (r) resolve(r);
-        else if (--remaining === 0) resolve(null);
-      }).catch(() => { if (--remaining === 0) resolve(null); });
-    }
-  });
-
-  if (!result) return;
-
-  if (result.iso2 === 'BR') {
-    if (result.region) _geoDetected = result.region;  // e.g. 'DF'
-    else _geoDetected = 'BR';
-  } else {
-    const dataCountry = _ISO2_TO_DATA_COUNTRY[result.iso2];
-    if (dataCountry) _geoDetected = 'INT:' + dataCountry;
-  }
-
-  _applyGeoLocation();
-}
-
-// ---------------------------------------------------------------------------
-// Estado filter — custom accordion dropdown
-// ---------------------------------------------------------------------------
-function _updateEstadoLabel() {
-  const v = state.estado;
-  if (v === 'todos') {
-    estadoFilterLabel.textContent = T.allLocations;
-    estadoFilterBtn.classList.remove('active');
-    return;
-  }
-  const opt = estadoFilterDropdown.querySelector(`.estado-option[data-value="${CSS.escape(v)}"]`);
-  estadoFilterLabel.textContent = opt ? opt.textContent : translatePlace(v.replace(/^INT:/, '').replace(/:/g, ', '));
-  estadoFilterBtn.classList.add('active');
-}
-
-function _closeEstadoDropdown() {
-  estadoFilterDropdown.classList.add('hidden');
-  estadoFilterBtn.setAttribute('aria-expanded', 'false');
-}
-
-function _closeFonteDropdown() {
-  fonteFilterDropdown.classList.add('hidden');
-  fonteFilterBtn.setAttribute('aria-expanded', 'false');
-}
-
-function _makeAccordionGroup(label, initiallyOpen) {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'estado-group';
-
-  const header = document.createElement('div');
-  header.className = 'estado-group-header';
-  const labelSpan = document.createElement('span');
-  labelSpan.textContent = label;
-  const chevron = document.createElement('span');
-  chevron.className = 'estado-group-chevron';
-  chevron.setAttribute('aria-hidden', 'true');
-  chevron.textContent = initiallyOpen ? '▾' : '▸';
-  header.appendChild(labelSpan);
-  header.appendChild(chevron);
-
-  const body = document.createElement('div');
-  body.className = 'estado-group-body';
-  if (!initiallyOpen) body.classList.add('collapsed');
-
-  header.addEventListener('click', () => {
-    const isOpen = !body.classList.contains('collapsed');
-    if (!isOpen) {
-      // Accordion: close every other open group
-      estadoFilterDropdown.querySelectorAll('.estado-group-body').forEach(b => {
-        if (b !== body && !b.classList.contains('collapsed')) {
-          b.classList.add('collapsed');
-          b.previousElementSibling.querySelector('.estado-group-chevron').textContent = '▸';
-        }
-      });
-    }
-    body.classList.toggle('collapsed', isOpen);
-    chevron.textContent = isOpen ? '▸' : '▾';
-  });
-
-  wrapper.appendChild(header);
-  wrapper.appendChild(body);
-  return { wrapper, body };
-}
-
-function populateEstadoFilter({ skipGeo = false } = {}) {
-  estadoFilterDropdown.innerHTML = '';
-  _estadoAvailableValues = new Set(['todos']);
-  const today = todayStr();
-
-  const base = state.fontes.size === 0
-    ? allCorridas
-    : allCorridas.filter(c => matchesFonte(c));
-
-  function makeOption(value, text) {
-    _estadoAvailableValues.add(value);
-    const el = document.createElement('div');
-    el.className = 'estado-option' + (state.estado === value ? ' selected' : '');
-    el.setAttribute('role', 'option');
-    el.setAttribute('aria-selected', String(state.estado === value));
-    el.dataset.value = value;
-    el.textContent = text;
-    el.addEventListener('click', () => {
-      _userChoseLocation = (value !== 'todos');
-      state.estado = value;
-      saveFilters();
-      _closeEstadoDropdown();
-      _updateEstadoLabel();
-      populateFontesFilter();
-      applyFilters();
-    });
-    return el;
-  }
-
-  // "Todos" at top level
-  estadoFilterDropdown.appendChild(makeOption('todos', T.allLocations));
-
-  // Build Brasil group entry
-  const brEstados = [...new Set(
-    base
-      .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
-      .map(c => c.estado)
-  )].sort();
-
-  // Build per-country entries
-  const countryCity = new Map();
-  for (const c of base) {
-    if (c.estado !== 'INT' || c.data_evento < today) continue;
-    const country = _extractCountry(c.cidade);
-    if (!country) continue;
-    const city = _extractCity(c.cidade);
-    if (!countryCity.has(country)) countryCity.set(country, new Set());
-    if (city && city !== country) countryCity.get(country).add(city);
-  }
-
-  // Merge into a single sorted list and append in alphabetical order
-  const allGroups = [];
-
-  if (brEstados.length > 0) {
-    allGroups.push({ label: T.groupBrasil, build: () => {
-      const brActive = state.estado === 'BR' || brEstados.includes(state.estado);
-      const { wrapper, body } = _makeAccordionGroup(T.groupBrasil, brActive);
-      body.appendChild(makeOption('BR', T.allBrazil));
-      for (const uf of brEstados) body.appendChild(makeOption(uf, _ESTADO_LABELS[uf] || uf));
-      return wrapper;
-    }});
-  }
-
-  for (const country of countryCity.keys()) {
-    const countryLabel = translatePlace(country);
-    allGroups.push({ label: countryLabel, build: () => {
-      const cities = [...countryCity.get(country)].sort();
-      const isActive = state.estado === 'INT:' + country ||
-                       cities.some(city => state.estado === 'INT:' + country + ':' + city);
-      const { wrapper, body } = _makeAccordionGroup(countryLabel, isActive);
-      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(countryLabel)));
-      for (const city of cities) {
-        const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
-        body.appendChild(makeOption(value, translatePlace(city)));
-      }
-      return wrapper;
-    }});
-  }
-
-  allGroups.sort((a, b) => a.label.localeCompare(b.label, 'pt'));
-  for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
-
-  // Reset to 'todos' if saved value no longer valid
-  if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {
-    state.estado = 'todos';
-    saveFilters();
-  }
-
-  if (!skipGeo) _applyGeoLocation();
-  _updateEstadoLabel();
-}
-
-// ---------------------------------------------------------------------------
-// Fonte filter
-// ---------------------------------------------------------------------------
-function populateFontesFilter() {
-  const today = todayStr();
-  // When a location is selected, only show fontes that have events there
-  const base = allCorridas.filter(c =>
-    c.data_evento >= today && _matchEstadoValue(c, state.estado)
-  );
-  const availableNomes = new Set(base.flatMap(c => (c.fontes || []).map(f => f.nome)));
-
-  // Auto-uncheck fontes no longer available in the selected location
-  let stateChanged = false;
-  for (const nome of [...state.fontes]) {
-    if (!availableNomes.has(nome)) {
-      state.fontes.delete(nome);
-      stateChanged = true;
+  // Build fonte dropdown
+  const fonteSet = new Set();
+  for (const c of allCorridas) {
+    for (const f of (c.fontes || [])) {
+      if (f.nome) fonteSet.add(f.nome);
     }
   }
-  if (stateChanged) saveFilters();
+  const fontes = [...fonteSet].sort();
+  buildFonteDropdown(fontes);
 
-  fonteFilterDropdown.innerHTML = '';
-  for (const nome of [...availableNomes].sort()) {
-    const label = document.createElement('label');
-    label.className = 'fonte-filter-option' + (state.fontes.has(nome) ? ' checked' : '');
-    label.setAttribute('role', 'option');
-    label.setAttribute('aria-selected', String(state.fontes.has(nome)));
-
-    const cb = document.createElement('input');
-    cb.type = 'checkbox';
-    cb.value = nome;
-    cb.checked = state.fontes.has(nome);
-
-    const text = document.createTextNode(nome);
-    label.appendChild(cb);
-    label.appendChild(text);
-
-    cb.addEventListener('change', () => {
-      if (cb.checked) {
-        state.fontes.add(nome);
-        label.classList.add('checked');
-        label.setAttribute('aria-selected', 'true');
-      } else {
-        state.fontes.delete(nome);
-        label.classList.remove('checked');
-        label.setAttribute('aria-selected', 'false');
-      }
-      _updateFonteLabel();
-      saveFilters();
-      // Update available locations based on new fonte selection
-      const prevEstado = state.estado;
-      populateEstadoFilter({ skipGeo: true });
-      // If estado was reset (no longer valid), refresh fontes for new 'todos' scope
-      if (state.estado !== prevEstado) populateFontesFilter();
-      applyFilters();
-    });
-
-    fonteFilterDropdown.appendChild(label);
+  // Geolocation (only if no persisted state preference)
+  const saved = loadSavedFilters();
+  if (!saved || !saved.estado) {
+    const geo = await detectGeoEstado();
+    if (geo && estadoSet.has(geo)) {
+      state.estado  = geo;
+      _geoApplied   = geo;
+      updateEstadoUI();
+    }
   }
-  _updateFonteLabel();
-}
 
-function _updateFonteLabel() {
-  if (state.fontes.size === 0) {
-    fonteFilterLabel.textContent = T.allSources;
-    fonteFilterBtn.classList.remove('active');
-  } else if (state.fontes.size === 1) {
-    fonteFilterLabel.textContent = [...state.fontes][0];
-    fonteFilterBtn.classList.add('active');
-  } else {
-    fonteFilterLabel.textContent = T.nSources(state.fontes.size);
-    fonteFilterBtn.classList.add('active');
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Filtering
-// ---------------------------------------------------------------------------
-function applyFilters() {
-  const today = todayStr();
-  const searching = state.searchQuery !== '';
-
-  filteredCorridas = allCorridas.filter(c => {
-    if (!searching && !matchesPeriodo(c, today)) return false;
-    if (!matchesEstado(c)) return false;
-    if (!matchesFonte(c)) return false;
-    if (!matchesDistancia(c)) return false;
-    if (!matchesSearch(c)) return false;
-    return true;
-  });
-
-  updateClearButton();
+  applyFilters();
   renderCards();
   updateCount();
 }
 
-function matchesPeriodo(c, today) {
-  const d = c.data_evento;
-  if (!d) return false;
+// ---------------------------------------------------------------------------
+// Persistence
+// ---------------------------------------------------------------------------
+function loadSavedFilters() {
+  try { return JSON.parse(localStorage.getItem('corridas_filters') || 'null'); }
+  catch (_) { return null; }
+}
+
+function restoreFilters() {
+  const saved = loadSavedFilters();
+  if (!saved) return;
+
+  if (saved.searchQuery) {
+    state.searchQuery = saved.searchQuery;
+    searchInput.value = saved.searchQuery;
+  }
+  if (saved.periodo) {
+    state.periodo = saved.periodo;
+    periodoSelect.value = saved.periodo;
+    toggleCustomDateRow(saved.periodo === 'custom');
+  }
+  if (saved.dateFrom) { state.dateFrom = saved.dateFrom; dateFrom.value = saved.dateFrom; }
+  if (saved.dateTo)   { state.dateTo   = saved.dateTo;   dateTo.value   = saved.dateTo; }
+  if (saved.estado) {
+    state.estado = saved.estado;
+    updateEstadoUI();
+  }
+  if (saved.fontes && Array.isArray(saved.fontes)) {
+    state.fontes = new Set(saved.fontes);
+  }
+  if (saved.activePills && Array.isArray(saved.activePills)) {
+    state.activePills = new Set(saved.activePills);
+    for (const pill of pillsContainer.querySelectorAll('.pill')) {
+      pill.setAttribute('aria-pressed', state.activePills.has(pill.dataset.km) ? 'true' : 'false');
+      pill.classList.toggle('active', state.activePills.has(pill.dataset.km));
+    }
+  }
+  if (saved.distMode === 'interval') {
+    state.distMode = 'interval';
+    modeSelect.classList.remove('active'); modeSelect.setAttribute('aria-pressed', 'false');
+    modeInterval.classList.add('active');  modeInterval.setAttribute('aria-pressed', 'true');
+    pillsContainer.classList.add('hidden');
+    intervalContainer.classList.remove('hidden');
+  }
+  if (saved.distMin !== undefined && saved.distMin !== null) { state.distMin = saved.distMin; distMin.value = saved.distMin; }
+  if (saved.distMax !== undefined && saved.distMax !== null) { state.distMax = saved.distMax; distMax.value = saved.distMax; }
+}
+
+function saveFilters() {
+  const obj = {
+    searchQuery: state.searchQuery,
+    periodo:     state.periodo,
+    dateFrom:    state.dateFrom,
+    dateTo:      state.dateTo,
+    estado:      state.estado,
+    fontes:      [...state.fontes],
+    activePills: [...state.activePills],
+    distMode:    state.distMode,
+    distMin:     state.distMin,
+    distMax:     state.distMax,
+  };
+  localStorage.setItem('corridas_filters', JSON.stringify(obj));
+}
+
+// ---------------------------------------------------------------------------
+// Estado dropdown (custom multi-region selector)
+// ---------------------------------------------------------------------------
+const STATE_LABELS = {
+  AC:'Acre',AM:'Amazonas',AP:'Amapá',PA:'Pará',RO:'Rondônia',RR:'Roraima',TO:'Tocantins',
+  AL:'Alagoas',BA:'Bahia',CE:'Ceará',MA:'Maranhão',PB:'Paraíba',PE:'Pernambuco',
+  PI:'Piauí',RN:'Rio Grande do Norte',SE:'Sergipe',
+  DF:'Distrito Federal',GO:'Goiás',MS:'Mato Grosso do Sul',MT:'Mato Grosso',
+  ES:'Espírito Santo',MG:'Minas Gerais',RJ:'Rio de Janeiro',SP:'São Paulo',
+  PR:'Paraná',RS:'Rio Grande do Sul',SC:'Santa Catarina',
+  INT:'Internacional',
+};
+
+function buildEstadoDropdown(estados) {
+  estadoFilterDropdown.innerHTML = '';
+
+  const allOpt = document.createElement('div');
+  allOpt.className = 'estado-option';
+  allOpt.setAttribute('role', 'option');
+  allOpt.dataset.value = 'todos';
+  allOpt.textContent = T.allLocations;
+  allOpt.setAttribute('aria-selected', state.estado === 'todos' ? 'true' : 'false');
+  allOpt.addEventListener('click', () => setEstado('todos'));
+  estadoFilterDropdown.appendChild(allOpt);
+
+  const brOpt = document.createElement('div');
+  brOpt.className = 'estado-option';
+  brOpt.setAttribute('role', 'option');
+  brOpt.dataset.value = 'brasil';
+  brOpt.textContent = T.allBrazil;
+  brOpt.setAttribute('aria-selected', state.estado === 'brasil' ? 'true' : 'false');
+  brOpt.addEventListener('click', () => setEstado('brasil'));
+  estadoFilterDropdown.appendChild(brOpt);
+
+  for (const est of estados) {
+    const opt = document.createElement('div');
+    opt.className = 'estado-option';
+    opt.setAttribute('role', 'option');
+    opt.dataset.value = est;
+    opt.textContent = STATE_LABELS[est] ? `${STATE_LABELS[est]} (${est})` : est;
+    opt.setAttribute('aria-selected', state.estado === est ? 'true' : 'false');
+    opt.addEventListener('click', () => setEstado(est));
+    estadoFilterDropdown.appendChild(opt);
+  }
+}
+
+function setEstado(val) {
+  state.estado = val;
+  updateEstadoUI();
+  estadoFilterDropdown.classList.add('hidden');
+  estadoFilterBtn.setAttribute('aria-expanded', 'false');
+  onFilterChange();
+}
+
+function updateEstadoUI() {
+  const val = state.estado;
+  if (val === 'todos')  estadoFilterLabel.textContent = T.allLocations;
+  else if (val === 'brasil') estadoFilterLabel.textContent = T.allBrazil;
+  else estadoFilterLabel.textContent = STATE_LABELS[val] ? `${STATE_LABELS[val]} (${val})` : val;
+
+  for (const opt of estadoFilterDropdown.querySelectorAll('.estado-option')) {
+    opt.setAttribute('aria-selected', opt.dataset.value === val ? 'true' : 'false');
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Fonte dropdown
+// ---------------------------------------------------------------------------
+function buildFonteDropdown(fontes) {
+  fonteFilterDropdown.innerHTML = '';
+
+  const allOpt = document.createElement('div');
+  allOpt.className = 'fonte-option';
+  allOpt.setAttribute('role', 'option');
+  allOpt.setAttribute('aria-selected', state.fontes.size === 0 ? 'true' : 'false');
+  allOpt.dataset.value = '__all__';
+  allOpt.textContent = T.allSources;
+  allOpt.addEventListener('click', () => {
+    state.fontes.clear();
+    updateFonteUI();
+    fonteFilterDropdown.classList.add('hidden');
+    fonteFilterBtn.setAttribute('aria-expanded', 'false');
+    onFilterChange();
+  });
+  fonteFilterDropdown.appendChild(allOpt);
+
+  for (const f of fontes) {
+    const opt = document.createElement('div');
+    opt.className = 'fonte-option';
+    opt.setAttribute('role', 'option');
+    opt.setAttribute('aria-selected', state.fontes.has(f) ? 'true' : 'false');
+    opt.dataset.value = f;
+    opt.textContent = f;
+    opt.addEventListener('click', () => {
+      if (state.fontes.has(f)) state.fontes.delete(f);
+      else state.fontes.add(f);
+      updateFonteUI();
+      onFilterChange();
+    });
+    fonteFilterDropdown.appendChild(opt);
+  }
+
+  updateFonteUI();
+}
+
+function updateFonteUI() {
+  const n = state.fontes.size;
+  fonteFilterLabel.textContent = n === 0 ? T.allSources : T.nSources(n);
+  for (const opt of fonteFilterDropdown.querySelectorAll('.fonte-option')) {
+    const v = opt.dataset.value;
+    opt.setAttribute('aria-selected',
+      v === '__all__' ? (n === 0 ? 'true' : 'false') : state.fontes.has(v) ? 'true' : 'false'
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Filter logic
+// ---------------------------------------------------------------------------
+function onFilterChange() {
+  applyFilters();
+  renderCards();
+  updateCount();
+  updateClearButton();
+  saveFilters();
+}
+
+function applyFilters() {
+  filteredCorridas = allCorridas.filter(c =>
+    matchesPeriodo(c) && matchesEstado(c) && matchesFonte(c) &&
+    matchesDistancia(c) && matchesSearch(c)
+  );
+}
+
+function matchesPeriodo(c) {
+  const today = todayStr();
   switch (state.periodo) {
-    case 'past15':  return d >= addDays(today, -15);
-    case 'today':   return d >= today;
-    case '30':      return d >= today && d <= addDays(today, 30);
-    case '90':      return d >= today && d <= addDays(today, 90);
-    case '180':     return d >= today && d <= addDays(today, 180);
-    case 'all':     return true;
+    case 'past15': return !c.data_evento || c.data_evento >= addDays(today, -15);
+    case 'today':  return !c.data_evento || c.data_evento >= today;
+    case '30':     return !c.data_evento || (c.data_evento >= today && c.data_evento <= addDays(today, 30));
+    case '90':     return !c.data_evento || (c.data_evento >= today && c.data_evento <= addDays(today, 90));
+    case '180':    return !c.data_evento || (c.data_evento >= today && c.data_evento <= addDays(today, 180));
+    case 'all':    return true;
     case 'custom': {
-      const from = state.dateFrom;
-      const to   = state.dateTo;
-      if (from && d < from) return false;
-      if (to   && d > to)   return false;
+      const from = state.dateFrom, to = state.dateTo;
+      if (!from && !to) return true;
+      if (from && c.data_evento < from) return false;
+      if (to   && c.data_evento > to)   return false;
       return true;
     }
     default: return true;
   }
 }
 
-// Pure helper: test an event against an arbitrary filter value
-function _matchEstadoValue(c, value) {
-  if (value === 'todos') return true;
-  if (value === 'BR')    return c.estado !== 'INT';
-  if (value === 'INT')   return c.estado === 'INT';
-  if (value === 'MAJORS') return isMajor(c);
-  if (value.startsWith('INT:')) {
-    const rest = value.slice(4);
-    const sep = rest.indexOf(':');
-    if (sep === -1) {
-      return c.estado === 'INT' && _extractCountry(c.cidade) === rest;
-    }
-    const country = rest.slice(0, sep);
-    const city    = rest.slice(sep + 1);
-    return c.estado === 'INT' && _extractCountry(c.cidade) === country && _extractCity(c.cidade) === city;
-  }
-  return c.estado === value;
-}
-
 function matchesEstado(c) {
-  return _matchEstadoValue(c, state.estado);
+  if (state.estado === 'todos')  return true;
+  if (state.estado === 'brasil') return c.estado !== 'INT';
+  return c.estado === state.estado;
 }
 
 function matchesFonte(c) {
@@ -1199,135 +692,67 @@ function renderCards() {
   const today = todayStr();
   const frag  = document.createDocumentFragment();
 
-  let toRender   = filteredCorridas;
-  let recentPast = [];
-
-  if (state.periodo === 'past15') {
-    recentPast = filteredCorridas.filter(c => c.data_evento && c.data_evento < today);
-    toRender   = filteredCorridas.filter(c => !c.data_evento || c.data_evento >= today);
-  }
-
-  const byMonth = new Map();
-  for (const corrida of toRender) {
-    const key = corrida.data_evento ? corrida.data_evento.slice(0, 7) : '__sem_data';
-    if (!byMonth.has(key)) byMonth.set(key, []);
-    byMonth.get(key).push(corrida);
-  }
-  let firstFutureMonthFound = false;
-  for (const [monthKey, corridas] of byMonth) {
-    const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
-    const expand = hasFuture && !firstFutureMonthFound;
-    if (expand) firstFutureMonthFound = true;
-    const hasNovo = corridas.some(c => _isNovo(c));
-    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNovo);
-    for (const corrida of corridas) {
-      cardsContainer.appendChild(buildCard(corrida));
+  // Group by month
+  const groups = [];
+  let curMonth = null;
+  for (const c of filteredCorridas) {
+    const month = (c.data_evento || '').slice(0, 7);
+    if (month !== curMonth) {
+      groups.push({ month, items: [] });
+      curMonth = month;
     }
-    frag.appendChild(section);
+    groups[groups.length - 1].items.push(c);
   }
 
-  if (recentPast.length > 0) {
-    frag.prepend(buildPastSection(recentPast));
+  const sevenDaysAgo = addDays(today, -7);
+
+  for (const { month, items } of groups) {
+    // Month header
+    const header = document.createElement('div');
+    header.className = 'month-header';
+    const monthLabel = month ? formatMonth(month) : '—';
+    const hasNew = items.some(c => c.first_seen_at && c.first_seen_at >= sevenDaysAgo);
+    header.innerHTML = `<span class="month-label">${monthLabel}</span>${hasNew ? `<span class="badge-novo">${T.badgeNovo}</span>` : ''}`;
+    frag.appendChild(header);
+
+    for (const c of items) {
+      const card = buildCard(c, today, sevenDaysAgo);
+      frag.appendChild(card);
+    }
   }
 
   cardsList.appendChild(frag);
 }
 
-function buildPastSection(corridas) {
-  const sorted = [...corridas].sort((a, b) =>
-    (b.data_evento || '').localeCompare(a.data_evento || ''));
+function buildCard(c, today, sevenDaysAgo) {
+  const tmpl = document.getElementById('cardTemplate');
+  const node  = tmpl.content.cloneNode(true);
+  const card  = node.querySelector('.card');
 
-  const countLabel = T.raceCountLabel(sorted.length);
-  const section    = document.createElement('div');
-  section.className = 'month-section';
-
-  const btn = document.createElement('button');
-  btn.className = 'month-separator month-separator--past';
-  btn.setAttribute('aria-expanded', 'false');
-  btn.setAttribute('aria-label', `${T.pastSectionLabel}, ${countLabel}`);
-  btn.innerHTML = `
-    <span class="month-separator-label">${T.pastSectionLabel}</span>
-    <span class="month-count">${countLabel}</span>
-    <span class="month-chevron" aria-hidden="true">▸</span>`;
-
-  const cardsContainer = document.createElement('div');
-  cardsContainer.className = 'month-cards month-cards--collapsed';
-
-  for (const corrida of sorted) {
-    cardsContainer.appendChild(buildCard(corrida));
-  }
-
-  btn.addEventListener('click', () => {
-    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
-    btn.setAttribute('aria-expanded', String(!collapsed));
-    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
-  });
-
-  section.appendChild(btn);
-  section.appendChild(cardsContainer);
-  return section;
-}
-
-function _isNovo(c) {
-  if (!c || !c.first_seen_at) return false;
-  return (Date.now() - new Date(c.first_seen_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
-}
-
-function buildMonthSection(monthKey, count, expanded = false, hasNovo = false) {
-  const [year, month] = monthKey.split('-');
-  const label      = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
-  const countLabel = T.raceCountLabel(count);
-  const novoBadge  = hasNovo ? `<span class="badge-novo">${T.badgeNovo}</span>` : '';
-
-  const section = document.createElement('div');
-  section.className = 'month-section';
-
-  const btn = document.createElement('button');
-  btn.className = 'month-separator';
-  btn.setAttribute('aria-expanded', String(expanded));
-  btn.setAttribute('aria-label', `${label}, ${countLabel}`);
-  btn.innerHTML = `
-    <span class="month-separator-label">${label}</span>
-    ${novoBadge}
-    <span class="month-count">${countLabel}</span>
-    <span class="month-chevron" aria-hidden="true">${expanded ? '▾' : '▸'}</span>`;
-
-  const cardsContainer = document.createElement('div');
-  cardsContainer.className = expanded ? 'month-cards' : 'month-cards month-cards--collapsed';
-
-  btn.addEventListener('click', () => {
-    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
-    btn.setAttribute('aria-expanded', String(!collapsed));
-    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
-  });
-
-  section.appendChild(btn);
-  section.appendChild(cardsContainer);
-  return { section, cardsContainer };
-}
-
-function buildCard(c) {
-  const clone     = cardTemplate.content.cloneNode(true);
-  const card      = clone.querySelector('.card');
+  // Collapsed section
   const collapsed = card.querySelector('.card-collapsed');
-  const expanded  = card.querySelector('.card-expanded');
 
-  const img         = card.querySelector('.card-img');
+  const img = card.querySelector('.card-img');
   const placeholder = card.querySelector('.card-img-placeholder');
   if (c.imagem_url) {
-    img.src    = c.imagem_url;
-    img.alt    = c.titulo;
-    img.onload  = () => placeholder.classList.add('hidden');
-    img.onerror = () => { img.classList.add('hidden'); showPlaceholder(placeholder, c.estado); };
-    showPlaceholder(placeholder, c.estado);
+    img.src = c.imagem_url;
+    img.alt = c.titulo;
+    img.style.display = '';
+    placeholder.style.display = 'none';
+    img.addEventListener('error', () => {
+      img.style.display = 'none';
+      placeholder.style.display = '';
+      placeholder.style.background = stateColor(c.estado);
+    });
   } else {
-    img.classList.add('hidden');
-    showPlaceholder(placeholder, c.estado);
+    img.style.display = 'none';
+    placeholder.style.display = '';
+    placeholder.style.background = stateColor(c.estado);
   }
 
   card.querySelector('.card-title').textContent    = c.titulo;
   card.querySelector('.card-date').textContent     = formatDate(c.data_evento, c.horario, c.distancias);
-  card.querySelector('.card-location').textContent = formatLocation(c.cidade, c.estado);
+  card.querySelector('.card-location').textContent = c.localizacao || '';
 
   const distContainer = card.querySelector('.card-distances');
   for (const km of formatDistancesPills(c.distancias)) {
@@ -1337,60 +762,57 @@ function buildCard(c) {
     distContainer.appendChild(span);
   }
 
-
-  const novoBadge = card.querySelector('.badge-novo');
-  if (novoBadge && c.first_seen_at) {
-    const age = Date.now() - new Date(c.first_seen_at).getTime();
-    if (age < 7 * 24 * 60 * 60 * 1000) {
-      novoBadge.textContent = T.badgeNovo;
-      novoBadge.classList.remove('hidden');
-    }
+  // "Novo" badge
+  const badgeNovo = card.querySelector('.badge-novo');
+  if (badgeNovo) {
+    const isNew = c.first_seen_at && c.first_seen_at >= sevenDaysAgo;
+    badgeNovo.textContent = T.badgeNovo;
+    badgeNovo.classList.toggle('hidden', !isNew);
   }
 
-  const fontesBadge = card.querySelector('.badge-fontes');
-  if (c.fontes && c.fontes.length > 1) {
-    fontesBadge.textContent = T.nSources(c.fontes.length);
-    fontesBadge.classList.remove('hidden');
+  // Fontes badge on collapsed card
+  const badgeFontes = card.querySelector('.badge-fontes');
+  if (badgeFontes && c.fontes && c.fontes.length > 1) {
+    badgeFontes.textContent = T.nSources(c.fontes.length);
+    badgeFontes.classList.remove('hidden');
   }
 
-  buildExpanded(card, c);
-
-  collapsed.addEventListener('click', () => toggleExpand(collapsed, expanded));
-  collapsed.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleExpand(collapsed, expanded); }
-  });
+  // Expand / collapse
+  collapsed.addEventListener('click',  e => toggleCard(card, c, e));
+  collapsed.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(card, c, e); } });
 
   return card;
 }
 
-function showPlaceholder(el, estado) {
-  el.style.background = stateColor(estado);
-  el.textContent = '🏃';
-}
-
-function _collapseAllCards(anchor) {
-  const others = document.querySelectorAll('.card-expanded:not(.hidden)');
-  if (!others.length) return;
-  const anchorTop = anchor.getBoundingClientRect().top;
-  others.forEach(exp => {
-    exp.classList.add('hidden');
-    exp.setAttribute('aria-hidden', 'true');
-    exp.closest('.card').querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
-  });
-  const shift = anchor.getBoundingClientRect().top - anchorTop;
-  if (shift !== 0) window.scrollBy({ top: shift, behavior: 'instant' });
-}
-
-function toggleExpand(collapsed, expanded) {
-  const opening = expanded.classList.contains('hidden');
-  if (opening) {
-    _closeEstadoDropdown();
-    _closeFonteDropdown();
-    _collapseAllCards(collapsed.closest('.card'));
+function toggleCard(card, c, e) {
+  if (e.target.closest('a, button')) return;
+  const isOpen = card.classList.contains('open');
+  // Close all other open cards
+  for (const other of cardsList.querySelectorAll('.card.open')) {
+    if (other !== card) {
+      other.classList.remove('open');
+      other.querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
+      other.querySelector('.card-expanded').classList.add('hidden');
+      other.querySelector('.card-expanded').setAttribute('aria-hidden', 'true');
+    }
   }
-  const open = expanded.classList.toggle('hidden');
-  collapsed.setAttribute('aria-expanded', String(!open));
-  expanded.setAttribute('aria-hidden', String(open));
+  if (isOpen) {
+    card.classList.remove('open');
+    card.querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
+    card.querySelector('.card-expanded').classList.add('hidden');
+    card.querySelector('.card-expanded').setAttribute('aria-hidden', 'true');
+  } else {
+    card.classList.add('open');
+    card.querySelector('.card-collapsed').setAttribute('aria-expanded', 'true');
+    const expPanel = card.querySelector('.card-expanded');
+    expPanel.classList.remove('hidden');
+    expPanel.setAttribute('aria-hidden', 'false');
+    if (!expPanel.dataset.built) {
+      buildExpanded(card, c);
+      expPanel.dataset.built = '1';
+    }
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 }
 
 function buildExpanded(card, c) {
@@ -1420,9 +842,13 @@ function buildExpanded(card, c) {
     table.innerHTML = thead;
 
     const tbody = document.createElement('tbody');
+    const seenKm = new Set();
     for (const d of sorted) {
+      const label = formatKm(d.km);
+      if (seenKm.has(label)) continue;
+      seenKm.add(label);
       const tr  = document.createElement('tr');
-      let cells = `<td>${formatKm(d.km)}</td>`;
+      let cells = `<td>${label}</td>`;
       if (hasDate)    cells += `<td>${d.data ? formatDateShort(d.data) : '—'}</td>`;
       if (hasHorario) cells += `<td>${d.horario || '—'}</td>`;
       tr.innerHTML = cells;
@@ -1435,76 +861,81 @@ function buildExpanded(card, c) {
   if (c.fontes && c.fontes.length > 0) {
     const h = document.createElement('p');
     h.className   = 'expanded-section-title';
-    h.textContent = T.sourcesSection;
+    h.textContent = T.sourcesHeader;
     expFontes.appendChild(h);
+
     for (const fonte of c.fontes) {
-      const div    = document.createElement('div');
-      div.className = 'fonte-item';
-      const inscLink = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
-        ? fonte.links_inscricao[0] : (fonte.link_evento || null);
-      const btnHtml = inscLink
-        ? `<a href="${inscLink}" target="_blank" rel="noopener" class="btn-inscricao">${T.registerBtn}</a>`
-        : '';
-      div.innerHTML = `<span class="fonte-nome-text">${fonte.nome}</span>${btnHtml}`;
-      expFontes.appendChild(div);
+      const row = document.createElement('div');
+      row.className = 'fonte-row';
+
+      const name = document.createElement('span');
+      name.className   = 'fonte-name';
+      name.textContent = fonte.nome || '';
+      row.appendChild(name);
+
+      if (fonte.links_inscricao && fonte.links_inscricao.length > 0) {
+        for (const link of fonte.links_inscricao) {
+          const a = document.createElement('a');
+          a.href      = link;
+          a.target    = '_blank';
+          a.rel       = 'noopener noreferrer';
+          a.className = 'btn-register';
+          a.textContent = T.registerBtn;
+          row.appendChild(a);
+        }
+      }
+      expFontes.appendChild(row);
     }
   }
 
-  if (expFotos && c.fotos && c.fotos.length > 0) {
-    const h = document.createElement('p');
-    h.className   = 'expanded-section-title';
-    h.textContent = T.photosSection;
-    expFotos.appendChild(h);
-    const btns = document.createElement('div');
-    btns.className = 'fotos-btns';
-    for (const foto of c.fotos) {
-      const a = document.createElement('a');
-      a.href      = foto.url;
-      a.target    = '_blank';
-      a.rel       = 'noopener';
-      a.className = 'btn-fotos';
-      a.textContent = foto.plataforma + ' →';
-      btns.appendChild(a);
+  if (c.fotos && c.fotos.length > 0) {
+    for (const url of c.fotos) {
+      const img = document.createElement('img');
+      img.src     = url;
+      img.alt     = '';
+      img.loading = 'lazy';
+      img.className = 'expanded-photo';
+      expFotos.appendChild(img);
     }
-    expFotos.appendChild(btns);
   }
 }
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-function formatDate(isoDate, horario, distancias) {
-  if (!isoDate) return T.dateTBD;
-  const distDates = [...new Set(
-    (distancias || []).map(d => d.data).filter(Boolean)
-  )].sort();
-  if (distDates.length >= 2) return formatDateRange(distDates[0], distDates[distDates.length - 1]);
-  return formatDateFull(isoDate) + (horario ? ` • ${horario.replace(':', 'h')}` : '');
-}
-
-function formatDateFull(iso) {
-  const d = new Date(iso + 'T12:00:00');
-  return T.dateFullFormat(T.weekdays[d.getDay()], d.getDate(), T.months[d.getMonth()], d.getFullYear());
-}
-
-function formatDateRange(fromIso, toIso) {
-  const d1 = new Date(fromIso + 'T12:00:00');
-  const d2 = new Date(toIso   + 'T12:00:00');
-  if (d1.getMonth() === d2.getMonth() && d1.getFullYear() === d2.getFullYear()) {
-    return T.dateRangeSameMonth(d1.getDate(), d2.getDate(), T.months[d1.getMonth()], d1.getFullYear());
-  }
-  return T.dateRangeDiff(d1.getDate(), T.months[d1.getMonth()], d2.getDate(), T.months[d2.getMonth()], d2.getFullYear());
+function formatMonth(yearMonth) {
+  const [year, month] = yearMonth.split('-').map(Number);
+  return `${T.monthNames[month - 1]} ${year}`;
 }
 
 function formatDateShort(iso) {
-  if (!iso) return '';
-  const [y, m, d] = iso.split('-');
-  return `${d}/${m}/${y}`;
+  if (!iso) return '—';
+  const [y, m, d] = iso.split('-').map(Number);
+  return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
 }
 
-function formatLocation(cidade, estado) {
-  if (estado === 'INT' || estado === '??' || !estado) return translatePlace(cidade || '');
-  return [cidade, estado].filter(Boolean).join(' · ');
+function formatDate(isoDate, horario, distancias) {
+  if (!isoDate) return '';
+  const dates = new Set(
+    (distancias || []).map(d => d.data).filter(Boolean)
+  );
+  const hasPerDistDate = dates.size > 1;
+
+  const [y, m, d] = isoDate.split('-').map(Number);
+  const today = todayStr();
+  const iso   = isoDate;
+
+  let label;
+  if (iso === today)                label = T.today_label;
+  else if (iso === addDays(today,1)) label = T.tomorrow_label;
+  else if (iso === addDays(today,-1)) label = T.yesterday_label;
+  else {
+    const dow = new Date(iso + 'T12:00:00').getDay();
+    label = `${T.dayNames[dow]}, ${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+  }
+
+  if (!hasPerDistDate && horario) label += ` · ${horario}`;
+  return label;
 }
 
 function sortDistancias(distancias) {
@@ -1517,7 +948,10 @@ function sortDistancias(distancias) {
 
 function formatDistancesPills(distancias) {
   if (!distancias || distancias.length === 0) return [];
-  return sortDistancias(distancias).map(d => formatKm(d.km));
+  const seen = new Set();
+  return sortDistancias(distancias)
+    .map(d => formatKm(d.km))
+    .filter(label => { if (seen.has(label)) return false; seen.add(label); return true; });
 }
 
 function formatKm(km) {
@@ -1570,222 +1004,237 @@ function updateClearButton() {
 }
 
 function clearFilters() {
-  _userChoseLocation = false;
   state.searchQuery = '';
   state.activePills.clear();
-  state.distMin  = null;
-  state.distMax  = null;
-  state.distMode = 'select';
-  state.periodo  = 'past15';
-  state.dateFrom = null;
-  state.dateTo   = null;
-  state.estado   = _geoApplied || 'todos';
+  state.distMode   = 'select';
+  state.distMin    = null;
+  state.distMax    = null;
+  state.periodo    = 'past15';
+  state.dateFrom   = null;
+  state.dateTo     = null;
+  state.estado     = _geoApplied || 'todos';
   state.fontes.clear();
 
-  searchInput.value = '';
-
-  document.querySelectorAll('.pill').forEach(p => {
-    p.classList.remove('active');
-    p.setAttribute('aria-pressed', 'false');
-  });
-  distMin.value       = '';
-  distMax.value       = '';
+  searchInput.value   = '';
   periodoSelect.value = 'past15';
-  state.estado = _geoApplied || 'todos';
-  _updateEstadoLabel();
-  customDateRow.classList.add('hidden');
   dateFrom.value = '';
   dateTo.value   = '';
-  setDistMode('select');
+  toggleCustomDateRow(false);
 
-  fonteFilterDropdown.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.checked = false;
-    cb.closest('.fonte-filter-option')?.classList.remove('checked');
-  });
-  _updateFonteLabel();
+  modeSelect.classList.add('active');    modeSelect.setAttribute('aria-pressed', 'true');
+  modeInterval.classList.remove('active'); modeInterval.setAttribute('aria-pressed', 'false');
+  pillsContainer.classList.remove('hidden');
+  intervalContainer.classList.add('hidden');
+  distMin.value = '';
+  distMax.value = '';
 
-  saveFilters();
-  applyFilters();
+  for (const pill of pillsContainer.querySelectorAll('.pill')) {
+    pill.setAttribute('aria-pressed', 'false');
+    pill.classList.remove('active');
+  }
+
+  updateEstadoUI();
+  updateFonteUI();
+  onFilterChange();
+}
+
+function toggleCustomDateRow(show) {
+  customDateRow.classList.toggle('hidden', !show);
 }
 
 // ---------------------------------------------------------------------------
-// Mode toggle
+// Event wiring
 // ---------------------------------------------------------------------------
-function setDistMode(mode) {
-  state.distMode = mode;
-  if (mode === 'select') {
-    modeSelect.classList.add('active');
-    modeSelect.setAttribute('aria-pressed', 'true');
-    modeInterval.classList.remove('active');
-    modeInterval.setAttribute('aria-pressed', 'false');
+document.addEventListener('DOMContentLoaded', () => {
+  // DOM refs
+  searchInput         = document.getElementById('searchInput');
+  cardsList           = document.getElementById('cardsList');
+  emptyState          = document.getElementById('emptyState');
+  btnClear            = document.getElementById('btnClear');
+  btnClearEmpty       = document.getElementById('btnClearEmpty');
+  periodoSelect       = document.getElementById('periodoSelect');
+  estadoFilterBtn     = document.getElementById('estadoFilterBtn');
+  estadoFilterLabel   = document.getElementById('estadoFilterLabel');
+  estadoFilterDropdown = document.getElementById('estadoFilterDropdown');
+  fonteFilterBtn      = document.getElementById('fonteFilterBtn');
+  fonteFilterLabel    = document.getElementById('fonteFilterLabel');
+  fonteFilterDropdown = document.getElementById('fonteFilterDropdown');
+  resultCount         = document.getElementById('resultCount');
+  filtersBar          = document.getElementById('filtersBar');
+  btnRefresh          = document.getElementById('btnRefresh');
+  btnLang             = document.getElementById('btnLang');
+  btnHome             = document.getElementById('btnHome');
+  modeSelect          = document.getElementById('modeSelect');
+  modeInterval        = document.getElementById('modeInterval');
+  pillsContainer      = document.getElementById('pillsContainer');
+  intervalContainer   = document.getElementById('intervalContainer');
+  distMin             = document.getElementById('distMin');
+  distMax             = document.getElementById('distMax');
+  customDateRow       = document.getElementById('customDateRow');
+  dateFrom            = document.getElementById('dateFrom');
+  dateTo              = document.getElementById('dateTo');
+
+  // i18n static labels
+  document.title = T.siteTitle;
+  const headerTitle = document.querySelector('.app-title');
+  if (headerTitle) headerTitle.textContent = T.headerTitle;
+  searchInput.placeholder = T.searchPlaceholder;
+  searchInput.setAttribute('aria-label', T.searchAriaLabel);
+  modeSelect.textContent   = T.modeSelect;
+  modeInterval.textContent = T.modeInterval;
+  document.getElementById('labelDistFrom').textContent = T.labelDistFrom;
+  document.getElementById('labelDistTo').textContent   = T.labelDistTo;
+  document.getElementById('labelDateFrom').textContent = T.labelDateFrom;
+  document.getElementById('labelDateTo').textContent   = T.labelDateTo;
+  distMin.setAttribute('aria-label', T.distMinAriaLabel);
+  distMax.setAttribute('aria-label', T.distMaxAriaLabel);
+  dateFrom.setAttribute('aria-label', T.dateFromAriaLabel);
+  dateTo.setAttribute('aria-label',   T.dateToAriaLabel);
+  periodoSelect.setAttribute('aria-label', T.periodoAriaLabel);
+  estadoFilterBtn.setAttribute('aria-label', T.estadoAriaLabel);
+  fonteFilterBtn.setAttribute('aria-label',  T.fonteFilterAriaLabel);
+  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
+  btnHome.setAttribute('aria-label',    T.homeAriaLabel);
+  btnLang.setAttribute('aria-label',    T.langAriaLabel);
+  btnClear.setAttribute('aria-label',       T.clearFiltersAriaLabel);
+  btnClear.textContent      = T.clearFilters;
+  btnClearEmpty.textContent = T.clearFilters;
+  document.querySelector('#emptyState p').textContent = T.noResults;
+
+  // Periodo options
+  const periodoOpts = [
+    ['past15', T.past15], ['today', T.today], ['30', T.next30],
+    ['90', T.next90], ['180', T.next180], ['all', T.allTime], ['custom', T.custom],
+  ];
+  periodoSelect.innerHTML = periodoOpts.map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
+
+  // Distance pills
+  for (const pill of pillsContainer.querySelectorAll('.pill')) {
+    const key = pill.dataset.km;
+    if (T.pills[key]) pill.textContent = T.pills[key];
+  }
+
+  // Event listeners
+  searchInput.addEventListener('input', () => {
+    state.searchQuery = searchInput.value.trim();
+    onFilterChange();
+  });
+
+  periodoSelect.addEventListener('change', () => {
+    state.periodo = periodoSelect.value;
+    toggleCustomDateRow(state.periodo === 'custom');
+    onFilterChange();
+  });
+
+  dateFrom.addEventListener('change', () => { state.dateFrom = dateFrom.value || null; onFilterChange(); });
+  dateTo.addEventListener('change',   () => { state.dateTo   = dateTo.value   || null; onFilterChange(); });
+
+  for (const pill of pillsContainer.querySelectorAll('.pill')) {
+    pill.addEventListener('click', () => {
+      const km = pill.dataset.km;
+      if (state.activePills.has(km)) {
+        state.activePills.delete(km);
+        pill.setAttribute('aria-pressed', 'false');
+        pill.classList.remove('active');
+      } else {
+        state.activePills.add(km);
+        pill.setAttribute('aria-pressed', 'true');
+        pill.classList.add('active');
+      }
+      onFilterChange();
+    });
+  }
+
+  modeSelect.addEventListener('click', () => {
+    if (state.distMode === 'select') return;
+    state.distMode = 'select';
+    state.distMin  = null;
+    state.distMax  = null;
+    distMin.value  = '';
+    distMax.value  = '';
+    modeSelect.classList.add('active');    modeSelect.setAttribute('aria-pressed', 'true');
+    modeInterval.classList.remove('active'); modeInterval.setAttribute('aria-pressed', 'false');
     pillsContainer.classList.remove('hidden');
     intervalContainer.classList.add('hidden');
-  } else {
-    modeInterval.classList.add('active');
-    modeInterval.setAttribute('aria-pressed', 'true');
-    modeSelect.classList.remove('active');
-    modeSelect.setAttribute('aria-pressed', 'false');
+    onFilterChange();
+  });
+
+  modeInterval.addEventListener('click', () => {
+    if (state.distMode === 'interval') return;
+    state.distMode = 'interval';
+    state.activePills.clear();
+    for (const pill of pillsContainer.querySelectorAll('.pill')) {
+      pill.setAttribute('aria-pressed', 'false');
+      pill.classList.remove('active');
+    }
+    modeInterval.classList.add('active');  modeInterval.setAttribute('aria-pressed', 'true');
+    modeSelect.classList.remove('active'); modeSelect.setAttribute('aria-pressed', 'false');
     intervalContainer.classList.remove('hidden');
     pillsContainer.classList.add('hidden');
-  }
-}
+    onFilterChange();
+  });
 
-// ---------------------------------------------------------------------------
-// Event listeners
-// ---------------------------------------------------------------------------
-modeSelect.addEventListener('click', () => {
-  if (state.distMode !== 'select') {
-    state.distMin = null;
-    state.distMax = null;
-    distMin.value = '';
-    distMax.value = '';
-    setDistMode('select');
-    saveFilters();
-    applyFilters();
-  }
-});
+  distMin.addEventListener('input', () => { state.distMin = distMin.value ? parseFloat(distMin.value) : null; onFilterChange(); });
+  distMax.addEventListener('input', () => { state.distMax = distMax.value ? parseFloat(distMax.value) : null; onFilterChange(); });
 
-modeInterval.addEventListener('click', () => {
-  if (state.distMode !== 'interval') {
-    state.activePills.clear();
-    document.querySelectorAll('.pill').forEach(p => {
-      p.classList.remove('active');
-      p.setAttribute('aria-pressed', 'false');
-    });
-    setDistMode('interval');
-    saveFilters();
-    applyFilters();
-  }
-});
+  btnClear.addEventListener('click',      clearFilters);
+  btnClearEmpty.addEventListener('click', clearFilters);
 
-document.querySelectorAll('.pill').forEach(pill => {
-  pill.addEventListener('click', () => {
-    const km = pill.dataset.km;
-    if (state.activePills.has(km)) {
-      state.activePills.delete(km);
-      pill.classList.remove('active');
-      pill.setAttribute('aria-pressed', 'false');
+  btnRefresh.addEventListener('click', () => {
+    allCorridas = [];
+    filteredCorridas = [];
+    cardsList.innerHTML = '';
+    loadData();
+  });
+
+  btnLang.addEventListener('click', () => {
+    const langs = Object.keys(LANG_URLS);
+    const next  = langs[(langs.indexOf(LANG) + 1) % langs.length];
+    sessionStorage.setItem('_geoCache', sessionStorage.getItem('_geoCache') || 'null');
+    window.location.href = LANG_URLS[next];
+  });
+
+  btnHome.addEventListener('click', async () => {
+    const geo = await detectGeoEstado();
+    if (geo) {
+      setEstado(geo);
+      _geoApplied = geo;
     } else {
-      state.activePills.add(km);
-      pill.classList.add('active');
-      pill.setAttribute('aria-pressed', 'true');
+      setEstado('todos');
+      _geoApplied = null;
     }
-    saveFilters();
-    applyFilters();
   });
-});
 
-distMin.addEventListener('input', () => {
-  state.distMin = distMin.value ? parseFloat(distMin.value) : null;
-  saveFilters();
-  applyFilters();
-});
-distMax.addEventListener('input', () => {
-  state.distMax = distMax.value ? parseFloat(distMax.value) : null;
-  saveFilters();
-  applyFilters();
-});
-
-periodoSelect.addEventListener('change', () => {
-  state.periodo = periodoSelect.value;
-  customDateRow.classList.toggle('hidden', state.periodo !== 'custom');
-  applyFilters();
-});
-
-dateFrom.addEventListener('change', () => {
-  state.dateFrom = dateFrom.value || null;
-  applyFilters();
-});
-dateTo.addEventListener('change', () => {
-  state.dateTo = dateTo.value || null;
-  applyFilters();
-});
-
-estadoFilterBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  const isOpen = !estadoFilterDropdown.classList.contains('hidden');
-  if (!isOpen) {
-    _closeFonteDropdown();
-    _collapseAllCards(estadoFilterBtn);
-  }
-  estadoFilterDropdown.classList.toggle('hidden', isOpen);
-  estadoFilterBtn.setAttribute('aria-expanded', String(!isOpen));
-});
-
-document.addEventListener('click', e => {
-  if (estadoFilterWrapper && !estadoFilterWrapper.contains(e.target)) {
-    _closeEstadoDropdown();
-  }
-});
-
-let _searchTimer = null;
-searchInput.addEventListener('input', () => {
-  clearTimeout(_searchTimer);
-  _searchTimer = setTimeout(() => {
-    state.searchQuery = searchInput.value.trim();
-    applyFilters();
-  }, 200);
-});
-
-[btnClear, btnClearEmpty].forEach(btn => btn?.addEventListener('click', clearFilters));
-btnRefresh.addEventListener('click', () => {
-  window.location.replace(LANG_URLS[BROWSER_LANG] || '/pt');
-});
-
-fonteFilterBtn.addEventListener('click', e => {
-  e.stopPropagation();
-  const isOpen = !fonteFilterDropdown.classList.contains('hidden');
-  if (!isOpen) _closeEstadoDropdown();
-  fonteFilterDropdown.classList.toggle('hidden', isOpen);
-  fonteFilterBtn.setAttribute('aria-expanded', String(!isOpen));
-});
-
-document.addEventListener('click', e => {
-  if (!fonteFilterWrapper.contains(e.target)) _closeFonteDropdown();
-});
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    if (!fonteFilterDropdown.classList.contains('hidden')) {
-      _closeFonteDropdown();
-      fonteFilterBtn.focus();
+  // Estado dropdown toggle
+  estadoFilterBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = !estadoFilterDropdown.classList.contains('hidden');
+    closeAllDropdowns();
+    if (!open) {
+      estadoFilterDropdown.classList.remove('hidden');
+      estadoFilterBtn.setAttribute('aria-expanded', 'true');
     }
-    if (!estadoFilterDropdown.classList.contains('hidden')) {
-      _closeEstadoDropdown();
-      estadoFilterBtn.focus();
-    }
-  }
-});
-
-// ---------------------------------------------------------------------------
-// Init
-// ---------------------------------------------------------------------------
-function init() {
-  initI18n();
-  loadFilters();
-
-  if (state.distMode === 'interval') setDistMode('interval');
-  state.activePills.forEach(km => {
-    const pill = document.querySelector(`.pill[data-km="${km}"]`);
-    if (pill) { pill.classList.add('active'); pill.setAttribute('aria-pressed', 'true'); }
   });
-  if (state.distMin !== null) distMin.value = state.distMin;
-  if (state.distMax !== null) distMax.value = state.distMax;
-  _updateEstadoLabel();
-  periodoSelect.value = state.periodo;
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+  // Fonte dropdown toggle
+  fonteFilterBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = !fonteFilterDropdown.classList.contains('hidden');
+    closeAllDropdowns();
+    if (!open) {
+      fonteFilterDropdown.classList.remove('hidden');
+      fonteFilterBtn.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  document.addEventListener('click', closeAllDropdowns);
+
+  function closeAllDropdowns() {
+    estadoFilterDropdown.classList.add('hidden');
+    estadoFilterBtn.setAttribute('aria-expanded', 'false');
+    fonteFilterDropdown.classList.add('hidden');
+    fonteFilterBtn.setAttribute('aria-expanded', 'false');
   }
 
-  // Restore geo value carried from previous page via 📍 language-change navigation.
-  try {
-    const cached = sessionStorage.getItem('_geoCache');
-    if (cached) { _geoDetected = cached; sessionStorage.removeItem('_geoCache'); }
-  } catch (e) {}
-
-  detectUserLocation();
-  fetchData();
-}
-
-init();
+  loadData();
+});

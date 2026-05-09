@@ -29,7 +29,7 @@ GitHub Actions.
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-09 13:40 | ✅ | 2026-05-09 13:40 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-09 13:40 | ✅ | 2026-05-09 13:40 |
 | GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-09 13:40 | ❌ 0 eventos | — |
-| Largada Esportiva<!--largada_esportiva--> | 🆕 | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-09 17:34 | ❌ 0 eventos | — |
+| Largada Esportiva<!--largada_esportiva--> | 🆕 | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-09 18:33 | ✅ | 2026-05-09 18:33 |
 | Road Runners<!--road_runners--> | ✅ | `roadrunners.run` (por estado) | __NEXT_DATA__ / HTML / Playwright | 2026-05-09 13:39 | ❌ 0 eventos | — |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | 2026-05-09 13:39 | ❌ 0 eventos | — |
 

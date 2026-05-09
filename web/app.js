@@ -513,10 +513,15 @@ const _ISO2_TO_DATA_COUNTRY = {
   NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
 };
 
+const _COUNTRY_NORMALIZE = { 'Eua': 'EUA', 'eua': 'EUA', 'EuA': 'EUA' };
+
 function _extractCountry(cidade) {
   if (!cidade) return null;
   const parts = cidade.split(',');
-  if (parts.length > 1) return parts[parts.length - 1].trim();
+  if (parts.length > 1) {
+    const raw = parts[parts.length - 1].trim();
+    return _COUNTRY_NORMALIZE[raw] || raw;
+  }
   return _CITY_COUNTRY[cidade.trim()] || null;
 }
 
@@ -1470,6 +1475,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnHome.addEventListener('click', async () => {
+    const targetLang = BROWSER_LANG;
+
+    if (targetLang !== LANG) {
+      // Different language: navigate, carrying geo cache and clearing saved location
+      const geo = await detectGeoEstado();
+      if (geo) sessionStorage.setItem('_geoCache', geo);
+      try {
+        const saved = JSON.parse(localStorage.getItem('corridas_filters') || 'null');
+        if (saved) { delete saved.estado; localStorage.setItem('corridas_filters', JSON.stringify(saved)); }
+      } catch (_) {}
+      window.location.href = LANG_URLS[targetLang];
+      return;
+    }
+
+    // Same language: just reset location
     const geo = await detectGeoEstado();
     _userChoseLocation = false;
     state.estado = geo || 'todos';

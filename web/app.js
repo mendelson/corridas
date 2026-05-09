@@ -65,9 +65,6 @@ const STRINGS = {
     distancesHeader: 'Distâncias',
     dateColHeader: 'Data',
     timeColHeader: 'Horário',
-    registrationPeriod: 'Período de inscrição',
-    regOpening: 'Abertura',
-    regClosing: 'Encerramento',
     sourcesSection: 'Fontes',
     photosSection: 'Fotos',
     registerBtn: 'Inscrever-se →',
@@ -125,9 +122,6 @@ const STRINGS = {
     distancesHeader: 'Distances',
     dateColHeader: 'Date',
     timeColHeader: 'Time',
-    registrationPeriod: 'Registration period',
-    regOpening: 'Opening',
-    regClosing: 'Closing',
     sourcesSection: 'Sources',
     photosSection: 'Photos',
     registerBtn: 'Register →',
@@ -155,7 +149,7 @@ const STRINGS = {
       'Áustria': 'Austria', 'Suíça': 'Switzerland', 'Polônia': 'Poland',
       'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokyo', 'Londres': 'London',
       'Berlim': 'Berlin', 'Valência': 'Valencia',
-      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhagen',
+      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Copenhagen',
       'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athens',
       'Milão': 'Milan', 'Veneza': 'Venice', 'Assunção': 'Asunción',
       'Lisboa': 'Lisbon', 'Moscou': 'Moscow',
@@ -203,9 +197,6 @@ const STRINGS = {
     distancesHeader: 'Distancias',
     dateColHeader: 'Fecha',
     timeColHeader: 'Hora',
-    registrationPeriod: 'Período de inscripción',
-    regOpening: 'Apertura',
-    regClosing: 'Cierre',
     sourcesSection: 'Fuentes',
     photosSection: 'Fotos',
     registerBtn: 'Inscribirse →',
@@ -233,7 +224,7 @@ const STRINGS = {
       'Áustria': 'Austria', 'Suíça': 'Suiza', 'Polônia': 'Polonia',
       'Edimburgo': 'Edimburgo', 'Tóquio': 'Tokio', 'Londres': 'Londres',
       'Berlim': 'Berlín', 'Valência': 'Valencia', 'Dublin': 'Dublín',
-      'Nova York': 'Nueva York', 'Amsterdã': 'Ámsterdam', 'Copenhague': 'Copenhague',
+      'Nova York': 'Nueva York', 'Amstã': 'Ámsterdam', 'Copenhague': 'Copenhague',
       'Estocolmo': 'Estocolmo', 'Praga': 'Praga', 'Atenas': 'Atenas',
       'Milão': 'Milán', 'Veneza': 'Venecia', 'Assunção': 'Asunción',
       'Lisboa': 'Lisboa', 'Moscou': 'Moscú',
@@ -281,9 +272,6 @@ const STRINGS = {
     distancesHeader: 'Distanzen',
     dateColHeader: 'Datum',
     timeColHeader: 'Uhrzeit',
-    registrationPeriod: 'Anmeldezeitraum',
-    regOpening: 'Öffnung',
-    regClosing: 'Schließung',
     sourcesSection: 'Quellen',
     photosSection: 'Fotos',
     registerBtn: 'Anmelden →',
@@ -311,7 +299,7 @@ const STRINGS = {
       'Áustria': 'Österreich', 'Suíça': 'Schweiz', 'Polônia': 'Polen',
       'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokio', 'Londres': 'London',
       'Berlim': 'Berlin', 'Valência': 'Valencia',
-      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
+      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
       'Estocolmo': 'Stockholm', 'Praga': 'Prag', 'Atenas': 'Athen',
       'Milão': 'Mailand', 'Veneza': 'Venedig', 'Assunção': 'Asunción',
       'Lisboa': 'Lissabon', 'Moscou': 'Moskau',
@@ -359,9 +347,6 @@ const STRINGS = {
     distancesHeader: 'Distances',
     dateColHeader: 'Date',
     timeColHeader: 'Heure',
-    registrationPeriod: "Période d'inscription",
-    regOpening: 'Ouverture',
-    regClosing: 'Clôture',
     sourcesSection: 'Sources',
     photosSection: 'Photos',
     registerBtn: "S'inscrire →",
@@ -389,7 +374,7 @@ const STRINGS = {
       'Áustria': 'Autriche', 'Suíça': 'Suisse', 'Polônia': 'Pologne',
       'Edimburgo': 'Édimbourg', 'Tóquio': 'Tokyo', 'Londres': 'Londres',
       'Berlim': 'Berlin', 'Valência': 'Valence',
-      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhague',
+      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Copenhague',
       'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athènes',
       'Milão': 'Milan', 'Veneza': 'Venise', 'Assunção': 'Asunción',
       'Lisboa': 'Lisbonne', 'Moscou': 'Moscou',
@@ -692,7 +677,7 @@ const _CITY_COUNTRY = {
   'Madrid':       'Espanha',
   'Barcelona':    'Espanha',
   'Amsterdam':    'Países Baixos',
-  'Amsterdã':     'Países Baixos',
+  'Amstã':     'Países Baixos',
   'Montevidéu':   'Uruguai',
   'Santiago':     'Chile',
   'Lima':         'Peru',
@@ -1411,7 +1396,6 @@ function toggleExpand(collapsed, expanded) {
 function buildExpanded(card, c) {
   const expTitle  = card.querySelector('.expanded-title');
   const expDist   = card.querySelector('.expanded-distances');
-  const expPeriod = card.querySelector('.expanded-period');
   const expFontes = card.querySelector('.expanded-fontes');
   const expFotos  = card.querySelector('.expanded-fotos');
 
@@ -1446,18 +1430,6 @@ function buildExpanded(card, c) {
     }
     table.appendChild(tbody);
     expDist.appendChild(table);
-  }
-
-  if (c.periodo_inscricao && (c.periodo_inscricao.abertura || c.periodo_inscricao.encerramento)) {
-    const h = document.createElement('p');
-    h.className   = 'expanded-section-title';
-    h.textContent = T.registrationPeriod;
-    expPeriod.appendChild(h);
-    const p   = document.createElement('p');
-    const ab  = c.periodo_inscricao.abertura     ? `${T.regOpening}: ${formatDateShort(c.periodo_inscricao.abertura)}`     : '';
-    const enc = c.periodo_inscricao.encerramento ? `${T.regClosing}: ${formatDateShort(c.periodo_inscricao.encerramento)}` : '';
-    p.textContent = [ab, enc].filter(Boolean).join(' · ');
-    expPeriod.appendChild(p);
   }
 
   if (c.fontes && c.fontes.length > 0) {

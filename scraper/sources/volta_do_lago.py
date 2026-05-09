@@ -84,7 +84,7 @@ def _try_next_data(soup, page_url: str) -> list[Corrida] | None:
         return None
 
     text = json.dumps(data, ensure_ascii=False)
-    data_evento = _extract_date_from_str(text)
+    data_evento = _extract_date_from_str(text) or _extract_date_from_soup(soup)
     if not data_evento:
         return None
 
@@ -109,7 +109,7 @@ def _try_next_data(soup, page_url: str) -> list[Corrida] | None:
 # HTML strategy
 # ---------------------------------------------------------------------------
 def _try_html(soup, text_full: str, page_url: str) -> list[Corrida] | None:
-    data_evento = _extract_date_from_str(text_full)
+    data_evento = _extract_date_from_soup(soup) or _extract_date_from_str(text_full)
     if not data_evento:
         return None
 
@@ -139,6 +139,7 @@ _PT_MONTHS = {
 }
 
 _YEAR_RE  = re.compile(r"\b(202\d|203\d)\b")
+_DATE_ISO = re.compile(r"\b(202\d|203\d)-(0[1-9]|1[0-2])-(\d{2})\b")
 _DATE_RE1 = re.compile(r"\b(\d{1,2})[/.\-](\d{1,2})[/.\-](202\d|203\d)\b")
 _DATE_RE2 = re.compile(
     r"\b(\d{1,2})\s+de\s+([a-záéíóúãõâêô]+)\s+de\s+(202\d|203\d)\b",
@@ -156,7 +157,34 @@ _INSC_RE  = re.compile(
 )
 
 
+def _extract_date_from_soup(soup) -> str | None:
+    """Try structured data sources before falling back to text."""
+    # JSON-LD Event schema
+    for tag in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(tag.string or "")
+            if isinstance(data, list):
+                data = data[0]
+            start = data.get("startDate") or data.get("start_date") or ""
+            if start and re.match(r"202\d|203\d", start):
+                return start[:10]
+        except Exception:
+            pass
+    # Meta tags (og:event, event:start_time, etc.)
+    for attr in ("event:start_time", "og:event:start_time"):
+        tag = soup.find("meta", property=attr) or soup.find("meta", attrs={"name": attr})
+        if tag and tag.get("content"):
+            m = _DATE_ISO.search(tag["content"])
+            if m:
+                return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    return None
+
+
 def _extract_date_from_str(text: str) -> str | None:
+    # ISO format: 2026-08-09
+    m = _DATE_ISO.search(text)
+    if m:
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     m = _DATE_RE1.search(text)
     if m:
         d, mo, y = m.group(1).zfill(2), m.group(2).zfill(2), m.group(3)

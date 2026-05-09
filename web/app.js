@@ -76,6 +76,8 @@ const STRINGS = {
     today_label: 'Hoje',
     tomorrow_label: 'Amanhã',
     yesterday_label: 'Ontem',
+    groupBrasil: 'Brasil',
+    allCountry: country => `Todo ${country}`,
     pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Outras' },
     periodoSelect: 'Filtrar por período',
   },
@@ -132,6 +134,8 @@ const STRINGS = {
     today_label: 'Today',
     tomorrow_label: 'Tomorrow',
     yesterday_label: 'Yesterday',
+    groupBrasil: 'Brazil',
+    allCountry: country => `All ${country}`,
     pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Other' },
     periodoSelect: 'Filter by period',
   },
@@ -188,6 +192,8 @@ const STRINGS = {
     today_label: 'Hoy',
     tomorrow_label: 'Mañana',
     yesterday_label: 'Ayer',
+    groupBrasil: 'Brasil',
+    allCountry: country => `Todo ${country}`,
     pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Otras' },
     periodoSelect: 'Filtrar por período',
   },
@@ -244,6 +250,8 @@ const STRINGS = {
     today_label: 'Heute',
     tomorrow_label: 'Morgen',
     yesterday_label: 'Gestern',
+    groupBrasil: 'Brasilien',
+    allCountry: country => `Ganz ${country}`,
     pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Andere' },
     periodoSelect: 'Nach Zeitraum filtern',
   },
@@ -300,6 +308,8 @@ const STRINGS = {
     today_label: "Aujourd'hui",
     tomorrow_label: 'Demain',
     yesterday_label: 'Hier',
+    groupBrasil: 'Brésil',
+    allCountry: country => `Tout le ${country}`,
     pills: { '5': '5K', '10': '10K', '15': '15K', '21': '21K', '42': '42K', 'outros': 'Autres' },
     periodoSelect: 'Filtrer par période',
   },
@@ -336,6 +346,8 @@ const state = {
 let allCorridas      = [];
 let filteredCorridas = [];
 let _geoApplied      = null;  // estado code applied from geolocation
+let _userChoseLocation = false;
+let _estadoAvailableValues = new Set(['todos']);
 
 // ---------------------------------------------------------------------------
 // Geolocation pipeline
@@ -384,33 +396,19 @@ async function loadData() {
 // ---------------------------------------------------------------------------
 async function initFilters() {
   restoreFilters();
+  populateEstadoFilter({ skipGeo: true });
+  populateFontesFilter();
 
-  // Build estado dropdown
-  const estadoSet = new Set();
-  for (const c of allCorridas) {
-    if (c.estado) estadoSet.add(c.estado);
-  }
-  const estados = [...estadoSet].sort();
-  buildEstadoDropdown(estados);
-
-  // Build fonte dropdown
-  const fonteSet = new Set();
-  for (const c of allCorridas) {
-    for (const f of (c.fontes || [])) {
-      if (f.nome) fonteSet.add(f.nome);
-    }
-  }
-  const fontes = [...fonteSet].sort();
-  buildFonteDropdown(fontes);
-
-  // Geolocation (only if no persisted state preference)
+  // Geolocation (only if no persisted location preference)
   const saved = loadSavedFilters();
   if (!saved || !saved.estado) {
     const geo = await detectGeoEstado();
-    if (geo && estadoSet.has(geo)) {
-      state.estado  = geo;
-      _geoApplied   = geo;
-      updateEstadoUI();
+    if (geo && _estadoAvailableValues.has(geo)) {
+      state.estado = geo;
+      _geoApplied  = geo;
+      _updateEstadoLabel();
+      // Refresh selected state in accordion
+      populateEstadoFilter({ skipGeo: true });
     }
   }
 
@@ -444,7 +442,6 @@ function restoreFilters() {
   if (saved.dateTo)   { state.dateTo   = saved.dateTo;   dateTo.value   = saved.dateTo; }
   if (saved.estado) {
     state.estado = saved.estado;
-    updateEstadoUI();
   }
   if (saved.fontes && Array.isArray(saved.fontes)) {
     state.fontes = new Set(saved.fontes);
@@ -486,116 +483,270 @@ function saveFilters() {
 // ---------------------------------------------------------------------------
 // Estado dropdown (custom multi-region selector)
 // ---------------------------------------------------------------------------
-const STATE_LABELS = {
-  AC:'Acre',AM:'Amazonas',AP:'Amapá',PA:'Pará',RO:'Rondônia',RR:'Roraima',TO:'Tocantins',
-  AL:'Alagoas',BA:'Bahia',CE:'Ceará',MA:'Maranhão',PB:'Paraíba',PE:'Pernambuco',
-  PI:'Piauí',RN:'Rio Grande do Norte',SE:'Sergipe',
-  DF:'Distrito Federal',GO:'Goiás',MS:'Mato Grosso do Sul',MT:'Mato Grosso',
-  ES:'Espírito Santo',MG:'Minas Gerais',RJ:'Rio de Janeiro',SP:'São Paulo',
-  PR:'Paraná',RS:'Rio Grande do Sul',SC:'Santa Catarina',
-  INT:'Internacional',
+const _ESTADO_LABELS = {
+  AC: 'Acre · AC',              AL: 'Alagoas · AL',            AM: 'Amazonas · AM',
+  AP: 'Amapá · AP',             BA: 'Bahia · BA',              CE: 'Ceará · CE',
+  DF: 'Brasília · DF',          ES: 'Espírito Santo · ES',     GO: 'Goiás · GO',
+  MA: 'Maranhão · MA',          MG: 'Minas Gerais · MG',       MS: 'Mato Grosso do Sul · MS',
+  MT: 'Mato Grosso · MT',       PA: 'Pará · PA',               PB: 'Paraíba · PB',
+  PE: 'Pernambuco · PE',        PI: 'Piauí · PI',              PR: 'Paraná · PR',
+  RJ: 'Rio de Janeiro · RJ',    RN: 'Rio Grande do Norte · RN', RO: 'Rondônia · RO',
+  RR: 'Roraima · RR',           RS: 'Rio Grande do Sul · RS',  SC: 'Santa Catarina · SC',
+  SE: 'Sergipe · SE',           SP: 'São Paulo · SP',          TO: 'Tocantins · TO',
 };
 
-function buildEstadoDropdown(estados) {
-  estadoFilterDropdown.innerHTML = '';
+const _CITY_COUNTRY = {
+  'Buenos Aires': 'Argentina',   'Paris': 'França',          'Veneza': 'Itália',
+  'Roma': 'Itália',              'Milão': 'Itália',          'Amsterdam': 'Países Baixos',
+  'Madrid': 'Espanha',           'Barcelona': 'Espanha',     'Porto': 'Portugal',
+  'Assunção': 'Paraguai',        'Montevidéu': 'Uruguai',    'Santiago': 'Chile',
+  'Lima': 'Peru',                'Bogotá': 'Colômbia',       'Cidade do México': 'México',
+};
 
-  const allOpt = document.createElement('div');
-  allOpt.className = 'estado-option';
-  allOpt.setAttribute('role', 'option');
-  allOpt.dataset.value = 'todos';
-  allOpt.textContent = T.allLocations;
-  allOpt.setAttribute('aria-selected', state.estado === 'todos' ? 'true' : 'false');
-  allOpt.addEventListener('click', () => setEstado('todos'));
-  estadoFilterDropdown.appendChild(allOpt);
+const _ISO2_TO_DATA_COUNTRY = {
+  AR: 'Argentina',  PT: 'Portugal',   IT: 'Itália',     DE: 'Alemanha',  FR: 'França',
+  GB: 'Reino Unido', US: 'EUA',       JP: 'Japão',      AU: 'Austrália', ES: 'Espanha',
+  CL: 'Chile',      CO: 'Colômbia',   MX: 'México',     PE: 'Peru',      NL: 'Países Baixos',
+  AT: 'Áustria',    CH: 'Suíça',      SE: 'Suécia',     NO: 'Noruega',   DK: 'Dinamarca',
+  FI: 'Finlândia',  PL: 'Polônia',    CZ: 'República Tcheca', ZA: 'África do Sul',
+  KE: 'Quênia',     ET: 'Etiópia',    CN: 'China',      KR: 'Coreia do Sul', CA: 'Canadá',
+  NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
+};
 
-  const brOpt = document.createElement('div');
-  brOpt.className = 'estado-option';
-  brOpt.setAttribute('role', 'option');
-  brOpt.dataset.value = 'brasil';
-  brOpt.textContent = T.allBrazil;
-  brOpt.setAttribute('aria-selected', state.estado === 'brasil' ? 'true' : 'false');
-  brOpt.addEventListener('click', () => setEstado('brasil'));
-  estadoFilterDropdown.appendChild(brOpt);
-
-  for (const est of estados) {
-    const opt = document.createElement('div');
-    opt.className = 'estado-option';
-    opt.setAttribute('role', 'option');
-    opt.dataset.value = est;
-    opt.textContent = STATE_LABELS[est] ? `${STATE_LABELS[est]} (${est})` : est;
-    opt.setAttribute('aria-selected', state.estado === est ? 'true' : 'false');
-    opt.addEventListener('click', () => setEstado(est));
-    estadoFilterDropdown.appendChild(opt);
-  }
+function _extractCountry(cidade) {
+  if (!cidade) return null;
+  const parts = cidade.split(',');
+  if (parts.length > 1) return parts[parts.length - 1].trim();
+  return _CITY_COUNTRY[cidade.trim()] || null;
 }
 
-function setEstado(val) {
-  state.estado = val;
-  updateEstadoUI();
+function _extractCity(cidade) {
+  if (!cidade) return null;
+  return cidade.split(',')[0].trim() || null;
+}
+
+function _closeEstadoDropdown() {
   estadoFilterDropdown.classList.add('hidden');
   estadoFilterBtn.setAttribute('aria-expanded', 'false');
-  onFilterChange();
 }
 
-function updateEstadoUI() {
-  const val = state.estado;
-  if (val === 'todos')  estadoFilterLabel.textContent = T.allLocations;
-  else if (val === 'brasil') estadoFilterLabel.textContent = T.allBrazil;
-  else estadoFilterLabel.textContent = STATE_LABELS[val] ? `${STATE_LABELS[val]} (${val})` : val;
+function _closeFonteDropdown() {
+  fonteFilterDropdown.classList.add('hidden');
+  fonteFilterBtn.setAttribute('aria-expanded', 'false');
+}
 
-  for (const opt of estadoFilterDropdown.querySelectorAll('.estado-option')) {
-    opt.setAttribute('aria-selected', opt.dataset.value === val ? 'true' : 'false');
+function _updateEstadoLabel() {
+  const v = state.estado;
+  if (v === 'todos') {
+    estadoFilterLabel.textContent = T.allLocations;
+    estadoFilterBtn.classList.remove('active');
+    return;
   }
+  const opt = estadoFilterDropdown.querySelector(`.estado-option[data-value="${CSS.escape(v)}"]`);
+  if (opt) {
+    estadoFilterLabel.textContent = opt.textContent;
+  } else if (v === 'BR') {
+    estadoFilterLabel.textContent = T.allBrazil;
+  } else if (v.startsWith('INT:')) {
+    const rest = v.slice(4);
+    estadoFilterLabel.textContent = rest.includes(':') ? rest.split(':').join(', ') : rest;
+  } else {
+    estadoFilterLabel.textContent = _ESTADO_LABELS[v] || v;
+  }
+  estadoFilterBtn.classList.add('active');
 }
 
-// ---------------------------------------------------------------------------
-// Fonte dropdown
-// ---------------------------------------------------------------------------
-function buildFonteDropdown(fontes) {
-  fonteFilterDropdown.innerHTML = '';
+function _makeAccordionGroup(label, initiallyOpen) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'estado-group';
 
-  const allOpt = document.createElement('div');
-  allOpt.className = 'fonte-option';
-  allOpt.setAttribute('role', 'option');
-  allOpt.setAttribute('aria-selected', state.fontes.size === 0 ? 'true' : 'false');
-  allOpt.dataset.value = '__all__';
-  allOpt.textContent = T.allSources;
-  allOpt.addEventListener('click', () => {
-    state.fontes.clear();
-    updateFonteUI();
-    fonteFilterDropdown.classList.add('hidden');
-    fonteFilterBtn.setAttribute('aria-expanded', 'false');
-    onFilterChange();
+  const header = document.createElement('div');
+  header.className = 'estado-group-header';
+  const labelSpan = document.createElement('span');
+  labelSpan.textContent = label;
+  const chevron = document.createElement('span');
+  chevron.className = 'estado-group-chevron';
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.textContent = initiallyOpen ? '▾' : '▸';
+  header.appendChild(labelSpan);
+  header.appendChild(chevron);
+
+  const body = document.createElement('div');
+  body.className = 'estado-group-body';
+  if (!initiallyOpen) body.classList.add('collapsed');
+
+  header.addEventListener('click', () => {
+    const isOpen = !body.classList.contains('collapsed');
+    if (!isOpen) {
+      estadoFilterDropdown.querySelectorAll('.estado-group-body').forEach(b => {
+        if (b !== body && !b.classList.contains('collapsed')) {
+          b.classList.add('collapsed');
+          b.previousElementSibling.querySelector('.estado-group-chevron').textContent = '▸';
+        }
+      });
+    }
+    body.classList.toggle('collapsed', isOpen);
+    chevron.textContent = isOpen ? '▸' : '▾';
   });
-  fonteFilterDropdown.appendChild(allOpt);
 
-  for (const f of fontes) {
-    const opt = document.createElement('div');
-    opt.className = 'fonte-option';
-    opt.setAttribute('role', 'option');
-    opt.setAttribute('aria-selected', state.fontes.has(f) ? 'true' : 'false');
-    opt.dataset.value = f;
-    opt.textContent = f;
-    opt.addEventListener('click', () => {
-      if (state.fontes.has(f)) state.fontes.delete(f);
-      else state.fontes.add(f);
-      updateFonteUI();
-      onFilterChange();
-    });
-    fonteFilterDropdown.appendChild(opt);
-  }
-
-  updateFonteUI();
+  wrapper.appendChild(header);
+  wrapper.appendChild(body);
+  return { wrapper, body };
 }
 
-function updateFonteUI() {
+function populateEstadoFilter({ skipGeo = false } = {}) {
+  estadoFilterDropdown.innerHTML = '';
+  _estadoAvailableValues = new Set(['todos']);
+  const today = todayStr();
+
+  const base = state.fontes.size === 0
+    ? allCorridas
+    : allCorridas.filter(c => matchesFonte(c));
+
+  function makeOption(value, text) {
+    _estadoAvailableValues.add(value);
+    const el = document.createElement('div');
+    el.className = 'estado-option' + (state.estado === value ? ' selected' : '');
+    el.setAttribute('role', 'option');
+    el.setAttribute('aria-selected', String(state.estado === value));
+    el.dataset.value = value;
+    el.textContent = text;
+    el.addEventListener('click', () => {
+      _userChoseLocation = (value !== 'todos');
+      state.estado = value;
+      saveFilters();
+      _closeEstadoDropdown();
+      _updateEstadoLabel();
+      populateFontesFilter();
+      applyFilters();
+      renderCards();
+      updateCount();
+      updateClearButton();
+    });
+    return el;
+  }
+
+  estadoFilterDropdown.appendChild(makeOption('todos', T.allLocations));
+
+  const brUFs = [...new Set(
+    base
+      .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
+      .map(c => c.estado)
+  )].sort();
+
+  const countryCity = new Map();
+  for (const c of base) {
+    if (c.estado !== 'INT' || !c.data_evento || c.data_evento < today) continue;
+    const country = _extractCountry(c.cidade);
+    if (!country) continue;
+    const city = _extractCity(c.cidade);
+    if (!countryCity.has(country)) countryCity.set(country, new Set());
+    if (city && city !== country) countryCity.get(country).add(city);
+  }
+
+  const allGroups = [];
+
+  if (brUFs.length > 0) {
+    allGroups.push({ label: T.groupBrasil, build: () => {
+      const brActive = state.estado === 'BR' || brUFs.includes(state.estado);
+      const { wrapper, body } = _makeAccordionGroup(T.groupBrasil, brActive);
+      body.appendChild(makeOption('BR', T.allBrazil));
+      for (const uf of brUFs) body.appendChild(makeOption(uf, _ESTADO_LABELS[uf] || uf));
+      return wrapper;
+    }});
+  }
+
+  for (const [country, citiesSet] of countryCity) {
+    const cities = [...citiesSet].sort();
+    allGroups.push({ label: country, build: () => {
+      const isActive = state.estado === 'INT:' + country ||
+                       cities.some(city => state.estado === 'INT:' + country + ':' + city);
+      const { wrapper, body } = _makeAccordionGroup(country, isActive);
+      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
+      for (const city of cities) {
+        const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
+        body.appendChild(makeOption(value, city));
+      }
+      return wrapper;
+    }});
+  }
+
+  allGroups.sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+  for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
+
+  if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {
+    state.estado = 'todos';
+    saveFilters();
+  }
+
+  if (!skipGeo) {
+    // geo is applied externally in initFilters
+  }
+
+  _updateEstadoLabel();
+}
+
+// ---------------------------------------------------------------------------
+// Fonte filter (multi-select checkboxes, shows only available sources)
+// ---------------------------------------------------------------------------
+function populateFontesFilter() {
+  const today = todayStr();
+  const base = allCorridas.filter(c =>
+    c.data_evento >= today && _matchEstadoValue(c, state.estado)
+  );
+  const availableNomes = new Set(base.flatMap(c => (c.fontes || []).map(f => f.nome)));
+
+  let stateChanged = false;
+  for (const nome of [...state.fontes]) {
+    if (!availableNomes.has(nome)) { state.fontes.delete(nome); stateChanged = true; }
+  }
+  if (stateChanged) saveFilters();
+
+  fonteFilterDropdown.innerHTML = '';
+  for (const nome of [...availableNomes].sort()) {
+    const label = document.createElement('label');
+    label.className = 'fonte-filter-option' + (state.fontes.has(nome) ? ' checked' : '');
+    label.setAttribute('role', 'option');
+    label.setAttribute('aria-selected', String(state.fontes.has(nome)));
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = nome;
+    cb.checked = state.fontes.has(nome);
+
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(nome));
+
+    cb.addEventListener('change', () => {
+      if (cb.checked) { state.fontes.add(nome); label.classList.add('checked'); label.setAttribute('aria-selected', 'true'); }
+      else { state.fontes.delete(nome); label.classList.remove('checked'); label.setAttribute('aria-selected', 'false'); }
+      _updateFonteLabel();
+      saveFilters();
+      const prevEstado = state.estado;
+      populateEstadoFilter({ skipGeo: true });
+      if (state.estado !== prevEstado) populateFontesFilter();
+      applyFilters();
+      renderCards();
+      updateCount();
+      updateClearButton();
+    });
+
+    fonteFilterDropdown.appendChild(label);
+  }
+  _updateFonteLabel();
+}
+
+function _updateFonteLabel() {
   const n = state.fontes.size;
-  fonteFilterLabel.textContent = n === 0 ? T.allSources : T.nSources(n);
-  for (const opt of fonteFilterDropdown.querySelectorAll('.fonte-option')) {
-    const v = opt.dataset.value;
-    opt.setAttribute('aria-selected',
-      v === '__all__' ? (n === 0 ? 'true' : 'false') : state.fontes.has(v) ? 'true' : 'false'
-    );
+  if (n === 0) {
+    fonteFilterLabel.textContent = T.allSources;
+    fonteFilterBtn.classList.remove('active');
+  } else if (n === 1) {
+    fonteFilterLabel.textContent = [...state.fontes][0];
+    fonteFilterBtn.classList.add('active');
+  } else {
+    fonteFilterLabel.textContent = T.nSources(n);
+    fonteFilterBtn.classList.add('active');
   }
 }
 
@@ -637,10 +788,22 @@ function matchesPeriodo(c) {
   }
 }
 
+function _matchEstadoValue(c, value) {
+  if (value === 'todos') return true;
+  if (value === 'BR')    return c.estado !== 'INT';
+  if (value.startsWith('INT:')) {
+    const rest = value.slice(4);
+    const sep  = rest.indexOf(':');
+    if (sep === -1) return c.estado === 'INT' && _extractCountry(c.cidade) === rest;
+    const country = rest.slice(0, sep);
+    const city    = rest.slice(sep + 1);
+    return c.estado === 'INT' && _extractCountry(c.cidade) === country && _extractCity(c.cidade) === city;
+  }
+  return c.estado === value;
+}
+
 function matchesEstado(c) {
-  if (state.estado === 'todos')  return true;
-  if (state.estado === 'brasil') return c.estado !== 'INT';
-  return c.estado === state.estado;
+  return _matchEstadoValue(c, state.estado);
 }
 
 function matchesFonte(c) {
@@ -1110,8 +1273,9 @@ function clearFilters() {
     pill.classList.remove('active');
   }
 
-  updateEstadoUI();
-  updateFonteUI();
+  _userChoseLocation = false;
+  populateEstadoFilter({ skipGeo: true });
+  populateFontesFilter();
   onFilterChange();
 }
 
@@ -1273,13 +1437,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnHome.addEventListener('click', async () => {
     const geo = await detectGeoEstado();
-    if (geo) {
-      setEstado(geo);
-      _geoApplied = geo;
-    } else {
-      setEstado('todos');
-      _geoApplied = null;
-    }
+    _userChoseLocation = false;
+    state.estado = geo || 'todos';
+    _geoApplied  = geo || null;
+    _closeEstadoDropdown();
+    populateEstadoFilter({ skipGeo: true });
+    populateFontesFilter();
+    applyFilters();
+    renderCards();
+    updateCount();
+    updateClearButton();
+    saveFilters();
   });
 
   // Estado dropdown toggle
@@ -1293,7 +1461,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Fonte dropdown toggle
+  // Fonte dropdown toggle — stopPropagation on the dropdown itself keeps it open on checkbox clicks
   fonteFilterBtn.addEventListener('click', e => {
     e.stopPropagation();
     const open = !fonteFilterDropdown.classList.contains('hidden');
@@ -1303,14 +1471,13 @@ document.addEventListener('DOMContentLoaded', () => {
       fonteFilterBtn.setAttribute('aria-expanded', 'true');
     }
   });
+  fonteFilterDropdown.addEventListener('click', e => e.stopPropagation());
 
   document.addEventListener('click', closeAllDropdowns);
 
   function closeAllDropdowns() {
-    estadoFilterDropdown.classList.add('hidden');
-    estadoFilterBtn.setAttribute('aria-expanded', 'false');
-    fonteFilterDropdown.classList.add('hidden');
-    fonteFilterBtn.setAttribute('aria-expanded', 'false');
+    _closeEstadoDropdown();
+    _closeFonteDropdown();
   }
 
   loadData();

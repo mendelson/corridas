@@ -21,7 +21,7 @@ GitHub Actions.
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-08 15:01 | ✅ | 2026-05-08 15:01 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
-| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
+| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-09 00:30 | ✅ | 2026-05-09 00:30 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-08 19:12 | ✅ | 2026-05-08 19:12 |
@@ -50,7 +50,7 @@ GitHub Actions.
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-05 00:40 | ✅ | 2026-05-05 00:40 |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-05 00:42 | ✅ | 2026-05-05 00:42 |
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-05 00:41 | ✅ | 2026-05-05 00:41 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `voltadolago.com.br` | 2026-05-05 00:42 | ❌ 0 eventos | — |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `voltadolago.com.br` | 2026-05-09 00:30 | ❌ 0 eventos | — |
 
 ### Fontes internacionais
 

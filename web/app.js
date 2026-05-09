@@ -53,6 +53,7 @@ const STRINGS = {
     clearFilters: 'Limpar filtros',
     noResults: 'Nenhuma corrida encontrada com os filtros atuais.',
     raceCount: n => n === 1 ? `${n} corrida` : `${n} corridas`,
+    pastSectionLabel: '🏁 Corridas nos últimos 15 dias',
     past15: 'Desde 15 dias atrás',
     today: 'A partir de hoje',
     next30: 'Próximos 30 dias',
@@ -108,6 +109,7 @@ const STRINGS = {
     clearFilters: 'Clear filters',
     noResults: 'No races found with current filters.',
     raceCount: n => n === 1 ? `${n} race` : `${n} races`,
+    pastSectionLabel: '🏁 Races in the last 15 days',
     past15: 'Since 15 days ago',
     today: 'From today',
     next30: 'Next 30 days',
@@ -163,6 +165,7 @@ const STRINGS = {
     clearFilters: 'Limpiar filtros',
     noResults: 'No se encontraron carreras con los filtros actuales.',
     raceCount: n => n === 1 ? `${n} carrera` : `${n} carreras`,
+    pastSectionLabel: '🏁 Carreras en los últimos 15 días',
     past15: 'Desde hace 15 días',
     today: 'Desde hoy',
     next30: 'Próximos 30 días',
@@ -218,6 +221,7 @@ const STRINGS = {
     clearFilters: 'Filter löschen',
     noResults: 'Keine Rennen mit den aktuellen Filtern gefunden.',
     raceCount: n => n === 1 ? `${n} Rennen` : `${n} Rennen`,
+    pastSectionLabel: '🏁 Rennen der letzten 15 Tage',
     past15: 'Seit 15 Tagen',
     today: 'Ab heute',
     next30: 'Nächste 30 Tage',
@@ -273,6 +277,7 @@ const STRINGS = {
     clearFilters: 'Effacer les filtres',
     noResults: 'Aucune course trouvée avec les filtres actuels.',
     raceCount: n => n === 1 ? `${n} course` : `${n} courses`,
+    pastSectionLabel: '🏁 Courses des 15 derniers jours',
     past15: 'Depuis 15 jours',
     today: "À partir d'aujourd'hui",
     next30: '30 prochains jours',
@@ -690,39 +695,107 @@ function renderCards() {
   }
   emptyState.classList.add('hidden');
 
-  const today = todayStr();
-  const frag  = document.createDocumentFragment();
+  const today       = todayStr();
+  const sevenDaysAgo = addDays(today, -7);
+  const frag        = document.createDocumentFragment();
 
-  // Group by month
-  const groups = [];
-  let curMonth = null;
-  for (const c of filteredCorridas) {
-    const month = (c.data_evento || '').slice(0, 7);
-    if (month !== curMonth) {
-      groups.push({ month, items: [] });
-      curMonth = month;
-    }
-    groups[groups.length - 1].items.push(c);
+  let toRender   = filteredCorridas;
+  let recentPast = [];
+
+  if (state.periodo === 'past15') {
+    recentPast = filteredCorridas.filter(c => c.data_evento && c.data_evento < today);
+    toRender   = filteredCorridas.filter(c => !c.data_evento || c.data_evento >= today);
   }
 
-  const sevenDaysAgo = addDays(today, -7);
+  const byMonth = new Map();
+  for (const corrida of toRender) {
+    const key = corrida.data_evento ? corrida.data_evento.slice(0, 7) : '__sem_data';
+    if (!byMonth.has(key)) byMonth.set(key, []);
+    byMonth.get(key).push(corrida);
+  }
 
-  for (const { month, items } of groups) {
-    // Month header
-    const header = document.createElement('div');
-    header.className = 'month-header';
-    const monthLabel = month ? formatMonth(month) : '—';
-    const hasNew = items.some(c => c.first_seen_at && c.first_seen_at >= sevenDaysAgo);
-    header.innerHTML = `<span class="month-label">${monthLabel}</span>${hasNew ? `<span class="badge-novo">${T.badgeNovo}</span>` : ''}`;
-    frag.appendChild(header);
-
-    for (const c of items) {
-      const card = buildCard(c, today, sevenDaysAgo);
-      frag.appendChild(card);
+  let firstFutureMonthFound = false;
+  for (const [monthKey, corridas] of byMonth) {
+    const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
+    const expand = hasFuture && !firstFutureMonthFound;
+    if (expand) firstFutureMonthFound = true;
+    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand);
+    for (const corrida of corridas) {
+      cardsContainer.appendChild(buildCard(corrida, today, sevenDaysAgo));
     }
+    frag.appendChild(section);
+  }
+
+  if (recentPast.length > 0) {
+    frag.prepend(buildPastSection(recentPast, today, sevenDaysAgo));
   }
 
   cardsList.appendChild(frag);
+}
+
+function buildPastSection(corridas, today, sevenDaysAgo) {
+  const sorted = [...corridas].sort((a, b) =>
+    (b.data_evento || '').localeCompare(a.data_evento || ''));
+
+  const countLabel = T.raceCount(sorted.length);
+  const section    = document.createElement('div');
+  section.className = 'month-section';
+
+  const btn = document.createElement('button');
+  btn.className = 'month-separator month-separator--past';
+  btn.setAttribute('aria-expanded', 'false');
+  btn.setAttribute('aria-label', `${T.pastSectionLabel}, ${countLabel}`);
+  btn.innerHTML = `
+    <span class="month-separator-label">${T.pastSectionLabel}</span>
+    <span class="month-count">${countLabel}</span>
+    <span class="month-chevron" aria-hidden="true">▸</span>`;
+
+  const cardsContainer = document.createElement('div');
+  cardsContainer.className = 'month-cards month-cards--collapsed';
+
+  for (const corrida of sorted) {
+    cardsContainer.appendChild(buildCard(corrida, today, sevenDaysAgo));
+  }
+
+  btn.addEventListener('click', () => {
+    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
+  });
+
+  section.appendChild(btn);
+  section.appendChild(cardsContainer);
+  return section;
+}
+
+function buildMonthSection(monthKey, count, expanded = false) {
+  const label      = monthKey === '__sem_data' ? '—' : formatMonth(monthKey);
+  const countLabel = T.raceCount(count);
+
+  const section = document.createElement('div');
+  section.className = 'month-section';
+
+  const btn = document.createElement('button');
+  btn.className = 'month-separator';
+  btn.setAttribute('aria-expanded', String(expanded));
+  btn.setAttribute('aria-label', `${label}, ${countLabel}`);
+  btn.innerHTML = `
+    <span class="month-separator-label">${label}</span>
+    <span class="month-count">${countLabel}</span>
+    <span class="month-chevron" aria-hidden="true">${expanded ? '▾' : '▸'}</span>`;
+
+  const cardsContainer = document.createElement('div');
+  cardsContainer.className = expanded ? 'month-cards' : 'month-cards month-cards--collapsed';
+
+  btn.addEventListener('click', () => {
+    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
+    btn.setAttribute('aria-expanded', String(!collapsed));
+    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
+  });
+
+  section.appendChild(btn);
+  section.appendChild(cardsContainer);
+  return { section, cardsContainer };
 }
 
 function buildCard(c, today, sevenDaysAgo) {

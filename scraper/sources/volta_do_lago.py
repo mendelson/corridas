@@ -67,7 +67,9 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] 1 corrida encontrada via HTML")
         return result
 
-    print(f"[{SOURCE_NAME}] site acessível mas sem dados reconhecíveis")
+    # Debug: show a snippet of what was found to diagnose extraction failures
+    snippet = text_full[:500].replace('\n', ' ')
+    print(f"[{SOURCE_NAME}] site acessível mas sem dados reconhecíveis. snippet: {snippet!r}")
     return []
 
 
@@ -170,6 +172,11 @@ def _extract_date_from_soup(soup) -> str | None:
                 return start[:10]
         except Exception:
             pass
+    # <time datetime="YYYY-MM-DD"> or <time datetime="YYYY-MM-DDThh:mm">
+    for tag in soup.find_all("time", datetime=True):
+        m = _DATE_ISO.search(tag["datetime"])
+        if m:
+            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     # Meta tags (og:event, event:start_time, etc.)
     for attr in ("event:start_time", "og:event:start_time"):
         tag = soup.find("meta", property=attr) or soup.find("meta", attrs={"name": attr})
@@ -177,6 +184,11 @@ def _extract_date_from_soup(soup) -> str | None:
             m = _DATE_ISO.search(tag["content"])
             if m:
                 return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    # URLs on the page that embed a date (WordPress permalink pattern)
+    for a in soup.find_all("a", href=True):
+        m = _DATE_ISO.search(a["href"])
+        if m:
+            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     return None
 
 

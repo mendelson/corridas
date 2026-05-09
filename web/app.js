@@ -40,6 +40,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrar por localização',
     fonteFilterAriaLabel: 'Filtrar por fonte',
     refreshAriaLabel: 'Atualizar',
+    homeAriaLabel: 'Minha localização e idioma',
+    langAriaLabel: 'Idioma',
     clearFiltersAriaLabel: 'Limpar filtros',
     allLocations: 'Todos',
     allBrazil: 'Todo o Brasil',
@@ -63,9 +65,6 @@ const STRINGS = {
     distancesHeader: 'Distâncias',
     dateColHeader: 'Data',
     timeColHeader: 'Horário',
-    registrationPeriod: 'Período de inscrição',
-    regOpening: 'Abertura',
-    regClosing: 'Encerramento',
     sourcesSection: 'Fontes',
     photosSection: 'Fotos',
     registerBtn: 'Inscrever-se →',
@@ -98,6 +97,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filter by location',
     fonteFilterAriaLabel: 'Filter by source',
     refreshAriaLabel: 'Refresh',
+    homeAriaLabel: 'My location and language',
+    langAriaLabel: 'Language',
     clearFiltersAriaLabel: 'Clear filters',
     allLocations: 'All',
     allBrazil: 'All Brazil',
@@ -121,9 +122,6 @@ const STRINGS = {
     distancesHeader: 'Distances',
     dateColHeader: 'Date',
     timeColHeader: 'Time',
-    registrationPeriod: 'Registration period',
-    regOpening: 'Opening',
-    regClosing: 'Closing',
     sourcesSection: 'Sources',
     photosSection: 'Photos',
     registerBtn: 'Register →',
@@ -151,7 +149,7 @@ const STRINGS = {
       'Áustria': 'Austria', 'Suíça': 'Switzerland', 'Polônia': 'Poland',
       'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokyo', 'Londres': 'London',
       'Berlim': 'Berlin', 'Valência': 'Valencia',
-      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhagen',
+      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Copenhagen',
       'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athens',
       'Milão': 'Milan', 'Veneza': 'Venice', 'Assunção': 'Asunción',
       'Lisboa': 'Lisbon', 'Moscou': 'Moscow',
@@ -174,6 +172,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrar por ubicación',
     fonteFilterAriaLabel: 'Filtrar por fuente',
     refreshAriaLabel: 'Actualizar',
+    homeAriaLabel: 'Mi ubicación e idioma',
+    langAriaLabel: 'Idioma',
     clearFiltersAriaLabel: 'Limpiar filtros',
     allLocations: 'Todos',
     allBrazil: 'Todo Brasil',
@@ -197,9 +197,6 @@ const STRINGS = {
     distancesHeader: 'Distancias',
     dateColHeader: 'Fecha',
     timeColHeader: 'Hora',
-    registrationPeriod: 'Período de inscripción',
-    regOpening: 'Apertura',
-    regClosing: 'Cierre',
     sourcesSection: 'Fuentes',
     photosSection: 'Fotos',
     registerBtn: 'Inscribirse →',
@@ -227,7 +224,7 @@ const STRINGS = {
       'Áustria': 'Austria', 'Suíça': 'Suiza', 'Polônia': 'Polonia',
       'Edimburgo': 'Edimburgo', 'Tóquio': 'Tokio', 'Londres': 'Londres',
       'Berlim': 'Berlín', 'Valência': 'Valencia', 'Dublin': 'Dublín',
-      'Nova York': 'Nueva York', 'Amsterdã': 'Ámsterdam', 'Copenhague': 'Copenhague',
+      'Nova York': 'Nueva York', 'Amstã': 'Ámsterdam', 'Copenhague': 'Copenhague',
       'Estocolmo': 'Estocolmo', 'Praga': 'Praga', 'Atenas': 'Atenas',
       'Milão': 'Milán', 'Veneza': 'Venecia', 'Assunção': 'Asunción',
       'Lisboa': 'Lisboa', 'Moscou': 'Moscú',
@@ -250,6 +247,8 @@ const STRINGS = {
     estadoAriaLabel: 'Nach Ort filtern',
     fonteFilterAriaLabel: 'Nach Quelle filtern',
     refreshAriaLabel: 'Aktualisieren',
+    homeAriaLabel: 'Mein Standort und Sprache',
+    langAriaLabel: 'Sprache',
     clearFiltersAriaLabel: 'Filter löschen',
     allLocations: 'Alle',
     allBrazil: 'Ganz Brasilien',
@@ -273,9 +272,6 @@ const STRINGS = {
     distancesHeader: 'Distanzen',
     dateColHeader: 'Datum',
     timeColHeader: 'Uhrzeit',
-    registrationPeriod: 'Anmeldezeitraum',
-    regOpening: 'Öffnung',
-    regClosing: 'Schließung',
     sourcesSection: 'Quellen',
     photosSection: 'Fotos',
     registerBtn: 'Anmelden →',
@@ -303,7 +299,7 @@ const STRINGS = {
       'Áustria': 'Österreich', 'Suíça': 'Schweiz', 'Polônia': 'Polen',
       'Edimburgo': 'Edinburgh', 'Tóquio': 'Tokio', 'Londres': 'London',
       'Berlim': 'Berlin', 'Valência': 'Valencia',
-      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
+      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Kopenhagen',
       'Estocolmo': 'Stockholm', 'Praga': 'Prag', 'Atenas': 'Athen',
       'Milão': 'Mailand', 'Veneza': 'Venedig', 'Assunção': 'Asunción',
       'Lisboa': 'Lissabon', 'Moscou': 'Moskau',
@@ -326,6 +322,8 @@ const STRINGS = {
     estadoAriaLabel: 'Filtrer par lieu',
     fonteFilterAriaLabel: 'Filtrer par source',
     refreshAriaLabel: 'Actualiser',
+    homeAriaLabel: 'Ma localisation et langue',
+    langAriaLabel: 'Langue',
     clearFiltersAriaLabel: 'Effacer les filtres',
     allLocations: 'Tous',
     allBrazil: 'Tout le Brésil',
@@ -349,9 +347,6 @@ const STRINGS = {
     distancesHeader: 'Distances',
     dateColHeader: 'Date',
     timeColHeader: 'Heure',
-    registrationPeriod: "Période d'inscription",
-    regOpening: 'Ouverture',
-    regClosing: 'Clôture',
     sourcesSection: 'Sources',
     photosSection: 'Photos',
     registerBtn: "S'inscrire →",
@@ -379,7 +374,7 @@ const STRINGS = {
       'Áustria': 'Autriche', 'Suíça': 'Suisse', 'Polônia': 'Pologne',
       'Edimburgo': 'Édimbourg', 'Tóquio': 'Tokyo', 'Londres': 'Londres',
       'Berlim': 'Berlin', 'Valência': 'Valence',
-      'Nova York': 'New York', 'Amsterdã': 'Amsterdam', 'Copenhague': 'Copenhague',
+      'Nova York': 'New York', 'Amstã': 'Amsterdam', 'Copenhague': 'Copenhague',
       'Estocolmo': 'Stockholm', 'Praga': 'Prague', 'Atenas': 'Athènes',
       'Milão': 'Milan', 'Veneza': 'Venise', 'Assunção': 'Asunción',
       'Lisboa': 'Lisbonne', 'Moscou': 'Moscou',
@@ -426,7 +421,8 @@ const resultCount       = $('resultCount');
 const btnClear          = $('btnClear');
 const btnClearEmpty     = $('btnClearEmpty');
 const btnRefresh        = $('btnRefresh');
-const langSelect        = $('langSelect');
+const btnLang           = $('btnLang');
+const btnHome           = $('btnHome');
 const estadoFilterWrapper  = $('estadoFilterWrapper');
 const estadoFilterBtn      = $('estadoFilterBtn');
 const estadoFilterDropdown = $('estadoFilterDropdown');
@@ -456,7 +452,8 @@ function initI18n() {
   document.title = T.siteTitle;
   document.querySelector('.app-title').textContent = T.headerTitle;
 
-  if (langSelect) langSelect.value = LANG;
+  if (btnLang)     btnLang.setAttribute('aria-label', T.langAriaLabel);
+  if (btnHome)     btnHome.setAttribute('aria-label', T.homeAriaLabel);
   if (btnRefresh)  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
   if (searchInput) {
     searchInput.placeholder = T.searchPlaceholder;
@@ -504,11 +501,73 @@ function initI18n() {
 }
 
 // ---------------------------------------------------------------------------
-// Language switch
+// Language switch (custom dropdown)
 // ---------------------------------------------------------------------------
-if (langSelect) {
-  langSelect.addEventListener('change', () => {
-    window.location.href = LANG_URLS[langSelect.value] || '/pt';
+const _LANG_LABELS = { de: 'Deutsch', en: 'English', es: 'Español', fr: 'Français', pt: 'Português' };
+let _langDropdown = null;
+
+function _closeLangDropdown() {
+  if (_langDropdown) { _langDropdown.remove(); _langDropdown = null; }
+}
+
+if (btnLang) {
+  btnLang.addEventListener('click', e => {
+    e.stopPropagation();
+    if (_langDropdown) { _closeLangDropdown(); return; }
+
+    const dd = document.createElement('div');
+    dd.className = 'lang-dropdown';
+    const _sortedLangs = [[LANG, _LANG_LABELS[LANG]],
+      ...Object.entries(_LANG_LABELS).filter(([c]) => c !== LANG)];
+    for (const [code, label] of _sortedLangs) {
+      const btn = document.createElement('button');
+      btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');
+      btn.textContent = label;
+      btn.addEventListener('click', () => {
+        _closeLangDropdown();
+        if (code !== LANG) window.location.href = LANG_URLS[code] || '/pt';
+      });
+      dd.appendChild(btn);
+    }
+    _langDropdown = dd;
+    document.body.appendChild(dd);
+
+    const r = btnLang.getBoundingClientRect();
+    dd.style.top   = (r.bottom + 4) + 'px';
+    dd.style.right = (window.innerWidth - r.right) + 'px';
+    dd.style.position = 'fixed';
+
+    setTimeout(() => document.addEventListener('click', _closeLangDropdown, { once: true }), 0);
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Home button — reset to browser language + geo-detected location
+// ---------------------------------------------------------------------------
+if (btnHome) {
+  btnHome.addEventListener('click', () => {
+    const targetLang = BROWSER_LANG;
+
+    if (targetLang === LANG) {
+      _userChoseLocation = false;
+      state.estado = 'todos';
+      _geoApplied  = null;
+      if (_geoDetected) {
+        _applyGeoLocation();
+      } else {
+        detectUserLocation();
+      }
+      return;
+    }
+
+    if (_geoDetected) {
+      try { sessionStorage.setItem('_geoCache', _geoDetected); } catch (e) {}
+    }
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+      if (saved) { delete saved.estado; localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); }
+    } catch (e) {}
+    window.location.href = LANG_URLS[targetLang] || '/pt';
   });
 }
 
@@ -554,7 +613,7 @@ async function fetchData(triggeredByUser = false) {
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const json = await resp.json();
     allCorridas = json.corridas || [];
-    populateEstadoFilter({ skipGeo: true });
+    populateEstadoFilter();
     populateFontesFilter();
     if (triggeredByUser && !_userChoseLocation) {
       state.estado = 'todos';
@@ -576,11 +635,8 @@ async function fetchData(triggeredByUser = false) {
 // Location / geo helpers
 // ---------------------------------------------------------------------------
 
-// Translate a Portuguese place string (city, country, or "City, Country")
-// to the current language. PT is already the base, other langs use T.places.
 function translatePlace(str) {
   if (!str || LANG === 'pt' || !T.places) return str || '';
-  // Sort entries longest-first so "Estados Unidos" matches before "Estados"
   const entries = Object.entries(T.places).sort((a, b) => b[0].length - a[0].length);
   let out = str;
   for (const [pt, local] of entries) {
@@ -601,7 +657,6 @@ const _ESTADO_LABELS = {
   SE: 'Sergipe · SE',        SP: 'São Paulo · SP',           TO: 'Tocantins · TO',
 };
 
-// Fallback country for cities that omit the ", Country" suffix
 const _CITY_COUNTRY = {
   'Buenos Aires': 'Argentina',
   'Assunção':     'Paraguai',
@@ -615,7 +670,7 @@ const _CITY_COUNTRY = {
   'Madrid':       'Espanha',
   'Barcelona':    'Espanha',
   'Amsterdam':    'Países Baixos',
-  'Amsterdã':     'Países Baixos',
+  'Amstã':     'Países Baixos',
   'Montevidéu':   'Uruguai',
   'Santiago':     'Chile',
   'Lima':         'Peru',
@@ -623,7 +678,6 @@ const _CITY_COUNTRY = {
   'Cidade do México': 'México',
 };
 
-// ISO 3166-1 alpha-2 → country name as used in the data (Portuguese)
 const _ISO2_TO_DATA_COUNTRY = {
   AR: 'Argentina',
   PY: 'Paraguai',
@@ -659,7 +713,6 @@ const _ISO2_TO_DATA_COUNTRY = {
   NZ: 'Nova Zelândia',
 };
 
-// Cities that host World Marathon Majors (lowercase for matching)
 const _MAJOR_CITIES = new Set([
   'tóquio', 'tokyo',
   'boston',
@@ -692,27 +745,22 @@ function _extractCity(cidade) {
 // Geo-detection fallback chain
 // ---------------------------------------------------------------------------
 
-// Returns true if there is at least one future event matching filterValue
 function _hasFutureEvents(filterValue) {
   const today = todayStr();
   return allCorridas.some(c => c.data_evento >= today && _matchEstadoValue(c, filterValue));
 }
 
-// Fallback candidates, in priority order
 function _getFallbackChain(geoValue) {
   if (!geoValue) return [];
-  // INT:Country:City → INT:Country; INT:Country → todos
   if (geoValue.startsWith('INT:')) {
     const rest = geoValue.slice(4);
     if (rest.includes(':')) return [geoValue, 'INT:' + rest.slice(0, rest.indexOf(':'))];
     return [geoValue];
   }
-  // BR state → all Brazil
   return [geoValue, 'BR'];
 }
 
 function _applyGeoLocation() {
-  // Don't override a saved/explicit user filter
   if (state.estado !== 'todos') return;
   if (!_geoDetected && !allCorridas.length) return;
 
@@ -776,7 +824,7 @@ async function detectUserLocation() {
   if (!result) return;
 
   if (result.iso2 === 'BR') {
-    if (result.region) _geoDetected = result.region;  // e.g. 'DF'
+    if (result.region) _geoDetected = result.region;
     else _geoDetected = 'BR';
   } else {
     const dataCountry = _ISO2_TO_DATA_COUNTRY[result.iso2];
@@ -833,7 +881,6 @@ function _makeAccordionGroup(label, initiallyOpen) {
   header.addEventListener('click', () => {
     const isOpen = !body.classList.contains('collapsed');
     if (!isOpen) {
-      // Accordion: close every other open group
       estadoFilterDropdown.querySelectorAll('.estado-group-body').forEach(b => {
         if (b !== body && !b.classList.contains('collapsed')) {
           b.classList.add('collapsed');
@@ -879,17 +926,14 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     return el;
   }
 
-  // "Todos" at top level
   estadoFilterDropdown.appendChild(makeOption('todos', T.allLocations));
 
-  // Build Brasil group entry
   const brEstados = [...new Set(
     base
       .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
       .map(c => c.estado)
   )].sort();
 
-  // Build per-country entries
   const countryCity = new Map();
   for (const c of base) {
     if (c.estado !== 'INT' || c.data_evento < today) continue;
@@ -900,7 +944,6 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     if (city && city !== country) countryCity.get(country).add(city);
   }
 
-  // Merge into a single sorted list and append in alphabetical order
   const allGroups = [];
 
   if (brEstados.length > 0) {
@@ -932,7 +975,6 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
   allGroups.sort((a, b) => a.label.localeCompare(b.label, 'pt'));
   for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
 
-  // Reset to 'todos' if saved value no longer valid
   if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {
     state.estado = 'todos';
     saveFilters();
@@ -947,13 +989,11 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
 // ---------------------------------------------------------------------------
 function populateFontesFilter() {
   const today = todayStr();
-  // When a location is selected, only show fontes that have events there
   const base = allCorridas.filter(c =>
     c.data_evento >= today && _matchEstadoValue(c, state.estado)
   );
   const availableNomes = new Set(base.flatMap(c => (c.fontes || []).map(f => f.nome)));
 
-  // Auto-uncheck fontes no longer available in the selected location
   let stateChanged = false;
   for (const nome of [...state.fontes]) {
     if (!availableNomes.has(nome)) {
@@ -991,10 +1031,8 @@ function populateFontesFilter() {
       }
       _updateFonteLabel();
       saveFilters();
-      // Update available locations based on new fonte selection
       const prevEstado = state.estado;
       populateEstadoFilter({ skipGeo: true });
-      // If estado was reset (no longer valid), refresh fontes for new 'todos' scope
       if (state.estado !== prevEstado) populateFontesFilter();
       applyFilters();
     });
@@ -1059,7 +1097,6 @@ function matchesPeriodo(c, today) {
   }
 }
 
-// Pure helper: test an event against an arbitrary filter value
 function _matchEstadoValue(c, value) {
   if (value === 'todos') return true;
   if (value === 'BR')    return c.estado !== 'INT';
@@ -1156,7 +1193,8 @@ function renderCards() {
     const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
     const expand = hasFuture && !firstFutureMonthFound;
     if (expand) firstFutureMonthFound = true;
-    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand);
+    const hasNovo = corridas.some(c => _isNovo(c));
+    const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNovo);
     for (const corrida of corridas) {
       cardsContainer.appendChild(buildCard(corrida));
     }
@@ -1205,10 +1243,16 @@ function buildPastSection(corridas) {
   return section;
 }
 
-function buildMonthSection(monthKey, count, expanded = false) {
+function _isNovo(c) {
+  if (!c || !c.first_seen_at) return false;
+  return (Date.now() - new Date(c.first_seen_at).getTime()) < 7 * 24 * 60 * 60 * 1000;
+}
+
+function buildMonthSection(monthKey, count, expanded = false, hasNovo = false) {
   const [year, month] = monthKey.split('-');
   const label      = T.monthsFull[parseInt(month, 10) - 1] + ' ' + year;
   const countLabel = T.raceCountLabel(count);
+  const novoBadge  = hasNovo ? `<span class="badge-novo">${T.badgeNovo}</span>` : '';
 
   const section = document.createElement('div');
   section.className = 'month-section';
@@ -1219,6 +1263,7 @@ function buildMonthSection(monthKey, count, expanded = false) {
   btn.setAttribute('aria-label', `${label}, ${countLabel}`);
   btn.innerHTML = `
     <span class="month-separator-label">${label}</span>
+    ${novoBadge}
     <span class="month-count">${countLabel}</span>
     <span class="month-chevron" aria-hidden="true">${expanded ? '▾' : '▸'}</span>`;
 
@@ -1271,7 +1316,7 @@ function buildCard(c) {
   const novoBadge = card.querySelector('.badge-novo');
   if (novoBadge && c.first_seen_at) {
     const age = Date.now() - new Date(c.first_seen_at).getTime();
-    if (age < 24 * 60 * 60 * 1000) {
+    if (age < 7 * 24 * 60 * 60 * 1000) {
       novoBadge.textContent = T.badgeNovo;
       novoBadge.classList.remove('hidden');
     }
@@ -1326,7 +1371,6 @@ function toggleExpand(collapsed, expanded) {
 function buildExpanded(card, c) {
   const expTitle  = card.querySelector('.expanded-title');
   const expDist   = card.querySelector('.expanded-distances');
-  const expPeriod = card.querySelector('.expanded-period');
   const expFontes = card.querySelector('.expanded-fontes');
   const expFotos  = card.querySelector('.expanded-fotos');
 
@@ -1335,8 +1379,9 @@ function buildExpanded(card, c) {
 
   if (c.distancias && c.distancias.length > 0) {
     const sorted      = sortDistancias(c.distancias);
-    const hasDate     = sorted.some(d => d.data);
+    const uniqueDates = new Set(sorted.map(d => d.data || null).filter(Boolean));
     const uniqueTimes = new Set(sorted.map(d => d.horario || null).filter(Boolean));
+    const hasDate     = uniqueDates.size > 1;
     const hasHorario  = uniqueTimes.size > 1;
 
     const table = document.createElement('table');
@@ -1348,9 +1393,13 @@ function buildExpanded(card, c) {
     table.innerHTML = thead;
 
     const tbody = document.createElement('tbody');
+    const seenKm = new Set();
     for (const d of sorted) {
+      const label = formatKm(d.km);
+      if (seenKm.has(label)) continue;
+      seenKm.add(label);
       const tr  = document.createElement('tr');
-      let cells = `<td>${formatKm(d.km)}</td>`;
+      let cells = `<td>${label}</td>`;
       if (hasDate)    cells += `<td>${d.data ? formatDateShort(d.data) : '—'}</td>`;
       if (hasHorario) cells += `<td>${d.horario || '—'}</td>`;
       tr.innerHTML = cells;
@@ -1358,18 +1407,6 @@ function buildExpanded(card, c) {
     }
     table.appendChild(tbody);
     expDist.appendChild(table);
-  }
-
-  if (c.periodo_inscricao && (c.periodo_inscricao.abertura || c.periodo_inscricao.encerramento)) {
-    const h = document.createElement('p');
-    h.className   = 'expanded-section-title';
-    h.textContent = T.registrationPeriod;
-    expPeriod.appendChild(h);
-    const p   = document.createElement('p');
-    const ab  = c.periodo_inscricao.abertura     ? `${T.regOpening}: ${formatDateShort(c.periodo_inscricao.abertura)}`     : '';
-    const enc = c.periodo_inscricao.encerramento ? `${T.regClosing}: ${formatDateShort(c.periodo_inscricao.encerramento)}` : '';
-    p.textContent = [ab, enc].filter(Boolean).join(' · ');
-    expPeriod.appendChild(p);
   }
 
   if (c.fontes && c.fontes.length > 0) {
@@ -1457,7 +1494,10 @@ function sortDistancias(distancias) {
 
 function formatDistancesPills(distancias) {
   if (!distancias || distancias.length === 0) return [];
-  return sortDistancias(distancias).map(d => formatKm(d.km));
+  const seen = new Set();
+  return sortDistancias(distancias)
+    .map(d => formatKm(d.km))
+    .filter(label => { if (seen.has(label)) return false; seen.add(label); return true; });
 }
 
 function formatKm(km) {
@@ -1717,6 +1757,11 @@ function init() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js').catch(() => {});
   }
+
+  try {
+    const cached = sessionStorage.getItem('_geoCache');
+    if (cached) { _geoDetected = cached; sessionStorage.removeItem('_geoCache'); }
+  } catch (e) {}
 
   detectUserLocation();
   fetchData();

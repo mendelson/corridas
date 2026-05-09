@@ -1442,8 +1442,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const dd = document.createElement('div');
     dd.className = 'lang-dropdown';
 
-    const sorted = [[LANG, _LANG_LABELS[LANG]],
-      ...Object.entries(_LANG_LABELS).filter(([c]) => c !== LANG)];
+    const sorted = [
+      [LANG, _LANG_LABELS[LANG]],
+      ...Object.entries(_LANG_LABELS).filter(([c]) => c !== LANG).sort((a, b) => a[1].localeCompare(b[1])),
+    ];
     for (const [code, label] of sorted) {
       const btn = document.createElement('button');
       btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');

@@ -1475,6 +1475,21 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnHome.addEventListener('click', async () => {
+    const targetLang = BROWSER_LANG;
+
+    if (targetLang !== LANG) {
+      // Different language: navigate, carrying geo cache and clearing saved location
+      const geo = await detectGeoEstado();
+      if (geo) sessionStorage.setItem('_geoCache', geo);
+      try {
+        const saved = JSON.parse(localStorage.getItem('corridas_filters') || 'null');
+        if (saved) { delete saved.estado; localStorage.setItem('corridas_filters', JSON.stringify(saved)); }
+      } catch (_) {}
+      window.location.href = LANG_URLS[targetLang];
+      return;
+    }
+
+    // Same language: just reset location
     const geo = await detectGeoEstado();
     _userChoseLocation = false;
     state.estado = geo || 'todos';

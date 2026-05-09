@@ -83,6 +83,8 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 - Filter persistence: `localStorage['corridas_filters']` (object with `estado`, `fontes` set, distance pills, etc.). `sessionStorage['_geoCache']` is used to carry detected geo across cross-language navigation so the new page applies the location filter immediately.
 - "Novo" badge logic: an event is "new" when `Date.now() - first_seen_at < 7 days`. The badge appears on cards **and** on month-section headers (any event in the month qualifying). The `<span class="badge-novo">` element must exist in the card template — JS uses `card.querySelector('.badge-novo')` and silently no-ops if missing.
 - The expanded card's distance table only renders the **Date** or **Horário** column when values differ across distances. If every `Distancia` shares the same date or horário, that column is suppressed (the value is already on the card-level header).
+- `periodo_inscricao` is stored in the data model but **never displayed** in the frontend. Do not add any UI for it — no section title, no dates, no block of any kind.
+- `links_inscricao` in each `FonteInfo` should always be `[link_evento]` — the source page where the event data was scraped from. **No conditional logic based on `inscricoes_abertas`.** The button always shows and always leads to the source event page.
 
 ### Frontend distances are unit-aware
 

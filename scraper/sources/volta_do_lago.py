@@ -1,135 +1,35 @@
 """Scraper for Corrida da Volta do Lago Paranoá — Brasília, DF
 
-Site oficial: voltadolago.com.br
-Evento anual em Brasília, percurso ao redor do Lago Paranoá.
+The official site (voltadolago.com.br) is a JavaScript-heavy SPA that cannot be
+scraped without full JS rendering. This scraper finds the event on major Brazilian
+inscription platforms instead: Ticket Sports (JSON API) and Sympla (HTML/Next.js).
 """
 from __future__ import annotations
 import json
 import re
-from datetime import date
 
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import (
-    normalize_date, normalize_titulo, normalize_time, slugify, now_iso, today_iso,
+from ..utils import normalize_titulo, slugify, now_iso, today_iso
+
+SOURCE_NAME = "Volta do Lago"
+BASE_SITE   = "https://voltadolago.com.br"
+
+# ── Ticket Sports ────────────────────────────────────────────────────────────
+_TS_API  = "https://www.ticketsports.app/api/events/list"
+_TS_BASE = "https://www.ticketsports.com.br"
+
+# ── Sympla ───────────────────────────────────────────────────────────────────
+_SYMPLA_BASE = "https://www.sympla.com.br"
+
+# Matches the event name in any title/description
+_MATCH_RE = re.compile(
+    r"volta\s+d[ao]\s+lago\s+paran[oó]|volta\s+d[ao]\s+lago",
+    re.IGNORECASE,
 )
 
-BASE        = "https://voltadolago.com.br"
-SOURCE_NAME = "Volta do Lago"
-
-_OPEN_KW   = ["inscrições abertas", "inscreva-se", "inscrição", "inscrições",
-               "garantir vaga", "clique aqui", "cadastre-se", "inscricoes abertas",
-               "aberto", "aberta", "participe"]
-_CLOSED_KW = ["inscrições encerradas", "esgotado", "encerrado", "encerrada",
-               "vagas esgotadas", "inscricoes encerradas"]
-
-_PAGES = [
-    BASE + "/",
-    BASE + "/corrida/",
-    BASE + "/corrida-de-rua/",
-    BASE + "/inscricao/",
-    BASE + f"/{date.today().year}/",
-    BASE + f"/corrida-{date.today().year}/",
-    BASE + f"/volta-{date.today().year}/",
-]
-
-
-def scrape() -> list[Corrida]:
-    soup = None
-    final_url = BASE + "/"
-    for url in _PAGES:
-        try:
-            resp = get(url, source=SOURCE_NAME, render_js=True, timeout=30)
-            if resp.status_code == 200 and len(resp.text) > 500:
-                soup = BeautifulSoup(resp.text, "lxml")
-                final_url = url
-                break
-        except Exception:
-            continue
-
-    if soup is None:
-        print(f"[{SOURCE_NAME}] site inacessível, sem dados para retornar")
-        return []
-
-    text_full = soup.get_text(" ", strip=True)
-
-    # ── Try __NEXT_DATA__ (Next.js) ──────────────────────────────────────────
-    result = _try_next_data(soup, final_url)
-    if result:
-        print(f"[{SOURCE_NAME}] 1 corrida encontrada via __NEXT_DATA__")
-        return result
-
-    # ── Try standard HTML extraction ─────────────────────────────────────────
-    result = _try_html(soup, text_full, final_url)
-    if result:
-        print(f"[{SOURCE_NAME}] 1 corrida encontrada via HTML")
-        return result
-
-    # Debug: show a snippet of what was found to diagnose extraction failures
-    snippet = text_full[:500].replace('\n', ' ')
-    print(f"[{SOURCE_NAME}] site acessível mas sem dados reconhecíveis. snippet: {snippet!r}")
-    return []
-
-
-# ---------------------------------------------------------------------------
-# Next.js strategy
-# ---------------------------------------------------------------------------
-def _try_next_data(soup, page_url: str) -> list[Corrida] | None:
-    tag = soup.find("script", id="__NEXT_DATA__")
-    if not tag:
-        return None
-    try:
-        data = json.loads(tag.string or "")
-    except Exception:
-        return None
-
-    text = json.dumps(data, ensure_ascii=False)
-    data_evento = _extract_date_from_str(text) or _extract_date_from_soup(soup)
-    if not data_evento:
-        return None
-
-    titulo_raw = (
-        _jget(data, "pageProps", "event", "name")
-        or _jget(data, "pageProps", "titulo")
-        or _jget(data, "pageProps", "title")
-        or "Corrida da Volta do Lago"
-    )
-    titulo = normalize_titulo(titulo_raw)
-
-    distancias = _extract_distances_from_str(text)
-    if not distancias:
-        distancias = _guess_distances(titulo)
-
-    link = _find_insc_link(soup) or page_url
-
-    return [_build(titulo, data_evento, distancias, link, None)]
-
-
-# ---------------------------------------------------------------------------
-# HTML strategy
-# ---------------------------------------------------------------------------
-def _try_html(soup, text_full: str, page_url: str) -> list[Corrida] | None:
-    data_evento = _extract_date_from_soup(soup) or _extract_date_from_str(text_full)
-    if not data_evento:
-        return None
-
-    titulo = _extract_titulo(soup) or "Corrida da Volta do Lago"
-    distancias = _extract_distances_from_str(text_full)
-    if not distancias:
-        distancias = _guess_distances(titulo)
-
-    horario_str = normalize_time(text_full)
-    imagem_url = _extract_image(soup)
-    link = _find_insc_link(soup) or page_url
-
-    return [_build(titulo, data_evento, distancias, link, imagem_url, horario_str)]
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
 _PT_MONTHS = {
     "jan": "01", "fev": "02", "mar": "03", "abr": "04",
     "mai": "05", "jun": "06", "jul": "07", "ago": "08",
@@ -139,64 +39,237 @@ _PT_MONTHS = {
     "agosto": "08", "setembro": "09", "outubro": "10",
     "novembro": "11", "dezembro": "12",
 }
-
-_YEAR_RE  = re.compile(r"\b(202\d|203\d)\b")
 _DATE_ISO = re.compile(r"\b(202\d|203\d)-(0[1-9]|1[0-2])-(\d{2})\b")
 _DATE_RE1 = re.compile(r"\b(\d{1,2})[/.\-](\d{1,2})[/.\-](202\d|203\d)\b")
 _DATE_RE2 = re.compile(
     r"\b(\d{1,2})\s+de\s+([a-záéíóúãõâêô]+)\s+de\s+(202\d|203\d)\b",
     re.IGNORECASE,
 )
-_DATE_RE3 = re.compile(
-    r"\b(\d{1,2})\s+([a-záéíóúãõâêô]{3,})\s+(202\d|203\d)\b",
-    re.IGNORECASE,
-)
 _DIST_RE  = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*km?\b", re.IGNORECASE)
-_INSC_RE  = re.compile(
-    r"href=[\"'](https?://[^\"']*(?:sympla|ticketsports|ticket\.com\.br"
-    r"|minhasinscricoes|even3|ativo\.com|inscricao|inscreva)[^\"']*)[\"']",
-    re.IGNORECASE,
-)
+_CANON_KM = {21: 21.097, 42: 42.195}
 
 
-def _extract_date_from_soup(soup) -> str | None:
-    """Try structured data sources before falling back to text."""
-    # JSON-LD Event schema
-    for tag in soup.find_all("script", type="application/ld+json"):
+def scrape() -> list[Corrida]:
+    today = today_iso()
+
+    # 1. Ticket Sports — targeted search
+    result = _search_ticket_sports(today)
+    if result:
+        print(f"[{SOURCE_NAME}] {len(result)} corrida(s) encontrada(s) via Ticket Sports")
+        return result
+
+    # 2. Sympla — targeted search
+    result = _search_sympla(today)
+    if result:
+        print(f"[{SOURCE_NAME}] {len(result)} corrida(s) encontrada(s) via Sympla")
+        return result
+
+    print(f"[{SOURCE_NAME}] evento não encontrado em nenhuma plataforma")
+    return []
+
+
+# ---------------------------------------------------------------------------
+# Ticket Sports
+# ---------------------------------------------------------------------------
+
+def _search_ticket_sports(today: str) -> list[Corrida]:
+    for term in ("volta lago", "volta do lago", "lago paranoa"):
         try:
-            data = json.loads(tag.string or "")
-            if isinstance(data, list):
-                data = data[0]
-            start = data.get("startDate") or data.get("start_date") or ""
-            if start and re.match(r"202\d|203\d", start):
-                return start[:10]
+            resp = get(_TS_API, params={"quantity": 50, "atlheteId": 0, "term": term})
+            resp.raise_for_status()
+            events: list[dict] = json.loads(resp.content.decode("utf-8"))
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] Ticket Sports erro (term={term!r}): {e}")
+            continue
+
+        for ev in events:
+            title = ev.get("title") or ev.get("nome") or ""
+            if not _MATCH_RE.search(title):
+                continue
+            c = _parse_ts_event(ev, today)
+            if c:
+                return [c]
+
+    return []
+
+
+def _parse_ts_event(ev: dict, today: str) -> Corrida | None:
+    title  = ev.get("title") or ev.get("nome") or ""
+    titulo = normalize_titulo(title)
+    if not titulo:
+        return None
+
+    event_id  = ev.get("id") or ev.get("eventId") or ""
+    slug      = ev.get("url") or ev.get("slug") or ""
+    link      = (f"{_TS_BASE}/{slug}" if slug else
+                 f"{_TS_BASE}/evento/{event_id}" if event_id else _TS_BASE)
+
+    # Date
+    raw_date = (ev.get("date") or ev.get("data") or
+                ev.get("startDate") or ev.get("dataInicio") or "")
+    data_evento = _parse_date(raw_date) or ""
+
+    if data_evento and data_evento < today:
+        return None
+
+    # Distances
+    dist_text = " ".join(filter(None, [
+        ev.get("description") or "", ev.get("descricao") or "",
+        ev.get("modalidades") or "",
+    ]))
+    distancias = _extract_distances(dist_text) or _guess_distances(titulo)
+
+    imagem = ev.get("image") or ev.get("foto") or ev.get("banner") or None
+    if imagem and imagem.startswith("//"):
+        imagem = "https:" + imagem
+
+    now = now_iso()
+    return Corrida(
+        id=f"volta-do-lago_df_{data_evento[:4] if data_evento else today[:4]}",
+        titulo=titulo,
+        data_evento=data_evento,
+        horario=None,
+        localizacao="Brasília, DF",
+        cidade="Brasília",
+        estado="DF",
+        distancias=distancias,
+        imagem_url=imagem or None,
+        inscricoes_abertas=None,
+        periodo_inscricao=None,
+        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link])],
+        miss_count=0,
+        first_seen_at=now,
+        updated_at=now,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Sympla
+# ---------------------------------------------------------------------------
+
+def _search_sympla(today: str) -> list[Corrida]:
+    for term in ("volta do lago", "volta lago brasilia", "volta lago paranoa"):
+        url = f"{_SYMPLA_BASE}/busca?q={term.replace(' ', '+')}"
+        try:
+            resp = get(url, source=SOURCE_NAME, timeout=30)
+            if resp.status_code != 200:
+                continue
+            soup = BeautifulSoup(resp.text, "lxml")
         except Exception:
-            pass
-    # <time datetime="YYYY-MM-DD"> or <time datetime="YYYY-MM-DDThh:mm">
-    for tag in soup.find_all("time", datetime=True):
-        m = _DATE_ISO.search(tag["datetime"])
-        if m:
-            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-    # Meta tags (og:event, event:start_time, etc.)
-    for attr in ("event:start_time", "og:event:start_time"):
-        tag = soup.find("meta", property=attr) or soup.find("meta", attrs={"name": attr})
-        if tag and tag.get("content"):
-            m = _DATE_ISO.search(tag["content"])
-            if m:
-                return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-    # URLs on the page that embed a date (WordPress permalink pattern)
-    for a in soup.find_all("a", href=True):
-        m = _DATE_ISO.search(a["href"])
-        if m:
-            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
-    return None
+            continue
+
+        # Try __NEXT_DATA__ first
+        tag = soup.find("script", id="__NEXT_DATA__")
+        if tag:
+            try:
+                data = json.loads(tag.string or "")
+                items = _dig(data, "pageProps", "initialData", "results") or []
+                for item in items:
+                    name = item.get("name") or item.get("title") or ""
+                    if _MATCH_RE.search(name):
+                        c = _parse_sympla_item(item, today)
+                        if c:
+                            return [c]
+            except Exception:
+                pass
+
+        # HTML fallback: look for any card/link containing the event name
+        for a in soup.find_all("a", href=True):
+            text = a.get_text(" ", strip=True)
+            if _MATCH_RE.search(text):
+                href = a["href"]
+                if not href.startswith("http"):
+                    href = _SYMPLA_BASE + href
+                c = _parse_sympla_link(text, href, today)
+                if c:
+                    return [c]
+
+    return []
 
 
-def _extract_date_from_str(text: str) -> str | None:
-    # ISO format: 2026-08-09
-    m = _DATE_ISO.search(text)
+def _parse_sympla_item(item: dict, today: str) -> Corrida | None:
+    title = item.get("name") or item.get("title") or ""
+    titulo = normalize_titulo(title)
+    if not titulo:
+        return None
+
+    slug      = item.get("url") or item.get("id") or ""
+    link      = (f"{_SYMPLA_BASE}/evento/{slug}" if slug and not slug.startswith("http")
+                 else slug or _SYMPLA_BASE)
+
+    raw_date  = item.get("start_date") or item.get("startDate") or item.get("date") or ""
+    data_evento = _parse_date(raw_date) or ""
+    if data_evento and data_evento < today:
+        return None
+
+    distancias = _extract_distances(
+        " ".join(filter(None, [item.get("description") or "", title]))
+    ) or _guess_distances(titulo)
+
+    imagem = item.get("image") or item.get("thumb") or item.get("cover") or None
+
+    now = now_iso()
+    return Corrida(
+        id=f"volta-do-lago_df_{data_evento[:4] if data_evento else today[:4]}",
+        titulo=titulo,
+        data_evento=data_evento,
+        horario=None,
+        localizacao="Brasília, DF",
+        cidade="Brasília",
+        estado="DF",
+        distancias=distancias,
+        imagem_url=imagem,
+        inscricoes_abertas=None,
+        periodo_inscricao=None,
+        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link])],
+        miss_count=0,
+        first_seen_at=now,
+        updated_at=now,
+    )
+
+
+def _parse_sympla_link(text: str, href: str, today: str) -> Corrida | None:
+    titulo = normalize_titulo(text[:120])
+    if not titulo:
+        return None
+    data_evento = _parse_date_from_str(text) or ""
+    if data_evento and data_evento < today:
+        return None
+    distancias = _extract_distances(text) or _guess_distances(titulo)
+    now = now_iso()
+    return Corrida(
+        id=f"volta-do-lago_df_{data_evento[:4] if data_evento else today[:4]}",
+        titulo=titulo,
+        data_evento=data_evento,
+        horario=None,
+        localizacao="Brasília, DF",
+        cidade="Brasília",
+        estado="DF",
+        distancias=distancias,
+        imagem_url=None,
+        inscricoes_abertas=None,
+        periodo_inscricao=None,
+        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=href, links_inscricao=[href])],
+        miss_count=0,
+        first_seen_at=now,
+        updated_at=now,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _parse_date(raw: str) -> str | None:
+    if not raw:
+        return None
+    m = _DATE_ISO.search(raw)
     if m:
         return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    return _parse_date_from_str(raw)
+
+
+def _parse_date_from_str(text: str) -> str | None:
     m = _DATE_RE1.search(text)
     if m:
         d, mo, y = m.group(1).zfill(2), m.group(2).zfill(2), m.group(3)
@@ -206,116 +279,43 @@ def _extract_date_from_str(text: str) -> str | None:
         mo = _PT_MONTHS.get(m.group(2).lower())
         if mo:
             return f"{m.group(3)}-{mo}-{m.group(1).zfill(2)}"
-    m = _DATE_RE3.search(text)
-    if m:
-        mo = _PT_MONTHS.get(m.group(2).lower()[:3])
-        if mo:
-            return f"{m.group(3)}-{mo}-{m.group(1).zfill(2)}"
     return None
 
 
-def _extract_distances_from_str(text: str) -> list[Distancia]:
-    seen: set[float] = set()
+def _extract_distances(text: str) -> list[Distancia]:
+    if not text:
+        return []
+    seen: set[int] = set()
     result: list[Distancia] = []
-    # "meia maratona" / "half marathon"
     if re.search(r"meia\s+maratona|half\s+marathon", text, re.IGNORECASE):
-        seen.add(21.097); result.append(Distancia(km=21.097, data=None, horario=None))
-    if re.search(r"(?<!meia\s)\bmaratona\b|(?<!half\s)\bmarathon\b", text, re.IGNORECASE):
-        if 42.195 not in seen:
-            seen.add(42.195); result.append(Distancia(km=42.195, data=None, horario=None))
+        seen.add(21); result.append(Distancia(km=21.097, data=None, horario=None))
+    if re.search(r"(?<!meia\s)\bmaratona\b", text, re.IGNORECASE):
+        if 42 not in seen:
+            seen.add(42); result.append(Distancia(km=42.195, data=None, horario=None))
     for m in _DIST_RE.finditer(text):
         km = float(m.group(1).replace(",", "."))
-        if 3 <= km <= 100 and km not in seen:
-            seen.add(km); result.append(Distancia(km=km, data=None, horario=None))
+        key = round(km)
+        if 3 <= km <= 100 and key not in seen:
+            seen.add(key)
+            result.append(Distancia(km=_CANON_KM.get(key, km), data=None, horario=None))
     return sorted(result, key=lambda d: float(d.km) if isinstance(d.km, (int, float)) else 999)
 
 
 def _guess_distances(titulo: str) -> list[Distancia]:
-    """Last-resort fallback: infer distances from title keywords."""
     t = titulo.lower()
     if "meia" in t:
         return [Distancia(km=21.097, data=None, horario=None)]
     if "maratona" in t:
         return [Distancia(km=42.195, data=None, horario=None)]
-    # Default: 5km + 10km (typical Brasília recreational race)
     return [
         Distancia(km=5.0,  data=None, horario=None),
         Distancia(km=10.0, data=None, horario=None),
     ]
 
 
-def _extract_titulo(soup) -> str | None:
-    for sel in ["h1", "h2", ".event-title", ".titulo", ".title", "title"]:
-        tag = soup.select_one(sel)
-        if tag:
-            t = normalize_titulo(tag.get_text(strip=True))
-            if t and len(t) > 4:
-                return t
-    return None
-
-
-def _extract_image(soup) -> str | None:
-    for sel in ["meta[property='og:image']", "meta[name='twitter:image']"]:
-        tag = soup.select_one(sel)
-        if tag and tag.get("content"):
-            return tag["content"]
-    for img in soup.find_all("img", src=True):
-        src = img["src"]
-        if re.search(r"\.(jpg|jpeg|png|webp)", src, re.IGNORECASE):
-            if not re.search(r"logo|icon|sponsor|pixel|favicon", src, re.IGNORECASE):
-                return src if src.startswith("http") else BASE + src
-    return None
-
-
-def _find_insc_link(soup) -> str | None:
-    html = str(soup)
-    m = _INSC_RE.search(html)
-    if m:
-        return m.group(1)
-    # Fallback: any <a> with "inscrição" or "inscreva" text
-    for a in soup.find_all("a", href=True):
-        txt = a.get_text(" ", strip=True).lower()
-        if any(k in txt for k in ("inscrição", "inscreva", "inscrever", "participe")):
-            href = a["href"]
-            return href if href.startswith("http") else BASE + href
-    return None
-
-
-def _jget(obj, *keys):
+def _dig(obj, *keys):
     for k in keys:
         if not isinstance(obj, dict):
             return None
         obj = obj.get(k)
-    return obj if isinstance(obj, str) else None
-
-
-def _build(
-    titulo: str,
-    data_evento: str,
-    distancias: list[Distancia],
-    link: str,
-    imagem_url: str | None,
-    horario: str | None = None,
-) -> Corrida:
-    now   = now_iso()
-    return Corrida(
-        id=f"volta-do-lago_df_{data_evento[:4]}",
-        titulo=titulo,
-        data_evento=data_evento,
-        horario=horario,
-        localizacao="Brasília, DF",
-        cidade="Brasília",
-        estado="DF",
-        distancias=distancias,
-        imagem_url=imagem_url,
-        inscricoes_abertas=None,
-        periodo_inscricao=None,
-        fontes=[FonteInfo(
-            nome=SOURCE_NAME,
-            link_evento=link,
-            links_inscricao=[link],
-        )],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )
+    return obj

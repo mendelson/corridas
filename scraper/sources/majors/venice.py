@@ -13,13 +13,12 @@ from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo
 from ...utils import now_iso, today_iso, extract_all_future_dates, extract_date_from_soup
 
-SOURCE_NAME   = "Venice Marathon"
+SOURCE_NAME = "Venice Marathon"
 URL           = "https://www.venicemarathon.it/en/"
 URL_TIMETABLE = "https://www.venicemarathon.it/en/race/timetable/"
 
-KNOWN_DATE      = "2026-10-25"
-KNOWN_DATE_NEXT = "2027-10-24"   # 4th Sunday of October 2027
-LOCALIZACAO     = "Veneza, Itália"
+KNOWN_DATE  = "2026-10-25"  # confirmed; only used as fallback when site is unreachable
+LOCALIZACAO = "Veneza, Itália"
 
 _DISTANCES: list[tuple[float, str]] = [
     (42.195, "09:15"),
@@ -35,7 +34,6 @@ _CLOSED_KW = ["sold out", "registration closed", "registrations closed",
 
 def scrape() -> list[Corrida]:
     today = today_iso()
-    all_known = sorted({KNOWN_DATE, KNOWN_DATE_NEXT})
 
     dates_to_use: list[str] = []
     imagem_url: str | None = None
@@ -70,14 +68,12 @@ def scrape() -> list[Corrida]:
         except Exception:
             continue
 
+    # Fallback to the single confirmed date only — never speculate on next year
+    if not dates_to_use and KNOWN_DATE >= today:
+        dates_to_use = [KNOWN_DATE]
+
     if not dates_to_use:
-        future = sorted(d for d in all_known if d >= today)
-        if future:
-            dates_to_use = future
-        else:
-            last = sorted(all_known)[-1]
-            y, m, d = last.split('-')
-            dates_to_use = [f"{int(y) + 1}-{m}-{d}"]
+        return []
 
     now = now_iso()
     distancias = [Distancia(km=km, data=None, horario=h) for km, h in _DISTANCES]

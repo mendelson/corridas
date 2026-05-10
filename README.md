@@ -16,7 +16,7 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-10 00:34 | ✅ | 2026-05-10 00:34 |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-10 00:41 | ✅ | 2026-05-10 00:41 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
@@ -24,11 +24,11 @@ GitHub Actions.
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-10 00:41 | ✅ | 2026-05-10 00:41 |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
-| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-10 00:02 | ❌ 0 eventos | — |
+| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-10 00:41 | ❌ 0 eventos | — |
 | Largada Esportiva<!--largada_esportiva--> | 🆕 | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
 | Road Runners<!--road_runners--> | ✅ | `roadrunners.run` (por estado) | __NEXT_DATA__ / HTML / Playwright | 2026-05-10 00:02 | ❌ 0 eventos | — |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | 2026-05-10 00:02 | ❌ 0 eventos | — |
@@ -85,7 +85,7 @@ projeção automática para o ano seguinte quando todas as datas conhecidas já 
 | Manchester Half Marathon<!--majors/manchester_half--> | ✅ | `manchesterhalfmarathon.com` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Bank of America Chicago Marathon<!--majors/chicago--> | ✅ | `chicagomarathon.com` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Amsterdam Marathon<!--majors/amsterdam--> | ✅ | `tcsamsterdammarathon.nl/en` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
-| Venice Marathon<!--majors/venice--> | ✅ | `venicemarathon.it/en` | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
+| Venice Marathon<!--majors/venice--> | ✅ | `venicemarathon.it/en` | 2026-05-10 00:40 | ✅ | 2026-05-10 00:40 |
 | Dublin City Marathon<!--majors/dublin--> | ✅ | `irishlifedublinmarathon.ie` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | TCS New York City Marathon<!--majors/nyc--> | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | Athens Classic Marathon<!--majors/athens--> | ✅ | `athensauthenticmarathon.gr/en` | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |

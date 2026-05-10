@@ -762,7 +762,7 @@ def _parse_json_event(ev: dict, today: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if inscricoes_abertas is not False else [],
+        links_inscricao=[link],
     )
 
     return Corrida(
@@ -977,7 +977,7 @@ def _parse_card(card, today: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=href,
-        links_inscricao=[href] if inscricoes_abertas is not False else [],
+        links_inscricao=[href],
     )
 
     return Corrida(

@@ -102,7 +102,7 @@ def scrape_major(
     fonte = FonteInfo(
         nome=source_name,
         link_evento=url,
-        links_inscricao=[url] if inscricoes_abertas else [],
+        links_inscricao=[url],
     )
 
     results = []

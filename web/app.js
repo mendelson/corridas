@@ -1148,6 +1148,8 @@ function formatDateShort(iso) {
   return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
 }
 
+const _LOCALE_MAP = { pt: 'pt-BR', en: 'en-US', es: 'es-ES', de: 'de-DE', fr: 'fr-FR' };
+
 function formatDate(isoDate, horario, distancias) {
   if (!isoDate) return '';
   const dates = new Set(
@@ -1155,7 +1157,6 @@ function formatDate(isoDate, horario, distancias) {
   );
   const hasPerDistDate = dates.size > 1;
 
-  const [y, m, d] = isoDate.split('-').map(Number);
   const today = todayStr();
   const iso   = isoDate;
 
@@ -1165,7 +1166,8 @@ function formatDate(isoDate, horario, distancias) {
   else if (iso === addDays(today,-1)) label = T.yesterday_label;
   else {
     const dow = new Date(iso + 'T12:00:00').getDay();
-    label = `${T.dayNames[dow]}, ${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+    const dateStr = new Date(iso + 'T12:00:00').toLocaleDateString(_LOCALE_MAP[LANG] || 'en-US', { day: 'numeric', month: 'long', year: 'numeric' });
+    label = `${T.dayNames[dow]}, ${dateStr}`;
   }
 
   if (!hasPerDistDate && horario) label += ` · ${horario}`;

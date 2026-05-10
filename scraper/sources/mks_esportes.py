@@ -190,7 +190,7 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=url,
-        links_inscricao=[INSC_URL],
+        links_inscricao=[url],
     )
 
     return Corrida(

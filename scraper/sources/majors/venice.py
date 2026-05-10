@@ -84,7 +84,7 @@ def scrape() -> list[Corrida]:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=URL,
-        links_inscricao=[URL] if inscricoes_abertas else [],
+        links_inscricao=[URL],
     )
 
     results = []

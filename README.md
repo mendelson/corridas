@@ -24,7 +24,7 @@ GitHub Actions.
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-10 00:41 | ✅ | 2026-05-10 00:41 |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-10 22:30 | ✅ | 2026-05-10 22:30 |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
@@ -85,7 +85,7 @@ projeção automática para o ano seguinte quando todas as datas conhecidas já 
 | Manchester Half Marathon<!--majors/manchester_half--> | ✅ | `manchesterhalfmarathon.com` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Bank of America Chicago Marathon<!--majors/chicago--> | ✅ | `chicagomarathon.com` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Amsterdam Marathon<!--majors/amsterdam--> | ✅ | `tcsamsterdammarathon.nl/en` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
-| Venice Marathon<!--majors/venice--> | ✅ | `venicemarathon.it/en` | 2026-05-10 00:40 | ✅ | 2026-05-10 00:40 |
+| Venice Marathon<!--majors/venice--> | ✅ | `venicemarathon.it/en` | 2026-05-10 22:30 | ✅ | 2026-05-10 22:30 |
 | Dublin City Marathon<!--majors/dublin--> | ✅ | `irishlifedublinmarathon.ie` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | TCS New York City Marathon<!--majors/nyc--> | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | Athens Classic Marathon<!--majors/athens--> | ✅ | `athensauthenticmarathon.gr/en` | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |

@@ -4,7 +4,6 @@ from ._base import scrape_major
 SOURCE_NAME = "Cardiff Half Marathon"
 URL         = "https://www.cardiffhalfmarathon.co.uk/"
 KNOWN_DATE  = "2026-10-04"
-KNOWN_DATE_NEXT = "2027-10-03"
 HORARIO     = "09:30"
 LOCALIZACAO = "Cardiff, Reino Unido"
 
@@ -16,7 +15,7 @@ def scrape():
     return scrape_major(
         source_name=SOURCE_NAME, titulo="Cardiff Half Marathon",
         url=URL, known_date=KNOWN_DATE,
-        known_dates=[KNOWN_DATE, KNOWN_DATE_NEXT], horario=HORARIO,
+        known_dates=[KNOWN_DATE], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
         distances_km=[21.097],

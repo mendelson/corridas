@@ -4,7 +4,6 @@ from ._base import scrape_major
 SOURCE_NAME = "Bank of America Chicago Marathon"
 URL = "https://www.chicagomarathon.com/"
 KNOWN_DATE = "2026-10-11"
-KNOWN_DATE_NEXT = "2027-10-10"
 HORARIO = "07:30"
 LOCALIZACAO = "Chicago, EUA"
 
@@ -16,7 +15,7 @@ def scrape():
     return scrape_major(
         source_name=SOURCE_NAME, titulo="Bank of America Chicago Marathon",
         url=URL, known_date=KNOWN_DATE,
-        known_dates=[KNOWN_DATE, KNOWN_DATE_NEXT], horario=HORARIO,
+        known_dates=[KNOWN_DATE], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
         open_kw=_OPEN, closed_kw=_CLOSED,
     )

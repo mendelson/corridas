@@ -32,9 +32,13 @@ _NON_RUNNING_KW = [
     "aquabike", "aqua bike", "aquathlon",
     "natação", "natacao", "águas abertas", "aguas abertas", "swimrun",
     "federação de triathlon", "federacao de triathlon",
-    "granfondo", "gran fondo", "granfondo", "gran-fondo",
+    "granfondo", "gran fondo", "gran-fondo",
+    "l'étape", "l etape", "letape",  # Tour de France cycling sportives
+    " gf ",  # Gran Fondo abbreviation (e.g. "6ª GF João Pessoa")
     "ciclismo", "pedalada", "bike tour",
 ]
+
+_TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
 # Addresses that indicate a virtual/online event with no fixed location
 _VIRTUAL_ADDR_KW = {
@@ -235,7 +239,11 @@ def _enrich_all_distances(corridas: list[Corrida]) -> None:
 
 
 def _is_running(titulo_lower: str) -> bool:
-    return not any(kw in titulo_lower for kw in _NON_RUNNING_KW)
+    if any(kw in titulo_lower for kw in _NON_RUNNING_KW):
+        return False
+    if _TRI_DIGIT_RE.search(titulo_lower):
+        return False
+    return True
 
 
 def _parse_event(ev: dict, today: str) -> Corrida | None:

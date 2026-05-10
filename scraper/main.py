@@ -2,6 +2,7 @@
 from __future__ import annotations
 import json
 import os
+import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict
@@ -512,8 +513,11 @@ _NON_RUNNING_KW = [
     "cycling", "cyclist", "pedalada", "gravel", "velódromo", "velodrome",
     "granfondo", "gran fondo", "gran-fondo", "fondo", "sportive",
     "uci ", "uci-",
+    "l'étape", "l etape", "letape",  # Tour de France cycling sportives
+    " gf ",  # Gran Fondo abbreviation (e.g. "6ª GF João Pessoa")
     # Triathlon / multisport
     "triathlon", "triathon", "duathlon", "ironman", "swimrun",
+    "aquabike", "aqua bike", "aquathlon",
     # Open water swimming & aquatic sports
     "natação", "natacao", "nado ", "águas abertas", "aguas abertas",
     "travessia",  # open water crossings (Travessia do Fogo, Santos-Guarujá, etc.)
@@ -524,6 +528,8 @@ _NON_RUNNING_KW = [
     "futebol", "voleibol", "vôlei", "volei", "basquete", "basquetebol",
     "handball", "handebol", "tênis", "badminton", "esgrima",
 ]
+
+_TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
 
 def _is_valid(c: Corrida) -> bool:
@@ -543,6 +549,10 @@ def _is_valid(c: Corrida) -> bool:
 
     # Reject non-running events (cycling, swimming, etc.)
     if any(kw in titulo_lower for kw in _NON_RUNNING_KW):
+        return False
+
+    # Reject triathlon events named "Tri<number>" (e.g. "Tri257")
+    if _TRI_DIGIT_RE.search(titulo_lower):
         return False
 
     # Non-INT events must have a valid date

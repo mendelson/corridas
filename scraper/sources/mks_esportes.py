@@ -11,7 +11,6 @@ from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
 
 BASE = "https://www.mksesportes.com.br"
 SITEMAP_URL = f"{BASE}/pages-sitemap.xml"
-INSC_URL = "https://www.ticketagora.com.br/Entrar/Participante"
 SOURCE_NAME = "MKS Esportes"
 
 # Known locations by URL slug (used when location can't be extracted from text)

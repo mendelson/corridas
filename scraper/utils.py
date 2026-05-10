@@ -326,11 +326,18 @@ def normalize_cidade(raw: str | None) -> str:
     if key in _CIDADE_NORMALIZED:
         return _CIDADE_NORMALIZED[key]
     # Fallback: title case then lowercase Portuguese articles/prepositions
+    orig_words = raw.split()
     words = raw.title().split()
-    return ' '.join(
+    result = [
         w if i == 0 else (w.lower() if w.lower() in _LOWER_WORDS else w)
         for i, w in enumerate(words)
-    )
+    ]
+    # Restore all-caps abbreviations that .title() wrongly lowercased (e.g. EUA, SP, RJ)
+    for i, (orig, res) in enumerate(zip(orig_words, result)):
+        bare = orig.strip('.,')
+        if bare.isupper() and len(bare) >= 2:
+            result[i] = orig
+    return ' '.join(result)
 
 
 # ---------------------------------------------------------------------------

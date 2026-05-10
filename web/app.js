@@ -65,7 +65,7 @@ const STRINGS = {
     dateColHeader: 'Data',
     timeColHeader: 'Horário',
     sourcesHeader: 'Fontes',
-    registerBtn: 'Inscreva-se',
+    registerBtn: 'Inscreva-se →',
     noImage: 'Sem imagem',
     labelDateFrom: 'De',
     labelDateTo: 'Até',
@@ -123,7 +123,7 @@ const STRINGS = {
     dateColHeader: 'Date',
     timeColHeader: 'Time',
     sourcesHeader: 'Sources',
-    registerBtn: 'Register',
+    registerBtn: 'Register →',
     noImage: 'No image',
     labelDateFrom: 'From',
     labelDateTo: 'To',
@@ -181,7 +181,7 @@ const STRINGS = {
     dateColHeader: 'Fecha',
     timeColHeader: 'Hora',
     sourcesHeader: 'Fuentes',
-    registerBtn: 'Inscribirse',
+    registerBtn: 'Inscribirse →',
     noImage: 'Sin imagen',
     labelDateFrom: 'Desde',
     labelDateTo: 'Hasta',
@@ -239,7 +239,7 @@ const STRINGS = {
     dateColHeader: 'Datum',
     timeColHeader: 'Zeit',
     sourcesHeader: 'Quellen',
-    registerBtn: 'Anmelden',
+    registerBtn: 'Anmelden →',
     noImage: 'Kein Bild',
     labelDateFrom: 'Von',
     labelDateTo: 'Bis',
@@ -297,7 +297,7 @@ const STRINGS = {
     dateColHeader: 'Date',
     timeColHeader: 'Heure',
     sourcesHeader: 'Sources',
-    registerBtn: "S'inscrire",
+    registerBtn: "S'inscrire →",
     noImage: 'Sans image',
     labelDateFrom: 'De',
     labelDateTo: 'À',
@@ -1110,26 +1110,15 @@ function buildExpanded(card, c) {
     expFontes.appendChild(h);
 
     for (const fonte of c.fontes) {
-      const row = document.createElement('div');
-      row.className = 'fonte-row';
-
-      const name = document.createElement('span');
-      name.className   = 'fonte-name';
-      name.textContent = fonte.nome || '';
-      row.appendChild(name);
-
-      if (fonte.links_inscricao && fonte.links_inscricao.length > 0) {
-        for (const link of fonte.links_inscricao) {
-          const a = document.createElement('a');
-          a.href      = link;
-          a.target    = '_blank';
-          a.rel       = 'noopener noreferrer';
-          a.className = 'btn-register';
-          a.textContent = T.registerBtn;
-          row.appendChild(a);
-        }
-      }
-      expFontes.appendChild(row);
+      const div = document.createElement('div');
+      div.className = 'fonte-item';
+      const link = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
+        ? fonte.links_inscricao[0] : null;
+      const btnHtml = link
+        ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-inscricao">${T.registerBtn}</a>`
+        : '';
+      div.innerHTML = `<span class="fonte-nome-text">${fonte.nome || ''}</span>${btnHtml}`;
+      expFontes.appendChild(div);
     }
   }
 

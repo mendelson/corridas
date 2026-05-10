@@ -48,6 +48,16 @@ def _add_geo_mocks(context):
     context.route("**/api.ip.sb/**", handle)
 
 
+def pytest_collection_modifyitems(items):
+    """Inject each test's docstring into user_properties for the JSON report."""
+    for item in items:
+        doc = getattr(item.obj, "__doc__", None)
+        if doc:
+            first_line = doc.strip().split("\n")[0].strip()
+            if first_line:
+                item.user_properties.append(("description", first_line))
+
+
 @pytest.fixture
 def page_pt(browser, live_server):
     ctx = browser.new_context(locale="pt-BR")

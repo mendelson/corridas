@@ -63,7 +63,17 @@ def _parse_report(report_path: Path) -> dict:
     for test in report.get("tests", []):
         outcome = test.get("outcome", "unknown")
         nodeid  = test.get("nodeid", "")
-        name    = nodeid.split("::")[-1] if "::" in nodeid else nodeid
+        func    = nodeid.split("::")[-1] if "::" in nodeid else nodeid
+
+        # Prefer the human-readable docstring injected via user_properties
+        name = next(
+            (v for k, v in test.get("user_properties", []) if k == "description"),
+            None,
+        )
+        if not name:
+            # Fall back to cleaned function name: test_foo_bar → "foo bar"
+            name = func[5:].replace("_", " ") if func.startswith("test_") else func
+
         call    = test.get("call", {})
         duration_ms = round((call.get("duration", 0.0)) * 1000, 1)
         message = ""

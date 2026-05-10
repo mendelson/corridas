@@ -38,13 +38,8 @@ def _same_domain(img_url: str, page_url: str) -> bool:
 
 
 def _resolve_dates(known_dates: list[str], today: str) -> list[str]:
-    """Return future known dates; if all are past, project the most recent one +1 year."""
-    future = sorted(d for d in known_dates if d >= today)
-    if future:
-        return future
-    last = sorted(known_dates)[-1]
-    y, m, d = last.split('-')
-    return [f"{int(y) + 1}-{m}-{d}"]
+    """Return only future confirmed known dates. Never projects or infers dates."""
+    return sorted(d for d in known_dates if d >= today)
 
 
 def scrape_major(

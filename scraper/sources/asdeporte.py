@@ -112,13 +112,23 @@ def scrape() -> list[Corrida]:
 
 
 def _debug_html(soup: BeautifulSoup) -> None:
-    body = soup.find("body")
-    raw = str(body)[:4000] if body else str(soup)[:4000]
-    print(f"[{SOURCE_NAME}] DEBUG html[:4000]:\n{raw}")
-    # Also print all class names found on divs/articles/sections
-    tags = soup.find_all(["div", "article", "li", "a"], class_=True)
-    classes = sorted({c for t in tags[:50] for c in (t.get("class") or [])})
-    print(f"[{SOURCE_NAME}] DEBUG classes: {classes}")
+    # Dump candidate container + first child HTML to understand card structure
+    containers = [
+        soup.find(class_="results_section_container_children"),
+        soup.find(class_="results_component_events"),
+        soup.find(class_="events__container__results"),
+        soup.find("article"),
+    ]
+    for c in containers:
+        if c:
+            print(f"[{SOURCE_NAME}] DEBUG container tag={c.name} class={c.get('class')}")
+            print(f"[{SOURCE_NAME}] DEBUG container html[:2000]:\n{str(c)[:2000]}")
+            # First child
+            children = list(c.children)
+            for ch in children[:3]:
+                if hasattr(ch, "name") and ch.name:
+                    print(f"[{SOURCE_NAME}] DEBUG child tag={ch.name} class={ch.get('class')} html:\n{str(ch)[:800]}")
+            break
 
 
 def _find_cards(soup: BeautifulSoup) -> list:

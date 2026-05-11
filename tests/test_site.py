@@ -298,6 +298,17 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
     if new_corrida is None:
         pytest.skip("No 'new' events in the dataset (first_seen_at within 7 days)")
 
+    # Reset location filter to 'todos' so the card is visible regardless of geo
+    page_pt.evaluate("""
+        () => {
+            const saved = JSON.parse(localStorage.getItem('corridas_filters') || '{}');
+            saved.estado = 'todos';
+            localStorage.setItem('corridas_filters', JSON.stringify(saved));
+        }
+    """)
+    page_pt.reload(wait_until="networkidle")
+    page_pt.wait_for_selector(".card", state="attached", timeout=15000)
+
     # Expand all months so cards are rendered
     page_pt.evaluate("""
         () => document.querySelectorAll('.month-cards--collapsed').forEach(
@@ -316,8 +327,7 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
             found_card = card
             break
 
-    if found_card is None:
-        pytest.skip(f"Card for '{titulo}' not visible (may be filtered out)")
+    assert found_card is not None, f"Card for '{titulo}' not found even with 'todos' filter"
 
     badge = found_card.query_selector(".badge-novo")
     assert badge is not None, "card has no .badge-novo element"

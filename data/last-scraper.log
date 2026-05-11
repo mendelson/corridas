@@ -5,6 +5,8 @@
 [Ativo] 7 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
+[MKS Esportes] 3 corridas encontradas
+[Minhas Inscrições] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
 [SESC DF] 9 corridas encontradas
@@ -25,6 +27,12 @@
 [RunSignup] API response keys: ['error']
 [RunSignup] total_results: ?
 [RunSignup] nenhuma corrida retornada pela API
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[Asdeporte] DEBUG container tag=div class=['results_section_container_children']
+[Asdeporte] DEBUG container html[:2000]:
+<div class="results_section_container_children"><div class="events__container__results"><div class="results_section_container_tabs__events"><div class="asd-tabs"><div class="asd-tabs__header asd-is-top"><div class="asd-tabs__nav" style="min-height:48px"><div class="asd-tabs__operations asd-tabs__operations--left"></div><div class="asd-tabs__operations asd-tabs__operations--right"></div><div class="asd-tabs__nav-container asd-is-top"><div class="asd-tabs__nav-scroll"><div class="asd-tabs__nav-wrap asd-is-smooth" style="transform:translate(0px, 0)"><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__nav-item asd-size-m asd-is-active asd-is-top"><div class="asd-tabs__nav-item-wrapper"><span class="asd-tabs__nav-item-text-wrapper">Próximos eventos</span></div></div><div class="asd-tabs__nav-item asd-size-m asd-is-top"><div class="asd-tabs__nav-item-wrapper"><span class="asd-tabs__nav-item-text-wrapper">Mis próximos eventos</span></div></div></div></div></div></div></div><div class="asd-tabs__content asd-is-top"><div class="asd-tab-panel"></div></div></div></div><div class="label_qty_resultados" style="width:100%;color:#7C7C7B">Mostrando <!-- -->0<!-- --> de <!-- -->0<!-- --> <!-- -->resultados</div><div class="hajspo" style="height:424px;width:100%;background:white"><div class="asd-loading asd-loading--center asd-size-m"><svg class="asd-loading__gradient asd-icon-loading" height="1em" version="1.1" viewbox="0 0 14 14" width="1em" xmlns="http://www.w3.org/2000/svg"><foreignobject height="12" width="12" x="1" y="1"><div class="asd-loading__gradient-conic"></div></foreignobject></svg></div></div></div></div>
+[Asdeporte] DEBUG child tag=div class=['events__container__results'] html:
+<div class="events__container__results"><div class="results_section_container_tabs__events"><div class="asd-tabs"><div class="asd-tabs__header asd-is-top"><div class="asd-tabs__nav" style="min-height:48px"><div class="asd-tabs__operations asd-tabs__operations--left"></div><div class="asd-tabs__operations asd-tabs__operations--right"></div><div class="asd-tabs__nav-container asd-is-top"><div class="asd-tabs__nav-scroll"><div class="asd-tabs__nav-wrap asd-is-smooth" style="transform:translate(0px, 0)"><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__nav-item asd-size-m asd-is-active asd-is-top"><div class="asd-tabs__nav-item-wrapper"><span class="asd-tabs__nav-item-text-wrapper">Próximos eventos</span></div></div><div class="asd-ta
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [Asdeporte] DEBUG __NEXT_DATA__ found, len=72122

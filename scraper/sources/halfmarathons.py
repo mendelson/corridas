@@ -88,11 +88,6 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page} JSON erro: {e}")
             break
 
-        print(f"[{SOURCE_NAME}] page {page}: {len(posts) if isinstance(posts, list) else type(posts)} posts, status={resp.status_code}")
-
-        if page == 1:
-            _debug_post(posts[0] if posts else {})
-
         if not posts:
             break
 
@@ -107,20 +102,6 @@ def scrape() -> list[Corrida]:
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corrida(s) encontrada(s)")
     return corridas
-
-
-def _debug_post(post: dict) -> None:
-    import json as _json
-    keys = list(post.keys())
-    meta = post.get("meta")
-    acf  = post.get("acf")
-    print(f"[{SOURCE_NAME}] DEBUG post keys: {keys}")
-    print(f"[{SOURCE_NAME}] DEBUG meta: {_json.dumps(meta, default=str)[:500]}")
-    print(f"[{SOURCE_NAME}] DEBUG acf: {_json.dumps(acf, default=str)[:500]}")
-    print(f"[{SOURCE_NAME}] DEBUG class_list[:5]: {(post.get('class_list') or [])[:5]}")
-    print(f"[{SOURCE_NAME}] DEBUG wp date: {post.get('date')}")
-    content = (post.get("content") or {}).get("rendered", "")[:200]
-    print(f"[{SOURCE_NAME}] DEBUG content[:200]: {content}")
 
 
 def _parse_post(post: dict, today: str) -> Corrida | None:

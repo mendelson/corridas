@@ -47,6 +47,13 @@ GitHub Actions.
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-11 16:47 | ✅ | 2026-05-11 16:47 |
 | Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-11 16:47 | ✅ | 2026-05-11 16:47 |
 
+### Fontes mexicanas
+
+| Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- | --- |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | — | — | — |
+| FMAA<!--fmaa--> | ✅ | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | The Events Calendar API; 0 eventos publicados atualmente | — | — | — |
+
 ### Fontes internacionais
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |

@@ -1135,16 +1135,17 @@ function buildExpanded(card, c) {
     }
   }
 
-  if (c.fotos && c.fotos.length > 0) {
-    for (const url of c.fotos) {
-      const img = document.createElement('img');
-      img.src     = url.url;
-      img.alt     = '';
-      img.loading = 'lazy';
-      img.className = 'expanded-photo';
-      expFotos.appendChild(img);
-    }
-  }
+  // fotos rendering out of scope for now
+  // if (c.fotos && c.fotos.length > 0) {
+  //   for (const foto of c.fotos) {
+  //     const img = document.createElement('img');
+  //     img.src       = foto.url;
+  //     img.alt       = foto.plataforma || '';
+  //     img.loading   = 'lazy';
+  //     img.className = 'expanded-photo';
+  //     expFotos.appendChild(img);
+  //   }
+  // }
 }
 
 // ---------------------------------------------------------------------------

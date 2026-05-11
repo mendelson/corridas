@@ -32,20 +32,15 @@ from .sources import (
     mks_esportes,
     corridas_brasil,
     minhas_inscricoes,
-    brasil_que_corre,
     correr_brasilia,
     # corridas_br,  # removido — ver SOURCES abaixo
     sesc_df,
     runner_brasil,
     brasil_corrida,
     circuito_das_estacoes,
-    godream,
     largada_esportiva,
-    portal_das_corridas,
     volta_do_lago,
-    road_runners,
     runsignup,
-    sympla,
 )
 from .sources.majors import (
     tokyo,
@@ -87,7 +82,6 @@ SOURCES = [
     runner_brasil,
     brasil_corrida,
     # DF-specific sources
-    brasil_que_corre,
     correr_brasilia,
     # corridas_br,  # removido: agrega eventos sem links de inscrição reais;
     #               # 37 eventos DF exclusivos perdem-se (incl. Circuito das Estações)
@@ -95,9 +89,7 @@ SOURCES = [
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
     # Brazilian running event platforms
-    godream,
     largada_esportiva,
-    portal_das_corridas,
     # Single major events (BR)
     maratona_rio,
     maratona_porto_alegre,
@@ -130,12 +122,8 @@ SOURCES = [
     brighton,
     # Single events (DF)
     volta_do_lago,
-    # Brazilian state-aggregated calendar
-    road_runners,
     # US/global running calendar
     runsignup,
-    # Brazilian event platform (Sympla)
-    sympla,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

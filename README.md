@@ -28,20 +28,14 @@ GitHub Actions.
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
-| GoDream<!--godream--> | ✅ | `godream.com.br/corrida-de-rua` | Playwright (intercepção de JSON) | 2026-05-10 00:41 | ❌ 0 eventos | — |
 | Largada Esportiva<!--largada_esportiva--> | 🆕 | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
-| Road Runners<!--road_runners--> | ✅ | `roadrunners.run` (por estado) | __NEXT_DATA__ / HTML / Playwright | 2026-05-10 00:02 | ❌ 0 eventos | — |
-| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br` | Playwright (SPA) | 2026-05-10 00:02 | ❌ 0 eventos | — |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Brasil que Corre<!--brasil_que_corre--> | ✅¹ | `brasilquecorre.com/distritofederal` | HTML | 2026-05-10 00:01 | ❌ 0 eventos | — |
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
-
-> ¹ Retorna 0 eventos — `brasilquecorre.com` bloqueia IPs de datacenter (403). Playwright não bypassa.
 
 ### Fontes brasileiras — eventos específicos
 
@@ -51,12 +45,13 @@ GitHub Actions.
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `voltadolago.com.br` | 2026-05-10 00:02 | ❌ 0 eventos | — |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-10 00:02 | ❌ 0 eventos | — |
 
 ### Fontes internacionais
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-05-10 00:02 | ❌ 0 eventos | — |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-10 22:35 | ✅ | 2026-05-10 22:35 |
 
 ---
@@ -112,7 +107,10 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
-| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 403 no CI. | 2026-05-10 00:01 | ❌ 0 eventos | — |
+| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 0 no CI sem erro HTTP — seletores CSS genéricos nunca casaram com o HTML real do site. | 2026-05-10 00:01 | ❌ 0 eventos | — |
+| Brasil que Corre<!--brasil_que_corre--> | ❌ | `brasilquecorre.com/distritofederal` | Retorna 0 — seletores CSS genéricos não casam com o HTML real do site. | 2026-05-10 00:01 | ❌ 0 eventos | — |
+| Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-10 00:02 | ❌ 0 eventos | — |
+| Sympla<!--sympla--> | ❌ | `sympla.com.br/busca?q=corrida` | URL de busca retorna HTTP 404; Playwright redireciona para página de login — endpoint de busca indisponível ou requer autenticação. | — | ❌ | — |
 
 ## Fontes testadas e inviáveis
 
@@ -120,6 +118,8 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 |---|---|---|
 | Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. |
 | Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. |
+| GoDream | `godream.com.br/corrida-de-rua` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 + Playwright `ERR_TUNNEL_CONNECTION_FAILED`. |
+| Road Runners | `roadrunners.run` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 em todos os 27 estados. |
 
 ---
 

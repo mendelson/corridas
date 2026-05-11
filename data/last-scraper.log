@@ -13,6 +13,7 @@
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
 [SESC DF] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
+[Correr Brasília] 1 corridas encontradas
 [Yescom] 14 corridas encontradas
 [Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
@@ -30,13 +31,20 @@
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [HalfMarathons.net] 0 corrida(s) encontrada(s)
 [TF Sports] 48 corridas encontradas
+[HalfMarathons.net] page 2: 100 posts, status=200
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[HalfMarathons.net] page 4: 100 posts, status=200
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
+[HalfMarathons.net] page 5: 100 posts, status=200
+[HalfMarathons.net] page 6: 100 posts, status=200
+[HalfMarathons.net] page 7: 100 posts, status=200
+[HalfMarathons.net] page 8: 100 posts, status=200
+[HalfMarathons.net] page 9: 100 posts, status=200
 [Ticket Sports] 970 corridas encontradas
 [main] 4461 registros coletados (antes do merge)
 [main] 1136 registros após validação
@@ -60,6 +68,7 @@
 [main] 'Passaporte Circuito Sesc Trail 2026' — link válido, miss_count zerado
 [main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
 [main] '2ª Corrida Tribunal De Contas De Santa Catarina' — link válido, miss_count zerado
+[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
 [main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
 [main] '5º Cross Country Calipal' — link válido, miss_count zerado
 [main] 'Sítio São José Trail Running' — link válido, miss_count zerado

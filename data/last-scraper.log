@@ -1,31 +1,32 @@
 [main] iniciando scraping...
-[main] 1192 corridas no estado anterior
+[main] 1169 corridas no estado anterior
 [Ativo] 7 corridas encontradas
 [Central da Corrida] 78 corridas encontradas
+[MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
 [Brasil Corrida] 10 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
-[MKS Esportes] 3 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
-[SESC DF] 9 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
 [Correr Brasília] 1 corridas encontradas
+[SESC DF] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
 [Yescom] 14 corridas encontradas
-[Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Prague Marathon] nenhuma edição futura identificada
 [Corridas Brasil] 3144 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [RunSignup] API response keys: ['error']
 [RunSignup] total_results: ?
 [RunSignup] nenhuma corrida retornada pela API
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[HalfMarathons.net] 0 corrida(s) encontrada(s)
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [TF Sports] 48 corridas encontradas
@@ -36,60 +37,60 @@
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[Ticket Sports] 969 corridas encontradas
-[main] 4460 registros coletados (antes do merge)
-[main] 1135 registros após validação
-[main] 1093 corridas após merge
+[Ticket Sports] 970 corridas encontradas
+[main] 4461 registros coletados (antes do merge)
+[main] 1136 registros após validação
+[main] 1094 corridas após merge
 [main] verificando links de 46 evento(s) não encontrado(s) no scrape...
-[main] 'Corrida Da Infantaria 2026' — link válido, miss_count zerado
-[main] 'Combo Multisports - Lote 2 Provas 1705 1810 1608 0612' — link válido, miss_count zerado
-[main] 'Desafio Da Floresta' — link válido, miss_count zerado
 [main] '9ª Maratona Nilson Lima De Uberlandia 2026' — link válido, miss_count zerado
-[main] '2ª Corrida Tribunal De Contas De Santa Catarina' — link válido, miss_count zerado
-[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
-[main] 'Desafio Macuco' — link válido, miss_count zerado
+[main] 'Combo Multisports - Lote 2 Provas 1705 1810 1608 0612' — link válido, miss_count zerado
 [main] '1ª Kr Trail Run' — link válido, miss_count zerado
+[main] 'Corrida Da Infantaria 2026' — link válido, miss_count zerado
+[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
 [main] 'Amapai Run - No Ritmo Da Inclusão' — link válido, miss_count zerado
+[main] 'Desafio Macuco' — link válido, miss_count zerado
+[main] '2ª Corrida Tribunal De Contas De Santa Catarina' — link válido, miss_count zerado
 [main] '1ª Corrida E Caminhada De Nossa Senhora De Fátima' — link válido, miss_count zerado
 [main] 'Tá On - Shopping Palladium' — link válido, miss_count zerado
-[main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
 [main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
 [main] '3ª Corrida E Caminhada Rotary Run Indaiatuba' — link válido, miss_count zerado
-[main] 'Circuito RJ 2026 - 1ª Etapa' — link válido, miss_count zerado
-[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
 [main] 'Corrida Do Colégio Novo Alvo' — link válido, miss_count zerado
+[main] 'Desafio Da Floresta' — link válido, miss_count zerado
+[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
 [main] 'Passaporte Circuito Sesc Trail 2026' — link válido, miss_count zerado
+[main] 'Circuito RJ 2026 - 1ª Etapa' — link válido, miss_count zerado
 [main] '9ª Corrida Vencendo As Cefaleias' — link válido, miss_count zerado
+[main] 'Meia Maratona Foco Run - 2026' — link válido, miss_count zerado
+[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
+[main] 'Corrida Da Cooperação 2026' — link válido, miss_count zerado
+[main] '5º Cross Country Calipal' — link válido, miss_count zerado
 [main] '3ª Maratona Internacional De Goiânia Wr' — link válido, miss_count zerado
-[main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
+[main] '1ª Ananin Runner 2026' — link válido, miss_count zerado
 [main] 'Corrida De Santa Rita' — link válido, miss_count zerado
 [main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
-[main] 'Pedra Grande Ultra Trail Challenge 2026' — link válido, miss_count zerado
 [main] 'Meia Maratona São João Da Barra' — link válido, miss_count zerado
-[main] 'Corrida - Betty Boop' — link válido, miss_count zerado
-[main] '1ª Ananin Runner 2026' — link válido, miss_count zerado
-[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
-[main] '5º Cross Country Calipal' — link válido, miss_count zerado
-[main] 'Time Praia Grande Run' — link válido, miss_count zerado
-[main] 'Mons Ultra Trail Urubici 2026' — link válido, miss_count zerado
-[main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
-[main] '1ª Corrida Da Romu' — link válido, miss_count zerado
-[main] 'Circuito Pela Vida' — link válido, miss_count zerado
 [main] 'Corrida Da Panini | São Paulo' — link válido, miss_count zerado
-[main] '#Dicaticket' — link válido, miss_count zerado
-[main] 'Corrida Da Cooperação 2026' — link válido, miss_count zerado
-[main] '6ª Corrida Capitão Running' — link válido, miss_count zerado
-[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
+[main] 'Corrida - Betty Boop' — link válido, miss_count zerado
+[main] 'Pedra Grande Ultra Trail Challenge 2026' — link válido, miss_count zerado
+[main] 'Mons Ultra Trail Urubici 2026' — link válido, miss_count zerado
+[main] 'Time Praia Grande Run' — link válido, miss_count zerado
+[main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
+[main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
+[main] 'Circuito Pela Vida' — link válido, miss_count zerado
+[main] '1ª Corrida Da Romu' — link válido, miss_count zerado
 [main] 'Correndo Pelo Hexa' — link válido, miss_count zerado
-[main] 'Corrida Virtual Da Conscientização Do Autismo' — link válido, miss_count zerado
+[main] '#Dicaticket' — link válido, miss_count zerado
+[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
 [main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Da Conscientização Do Autismo' — link válido, miss_count zerado
+[main] '6ª Corrida Capitão Running' — link válido, miss_count zerado
+[main] 'Go.Run' — link válido, miss_count zerado
+[main] 'Cyborg Run 5K' — link válido, miss_count zerado
 [main] 'Circuito De Corrida De Rua Carambeí Running - 2526' — link válido, miss_count zerado
 [main] 'Bemol Run Manaus 2026' — link válido, miss_count zerado
-[main] 'Cyborg Run 5K' — link válido, miss_count zerado
-[main] 'Go.Run' — link válido, miss_count zerado
-[main] 1192 corridas após reconciliação
-[main] 1192 corridas após dedup final
+[main] 1193 corridas após reconciliação
+[main] 1193 corridas após dedup final
 [main] buscando imagens para 124 evento(s) sem foto...
 [main] 0/124 imagens encontradas
 [main] 23 corrida(s) removida(s) por data passada (antes de 2026-04-26)
-[main] 1169 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 1170 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

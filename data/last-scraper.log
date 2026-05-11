@@ -1,107 +1,63 @@
 [main] iniciando scraping...
-[main] 1169 corridas no estado anterior
-[Central da Corrida] 78 corridas encontradas
+[main] erro ao carregar JSON existente: Distancia.__init__() got an unexpected keyword argument 'nome'
+[main] 0 corridas no estado anterior
 [Ativo] 7 corridas encontradas
+[Central da Corrida] 78 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
-[Iguana Sports] 8 corridas encontradas
-[Brasil Corrida] 10 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
+[Brasil Corrida] 10 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
 [SESC DF] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
-[Correr Brasília] 1 corridas encontradas
 [Yescom] 14 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Prague Marathon] nenhuma edição futura identificada
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Corridas Brasil] 3144 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
-[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [RunSignup] API response keys: ['error']
 [RunSignup] total_results: ?
 [RunSignup] nenhuma corrida retornada pela API
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[Asdeporte] DEBUG html[:4000]:
+<body><div id="__next"><div class="__className_c80aa9"><noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-T4C6RKQD" style="display:none;visibility:hidden" title="GTM" width="0"></iframe></noscript><div class="notify"><div class="Toastify"></div></div><div class=""><div class="opglzs regionalization__header__hide"><div class="header__background__left"></div><div class="header__background__right"></div><div class="header"><div class="icon-logo-asd"><a href="/"></a><svg fill="none" height="42" viewbox="0 0 220 42" width="220" xmlns="http://www.w3.org/2000/svg"><g><path d="M14.8515 40.4631H2.59438C1.53443 40.408 0.696338 39.7772 0.283453 38.9382C-0.0924575 38.1727 -0.117107 37.2356 0.363565 36.3966L20.4963 1.3719C21.014 0.465506 21.926 0.00618551 22.8504 6.12391e-05C23.7871 -0.00606303 24.7238 0.447133 25.2538 1.3719L26.0302 2.71924C31.3115 12.0036 24.656 30.5051 14.8577 40.457L14.8515 40.4631Z" fill="white"></path><path d="M43.5193 40.463H26.4431C31.9215 32.183 32.9137 22.1025 31.5087 12.2607L45.3804 36.4026C46.3356 38.0623 45.3619 40.4753 43.5193 40.4692V40.463Z" fill="white"></path><path d="M216.006 16.1191C215.655 15.917 215.378 15.6414 215.175 15.2923C214.971 14.9433 214.866 14.5636 214.866 14.141C214.866 13.7184 214.971 13.3448 215.175 12.9957C215.378 12.6467 215.655 12.3772 216.006 12.1751C216.358 11.973 216.74 11.875 217.165 11.875C217.59 11.875 217.972 11.973 218.324 12.1751C218.675 12.3772 218.952 12.6528 219.156 12.9957C219.359 13.3387 219.464 13.7245 219.464 14.141C219.464 14.5574 219.359 14.9433 219.156 15.2923C218.952 15.6414 218.675 15.917 218.324 16.1191C217.972 16.3212 217.59 16.4253 217.165 16.4253C216.74 16.4253 216.358 16.3212 216.006 16.1191ZM215.655 15.0474C215.809 15.3168 216.019 15.5373 216.284 15.6965C216.549 15.8558 216.845 15.9354 217.165 15.9354C217.485 15.9354 217.775 15.8558 218.046 15.6965C218.311 15.5373 218.521 15.323 218.675 15.0474C218.829 14.7779 218.909 14.4717 218.909 14.1471C218.909 13.8225 218.829 13.5224 218.675 13.253C218.521 12.9835 218.311 12.7691 218.046 12.6099C217.781 12.4507 217.485 12.3772 217.165 12.3772C216.845 12.3772 216.549 12.4568 216.284 12.6099C216.019 12.7691 215.809 12.9835 215.655 13.253C215.501 13.5224 215.421 13.8225 215.421 14.1471C215.421 14.4717 215.501 14.7779 215.655 15.0474ZM216.271 12.861H217.276C217.424 12.861 217.566 12.8978 217.695 12.9651C217.824 13.0325 217.923 13.1244 217.997 13.2407C218.071 13.3571 218.108 13.4857 218.108 13.6204C218.108 13.7858 218.059 13.9389 217.954 14.0675C217.855 14.1961 217.72 14.288 217.553 14.337L218.293 15.3965H217.695L217.005 14.3798H216.795V15.3965H216.271V12.8671V12.861ZM217.276 13.9144C217.368 13.9144 217.449 13.8838 217.51 13.8286C217.572 13.7735 217.609 13.7 217.609 13.6204C217.609 13.5408 217.578 13.4673 217.51 13.4122C217.449 13.3571 217.368 13.3326 217.276 13.3326H216.795V13.9205H217.276V13.9144Z" fill="white"></path><path d="M66.8256 29.9231C66.7332 29.9231 66.5483 29.3474 66.5483 28.6309C65.7164 29.4393 63.4671 30.1313 59.8251 30.1313C55.7209 30.1313 53.3792 29.0473 53.3792 26.2853C53.3792 23.9581 55.0492 21.9554 61.68 21.8881C63.0727 21.8881 65.2974 22.0044 66.5483 22.1391C66.5483 21.9064 66.5237 21.588 66.4313 21.2389C66.1786 20.4795 64.9276 19.9038 62.3763 19.9038C58.531 19.9038 58.1551 20.6632 58.1551 21.5635H54.1433C54.1433 18.9117 56.4604 16.8845 62.1853 16.8845C67.331 16.8845 69.6481 18.1767 70.2027 20.6877C70.3629 21.3307 70.4553 22.8067 70.4369 23.7988C70.4122 24.4419 70.3876 25.9852 70.3876 27.0263C70.3876 28.1777 70.5046 29.5128 70.7142 29.9292H66.8195L66.8256 29.9231ZM62.3517 24.4174C58.6665 24.4174 57.6251 25.0421 57.6251 26.0281C57.6251 26.8365 58.5741 27.3203 61.1007 27.3203C64.8105 27.3203 66.5915 26.3771 66.5915 24.693C65.6425 24.5521 64.1142 24.4174 62.3517 24.4174Z" fill="white"></path><path d="M81.6155 30.1743C75.7981 30.1743 73.5735 29.2066 72.9264 26.8549C72.834 26.463 72.7847 26.0955 72.7847 25.7954H76.8642C76.8642 25.9547 76.9135 26.2302 77.0737 26.463C77.4188 26.97
+[Asdeporte] DEBUG classes: ['Toastify', '[&_.asd-popup]:!max-w-[720px]', '[&_.asd-popup]:!w-full', '[&_.asd-popup]:!z-[9999]', '[&_.asd-select-option]:!h-auto', '[&_.asd-select-option]:!py-3', '__className_c80aa9', 'asd-is-active', 'asd-is-smooth', 'asd-is-top', 'asd-loading', 'asd-loading--center', 'asd-loading__gradient-conic', 'asd-size-m', 'asd-size-s', 'asd-tabs', 'asd-tabs__bar', 'asd-tabs__header', 'asd-tabs__nav', 'asd-tabs__nav-container', 'asd-tabs__nav-item', 'asd-tabs__nav-item-wrapper', 'asd-tabs__nav-scroll', 'asd-tabs__nav-wrap', 'asd-tabs__operations', 'asd-tabs__operations--left', 'asd-tabs__operations--right', 'events__container', 'events__container__results', 'flex', 'flex-col', 'header', 'header__background__left', 'header__background__right', 'header__icons', 'header__icons__menu', 'header__icons__notifications', 'header__icons__search', 'header__nav', 'header__nav__route', 'header__nav__route__plus', 'header__profile', 'header__region', 'header__regionalization__col__2__regionalization', 'icon', 'icon-asd-plus-arrow-header', 'icon-logo-asd', 'max-w-[1440px]', 'mx-auto', 'notify', 'opglzs', 'pb-[90px]', 'pt-8', 'pt-[80px]', 'px-16', 'region', 'regionalization__header__hide', 'results_component', 'results_component_events', 'results_section_container', 'results_section_container_children', 'results_section_container_tabs__events', 'searcherbox', 'searcherfilter', 'w-full']
+[FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
+[FMAA] DEBUG total=0, total_pages=0
+[FMAA] 0 corrida(s) encontrada(s)
 [TF Sports] 48 corridas encontradas
-[HalfMarathons.net] page 2: 100 posts, status=200
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Asdeporte] 600 corrida(s) encontrada(s)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[HalfMarathons.net] page 4: 100 posts, status=200
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[HalfMarathons.net] page 5: 100 posts, status=200
-[HalfMarathons.net] page 6: 100 posts, status=200
-[HalfMarathons.net] page 7: 100 posts, status=200
-[HalfMarathons.net] page 8: 100 posts, status=200
-[HalfMarathons.net] page 9: 100 posts, status=200
 [Ticket Sports] 970 corridas encontradas
 [HalfMarathons.net] 1914 corrida(s) encontrada(s)
-[main] 6375 registros coletados (antes do merge)
-[main] 2925 registros após validação
-[main] 2774 corridas após merge
-[main] verificando links de 45 evento(s) não encontrado(s) no scrape...
-[main] 'Amapai Run - No Ritmo Da Inclusão' — link válido, miss_count zerado
-[main] 'Corrida Da Infantaria 2026' — link válido, miss_count zerado
-[main] '9ª Maratona Nilson Lima De Uberlandia 2026' — link válido, miss_count zerado
-[main] 'Desafio Da Floresta' — link válido, miss_count zerado
-[main] 'Desafio Macuco' — link válido, miss_count zerado
-[main] '3ª Corrida E Caminhada Rotary Run Indaiatuba' — link válido, miss_count zerado
-[main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
-[main] 'Tá On - Shopping Palladium' — link válido, miss_count zerado
-[main] 'Combo Multisports - Lote 2 Provas 1705 1810 1608 0612' — link válido, miss_count zerado
-[main] '1ª Corrida E Caminhada De Nossa Senhora De Fátima' — link válido, miss_count zerado
-[main] '1ª Kr Trail Run' — link válido, miss_count zerado
-[main] 'Corrida 1 Ano Corre Cléo' — link válido, miss_count zerado
-[main] 'Circuito RJ 2026 - 1ª Etapa' — link válido, miss_count zerado
-[main] 'Corrida Do Colégio Novo Alvo' — link válido, miss_count zerado
-[main] '9ª Corrida Vencendo As Cefaleias' — link válido, miss_count zerado
-[main] '2ª Corrida Tribunal De Contas De Santa Catarina' — link válido, miss_count zerado
-[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
-[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
-[main] '5º Cross Country Calipal' — link válido, miss_count zerado
-[main] 'Circuito Sesc Trail - 3ª Etapa Bodoquena' — link válido, miss_count zerado
-[main] 'Sítio São José Trail Running' — link válido, miss_count zerado
-[main] 'Corrida Da Cooperação 2026' — link válido, miss_count zerado
-[main] '1ª Ananin Runner 2026' — link válido, miss_count zerado
-[main] 'Passaporte Circuito Sesc Trail 2026' — link válido, miss_count zerado
-[main] '3ª Maratona Internacional De Goiânia Wr' — link válido, miss_count zerado
-[main] '4ª Corrida Nova Era Boa Vista' — link válido, miss_count zerado
-[main] '2ª Meia De Rio Claro - 2026' — link válido, miss_count zerado
-[main] 'Corrida Da Panini | São Paulo' — link válido, miss_count zerado
-[main] 'Corrida De Santa Rita' — link válido, miss_count zerado
-[main] 'Meia Maratona São João Da Barra' — link válido, miss_count zerado
-[main] 'Time Praia Grande Run' — link válido, miss_count zerado
-[main] '1ª Corrida Da Romu' — link válido, miss_count zerado
-[main] 'Mons Ultra Trail Urubici 2026' — link válido, miss_count zerado
-[main] '2ª Corrida De Rua Rhino Falls 2026' — link válido, miss_count zerado
-[main] 'Pedra Grande Ultra Trail Challenge 2026' — link válido, miss_count zerado
-[main] 'Circuito Pela Vida' — link válido, miss_count zerado
-[main] '#Dicaticket' — link válido, miss_count zerado
-[main] 'Correndo Pelo Hexa' — link válido, miss_count zerado
-[main] '6ª Corrida Capitão Running' — link válido, miss_count zerado
-[main] '15ª Volta Da União - Osasco' — link válido, miss_count zerado
-[main] 'Cyborg Run 5K' — link válido, miss_count zerado
-[main] 'Terras Altas Trail Run - 2026' — link válido, miss_count zerado
-[main] 'Corrida Virtual Da Conscientização Do Autismo' — link válido, miss_count zerado
-[main] 'Circuito De Corrida De Rua Carambeí Running - 2526' — link válido, miss_count zerado
-[main] 'Bemol Run Manaus 2026' — link válido, miss_count zerado
-[main] 'Go.Run' — link válido, miss_count zerado
-[main] 2872 corridas após reconciliação
-[main] 2872 corridas após dedup final
-[main] buscando imagens para 1804 evento(s) sem foto...
+[main] 6975 registros coletados (antes do merge)
+[main] 3145 registros após validação
+[main] 2775 corridas após merge
+[main] 2775 corridas após reconciliação
+[main] 2775 corridas após dedup final
+[main] buscando imagens para 1851 evento(s) sem foto...
+[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 1659/1804 imagens encontradas
+[main] 1706/1851 imagens encontradas
 [main] 23 corrida(s) removida(s) por data passada (antes de 2026-04-26)
-[main] 2849 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 2752 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

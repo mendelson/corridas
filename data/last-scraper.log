@@ -1,6 +1,5 @@
 [main] iniciando scraping...
-[main] 2752 corridas no estado anterior
-[MKS Esportes] 3 corridas encontradas
+[main] 2753 corridas no estado anterior
 [Central da Corrida] 78 corridas encontradas
 [Ativo] 7 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
@@ -8,23 +7,21 @@
 [MKS Esportes] 3 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
+[Runner Brasil] 22 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
-[SESC DF] 9 corridas encontradas
+[Minhas Inscrições] 14 corridas encontradas
 [Brasil Corrida] 10 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
+[Corridas Brasil] 3144 corridas encontradas
+[SESC DF] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
 [Yescom] 14 corridas encontradas
 [Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Corridas Brasil] 3144 corridas encontradas
-[Prague Marathon] nenhuma edição futura identificada
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [RunSignup] API response keys: ['error']
 [RunSignup] total_results: ?
 [RunSignup] nenhuma corrida retornada pela API
@@ -36,34 +33,27 @@
 <div class="events__container__results"><div class="results_section_container_tabs__events"><div class="asd-tabs"><div class="asd-tabs__header asd-is-top"><div class="asd-tabs__nav" style="min-height:48px"><div class="asd-tabs__operations asd-tabs__operations--left"></div><div class="asd-tabs__operations asd-tabs__operations--right"></div><div class="asd-tabs__nav-container asd-is-top"><div class="asd-tabs__nav-scroll"><div class="asd-tabs__nav-wrap asd-is-smooth" style="transform:translate(0px, 0)"><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__nav-item asd-size-m asd-is-active asd-is-top"><div class="asd-tabs__nav-item-wrapper"><span class="asd-tabs__nav-item-text-wrapper">Próximos eventos</span></div></div><div class="asd-ta
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[Asdeporte] DEBUG __NEXT_DATA__ found, len=72122
-[Asdeporte] DEBUG __NEXT_DATA__[:3000]:
-{"props":{"pageProps":{"lang":"es","__ni18n_server__":{"resources":{"es":{"page-home":{"TopEvents":"Estelares","NearEvents":"Eventos cerca de mí","RecomendedEvents":"Recomendados para mí","Top10":"Los 10 + populares","Serials":"Seriales","ExperiencesAndChallenges":"Experiencias y retos","ThisWeekend":"Este fin de semana","StageBtnDetails":"Ver detalles","StageBtnInscription":"Inscribirme","toastLike":"Has dado like al evento","toastFavorite":"El evento esta en tus favoritos","toastNotLike":"Has quitado like del evento seleccionado","toastNotFavorite":"El evento seleccionado ya no es tu favorito"},"translation":{}},"en":{"page-home":{"TopEvents":"Star events","NearEvents":"Events near me","RecomendedEvents":"Recommended for me","Top10":"Los 10 + popular","Serials":"Serials","ExperiencesAndChallenges":"Experiences and challenges","ThisWeekend":"This weekend","Facturation":"Facturación","StageBtnDetails":"view details","StageBtnInscription":"Inscribirme"},"translation":{}}},"ns":["page-home","translation"],"lng":"es"},"recomended":[{"id":"dc0d91cf-8a87-4f58-9f23-4e588fbd634c","own":true,"imgEventDesktop":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2026/2/1771424999516_1771382203399_IM7-Cozumel-26-carr-415x225.jpg","imgEvent":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2026/2/1771424999516_1771382203399_IM7-Cozumel-26-carr-415x225.jpg","imgEventMobile":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2026/2/1771425017525_1771382209563_IM7-Cozumel-26-carr-160x250.jpg","logoEvent":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2026/2/1771424984958_1771382188982_IM7-Cozumel-26-logo-negro.jpg","nameEvent":"IRONMAN 70.3 Cozumel 2026 HSBC","place":"Cozumel, Quintana Roo","lastPlaces":false,"comments":261,"date":"2026-09-20T06:00:00.000Z","priceRegular":6660,"pricePlus":0,"typeEvent":"Carrera","level":"Avanzado","event":"Competencia","calificationStar":5,"favorites":false,"like":false,"video":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2026/2/1771425029198_1771382216667_IM7-Cozumel-26-pop-420x236.jpg","currency":"MXN","routeConvocatoria":"/evento/ironman-70-3-cozumel-2026-hsbc-do8","routeInscription":"/evento/ironman-70-3-cozumel-2026-hsbc-do8/inscripcion","inscriptionAllow":true,"externalinscription":null,"last_places_discount_10":null},{"id":"c96b2a63-69ea-4f27-be85-375c93c78982","own":true,"imgEventDesktop":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2025/12/1765473742492_3k-Veracruz-26-carr-415x225.jpg","imgEvent":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2025/12/1765473742492_3k-Veracruz-26-carr-415x225.jpg","imgEventMobile":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2025/11/1763678023537_3k-Veracruz-25-carr-160x225.jpg","logoEvent":"https://d3cnkhyiyh0ve2.cloudfront.net/upload/2025/11/1763678013826_Veracruz-24-logo-300.jpg","nameEvent":"3Kids Veracruz 2026","place":"Boca del Río, Veracruz","lastPlaces":false,"comments":261,"date":"2026-08-23T13:00:00.000Z","priceRegular":1000,"pricePlus":0,"typeEvent":"Carrera","level":"Avanzado","event":"C
-[Asdeporte] DEBUG _find_cards count=120
-[Asdeporte] DEBUG card[0] tag=div classes=['events__container'] html:
-<div class="events__container"><div class="results_component"><div class="results_component_events"><div class="results_section_container"><div class="results_section_container_children"><div class="events__container__results"><div class="results_section_container_tabs__events"><div class="asd-tabs"><div class="asd-tabs__header asd-is-top"><div class="asd-tabs__nav" style="min-height:48px"><div class="asd-tabs__operations asd-tabs__operations--left"></div><div class="asd-tabs__operations asd-tabs__operations--right"></div><div class="asd-tabs__nav-container asd-is-top"><div class="asd-tabs__nav-scroll"><div class="asd-tabs__nav-wrap asd-is-smooth" style="transform:translate(0px, 0)"><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__nav-item asd-size-m asd-is-active asd-is-top"><div class="asd-tabs__nav-item-wrapper"><span class="asd-tabs__nav-item-text-wrapper">Próximos eventos</span></div></div><div class="asd-tabs__nav-item 
-[Asdeporte] DEBUG card[1] tag=div classes=['results_component_events'] html:
-<div class="results_component_events"><div class="results_section_container"><div class="results_section_container_children"><div class="events__container__results"><div class="results_section_container_tabs__events"><div class="asd-tabs"><div class="asd-tabs__header asd-is-top"><div class="asd-tabs__nav" style="min-height:48px"><div class="asd-tabs__operations asd-tabs__operations--left"></div><div class="asd-tabs__operations asd-tabs__operations--right"></div><div class="asd-tabs__nav-container asd-is-top"><div class="asd-tabs__nav-scroll"><div class="asd-tabs__nav-wrap asd-is-smooth" style="transform:translate(0px, 0)"><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__bar asd-is-top"></div><div class="asd-tabs__nav-item asd-size-m asd-is-active asd-is-top"><div class="asd-tabs__nav-item-wrapper"><span class="asd-tabs__nav-item-text-wrapper">Próximos eventos</span></div></div><div class="asd-tabs__nav-item asd-size-m asd-is-top"><div class="asd-tabs__nav-item-wrapper"
-[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
 [FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
 [FMAA] DEBUG total=0, total_pages=0
 [FMAA] 0 corrida(s) encontrada(s)
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports] 48 corridas encontradas
 [Asdeporte] 600 corrida(s) encontrada(s)
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[Ticket Sports] 972 corridas encontradas
+[Ticket Sports] 973 corridas encontradas
 [HalfMarathons.net] 1914 corrida(s) encontrada(s)
-[main] 6977 registros coletados (antes do merge)
-[main] 3146 registros após validação
-[main] 2776 corridas após merge
-[main] 2776 corridas após reconciliação
-[main] 2776 corridas após dedup final
+[main] 6978 registros coletados (antes do merge)
+[main] 3147 registros após validação
+[main] 2777 corridas após merge
+[main] 2777 corridas após reconciliação
+[main] 2777 corridas após dedup final
 [main] buscando imagens para 145 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
@@ -73,4 +63,4 @@
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
 [main] 0/145 imagens encontradas
 [main] 23 corrida(s) removida(s) por data passada (antes de 2026-04-26)
-[main] 2753 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 2754 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

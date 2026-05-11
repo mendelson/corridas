@@ -45,13 +45,13 @@ GitHub Actions.
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-10 00:02 | ❌ 0 eventos | — |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-11 15:57 | ✅ | 2026-05-11 15:57 |
 
 ### Fontes internacionais
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-05-10 00:02 | ❌ 0 eventos | — |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-05-11 15:57 | ❌ 0 eventos | — |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-10 22:35 | ✅ | 2026-05-10 22:35 |
 
 ---
@@ -107,19 +107,19 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-10 00:02 | ✅ | 2026-05-10 00:02 |
-| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 0 no CI sem erro HTTP — seletores CSS genéricos nunca casaram com o HTML real do site. | 2026-05-10 00:01 | ❌ 0 eventos | — |
-| Brasil que Corre<!--brasil_que_corre--> | ❌ | `brasilquecorre.com/distritofederal` | Retorna 0 — seletores CSS genéricos não casam com o HTML real do site. | 2026-05-10 00:01 | ❌ 0 eventos | — |
-| Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-10 00:02 | ❌ 0 eventos | — |
-| Sympla<!--sympla--> | ❌ | `sympla.com.br/busca?q=corrida` | URL de busca retorna HTTP 404; Playwright redireciona para página de login — endpoint de busca indisponível ou requer autenticação. | — | ❌ | — |
+| Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Retorna 0 no CI sem erro HTTP — seletores CSS genéricos nunca casaram com o HTML real do site. | 2026-05-11 15:57 | ❌ 403 no CI | — |
+| Brasil que Corre<!--brasil_que_corre--> | ❌ | `brasilquecorre.com/distritofederal` | Retorna 0 — seletores CSS genéricos não casam com o HTML real do site. | 2026-05-11 15:57 | ❌ 403 no CI | — |
+| Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-11 15:57 | ❌ | — |
+| Sympla<!--sympla--> | ❌ | `sympla.com.br/busca?q=corrida` | URL de busca retorna HTTP 404; Playwright redireciona para página de login — endpoint de busca indisponível ou requer autenticação. | 2026-05-11 15:57 | ❌ | — |
 
 ## Fontes testadas e inviáveis
 
-| Fonte | URL | Motivo |
-|---|---|---|
-| Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. |
-| Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. |
-| GoDream | `godream.com.br/corrida-de-rua` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 + Playwright `ERR_TUNNEL_CONNECTION_FAILED`. |
-| Road Runners | `roadrunners.run` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 em todos os 27 estados. |
+| Fonte | URL | Motivo | Testado em | Status | Últ. sucesso |
+| --- | --- | --- | --- | --- | --- |
+| Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. | — | — | — |
+| Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. | — | — | — |
+| GoDream<!--godream--> | `godream.com.br/corrida-de-rua` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 + Playwright `ERR_TUNNEL_CONNECTION_FAILED`. | 2026-05-11 15:57 | ❌ | — |
+| Road Runners | `roadrunners.run` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 em todos os 27 estados. | — | — | — |
 
 ---
 

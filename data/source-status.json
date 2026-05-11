@@ -240,10 +240,10 @@
     "last_success": "2026-05-10T00:41:31Z"
   },
   "volta_do_lago": {
-    "tested_at": "2026-05-10T00:02:31Z",
-    "status": "fail",
-    "failure_note": "0 eventos",
-    "last_success": null
+    "tested_at": "2026-05-11T15:57:17Z",
+    "status": "ok",
+    "failure_note": null,
+    "last_success": "2026-05-11T15:57:17Z"
   },
   "yescom": {
     "tested_at": "2026-05-10T00:03:14Z",
@@ -252,7 +252,7 @@
     "last_success": "2026-05-10T00:03:14Z"
   },
   "runsignup": {
-    "tested_at": "2026-05-10T00:03:04Z",
+    "tested_at": "2026-05-11T15:57:23Z",
     "status": "fail",
     "failure_note": "0 eventos",
     "last_success": null
@@ -262,5 +262,41 @@
     "status": "ok",
     "failure_note": null,
     "last_success": "2026-05-10T00:02:51Z"
+  },
+  "bora_correr": {
+    "tested_at": "2026-05-11T15:57:19Z",
+    "status": "fail",
+    "failure_note": "403 no CI",
+    "last_success": null
+  },
+  "brasil_que_corre": {
+    "tested_at": "2026-05-11T15:57:15Z",
+    "status": "fail",
+    "failure_note": "403 no CI",
+    "last_success": null
+  },
+  "godream": {
+    "tested_at": "2026-05-11T15:57:10Z",
+    "status": "fail",
+    "failure_note": null,
+    "last_success": null
+  },
+  "portal_das_corridas": {
+    "tested_at": "2026-05-11T15:57:19Z",
+    "status": "fail",
+    "failure_note": null,
+    "last_success": null
+  },
+  "road_runners": {
+    "tested_at": "2026-05-11T15:57:08Z",
+    "status": "fail",
+    "failure_note": null,
+    "last_success": null
+  },
+  "sympla": {
+    "tested_at": "2026-05-11T15:57:19Z",
+    "status": "fail",
+    "failure_note": null,
+    "last_success": null
   }
 }

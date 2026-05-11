@@ -100,7 +100,7 @@ def _search_largada_esportiva(today: str) -> list[Corrida]:
             titulo=normalize_titulo(name),
             data_evento=data_evento,
             horario=None,
-            localizacao=ev.get("address") or "Brasília, DF",
+            localizacao="Brasília, DF",
             cidade="Brasília",
             estado="DF",
             distancias=distancias,

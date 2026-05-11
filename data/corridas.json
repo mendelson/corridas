@@ -1,850 +1,21 @@
 {
-  "gerado_em": "2026-05-11T16:47:50+00:00",
-  "total": 1192,
+  "gerado_em": "2026-05-11T16:54:47+00:00",
+  "total": 1169,
   "corridas": [
     {
-      "id": "riomar-fortaleza-i_ce_2026-04-30",
-      "titulo": "Riomar Fortaleza I",
-      "data_evento": "2025-05-17",
+      "id": "circuito-sesc-corridas-etapa-taguatinga_df_2026-05-01",
+      "titulo": "Circuito Sesc + Corridas - Etapa Taguatinga",
+      "data_evento": "2026-04-26",
       "horario": null,
-      "localizacao": "Fortaleza, CE",
-      "cidade": "Fortaleza",
-      "estado": "CE",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://d1au5iau2exwyo.cloudfront.net/small_RUN_SERIES_8c536e066d.png",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "TF Sports",
-          "link_evento": "https://www.tfsports.com.br/run-series/rio-mar-fortaleza-i-2026",
-          "links_inscricao": [
-            "https://www.tfsports.com.br/run-series/rio-mar-fortaleza-i-2026"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-04-30T14:18:52+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-palmas-outono",
-      "titulo": "Circuito das Estações - Outono - Palmas",
-      "data_evento": "2026-03-01",
-      "horario": null,
-      "localizacao": "Palmas",
-      "cidade": "Palmas",
-      "estado": "TO",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/palmas/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-palmas"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-rio-de-janeiro-outono",
-      "titulo": "Circuito das Estações - Outono - Rio de Janeiro",
-      "data_evento": "2026-03-08",
-      "horario": null,
-      "localizacao": "Rio de Janeiro",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/rio-de-janeiro/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-rio-de-janeiro"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-sao-paulo-outono",
-      "titulo": "Circuito das Estações - Outono - São Paulo",
-      "data_evento": "2026-03-15",
-      "horario": null,
-      "localizacao": "São Paulo",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/sao-paulo/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-sao-paulo"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-belo-horizonte-outono",
-      "titulo": "Circuito das Estações - Outono - Belo Horizonte",
-      "data_evento": "2026-03-15",
-      "horario": null,
-      "localizacao": "Belo Horizonte",
-      "cidade": "Belo Horizonte",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/belo-horizonte/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-belo-horizonte"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-porto-alegre-outono",
-      "titulo": "Circuito das Estações - Outono - Porto Alegre",
-      "data_evento": "2026-03-15",
-      "horario": null,
-      "localizacao": "Porto Alegre",
-      "cidade": "Porto Alegre",
-      "estado": "RS",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/porto-alegre/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-porto-alegre"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-anapolis-outono",
-      "titulo": "Circuito das Estações - Outono - Anápolis",
-      "data_evento": "2026-03-15",
-      "horario": null,
-      "localizacao": "Anápolis",
-      "cidade": "Anápolis",
-      "estado": "GO",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/anapolis/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-anapolis",
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-goiania"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-brasilia-outono",
-      "titulo": "Circuito das Estações - Outono - Brasília",
-      "data_evento": "2026-03-22",
-      "horario": null,
-      "localizacao": "Brasília",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/brasilia/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-brasilia"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-recife-outono",
-      "titulo": "Circuito das Estações - Outono - Recife",
-      "data_evento": "2026-03-22",
-      "horario": null,
-      "localizacao": "Recife",
-      "cidade": "Recife",
-      "estado": "PE",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/recife/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-recife"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-belem-outono",
-      "titulo": "Circuito das Estações - Outono - Belém",
-      "data_evento": "2026-03-22",
-      "horario": null,
-      "localizacao": "Belém",
-      "cidade": "Belém",
-      "estado": "PA",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/belem/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-belem"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-ribeirao-preto-outono",
-      "titulo": "Circuito das Estações - Outono - Ribeirão Preto",
-      "data_evento": "2026-03-22",
-      "horario": null,
-      "localizacao": "Ribeirão Preto",
-      "cidade": "Ribeirão Preto",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/ribeirao-preto/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-ribeirao-preto"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-cuiaba-outono",
-      "titulo": "Circuito das Estações - Outono - Cuiabá",
-      "data_evento": "2026-03-22",
-      "horario": null,
-      "localizacao": "Cuiabá",
-      "cidade": "Cuiabá",
-      "estado": "MT",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/cuiaba/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-cuiaba"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-sao-luis-outono",
-      "titulo": "Circuito das Estações - Outono - São Luis",
-      "data_evento": "2026-03-22",
-      "horario": null,
-      "localizacao": "São Luis",
-      "cidade": "São Luís",
-      "estado": "MA",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/sao-luis/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-sao-luis"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-fortaleza-outono",
-      "titulo": "Circuito das Estações - Outono - Fortaleza",
-      "data_evento": "2026-03-29",
-      "horario": null,
-      "localizacao": "Fortaleza",
-      "cidade": "Fortaleza",
-      "estado": "CE",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/fortaleza/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-fortaleza"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-campinas-outono",
-      "titulo": "Circuito das Estações - Outono - Campinas",
-      "data_evento": "2026-03-29",
-      "horario": null,
-      "localizacao": "Campinas",
-      "cidade": "Campinas",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/campinas/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-campinas",
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-sao-jose-dos-campos"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-vitoria-outono",
-      "titulo": "Circuito das Estações - Outono - Vitória",
-      "data_evento": "2026-03-29",
-      "horario": null,
-      "localizacao": "Vitória",
-      "cidade": "Vitória",
-      "estado": "ES",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/vitoria/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-vitoria"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-joao-pessoa-outono",
-      "titulo": "Circuito das Estações - Outono - João Pessoa",
-      "data_evento": "2026-03-29",
-      "horario": null,
-      "localizacao": "João Pessoa",
-      "cidade": "João Pessoa",
-      "estado": "PB",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/joao-pessoa/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-joao-pessoa"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-teresina-outono",
-      "titulo": "Circuito das Estações - Outono - Teresina",
-      "data_evento": "2026-03-29",
-      "horario": null,
-      "localizacao": "Teresina",
-      "cidade": "Teresina",
-      "estado": "PI",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/teresina/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-teresina"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "30a-maratona-int-l-de-sao-paulo-sao-paulo-int-l-marathon_sp_2026-04-30",
-      "titulo": "30ª Maratona Int'L De São Paulo - Sao Paulo Int'L Marathon",
-      "data_evento": "2026-04-11",
-      "horario": null,
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 7.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://www.yescom.com.br/maratonasp/2026/img/og-image_30.jpg",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Yescom",
-          "link_evento": "https://www.yescom.com.br/maratonasp/2026/index.asp",
-          "links_inscricao": [
-            "http://rotinas.minhasinscricoes.com.br/inscricaomobile/default.aspx?keycode=ce21f45b-16ed-4fae-a3ef-06a47f40ff9f&chave=8983cf1d-e0f0-4e5c-8435-85d37f86d01b"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T14:51:52+00:00",
-      "updated_at": "2026-04-30T14:51:52+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-salvador-outono",
-      "titulo": "Circuito das Estações - Outono - Salvador",
-      "data_evento": "2026-04-12",
-      "horario": null,
-      "localizacao": "Salvador",
-      "cidade": "Salvador",
-      "estado": "BA",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 13.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/salvador/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-salvador"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-florianopolis-outono",
-      "titulo": "Circuito das Estações - Outono - Florianópolis",
-      "data_evento": "2026-04-12",
-      "horario": null,
-      "localizacao": "Florianópolis",
-      "cidade": "Florianópolis",
-      "estado": "SC",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/florianopolis/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-florianopolis"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "etapa-plano-piloto_df_2026-04-30",
-      "titulo": "Etapa Plano Piloto",
-      "data_evento": "2026-04-12",
-      "horario": "07:05",
       "localizacao": "Brasília-DF",
       "cidade": "Brasília",
       "estado": "DF",
       "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
         {
           "km": 6.0,
           "data": null,
@@ -854,65 +25,23 @@
           "km": 12.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/rszc-6143743e0d9c4d880570ea4a33c4f83156fa6f96+%285%29.jpeg/018dfa01-533a-833c-ab11-5aff38091a27?t=1770067235548",
+      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
       "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "SESC DF",
-          "link_evento": "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514",
+          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
           "links_inscricao": [
-            "https://www.sescdf.com.br/web/guest/w/sesc-corrida%C2%A0-etapa-plano-piloto-est%C3%A1-com-inscri%C3%A7%C3%B5es-abertas%C2%A0/-/categories/288514"
+            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
           ]
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T01:40:07+00:00",
-      "updated_at": "2026-04-30T14:52:00+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-das-estacoes-natal-outono",
-      "titulo": "Circuito das Estações - Outono - Natal",
-      "data_evento": "2026-04-19",
-      "horario": null,
-      "localizacao": "Natal",
-      "cidade": "Natal",
-      "estado": "RN",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": false,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/natal/outono",
-          "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-natal"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-04-30T21:23:44+00:00",
+      "updated_at": "2026-05-01T12:30:38+00:00",
       "fotos": []
     },
     {
@@ -987,48 +116,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
       "updated_at": "2026-04-30T21:23:44+00:00",
-      "fotos": []
-    },
-    {
-      "id": "circuito-sesc-corridas-etapa-taguatinga_df_2026-05-01",
-      "titulo": "Circuito Sesc + Corridas - Etapa Taguatinga",
-      "data_evento": "2026-04-26",
-      "horario": null,
-      "localizacao": "Brasília-DF",
-      "cidade": "Brasília",
-      "estado": "DF",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://www.sescdf.com.br:443/documents/20123/0/taguatinga.jpg/51fa96d9-31e3-9c40-400f-671ead22db2e?t=1775760611020",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "SESC DF",
-          "link_evento": "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462",
-          "links_inscricao": [
-            "https://www.sescdf.com.br/web/guest/w/inscri%C3%A7%C3%B5es-abertas-para-etapa-de-taguatinga-do-circuito-sesc-corridas-1/-/categories/288462"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T01:40:07+00:00",
-      "updated_at": "2026-05-01T12:30:38+00:00",
       "fotos": []
     },
     {
@@ -3487,6 +2574,43 @@
       "fotos": []
     },
     {
+      "id": "ts_86550",
+      "titulo": "Corrida Da Infantaria 2026",
+      "data_evento": "2026-05-16",
+      "horario": "21:00",
+      "localizacao": "Curitiba, PR",
+      "cidade": "Curitiba",
+      "estado": "PR",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/PM8WUJQ169SFI5ZMKY6WCVPHDXAQNY1012OVTDQUJKY0XBFD1I.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DA+INFANTARIA+2026-86550",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+DA+INFANTARIA+2026-86550"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
       "id": "ts_85739",
       "titulo": "Desafio Da Floresta",
       "data_evento": "2026-05-16",
@@ -3530,44 +2654,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T15:22:21+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86550",
-      "titulo": "Corrida Da Infantaria 2026",
-      "data_evento": "2026-05-16",
-      "horario": "21:00",
-      "localizacao": "Curitiba, PR",
-      "cidade": "Curitiba",
-      "estado": "PR",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/PM8WUJQ169SFI5ZMKY6WCVPHDXAQNY1012OVTDQUJKY0XBFD1I.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DA+INFANTARIA+2026-86550",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/CORRIDA+DA+INFANTARIA+2026-86550"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -3599,7 +2686,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -3673,7 +2760,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -5035,7 +4122,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-07T17:51:38+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5113,13 +4200,13 @@
       "fotos": []
     },
     {
-      "id": "ts_85228",
-      "titulo": "Meia Maratona Foco Run - 2026",
+      "id": "ts_86213",
+      "titulo": "Combo Multisports - Lote 2 Provas 1705 1810 1608 0612",
       "data_evento": "2026-05-17",
-      "horario": "04:30",
-      "localizacao": "Manaus, AM",
-      "cidade": "Manaus",
-      "estado": "AM",
+      "horario": "00:00",
+      "localizacao": "Matinhos, PR",
+      "cidade": "Matinhos",
+      "estado": "PR",
       "distancias": [
         {
           "km": 5.0,
@@ -5132,63 +4219,31 @@
           "horario": null
         },
         {
-          "km": 21.097,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/IDT0EEORKWG90UJFCS7O2YMWX0AN8GCVA68KGGEV6KEGE7AGW8.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/MEIA+MARATONA+FOCO+RUN+-+2026-85228",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/MEIA+MARATONA+FOCO+RUN+-+2026-85228"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86443",
-      "titulo": "2ª Corrida Tribunal De Contas De Santa Catarina",
-      "data_evento": "2026-05-17",
-      "horario": "07:00",
-      "localizacao": "Florianópolis, SC",
-      "cidade": "Florianópolis",
-      "estado": "SC",
-      "distancias": [
-        {
-          "km": 3.0,
+          "km": 20.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 5.0,
+          "km": 40.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/BZ7ECM5FG4D3Z1LHA6GNY3UP6JTJF9446EKHRXL47DKLR4WFZ7.png",
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/CCPW6KEFHF9BDLBG0ZP8I3JSPZFU35N2SVNWOKHZLI5LUMISZW.png",
       "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/2%C2%AA+CORRIDA+TRIBUNAL+DE+CONTAS++DE+SANTA+CATARINA-86443",
+          "link_evento": "https://www.ticketsports.com.br/e/COMBO+MULTISPORTS+-+LOTE+2+provas+1705+1810+1608+0612-86213",
           "links_inscricao": [
-            "https://www.ticketsports.com.br/e/2%C2%AA+CORRIDA+TRIBUNAL+DE+CONTAS++DE+SANTA+CATARINA-86443"
+            "https://www.ticketsports.com.br/e/COMBO+MULTISPORTS+-+LOTE+2+provas+1705+1810+1608+0612-86213"
           ]
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5240,7 +4295,44 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_86443",
+      "titulo": "2ª Corrida Tribunal De Contas De Santa Catarina",
+      "data_evento": "2026-05-17",
+      "horario": "07:00",
+      "localizacao": "Florianópolis, SC",
+      "cidade": "Florianópolis",
+      "estado": "SC",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/BZ7ECM5FG4D3Z1LHA6GNY3UP6JTJF9446EKHRXL47DKLR4WFZ7.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/2%C2%AA+CORRIDA+TRIBUNAL+DE+CONTAS++DE+SANTA+CATARINA-86443",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/2%C2%AA+CORRIDA+TRIBUNAL+DE+CONTAS++DE+SANTA+CATARINA-86443"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5272,165 +4364,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86213",
-      "titulo": "Combo Multisports - Lote 2 Provas 1705 1810 1608 0612",
-      "data_evento": "2026-05-17",
-      "horario": "00:00",
-      "localizacao": "Matinhos, PR",
-      "cidade": "Matinhos",
-      "estado": "PR",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 20.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 40.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/CCPW6KEFHF9BDLBG0ZP8I3JSPZFU35N2SVNWOKHZLI5LUMISZW.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/COMBO+MULTISPORTS+-+LOTE+2+provas+1705+1810+1608+0612-86213",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/COMBO+MULTISPORTS+-+LOTE+2+provas+1705+1810+1608+0612-86213"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85189",
-      "titulo": "1ª Corrida E Caminhada De Nossa Senhora De Fátima",
-      "data_evento": "2026-05-17",
-      "horario": "09:00",
-      "localizacao": "Guaíba, RS",
-      "cidade": "Guaíba",
-      "estado": "RS",
-      "distancias": [
-        {
-          "km": 4.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 8.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/E6ASTTOMWKTYCBQMVCC8PKG0NCDTUFUUTA5YGE44RL9XMO406D.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+E+CAMINHADA+DE+NOSSA+SENHORA+DE+F%C3%81TIMA-85189",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+E+CAMINHADA+DE+NOSSA+SENHORA+DE+F%C3%81TIMA-85189"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85193",
-      "titulo": "5º Cross Country Calipal",
-      "data_evento": "2026-05-17",
-      "horario": "06:00",
-      "localizacao": "Jaboticabal, SP",
-      "cidade": "Jaboticabal",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/RTCF6N4KIOOBZ2TBC1GZ0J6101FYO9KKM1XGG5GABBFUDFFYLV.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/5%C2%BA+CROSS+COUNTRY+CALIPAL+-85193",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/5%C2%BA+CROSS+COUNTRY+CALIPAL+-85193"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85355",
-      "titulo": "1ª Ananin Runner 2026",
-      "data_evento": "2026-05-17",
-      "horario": "06:00",
-      "localizacao": "Ananindeua, PA",
-      "cidade": "Ananindeua",
-      "estado": "PA",
-      "distancias": [
-        {
-          "km": 3.5,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.5,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/4QQ1TPWHBQ18SE4VEF6504WF7XIQAKZ77LWJGWJK0WPMIBVG70.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/+1%C2%AA+ANANIN+RUNNER+2026-85355",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/+1%C2%AA+ANANIN+RUNNER+2026-85355"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5462,44 +4396,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85317",
-      "titulo": "Sítio São José Trail Running",
-      "data_evento": "2026-05-17",
-      "horario": "07:00",
-      "localizacao": "Campinas, SP",
-      "cidade": "Campinas",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/CCZ5Z1FKBDMC8WDUKB97KE57QOT7JH712067CNHAD1J30MAF2U.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/S%C3%8DTIO+S%C3%83O+JOS%C3%89+trail+running-85317",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/S%C3%8DTIO+S%C3%83O+JOS%C3%89+trail+running-85317"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5536,7 +4433,44 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85189",
+      "titulo": "1ª Corrida E Caminhada De Nossa Senhora De Fátima",
+      "data_evento": "2026-05-17",
+      "horario": "09:00",
+      "localizacao": "Guaíba, RS",
+      "cidade": "Guaíba",
+      "estado": "RS",
+      "distancias": [
+        {
+          "km": 4.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 8.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/E6ASTTOMWKTYCBQMVCC8PKG0NCDTUFUUTA5YGE44RL9XMO406D.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+E+CAMINHADA+DE+NOSSA+SENHORA+DE+F%C3%81TIMA-85189",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+E+CAMINHADA+DE+NOSSA+SENHORA+DE+F%C3%81TIMA-85189"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5578,7 +4512,49 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85228",
+      "titulo": "Meia Maratona Foco Run - 2026",
+      "data_evento": "2026-05-17",
+      "horario": "04:30",
+      "localizacao": "Manaus, AM",
+      "cidade": "Manaus",
+      "estado": "AM",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/IDT0EEORKWG90UJFCS7O2YMWX0AN8GCVA68KGGEV6KEGE7AGW8.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/MEIA+MARATONA+FOCO+RUN+-+2026-85228",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/MEIA+MARATONA+FOCO+RUN+-+2026-85228"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5620,7 +4596,86 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85791",
+      "titulo": "3ª Corrida E Caminhada Rotary Run Indaiatuba",
+      "data_evento": "2026-05-17",
+      "horario": "08:00",
+      "localizacao": "Indaiatuba, SP",
+      "cidade": "Indaiatuba",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0W7MBJ875WXML8A5ZT44B2S0L0GSMT6GHEYYKELUWFOP4BTNPY.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/3%C2%AA+CORRIDA+E+CAMINHADA+ROTARY+RUN+INDAIATUBA-85791",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/3%C2%AA+CORRIDA+E+CAMINHADA+ROTARY+RUN+INDAIATUBA-85791"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85728",
+      "titulo": "Circuito RJ 2026 - 1ª Etapa",
+      "data_evento": "2026-05-17",
+      "horario": "07:00",
+      "localizacao": "Rio de Janeiro, RJ",
+      "cidade": "Rio de Janeiro",
+      "estado": "RJ",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/2RDM9ONFY3VIZP0URDFH992OXD43OXMNFLSPW2MA4JUZS8FM2L.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CIRCUITO+RJ+2026+-+1%C2%AA+ETAPA-85728",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CIRCUITO+RJ+2026+-+1%C2%AA+ETAPA-85728"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5667,86 +4722,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:34+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85791",
-      "titulo": "3ª Corrida E Caminhada Rotary Run Indaiatuba",
-      "data_evento": "2026-05-17",
-      "horario": "08:00",
-      "localizacao": "Indaiatuba, SP",
-      "cidade": "Indaiatuba",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/0W7MBJ875WXML8A5ZT44B2S0L0GSMT6GHEYYKELUWFOP4BTNPY.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/3%C2%AA+CORRIDA+E+CAMINHADA+ROTARY+RUN+INDAIATUBA-85791",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/3%C2%AA+CORRIDA+E+CAMINHADA+ROTARY+RUN+INDAIATUBA-85791"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85728",
-      "titulo": "Circuito RJ 2026 - 1ª Etapa",
-      "data_evento": "2026-05-17",
-      "horario": "07:00",
-      "localizacao": "Rio de Janeiro, RJ",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/2RDM9ONFY3VIZP0URDFH992OXD43OXMNFLSPW2MA4JUZS8FM2L.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/CIRCUITO+RJ+2026+-+1%C2%AA+ETAPA-85728",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/CIRCUITO+RJ+2026+-+1%C2%AA+ETAPA-85728"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5783,7 +4759,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5830,7 +4806,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -5867,7 +4843,118 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85355",
+      "titulo": "1ª Ananin Runner 2026",
+      "data_evento": "2026-05-17",
+      "horario": "06:00",
+      "localizacao": "Ananindeua, PA",
+      "cidade": "Ananindeua",
+      "estado": "PA",
+      "distancias": [
+        {
+          "km": 3.5,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.5,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/4QQ1TPWHBQ18SE4VEF6504WF7XIQAKZ77LWJGWJK0WPMIBVG70.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/+1%C2%AA+ANANIN+RUNNER+2026-85355",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/+1%C2%AA+ANANIN+RUNNER+2026-85355"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85317",
+      "titulo": "Sítio São José Trail Running",
+      "data_evento": "2026-05-17",
+      "horario": "07:00",
+      "localizacao": "Campinas, SP",
+      "cidade": "Campinas",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/CCZ5Z1FKBDMC8WDUKB97KE57QOT7JH712067CNHAD1J30MAF2U.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/S%C3%8DTIO+S%C3%83O+JOS%C3%89+trail+running-85317",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/S%C3%8DTIO+S%C3%83O+JOS%C3%89+trail+running-85317"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85193",
+      "titulo": "5º Cross Country Calipal",
+      "data_evento": "2026-05-17",
+      "horario": "06:00",
+      "localizacao": "Jaboticabal, SP",
+      "cidade": "Jaboticabal",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/RTCF6N4KIOOBZ2TBC1GZ0J6101FYO9KKM1XGG5GABBFUDFFYLV.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/5%C2%BA+CROSS+COUNTRY+CALIPAL+-85193",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/5%C2%BA+CROSS+COUNTRY+CALIPAL+-85193"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -6254,7 +5341,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -6380,7 +5467,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -6425,7 +5512,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:51:44+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -6470,7 +5557,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:18+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -6549,7 +5636,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -7598,7 +6685,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -7815,7 +6902,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -8073,38 +7160,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85729",
-      "titulo": "Corrida Da Panini | São Paulo",
-      "data_evento": "2026-05-24",
-      "horario": "06:00",
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/1QF2ETX3XP8IUI20YBOUEVLLC5T6BKIJ133VIWOZ7E8NNOWFT2.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DA+PANINI+%7C+S%C3%83O+PAULO-85729",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/CORRIDA+DA+PANINI+%7C+S%C3%83O+PAULO-85729"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_85044",
       "titulo": "3ª Maratona Internacional De Goiânia Wr",
       "data_evento": "2026-05-24",
@@ -8153,7 +7208,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -8195,44 +7250,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_86485",
-      "titulo": "4ª Corrida Nova Era Boa Vista",
-      "data_evento": "2026-05-24",
-      "horario": "06:00",
-      "localizacao": "Boa Vista, RR",
-      "cidade": "Boa Vista",
-      "estado": "RR",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/U95VOOR173FC1055JUSRSH956LD73558A3MRV4A8KJ1RXHMA33.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/4%C2%AA+CORRIDA+NOVA+ERA+BOA+VISTA-86485",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/4%C2%AA+CORRIDA+NOVA+ERA+BOA+VISTA-86485"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -8269,7 +7287,44 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_86485",
+      "titulo": "4ª Corrida Nova Era Boa Vista",
+      "data_evento": "2026-05-24",
+      "horario": "06:00",
+      "localizacao": "Boa Vista, RR",
+      "cidade": "Boa Vista",
+      "estado": "RR",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/U95VOOR173FC1055JUSRSH956LD73558A3MRV4A8KJ1RXHMA33.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/4%C2%AA+CORRIDA+NOVA+ERA+BOA+VISTA-86485",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/4%C2%AA+CORRIDA+NOVA+ERA+BOA+VISTA-86485"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -8311,7 +7366,39 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85729",
+      "titulo": "Corrida Da Panini | São Paulo",
+      "data_evento": "2026-05-24",
+      "horario": "06:00",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/1QF2ETX3XP8IUI20YBOUEVLLC5T6BKIJ133VIWOZ7E8NNOWFT2.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DA+PANINI+%7C+S%C3%83O+PAULO-85729",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+DA+PANINI+%7C+S%C3%83O+PAULO-85729"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -8368,7 +7455,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -8405,7 +7492,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -8888,7 +7975,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -8957,7 +8044,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -9026,7 +8113,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -9470,7 +8557,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -9582,7 +8669,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -10175,7 +9262,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -10678,7 +9765,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-01T15:45:35+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -10779,7 +9866,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -10811,7 +9898,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -10863,44 +9950,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
-      "fotos": []
-    },
-    {
-      "id": "ts_85572",
-      "titulo": "1ª Corrida Da Romu",
-      "data_evento": "2026-05-31",
-      "horario": "05:30",
-      "localizacao": "Toritama, PE",
-      "cidade": "Toritama",
-      "estado": "PE",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/5LK3W10ZKI2MFIMASGQMQUC52LE66C3YABI607Z49ZHI0WLT6Y.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+DA+ROMU-85572",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+DA+ROMU-85572"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -10937,7 +9987,44 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85572",
+      "titulo": "1ª Corrida Da Romu",
+      "data_evento": "2026-05-31",
+      "horario": "05:30",
+      "localizacao": "Toritama, PE",
+      "cidade": "Toritama",
+      "estado": "PE",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/5LK3W10ZKI2MFIMASGQMQUC52LE66C3YABI607Z49ZHI0WLT6Y.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+DA+ROMU-85572",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/1%C2%AA+CORRIDA+DA+ROMU-85572"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T15:26:07+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -11016,7 +10103,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -11394,7 +10481,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -12164,7 +11251,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -12423,7 +11510,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -13109,7 +12196,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -13790,7 +12877,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -13948,7 +13035,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -14513,7 +13600,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -14861,7 +13948,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -15400,7 +14487,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-09T06:20:37+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -15514,7 +14601,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:18+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -15561,7 +14648,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -15877,7 +14964,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -17370,7 +16457,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -17778,7 +16865,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -17897,7 +16984,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:19+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -18816,7 +17903,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -19011,7 +18098,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -19430,7 +18517,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -19472,7 +18559,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:36+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -19766,7 +18853,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -20077,7 +19164,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-11T15:57:26+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -20405,7 +19492,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -20837,7 +19924,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -21409,7 +20496,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -22243,7 +21330,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -22697,7 +21784,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-08T19:05:47+00:00",
-      "updated_at": "2026-05-11T16:47:36+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -22907,7 +21994,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-05T23:40:34+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -23423,7 +22510,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -23470,7 +22557,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -23956,7 +23043,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -24889,7 +23976,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -24931,7 +24018,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -24963,7 +24050,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -25762,7 +24849,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -25831,7 +24918,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -26088,7 +25175,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -26300,7 +25387,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -27551,7 +26638,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-08T03:29:45+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -27620,7 +26707,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -27961,7 +27048,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -28030,7 +27117,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -28578,7 +27665,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-11T14:51:12+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -29012,7 +28099,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -29289,7 +28376,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -29457,7 +28544,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:05:38+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -29507,7 +28594,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:18+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -29855,7 +28942,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -30255,7 +29342,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:48:16+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -30788,7 +29875,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -30862,7 +29949,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -31588,7 +30675,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -32042,7 +31129,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -32147,38 +31234,6 @@
       "fotos": []
     },
     {
-      "id": "ts_85643",
-      "titulo": "Cyborg Run 5K",
-      "data_evento": "2026-08-30",
-      "horario": "08:30",
-      "localizacao": "São Paulo, SP",
-      "cidade": "São Paulo",
-      "estado": "SP",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/WJ9CDKW4BKKGKXPLQ3VEVSO3BRB4XBHU2C3VK3T99ZXNLTUV27.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Ticket Sports",
-          "link_evento": "https://www.ticketsports.com.br/e/CYBORG+RUN+5K-85643",
-          "links_inscricao": [
-            "https://www.ticketsports.com.br/e/CYBORG+RUN+5K-85643"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-04-30T16:21:30+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_86645",
       "titulo": "Bemol Run Manaus 2026",
       "data_evento": "2026-08-30",
@@ -32212,7 +31267,39 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:36+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
+      "fotos": []
+    },
+    {
+      "id": "ts_85643",
+      "titulo": "Cyborg Run 5K",
+      "data_evento": "2026-08-30",
+      "horario": "08:30",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/WJ9CDKW4BKKGKXPLQ3VEVSO3BRB4XBHU2C3VK3T99ZXNLTUV27.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CYBORG+RUN+5K-85643",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CYBORG+RUN+5K-85643"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-04-30T16:21:30+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -32607,7 +31694,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -32849,7 +31936,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -34043,7 +33130,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T20:48:24+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -34683,7 +33770,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -35085,7 +34172,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -35431,7 +34518,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -35579,7 +34666,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -36878,7 +35965,7 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/S9WO7K8F43JEEI1YZ1PAGIYXFTV11QAA23WWVMSZ025BRTBER1.png",
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/YLV0WYC9API6PV21B02KTGYMISO967BBJLO6H63O40ZFYTU9R0.png",
       "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
@@ -36892,7 +35979,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-06T14:24:56+00:00",
-      "updated_at": "2026-05-06T14:24:56+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -37309,7 +36396,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-08T19:05:47+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -37501,7 +36588,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-02T01:23:00+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -37900,7 +36987,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:20+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -38584,7 +37671,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -38984,7 +38071,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -39358,38 +38445,6 @@
       "fotos": []
     },
     {
-      "id": "dublin-city-marathon_int_2026",
-      "titulo": "Dublin City Marathon",
-      "data_evento": "2026-10-25",
-      "horario": "09:00",
-      "localizacao": "Dublin, Irlanda",
-      "cidade": "Dublin, Irlanda",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://irishlifedublinmarathon.ie/wp-content/uploads/2025/02/irish-life-logo-image.png",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Dublin City Marathon",
-          "link_evento": "https://www.irishlifedublinmarathon.ie/",
-          "links_inscricao": [
-            "https://www.irishlifedublinmarathon.ie/"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-02T00:14:17+00:00",
-      "updated_at": "2026-05-11T00:21:48+00:00",
-      "fotos": []
-    },
-    {
       "id": "ts_74707",
       "titulo": "Maratona De Veneza 2026",
       "data_evento": "2026-10-25",
@@ -39436,6 +38491,38 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
       "updated_at": "2026-05-09T15:51:19+00:00",
+      "fotos": []
+    },
+    {
+      "id": "dublin-city-marathon_int_2026",
+      "titulo": "Dublin City Marathon",
+      "data_evento": "2026-10-25",
+      "horario": "09:00",
+      "localizacao": "Dublin, Irlanda",
+      "cidade": "Dublin, Irlanda",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://irishlifedublinmarathon.ie/wp-content/uploads/2025/02/irish-life-logo-image.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Dublin City Marathon",
+          "link_evento": "https://www.irishlifedublinmarathon.ie/",
+          "links_inscricao": [
+            "https://www.irishlifedublinmarathon.ie/"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-02T00:14:17+00:00",
+      "updated_at": "2026-05-11T00:21:48+00:00",
       "fotos": []
     },
     {
@@ -39867,7 +38954,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -40262,7 +39349,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -41583,7 +40670,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T00:20:21+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -42052,7 +41139,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:08+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -42647,7 +41734,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -43017,7 +42104,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T21:23:44+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:30+00:00",
       "fotos": []
     },
     {
@@ -43090,6 +42177,38 @@
       "fotos": []
     },
     {
+      "id": "valencia-trinidad-alfonso-marathon_int_2026",
+      "titulo": "Valencia Trinidad Alfonso Marathon",
+      "data_evento": "2026-12-06",
+      "horario": "08:30",
+      "localizacao": "Valência, Espanha",
+      "cidade": "Valência, Espanha",
+      "estado": "INT",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn1.valenciaciudaddelrunning.com/wp-content/uploads/2020/07/2541-mvta-2025-4956-scaled-e1766746579528.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Valencia Marathon",
+          "link_evento": "https://valenciaciudaddelrunning.com/en/marathon/",
+          "links_inscricao": [
+            "https://valenciaciudaddelrunning.com/en/marathon/"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-02T00:13:49+00:00",
+      "updated_at": "2026-05-06T14:26:06+00:00",
+      "fotos": []
+    },
+    {
       "id": "shopping-vila-olimpia-ii_sp_2026-04-30",
       "titulo": "Shopping Vila Olímpia Ii",
       "data_evento": "2026-12-06",
@@ -43124,38 +42243,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-04-30T14:18:52+00:00",
       "updated_at": "2026-05-01T09:50:36+00:00",
-      "fotos": []
-    },
-    {
-      "id": "valencia-trinidad-alfonso-marathon_int_2026",
-      "titulo": "Valencia Trinidad Alfonso Marathon",
-      "data_evento": "2026-12-06",
-      "horario": "08:30",
-      "localizacao": "Valência, Espanha",
-      "cidade": "Valência, Espanha",
-      "estado": "INT",
-      "distancias": [
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn1.valenciaciudaddelrunning.com/wp-content/uploads/2020/07/2541-mvta-2025-4956-scaled-e1766746579528.jpg",
-      "inscricoes_abertas": true,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Valencia Marathon",
-          "link_evento": "https://valenciaciudaddelrunning.com/en/marathon/",
-          "links_inscricao": [
-            "https://valenciaciudaddelrunning.com/en/marathon/"
-          ]
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-02T00:13:49+00:00",
-      "updated_at": "2026-05-06T14:26:06+00:00",
       "fotos": []
     },
     {
@@ -44159,7 +43246,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44201,7 +43288,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44258,7 +43345,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44315,7 +43402,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44375,7 +43462,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44464,7 +43551,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44511,7 +43598,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44561,7 +43648,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44603,7 +43690,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44688,7 +43775,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44741,7 +43828,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44788,7 +43875,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44820,7 +43907,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44852,7 +43939,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44884,7 +43971,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44936,7 +44023,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -44968,7 +44055,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -45005,7 +44092,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -45079,7 +44166,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-06T00:32:42+00:00",
-      "updated_at": "2026-05-11T16:47:35+00:00",
+      "updated_at": "2026-05-11T16:54:32+00:00",
       "fotos": []
     },
     {
@@ -45148,7 +44235,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -45674,7 +44761,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-05T21:07:31+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -45899,7 +44986,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -45941,7 +45028,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -45983,7 +45070,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -46025,7 +45112,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     },
     {
@@ -46082,7 +45169,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-04-30T15:26:07+00:00",
-      "updated_at": "2026-05-11T16:47:33+00:00",
+      "updated_at": "2026-05-11T16:54:31+00:00",
       "fotos": []
     }
   ]

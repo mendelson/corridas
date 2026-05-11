@@ -6,7 +6,7 @@ import re
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from .merger import are_duplicates, merge_rodada
@@ -250,9 +250,18 @@ def _normalize_all_locations(corridas: list[Corrida]) -> None:
         c.cidade = normalize_cidade(c.cidade)
 
 
+_KEEP_PAST_DAYS = 15  # matches frontend's deepest past window (past15 filter)
+
+
 def save(corridas: list[Corrida]) -> None:
+    cutoff = (date.today() - timedelta(days=_KEEP_PAST_DAYS)).isoformat()
+    pruned = [c for c in corridas if not c.data_evento or c.data_evento >= cutoff]
+    dropped = len(corridas) - len(pruned)
+    if dropped:
+        print(f"[main] {dropped} corrida(s) removida(s) por data passada (antes de {cutoff})")
+
     corridas_sorted = sorted(
-        corridas,
+        pruned,
         key=lambda c: c.data_evento if c.data_evento else "9999-99-99",
     )
     payload = {

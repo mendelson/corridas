@@ -89,6 +89,8 @@ input { font-family: inherit; }
   transition: color 0.2s, border-color 0.2s;
 }
 .btn-refresh:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.btn-refresh.spinning { animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .btn-apps {
   display: flex;

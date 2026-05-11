@@ -379,6 +379,7 @@ async function detectGeoEstado() {
 // ---------------------------------------------------------------------------
 async function loadData() {
   resultCount.textContent = T.loading;
+  if (btnRefresh) btnRefresh.classList.add('spinning');
   try {
     const res = await fetch('/corridas.json');
     if (!res.ok) throw new Error(res.status);
@@ -388,6 +389,8 @@ async function loadData() {
   } catch (e) {
     resultCount.textContent = T.loadError;
     console.error('loadData error', e);
+  } finally {
+    if (btnRefresh) btnRefresh.classList.remove('spinning');
   }
 }
 

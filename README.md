@@ -59,7 +59,7 @@ GitHub Actions.
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-11 18:04 | ✅ | 2026-05-11 18:04 |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-05-11 18:02 | ❌ 0 eventos | — |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Estava retornando 0 eventos porque a API mudou o formato esperado de datas de `MM/DD/YYYY` para ISO `YYYY-MM-DD` — corrigido em 2026-05-11. | 2026-05-11 18:02 | ❌ 0 eventos | — |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-11 18:04 | ✅ | 2026-05-11 18:04 |
 
 ---

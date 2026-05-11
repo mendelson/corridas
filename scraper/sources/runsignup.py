@@ -58,8 +58,8 @@ _NON_RUNNING = re.compile(
 # ---------------------------------------------------------------------------
 def scrape() -> list[Corrida]:
     today_s = today_iso()
-    start   = date.today().strftime("%m/%d/%Y")
-    end     = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).strftime("%m/%d/%Y")
+    start   = date.today().strftime("%Y-%m-%d")
+    end     = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).strftime("%Y-%m-%d")
 
     races: list[dict] = []
     for page in range(1, _MAX_PAGES + 1):

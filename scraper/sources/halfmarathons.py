@@ -92,6 +92,9 @@ def scrape() -> list[Corrida]:
         if not posts:
             break
 
+        if page == 1 and posts:
+            _debug_post(posts[0])
+
         for post in posts:
             c = _parse_post(post, today)
             if c:
@@ -103,6 +106,20 @@ def scrape() -> list[Corrida]:
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corrida(s) encontrada(s)")
     return corridas
+
+
+def _debug_post(post: dict) -> None:
+    import json as _json
+    keys = list(post.keys())
+    meta = post.get("meta")
+    acf  = post.get("acf")
+    print(f"[{SOURCE_NAME}] DEBUG post keys: {keys}")
+    print(f"[{SOURCE_NAME}] DEBUG meta: {_json.dumps(meta, default=str)[:500]}")
+    print(f"[{SOURCE_NAME}] DEBUG acf: {_json.dumps(acf, default=str)[:500]}")
+    print(f"[{SOURCE_NAME}] DEBUG class_list[:5]: {(post.get('class_list') or [])[:5]}")
+    print(f"[{SOURCE_NAME}] DEBUG wp date: {post.get('date')}")
+    content = (post.get("content") or {}).get("rendered", "")[:200]
+    print(f"[{SOURCE_NAME}] DEBUG content[:200]: {content}")
 
 
 def _parse_post(post: dict, today: str) -> Corrida | None:

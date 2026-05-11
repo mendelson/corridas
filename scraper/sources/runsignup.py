@@ -76,6 +76,11 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] JSON inválido na página {page}: {e}")
             break
 
+        if page == 1 and isinstance(data, dict):
+            print(f"[{SOURCE_NAME}] API response keys: {list(data.keys())}")
+            total = data.get("total_results") or data.get("total") or data.get("num_results") or "?"
+            print(f"[{SOURCE_NAME}] total_results: {total}")
+
         page_races = data.get("races", []) if isinstance(data, dict) else []
         if not page_races:
             break

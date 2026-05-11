@@ -20,4 +20,5 @@ from . import (
     largada_esportiva,
     volta_do_lago,
     runsignup,
+    halfmarathons,
 )

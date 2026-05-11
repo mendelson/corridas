@@ -392,6 +392,8 @@ _BSB_KEYWORDS = {
     "brasília", "brasilia", "df", "distrito federal", "plano piloto",
     "taguatinga", "ceilândia", "ceilandia", "sobradinho", "gama",
     "samambaia", "águas claras", "aguas claras", "guará", "guara",
+    "paranoá", "paranoa", "lago paranoá", "lago paranoa",
+    "ponte jk", "sces trecho", "setor de clubes",
 }
 
 

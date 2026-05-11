@@ -10,7 +10,7 @@ import re
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, now_iso, today_iso
+from ..utils import normalize_titulo, infer_estado, now_iso, today_iso
 
 SOURCE_NAME = "Volta do Lago"
 
@@ -94,15 +94,16 @@ def _search_largada_esportiva(today: str) -> list[Corrida]:
         distancias = _extract_distances(ev.get("regulation") or "")
         ev_id = ev.get("id")
         link = f"{_LE_BASE}/event/{ev_id}"
+        localizacao, cidade, estado = _extract_location(ev, name)
         now = now_iso()
         results.append(Corrida(
-            id=f"volta-do-lago_df_{data_evento[:4]}",
+            id=f"volta-do-lago_{estado.lower() or 'df'}_{data_evento[:4]}",
             titulo=normalize_titulo(name),
             data_evento=data_evento,
             horario=None,
-            localizacao="Brasília, DF",
-            cidade="Brasília",
-            estado="DF",
+            localizacao=localizacao,
+            cidade=cidade,
+            estado=estado or "DF",
             distancias=distancias,
             imagem_url=None,
             inscricoes_abertas=None,
@@ -169,15 +170,16 @@ def _parse_ts_event(ev: dict, today: str) -> Corrida | None:
     if imagem and imagem.startswith("//"):
         imagem = "https:" + imagem
 
+    localizacao, cidade, estado = _extract_location(ev, title)
     now = now_iso()
     return Corrida(
-        id=f"volta-do-lago_df_{data_evento[:4] if data_evento else today[:4]}",
+        id=f"volta-do-lago_{estado.lower() or 'df'}_{data_evento[:4] if data_evento else today[:4]}",
         titulo=titulo,
         data_evento=data_evento,
         horario=None,
-        localizacao="Brasília, DF",
-        cidade="Brasília",
-        estado="DF",
+        localizacao=localizacao,
+        cidade=cidade,
+        estado=estado or "DF",
         distancias=distancias,
         imagem_url=imagem or None,
         inscricoes_abertas=None,
@@ -192,6 +194,40 @@ def _parse_ts_event(ev: dict, today: str) -> Corrida | None:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def _extract_location(ev: dict, name: str) -> tuple[str, str, str]:
+    """Return (localizacao, cidade, estado) from a Largada Esportiva API event dict."""
+    cidade = ev.get("cidade") or ev.get("city") or ev.get("municipio") or ""
+    uf = (ev.get("estado") or ev.get("uf") or ev.get("state") or "").strip().upper()
+    if len(uf) != 2:
+        uf = ""
+    address = ev.get("address") or ev.get("local") or ev.get("location") or ""
+
+    if not uf:
+        uf = infer_estado(address, name) or ""
+
+    # Try to parse "City, UF" or "City – UF" pattern from address
+    if not cidade and address:
+        m = re.search(
+            r"\b([A-ZÁÉÍÓÚÂÊÔÃÕa-záéíóúâêôãõç][A-Za-záéíóúâêôãõç\s]{2,25})\s*[,–\-]\s*([A-Z]{2})\b",
+            address,
+        )
+        if m:
+            cidade = normalize_titulo(m.group(1).strip())
+            if not uf:
+                uf = m.group(2)
+
+    if cidade and uf:
+        localizacao = f"{cidade}, {uf}"
+    elif uf:
+        localizacao = uf
+    elif cidade:
+        localizacao = cidade
+    else:
+        localizacao = address[:60].strip() if address else ""
+
+    return localizacao, cidade, uf
+
 
 def _parse_date(raw: str) -> str | None:
     if not raw:

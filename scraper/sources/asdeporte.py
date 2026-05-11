@@ -90,7 +90,7 @@ def scrape() -> list[Corrida]:
         soup = BeautifulSoup(resp.text, "lxml")
 
         if page == 1:
-            _debug_html(soup)
+            _debug_next_data(soup)
 
         cards = _find_cards(soup)
         if not cards:
@@ -111,18 +111,29 @@ def scrape() -> list[Corrida]:
     return corridas
 
 
-def _debug_html(soup: BeautifulSoup) -> None:
-    # Check __NEXT_DATA__ for server-side JSON
-    next_data = soup.find("script", {"id": "__NEXT_DATA__"})
-    if next_data:
-        print(f"[{SOURCE_NAME}] DEBUG __NEXT_DATA__ found, len={len(next_data.string or '')}")
-        print(f"[{SOURCE_NAME}] DEBUG __NEXT_DATA__[:3000]:\n{(next_data.string or '')[:3000]}")
-
-    # Check what _find_cards() actually returns
-    cards = _find_cards(soup)
-    print(f"[{SOURCE_NAME}] DEBUG _find_cards count={len(cards)}")
-    for i, c in enumerate(cards[:2]):
-        print(f"[{SOURCE_NAME}] DEBUG card[{i}] tag={c.name} classes={c.get('class')} html:\n{str(c)[:1000]}")
+def _debug_next_data(soup: BeautifulSoup) -> None:
+    import json as _json
+    script = soup.find("script", {"id": "__NEXT_DATA__"})
+    if not script or not script.string:
+        print(f"[{SOURCE_NAME}] DEBUG no __NEXT_DATA__")
+        return
+    try:
+        data = _json.loads(script.string)
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] DEBUG __NEXT_DATA__ parse error: {e}")
+        return
+    pp = data.get("props", {}).get("pageProps", {})
+    print(f"[{SOURCE_NAME}] DEBUG pageProps keys: {list(pp.keys())}")
+    for key in list(pp.keys()):
+        val = pp[key]
+        if isinstance(val, list):
+            print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}] = list len={len(val)}")
+            if val:
+                print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}][0] keys: {list(val[0].keys()) if isinstance(val[0], dict) else val[0]}")
+        elif isinstance(val, dict):
+            print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}] = dict keys: {list(val.keys())[:10]}")
+        else:
+            print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}] = {repr(val)[:100]}")
 
 
 def _find_cards(soup: BeautifulSoup) -> list:

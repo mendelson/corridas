@@ -1,9 +1,11 @@
 """Scraper for Asdeporte.com — Mexican multi-sport event platform.
 
-Server-rendered HTML at /eventos?competencias=publicas&pagina=N.
-Filters for running events (carreras); skips triathlons, cycling, etc.
+Next.js site. Events are loaded client-side, but the SSR __NEXT_DATA__ script
+contains pageProps.recomended — a list of upcoming featured public events.
+We paginate through the /eventos listing pages, collecting unique events by id.
 """
 from __future__ import annotations
+import json
 import re
 from datetime import datetime
 
@@ -16,7 +18,7 @@ from ..utils import normalize_titulo, slugify, now_iso, today_iso
 SOURCE_NAME = "Asdeporte"
 _BASE       = "https://www.asdeporte.com"
 _LIST_URL   = f"{_BASE}/eventos"
-_MAX_PAGES  = 10
+_MAX_PAGES  = 15
 
 _MX_STATES: dict[str, str] = {
     "aguascalientes": "AGS", "baja california": "BC", "baja california sur": "BCS",
@@ -33,12 +35,6 @@ _MX_STATES: dict[str, str] = {
     "zacatecas": "ZAC",
 }
 
-_MONTHS_ES = {
-    "enero": 1, "febrero": 2, "marzo": 3, "abril": 4,
-    "mayo": 5, "junio": 6, "julio": 7, "agosto": 8,
-    "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12,
-}
-
 # Skip these event types
 _NON_RUNNING = re.compile(
     r"\btriath?lon\b|\bduath?lon\b|\baqua\b|\bciclismo\b|\bciclovia\b"
@@ -53,7 +49,6 @@ _RUNNING_KW = re.compile(
     re.IGNORECASE,
 )
 
-# Distances embedded in title: "5k", "10K", "21K", "42K", "10 mi", etc.
 _DIST_RE = re.compile(
     r"\b(\d+(?:\.\d+)?)\s*(?:k|km|kms?)\b"
     r"|\b(\d+(?:\.\d+)?)\s*mi(?:les?)?\b"
@@ -66,6 +61,7 @@ _DIST_RE = re.compile(
 def scrape() -> list[Corrida]:
     today = today_iso()
     corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
 
     for page in range(1, _MAX_PAGES + 1):
         try:
@@ -88,110 +84,75 @@ def scrape() -> list[Corrida]:
             break
 
         soup = BeautifulSoup(resp.text, "lxml")
-
-        if page == 1:
-            _debug_next_data(soup)
-
-        cards = _find_cards(soup)
-        if not cards:
+        events = _extract_events(soup)
+        if not events:
             break
 
-        prev_len = len(corridas)
-        for card in cards:
-            c = _parse_card(card, today)
+        new_this_page = 0
+        for ev in events:
+            ev_id = ev.get("id") or ""
+            if ev_id and ev_id in seen_ids:
+                continue
+            if ev_id:
+                seen_ids.add(ev_id)
+            c = _parse_event(ev, today)
             if c:
                 corridas.append(c)
+                new_this_page += 1
 
-        # If we got cards but none were future running events, keep paginating
-        # Stop only if the page itself is empty of cards
-        if page > 1 and len(cards) < 5:
+        # Stop when no new events appeared (recomended list is static per page)
+        if page > 1 and new_this_page == 0:
             break
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corrida(s) encontrada(s)")
     return corridas
 
 
-def _debug_next_data(soup: BeautifulSoup) -> None:
-    import json as _json
+def _extract_events(soup: BeautifulSoup) -> list[dict]:
     script = soup.find("script", {"id": "__NEXT_DATA__"})
     if not script or not script.string:
-        print(f"[{SOURCE_NAME}] DEBUG no __NEXT_DATA__")
-        return
+        return []
     try:
-        data = _json.loads(script.string)
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] DEBUG __NEXT_DATA__ parse error: {e}")
-        return
+        data = json.loads(script.string)
+    except Exception:
+        return []
     pp = data.get("props", {}).get("pageProps", {})
-    print(f"[{SOURCE_NAME}] DEBUG pageProps keys: {list(pp.keys())}")
-    # Drill into initialState.events
-    events_state = pp.get("initialState", {}).get("events", {})
-    print(f"[{SOURCE_NAME}] DEBUG initialState.events keys: {list(events_state.keys())[:20]}")
-    for key, val in events_state.items():
-        if isinstance(val, list):
-            print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}] = list len={len(val)}")
-            if val and isinstance(val[0], dict):
-                print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}][0] keys: {list(val[0].keys())}")
-                print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}][0]: {_json.dumps(val[0], default=str)[:600]}")
-        elif isinstance(val, dict):
-            print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}] = dict keys: {list(val.keys())[:10]}")
-        else:
-            print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}] = {repr(val)[:80]}")
+    return pp.get("recomended") or []
 
 
-def _find_cards(soup: BeautifulSoup) -> list:
-    # Will be refined once we see the actual HTML structure
-    candidates = (
-        soup.find_all("article")
-        or soup.find_all("div", class_=re.compile(r"event|card|evento|race", re.I))
-        or soup.find_all("li", class_=re.compile(r"event|card|evento|race", re.I))
-    )
-    return candidates
-
-
-def _parse_card(card, today: str) -> Corrida | None:
-    title_el = (
-        card.find(["h1", "h2", "h3", "h4"])
-        or card.find(class_=re.compile(r"title|nombre|name", re.I))
-    )
-    if not title_el:
+def _parse_event(ev: dict, today: str) -> Corrida | None:
+    titulo_raw = (ev.get("nameEvent") or "").strip()
+    if not titulo_raw:
         return None
+    titulo = normalize_titulo(titulo_raw)
 
-    titulo = normalize_titulo(title_el.get_text(" ", strip=True))
-    if not titulo:
-        return None
-
-    # Filter: skip non-running events
     if _NON_RUNNING.search(titulo) and not _RUNNING_KW.search(titulo):
         return None
     if not _RUNNING_KW.search(titulo):
         return None
 
-    # Date: look for text like "20 septiembre 2026"
-    text = card.get_text(" ", strip=True)
-    data_evento = _parse_date_es(text)
-    if not data_evento or data_evento < today:
+    date_raw = ev.get("date") or ""
+    if not date_raw:
+        return None
+    try:
+        data_evento = date_raw[:10]  # "YYYY-MM-DD"
+        datetime.strptime(data_evento, "%Y-%m-%d")
+    except ValueError:
+        return None
+    if data_evento < today:
         return None
 
-    # Location
-    loc_el = card.find(class_=re.compile(r"loc|city|lugar|ciudad|estado", re.I))
-    location_text = loc_el.get_text(" ", strip=True) if loc_el else ""
-    if not location_text:
-        # Fallback: look for city,state pattern in card text
-        m = re.search(r"([A-ZÁÉÍÓÚa-záéíóúüñ][^\n,]{2,40}),\s*([A-ZÁÉÍÓÚa-záéíóúñ][^\n,]{2,30})", text)
-        location_text = m.group(0) if m else ""
+    place = (ev.get("place") or "").strip()
+    ciudad, estado = _parse_location(place)
 
-    ciudad, estado = _parse_location(location_text)
+    route = ev.get("routeConvocatoria") or ""
+    event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)
 
-    # Link
-    link_el = card.find("a", href=True)
-    event_link = _BASE + link_el["href"] if link_el and link_el["href"].startswith("/") else (link_el["href"] if link_el else _LIST_URL)
-
-    # Distances from title
     distancias = _parse_distances(titulo)
+    imagem = ev.get("imgEventDesktop") or ev.get("imgEvent") or None
 
-    post_id = slugify(titulo + "_" + data_evento)
-    race_id = f"asdeporte_{post_id}"
+    ev_id = ev.get("id") or slugify(titulo + "_" + data_evento)
+    race_id = f"asdeporte_{ev_id}"
     now = now_iso()
 
     return Corrida(
@@ -203,7 +164,7 @@ def _parse_card(card, today: str) -> Corrida | None:
         cidade=ciudad,
         estado=estado,
         distancias=distancias,
-        imagem_url=None,
+        imagem_url=imagem,
         inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=event_link, links_inscricao=[event_link])],
@@ -213,30 +174,12 @@ def _parse_card(card, today: str) -> Corrida | None:
     )
 
 
-def _parse_date_es(text: str) -> str | None:
-    m = re.search(
-        r"(\d{1,2})\s+(enero|febrero|marzo|abril|mayo|junio|julio|agosto"
-        r"|septiembre|octubre|noviembre|diciembre)\s+(\d{4})",
-        text, re.IGNORECASE,
-    )
-    if not m:
-        return None
-    day, month_es, year = int(m.group(1)), m.group(2).lower(), int(m.group(3))
-    month = _MONTHS_ES.get(month_es)
-    if not month:
-        return None
-    try:
-        return datetime(year, month, day).strftime("%Y-%m-%d")
-    except ValueError:
-        return None
-
-
 def _parse_location(text: str) -> tuple[str, str]:
     if not text:
         return "", "INT"
     parts = [p.strip() for p in text.split(",")]
     ciudad = parts[0] if parts else ""
-    state_raw = parts[1].lower() if len(parts) > 1 else ""
+    state_raw = parts[1].lower().strip() if len(parts) > 1 else ""
     estado = _MX_STATES.get(state_raw, "INT")
     return ciudad, estado
 
@@ -247,7 +190,7 @@ def _parse_distances(titulo: str) -> list[Distancia]:
     for m in _DIST_RE.finditer(titulo):
         km_str, mi_str, marat, medio = m.group(1), m.group(2), m.group(3), m.group(4)
         if marat:
-            km = 42.195
+            km: float | str = 42.195
         elif medio:
             km = 21.097
         elif km_str:

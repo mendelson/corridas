@@ -124,16 +124,19 @@ def _debug_next_data(soup: BeautifulSoup) -> None:
         return
     pp = data.get("props", {}).get("pageProps", {})
     print(f"[{SOURCE_NAME}] DEBUG pageProps keys: {list(pp.keys())}")
-    for key in list(pp.keys()):
-        val = pp[key]
+    # Drill into initialState.events
+    events_state = pp.get("initialState", {}).get("events", {})
+    print(f"[{SOURCE_NAME}] DEBUG initialState.events keys: {list(events_state.keys())[:20]}")
+    for key, val in events_state.items():
         if isinstance(val, list):
-            print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}] = list len={len(val)}")
-            if val:
-                print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}][0] keys: {list(val[0].keys()) if isinstance(val[0], dict) else val[0]}")
+            print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}] = list len={len(val)}")
+            if val and isinstance(val[0], dict):
+                print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}][0] keys: {list(val[0].keys())}")
+                print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}][0]: {_json.dumps(val[0], default=str)[:600]}")
         elif isinstance(val, dict):
-            print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}] = dict keys: {list(val.keys())[:10]}")
+            print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}] = dict keys: {list(val.keys())[:10]}")
         else:
-            print(f"[{SOURCE_NAME}] DEBUG pageProps[{key!r}] = {repr(val)[:100]}")
+            print(f"[{SOURCE_NAME}] DEBUG events_state[{key!r}] = {repr(val)[:80]}")
 
 
 def _find_cards(soup: BeautifulSoup) -> list:

@@ -66,8 +66,7 @@ def scrape() -> list[Corrida]:
         try:
             resp = get(
                 _API,
-                params={"per_page": _PER_PAGE, "page": page,
-                        "orderby": "meta_value_num", "meta_key": "date", "order": "asc"},
+                params={"per_page": _PER_PAGE, "page": page},
                 source=SOURCE_NAME,
                 timeout=20,
             )
@@ -89,11 +88,13 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page} JSON erro: {e}")
             break
 
+        print(f"[{SOURCE_NAME}] page {page}: {len(posts) if isinstance(posts, list) else type(posts)} posts, status={resp.status_code}")
+
+        if page == 1:
+            _debug_post(posts[0] if posts else {})
+
         if not posts:
             break
-
-        if page == 1 and posts:
-            _debug_post(posts[0])
 
         for post in posts:
             c = _parse_post(post, today)

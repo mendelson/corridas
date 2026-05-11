@@ -323,7 +323,7 @@ const T = STRINGS[LANG] || STRINGS.en;
 let searchInput, cardsList, emptyState, btnClear, btnClearEmpty,
     periodoSelect, estadoFilterBtn, estadoFilterLabel, estadoFilterDropdown,
     fonteFilterBtn, fonteFilterLabel, fonteFilterDropdown,
-    resultCount, filtersBar, btnRefresh, btnLang, btnHome,
+    resultCount, btnRefresh, btnLang, btnHome,
     modeSelect, modeInterval, pillsContainer, intervalContainer,
     distMin, distMax, customDateRow, dateFrom, dateTo;
 
@@ -558,7 +558,7 @@ function _updateEstadoLabel() {
   } else {
     estadoFilterLabel.textContent = _ESTADO_LABELS[v] || v;
   }
-  estadoFilterBtn.classList.add('active');
+  estadoFilterBtn.classList.toggle('active', v !== (_geoApplied || 'todos'));
 }
 
 function _makeAccordionGroup(label, initiallyOpen) {
@@ -1297,7 +1297,6 @@ document.addEventListener('DOMContentLoaded', () => {
   fonteFilterLabel    = document.getElementById('fonteFilterLabel');
   fonteFilterDropdown = document.getElementById('fonteFilterDropdown');
   resultCount         = document.getElementById('resultCount');
-  filtersBar          = document.getElementById('filtersBar');
   btnRefresh          = document.getElementById('btnRefresh');
   btnLang             = document.getElementById('btnLang');
   btnHome             = document.getElementById('btnHome');

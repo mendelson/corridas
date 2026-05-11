@@ -1,53 +1,54 @@
 [main] iniciando scraping...
-[main] 2760 corridas no estado anterior
+[main] 5246 corridas no estado anterior
 [Ativo] 7 corridas encontradas
 [Central da Corrida] 78 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
-[Brasil Corrida] 10 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
+[Brasil Corrida] 10 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
-[Correr Brasília] 1 corridas encontradas
+[SESC DF] 9 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
 [Circuito das Estações] 104 corridas encontradas
-[SESC DF] 9 corridas encontradas
-[Yescom] 14 corridas encontradas
+[Correr Brasília] 1 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Yescom] 14 corridas encontradas
 [Prague Marathon] nenhuma edição futura identificada
-[Corridas Brasil] 3144 corridas encontradas
-[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Corridas Brasil] 3144 corridas encontradas
+[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[TF Sports] 48 corridas encontradas
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[TF Sports] 48 corridas encontradas
 [Asdeporte] 30 corrida(s) encontrada(s)
-[FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
-[FMAA] DEBUG total=0, total_pages=0
-[FMAA] 0 corrida(s) encontrada(s)
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[RunSignup] página 2: 250 corridas
+[FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
+[FMAA] DEBUG total=0, total_pages=0
+[FMAA] 0 corrida(s) encontrada(s)
+[BMW Berlin Marathon] erro ao buscar página: [Errno -3] Temporary failure in name resolution
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[RunSignup] página 2: 250 corridas
 [RunSignup] página 3: 250 corridas
-[RunSignup] página 4: 250 corridas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
+[RunSignup] página 4: 250 corridas
 [RunSignup] página 5: 250 corridas
 [RunSignup] página 6: 250 corridas
 [RunSignup] página 7: 250 corridas
 [RunSignup] página 8: 250 corridas
-[Ticket Sports] 914 corridas encontradas
+[Ticket Sports] 916 corridas encontradas
 [RunSignup] página 9: 250 corridas
 [RunSignup] página 10: 250 corridas
 [RunSignup] página 11: 250 corridas
@@ -56,404 +57,59 @@
 [RunSignup] página 14: 250 corridas
 [RunSignup] página 15: 250 corridas
 [RunSignup] 3750 corridas brutas no total
-[RunSignup] 3033 corridas válidas (717 ignoradas)
+[RunSignup] 3032 corridas válidas (718 ignoradas)
 [HalfMarathons.net] 1914 corrida(s) encontrada(s)
-[main] 9382 registros coletados (antes do merge)
-[main] 5911 registros após validação
-[main] 5327 corridas após merge
-[main] verificando links de 385 evento(s) não encontrado(s) no scrape...
-[main] 'Pike Lake Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Running Through The Decades Half Marathon – Tulsa' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon, 10K & 5K – Kentucky' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon & 5K/10K – St Louis' — link válido, miss_count zerado
-[main] 'La Jolla Half Marathon & 5K' — link válido, miss_count zerado
-[main] '2ª Corrida 26 Anos Faça Bonito' — link válido, miss_count zerado
-[main] 'Whitefish Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Running Through The Decades Half Marathon – Oklahoma City' — link válido, miss_count zerado
-[main] 'Reflection Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Clear Creek Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Windermere Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Ogden Marathon, Half Marathon, 8K & 5K' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon & 5K/10K – Oklahoma City' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon, 5K & 10K – Indianapolis' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon & 5K/10K – Des Moines' — link válido, miss_count zerado
-[main] 'Medina Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Denver Colfax Marathon, Half Marathon, 10M & Relay' — link válido, miss_count zerado
-[main] 'Memorial Day Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 9383 registros coletados (antes do merge)
+[main] 5912 registros após validação
+[main] 5328 corridas após merge
+[main] verificando links de 35 evento(s) não encontrado(s) no scrape...
+[main] 'Capitol Ford Santa Fe International Half Marathon' — link válido, miss_count zerado
+[main] 'Capone Test Race 1' — link válido, miss_count zerado
 [main] 'Corrida São Roque 2026' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon & 5K/10K – Nashville' — link válido, miss_count zerado
-[main] 'Prairie Series Day 4 – Ne Marathon Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'Hometown Half Marathon & 5K/10K – Fayetteville' — link válido, miss_count zerado
-[main] 'Prairie Series Day 6 – Sd Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Prairie Series Day 7 – Mn Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Run Madtown Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Hancock Half Marathon' — link válido, miss_count zerado
-[main] 'Steamworks Half Marathon' — link válido, miss_count zerado
-[main] 'Independence Series Day 1 Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Bear Lake Trifecta – Wyoming Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Timberline Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Independence Series – Day 2 Marathon & Half Marathon – Md' — link válido, miss_count zerado
-[main] 'Mish Waterfront Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Run For A Vet Half Marathon & 5K' — link válido, miss_count zerado
-[proxy] gltrunforthehills.com bloqueado (403), tentando Scrapestack...
-[main] 'Sandhills Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Whiskey Run Augusta Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Teton Dam Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Newport Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Independence Series – Day 4 Nj Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Red, White And Blue Half Marathon – Shreveport' — link válido, miss_count zerado
-[main] 'Utah Valley Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Clinton Historic Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Red, White And Blue Half Marathon – Oklahoma City' — link válido, miss_count zerado
-[main] 'Steamboat Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Old Zoo Half Marathon' — link válido, miss_count zerado
-[main] 'New England Series Marathon & Half Marathon – Day 1' — link válido, miss_count zerado
-[main] 'Grateful Dad Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Summer Solstice 5K, 10K, 15K, Half Marathon' — link válido, miss_count zerado
-[main] 'Slacker Half Marathon' — link válido, miss_count zerado
-[main] 'Race The Wolf Marathon & Half Marathon' — link válido, miss_count zerado
-[proxy] Scrapestack retornou 429 para gltrunforthehills.com, tentando Apify...
-[main] 'Summer Time Half Marathon' — link válido, miss_count zerado
-[main] 'New England Series Marathon & Half Marathon – Day 6' — link válido, miss_count zerado
-[main] 'Seaway Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'New England Series Marathon & Half Marathon – Day 3' — link válido, miss_count zerado
-[main] 'Hamburg Half Marathon' — link válido, miss_count zerado
-[proxy] Apify falhou para gltrunforthehills.com: 403 Forbidden
-[main] 'Christmas In July Half Marathon And 5K (Dayton)' — link válido, miss_count zerado
-[main] 'Akron Trail Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Christmas 5K, 10K, Half Marathon In July – Atlanta' — link válido, miss_count zerado
-[main] 'Big Sky Marathon & Half Marathon' — link válido, miss_count zerado
 [main] 'Vai Brasil (Virtual)' — link válido, miss_count zerado
-[main] 'Juneau Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Idaho Falls Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Deseret News Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Bad Bass Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Mad Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Xenia Avenue Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Sparta Half Marathon' — link válido, miss_count zerado
-[main] 'Paavo Nurmi Marathon, Half Marathon & Relay' — link válido, miss_count zerado
-[main] 'Tromptown Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Humboldt Bay Marathon & Half Marathon' — link válido, miss_count zerado
 [main] 'Desafio Corro Feliz, Corro Com Orgulho' — link válido, miss_count zerado
-[main] 'Run For Donuts Race 5K, 10K & 13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Riley Trails Marathon Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Underdown Trail Races 60K Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Pc2Pg Half Marathon, 10K, & 5K' — link válido, miss_count zerado
-[main] 'Dark Horse Trail Run Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Mora Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Stagecoach Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Med Bow Rail Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Boy Scout Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Not Your Grandma’S Marathon, Half Marathon & 10K' — link válido, miss_count zerado
+[main] '2ª Corrida 26 Anos Faça Bonito' — link válido, miss_count zerado
 [main] 'Maratona Internacional De Piracicaba - 2ª Edição' — link válido, miss_count zerado
-[main] 'Marquette Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Leave No Trace Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Diablo Trail Run 50K, Marathon, Half Marathon, 10M & 4M' — link válido, miss_count zerado
-[main] 'Labor Day Half Marathon' — link válido, miss_count zerado
-[main] 'Salmon Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'The Trailway Trail Race Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Bear Brook Trail Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Apple Dumpling Days Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Autumn And Ales Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Old Forge Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'The Kauai Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Lone Star Night Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Lock 2 Lock Marathon Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Run To The Rock Half Marathon, 10K, & 5K' — link válido, miss_count zerado
-[main] 'The Dirt Dash Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Geist Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Bird-In-Hand Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Boring Marathon, Half Marathon & 8K' — link válido, miss_count zerado
-[main] 'Chips And Salsa Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Patriots Run Half Marathon' — link válido, miss_count zerado
-[main] 'Clinton Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Mighty Mo Run Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Racefaster Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Skagit Flats Marathon, Half Marathon & 5M' — link válido, miss_count zerado
-[main] 'T-Bird Trek Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Waugoshance Trail Marathon, Half Marathon & 50K' — link válido, miss_count zerado
-[main] 'Run The Dam Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Yellowstone Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Planet Ny Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Run The Rockies Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Gopher To Badger Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Heartland Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Bismarck Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Pacific Northwest Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Adrenaline Races Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Wicked Half Marathon' — link válido, miss_count zerado
-[main] 'Whiskey Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Priest Lake 50K Marathon Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Ned Ned Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Yonkers Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Fox Cities Marathon, Half Marathon & Relay' — link válido, miss_count zerado
-[main] 'Women Run The D Half Marathon' — link válido, miss_count zerado
-[main] 'Air Force Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Back Your Badge Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Orca Half Marathon' — link válido, miss_count zerado
-[main] 'Mill Race Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Pony Express Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Run For Green Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Rocky Ridge Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Witch Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Monument Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Big Sur Trail Marathon, Half Marathon & 5M' — link válido, miss_count zerado
-[main] 'Rochester Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Rockin’ Rockwoods Ultra Run Half Marathon' — link válido, miss_count zerado
-[main] 'Parks Half Marathon' — link válido, miss_count zerado
-[main] 'Ely Marathon Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Chicago Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Fidalgo Marathon, Half Marathon & 5-Mile' — link válido, miss_count zerado
-[main] 'Rockin’ Brews Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Rock Of Ages Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'City Of Roses Half Marathon' — link válido, miss_count zerado
-[main] 'Clarence Demar Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Frog Hill Half Marathon & 10K' — link válido, miss_count zerado
 [main] 'Corrida Virtual Pátria Amada' — link válido, miss_count zerado
-[main] 'Bay Ridge Half Marathon' — link válido, miss_count zerado
-[main] 'Brookings Marathon, Half Marathon & Relay' — link válido, miss_count zerado
-[main] 'Evansville Half Marathon & 5M' — link válido, miss_count zerado
-[main] 'Indy Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Flagstaff Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Prairie State Half Marathon' — link válido, miss_count zerado
-[main] 'Jell-O Half Marathon & 7K' — link válido, miss_count zerado
-[main] 'Sleeping Bear Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'St. George Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Center Of The Nation Marathon Half Marathon 10K & 5K – Day 5' — link válido, miss_count zerado
-[main] 'Leavenworth Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Flats Trail Half Marathon' — link válido, miss_count zerado
-[main] 'Oktoberfest Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Snack Town Runfest Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Towpath Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Legends Never Die Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Colorado Springs Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Spooky Sprint Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Greenway Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Spooky Sprint Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'Stony Creek 50K, Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Manchester Marathon' — link válido, miss_count zerado
-[main] 'Arches Half Marathon' — link válido, miss_count zerado
-[main] 'Poulsbo Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Trailfest Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Cary Greenways Tour Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Windsor Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Fitone Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Jersey Shore Half Marathon' — link válido, miss_count zerado
-[main] 'Sono Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Empire State Half Marathon' — link válido, miss_count zerado
-[main] 'Wineglass Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Freedom’S Run Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Portland Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Rogue Marathon, Half Marathon, 10K & 1M' — link válido, miss_count zerado
-[main] 'E-Race Cancer Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Long View Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Under The Oaks Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Bear Chase Race Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Mo Fall Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Day Of The Dead Half Marathon & 5K – Corona' — link válido, miss_count zerado
-[main] 'Hot Cider Hustle Lansing Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Day Of The Dead Half Marathon – Shreveport' — link válido, miss_count zerado
-[main] 'Rocktoberfest Half Marathon & 5M' — link válido, miss_count zerado
-[main] 'Spooky Sprint – Des Moines Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
-[main] 'Spooky Sprint Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'The Driftless Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Rocktoberfest Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Athhalf Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Pensacola Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Fall Foliage Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Spooky Sprint Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'Whistlestop Marathon & Half Marathon' — link válido, miss_count zerado
-[proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
-[main] 'Mohawk Mountain Race Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Spooky Sprint – Fort Worth Half Marathon, 10K, 5K & 1 Mile' — link válido, miss_count zerado
-[proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 'Mill Town Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Bizz Johnson 50K, Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[proxy] spacerocktrailrace.com bloqueado (403), tentando Scrapestack...
-[main] 'Spooky Sprint Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'River City Half Marathon' — link válido, miss_count zerado
-[main] 'Mathews Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Tackle The Trail Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Mother Earth Brewing Ironclad Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Suffolk County Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Savannah River Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Cannonball Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Spooky Sprint – Omaha Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'Kansas City Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'The Peak 50K/Marathon/Half Marathon' — link válido, miss_count zerado
-[main] 'Wade Mountain Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Corrida Movimento Rosa 2026' — link válido, miss_count zerado
-[main] 'Duke City Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Happy Valley Half Marathon' — link válido, miss_count zerado
-[main] 'Columbus Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Imt Des Moines Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Columbia River Gorge Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Detroit Free Press Marathon, Half Marathons & 5K' — link válido, miss_count zerado
-[main] 'Helping Hands Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Lake Tahoe Marathon & Half Marathon Weekend' — link válido, miss_count zerado
-[main] 'Baystate Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Evl Halloween Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Spinx Run Fest Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Marathon 2 Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Day Of The Dead Half Marathon – Tulsa' — link válido, miss_count zerado
-[main] 'Nashville Half Marathon & 5K' — link válido, miss_count zerado
-[proxy] Scrapestack retornou 429 para spacerocktrailrace.com, tentando Apify...
-[main] 'Hallowed Half Marathon & Relay' — link válido, miss_count zerado
-[proxy] Apify falhou para spacerocktrailrace.com: 403 Forbidden
-[main] 'Emerald Isle Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Reservoir Run Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Seacoast Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Duneland Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Rdc Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Miami Beach Halloween Half Marathon & 4M' — link válido, miss_count zerado
-[main] 'Michigan Monster Dash Half Marathon, 10K, & 5K' — link válido, miss_count zerado
-[main] 'Spooky Sprint Kc Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Haunted Halloween Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Runtastic Haunted – Provo Canyon' — link válido, miss_count zerado
-[main] 'Haunted Half Marathon & Relay' — link válido, miss_count zerado
-[main] 'Haunted Halloween Hustle Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Dam Site Run Half Marathon' — link válido, miss_count zerado
-[main] 'Veterans Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'We Got Your Six Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Louisville Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Creep ‘N’ Crawl Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Raleigh City Of Oaks Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Bg26.2 Marathon Half Marathon & 6K' — link válido, miss_count zerado
-[main] 'Pocantico Hills Races Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Two Cities Marathon, Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'Schaeffer Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Rim Rock Run Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Bobcat Trail Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Chessie Trail Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Cypress Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Golden Gate Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Temecula Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Mayberry Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Mo’ Cowbell Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'B.A.A. Half Marathon' — link válido, miss_count zerado
-[main] 'St. Louis Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Run The Bay Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Southwest Series Day 1 Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Outer Banks Half Marathon' — link válido, miss_count zerado
-[main] 'Revel Big Bear Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Manchester City Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Half And Half Marathon' — link válido, miss_count zerado
-[main] 'Clarksville Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Centerpoint Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Monterey Bay Half Marathon 5K & 3K' — link válido, miss_count zerado
-[main] 'Moab Trail Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Churchill’S Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Huntsville Half Marathon' — link válido, miss_count zerado
-[main] 'Huffin For The Stuffin 5K, 10K, And Half Marathon' — link válido, miss_count zerado
-[main] 'Tryon Half Marathon' — link válido, miss_count zerado
-[main] 'Southwest Series Marathon Half Marathon 10K & 5K – Day 3' — link válido, miss_count zerado
-[main] 'Secret City Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Hillacious Half Marathon' — link válido, miss_count zerado
-[main] 'Run Hard Half Marathon' — link válido, miss_count zerado
-[main] 'Buffalo Wallow Races Half And Quarter Marathon & 2M' — link válido, miss_count zerado
-[main] 'Honor Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Charlotte Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Run De Pere Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Battleship Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'White River Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Early Bird Turkey Trot Half Marathon, 15K, 10K & 5K' — link válido, miss_count zerado
-[main] 'Run The Rock Half Marathon & 50K' — link válido, miss_count zerado
-[main] 'Makoa Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Gilbert Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Berkeley Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Johnstown Alexandria & Granville Turkey Trot Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Harvest Hustle Half Marathon, 15K, 10K & 5K' — link válido, miss_count zerado
-[main] 'Shiner Beer Run Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Madison Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Honoring Our Heroes Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] '10K Turkey Trek & 5K Turkey Trot – Now With Half Marathon Distance!' — link válido, miss_count zerado
-[main] 'Storybook Half Marathon' — link válido, miss_count zerado
-[main] 'Southwest Series Marathon, Half Marathon, 10K & 5K – Day 5' — link válido, miss_count zerado
-[main] 'Thanksgiving Day Half Marathon, 5K & 1M' — link válido, miss_count zerado
-[main] 'Philadelphia Marathon, Half Marathon & 8K' — link válido, miss_count zerado
-[main] 'Zoom Turkey Trot Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Thankful 13 Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Mansfield & Lexington Turkey Trot Half Marathon 10K & 5K' — link válido, miss_count zerado
-[main] 'Run Off The Turkey Trot 5K, 10K & 13.1 Houston' — link válido, miss_count zerado
-[main] 'The Thankful 131! A Half Marathon Event!' — link válido, miss_count zerado
-[main] 'Chattanooga Hungry Turkey Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Pumpkin Spice Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Quarry Turkey Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Cincinnati Hungry Turkey Half Marathon & 5K' — link válido, miss_count zerado
+[main] '6ª Corrida E Caminhada C.H.O.' — link válido, miss_count zerado
 [main] 'Corrida Virtual - Eu Corro É Pra Comer' — link válido, miss_count zerado
-[main] 'Dayton Turkey Trot Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Turkey Chase Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'New York Turkey Trot Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Fiery Gizzard Run Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Run At The Rock Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Santa Hustle – Roseville Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Santa Hustle Orlando Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Santa Hustle Indianapolis Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Santa Hustle Galveston Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Naptown Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
 [main] '1 Desafio Elementos - Natureza Em Fúria Combo' — link válido, miss_count zerado
-[main] 'Santa Hustle Glendale Half Marathon & 5K' — link válido, miss_count zerado
-[main] '1º Desafio Guerreiras Run' — link válido, miss_count zerado
-[main] 'Corrida Virtual Be A Star 2026' — link válido, miss_count zerado
-[main] 'Seattle Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Corrida Virtual Borá Correr Por Gabi Oliveira 2026' — link válido, miss_count zerado
 [main] '1º Desafio Yeshua' — link válido, miss_count zerado
+[main] 'Corrida Virtual Borá Correr Por Gabi Oliveira 2026' — link válido, miss_count zerado
 [main] 'Desafio Virtual Destrava Rp 5K 2026' — link válido, miss_count zerado
-[main] '1 Desafio Elementos - 1 Etapa Fogo' — link válido, miss_count zerado
+[main] 'Corrida Movimento Rosa 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Desafio Do Guerreiro 19K - 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Big Five Run - Elefante 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Crazy Animals - Cat 2026' — link válido, miss_count zerado
-[main] 'Corrida Virtual Candy Run - Donuts 2026' — link válido, miss_count zerado
-[main] 'Corrida Virtual Big Five Run Series - Etapa Búfalo 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Vikings Run - Desafio Solo - 2026' — link válido, miss_count zerado
-[main] 'Jekyll Island Marathon Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Corrida Kazamigas Kit Rosa' — link válido, miss_count zerado
-[main] 'Sarasota Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Meow Run' — link válido, miss_count zerado
+[main] 'Corrida Virtual Big Five Run Series - Etapa Búfalo 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Candy Run - Donuts 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Vikings Valhalla 2026' — link válido, miss_count zerado
-[main] 'Sun Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Groundhog Marathon & Half Marathon' — link válido, miss_count zerado
+[main] 'Corrida Kazamigas Kit Rosa' — link válido, miss_count zerado
 [main] 'Corrida Aumigo' — link válido, miss_count zerado
-[main] 'Rose Bowl Half Marathon' — link válido, miss_count zerado
-[main] 'Austin Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Sea Turtle Half Marathon, 5K & 1M' — link válido, miss_count zerado
-[main] 'Louisiana Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Miami Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Skidaway Island Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Lake Vian Hilltop Run Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Socal Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] 'Run The Alamo 13.1, Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Napa Valley Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'On The Run Half Marathon' — link válido, miss_count zerado
-[main] '305 Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Zydeco Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'Race To Space Marathon & Half Marathon' — link válido, miss_count zerado
-[main] 'London Oh Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Helenback Marathon, Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Blue Ridge 52.4M, Marathon, Half Marathon & 10K' — link válido, miss_count zerado
-[main] '1º Desafio Fenix Run' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes - 1ª Etapa Leão - Disciplina' — link válido, miss_count zerado
-[main] 'Hampton Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Drake Road Races Half Marathon, 10K & 5K' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes - 2ª Etapa Lobo - Execução' — link válido, miss_count zerado
-[main] 'Mesa Marathon, Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Meow Run' — link válido, miss_count zerado
 [main] 'Desafio Virtual Recicle Transparente' — link válido, miss_count zerado
+[main] '1º Desafio Fenix Run' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes - 2ª Etapa Lobo - Execução' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes - 1ª Etapa Leão - Disciplina' — link válido, miss_count zerado
+[main] '1º Desafio Guerreiras Run' — link válido, miss_count zerado
+[main] '1 Desafio Elementos - 1 Etapa Fogo' — link válido, miss_count zerado
+[main] 'Corrida Virtual Be A Star 2026' — link válido, miss_count zerado
 [main] '1º Desafio Gladiador Run' — link válido, miss_count zerado
-[main] 5712 corridas após reconciliação
-[main] 5269 corridas após dedup final
-[main] buscando imagens para 245 evento(s) sem foto...
+[main] 5363 corridas após reconciliação
+[main] 5363 corridas após dedup final
+[main] buscando imagens para 199 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 50/245 imagens encontradas
+[main] 7/199 imagens encontradas
 [main] removendo imagem inválida de 'Walt Disney World Marathon, Weekend Half Marathon': https://www.rundisney.com/events/disneyworld/media_102d0003d
 [main] removendo imagem inválida de 'Springmaid Trail Race Half Marathon': https://www.ascgreenway.org/wp-content/uploads/2022/12/medal
 [main] 2 imagem(ns) inválida(s) removida(s)
 [main] 23 corrida(s) removida(s) por data passada (antes de 2026-04-26)
-[main] 5246 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 5340 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

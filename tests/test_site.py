@@ -513,7 +513,7 @@ def test_pin_resets_location_filter(page_pt, live_server):
         }
     """)
     page_pt.reload(wait_until="networkidle")
-    page_pt.wait_for_selector(".card", timeout=15000)
+    page_pt.wait_for_selector(".card", state="attached", timeout=15000)
 
     label_before = page_pt.query_selector("#estadoFilterLabel").text_content().strip()
 

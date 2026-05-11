@@ -1,8 +1,6 @@
 [main] iniciando scraping...
 [main] 2762 corridas no estado anterior
 [Ativo] 7 corridas encontradas
-[Central da Corrida] 78 corridas encontradas
-[MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
 [Brasil Corrida] 10 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
@@ -14,6 +12,7 @@
 [Circuito das Estações] 104 corridas encontradas
 [SESC DF] 9 corridas encontradas
 [Yescom] 14 corridas encontradas
+[Circuito das Estações] 104 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Prague Marathon] nenhuma edição futura identificada
@@ -35,6 +34,9 @@
 [FMAA] 0 corrida(s) encontrada(s)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
+[FMAA] DEBUG total=0, total_pages=0
+[FMAA] 0 corrida(s) encontrada(s)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
@@ -42,7 +44,7 @@
 [Largada Esportiva] 1 corridas via Playwright
 [Ticket Sports] 972 corridas encontradas
 [HalfMarathons.net] 1914 corrida(s) encontrada(s)
-[main] 6407 registros coletados (antes do merge)
+[main] 6406 registros coletados (antes do merge)
 [main] 2938 registros após validação
 [main] 2787 corridas após merge
 [main] 2787 corridas após reconciliação

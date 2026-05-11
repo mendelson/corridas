@@ -178,9 +178,14 @@ def _parse_location(text: str) -> tuple[str, str]:
     if not text:
         return "", "INT"
     parts = [p.strip() for p in text.split(",")]
+    # Scan all parts for a known state (address may have multiple comma segments)
+    estado = "INT"
+    for part in reversed(parts):
+        key = part.lower().strip()
+        if key in _MX_STATES:
+            estado = _MX_STATES[key]
+            break
     ciudad = parts[0] if parts else ""
-    state_raw = parts[1].lower().strip() if len(parts) > 1 else ""
-    estado = _MX_STATES.get(state_raw, "INT")
     return ciudad, estado
 
 

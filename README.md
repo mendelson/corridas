@@ -45,7 +45,7 @@ GitHub Actions.
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-11 16:02 | ✅ | 2026-05-11 16:02 |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-11 16:02 | ✅ | 2026-05-11 16:02 |
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-11 16:03 | ✅ | 2026-05-11 16:03 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-11 16:02 | ✅ | 2026-05-11 16:02 |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-11 16:32 | ✅ | 2026-05-11 16:32 |
 
 ### Fontes internacionais
 

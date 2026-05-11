@@ -65,13 +65,24 @@ def _parse_report(report_path: Path) -> dict:
         nodeid  = test.get("nodeid", "")
         func    = nodeid.split("::")[-1] if "::" in nodeid else nodeid
 
-        # Prefer the human-readable docstring injected via user_properties
-        name = next(
-            (v for k, v in test.get("user_properties", []) if k == "description"),
-            None,
-        )
+        # Prefer the human-readable docstring injected via user_properties.
+        # pytest-json-report serialises user_properties as a list of single-key
+        # dicts: [{"description": "text"}, ...] — not as [[k, v], ...].
+        name = None
+        for prop in test.get("user_properties", []):
+            if isinstance(prop, dict) and "description" in prop:
+                name = prop["description"]
+                break
+            # Fallback: handle [[k, v], ...] format just in case
+            try:
+                k, v = prop
+                if k == "description":
+                    name = v
+                    break
+            except (TypeError, ValueError):
+                pass
         if not name:
-            # Fall back to cleaned function name: test_foo_bar → "foo bar"
+            # Cleaned function name: test_foo_bar → "foo bar"
             name = func[5:].replace("_", " ") if func.startswith("test_") else func
 
         call    = test.get("call", {})

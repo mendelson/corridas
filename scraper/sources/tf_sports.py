@@ -438,7 +438,7 @@ def scrape() -> list[Corrida]:
                 links_inscricao=links_insc,
             )
             corridas.append(Corrida(
-                id=f"{slugify(titulo)}_{state.lower()}_{today}",
+                id=f"tfs_{event.get('id') or slug or slugify(titulo)}",
                 titulo=titulo,
                 data_evento=data_evento,
                 horario=horario_evento,

@@ -37,6 +37,15 @@ _US_STATES = {
     "WI", "WY", "DC",
 }
 
+_ISO_TO_PT: dict[str, str] = {
+    "CA": "Canadá", "GB": "Reino Unido", "IE": "Irlanda", "DE": "Alemanha",
+    "FR": "França",  "IT": "Itália",     "ES": "Espanha", "PT": "Portugal",
+    "NL": "Países Baixos", "AU": "Austrália", "NZ": "Nova Zelândia",
+    "MX": "México",  "AR": "Argentina",  "CL": "Chile",   "CO": "Colômbia",
+    "PE": "Peru",    "ZA": "África do Sul", "JP": "Japão", "KR": "Coreia do Sul",
+    "CN": "China",   "IN": "Índia",      "BR": "Brasil",
+}
+
 _NON_RUNNING = re.compile(
     r"\btriathlon\b|\bduathlon\b|\baquathlon\b|\baquabike\b"
     r"|\bcycling\b|\bcyclocross\b|\bbike\s*ride\b"
@@ -292,8 +301,9 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
         estado    = state if state in _US_STATES else "INT"
         loc_parts = [p for p in (city, state, "EUA") if p]
     else:
-        estado    = "INT"
-        loc_parts = [p for p in (city, country) if p]
+        estado       = "INT"
+        country_pt   = _ISO_TO_PT.get(country, country)
+        loc_parts    = [p for p in (city, country_pt) if p]
     localizacao = ", ".join(loc_parts) or "Internacional"
 
     race_id = race.get("race_id") or race.get("id")

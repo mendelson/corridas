@@ -808,7 +808,7 @@ function matchesPeriodo(c) {
 
 function _matchEstadoValue(c, value) {
   if (value === 'todos') return true;
-  if (value === 'BR')    return c.estado !== 'INT';
+  if (value === 'BR')    return c.estado !== 'INT' && c.estado !== '??';
   if (value.startsWith('INT:')) {
     const rest = value.slice(4);
     const sep  = rest.indexOf(':');
@@ -1138,7 +1138,7 @@ function buildExpanded(card, c) {
   if (c.fotos && c.fotos.length > 0) {
     for (const url of c.fotos) {
       const img = document.createElement('img');
-      img.src     = url;
+      img.src     = url.url;
       img.alt     = '';
       img.loading = 'lazy';
       img.className = 'expanded-photo';

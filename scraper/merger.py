@@ -21,7 +21,7 @@ def score(c: Corrida) -> int:
         bool(c.inscricoes_abertas is not None) +
         bool(c.periodo_inscricao) +
         bool(c.periodo_inscricao and c.periodo_inscricao.encerramento) +
-        len(c.fontes[0].links_inscricao) * 2
+        (len(c.fontes[0].links_inscricao) * 2 if c.fontes else 0)
     )
 
 

@@ -85,7 +85,7 @@ def _parse_event(el) -> Corrida | None:
     )
 
     return Corrida(
-        id=f"{slugify(titulo)}_df_{today}",
+        id=f"sescdf_{slugify(titulo)}",
         titulo=titulo,
         data_evento=data or "",
         horario=normalize_time(text),

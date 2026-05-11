@@ -34,7 +34,7 @@ _CITY_STATE: dict[str, str] = {
     "Palmas":               "TO",
     "Anápolis":             "GO",
     "Cuiabá":               "MT",
-    "São Luis":             "MA",
+    "São Luís":             "MA",
     "Goiânia":              "GO",
     "Imperatriz":           "MA",
     "João Pessoa":          "PB",

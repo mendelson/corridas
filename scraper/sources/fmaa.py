@@ -127,12 +127,12 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if data_evento < today:
         return None
 
-    # Location
+    # Location — FMAA events are always in Mexico
     venue = ev.get("venue") or {}
     city = venue.get("city") or ""
-    state_raw = (venue.get("stateprovince") or venue.get("state") or "").lower()
-    estado = _MX_STATES.get(state_raw, "INT")
-    localizacao = f"{city}, {estado}" if city else estado
+    estado = "INT"
+    cidade = f"{city}, México" if city else "México"
+    localizacao = cidade
 
     # URL
     event_link = ev.get("url") or _BASE
@@ -148,9 +148,9 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         id=race_id,
         titulo=titulo,
         data_evento=data_evento,
-        horario=ev.get("start_date", "")[-8:-3] or None,
+        horario=start_raw[11:16] if len(start_raw) >= 16 else None,
         localizacao=localizacao,
-        cidade=city,
+        cidade=cidade,
         estado=estado,
         distancias=distancias,
         imagem_url=None,

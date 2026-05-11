@@ -112,23 +112,17 @@ def scrape() -> list[Corrida]:
 
 
 def _debug_html(soup: BeautifulSoup) -> None:
-    # Dump candidate container + first child HTML to understand card structure
-    containers = [
-        soup.find(class_="results_section_container_children"),
-        soup.find(class_="results_component_events"),
-        soup.find(class_="events__container__results"),
-        soup.find("article"),
-    ]
-    for c in containers:
-        if c:
-            print(f"[{SOURCE_NAME}] DEBUG container tag={c.name} class={c.get('class')}")
-            print(f"[{SOURCE_NAME}] DEBUG container html[:2000]:\n{str(c)[:2000]}")
-            # First child
-            children = list(c.children)
-            for ch in children[:3]:
-                if hasattr(ch, "name") and ch.name:
-                    print(f"[{SOURCE_NAME}] DEBUG child tag={ch.name} class={ch.get('class')} html:\n{str(ch)[:800]}")
-            break
+    # Check __NEXT_DATA__ for server-side JSON
+    next_data = soup.find("script", {"id": "__NEXT_DATA__"})
+    if next_data:
+        print(f"[{SOURCE_NAME}] DEBUG __NEXT_DATA__ found, len={len(next_data.string or '')}")
+        print(f"[{SOURCE_NAME}] DEBUG __NEXT_DATA__[:3000]:\n{(next_data.string or '')[:3000]}")
+
+    # Check what _find_cards() actually returns
+    cards = _find_cards(soup)
+    print(f"[{SOURCE_NAME}] DEBUG _find_cards count={len(cards)}")
+    for i, c in enumerate(cards[:2]):
+        print(f"[{SOURCE_NAME}] DEBUG card[{i}] tag={c.name} classes={c.get('class')} html:\n{str(c)[:1000]}")
 
 
 def _find_cards(soup: BeautifulSoup) -> list:

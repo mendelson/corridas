@@ -45,9 +45,7 @@ GitHub Actions.
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-10 00:01 | ✅ | 2026-05-10 00:01 |
 | São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-10 00:03 | ✅ | 2026-05-10 00:03 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `voltadolago.com.br` | 2026-05-10 00:02 | ❌ 0 eventos¹ | — |
-
-> ¹ Comportamento esperado: a Volta do Lago é um evento anual; retorna 0 quando não há edição futura anunciada nas plataformas consultadas (Ticket Sports, Sympla).
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-10 00:02 | ❌ 0 eventos | — |
 
 ### Fontes internacionais
 

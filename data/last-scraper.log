@@ -11,13 +11,13 @@
 [Correr Brasília] 1 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
 [Brasil Corrida] 10 corridas encontradas
-[Runner Brasil] 22 corridas encontradas
-[Correr Brasília] 1 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
+[MKS Esportes] 3 corridas encontradas
+[SESC DF] 9 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
 [Circuito das Estações] 104 corridas encontradas
-[SESC DF] 9 corridas encontradas
 [Yescom] 14 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
@@ -29,8 +29,6 @@
 [RunSignup] API response keys: ['error']
 [RunSignup] total_results: ?
 [RunSignup] nenhuma corrida retornada pela API
-[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
-[Asdeporte] 30 corrida(s) encontrada(s)
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
@@ -43,6 +41,7 @@
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: [Errno 101] Network is unreachable
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
@@ -60,6 +59,6 @@
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 1/145 imagens encontradas
+[main] 0/145 imagens encontradas
 [main] 23 corrida(s) removida(s) por data passada (antes de 2026-04-26)
 [main] 2764 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

@@ -49,6 +49,13 @@ _RUNNING_KW = re.compile(
     re.IGNORECASE,
 )
 
+_VENUE_KW = re.compile(
+    r"\b(calle|paseo|avenida|av\.|blvd|boulevard|parque|plaza|estadio"
+    r"|interior|km\s*\d|carretera|periférico|periferico|circuito|jardines"
+    r"|prolongacion|prolongación|glorieta|andador|privada)\b",
+    re.IGNORECASE,
+)
+
 _DIST_RE = re.compile(
     r"\b(\d+(?:\.\d+)?)\s*(?:k|km|kms?)\b"
     r"|\b(\d+(?:\.\d+)?)\s*mi(?:les?)?\b"
@@ -177,22 +184,33 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
 def _parse_location(text: str) -> tuple[str, str]:
     """Returns (ciudad, "INT"). All Asdeporte events are in Mexico.
 
-    ciudad is formatted as "City, México" so the frontend's _extractCountry
-    can correctly group these events under the México section.
+    ciudad is "City, México" for recognizable city names, or just "México"
+    when the place field is a raw venue/street address.
     """
     if not text:
         return "México", "INT"
     parts = [p.strip() for p in text.split(",")]
-    # Pick first non-numeric part as the city name; numeric parts are
-    # street addresses (e.g. "Paseo de Los Parques Y Paseo de Las Peñas")
-    ciudad = ""
-    for part in parts:
-        if not re.search(r"\d", part) and len(part) > 2:
-            ciudad = part
-            break
-    if not ciudad:
-        ciudad = parts[0] if parts else ""
-    return (f"{ciudad}, México" if ciudad else "México"), "INT"
+
+    # Scan reversed parts for a known Mexican state — if found, the first
+    # part is the city.
+    for part in reversed(parts):
+        key = re.sub(r"[^\w\s]", "", part).lower().strip()
+        if key in _MX_STATES:
+            ciudad = parts[0]
+            if _looks_like_venue(ciudad):
+                return "México", "INT"
+            return f"{ciudad}, México", "INT"
+
+    # No state found — check if the first part looks like a city name rather
+    # than a venue/street description.
+    ciudad = parts[0]
+    if _looks_like_venue(ciudad):
+        return "México", "INT"
+    return f"{ciudad}, México", "INT"
+
+
+def _looks_like_venue(text: str) -> bool:
+    return bool(re.search(r"\d", text) or _VENUE_KW.search(text) or len(text) > 50)
 
 
 def _parse_distances(titulo: str) -> list[Distancia]:

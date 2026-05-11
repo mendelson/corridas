@@ -499,11 +499,20 @@ const _ESTADO_LABELS = {
 };
 
 const _CITY_COUNTRY = {
+  // Well-known cities (no country suffix in cidade)
   'Buenos Aires': 'Argentina',   'Paris': 'França',          'Veneza': 'Itália',
   'Roma': 'Itália',              'Milão': 'Itália',          'Amsterdam': 'Países Baixos',
   'Madrid': 'Espanha',           'Barcelona': 'Espanha',     'Porto': 'Portugal',
   'Assunção': 'Paraguai',        'Montevidéu': 'Uruguai',    'Santiago': 'Chile',
   'Lima': 'Peru',                'Bogotá': 'Colômbia',       'Cidade do México': 'México',
+  'Punta Del Este': 'Uruguai',   'Punta del Este': 'Uruguai',
+  // Country-name fallback: when cidade has no comma (no city info available)
+  'EUA': 'EUA',                  'México': 'México',         'Canadá': 'Canadá',
+  'Alemanha': 'Alemanha',        'França': 'França',         'Itália': 'Itália',
+  'Espanha': 'Espanha',          'Irlanda': 'Irlanda',       'Países Baixos': 'Países Baixos',
+  'Austrália': 'Austrália',      'Reino Unido': 'Reino Unido', 'Portugal': 'Portugal',
+  'Argentina': 'Argentina',      'Chile': 'Chile',           'Colômbia': 'Colômbia',
+  'Uruguai': 'Uruguai',          'Peru': 'Peru',             'Paraguai': 'Paraguai',
 };
 
 const _ISO2_TO_DATA_COUNTRY = {
@@ -670,7 +679,8 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
       const isActive = state.estado === 'INT:' + country ||
                        cities.some(city => state.estado === 'INT:' + country + ':' + city);
       const { wrapper, body } = _makeAccordionGroup(country, isActive);
-      if (cities.length > 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
+      // Always show "All Country" when there are 0 or >1 cities
+      if (cities.length !== 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
       for (const city of cities) {
         const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
         body.appendChild(makeOption(value, city));

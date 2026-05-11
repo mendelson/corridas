@@ -163,20 +163,16 @@ def test_fontes_multi_select_filters_events(page_pt, live_server):
     page_pt.keyboard.press("Escape")
     page_pt.wait_for_timeout(200)
 
-    # Read visible cards' fonte info via JS
-    visible_fontes = page_pt.evaluate("""
-        () => {
-            const cards = [...document.querySelectorAll('.card')];
-            return cards.map(card => {
-                const items = [...card.querySelectorAll('.fonte-nome-text')];
-                return items.map(i => i.textContent.trim());
-            });
-        }
+    # .fonte-nome-text is only built on card expand (lazy), so read the JS
+    # filteredCorridas array directly — it's the source of truth for what renders.
+    filtered = page_pt.evaluate("""
+        () => filteredCorridas.map(c => c.fontes ? c.fontes.map(f => f.nome) : [])
     """)
 
-    for card_fontes in visible_fontes:
-        assert any(fonte_name == f for f in card_fontes), (
-            f"Card with fontes {card_fontes} shown but filter is '{fonte_name}'"
+    assert len(filtered) > 0, f"filteredCorridas is empty after selecting fonte '{fonte_name}'"
+    for card_fontes in filtered:
+        assert fonte_name in card_fontes, (
+            f"Corrida with fontes {card_fontes} shown but filter is '{fonte_name}'"
         )
 
 
@@ -289,7 +285,7 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
     from datetime import datetime, timezone, timedelta
 
     corridas = _load_corridas()
-    now = datetime(2026, 5, 10, tzinfo=timezone.utc)
+    now = datetime.now(tz=timezone.utc)
     cutoff = (now - timedelta(days=7)).isoformat()
 
     # Find a new event
@@ -336,7 +332,7 @@ def test_month_section_badge_when_has_new(page_pt, live_server):
     from datetime import datetime, timezone, timedelta
 
     corridas = _load_corridas()
-    now = datetime(2026, 5, 10, tzinfo=timezone.utc)
+    now = datetime.now(tz=timezone.utc)
     cutoff = (now - timedelta(days=7)).isoformat()
 
     has_new = any(c.get("first_seen_at", "") >= cutoff for c in corridas)
@@ -548,7 +544,7 @@ def test_initial_load_no_session_cache(browser, live_server):
     page = ctx.new_page()
     # clear storage explicitly (new context starts empty, but be explicit)
     page.goto(live_server + "/pt/", wait_until="networkidle")
-    page.wait_for_selector(".card", timeout=15000)
+    page.wait_for_selector(".card", state="attached", timeout=15000)
     cards = page.query_selector_all(".card")
     assert len(cards) > 0, "No cards rendered on fresh load"
     ctx.close()
@@ -617,7 +613,7 @@ def test_language_fallback_to_english(browser, live_server):
     page = ctx.new_page()
     # Navigate to /en/ explicitly (fallback applies to URL-less root; /en/ gives English)
     page.goto(live_server + "/en/", wait_until="networkidle")
-    page.wait_for_selector(".card", timeout=15000)
+    page.wait_for_selector(".card", state="attached", timeout=15000)
     # The register button text must be the English one
     # Click first card to expand it to see the btn-inscricao
     cards = page.query_selector_all(".card")

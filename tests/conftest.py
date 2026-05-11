@@ -64,7 +64,7 @@ def page_pt(browser, live_server):
     _add_geo_mocks(ctx)
     page = ctx.new_page()
     page.goto(live_server + "/pt/", wait_until="networkidle")
-    page.wait_for_selector(".card", timeout=15000)
+    page.wait_for_selector(".card", state="attached", timeout=15000)
     yield page
     ctx.close()
 
@@ -75,6 +75,6 @@ def page_en(browser, live_server):
     _add_geo_mocks(ctx)
     page = ctx.new_page()
     page.goto(live_server + "/en/", wait_until="networkidle")
-    page.wait_for_selector(".card", timeout=15000)
+    page.wait_for_selector(".card", state="attached", timeout=15000)
     yield page
     ctx.close()

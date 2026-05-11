@@ -60,23 +60,14 @@ _KM_RE = re.compile(r"^(\d+(?:\.\d+)?)k$",    re.IGNORECASE)
 
 def scrape() -> list[Corrida]:
     today = today_iso()
-    today_ts = int(date.today().strftime("%s")) if hasattr(date.today(), "strftime") else \
-               int(datetime.now(timezone.utc).timestamp())
-    # Use integer unix timestamp via datetime
-    today_ts = int(datetime.now(timezone.utc).timestamp())
-
     corridas: list[Corrida] = []
 
     for page in range(1, _MAX_PAGES + 1):
         try:
             resp = get(
                 _API,
-                params={"per_page": _PER_PAGE, "page": page, "orderby": "meta_value_num",
-                        "meta_key": "date", "order": "asc",
-                        "meta_query[0][key]": "date",
-                        "meta_query[0][value]": str(today_ts),
-                        "meta_query[0][compare]": ">=",
-                        "meta_query[0][type]": "NUMERIC"},
+                params={"per_page": _PER_PAGE, "page": page,
+                        "orderby": "meta_value_num", "meta_key": "date", "order": "asc"},
                 source=SOURCE_NAME,
                 timeout=20,
             )
@@ -84,7 +75,7 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page} erro: {e}")
             break
 
-        if resp.status_code == 400:
+        if resp.status_code in (400, 404):
             break  # past end of results
         try:
             resp.raise_for_status()

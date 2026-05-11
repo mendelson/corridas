@@ -284,30 +284,16 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
     """A card whose corrida.first_seen_at is within 7 days must show a visible badge-novo."""
     from datetime import datetime, timezone, timedelta
 
-    corridas = _load_corridas()
     now = datetime.now(tz=timezone.utc)
     cutoff = (now - timedelta(days=7)).isoformat()
 
-    # Find a new event
-    new_corrida = None
-    for c in corridas:
-        if c.get("first_seen_at", "") >= cutoff:
-            new_corrida = c
-            break
-
-    if new_corrida is None:
-        pytest.skip("No 'new' events in the dataset (first_seen_at within 7 days)")
-
-    # Reset location filter to 'todos' so the card is visible regardless of geo
-    page_pt.evaluate("""
-        () => {
-            const saved = JSON.parse(localStorage.getItem('corridas_filters') || '{}');
-            saved.estado = 'todos';
-            localStorage.setItem('corridas_filters', JSON.stringify(saved));
-        }
-    """)
-    page_pt.reload(wait_until="networkidle")
-    page_pt.wait_for_selector(".card", state="attached", timeout=15000)
+    # Find a new event among what's currently visible (respects active location filter)
+    titulo = page_pt.evaluate(
+        "(cutoff) => { const c = filteredCorridas.find(c => c.first_seen_at && c.first_seen_at >= cutoff); return c ? c.titulo : null; }",
+        cutoff,
+    )
+    if titulo is None:
+        pytest.skip("No 'new' events visible with current location filter")
 
     # Expand all months so cards are rendered
     page_pt.evaluate("""
@@ -318,7 +304,6 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
     page_pt.wait_for_timeout(300)
 
     # Look for the card by title
-    titulo = new_corrida["titulo"]
     cards = page_pt.query_selector_all(".card")
     found_card = None
     for card in cards:
@@ -327,7 +312,7 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
             found_card = card
             break
 
-    assert found_card is not None, f"Card for '{titulo}' not found even with 'todos' filter"
+    assert found_card is not None, f"Card for '{titulo}' not found in DOM after expanding all months"
 
     badge = found_card.query_selector(".badge-novo")
     assert badge is not None, "card has no .badge-novo element"

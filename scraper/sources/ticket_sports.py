@@ -40,11 +40,13 @@ _NON_RUNNING_KW = [
 
 _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
-# Addresses that indicate a virtual/online event with no fixed location
+# Addresses / title keywords that indicate a virtual/online event with no fixed location
 _VIRTUAL_ADDR_KW = {
     "de onde você estiver", "de onde voce estiver",
+    "não informado", "nao informado",
     "virtual", "online",
 }
+_VIRTUAL_TITLE_RE = re.compile(r"\bvirtual\b", re.IGNORECASE)
 
 # City/country fragments that conclusively identify an international event
 _INTL_CITY_KW = {
@@ -256,6 +258,9 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     addr = ev.get("address") or ""
 
     if not _is_running(titulo_lower):
+        return None
+
+    if _VIRTUAL_TITLE_RE.search(titulo) or addr.lower().strip() in _VIRTUAL_ADDR_KW:
         return None
 
     cidade, estado = _split_address(addr)

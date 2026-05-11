@@ -55,6 +55,16 @@ _PT_MONTHS = {
     "novembro": "11", "dezembro": "12",
 }
 
+_UF_TO_CAPITAL: dict[str, str] = {
+    "AC": "Rio Branco", "AL": "Maceió", "AM": "Manaus", "AP": "Macapá",
+    "BA": "Salvador", "CE": "Fortaleza", "DF": "Brasília", "ES": "Vitória",
+    "GO": "Goiânia", "MA": "São Luís", "MG": "Belo Horizonte", "MS": "Campo Grande",
+    "MT": "Cuiabá", "PA": "Belém", "PB": "João Pessoa", "PE": "Recife",
+    "PI": "Teresina", "PR": "Curitiba", "RJ": "Rio de Janeiro", "RN": "Natal",
+    "RO": "Porto Velho", "RR": "Boa Vista", "RS": "Porto Alegre",
+    "SC": "Florianópolis", "SE": "Aracaju", "SP": "São Paulo", "TO": "Palmas",
+}
+
 _CANONICAL  = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 _DATE_ISO   = re.compile(r"(20\d{2}-\d{2}-\d{2})")
 _DATE_DMY   = re.compile(r"\b(\d{1,2})[/\-](\d{1,2})[/\-](20\d{2})\b")
@@ -428,6 +438,10 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
         estado = infer_estado(localizacao, titulo) or "??"
     if not cidade:
         cidade = localizacao.split(",")[0].split("-")[0].strip()
+    if not cidade and estado in _UF_TO_CAPITAL:
+        cidade = _UF_TO_CAPITAL[estado]
+    if cidade and estado and len(estado) == 2:
+        localizacao = f"{cidade}, {estado}"
 
     img_raw = (
         ev.get("imagem") or ev.get("image") or ev.get("foto") or
@@ -501,6 +515,10 @@ def _extract_location(el, text: str) -> tuple[str, str, str]:
     if not estado:
         estado = infer_estado(localizacao, "") or "??"
     cidade = localizacao.split(",")[0].split("-")[0].strip()
+    if not cidade and estado in _UF_TO_CAPITAL:
+        cidade = _UF_TO_CAPITAL[estado]
+    if cidade and estado and len(estado) == 2:
+        localizacao = f"{cidade}, {estado}"
     return estado, cidade, localizacao
 
 

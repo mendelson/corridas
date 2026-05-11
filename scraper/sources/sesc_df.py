@@ -89,7 +89,7 @@ def _parse_event(el) -> Corrida | None:
         titulo=titulo,
         data_evento=data or "",
         horario=normalize_time(text),
-        localizacao="Brasília-DF",
+        localizacao="Brasília, DF",
         cidade="Brasília",
         estado="DF",
         distancias=_extract_distances(text),

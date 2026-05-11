@@ -120,7 +120,7 @@ def _build_corrida(
         titulo=titulo,
         data_evento=data_evento,
         horario=None,
-        localizacao=city,
+        localizacao=f"{city}, {estado}" if estado != "??" else city,
         cidade=city,
         estado=estado,
         distancias=distancias,

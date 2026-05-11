@@ -18,28 +18,31 @@ _API        = f"{_BASE}/wp-json/wp/v2/races"
 _PER_PAGE   = 100
 _MAX_PAGES  = 50   # 100 events/page × 50 = up to 5,000 events
 
-# State slug → 2-letter abbreviation
-_STATE_SLUG: dict[str, str] = {
-    "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR",
-    "california": "CA", "colorado": "CO", "connecticut": "CT",
-    "delaware": "DE", "florida": "FL", "georgia": "GA", "hawaii": "HI",
-    "idaho": "ID", "illinois": "IL", "indiana": "IN", "iowa": "IA",
-    "kansas": "KS", "kentucky": "KY", "louisiana": "LA", "maine": "ME",
-    "maryland": "MD", "massachusetts": "MA", "michigan": "MI",
-    "minnesota": "MN", "mississippi": "MS", "missouri": "MO",
-    "montana": "MT", "nebraska": "NE", "nevada": "NV",
-    "new-hampshire": "NH", "new-jersey": "NJ", "new-mexico": "NM",
-    "new-york": "NY", "north-carolina": "NC", "north-dakota": "ND",
-    "ohio": "OH", "oklahoma": "OK", "oregon": "OR",
-    "pennsylvania": "PA", "rhode-island": "RI", "south-carolina": "SC",
-    "south-dakota": "SD", "tennessee": "TN", "texas": "TX", "utah": "UT",
-    "vermont": "VT", "virginia": "VA", "washington": "WA",
-    "west-virginia": "WV", "wisconsin": "WI", "wyoming": "WY",
-    "district-of-columbia": "DC",
-    # International / territories
-    "canada": "INT", "united-kingdom": "INT", "australia": "INT",
-    "germany": "INT", "france": "INT", "ireland": "INT", "spain": "INT",
-    "italy": "INT", "netherlands": "INT",
+# Slug → country label (PT). All non-US slugs explicitly mapped; US slugs fall
+# through to the default "EUA" so they appear grouped under the USA in the filter.
+_SLUG_COUNTRY: dict[str, str] = {
+    "canada":         "Canadá",
+    "united-kingdom": "Reino Unido",
+    "australia":      "Austrália",
+    "germany":        "Alemanha",
+    "france":         "França",
+    "ireland":        "Irlanda",
+    "spain":          "Espanha",
+    "italy":          "Itália",
+    "netherlands":    "Países Baixos",
+}
+
+# US state slugs — presence means the event is in the USA
+_US_STATE_SLUGS = {
+    "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
+    "connecticut", "delaware", "district-of-columbia", "florida", "georgia",
+    "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas", "kentucky",
+    "louisiana", "maine", "maryland", "massachusetts", "michigan", "minnesota",
+    "mississippi", "missouri", "montana", "nebraska", "nevada", "new-hampshire",
+    "new-jersey", "new-mexico", "new-york", "north-carolina", "north-dakota",
+    "ohio", "oklahoma", "oregon", "pennsylvania", "rhode-island",
+    "south-carolina", "south-dakota", "tennessee", "texas", "utah", "vermont",
+    "virginia", "washington", "west-virginia", "wisconsin", "wyoming",
 }
 
 # Distance label → canonical km value or miles string
@@ -124,16 +127,22 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     if not titulo:
         return None
 
-    # State from class_list
-    estado = "INT"
+    # Determine country from class_list slugs; all events are estado=INT
+    country = "EUA"  # default — the site is almost entirely US events
     for cls in (post.get("class_list") or []):
         slug = cls.replace("race-calendar-", "") if cls.startswith("race-calendar-") else None
-        if slug and slug in _STATE_SLUG:
-            estado = _STATE_SLUG[slug]
+        if not slug:
+            continue
+        if slug in _SLUG_COUNTRY:
+            country = _SLUG_COUNTRY[slug]
+            break
+        if slug in _US_STATE_SLUGS:
+            country = "EUA"
             break
 
     city: str = meta.get("city") or ""
-    localizacao = f"{city}, {estado}" if city and estado not in ("INT", "") else (city or estado)
+    cidade = f"{city}, {country}" if city else country
+    localizacao = cidade
 
     # Distances
     raw_distances: list[str] = meta.get("distance") or []
@@ -154,8 +163,8 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         data_evento=data_evento,
         horario=meta.get("starting-time") or None,
         localizacao=localizacao,
-        cidade=city or "",
-        estado=estado,
+        cidade=cidade,
+        estado="INT",
         distancias=distancias,
         imagem_url=None,
         inscricoes_abertas=None,

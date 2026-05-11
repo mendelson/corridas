@@ -160,7 +160,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         titulo=titulo,
         data_evento=data_evento,
         horario=None,
-        localizacao=f"{ciudad}, {estado}" if ciudad else estado,
+        localizacao=ciudad,  # already "City, México"
         cidade=ciudad,
         estado=estado,
         distancias=distancias,
@@ -175,18 +175,24 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
 
 
 def _parse_location(text: str) -> tuple[str, str]:
+    """Returns (ciudad, "INT"). All Asdeporte events are in Mexico.
+
+    ciudad is formatted as "City, México" so the frontend's _extractCountry
+    can correctly group these events under the México section.
+    """
     if not text:
-        return "", "INT"
+        return "México", "INT"
     parts = [p.strip() for p in text.split(",")]
-    # Scan all parts for a known state (address may have punctuation/extra text)
-    estado = "INT"
-    for part in reversed(parts):
-        key = re.sub(r"[^\w\s]", "", part).lower().strip()
-        if key in _MX_STATES:
-            estado = _MX_STATES[key]
+    # Pick first non-numeric part as the city name; numeric parts are
+    # street addresses (e.g. "Paseo de Los Parques Y Paseo de Las Peñas")
+    ciudad = ""
+    for part in parts:
+        if not re.search(r"\d", part) and len(part) > 2:
+            ciudad = part
             break
-    ciudad = parts[0] if parts else ""
-    return ciudad, estado
+    if not ciudad:
+        ciudad = parts[0] if parts else ""
+    return (f"{ciudad}, México" if ciudad else "México"), "INT"
 
 
 def _parse_distances(titulo: str) -> list[Distancia]:

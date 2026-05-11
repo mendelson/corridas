@@ -28,6 +28,7 @@ on:
         type: choice
         options:
           - all
+          - asdeporte
           - ativo
           - largada_esportiva
           - brasil_corrida
@@ -41,6 +42,7 @@ on:
           - maratona_rio
           - minhas_inscricoes
           - mks_esportes
+          - fmaa
           - halfmarathons
           - runner_brasil
           - runsignup

@@ -42,6 +42,8 @@ from .sources import (
     volta_do_lago,
     runsignup,
     halfmarathons,
+    asdeporte,
+    fmaa,
 )
 from .sources.majors import (
     tokyo,
@@ -126,6 +128,9 @@ SOURCES = [
     # US/global running calendar
     runsignup,
     halfmarathons,
+    # Mexican running calendars
+    asdeporte,
+    fmaa,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

@@ -21,4 +21,6 @@ from . import (
     volta_do_lago,
     runsignup,
     halfmarathons,
+    asdeporte,
+    fmaa,
 )

@@ -16,7 +16,7 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-12 17:22 | ✅ | 2026-05-12 17:22 |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-12 18:27 | ✅ | 2026-05-12 18:27 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-12 11:16 | ✅ | 2026-05-12 11:16 |
@@ -51,7 +51,7 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-12 18:10 | ✅ | 2026-05-12 18:10 |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-12 18:29 | ❌ | 2026-05-12 18:10 |
 | FMAA<!--fmaa--> | ✅ | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | The Events Calendar API; 0 eventos publicados atualmente | 2026-05-12 18:11 | ❌ 0 eventos | — |
 
 ### Fontes internacionais

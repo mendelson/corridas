@@ -11,6 +11,7 @@ from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, slugify, infer_estado, now_iso, today_iso,
 )
+from .. import geo as _geo
 
 BASE = "https://www.ticketsports.com.br"
 API_URL = "https://www.ticketsports.app/api/events/list"
@@ -277,7 +278,10 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
                     break
             estado = ""
         else:
-            estado = infer_estado(addr, titulo) or "??"
+            _pais_geo, _estado_geo = _geo.resolve(addr, "", "BR")
+            if _pais_geo and _pais_geo != "BR":
+                pais_iso2 = _pais_geo
+            estado = infer_estado(addr, titulo) or _estado_geo or ""
 
     data_evento = _parse_date(ev.get("date") or "")
     if not data_evento or data_evento < today:

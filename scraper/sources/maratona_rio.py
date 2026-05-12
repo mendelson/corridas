@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_date, now_iso, today_iso
+from .. import geo as _geo
 
 SITE_URL    = "https://www.maratonadorio.com.br/"
 SITE_EN_URL = "https://www.maratonadorio.com.br/en"
@@ -143,6 +144,7 @@ def scrape() -> list[Corrida]:
     imagem_url = _fetch_og_image(soup)
     now = now_iso()
     titulo = "Maratona do Rio"
+    estado = _geo.resolve("Rio de Janeiro, RJ", "Rio de Janeiro", "BR")[1] or "RJ"
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=SITE_URL,
@@ -155,7 +157,7 @@ def scrape() -> list[Corrida]:
         horario=_H_42K,
         localizacao="Rio de Janeiro, RJ",
         cidade="Rio de Janeiro",
-        estado="RJ",
+        estado=estado,
         pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,

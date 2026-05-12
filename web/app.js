@@ -624,6 +624,62 @@ const _COUNTRY_LABELS = {
   'Rússia':                { en: 'Russia',                   es: 'Rusia',                de: 'Russland',                  fr: 'Russie' },
 };
 
+// Subdivision translations: ISO2 country → subdivision code → per-language name.
+// Only entries where the name differs meaningfully across languages are listed.
+// Fallback: locations/{iso2}.json English name, then code.
+const _SUBDIV_LABELS = {
+  MX: {
+    CMX: { pt: 'Cidade do México',              en: 'Mexico City',               es: 'Ciudad de México',                de: 'Mexiko-Stadt',                      fr: 'Mexico' },
+    MEX: { pt: 'Estado do México',              en: 'State of Mexico',           es: 'Estado de México',                de: 'Bundesstaat Mexiko',                fr: 'État de Mexico' },
+  },
+  DE: {
+    BY:  { pt: 'Baviera',                       en: 'Bavaria',                   es: 'Baviera',                         de: 'Bayern',                            fr: 'Bavière' },
+    NW:  { pt: 'Renânia do Norte-Vestfália',    en: 'North Rhine-Westphalia',    es: 'Renania del Norte-Westfalia',     de: 'Nordrhein-Westfalen',               fr: 'Rhénanie-du-Nord-Westphalie' },
+    NI:  { pt: 'Baixa Saxônia',                 en: 'Lower Saxony',              es: 'Baja Sajonia',                    de: 'Niedersachsen',                     fr: 'Basse-Saxe' },
+    SN:  { pt: 'Saxônia',                       en: 'Saxony',                    es: 'Sajonia',                         de: 'Sachsen',                           fr: 'Saxe' },
+    TH:  { pt: 'Turíngia',                      en: 'Thuringia',                 es: 'Turingia',                        de: 'Thüringen',                         fr: 'Thuringe' },
+    RP:  { pt: 'Renânia-Palatinado',            en: 'Rhineland-Palatinate',      es: 'Renania-Palatinado',              de: 'Rheinland-Pfalz',                   fr: 'Rhénanie-Palatinat' },
+    ST:  { pt: 'Saxônia-Anhalt',                en: 'Saxony-Anhalt',             es: 'Sajonia-Anhalt',                  de: 'Sachsen-Anhalt',                    fr: 'Saxe-Anhalt' },
+    HE:  { pt: 'Hesse',                         en: 'Hesse',                     es: 'Hesse',                           de: 'Hessen',                            fr: 'Hesse' },
+    BW:  { pt: 'Baden-Württemberg',             en: 'Baden-Württemberg',         es: 'Baden-Wurtemberg',                de: 'Baden-Württemberg',                 fr: 'Bade-Wurtemberg' },
+    BB:  { pt: 'Brandemburgo',                  en: 'Brandenburg',               es: 'Brandeburgo',                     de: 'Brandenburg',                       fr: 'Brandebourg' },
+    MV:  { pt: 'Mecklemburgo-Pomerânia Ocidental', en: 'Mecklenburg-Vorpommern', es: 'Mecklemburgo-Pomerania Occidental', de: 'Mecklenburg-Vorpommern',          fr: 'Mecklembourg-Poméranie-Occidentale' },
+  },
+  GB: {
+    ENG: { pt: 'Inglaterra',                    en: 'England',                   es: 'Inglaterra',                      de: 'England',                           fr: 'Angleterre' },
+    SCT: { pt: 'Escócia',                       en: 'Scotland',                  es: 'Escocia',                         de: 'Schottland',                        fr: 'Écosse' },
+    WLS: { pt: 'País de Gales',                 en: 'Wales',                     es: 'Gales',                           de: 'Wales',                             fr: 'Pays de Galles' },
+    NIR: { pt: 'Irlanda do Norte',              en: 'Northern Ireland',          es: 'Irlanda del Norte',               de: 'Nordirland',                        fr: 'Irlande du Nord' },
+  },
+  AT: {
+    '9': { pt: 'Viena',                         en: 'Vienna',                    es: 'Viena',                           de: 'Wien',                              fr: 'Vienne' },
+  },
+  ES: {
+    CT:  { pt: 'Catalunha',                     en: 'Catalonia',                 es: 'Cataluña',                        de: 'Katalonien',                        fr: 'Catalogne' },
+    AN:  { pt: 'Andaluzia',                     en: 'Andalusia',                 es: 'Andalucía',                       de: 'Andalusien',                        fr: 'Andalousie' },
+    MD:  { pt: 'Comunidade de Madri',           en: 'Community of Madrid',       es: 'Comunidad de Madrid',             de: 'Gemeinde Madrid',                   fr: 'Communauté de Madrid' },
+    PV:  { pt: 'País Basco',                    en: 'Basque Country',            es: 'País Vasco',                      de: 'Baskenland',                        fr: 'Pays basque' },
+    GA:  { pt: 'Galiza',                        en: 'Galicia',                   es: 'Galicia',                         de: 'Galicien',                          fr: 'Galice' },
+    CL:  { pt: 'Castela e Leão',                en: 'Castile and León',          es: 'Castilla y León',                 de: 'Kastilien-León',                    fr: 'Castille-et-León' },
+    CM:  { pt: 'Castela-La Mancha',             en: 'Castilla-La Mancha',        es: 'Castilla-La Mancha',              de: 'Kastilien-La Mancha',               fr: 'Castille-La Manche' },
+    AR:  { pt: 'Aragão',                        en: 'Aragon',                    es: 'Aragón',                          de: 'Aragonien',                         fr: 'Aragon' },
+    VC:  { pt: 'Comunidade Valenciana',         en: 'Valencian Community',       es: 'Comunidad Valenciana',            de: 'Valencianische Gemeinschaft',       fr: 'Communauté valencienne' },
+    CN:  { pt: 'Ilhas Canárias',                en: 'Canary Islands',            es: 'Islas Canarias',                  de: 'Kanarische Inseln',                 fr: 'Îles Canaries' },
+    NA:  { pt: 'Navarra',                       en: 'Navarre',                   es: 'Navarra',                         de: 'Navarra',                           fr: 'Navarre' },
+  },
+  CA: {
+    QC:  { pt: 'Quebec',                        en: 'Quebec',                    es: 'Quebec',                          de: 'Québec',                            fr: 'Québec' },
+    NB:  { pt: 'Novo Brunswick',                en: 'New Brunswick',             es: 'Nuevo Brunswick',                 de: 'Neubraunschweig',                   fr: 'Nouveau-Brunswick' },
+    NS:  { pt: 'Nova Escócia',                  en: 'Nova Scotia',               es: 'Nueva Escocia',                   de: 'Neuschottland',                     fr: 'Nouvelle-Écosse' },
+    NL:  { pt: 'Terra Nova e Labrador',         en: 'Newfoundland and Labrador', es: 'Terranova y Labrador',            de: 'Neufundland und Labrador',          fr: 'Terre-Neuve-et-Labrador' },
+  },
+  NL: {
+    NH:  { pt: 'Holanda do Norte',              en: 'North Holland',             es: 'Holanda del Norte',               de: 'Nordholland',                       fr: 'Hollande-Septentrionale' },
+    ZH:  { pt: 'Holanda do Sul',                en: 'South Holland',             es: 'Holanda del Sur',                 de: 'Südholland',                        fr: 'Hollande-Méridionale' },
+    NB:  { pt: 'Brabante do Norte',             en: 'North Brabant',             es: 'Brabante del Norte',              de: 'Nordbrabant',                       fr: 'Brabant-Septentrional' },
+  },
+};
+
 function _localizeCountry(ptName) {
   if (LANG === 'pt') return ptName;
   const t = _COUNTRY_LABELS[ptName];
@@ -635,6 +691,13 @@ function _localizeCountryByIso2(iso2) {
   const ptName = _ISO2_TO_DATA_COUNTRY[iso2];
   if (ptName) return _localizeCountry(ptName);
   return _loadedLocations.get(iso2)?.name ?? iso2;
+}
+
+function _localizeSubdiv(pais, code, fallback) {
+  const t = _SUBDIV_LABELS[pais]?.[code];
+  if (!t) return fallback;
+  if (LANG === 'pt') return t.pt || fallback;
+  return t[LANG] || t.en || fallback;
 }
 
 function _extractCountry(cidade) {
@@ -683,13 +746,13 @@ function _updateEstadoLabel() {
       } else {
         const locData = _loadedLocations.get(pais);
         const sub = locData?.subdivisions?.find(s => s.code === estado);
-        estadoFilterLabel.textContent = _ESTADO_LABELS[estado] || (sub ? sub.name : estado);
+        estadoFilterLabel.textContent = _localizeSubdiv(pais, estado, _ESTADO_LABELS[estado] || (sub ? sub.name : estado));
       }
     } else {
       estadoFilterLabel.textContent = v;
     }
   }
-  estadoFilterBtn.classList.toggle('active', v !== (_geoApplied || 'todos'));
+  estadoFilterBtn.classList.remove('active');
 }
 
 function _makeAccordionGroup(label, initiallyOpen) {
@@ -793,8 +856,8 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     const subdivisions = [...estadoSet]
       .filter(s => s && (_ESTADO_LABELS[s] || subdivByCode[s]))
       .sort((a, b) => {
-        const la = _ESTADO_LABELS[a] || subdivByCode[a] || a;
-        const lb = _ESTADO_LABELS[b] || subdivByCode[b] || b;
+        const la = _localizeSubdiv(pais, a, _ESTADO_LABELS[a] || subdivByCode[a] || a);
+        const lb = _localizeSubdiv(pais, b, _ESTADO_LABELS[b] || subdivByCode[b] || b);
         return la.localeCompare(lb, LANG);
       });
     const hasCountryLevel = estadoSet.has('') || [...estadoSet].some(s => !s || (!_ESTADO_LABELS[s] && !subdivByCode[s]));
@@ -807,7 +870,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
         body.appendChild(makeOption(countryValue, allLabel));
       }
       for (const code of subdivisions) {
-        const label = _ESTADO_LABELS[code] || subdivByCode[code] || code;
+        const label = _localizeSubdiv(pais, code, _ESTADO_LABELS[code] || subdivByCode[code] || code);
         body.appendChild(makeOption(pais + ':' + code, label));
       }
       return wrapper;

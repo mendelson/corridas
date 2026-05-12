@@ -13,6 +13,7 @@ from .merger import are_duplicates, merge_rodada
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso, normalize_cidade, validate_image_url
 from .http_client import get as http_get
+from . import geo as _geo
 
 # ---------------------------------------------------------------------------
 # Source registry
@@ -163,7 +164,7 @@ def _dict_to_corrida(d: dict) -> Corrida:
         horario=d.get("horario"),
         localizacao=d.get("localizacao", ""),
         cidade=d.get("cidade", ""),
-        estado=d.get("estado", "??"),
+        estado=d.get("estado", ""),
         pais=d.get("pais", "BR"),
         distancias=distancias,
         imagem_url=validate_image_url(d.get("imagem_url")),
@@ -258,6 +259,27 @@ def _normalize_all_locations(corridas: list[Corrida]) -> None:
         c.cidade = normalize_cidade(c.cidade)
 
 
+def _resolve_missing_locations(corridas: list[Corrida]) -> None:
+    """Fill in empty estado (and incorrect pais) using geo.resolve() + cache."""
+    fixed = 0
+    for c in corridas:
+        needs_estado = not c.estado or c.estado in ("??", "INT")
+        needs_pais   = not c.pais  or c.pais  in ("??", "")
+        if not (needs_estado or needs_pais):
+            continue
+        city_part = (c.cidade or c.localizacao or "").split(",")[0].strip()
+        resolved_pais, resolved_estado = _geo.resolve(
+            city_part, "", c.pais or "BR"
+        )
+        if needs_pais and resolved_pais and resolved_pais not in ("??", ""):
+            c.pais = resolved_pais
+        if needs_estado and resolved_estado:
+            c.estado = resolved_estado
+            fixed += 1
+    if fixed:
+        print(f"[main] {fixed} estado(s) resolvido(s) pelo geo cache")
+
+
 _KEEP_PAST_DAYS = 15  # matches frontend's deepest past window (past15 filter)
 
 
@@ -304,7 +326,7 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
         existing.id = incoming.id
     if incoming.cidade:
         existing.cidade = incoming.cidade
-    if incoming.estado and incoming.estado != "??":
+    if incoming.estado and incoming.estado not in ("??", "INT"):
         existing.estado = incoming.estado
     elif existing.estado in ("INT", "??"):
         existing.estado = ""
@@ -646,6 +668,7 @@ def main() -> None:
 
     _demote_directory_links(final)
     _normalize_all_locations(final)
+    _resolve_missing_locations(final)
     # _find_all_photos(final)
     _enrich_images(final)
     _sanitize_images(final)

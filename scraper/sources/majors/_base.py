@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo
 from ...utils import slugify, now_iso, today_iso, extract_date_from_soup, extract_all_future_dates
+from ... import geo as _geo
 
 # Skip logos, icons, sponsors, and thumbnails when hunting for a race photo
 _SKIP_IMG = re.compile(
@@ -101,6 +102,9 @@ def scrape_major(
         links_inscricao=[url],
     )
 
+    city_only = cidade.split(",")[0].strip()
+    _, resolved_estado = _geo.resolve(city_only, "", pais)
+
     results = []
     for data in dates_to_use:
         year = data[:4]
@@ -111,7 +115,7 @@ def scrape_major(
             horario=horario,
             localizacao=localizacao,
             cidade=cidade,
-            estado="",
+            estado=resolved_estado,
             distancias=[Distancia(km=km, data=None, horario=None) for km in (distances_km or [42.195])],
             imagem_url=imagem_url,
             inscricoes_abertas=inscricoes_abertas,

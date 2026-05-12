@@ -9,6 +9,7 @@ from ..utils import (
     normalize_titulo, slugify, now_iso, today_iso,
     validate_image_url,
 )
+from .. import geo as _geo
 
 BASE = "https://centraldacorrida.com.br"
 API_URL = "https://tudmqbzxfbrjljpdpili.supabase.co/functions/v1/eventos-publicos"
@@ -52,8 +53,12 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     if not titulo or len(titulo) < 3:
         return None
 
-    estado = event.get("Estado") or "??"
+    estado = event.get("Estado") or ""
     cidade = event.get("Cidade") or ""
+    _pais_geo, _estado_geo = _geo.resolve(cidade, "", "BR")
+    pais = _pais_geo or "BR"
+    if not estado:
+        estado = _estado_geo or ""
     localizacao = f"{cidade}, {estado}" if cidade else estado
 
     data_evento, horario = _parse_datetime(event.get("Data_evento") or "")
@@ -86,7 +91,7 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
-        pais="BR",
+        pais=pais,
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=inscricoes_abertas,

@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 API_BASE = "https://brasilcorrida.com.br/api/src/Site"
 CARD_URL = f"{API_BASE}/EventosCard.php"
@@ -90,7 +91,11 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
     horario = hora_raw[:5] if hora_raw else None
 
     cidade_raw = (ev.get("cid_descricao") or ev_card.get("cid_descricao") or "").title()
-    estado = (ev.get("eve_end_uf") or ev_card.get("eve_end_uf") or "??").upper()
+    estado = (ev.get("eve_end_uf") or ev_card.get("eve_end_uf") or "").upper()
+    _geo_pais = "BR"
+    if not estado:
+        _geo_pais, estado = _geo.resolve(cidade_raw, "", "BR")
+        _geo_pais = _geo_pais or "BR"
     localizacao = f"{cidade_raw}, {estado}" if cidade_raw else estado
 
     distancias = _parse_distances(ev.get("distancias") or [])
@@ -120,7 +125,7 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade_raw,
         estado=estado,
-        pais="BR",
+        pais=_geo_pais,
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=None,

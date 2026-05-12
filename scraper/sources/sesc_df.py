@@ -9,6 +9,7 @@ from ..utils import (
     normalize_date, normalize_time, normalize_titulo,
     slugify, now_iso, today_iso
 )
+from .. import geo as _geo
 
 URL = "https://www.sescdf.com.br/corridas"
 BASE = "https://www.sescdf.com.br"
@@ -84,6 +85,7 @@ def _parse_event(el) -> Corrida | None:
         links_inscricao=[link] if has_link else [],
     )
 
+    estado = _geo.resolve("Brasília, DF", "Brasília", "BR")[1] or "DF"
     return Corrida(
         id=f"sescdf_{slugify(titulo)}",
         titulo=titulo,
@@ -91,7 +93,7 @@ def _parse_event(el) -> Corrida | None:
         horario=normalize_time(text),
         localizacao="Brasília, DF",
         cidade="Brasília",
-        estado="DF",
+        estado=estado,
         pais="BR",
         distancias=_extract_distances(text),
         imagem_url=imagem_url,

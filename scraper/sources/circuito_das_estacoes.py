@@ -8,6 +8,7 @@ from __future__ import annotations
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_date, slugify, now_iso
+from .. import geo as _geo
 
 _API = "https://hotsites.nortemkt.com/api/events/circuito-das-estacoes"
 _SITE_BASE = "https://www.circuitodasestacoes.com.br"
@@ -60,7 +61,7 @@ def scrape() -> list[Corrida]:
     for loc in data.get("locations", []):
         city: str = loc["name"]
         loc_slug: str = loc["slug"]
-        estado: str = _CITY_STATE.get(city, "??")
+        estado: str = _CITY_STATE.get(city) or _geo.resolve(city, "", "BR")[1] or ""
         stages = loc.get("stages") or []
 
         if not stages:
@@ -120,7 +121,7 @@ def _build_corrida(
         titulo=titulo,
         data_evento=data_evento,
         horario=None,
-        localizacao=f"{city}, {estado}" if estado != "??" else city,
+        localizacao=f"{city}, {estado}" if estado else city,
         cidade=city,
         estado=estado,
         pais="BR",

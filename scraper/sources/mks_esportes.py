@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from .. import geo as _geo
 
 BASE = "https://www.mksesportes.com.br"
 SITEMAP_URL = f"{BASE}/pages-sitemap.xml"
@@ -185,6 +186,10 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
     og_img = soup.find("meta", property="og:image")
     imagem = og_img.get("content") if og_img else None
 
+    _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
+    pais = _pais_geo or "BR"
+    estado = estado or _estado_geo or ""
+
     now = now_iso()
     fonte = FonteInfo(
         nome=SOURCE_NAME,
@@ -199,8 +204,8 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
         horario=horario,
         localizacao=localizacao,
         cidade=cidade,
-        estado=estado or "??",
-        pais="BR",
+        estado=estado,
+        pais=pais,
         distancias=distancias,
         imagem_url=imagem,
         inscricoes_abertas=None,
@@ -300,5 +305,6 @@ def _extract_location(text: str, titulo: str) -> tuple[str, str]:
         if len(state) == 2 and city:
             return city, state
 
-    state = infer_estado(text, titulo) or "??"
+    _, _geo_state = _geo.resolve(text, "", "BR")
+    state = infer_estado(text, titulo) or _geo_state or ""
     return "", state

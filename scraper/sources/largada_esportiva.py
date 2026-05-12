@@ -26,6 +26,7 @@ from ..utils import (
     slugify, infer_estado, now_iso, today_iso,
     validate_image_url,
 )
+from .. import geo as _geo
 
 BASE        = "https://largadaesportiva.com.br"
 SOURCE_NAME = "Largada Esportiva"
@@ -238,6 +239,8 @@ def _parse_card(el, today: str, page_url: str) -> Corrida | None:
         return None
 
     estado, cidade, localizacao = _extract_location(el, text)
+    _pais_geo, _ = _geo.resolve(localizacao, cidade, "BR")
+    pais_card = _pais_geo or "BR"
     horario = normalize_time(text)
 
     img = el.find("img")
@@ -265,7 +268,7 @@ def _parse_card(el, today: str, page_url: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
-        pais="BR",
+        pais=pais_card,
         distancias=_extract_distances_text(text),
         imagem_url=imagem_url,
         inscricoes_abertas=None,
@@ -436,7 +439,11 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
     if not localizacao:
         localizacao = ", ".join(filter(None, [cidade, estado]))
     if not estado:
-        estado = infer_estado(localizacao, titulo) or "??"
+        _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
+        pais_dict = _pais_geo or "BR"
+        estado = infer_estado(localizacao, titulo) or _estado_geo or ""
+    else:
+        pais_dict = "BR"
     if not cidade:
         cidade = localizacao.split(",")[0].split("-")[0].strip()
     if not cidade and estado in _UF_TO_CAPITAL:
@@ -483,7 +490,7 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
-        pais="BR",
+        pais=pais_dict,
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=None,
@@ -515,7 +522,8 @@ def _extract_location(el, text: str) -> tuple[str, str, str]:
     if m:
         estado = m.group(1)
     if not estado:
-        estado = infer_estado(localizacao, "") or "??"
+        _, _loc_geo = _geo.resolve(localizacao, "", "BR")
+        estado = infer_estado(localizacao, "") or _loc_geo or ""
     cidade = localizacao.split(",")[0].split("-")[0].strip()
     if not cidade and estado in _UF_TO_CAPITAL:
         cidade = _UF_TO_CAPITAL[estado]

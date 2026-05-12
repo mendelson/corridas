@@ -11,6 +11,7 @@ from datetime import date, datetime, timezone
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 SOURCE_NAME = "HalfMarathons.net"
 _BASE       = "https://halfmarathons.net"
@@ -164,6 +165,8 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
             break
 
     city: str = meta.get("city") or ""
+    if not estado and city:
+        _, estado = _geo.resolve(city, "", pais)
     cidade = f"{city}, {country}" if city else country
     localizacao = cidade
 

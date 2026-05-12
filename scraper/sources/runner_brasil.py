@@ -9,6 +9,7 @@ from ..utils import (
     normalize_date, normalize_time, normalize_titulo,
     slugify, infer_estado, now_iso, today_iso
 )
+from .. import geo as _geo
 
 URL = "https://www.runnerbrasil.com.br/"
 BASE = "https://www.runnerbrasil.com.br"
@@ -59,8 +60,10 @@ def _parse_event(el) -> Corrida | None:
 
     data = _extract_date(text)
     localizacao = _extract_localizacao(el, text)
-    estado = infer_estado(localizacao, titulo) or "??"
     cidade = localizacao.split(",")[0].strip()
+    _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
+    pais = _pais_geo or "BR"
+    estado = infer_estado(localizacao, titulo) or _estado_geo or ""
 
     img = el.find("img")
     imagem_url = (img.get("src") or img.get("data-src")) if img else None
@@ -84,7 +87,7 @@ def _parse_event(el) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
-        pais="BR",
+        pais=pais,
         distancias=_extract_distances(text),
         imagem_url=imagem_url,
         inscricoes_abertas=None,

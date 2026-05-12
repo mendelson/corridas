@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from .. import geo as _geo
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
@@ -413,9 +414,12 @@ def scrape() -> list[Corrida]:
             is_closed = ed.get("isSubscriptionClosed")
 
             city, state = _parse_location(location_raw, titulo)
+            pais = "BR"
             if state == "??":
                 inferred = infer_estado(location_raw + " " + titulo)
-                state = inferred or "??"
+                _pais_geo, _estado_geo = _geo.resolve(location_raw, city, "BR")
+                pais = _pais_geo or "BR"
+                state = inferred or _estado_geo or ""
             if not city:
                 city = _city_from_titulo(titulo)
 
@@ -445,7 +449,7 @@ def scrape() -> list[Corrida]:
                 localizacao=localizacao,
                 cidade=city,
                 estado=state,
-        pais="BR",
+                pais=pais,
                 distancias=distancias,
                 imagem_url=imagem_url,
                 inscricoes_abertas=inscricoes_abertas,

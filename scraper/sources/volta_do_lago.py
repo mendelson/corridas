@@ -11,6 +11,7 @@ import re
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, infer_estado, now_iso, today_iso
+from .. import geo as _geo
 
 SOURCE_NAME = "Volta do Lago"
 
@@ -206,7 +207,7 @@ def _extract_location(ev: dict, name: str) -> tuple[str, str, str]:
     address = ev.get("address") or ev.get("local") or ev.get("location") or ""
 
     if not uf:
-        uf = infer_estado(address, name) or ""
+        uf = infer_estado(address, name) or _geo.resolve(address, "", "BR")[1] or ""
 
     # Try to parse "City, UF" or "City – UF" pattern from address
     if not cidade and address:

@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from .. import geo as _geo
 
 BASE = "https://www.yescom.com.br"
 SOURCE_NAME = "Yescom"
@@ -157,7 +158,7 @@ def _parse_event_page(url: str) -> Corrida | None:
     full_text = soup.get_text(" ", strip=True)
 
     data_evento = _extract_event_date(heading_texts, full_text)
-    city, state = _extract_location(heading_texts, url, titulo)
+    city, state, pais = _extract_location(heading_texts, url, titulo)
     localizacao = f"{city}, {state}" if city and state else city or state or ""
 
     distancias = _extract_distances(soup)
@@ -180,7 +181,7 @@ def _parse_event_page(url: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=city,
         estado=state,
-        pais="BR",
+        pais=pais,
         distancias=distancias,
         imagem_url=_find_og_image(soup),
         inscricoes_abertas=True if insc_link else None,
@@ -218,29 +219,30 @@ def _extract_event_date(heading_texts: list[str], full_text: str) -> str | None:
     return None
 
 
-def _extract_location(heading_texts: list[str], url: str, titulo: str) -> tuple[str, str]:
+def _extract_location(heading_texts: list[str], url: str, titulo: str) -> tuple[str, str, str]:
     # 1. "CITY • DD Month YYYY" pattern in headings
     for text in heading_texts:
         m = _CITY_DATE_RE.match(text.strip())
         if m:
             city_raw = m.group(1).strip().title()
-            state = infer_estado(city_raw, titulo) or "??"
-            return city_raw, state
+            _pais_geo, _estado_geo = _geo.resolve(city_raw, "", "BR")
+            state = infer_estado(city_raw, titulo) or _estado_geo or ""
+            return city_raw, state, _pais_geo or "BR"
 
     # 2. State abbreviation in URL path (e.g. /rj/, /sp/)
     url_lower = url.lower()
     for pattern, (city, uf) in _STATE_IN_URL.items():
         if pattern in url_lower:
-            return city, uf
+            return city, uf, "BR"
 
     # 3. Known event slug → location
     for slug, (city, uf) in _KNOWN_LOCATIONS.items():
         if f"/{slug}/" in url_lower:
-            return city, uf
+            return city, uf, "BR"
 
     # 4. Fallback: infer from title, default SP (most Yescom events are SP)
     state = infer_estado("", titulo) or "SP"
-    return "", state
+    return "", state, "BR"
 
 
 def _extract_distances(soup: BeautifulSoup) -> list[Distancia]:

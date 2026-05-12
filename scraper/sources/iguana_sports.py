@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 BASE = "https://www.iguanasports.com.br"
 CALENDAR_URL = f"{BASE}/blogs/calendario-corridas-de-rua"
@@ -74,6 +75,11 @@ def scrape() -> list[Corrida]:
             inscricoes_abertas = True if insc_link else None
             links_insc = [insc_link] if insc_link else []
             cidade, estado = card["cidade"], card["estado"]
+            if not estado:
+                _pais_geo, estado = _geo.resolve(cidade or titulo, "", "BR")
+                pais = _pais_geo or "BR"
+            else:
+                pais = "BR"
             localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or ""
             titulo = card["titulo"]
 
@@ -91,7 +97,7 @@ def scrape() -> list[Corrida]:
                 localizacao=localizacao,
                 cidade=cidade,
                 estado=estado,
-        pais="BR",
+                pais=pais,
                 distancias=card["distancias"],
                 imagem_url=card["imagem_url"],
                 inscricoes_abertas=inscricoes_abertas,
@@ -185,7 +191,7 @@ def _parse_location(texts: list[str]) -> tuple[str, str]:
         parts = [s.strip() for s in t.split("|")]
         if len(parts) >= 2 and len(parts[1]) == 2 and parts[1].isupper():
             return parts[0].strip(), parts[1].strip()
-    return "", "SP"
+    return "", ""
 
 
 def _parse_distances(text: str) -> list[Distancia]:

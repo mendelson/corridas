@@ -19,6 +19,7 @@ from datetime import date, timedelta
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 
 BASE        = "https://runsignup.com"
@@ -309,13 +310,12 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     state   = (addr.get("state") or "").strip().upper()
     country = (addr.get("country_code") or "").strip().upper() or "US"
 
-    from .. import geo as _geo
     pais = country
     if country == "US":
         estado    = state if state in _US_STATES else ""
         loc_parts = [p for p in (city, state, "EUA") if p]
     else:
-        estado       = _geo.validate_estado(pais, state)
+        estado       = _geo.validate_estado(pais, state) or _geo.resolve(city, "", pais)[1] or ""
         country_pt   = _ISO_TO_PT.get(country, country)
         loc_parts    = [p for p in (city, country_pt) if p]
     localizacao = ", ".join(loc_parts) or "Internacional"

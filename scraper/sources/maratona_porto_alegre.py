@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_date, now_iso, today_iso
+from .. import geo as _geo
 
 SITE_URL    = "https://maratonadeportoalegre.com.br/"
 SOURCE_NAME = "Maratona de Porto Alegre"
@@ -130,6 +131,7 @@ def scrape() -> list[Corrida]:
 
     now = now_iso()
     titulo = "Maratona Internacional de Porto Alegre"
+    estado = _geo.resolve("Porto Alegre, RS", "Porto Alegre", "BR")[1] or "RS"
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=SITE_URL,
@@ -142,7 +144,7 @@ def scrape() -> list[Corrida]:
         horario=_H_MARATONA,
         localizacao="Porto Alegre, RS",
         cidade="Porto Alegre",
-        estado="RS",
+        estado=estado,
         pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,

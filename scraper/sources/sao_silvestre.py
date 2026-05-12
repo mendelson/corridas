@@ -18,6 +18,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import slugify, now_iso, today_iso
+from .. import geo as _geo
 
 SITE_URL    = "https://www.saosilvestre.com.br"
 SOURCE_NAME = "São Silvestre"
@@ -80,6 +81,7 @@ def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: s
     today = today_iso()
     edicao = year - 1925  # 100ª em 2025, 101ª em 2026, etc.
     titulo = f"{edicao}ª Corrida Internacional de São Silvestre"
+    estado = _geo.resolve("São Paulo, SP", "São Paulo", "BR")[1] or "SP"
 
     links_inscricao = [inscricao_url] if inscricao_url else []
 
@@ -96,7 +98,7 @@ def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: s
         horario=None,
         localizacao="São Paulo, SP",
         cidade="São Paulo",
-        estado="SP",
+        estado=estado,
         pais="BR",
         distancias=[Distancia(km=_DISTANCIA_KM, data=data_evento, horario=None)],
         imagem_url=imagem_url,

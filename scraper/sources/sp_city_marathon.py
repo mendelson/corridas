@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_date, now_iso, today_iso
+from .. import geo as _geo
 
 BASE_URL    = "https://iguanasports.com.br"
 BLOG_BASE   = f"{BASE_URL}/blogs/calendario-corridas-de-rua"
@@ -93,6 +94,7 @@ def scrape() -> list[Corrida]:
     distancias = [Distancia(km=km, data=data_evento, horario=_REF_HORARIO) for km in _DISTANCES]
 
     now = now_iso()
+    estado = _geo.resolve("São Paulo, SP", "São Paulo", "BR")[1] or "SP"
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=blog_url,
@@ -105,7 +107,7 @@ def scrape() -> list[Corrida]:
         horario=_REF_HORARIO,
         localizacao="São Paulo, SP",
         cidade="São Paulo",
-        estado="SP",
+        estado=estado,
         pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,

@@ -8,6 +8,7 @@ from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_date, normalize_time, normalize_titulo, slugify, now_iso, today_iso
 )
+from .. import geo as _geo
 
 URL = "https://correrbrasilia.com.br/calendario/"
 SOURCE_NAME = "Correr Brasília"
@@ -85,6 +86,7 @@ def _parse_event(el) -> Corrida | None:
         links_inscricao=[link] if has_link else [],
     )
 
+    estado = _geo.resolve("Brasília-DF", "Brasília", "BR")[1] or "DF"
     return Corrida(
         id=f"{slugify(titulo)}_df_{today}",
         titulo=titulo,
@@ -92,7 +94,7 @@ def _parse_event(el) -> Corrida | None:
         horario=normalize_time(text),
         localizacao="Brasília-DF",
         cidade="Brasília",
-        estado="DF",
+        estado=estado,
         pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,

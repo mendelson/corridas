@@ -5,6 +5,7 @@ import re
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, now_iso, today_iso
+from .. import geo as _geo
 
 API_URL = "https://www.ativo.com/eventos.json"
 PAY_BASE = "https://pay.ativo.com/evento"
@@ -86,6 +87,10 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     pay_link = f"{PAY_BASE}/{event_id}" if event_id else None
     event_page = (ev.get("post_json") or "").replace("/index.json", "") or "https://www.ativo.com"
 
+    _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
+    pais = _pais_geo or "BR"
+    estado = estado or _estado_geo or ""
+
     now = now_iso()
     fonte = FonteInfo(
         nome=SOURCE_NAME,
@@ -100,8 +105,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         horario=None,
         localizacao=localizacao,
         cidade=cidade,
-        estado=estado or "??",
-        pais="BR",
+        estado=estado,
+        pais=pais,
         distancias=distancias,
         imagem_url=ev.get("thumbnail") or None,
         inscricoes_abertas=None,

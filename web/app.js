@@ -352,26 +352,42 @@ let _estadoAvailableValues = new Set(['todos']);
 // ---------------------------------------------------------------------------
 // Geolocation pipeline
 // ---------------------------------------------------------------------------
-async function detectGeoEstado() {
-  const cached = sessionStorage.getItem('_geoCache');
-  // Evict cached values that are not valid Brazilian UFs (stale data from old scraper format)
-  if (cached && cached !== 'null' && !_ESTADO_LABELS[cached]) {
+async function detectGeoEstado({ force = false } = {}) {
+  if (!force) {
+    const cached = sessionStorage.getItem('_geoCache');
+    // Evict stale values: must be a BR UF code or 'INT:*' or the sentinel 'null'
+    if (cached && cached !== 'null' && !_ESTADO_LABELS[cached] && !cached.startsWith('INT:')) {
+      sessionStorage.removeItem('_geoCache');
+    } else if (cached) {
+      return cached === 'null' ? null : cached;
+    }
+  } else {
     sessionStorage.removeItem('_geoCache');
-  } else if (cached) {
-    return cached === 'null' ? null : cached;
   }
 
   const apis = [
-    () => fetch('https://ipwho.is/').then(r => r.json()).then(d => d.country_code === 'BR' ? d.region_code : null),
-    () => fetch('https://freeipapi.com/api/json').then(r => r.json()).then(d => d.countryCode === 'BR' ? d.regionCode : null),
-    () => fetch('https://api.ip.sb/geoip').then(r => r.json()).then(d => d.country_code === 'BR' ? d.region_code : null),
+    () => fetch('https://ipwho.is/').then(r => r.json()).then(d => [d.country_code, d.region_code]),
+    () => fetch('https://freeipapi.com/api/json').then(r => r.json()).then(d => [d.countryCode, d.regionCode]),
+    () => fetch('https://api.ip.sb/geoip').then(r => r.json()).then(d => [d.country_code, d.region_code]),
   ];
   for (const fn of apis) {
     try {
-      const code = await fn();
-      if (code) {
-        sessionStorage.setItem('_geoCache', code);
-        return code;
+      const [countryCode, regionCode] = await fn();
+      if (countryCode === 'BR') {
+        // Brazilian user: return the state code
+        const region = (regionCode || '').replace(/^BR-/, '').trim();
+        if (region && _ESTADO_LABELS[region]) {
+          sessionStorage.setItem('_geoCache', region);
+          return region;
+        }
+      } else if (countryCode) {
+        // International user: return INT:<portuguese-country-name>
+        const ptCountry = _ISO2_TO_DATA_COUNTRY[countryCode];
+        if (ptCountry) {
+          const val = 'INT:' + ptCountry;
+          sessionStorage.setItem('_geoCache', val);
+          return val;
+        }
       }
     } catch (_) {}
   }
@@ -588,6 +604,7 @@ const _COUNTRY_LABELS = {
 };
 
 function _localizeCountry(ptName) {
+  if (LANG === 'pt') return ptName;
   const t = _COUNTRY_LABELS[ptName];
   if (!t) return ptName;
   return t[LANG] || t.en || ptName;
@@ -1550,7 +1567,8 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnHome.addEventListener('click', async () => {
-    const geo = await detectGeoEstado();
+    // Always do a fresh geo lookup — bypass stale cache
+    const geo = await detectGeoEstado({ force: true });
 
     // Apply location to current page
     _userChoseLocation = false;
@@ -1568,7 +1586,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Switch to browser language if different
     const targetLang = BROWSER_LANG;
     if (targetLang !== LANG) {
-      if (geo) sessionStorage.setItem('_geoCache', geo);
       try {
         const saved = JSON.parse(localStorage.getItem('corridas_filters') || 'null');
         if (saved) { delete saved.estado; localStorage.setItem('corridas_filters', JSON.stringify(saved)); }

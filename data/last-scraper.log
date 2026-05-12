@@ -1,56 +1,56 @@
 [main] iniciando scraping...
-[main] 5652 corridas no estado anterior
+[main] 5651 corridas no estado anterior
 [Central da Corrida] 78 corridas encontradas
-[Ativo] 7 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
-[Brasil Corrida] 11 corridas encontradas
-[Minhas Inscrições] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
+[Minhas Inscrições] 14 corridas encontradas
+[Brasil Corrida] 11 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
 [SESC DF] 9 corridas encontradas
+[Circuito das Estações] 104 corridas encontradas
+[Ativo] 8 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
-[Circuito das Estações] 104 corridas encontradas
 [Yescom] 14 corridas encontradas
-[Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Prague Marathon] nenhuma edição futura identificada
+[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
-[Corridas Brasil] 3197 corridas encontradas
-[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
-[Asdeporte] 30 corrida(s) encontrada(s)
 [TF Sports] 48 corridas encontradas
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
 [FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
 [FMAA] DEBUG total=0, total_pages=0
 [FMAA] 0 corrida(s) encontrada(s)
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Asdeporte] 31 corrida(s) encontrada(s)
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [RunSignup] página 2: 250 corridas
+[Corridas Brasil] 3197 corridas encontradas
+[RunSignup] página 3: 250 corridas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[RunSignup] página 3: 250 corridas
 [RunSignup] página 4: 250 corridas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
+[RunSignup] página 5: 250 corridas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[RunSignup] página 5: 250 corridas
 [RunSignup] página 6: 250 corridas
 [RunSignup] página 7: 250 corridas
 [RunSignup] página 8: 250 corridas
 [RunSignup] página 9: 250 corridas
 [RunSignup] página 10: 250 corridas
-[Ticket Sports] 929 corridas encontradas
 [RunSignup] página 11: 250 corridas
+[Ticket Sports] 931 corridas encontradas
 [RunSignup] página 12: 250 corridas
 [RunSignup] página 13: 250 corridas
 [RunSignup] página 14: 250 corridas
@@ -58,85 +58,176 @@
 [RunSignup] 3750 corridas brutas no total
 [RunSignup] 3298 corridas válidas (452 ignoradas)
 [HalfMarathons.net] 1950 corrida(s) encontrada(s)
-[main] 9752 registros coletados (antes do merge)
-[main] 6222 registros após validação
-[main] 5616 corridas após merge
-[main] verificando links de 64 evento(s) não encontrado(s) no scrape...
-[main] '28Th Annual Olmsted Spirit 5K' — link válido, miss_count zerado
-[main] 'Cherry Pickin 5K Wave Race' — link válido, miss_count zerado
-[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
-[main] 'Desafio Pico Do Olho D'Água Sunset' — link válido, miss_count zerado
+[main] 9756 registros coletados (antes do merge)
+[main] 6223 registros após validação
+[main] 5888 corridas após merge
+[main] verificando links de 156 evento(s) não encontrado(s) no scrape...
+[main] 'Beaverhead Marathon Full & Half' — link válido, miss_count zerado
 [main] '17ª Meia Maratona Das Cataratas' — link válido, miss_count zerado
-[main] 'Corrida Vida E Saúde' — link válido, miss_count zerado
-[main] '1ª Corrida Engel' — link válido, miss_count zerado
-[main] 'Corrida São Roque 2026' — link válido, miss_count zerado
-[main] 'Cherohala Challenge' — link válido, miss_count zerado
-[main] '3 Trilhas' — link válido, miss_count zerado
+[main] '4ª Corrida Shopping Difusora' — link válido, miss_count zerado
+[main] 'Discover Trail - Marumbi 2026' — link válido, miss_count zerado
+[main] '2ª Corrida 26 Anos Faça Bonito' — link válido, miss_count zerado
+[main] 'Corrida Time Brasil 2026' — link válido, miss_count zerado
 [main] '6ª Corrida E Caminhada C.H.O.' — link válido, miss_count zerado
+[main] 'Cherry Pickin 5K Wave Race' — link válido, miss_count zerado
+[main] 'Desafio Pico Do Olho D'Água Sunset' — link válido, miss_count zerado
+[main] '28Th Annual Olmsted Spirit 5K' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] '1ª Corrida Engel' — link válido, miss_count zerado
+[main] 'Big River Race' — link válido, miss_count zerado
+[main] 'Corrida São Roque 2026' — link válido, miss_count zerado
+[main] 'Corrida Vida E Saúde' — link válido, miss_count zerado
+[main] 'Cherohala Challenge' — link válido, miss_count zerado
+[main] 'Beer City Half, 10K & 5K San Jose' — link válido, miss_count zerado
+[main] 'Lake Chabot Trail Challenge Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'I’M Bound For Boston Marathon – Seattle' — link válido, miss_count zerado
+[main] 'All-Out Summer Breeze Half Marathon, 10K, 5K & 1M' — link válido, miss_count zerado
 [main] 'Chef Joe'S Omelet Run' — link válido, miss_count zerado
+[main] '3 Trilhas' — link válido, miss_count zerado
+[main] 'Anchorage Mayor’S Marathon, Half Marathon & 5M' — link válido, miss_count zerado
 [main] 'Cherry Garcia Run: 10K, 5K Run Or Walk And Kids K' — link válido, miss_count zerado
-[main] 'Chester Rotary'S 48Th Four On The Fourth' — link válido, miss_count zerado
+[main] 'Las Vegas 4Th Of July 5K & 10K' — link válido, miss_count zerado
 [main] 'Cherry Kid'S Fun Run' — link válido, miss_count zerado
+[main] 'Chester Rotary'S 48Th Four On The Fourth' — link válido, miss_count zerado
+[main] 'Bre’S Run' — link válido, miss_count zerado
+[main] 'Chester 4Th Of July Fun Run' — link válido, miss_count zerado
+[main] 'Burn Your Half Off' — link válido, miss_count zerado
+[main] 'Beer City Half Alameda' — link válido, miss_count zerado
+[main] 'All-Out Dog Days Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Run Like The Wind – Westport' — link válido, miss_count zerado
 [main] 'Cherry Pickers Trot & Pit Spit' — link válido, miss_count zerado
 [main] 'Vai Brasil (Virtual)' — link válido, miss_count zerado
-[main] 'Chester 4Th Of July Fun Run' — link válido, miss_count zerado
 [main] '33ª Seletiva - Caminhada Ecológica - 2026' — link válido, miss_count zerado
+[main] 'John & Jessie Kelley Half Marathon' — link válido, miss_count zerado
+[main] 'Jared Anez Eagle Lake Race Series' — link válido, miss_count zerado
 [main] 'Desafio Corro Feliz, Corro Com Orgulho' — link válido, miss_count zerado
-[main] '2ª Corrida 26 Anos Faça Bonito' — link válido, miss_count zerado
-[main] 'Discover Trail - Marumbi 2026' — link válido, miss_count zerado
+[main] 'I’M Bound For Boston Marathon & Half Marathon – Denver' — link válido, miss_count zerado
+[main] 'Dave Mckay Memorial Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Back Roads Bound Half Marathon' — link válido, miss_count zerado
+[main] 'All-Out Runapalooza Half Marathon 10K & 5K' — link válido, miss_count zerado
 [main] 'Cherokee Bluff/Flowery Branch Trail Run 5K' — link válido, miss_count zerado
+[main] 'Beer City Half Slam' — link válido, miss_count zerado
 [main] 'Chesaning Chamber Of Commerce Dry-Tri' — link válido, miss_count zerado
+[main] 'Byers Peak Stampede' — link válido, miss_count zerado
+[main] 'Californian Dreamin 5K, 10K, & Half Marathon' — link válido, miss_count zerado
+[main] 'Bluegrass Reaper Challenge' — link válido, miss_count zerado
+[main] 'Asheville Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Brian Waterbury Memorial Rock To Pier Run' — link válido, miss_count zerado
 [main] 'Maratona Internacional De Piracicaba - 2ª Edição' — link válido, miss_count zerado
-[main] '2Nd Annual Pcom Georgia Blaze 5K' — link válido, miss_count zerado
-[main] 'Cherry City Half Marathon, 10K, 5K & Kids Race' — link válido, miss_count zerado
 [main] 'Cherry Hill Farm Ultra' — link válido, miss_count zerado
 [main] 'Cherokee National Holiday Veterans Run' — link válido, miss_count zerado
+[main] 'Bull Dam Trail Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Aidspirit Usa Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Cane Creek Mtn Trail Run' — link válido, miss_count zerado
+[main] 'Black Squirrel Half Marathon' — link válido, miss_count zerado
+[main] 'Carpe Diem – Carpe Noctem Half Marathon – North Carolina' — link válido, miss_count zerado
+[main] 'Bar Harbor Bank & Trust Half Marathon & Fall 5K' — link válido, miss_count zerado
+[main] 'Cascade Express Half Marathon' — link válido, miss_count zerado
+[main] '2Nd Annual Pcom Georgia Blaze 5K' — link válido, miss_count zerado
+[main] 'Blackwater Canyon Half Marathon' — link válido, miss_count zerado
+[main] 'Big Sky State Games Road Races' — link válido, miss_count zerado
+[main] 'Anacortes Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Cherry City Half Marathon, 10K, 5K & Kids Race' — link válido, miss_count zerado
+[main] '3ª Corrida Glossy' — link válido, miss_count zerado
 [main] 'Corrida Virtual Pátria Amada' — link válido, miss_count zerado
-[main] 'Corrida Movimento Rosa 2026' — link válido, miss_count zerado
+[main] 'Buckeye Trail Blue Blaze Festival Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Carrollton Half Marathon' — link válido, miss_count zerado
 [main] 'Chernisky Ghost Town Trail-A-Thon' — link válido, miss_count zerado
-[main] 'Cherokee 5K Turkey Strut' — link válido, miss_count zerado
-[main] 'Corrida Virtual - Eu Corro É Pra Comer' — link válido, miss_count zerado
-[main] 'Chester County Turkey Trot' — link válido, miss_count zerado
-[main] 'Chesapeake Rotary Holly Jolly Jog Race And Fun Run Presented By The Ymca Of South Hampton Roads' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
+[main] '9Th Annual Historic Hillsborough Half Marathon And 5K - 2026' — link válido, miss_count zerado
+[main] 'Bellin Women’S Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Back Roads Half And 10K' — link válido, miss_count zerado
+[main] 'Citizens Run Against Cancer Half Marathon & 5K' — link válido, miss_count zerado
 [main] 'Chemin-A-Haut 4 Mile Trail Run And 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Chemung County Senior Games Intergenerational 5K' — link válido, miss_count zerado
-[main] '1º Desafio Guerreiras Run' — link válido, miss_count zerado
+[main] 'Humboldt Redwoods Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Antelope Island Marathon – 26.2 – 13.1 – 10K – 5K' — link válido, miss_count zerado
+[main] 'Buffalo Creek Half Marathon' — link válido, miss_count zerado
+[main] 'City To The Sea Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Corrida Movimento Rosa 2026' — link válido, miss_count zerado
+[main] 'Cape Fear Marathon And Half' — link válido, miss_count zerado
+[main] 'Champlain Islands Marathon & Half Marathon' — link válido, miss_count zerado
+[main] 'Happy Girls Run Sisters Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Disney Wine & Dine Half Marathon' — link válido, miss_count zerado
+[main] 'Blue Sky Trail Marathon & Half Marathon' — link válido, miss_count zerado
+[main] 'Jim Rowland Fca River Valley Run Half Marathon' — link válido, miss_count zerado
+[main] 'All-Out Kooky-Spooky Half Marathon, 10K, 5K & 1M' — link válido, miss_count zerado
+[main] 'Azle Lake Run 5K' — link válido, miss_count zerado
+[main] 'Beer City Half Oc' — link válido, miss_count zerado
+[main] 'Princeton Half Marathon' — link válido, miss_count zerado
+[main] 'Cherokee 5K Turkey Strut' — link válido, miss_count zerado
+[main] '100% Pure Kona Coffee Half Marathon' — link válido, miss_count zerado
+[main] 'Cape Fear River Run' — link válido, miss_count zerado
+[main] 'Myrtle Beach Mini Marathon & 5K' — link válido, miss_count zerado
+[main] 'Catalina Island Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Holly Springs Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Chester County Turkey Trot' — link válido, miss_count zerado
+[main] 'San Diego Veterans Day Silver Strand Half Marathon, 12K, 10 Miler, 5K' — link válido, miss_count zerado
+[main] 'Black Toenail Friday Half Marathon And 7.5 Miler' — link válido, miss_count zerado
+[main] 'Corrida Virtual - Eu Corro É Pra Comer' — link válido, miss_count zerado
+[main] 'Palmetto Peach Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Chesapeake Rotary Holly Jolly Jog Race And Fun Run Presented By The Ymca Of South Hampton Roads' — link válido, miss_count zerado
+[main] 'All-Out Fa La La Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'San Antonio Marathon' — link válido, miss_count zerado
+[main] 'Lake Norman Turkey Trot' — link válido, miss_count zerado
+[main] 'Brazos Bend 100' — link válido, miss_count zerado
+[main] 'I’M Bound For Boston Marathon & Half Marathon – Sarasota' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
 [main] '1 Desafio Elementos - Natureza Em Fúria Combo' — link válido, miss_count zerado
+[main] 'Cajun Country Run Half Marathon, 10K & 5K' — link válido, miss_count zerado
 [main] '1º Desafio Yeshua' — link válido, miss_count zerado
-[main] 'Desafio Virtual Destrava Rp 5K 2026' — link válido, miss_count zerado
+[main] '1º Desafio Guerreiras Run' — link válido, miss_count zerado
+[main] 'Baker’S Dozen Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Candy Cane Course St. Louis Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] '1 Desafio Elementos - 1 Etapa Fogo' — link válido, miss_count zerado
+[main] 'Corrida Virtual Vikings Valhalla 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Borá Correr Por Gabi Oliveira 2026' — link válido, miss_count zerado
 [main] 'Meow Run' — link válido, miss_count zerado
 [main] 'Corrida Virtual Desafio Do Guerreiro 19K - 2026' — link válido, miss_count zerado
-[main] '1 Desafio Elementos - 1 Etapa Fogo' — link válido, miss_count zerado
-[main] 'Corrida Virtual Vikings Valhalla 2026' — link válido, miss_count zerado
-[main] 'Corrida Virtual Big Five Run Series - Etapa Búfalo 2026' — link válido, miss_count zerado
-[main] 'Corrida Virtual Candy Run - Donuts 2026' — link válido, miss_count zerado
-[main] 'Corrida Kazamigas Kit Rosa' — link válido, miss_count zerado
-[main] 'Corrida Virtual Vikings Run - Desafio Solo - 2026' — link válido, miss_count zerado
-[main] 'Desafio Virtual Recicle Transparente' — link válido, miss_count zerado
-[main] 'Cherokee Choices Mother'S Day 5K' — link válido, miss_count zerado
+[main] 'Desafio Virtual Destrava Rp 5K 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Big Five Run - Elefante 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Crazy Animals - Cat 2026' — link válido, miss_count zerado
+[main] 'Corrida Kazamigas Kit Rosa' — link válido, miss_count zerado
+[main] 'Corrida Virtual Candy Run - Donuts 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Big Five Run Series - Etapa Búfalo 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Be A Star 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Vikings Run - Desafio Solo - 2026' — link válido, miss_count zerado
+[main] 'Corrida Aumigo' — link válido, miss_count zerado
+[main] 'All-Out Polar Prowl Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Akahai 5K 10K & Half Marathon' — link válido, miss_count zerado
+[main] 'Best Damn Race – Safety Harbor Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Big Beach Marathon & Half Marathon' — link válido, miss_count zerado
+[main] 'F^3 Lake Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Beer City Half Santa Rosa' — link válido, miss_count zerado
+[main] 'Ashland City Half Marathon' — link válido, miss_count zerado
+[main] 'Lake Sammamish Half Marathon' — link válido, miss_count zerado
+[main] 'Beer City Half Long Beach' — link válido, miss_count zerado
+[main] 'Beer City Half San Diego' — link válido, miss_count zerado
+[main] 'All-Out Spring Fever Half Marathon, 10K, & 5K' — link válido, miss_count zerado
+[main] 'Syracuse Half Marathon' — link válido, miss_count zerado
+[main] 'Bridge And Dam Half Marathon' — link válido, miss_count zerado
+[main] 'April Fools Half Marathon' — link válido, miss_count zerado
+[main] 'Desafio Virtual Recicle Transparente' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 2ª Etapa Lobo - Execução' — link válido, miss_count zerado
 [main] '1º Desafio Fenix Run' — link válido, miss_count zerado
+[main] 'Cherokee Choices Mother'S Day 5K' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
+[main] 'Augusta Half Marathon, 10K & 5K' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 1ª Etapa Leão - Disciplina' — link válido, miss_count zerado
 [main] '1º Desafio Gladiador Run' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
-[main] 'Corrida Virtual Be A Star 2026' — link válido, miss_count zerado
-[main] 'Corrida Aumigo' — link válido, miss_count zerado
-[main] 'Corrida Virtual Crazy Animals - Cat 2026' — link válido, miss_count zerado
-[main] 5683 corridas após reconciliação
-[main] 5683 corridas após dedup final
-[main] buscando imagens para 202 evento(s) sem foto...
+[main] 'All-Out Mardi Crawl Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 6047 corridas após reconciliação
+[main] 5935 corridas após dedup final
+[main] 10 estado(s) resolvido(s) pelo geo cache
+[main] buscando imagens para 539 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 3/202 imagens encontradas
+[main] 339/539 imagens encontradas
 [main] removendo imagem inválida de 'Walt Disney World Marathon, Weekend Half Marathon': https://www.rundisney.com/events/disneyworld/media_102d0003d
 [main] removendo imagem inválida de 'Springmaid Trail Race Half Marathon': https://www.ascgreenway.org/wp-content/uploads/2022/12/medal
 [main] 2 imagem(ns) inválida(s) removida(s)
 [main] 26 corrida(s) removida(s) por data passada (antes de 2026-04-27)
-[main] 5657 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 5909 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

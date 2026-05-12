@@ -814,11 +814,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     }});
   }
 
-  allGroups.sort((a, b) => {
-    if (a.pais === 'BR') return -1;
-    if (b.pais === 'BR') return 1;
-    return a.label.localeCompare(b.label, LANG);
-  });
+  allGroups.sort((a, b) => a.label.localeCompare(b.label, LANG));
   for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
 
   if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {

@@ -21,18 +21,56 @@ _LIST_URL   = f"{_BASE}/eventos"
 _MAX_PAGES  = 15
 
 _MX_STATES: dict[str, str] = {
-    "aguascalientes": "AGS", "baja california": "BC", "baja california sur": "BCS",
-    "campeche": "CAM", "chiapas": "CHIS", "chihuahua": "CHIH", "coahuila": "COAH",
-    "colima": "COL", "cdmx": "CDMX", "ciudad de mexico": "CDMX",
-    "ciudad de méxico": "CDMX", "durango": "DGO", "guanajuato": "GTO",
-    "guerrero": "GRO", "hidalgo": "HGO", "jalisco": "JAL", "mexico": "MEX",
-    "méxico": "MEX", "michoacan": "MICH", "michoacán": "MICH", "morelos": "MOR",
-    "nayarit": "NAY", "nuevo leon": "NL", "nuevo león": "NL", "oaxaca": "OAX",
-    "puebla": "PUE", "queretaro": "QRO", "querétaro": "QRO",
-    "quintana roo": "QROO", "san luis potosi": "SLP", "san luis potosí": "SLP",
-    "sinaloa": "SIN", "sonora": "SON", "tabasco": "TAB", "tamaulipas": "TAMPS",
-    "tlaxcala": "TLAX", "veracruz": "VER", "yucatan": "YUC", "yucatán": "YUC",
+    "aguascalientes": "AGU", "baja california": "BCN", "baja california sur": "BCS",
+    "campeche": "CAM", "chiapas": "CHP", "chihuahua": "CHH",
+    "coahuila": "COA", "coahuila de zaragoza": "COA",
+    "colima": "COL", "cdmx": "CMX", "ciudad de mexico": "CMX",
+    "ciudad de méxico": "CMX", "df": "CMX", "distrito federal": "CMX",
+    "durango": "DUR", "guanajuato": "GUA", "guerrero": "GRO", "hidalgo": "HID",
+    "jalisco": "JAL", "estado de mexico": "MEX", "estado de méxico": "MEX",
+    "michoacan": "MIC", "michoacán": "MIC", "morelos": "MOR",
+    "nayarit": "NAY", "nuevo leon": "NLE", "nuevo león": "NLE", "oaxaca": "OAX",
+    "puebla": "PUE", "queretaro": "QUE", "querétaro": "QUE",
+    "quintana roo": "ROO", "san luis potosi": "SLP", "san luis potosí": "SLP",
+    "sinaloa": "SIN", "sonora": "SON", "tabasco": "TAB", "tamaulipas": "TAM",
+    "tlaxcala": "TLA", "veracruz": "VER", "yucatan": "YUC", "yucatán": "YUC",
     "zacatecas": "ZAC",
+}
+
+_MX_CITY_STATE: dict[str, str] = {
+    "guadalajara": "JAL", "zapopan": "JAL", "tonala": "JAL", "tlaquepaque": "JAL",
+    "monterrey": "NLE", "san nicolas de los garza": "NLE", "montemorelos": "NLE",
+    "san pedro garza garcia": "NLE", "apodaca": "NLE", "linares": "NLE",
+    "cdmx": "CMX", "ciudad de mexico": "CMX", "ciudad de méxico": "CMX",
+    "puebla": "PUE", "cholula": "PUE",
+    "queretaro": "QUE", "querétaro": "QUE",
+    "cancun": "ROO", "cancún": "ROO", "playa del carmen": "ROO", "cozumel": "ROO",
+    "merida": "YUC", "mérida": "YUC",
+    "tijuana": "BCN", "ensenada": "BCN", "mexicali": "BCN",
+    "san luis potosi": "SLP", "san luis potosí": "SLP",
+    "aguascalientes": "AGU",
+    "oaxaca": "OAX",
+    "toluca": "MEX", "ecatepec": "MEX", "naucalpan": "MEX",
+    "morelia": "MIC", "uruapan": "MIC",
+    "veracruz": "VER", "xalapa": "VER",
+    "chihuahua": "CHH", "ciudad juarez": "CHH", "ciudad juárez": "CHH",
+    "culiacan": "SIN", "culiacán": "SIN", "mazatlan": "SIN", "mazatlán": "SIN",
+    "hermosillo": "SON",
+    "acapulco": "GRO",
+    "tuxtla gutierrez": "CHP", "tuxtla gutiérrez": "CHP",
+    "tepic": "NAY",
+    "colima": "COL",
+    "campeche": "CAM",
+    "zacatecas": "ZAC",
+    "durango": "DUR",
+    "villahermosa": "TAB",
+    "chetumal": "ROO", "la paz": "BCS",
+    "guanajuato": "GUA", "leon": "GUA", "léon": "GUA", "irapuato": "GUA",
+    "tlaxcala": "TLA",
+    "cuernavaca": "MOR",
+    "ciudad victoria": "TAM", "tampico": "TAM", "matamoros": "TAM", "reynosa": "TAM",
+    "saltillo": "COA", "torreon": "COA", "torreón": "COA",
+    "pachuca": "HID", "pachuca de soto": "HID", "tulancingo": "HID",
 }
 
 # Skip these event types
@@ -169,7 +207,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         horario=None,
         localizacao=ciudad,  # already "City, México"
         cidade=ciudad,
-        estado="",
+        estado=estado,
         pais="MX",
         distancias=distancias,
         imagem_url=imagem,
@@ -183,31 +221,36 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
 
 
 def _parse_location(text: str) -> tuple[str, str]:
-    """Returns (ciudad, "INT"). All Asdeporte events are in Mexico.
-
-    ciudad is "City, México" for recognizable city names, or just "México"
-    when the place field is a raw venue/street address.
-    """
+    """Returns (ciudad, estado_code). All Asdeporte events are in Mexico."""
     if not text:
-        return "México", "INT"
+        return "México", ""
     parts = [p.strip() for p in text.split(",")]
 
-    # Scan reversed parts for a known Mexican state — if found, the first
-    # part is the city.
+    def _norm(s: str) -> str:
+        return re.sub(r"[^\w\s]", "", s).lower().strip()
+
+    # Scan reversed parts for a known Mexican state name
     for part in reversed(parts):
-        key = re.sub(r"[^\w\s]", "", part).lower().strip()
+        key = _norm(part)
         if key in _MX_STATES:
+            estado = _MX_STATES[key]
             ciudad = parts[0]
             if _looks_like_venue(ciudad):
-                return "México", "INT"
-            return f"{ciudad}, México", "INT"
+                return "México", estado
+            return f"{ciudad}, México", estado
 
-    # No state found — check if the first part looks like a city name rather
-    # than a venue/street description.
+    # No state name found — try city lookup
     ciudad = parts[0]
     if _looks_like_venue(ciudad):
-        return "México", "INT"
-    return f"{ciudad}, México", "INT"
+        # look for a known city in remaining parts
+        for part in parts[1:]:
+            estado = _MX_CITY_STATE.get(_norm(part), "")
+            if estado:
+                return "México", estado
+        return "México", ""
+
+    estado = _MX_CITY_STATE.get(_norm(ciudad), "")
+    return f"{ciudad}, México", estado
 
 
 def _looks_like_venue(text: str) -> bool:

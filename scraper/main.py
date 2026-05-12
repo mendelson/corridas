@@ -304,7 +304,7 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
         existing.id = incoming.id
     if incoming.cidade:
         existing.cidade = incoming.cidade
-    if incoming.estado and incoming.estado != "??":
+    if (incoming.estado and incoming.estado != "??") or existing.estado == "INT":
         existing.estado = incoming.estado
     if incoming.pais and incoming.pais not in ("??", ""):
         existing.pais = incoming.pais

@@ -530,7 +530,68 @@ const _ISO2_TO_DATA_COUNTRY = {
   NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
 };
 
-const _COUNTRY_NORMALIZE = { 'Eua': 'EUA', 'eua': 'EUA', 'EuA': 'EUA' };
+const _COUNTRY_NORMALIZE = {
+  'Eua': 'EUA', 'eua': 'EUA', 'EuA': 'EUA',
+  // ISO-2 codes that may appear in stale data before scraper fix
+  'AD': 'Andorra',               'BM': 'Bermuda',
+  'BO': 'Bolívia',               'PH': 'Filipinas',
+  'CG': 'República do Congo',    'BA': 'Bósnia e Herzegovina',
+  'GR': 'Grécia',                'AT': 'Áustria',
+  'CH': 'Suíça',                 'SE': 'Suécia',
+};
+
+// Portuguese country name → per-language display name
+const _COUNTRY_LABELS = {
+  'EUA':                   { en: 'USA',                      es: 'EE.UU.',               de: 'USA',                       fr: 'États-Unis' },
+  'México':                { en: 'Mexico',                   es: 'México',               de: 'Mexiko',                    fr: 'Mexique' },
+  'Reino Unido':           { en: 'United Kingdom',           es: 'Reino Unido',          de: 'Vereinigtes Königreich',    fr: 'Royaume-Uni' },
+  'Canadá':                { en: 'Canada',                   es: 'Canadá',               de: 'Kanada',                    fr: 'Canada' },
+  'Alemanha':              { en: 'Germany',                  es: 'Alemania',             de: 'Deutschland',               fr: 'Allemagne' },
+  'Japão':                 { en: 'Japan',                    es: 'Japón',                de: 'Japan',                     fr: 'Japon' },
+  'África do Sul':         { en: 'South Africa',             es: 'Sudáfrica',            de: 'Südafrika',                 fr: 'Afrique du Sud' },
+  'Suécia':                { en: 'Sweden',                   es: 'Suecia',               de: 'Schweden',                  fr: 'Suède' },
+  'Austrália':             { en: 'Australia',                es: 'Australia',            de: 'Australien',                fr: 'Australie' },
+  'Países Baixos':         { en: 'Netherlands',              es: 'Países Bajos',         de: 'Niederlande',               fr: 'Pays-Bas' },
+  'Irlanda':               { en: 'Ireland',                  es: 'Irlanda',              de: 'Irland',                    fr: 'Irlande' },
+  'Grécia':                { en: 'Greece',                   es: 'Grecia',               de: 'Griechenland',              fr: 'Grèce' },
+  'Espanha':               { en: 'Spain',                    es: 'España',               de: 'Spanien',                   fr: 'Espagne' },
+  'França':                { en: 'France',                   es: 'Francia',              de: 'Frankreich',                fr: 'France' },
+  'Dinamarca':             { en: 'Denmark',                  es: 'Dinamarca',            de: 'Dänemark',                  fr: 'Danemark' },
+  'Argentina':             { en: 'Argentina',                es: 'Argentina',            de: 'Argentinien',               fr: 'Argentine' },
+  'Portugal':              { en: 'Portugal',                 es: 'Portugal',             de: 'Portugal',                  fr: 'Portugal' },
+  'Itália':                { en: 'Italy',                    es: 'Italia',               de: 'Italien',                   fr: 'Italie' },
+  'Áustria':               { en: 'Austria',                  es: 'Austria',              de: 'Österreich',                fr: 'Autriche' },
+  'Suíça':                 { en: 'Switzerland',              es: 'Suiza',                de: 'Schweiz',                   fr: 'Suisse' },
+  'Noruega':               { en: 'Norway',                   es: 'Noruega',              de: 'Norwegen',                  fr: 'Norvège' },
+  'Polônia':               { en: 'Poland',                   es: 'Polonia',              de: 'Polen',                     fr: 'Pologne' },
+  'República Tcheca':      { en: 'Czech Republic',           es: 'República Checa',      de: 'Tschechien',                fr: 'République tchèque' },
+  'Finlândia':             { en: 'Finland',                  es: 'Finlandia',            de: 'Finnland',                  fr: 'Finlande' },
+  'Quênia':                { en: 'Kenya',                    es: 'Kenia',                de: 'Kenia',                     fr: 'Kenya' },
+  'Etiópia':               { en: 'Ethiopia',                 es: 'Etiopía',              de: 'Äthiopien',                 fr: 'Éthiopie' },
+  'China':                 { en: 'China',                    es: 'China',                de: 'China',                     fr: 'Chine' },
+  'Coreia do Sul':         { en: 'South Korea',              es: 'Corea del Sur',        de: 'Südkorea',                  fr: 'Corée du Sud' },
+  'Colômbia':              { en: 'Colombia',                 es: 'Colombia',             de: 'Kolumbien',                 fr: 'Colombie' },
+  'Peru':                  { en: 'Peru',                     es: 'Perú',                 de: 'Peru',                      fr: 'Pérou' },
+  'Chile':                 { en: 'Chile',                    es: 'Chile',                de: 'Chile',                     fr: 'Chili' },
+  'Uruguai':               { en: 'Uruguay',                  es: 'Uruguay',              de: 'Uruguay',                   fr: 'Uruguay' },
+  'Paraguai':              { en: 'Paraguay',                 es: 'Paraguay',             de: 'Paraguay',                  fr: 'Paraguay' },
+  'Nova Zelândia':         { en: 'New Zealand',              es: 'Nueva Zelanda',        de: 'Neuseeland',                fr: 'Nouvelle-Zélande' },
+  'Brasil':                { en: 'Brazil',                   es: 'Brasil',               de: 'Brasilien',                 fr: 'Brésil' },
+  'Andorra':               { en: 'Andorra',                  es: 'Andorra',              de: 'Andorra',                   fr: 'Andorre' },
+  'Bermuda':               { en: 'Bermuda',                  es: 'Bermuda',              de: 'Bermuda',                   fr: 'Bermudes' },
+  'Bolívia':               { en: 'Bolivia',                  es: 'Bolivia',              de: 'Bolivien',                  fr: 'Bolivie' },
+  'Filipinas':             { en: 'Philippines',              es: 'Filipinas',            de: 'Philippinen',               fr: 'Philippines' },
+  'República do Congo':    { en: 'Republic of the Congo',    es: 'República del Congo',  de: 'Republik Kongo',            fr: 'République du Congo' },
+  'Bósnia e Herzegovina':  { en: 'Bosnia and Herzegovina',   es: 'Bosnia y Herzegovina', de: 'Bosnien und Herzegowina',   fr: 'Bosnie-Herzégovine' },
+  'Índia':                 { en: 'India',                    es: 'India',                de: 'Indien',                    fr: 'Inde' },
+  'Rússia':                { en: 'Russia',                   es: 'Rusia',                de: 'Russland',                  fr: 'Russie' },
+};
+
+function _localizeCountry(ptName) {
+  const t = _COUNTRY_LABELS[ptName];
+  if (!t) return ptName;
+  return t[LANG] || t.en || ptName;
+}
 
 function _extractCountry(cidade) {
   if (!cidade) return null;
@@ -571,7 +632,12 @@ function _updateEstadoLabel() {
     estadoFilterLabel.textContent = T.allBrazil;
   } else if (v.startsWith('INT:')) {
     const rest = v.slice(4);
-    estadoFilterLabel.textContent = rest.includes(':') ? rest.split(':').join(', ') : rest;
+    if (rest.includes(':')) {
+      const [country, city] = rest.split(':');
+      estadoFilterLabel.textContent = `${_localizeCountry(country)}, ${city}`;
+    } else {
+      estadoFilterLabel.textContent = _localizeCountry(rest);
+    }
   } else {
     estadoFilterLabel.textContent = _ESTADO_LABELS[v] || v;
   }
@@ -680,12 +746,12 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
 
   for (const [country, citiesSet] of countryCity) {
     const cities = [...citiesSet].sort();
-    allGroups.push({ label: country, build: () => {
+    const localCountry = _localizeCountry(country);
+    allGroups.push({ label: localCountry, build: () => {
       const isActive = state.estado === 'INT:' + country ||
                        cities.some(city => state.estado === 'INT:' + country + ':' + city);
-      const { wrapper, body } = _makeAccordionGroup(country, isActive);
-      // Always show "All Country" when there are 0 or >1 cities
-      if (cities.length !== 1) body.appendChild(makeOption('INT:' + country, T.allCountry(country)));
+      const { wrapper, body } = _makeAccordionGroup(localCountry, isActive);
+      if (cities.length !== 1) body.appendChild(makeOption('INT:' + country, T.allCountry(localCountry)));
       for (const city of cities) {
         const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
         body.appendChild(makeOption(value, city));
@@ -694,7 +760,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     }});
   }
 
-  allGroups.sort((a, b) => a.label.localeCompare(b.label, 'pt'));
+  allGroups.sort((a, b) => a.label.localeCompare(b.label, LANG));
   for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
 
   if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {
@@ -1484,22 +1550,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnHome.addEventListener('click', async () => {
-    const targetLang = BROWSER_LANG;
-
-    if (targetLang !== LANG) {
-      // Different language: navigate, carrying geo cache and clearing saved location
-      const geo = await detectGeoEstado();
-      if (geo) sessionStorage.setItem('_geoCache', geo);
-      try {
-        const saved = JSON.parse(localStorage.getItem('corridas_filters') || 'null');
-        if (saved) { delete saved.estado; localStorage.setItem('corridas_filters', JSON.stringify(saved)); }
-      } catch (_) {}
-      window.location.href = LANG_URLS[targetLang];
-      return;
-    }
-
-    // Same language: just reset location
     const geo = await detectGeoEstado();
+
+    // Apply location to current page
     _userChoseLocation = false;
     state.estado = geo || 'todos';
     _geoApplied  = geo || null;
@@ -1511,6 +1564,17 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCount();
     updateClearButton();
     saveFilters();
+
+    // Switch to browser language if different
+    const targetLang = BROWSER_LANG;
+    if (targetLang !== LANG) {
+      if (geo) sessionStorage.setItem('_geoCache', geo);
+      try {
+        const saved = JSON.parse(localStorage.getItem('corridas_filters') || 'null');
+        if (saved) { delete saved.estado; localStorage.setItem('corridas_filters', JSON.stringify(saved)); }
+      } catch (_) {}
+      window.location.href = LANG_URLS[targetLang];
+    }
   });
 
   // Estado dropdown toggle

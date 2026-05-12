@@ -44,6 +44,18 @@ _ISO_TO_PT: dict[str, str] = {
     "MX": "México",  "AR": "Argentina",  "CL": "Chile",   "CO": "Colômbia",
     "PE": "Peru",    "ZA": "África do Sul", "JP": "Japão", "KR": "Coreia do Sul",
     "CN": "China",   "IN": "Índia",      "BR": "Brasil",
+    "AD": "Andorra", "BM": "Bermuda",    "BO": "Bolívia", "PH": "Filipinas",
+    "CG": "República do Congo", "BA": "Bósnia e Herzegovina",
+    "GR": "Grécia",  "AT": "Áustria",    "CH": "Suíça",   "SE": "Suécia",
+    "NO": "Noruega", "DK": "Dinamarca",  "PL": "Polônia", "CZ": "República Tcheca",
+    "FI": "Finlândia", "KE": "Quênia",   "ET": "Etiópia", "PY": "Paraguai",
+    "UY": "Uruguai", "RU": "Rússia",     "UA": "Ucrânia", "HU": "Hungria",
+    "RO": "Romênia", "HR": "Croácia",    "RS": "Sérvia",  "SK": "Eslováquia",
+    "SI": "Eslovênia", "EE": "Estônia",  "LV": "Letônia", "LT": "Lituânia",
+    "MT": "Malta",   "CY": "Chipre",     "IS": "Islândia","TR": "Turquia",
+    "TZ": "Tanzânia", "NG": "Nigéria",   "GH": "Gana",    "MA": "Marrocos",
+    "TH": "Tailândia", "SG": "Singapura","MY": "Malásia", "ID": "Indonésia",
+    "TW": "Taiwan",  "HK": "Hong Kong",  "IL": "Israel",  "AE": "Emirados Árabes",
 }
 
 _NON_RUNNING = re.compile(

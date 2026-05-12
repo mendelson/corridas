@@ -120,6 +120,7 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade_raw,
         estado=estado,
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=None,

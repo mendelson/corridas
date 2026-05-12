@@ -93,6 +93,7 @@ def _parse_event(el) -> Corrida | None:
         localizacao="Brasília-DF",
         cidade="Brasília",
         estado="DF",
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=True if has_link else None,

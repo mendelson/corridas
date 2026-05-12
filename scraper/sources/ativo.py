@@ -101,6 +101,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado or "??",
+        pais="BR",
         distancias=distancias,
         imagem_url=ev.get("thumbnail") or None,
         inscricoes_abertas=None,

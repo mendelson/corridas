@@ -309,11 +309,13 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     state   = (addr.get("state") or "").strip().upper()
     country = (addr.get("country_code") or "").strip().upper() or "US"
 
+    from .. import geo as _geo
+    pais = country
     if country == "US":
-        estado    = state if state in _US_STATES else "INT"
+        estado    = state if state in _US_STATES else ""
         loc_parts = [p for p in (city, state, "EUA") if p]
     else:
-        estado       = "INT"
+        estado       = _geo.validate_estado(pais, state)
         country_pt   = _ISO_TO_PT.get(country, country)
         loc_parts    = [p for p in (city, country_pt) if p]
     localizacao = ", ".join(loc_parts) or "Internacional"
@@ -338,6 +340,7 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=localizacao,
         estado=estado,
+        pais=pais,
         distancias=distancias,
         imagem_url=image,
         inscricoes_abertas=None,

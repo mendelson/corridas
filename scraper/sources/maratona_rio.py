@@ -156,6 +156,7 @@ def scrape() -> list[Corrida]:
         localizacao="Rio de Janeiro, RJ",
         cidade="Rio de Janeiro",
         estado="RJ",
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=True,

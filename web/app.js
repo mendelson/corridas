@@ -348,6 +348,7 @@ let filteredCorridas = [];
 let _geoApplied      = null;  // estado code applied from geolocation
 let _userChoseLocation = false;
 let _estadoAvailableValues = new Set(['todos']);
+const _loadedLocations = new Map(); // iso2 → { name, subdivisions }
 
 // ---------------------------------------------------------------------------
 // Geolocation pipeline
@@ -355,8 +356,8 @@ let _estadoAvailableValues = new Set(['todos']);
 async function detectGeoEstado({ force = false } = {}) {
   if (!force) {
     const cached = sessionStorage.getItem('_geoCache');
-    // Evict stale values: must be a BR UF code or 'INT:*' or the sentinel 'null'
-    if (cached && cached !== 'null' && !_ESTADO_LABELS[cached] && !cached.startsWith('INT:')) {
+    // Evict stale values: must match new format 'XX:...' or be the sentinel 'null'
+    if (cached && cached !== 'null' && !cached.match(/^[A-Z]{2}:/)) {
       sessionStorage.removeItem('_geoCache');
     } else if (cached) {
       return cached === 'null' ? null : cached;
@@ -374,20 +375,18 @@ async function detectGeoEstado({ force = false } = {}) {
     try {
       const [countryCode, regionCode] = await fn();
       if (countryCode === 'BR') {
-        // Brazilian user: return the state code
+        // Brazilian user: return 'BR:<UF>' when region is known
         const region = (regionCode || '').replace(/^BR-/, '').trim();
         if (region && _ESTADO_LABELS[region]) {
-          sessionStorage.setItem('_geoCache', region);
-          return region;
-        }
-      } else if (countryCode) {
-        // International user: return INT:<portuguese-country-name>
-        const ptCountry = _ISO2_TO_DATA_COUNTRY[countryCode];
-        if (ptCountry) {
-          const val = 'INT:' + ptCountry;
+          const val = 'BR:' + region;
           sessionStorage.setItem('_geoCache', val);
           return val;
         }
+      } else if (countryCode) {
+        // International user: return '<ISO2>:'
+        const val = countryCode.toUpperCase() + ':';
+        sessionStorage.setItem('_geoCache', val);
+        return val;
       }
     } catch (_) {}
   }
@@ -406,6 +405,8 @@ async function loadData() {
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
     allCorridas = json.corridas || json;
+    const paisSet = new Set(allCorridas.map(c => c.pais || 'BR').filter(Boolean));
+    await loadLocationsData(paisSet);
     await initFilters();
   } catch (e) {
     resultCount.textContent = T.loadError;
@@ -413,6 +414,16 @@ async function loadData() {
   } finally {
     if (btnRefresh) btnRefresh.classList.remove('spinning');
   }
+}
+
+async function loadLocationsData(paisSet) {
+  await Promise.all([...paisSet].map(async iso2 => {
+    if (_loadedLocations.has(iso2)) return;
+    try {
+      const r = await fetch(`../locations/${iso2}.json`);
+      if (r.ok) _loadedLocations.set(iso2, await r.json());
+    } catch (_) {}
+  }));
 }
 
 // ---------------------------------------------------------------------------
@@ -465,7 +476,15 @@ function restoreFilters() {
   if (saved.dateFrom) { state.dateFrom = saved.dateFrom; dateFrom.value = saved.dateFrom; }
   if (saved.dateTo)   { state.dateTo   = saved.dateTo;   dateTo.value   = saved.dateTo; }
   if (saved.estado) {
-    state.estado = saved.estado;
+    let est = saved.estado;
+    if (est !== 'todos') {
+      if (est.startsWith('INT:')) {
+        est = 'todos';
+      } else if (!est.includes(':')) {
+        est = est === 'BR' ? 'BR:' : 'BR:' + est;
+      }
+    }
+    state.estado = est;
   }
   if (saved.fontes && Array.isArray(saved.fontes)) {
     state.fontes = new Set(saved.fontes);
@@ -610,6 +629,12 @@ function _localizeCountry(ptName) {
   return t[LANG] || t.en || ptName;
 }
 
+function _localizeCountryByIso2(iso2) {
+  const ptName = _ISO2_TO_DATA_COUNTRY[iso2];
+  if (ptName) return _localizeCountry(ptName);
+  return _loadedLocations.get(iso2)?.name ?? iso2;
+}
+
 function _extractCountry(cidade) {
   if (!cidade) return null;
   const parts = cidade.split(',');
@@ -645,18 +670,22 @@ function _updateEstadoLabel() {
   const opt = estadoFilterDropdown.querySelector(`.estado-option[data-value="${CSS.escape(v)}"]`);
   if (opt) {
     estadoFilterLabel.textContent = opt.textContent;
-  } else if (v === 'BR') {
-    estadoFilterLabel.textContent = T.allBrazil;
-  } else if (v.startsWith('INT:')) {
-    const rest = v.slice(4);
-    if (rest.includes(':')) {
-      const [country, city] = rest.split(':');
-      estadoFilterLabel.textContent = `${_localizeCountry(country)}, ${city}`;
-    } else {
-      estadoFilterLabel.textContent = _localizeCountry(rest);
-    }
   } else {
-    estadoFilterLabel.textContent = _ESTADO_LABELS[v] || v;
+    const colon = v.indexOf(':');
+    if (colon !== -1) {
+      const pais   = v.slice(0, colon);
+      const estado = v.slice(colon + 1);
+      const localCountry = _localizeCountryByIso2(pais);
+      if (!estado) {
+        estadoFilterLabel.textContent = pais === 'BR' ? T.allBrazil : T.allCountry(localCountry);
+      } else {
+        const locData = _loadedLocations.get(pais);
+        const sub = locData?.subdivisions?.find(s => s.code === estado);
+        estadoFilterLabel.textContent = _ESTADO_LABELS[estado] || (sub ? sub.name : estado);
+      }
+    } else {
+      estadoFilterLabel.textContent = v;
+    }
   }
   estadoFilterBtn.classList.toggle('active', v !== (_geoApplied || 'todos'));
 }
@@ -734,60 +763,60 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
 
   estadoFilterDropdown.appendChild(makeOption('todos', T.allLocations));
 
-  const brUFs = [...new Set(
-    base
-      .filter(c => _ESTADO_LABELS[c.estado] && c.data_evento >= today)
-      .map(c => c.estado)
-  )].sort((a, b) => (_ESTADO_LABELS[a] || a).localeCompare(_ESTADO_LABELS[b] || b, 'pt'));
-
-  const countryCity = new Map();
+  // Collect (pais → Set of estado codes) from upcoming events
+  const paisEstados = new Map();
   for (const c of base) {
-    if (c.estado !== 'INT' || !c.data_evento || c.data_evento < today) continue;
-    const country = _extractCountry(c.cidade);
-    if (!country) continue;
-    const city = _extractCity(c.cidade);
-    if (!countryCity.has(country)) countryCity.set(country, new Set());
-    if (city && city !== country) countryCity.get(country).add(city);
+    if (!c.data_evento || c.data_evento < today) continue;
+    const pais = c.pais || 'BR';
+    if (!paisEstados.has(pais)) paisEstados.set(pais, new Set());
+    paisEstados.get(pais).add(c.estado || '');
   }
 
   const allGroups = [];
 
-  if (brUFs.length > 0) {
-    allGroups.push({ label: T.groupBrasil, build: () => {
-      const brActive = state.estado === 'BR' || brUFs.includes(state.estado);
-      const { wrapper, body } = _makeAccordionGroup(T.groupBrasil, brActive);
-      body.appendChild(makeOption('BR', T.allBrazil));
-      for (const uf of brUFs) body.appendChild(makeOption(uf, _ESTADO_LABELS[uf] || uf));
-      return wrapper;
-    }});
-  }
+  for (const [pais, estadoSet] of paisEstados) {
+    const locData = _loadedLocations.get(pais);
+    const subdivByCode = {};
+    for (const sub of (locData?.subdivisions || [])) subdivByCode[sub.code] = sub.name;
 
-  for (const [country, citiesSet] of countryCity) {
-    const cities = [...citiesSet].sort();
-    const localCountry = _localizeCountry(country);
-    allGroups.push({ label: localCountry, build: () => {
-      const isActive = state.estado === 'INT:' + country ||
-                       cities.some(city => state.estado === 'INT:' + country + ':' + city);
-      const { wrapper, body } = _makeAccordionGroup(localCountry, isActive);
-      if (cities.length !== 1) body.appendChild(makeOption('INT:' + country, T.allCountry(localCountry)));
-      for (const city of cities) {
-        const value = cities.length === 1 ? 'INT:' + country : 'INT:' + country + ':' + city;
-        body.appendChild(makeOption(value, city));
+    const countryValue = pais + ':';
+    const localCountryLabel = pais === 'BR' ? T.groupBrasil : _localizeCountryByIso2(pais);
+
+    // Known subdivisions present in data, sorted by display name
+    const subdivisions = [...estadoSet]
+      .filter(s => s && (_ESTADO_LABELS[s] || subdivByCode[s]))
+      .sort((a, b) => {
+        const la = _ESTADO_LABELS[a] || subdivByCode[a] || a;
+        const lb = _ESTADO_LABELS[b] || subdivByCode[b] || b;
+        return la.localeCompare(lb, LANG);
+      });
+    const hasCountryLevel = estadoSet.has('') || [...estadoSet].some(s => !s || (!_ESTADO_LABELS[s] && !subdivByCode[s]));
+
+    allGroups.push({ label: localCountryLabel, pais, build: () => {
+      const isActive = state.estado === countryValue || state.estado.startsWith(pais + ':');
+      const { wrapper, body } = _makeAccordionGroup(localCountryLabel, isActive);
+      if (subdivisions.length !== 1 || hasCountryLevel) {
+        const allLabel = pais === 'BR' ? T.allBrazil : T.allCountry(_localizeCountryByIso2(pais));
+        body.appendChild(makeOption(countryValue, allLabel));
+      }
+      for (const code of subdivisions) {
+        const label = _ESTADO_LABELS[code] || subdivByCode[code] || code;
+        body.appendChild(makeOption(pais + ':' + code, label));
       }
       return wrapper;
     }});
   }
 
-  allGroups.sort((a, b) => a.label.localeCompare(b.label, LANG));
+  allGroups.sort((a, b) => {
+    if (a.pais === 'BR') return -1;
+    if (b.pais === 'BR') return 1;
+    return a.label.localeCompare(b.label, LANG);
+  });
   for (const grp of allGroups) estadoFilterDropdown.appendChild(grp.build());
 
   if (state.estado !== 'todos' && !_estadoAvailableValues.has(state.estado)) {
     state.estado = 'todos';
     saveFilters();
-  }
-
-  if (!skipGeo) {
-    // geo is applied externally in initFilters
   }
 
   _updateEstadoLabel();
@@ -897,16 +926,13 @@ function matchesPeriodo(c) {
 
 function _matchEstadoValue(c, value) {
   if (value === 'todos') return true;
-  if (value === 'BR')    return !!_ESTADO_LABELS[c.estado];
-  if (value.startsWith('INT:')) {
-    const rest = value.slice(4);
-    const sep  = rest.indexOf(':');
-    if (sep === -1) return c.estado === 'INT' && _extractCountry(c.cidade) === rest;
-    const country = rest.slice(0, sep);
-    const city    = rest.slice(sep + 1);
-    return c.estado === 'INT' && _extractCountry(c.cidade) === country && _extractCity(c.cidade) === city;
-  }
-  return c.estado === value;
+  const colonIdx = value.indexOf(':');
+  if (colonIdx === -1) return false;
+  const pais   = value.slice(0, colonIdx);
+  const estado = value.slice(colonIdx + 1);
+  if ((c.pais || 'BR') !== pais) return false;
+  if (estado === '') return true;
+  return c.estado === estado;
 }
 
 function matchesEstado(c) {

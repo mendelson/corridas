@@ -106,6 +106,7 @@ def scrape() -> list[Corrida]:
         localizacao="São Paulo, SP",
         cidade="São Paulo",
         estado="SP",
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=inscricoes_abertas,

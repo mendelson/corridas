@@ -445,6 +445,7 @@ def scrape() -> list[Corrida]:
                 localizacao=localizacao,
                 cidade=city,
                 estado=state,
+        pais="BR",
                 distancias=distancias,
                 imagem_url=imagem_url,
                 inscricoes_abertas=inscricoes_abertas,

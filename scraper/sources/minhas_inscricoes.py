@@ -97,6 +97,7 @@ def _parse_event(el) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
+        pais="BR",
         distancias=_extract_distances(text),
         imagem_url=imagem_url,
         inscricoes_abertas=inscricoes_abertas,

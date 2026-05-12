@@ -21,5 +21,6 @@ def scrape():
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,
         localizacao=LOCALIZACAO, cidade=LOCALIZACAO,
+        pais="FR",
         open_kw=_OPEN, closed_kw=_CLOSED,
     )

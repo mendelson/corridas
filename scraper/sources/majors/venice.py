@@ -87,13 +87,14 @@ def scrape() -> list[Corrida]:
     for data in dates_to_use:
         year = data[:4]
         results.append(Corrida(
-            id=f"venice-marathon_int_{year}",
+            id=f"venice-marathon_it_{year}",
             titulo="Maratona de Veneza",
             data_evento=data,
             horario=_DISTANCES[0][1],
             localizacao=LOCALIZACAO,
             cidade=LOCALIZACAO,
-            estado="INT",
+            estado="",
+            pais="IT",
             distancias=distancias,
             imagem_url=imagem_url,
             inscricoes_abertas=inscricoes_abertas,

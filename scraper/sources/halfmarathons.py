@@ -32,6 +32,18 @@ _SLUG_COUNTRY: dict[str, str] = {
     "netherlands":    "Países Baixos",
 }
 
+_SLUG_ISO2: dict[str, str] = {
+    "canada":         "CA",
+    "united-kingdom": "GB",
+    "australia":      "AU",
+    "germany":        "DE",
+    "france":         "FR",
+    "ireland":        "IE",
+    "spain":          "ES",
+    "italy":          "IT",
+    "netherlands":    "NL",
+}
+
 # US state slugs — presence means the event is in the USA
 _US_STATE_SLUGS = {
     "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
@@ -127,17 +139,20 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     if not titulo:
         return None
 
-    # Determine country from class_list slugs; all events are estado=INT
+    # Determine country from class_list slugs
     country = "EUA"  # default — the site is almost entirely US events
+    pais = "US"
     for cls in (post.get("class_list") or []):
         slug = cls.replace("race-calendar-", "") if cls.startswith("race-calendar-") else None
         if not slug:
             continue
         if slug in _SLUG_COUNTRY:
             country = _SLUG_COUNTRY[slug]
+            pais = _SLUG_ISO2[slug]
             break
         if slug in _US_STATE_SLUGS:
             country = "EUA"
+            pais = "US"
             break
 
     city: str = meta.get("city") or ""
@@ -164,7 +179,8 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         horario=meta.get("starting-time") or None,
         localizacao=localizacao,
         cidade=cidade,
-        estado="INT",
+        estado="",
+        pais=pais,
         distancias=distancias,
         imagem_url=None,
         inscricoes_abertas=None,

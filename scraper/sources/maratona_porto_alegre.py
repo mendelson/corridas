@@ -143,6 +143,7 @@ def scrape() -> list[Corrida]:
         localizacao="Porto Alegre, RS",
         cidade="Porto Alegre",
         estado="RS",
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=True,

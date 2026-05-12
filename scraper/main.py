@@ -164,6 +164,7 @@ def _dict_to_corrida(d: dict) -> Corrida:
         localizacao=d.get("localizacao", ""),
         cidade=d.get("cidade", ""),
         estado=d.get("estado", "??"),
+        pais=d.get("pais", "BR"),
         distancias=distancias,
         imagem_url=validate_image_url(d.get("imagem_url")),
         inscricoes_abertas=d.get("inscricoes_abertas"),
@@ -288,7 +289,7 @@ def save(corridas: list[Corrida]) -> None:
 
 def _fields_changed(existing: Corrida, incoming: Corrida) -> bool:
     for field in ["titulo", "data_evento", "horario", "localizacao", "cidade",
-                  "estado", "distancias", "imagem_url", "inscricoes_abertas",
+                  "estado", "pais", "distancias", "imagem_url", "inscricoes_abertas",
                   "periodo_inscricao", "fontes"]:
         if getattr(existing, field) != getattr(incoming, field):
             return True
@@ -305,6 +306,8 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
         existing.cidade = incoming.cidade
     if incoming.estado and incoming.estado != "??":
         existing.estado = incoming.estado
+    if incoming.pais and incoming.pais not in ("??", ""):
+        existing.pais = incoming.pais
     existing.data_evento = incoming.data_evento or existing.data_evento
     existing.horario = incoming.horario or existing.horario
     existing.localizacao = incoming.localizacao or existing.localizacao

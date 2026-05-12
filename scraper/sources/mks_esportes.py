@@ -200,6 +200,7 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado or "??",
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem,
         inscricoes_abertas=None,

@@ -169,7 +169,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         horario=None,
         localizacao=ciudad,  # already "City, México"
         cidade=ciudad,
-        estado=estado,
+        estado="",
+        pais="MX",
         distancias=distancias,
         imagem_url=imagem,
         inscricoes_abertas=None,

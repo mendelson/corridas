@@ -52,6 +52,7 @@ def scrape_major(
     horario: str,
     localizacao: str,
     cidade: str,
+    pais: str,
     open_kw: list[str],
     closed_kw: list[str],
     ssl_verify: bool = True,
@@ -104,13 +105,13 @@ def scrape_major(
     for data in dates_to_use:
         year = data[:4]
         results.append(Corrida(
-            id=f"{slugify(titulo)}_int_{year}",
+            id=f"{slugify(titulo)}_{pais.lower()}_{year}",
             titulo=titulo,
             data_evento=data,
             horario=horario,
             localizacao=localizacao,
             cidade=cidade,
-            estado="INT",
+            estado="",
             distancias=[Distancia(km=km, data=None, horario=None) for km in (distances_km or [42.195])],
             imagem_url=imagem_url,
             inscricoes_abertas=inscricoes_abertas,
@@ -119,6 +120,7 @@ def scrape_major(
             miss_count=0,
             first_seen_at=now,
             updated_at=now,
+            pais=pais,
         ))
 
     if not results:

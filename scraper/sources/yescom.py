@@ -180,6 +180,7 @@ def _parse_event_page(url: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=city,
         estado=state,
+        pais="BR",
         distancias=distancias,
         imagem_url=_find_og_image(soup),
         inscricoes_abertas=True if insc_link else None,

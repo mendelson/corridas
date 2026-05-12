@@ -97,6 +97,7 @@ def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: s
         localizacao="São Paulo, SP",
         cidade="São Paulo",
         estado="SP",
+        pais="BR",
         distancias=[Distancia(km=_DISTANCIA_KM, data=data_evento, horario=None)],
         imagem_url=imagem_url,
         inscricoes_abertas=True if links_inscricao else None,

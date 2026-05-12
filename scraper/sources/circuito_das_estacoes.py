@@ -123,6 +123,7 @@ def _build_corrida(
         localizacao=f"{city}, {estado}" if estado != "??" else city,
         cidade=city,
         estado=estado,
+        pais="BR",
         distancias=distancias,
         imagem_url=None,
         inscricoes_abertas=inscricoes_abertas,

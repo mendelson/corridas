@@ -91,6 +91,7 @@ def scrape() -> list[Corrida]:
                 localizacao=localizacao,
                 cidade=cidade,
                 estado=estado,
+        pais="BR",
                 distancias=card["distancias"],
                 imagem_url=card["imagem_url"],
                 inscricoes_abertas=inscricoes_abertas,

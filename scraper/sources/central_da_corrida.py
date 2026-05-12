@@ -86,6 +86,7 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
+        pais="BR",
         distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=inscricoes_abertas,

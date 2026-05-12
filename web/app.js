@@ -563,6 +563,8 @@ const _ISO2_TO_DATA_COUNTRY = {
   FI: 'Finlândia',  PL: 'Polônia',    CZ: 'República Tcheca', ZA: 'África do Sul',
   KE: 'Quênia',     ET: 'Etiópia',    CN: 'China',      KR: 'Coreia do Sul', CA: 'Canadá',
   NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
+  IE: 'Irlanda',    GR: 'Grécia',     AD: 'Andorra',    BM: 'Bermuda',
+  BO: 'Bolívia',    PH: 'Filipinas',  CG: 'República do Congo', BA: 'Bósnia e Herzegovina',
 };
 
 const _COUNTRY_NORMALIZE = {
@@ -749,6 +751,11 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     el.addEventListener('click', () => {
       _userChoseLocation = (value !== 'todos');
       state.estado = value;
+      estadoFilterDropdown.querySelectorAll('.estado-option').forEach(opt => {
+        const sel = opt.dataset.value === value;
+        opt.classList.toggle('selected', sel);
+        opt.setAttribute('aria-selected', String(sel));
+      });
       saveFilters();
       _closeEstadoDropdown();
       _updateEstadoLabel();

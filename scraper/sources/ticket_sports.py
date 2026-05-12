@@ -61,29 +61,29 @@ _INTL_CITY_KW = {
     "patagonia argentina", "patagônia argentina",
 }
 
-# Maps city keyword → country name (PT) for display in localizacao
-_CITY_TO_COUNTRY: list[tuple[str, str]] = [
-    ("buenos aires", "Argentina"), ("patagonia argentina", "Argentina"),
-    ("patagônia argentina", "Argentina"),
-    ("assunção", "Paraguai"), ("assuncao", "Paraguai"),
-    ("montevideo", "Uruguai"), ("montevidéu", "Uruguai"),
-    ("punta del este", "Uruguai"),
-    ("santiago", "Chile"),
-    ("lima", "Peru"),
-    ("bogotá", "Colômbia"), ("bogota", "Colômbia"),
-    ("paris", "França"),
-    ("london", "Reino Unido"), ("londres", "Reino Unido"),
-    ("berlin", "Alemanha"), ("berlim", "Alemanha"),
-    ("amsterdam", "Holanda"), ("rotterdam", "Holanda"),
-    ("madrid", "Espanha"), ("barcelona", "Espanha"),
-    ("veneza", "Itália"), ("venice", "Itália"), ("venezia", "Itália"),
-    ("florença", "Itália"), ("florence", "Itália"),
-    ("rome", "Itália"), ("roma", "Itália"),
-    ("colonia agip", "Itália"), ("nove colli", "Itália"),
-    ("porto", "Portugal"), ("lisboa", "Portugal"), ("lisbon", "Portugal"),
-    ("new york", "EUA"), ("boston", "EUA"), ("chicago", "EUA"),
-    ("tokyo", "Japão"), ("tóquio", "Japão"),
-    ("sydney", "Austrália"),
+# Maps city keyword → (country name PT, ISO2)
+_CITY_TO_COUNTRY: list[tuple[str, str, str]] = [
+    ("buenos aires", "Argentina", "AR"), ("patagonia argentina", "Argentina", "AR"),
+    ("patagônia argentina", "Argentina", "AR"),
+    ("assunção", "Paraguai", "PY"), ("assuncao", "Paraguai", "PY"),
+    ("montevideo", "Uruguai", "UY"), ("montevidéu", "Uruguai", "UY"),
+    ("punta del este", "Uruguai", "UY"),
+    ("santiago", "Chile", "CL"),
+    ("lima", "Peru", "PE"),
+    ("bogotá", "Colômbia", "CO"), ("bogota", "Colômbia", "CO"),
+    ("paris", "França", "FR"),
+    ("london", "Reino Unido", "GB"), ("londres", "Reino Unido", "GB"),
+    ("berlin", "Alemanha", "DE"), ("berlim", "Alemanha", "DE"),
+    ("amsterdam", "Holanda", "NL"), ("rotterdam", "Holanda", "NL"),
+    ("madrid", "Espanha", "ES"), ("barcelona", "Espanha", "ES"),
+    ("veneza", "Itália", "IT"), ("venice", "Itália", "IT"), ("venezia", "Itália", "IT"),
+    ("florença", "Itália", "IT"), ("florence", "Itália", "IT"),
+    ("rome", "Itália", "IT"), ("roma", "Itália", "IT"),
+    ("colonia agip", "Itália", "IT"), ("nove colli", "Itália", "IT"),
+    ("porto", "Portugal", "PT"), ("lisboa", "Portugal", "PT"), ("lisbon", "Portugal", "PT"),
+    ("new york", "EUA", "US"), ("boston", "EUA", "US"), ("chicago", "EUA", "US"),
+    ("tokyo", "Japão", "JP"), ("tóquio", "Japão", "JP"),
+    ("sydney", "Austrália", "AU"),
 ]
 
 
@@ -271,12 +271,16 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         else:
             estado = infer_estado(addr, titulo) or "??"
 
-    if estado == "INT" and addr and "," not in addr:
-        addr_lower = addr.lower()
-        for kw, country in _CITY_TO_COUNTRY:
+    pais_iso2 = "BR"
+    if estado == "INT":
+        addr_lower = (addr or "").lower()
+        for kw, country, iso2 in _CITY_TO_COUNTRY:
             if kw in addr_lower:
-                addr = f"{addr}, {country}"
+                if "," not in addr:
+                    addr = f"{addr}, {country}"
+                pais_iso2 = iso2
                 break
+        estado = ""  # never store 'INT' on the model
 
     data_evento = _parse_date(ev.get("date") or "")
     if not data_evento or data_evento < today:
@@ -311,7 +315,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         localizacao=addr or cidade,
         cidade=cidade,
         estado=estado,
-        pais="BR",
+        pais=pais_iso2,
         distancias=_extract_distances(titulo_lower),
         imagem_url=ev.get("logoImageSource") or None,
         inscricoes_abertas=inscricoes_abertas,

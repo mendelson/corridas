@@ -354,7 +354,12 @@ let _estadoAvailableValues = new Set(['todos']);
 // ---------------------------------------------------------------------------
 async function detectGeoEstado() {
   const cached = sessionStorage.getItem('_geoCache');
-  if (cached) return cached === 'null' ? null : cached;
+  // Evict cached values that are not valid Brazilian UFs (stale data from old scraper format)
+  if (cached && cached !== 'null' && !_ESTADO_LABELS[cached]) {
+    sessionStorage.removeItem('_geoCache');
+  } else if (cached) {
+    return cached === 'null' ? null : cached;
+  }
 
   const apis = [
     () => fetch('https://ipwho.is/').then(r => r.json()).then(d => d.country_code === 'BR' ? d.region_code : null),
@@ -647,7 +652,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
 
   const brUFs = [...new Set(
     base
-      .filter(c => c.estado && c.estado !== 'INT' && c.estado !== '??' && c.data_evento >= today)
+      .filter(c => _ESTADO_LABELS[c.estado] && c.data_evento >= today)
       .map(c => c.estado)
   )].sort((a, b) => (_ESTADO_LABELS[a] || a).localeCompare(_ESTADO_LABELS[b] || b, 'pt'));
 
@@ -808,7 +813,7 @@ function matchesPeriodo(c) {
 
 function _matchEstadoValue(c, value) {
   if (value === 'todos') return true;
-  if (value === 'BR')    return c.estado !== 'INT' && c.estado !== '??';
+  if (value === 'BR')    return !!_ESTADO_LABELS[c.estado];
   if (value.startsWith('INT:')) {
     const rest = value.slice(4);
     const sep  = rest.indexOf(':');

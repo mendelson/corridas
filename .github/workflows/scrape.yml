@@ -50,7 +50,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           cp scraper.log data/last-scraper.log
-          git add data/corridas.json web/corridas.json data/last-scraper.log
+          git add data/corridas.json web/corridas.json data/last-scraper.log data/geo_cache.json
           if git diff --cached --quiet; then
             echo "No changes — skipping commit."
           else

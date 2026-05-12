@@ -386,7 +386,7 @@ input { font-family: inherit; }
 }
 .estado-group-header:hover { background: var(--color-surface-2); }
 .estado-group-chevron {
-  font-size: 0.65rem;
+  font-size: 0.85rem;
   color: var(--color-text-secondary);
 }
 /* Options inside a group are indented */

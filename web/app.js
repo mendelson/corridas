@@ -686,7 +686,8 @@ function _makeAccordionGroup(label, initiallyOpen) {
       estadoFilterDropdown.querySelectorAll('.estado-group-body').forEach(b => {
         if (b !== body && !b.classList.contains('collapsed')) {
           b.classList.add('collapsed');
-          b.previousElementSibling.querySelector('.estado-group-chevron').textContent = '▸';
+          const otherChevron = b.previousElementSibling?.querySelector('.estado-group-chevron');
+          if (otherChevron) otherChevron.textContent = '▸';
         }
       });
     }
@@ -972,7 +973,12 @@ function renderCards() {
   let recentPast = [];
 
   if (state.periodo === 'past15') {
-    recentPast = filteredCorridas.filter(c => c.data_evento && c.data_evento < today);
+    // Past events ignore the location filter so users always see what happened
+    // recently even when browsing a state/country with no recent past events.
+    const pastPool = allCorridas.filter(c =>
+      matchesPeriodo(c) && matchesFonte(c) && matchesDistancia(c) && matchesSearch(c)
+    );
+    recentPast = pastPool.filter(c => c.data_evento && c.data_evento < today);
     toRender   = filteredCorridas.filter(c => !c.data_evento || c.data_evento >= today);
   }
 

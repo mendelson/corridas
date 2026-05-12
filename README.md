@@ -51,8 +51,8 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-12 16:58 | ❌ | 2026-05-12 11:16 |
-| FMAA<!--fmaa--> | ✅ | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | The Events Calendar API; 0 eventos publicados atualmente | 2026-05-12 16:58 | ❌ 0 eventos | — |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-12 18:10 | ✅ | 2026-05-12 18:10 |
+| FMAA<!--fmaa--> | ✅ | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | The Events Calendar API; 0 eventos publicados atualmente | 2026-05-12 18:11 | ❌ 0 eventos | — |
 
 ### Fontes internacionais
 

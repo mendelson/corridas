@@ -973,12 +973,7 @@ function renderCards() {
   let recentPast = [];
 
   if (state.periodo === 'past15') {
-    // Past events ignore the location filter so users always see what happened
-    // recently even when browsing a state/country with no recent past events.
-    const pastPool = allCorridas.filter(c =>
-      matchesPeriodo(c) && matchesFonte(c) && matchesDistancia(c) && matchesSearch(c)
-    );
-    recentPast = pastPool.filter(c => c.data_evento && c.data_evento < today);
+    recentPast = filteredCorridas.filter(c => c.data_evento && c.data_evento < today);
     toRender   = filteredCorridas.filter(c => !c.data_evento || c.data_evento >= today);
   }
 

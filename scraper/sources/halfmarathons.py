@@ -44,18 +44,24 @@ _SLUG_ISO2: dict[str, str] = {
     "netherlands":    "NL",
 }
 
-# US state slugs — presence means the event is in the USA
-_US_STATE_SLUGS = {
-    "alabama", "alaska", "arizona", "arkansas", "california", "colorado",
-    "connecticut", "delaware", "district-of-columbia", "florida", "georgia",
-    "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas", "kentucky",
-    "louisiana", "maine", "maryland", "massachusetts", "michigan", "minnesota",
-    "mississippi", "missouri", "montana", "nebraska", "nevada", "new-hampshire",
-    "new-jersey", "new-mexico", "new-york", "north-carolina", "north-dakota",
-    "ohio", "oklahoma", "oregon", "pennsylvania", "rhode-island",
-    "south-carolina", "south-dakota", "tennessee", "texas", "utah", "vermont",
-    "virginia", "washington", "west-virginia", "wisconsin", "wyoming",
+# US state slug → ISO 3166-2:US code
+_US_SLUG_TO_STATE: dict[str, str] = {
+    "alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR",
+    "california": "CA", "colorado": "CO", "connecticut": "CT", "delaware": "DE",
+    "district-of-columbia": "DC", "florida": "FL", "georgia": "GA",
+    "hawaii": "HI", "idaho": "ID", "illinois": "IL", "indiana": "IN",
+    "iowa": "IA", "kansas": "KS", "kentucky": "KY", "louisiana": "LA",
+    "maine": "ME", "maryland": "MD", "massachusetts": "MA", "michigan": "MI",
+    "minnesota": "MN", "mississippi": "MS", "missouri": "MO", "montana": "MT",
+    "nebraska": "NE", "nevada": "NV", "new-hampshire": "NH", "new-jersey": "NJ",
+    "new-mexico": "NM", "new-york": "NY", "north-carolina": "NC",
+    "north-dakota": "ND", "ohio": "OH", "oklahoma": "OK", "oregon": "OR",
+    "pennsylvania": "PA", "rhode-island": "RI", "south-carolina": "SC",
+    "south-dakota": "SD", "tennessee": "TN", "texas": "TX", "utah": "UT",
+    "vermont": "VT", "virginia": "VA", "washington": "WA",
+    "west-virginia": "WV", "wisconsin": "WI", "wyoming": "WY",
 }
+_US_STATE_SLUGS = set(_US_SLUG_TO_STATE)
 
 # Distance label → canonical km value or miles string
 _DIST_MAP: dict[str, float | str] = {
@@ -139,9 +145,10 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     if not titulo:
         return None
 
-    # Determine country from class_list slugs
+    # Determine country and state from class_list slugs
     country = "EUA"  # default — the site is almost entirely US events
     pais = "US"
+    estado = ""
     for cls in (post.get("class_list") or []):
         slug = cls.replace("race-calendar-", "") if cls.startswith("race-calendar-") else None
         if not slug:
@@ -153,6 +160,7 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         if slug in _US_STATE_SLUGS:
             country = "EUA"
             pais = "US"
+            estado = _US_SLUG_TO_STATE[slug]
             break
 
     city: str = meta.get("city") or ""
@@ -179,7 +187,7 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         horario=meta.get("starting-time") or None,
         localizacao=localizacao,
         cidade=cidade,
-        estado="",
+        estado=estado,
         pais=pais,
         distancias=distancias,
         imagem_url=None,

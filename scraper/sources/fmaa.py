@@ -13,6 +13,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 SOURCE_NAME = "FMAA"
 _BASE       = "https://fmaa.apps-mexico.com"
@@ -170,6 +171,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     state_key = re.sub(r"[^\w\s]", "", raw_state).lower().strip()
     estado = _MX_STATES.get(state_key) or _MX_CITY_STATE.get(state_key) or \
              _MX_CITY_STATE.get(re.sub(r"[^\w\s]", "", city).lower().strip()) or ""
+    if not estado:
+        _, estado = _geo.resolve(city or raw_state, "", "MX")
     cidade = f"{city}, México" if city else "México"
     localizacao = cidade
 

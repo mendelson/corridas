@@ -14,6 +14,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 SOURCE_NAME = "Asdeporte"
 _BASE       = "https://www.asdeporte.com"
@@ -192,6 +193,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     api_state = (ev.get("state") or ev.get("stateName") or "").strip()
     place     = (ev.get("place") or "").strip()
     ciudad, estado = _parse_location(place, api_city, api_state)
+    if not estado:
+        _, estado = _geo.resolve(place or api_city, "", "MX")
 
     route = ev.get("routeConvocatoria") or ""
     event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)

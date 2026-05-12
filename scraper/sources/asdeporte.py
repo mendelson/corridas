@@ -187,8 +187,11 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if data_evento < today:
         return None
 
-    place = (ev.get("place") or "").strip()
-    ciudad, estado = _parse_location(place)
+    # Prefer explicit city/state fields if the API provides them
+    api_city  = (ev.get("city") or ev.get("municipality") or "").strip()
+    api_state = (ev.get("state") or ev.get("stateName") or "").strip()
+    place     = (ev.get("place") or "").strip()
+    ciudad, estado = _parse_location(place, api_city, api_state)
 
     route = ev.get("routeConvocatoria") or ""
     event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)
@@ -220,14 +223,33 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     )
 
 
-def _parse_location(text: str) -> tuple[str, str]:
+_CITY_SUBSTR_RE: dict[str, tuple[re.Pattern, str]] = {
+    city: (re.compile(r"\b" + re.escape(city) + r"\b"), code)
+    for city, code in sorted(_MX_CITY_STATE.items(), key=lambda x: -len(x[0]))
+}
+
+
+def _parse_location(text: str, api_city: str = "", api_state: str = "") -> tuple[str, str]:
     """Returns (ciudad, estado_code). All Asdeporte events are in Mexico."""
-    if not text:
-        return "México", ""
-    parts = [p.strip() for p in text.split(",")]
 
     def _norm(s: str) -> str:
         return re.sub(r"[^\w\s]", "", s).lower().strip()
+
+    # If the API already gave us separate state/city fields, use them first
+    if api_state:
+        estado = _MX_STATES.get(_norm(api_state)) or _MX_CITY_STATE.get(_norm(api_state)) or ""
+        ciudad = api_city or text or ""
+        if not ciudad or ciudad.lower() in ("mexico", "méxico"):
+            ciudad = "México"
+        elif not ciudad.endswith("México"):
+            ciudad = f"{ciudad}, México"
+        return ciudad, estado
+
+    if not text and not api_city:
+        return "México", ""
+
+    combined = text or api_city
+    parts = [p.strip() for p in combined.split(",")]
 
     # Scan reversed parts for a known Mexican state name
     for part in reversed(parts):
@@ -239,18 +261,26 @@ def _parse_location(text: str) -> tuple[str, str]:
                 return "México", estado
             return f"{ciudad}, México", estado
 
-    # No state name found — try city lookup
-    ciudad = parts[0]
-    if _looks_like_venue(ciudad):
-        # look for a known city in remaining parts
-        for part in parts[1:]:
-            estado = _MX_CITY_STATE.get(_norm(part), "")
-            if estado:
-                return "México", estado
-        return "México", ""
+    # No state name found — try exact city lookup on each comma-part
+    for part in parts:
+        estado = _MX_CITY_STATE.get(_norm(part), "")
+        if estado:
+            ciudad = part if not _looks_like_venue(part) else "México"
+            if ciudad != "México" and not ciudad.endswith("México"):
+                ciudad = f"{ciudad}, México"
+            return ciudad, estado
 
-    estado = _MX_CITY_STATE.get(_norm(ciudad), "")
-    return f"{ciudad}, México", estado
+    # Substring search: find any known city name anywhere in the full text
+    norm_full = _norm(combined)
+    for city, (pattern, code) in _CITY_SUBSTR_RE.items():
+        if pattern.search(norm_full):
+            return f"{city.title()}, México", code
+
+    # Fallback: unknown city
+    ciudad = parts[0] if parts else combined
+    if _looks_like_venue(ciudad) or not ciudad or ciudad.lower() in ("mexico", "méxico"):
+        return "México", ""
+    return f"{ciudad}, México", ""
 
 
 def _looks_like_venue(text: str) -> bool:

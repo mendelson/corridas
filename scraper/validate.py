@@ -87,15 +87,17 @@ def main() -> int:
     sem_data = len(corridas) - com_data
     futuras = sum(1 for c in corridas if c.get("data_evento", "") >= today)
     passadas = com_data - futuras
-    int_count = sum(1 for c in corridas if c.get("estado") == "INT")
-    br_count = len(corridas) - int_count
+    by_pais: dict = {}
+    for c in corridas:
+        p = c.get("pais", "BR")
+        by_pais[p] = by_pais.get(p, 0) + 1
     print(f"  Total:       {len(corridas)}")
     print(f"  Com data:    {com_data}")
     print(f"  Sem data:    {sem_data}")
     print(f"  Futuras:     {futuras}")
     print(f"  Passadas:    {passadas}")
-    print(f"  INT:         {int_count}")
-    print(f"  BR:          {br_count}")
+    for pais, count in sorted(by_pais.items()):
+        print(f"  {pais}:         {count}")
 
     print()
     if ISSUES:

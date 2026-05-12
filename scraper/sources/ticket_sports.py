@@ -264,23 +264,20 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         return None
 
     cidade, estado = _split_address(addr)
+    pais_iso2 = "BR"
     if not estado:
         combined = (addr + " " + titulo).lower()
         if any(kw in combined for kw in _INTL_CITY_KW):
-            estado = "INT"
+            addr_lower = (addr or "").lower()
+            for kw, country, iso2 in _CITY_TO_COUNTRY:
+                if kw in addr_lower:
+                    if "," not in addr:
+                        addr = f"{addr}, {country}"
+                    pais_iso2 = iso2
+                    break
+            estado = ""
         else:
             estado = infer_estado(addr, titulo) or "??"
-
-    pais_iso2 = "BR"
-    if estado == "INT":
-        addr_lower = (addr or "").lower()
-        for kw, country, iso2 in _CITY_TO_COUNTRY:
-            if kw in addr_lower:
-                if "," not in addr:
-                    addr = f"{addr}, {country}"
-                pais_iso2 = iso2
-                break
-        estado = ""  # never store 'INT' on the model
 
     data_evento = _parse_date(ev.get("date") or "")
     if not data_evento or data_evento < today:

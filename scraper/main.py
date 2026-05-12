@@ -304,8 +304,10 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
         existing.id = incoming.id
     if incoming.cidade:
         existing.cidade = incoming.cidade
-    if (incoming.estado and incoming.estado != "??") or existing.estado == "INT":
+    if incoming.estado and incoming.estado != "??":
         existing.estado = incoming.estado
+    elif existing.estado in ("INT", "??"):
+        existing.estado = ""
     if incoming.pais and incoming.pais not in ("??", ""):
         existing.pais = incoming.pais
     existing.data_evento = incoming.data_evento or existing.data_evento
@@ -562,8 +564,7 @@ def _is_valid(c: Corrida) -> bool:
     if _TRI_DIGIT_RE.search(titulo_lower):
         return False
 
-    # Non-INT events must have a valid date
-    if c.estado != "INT" and not c.data_evento:
+    if not c.data_evento:
         return False
 
     # Distances are mandatory
@@ -596,15 +597,15 @@ def run_all_scrapers() -> list[Corrida]:
 def _sanitize_images(corridas: list[Corrida]) -> None:
     """Validate imagem_url for all events.
 
-    For international events (estado='INT'): image must come from the same
-    registered domain as the event source OR a known trusted CDN.
-    For Brazilian events: only reject images with suspicious host keywords.
+    Non-BR events: image must come from the same registered domain as the event
+    source OR a known trusted CDN.
+    BR events: only reject images with suspicious host keywords.
     """
     cleared = 0
     for c in corridas:
         if not c.imagem_url:
             continue
-        if c.estado == 'INT':
+        if c.pais != 'BR':
             source_domains = [f.link_evento for f in c.fontes if f.link_evento]
             valid = any(validate_image_url(c.imagem_url, source_domain=d) for d in source_domains) \
                     if source_domains else bool(validate_image_url(c.imagem_url))

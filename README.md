@@ -16,25 +16,25 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-12 18:27 | ✅ | 2026-05-12 18:27 |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-12 20:30 | ❌ | 2026-05-12 18:27 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
-| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-12 11:16 | ✅ | 2026-05-12 11:16 |
-| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-12 11:18 | ✅ | 2026-05-12 11:18 |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:15 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:16 |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-12 16:58 | ❌ | 2026-05-12 11:15 |
-| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-12 11:20 | ✅ | 2026-05-12 11:20 |
-| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-12 11:18 | ✅ | 2026-05-12 11:18 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-12 11:18 | ✅ | 2026-05-12 11:18 |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-12 11:17 | ✅ | 2026-05-12 11:17 |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-12 16:58 | ✅ | 2026-05-12 16:58 |
-| Largada Esportiva<!--largada_esportiva--> | 🆕 | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-12 16:58 | ❌ | 2026-05-12 11:16 |
+| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:20 |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:18 |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:17 |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
+| Largada Esportiva<!--largada_esportiva--> | 🆕 | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:16 |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-12 16:58 | ❌ | 2026-05-12 11:16 |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
 
 ### Fontes brasileiras — eventos específicos
@@ -43,9 +43,9 @@ GitHub Actions.
 | --- | --- | --- | --- | --- | --- |
 | Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-05-12 16:58 | ❌ | 2026-05-12 11:17 |
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-12 11:17 | ✅ | 2026-05-12 11:17 |
-| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-12 11:16 | ✅ | 2026-05-12 11:16 |
-| São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-12 11:17 | ✅ | 2026-05-12 11:17 |
+| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
+| São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-12 20:30 | ✅ | 2026-05-12 20:30 |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-12 20:30 | ❌ | 2026-05-12 11:17 |
 
 ### Fontes mexicanas
 
@@ -58,8 +58,8 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-12 11:19 | ✅ | 2026-05-12 11:19 |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Estava retornando 0 eventos porque a API mudou o formato esperado de datas de `MM/DD/YYYY` para ISO `YYYY-MM-DD` — corrigido em 2026-05-11. | 2026-05-12 11:21 | ✅ | 2026-05-12 11:21 |
+| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-12 20:30 | ❌ | 2026-05-12 11:19 |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Estava retornando 0 eventos porque a API mudou o formato esperado de datas de `MM/DD/YYYY` para ISO `YYYY-MM-DD` — corrigido em 2026-05-11. | 2026-05-12 20:30 | ❌ | 2026-05-12 11:21 |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-12 11:16 | ✅ | 2026-05-12 11:16 |
 
 ---

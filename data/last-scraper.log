@@ -1,12 +1,13 @@
 [main] iniciando scraping...
-[main] 5619 corridas no estado anterior
-[Central da Corrida] 78 corridas encontradas
+[main] 5623 corridas no estado anterior
 [Ativo] 7 corridas encontradas
+[Central da Corrida] 78 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
-[Minhas Inscrições] 14 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
-[Iguana Sports] 8 corridas encontradas
+[Minhas Inscrições] 14 corridas encontradas
 [Brasil Corrida] 11 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
+[Correr Brasília] 1 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
@@ -15,40 +16,39 @@
 [Yescom] 14 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Corridas Brasil] 3197 corridas encontradas
 [Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Corridas Brasil] 3197 corridas encontradas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [TF Sports] 48 corridas encontradas
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[Asdeporte] 30 corrida(s) encontrada(s)
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[Asdeporte] 30 corrida(s) encontrada(s)
 [FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
 [FMAA] DEBUG total=0, total_pages=0
 [FMAA] 0 corrida(s) encontrada(s)
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [RunSignup] página 2: 250 corridas
 [RunSignup] página 3: 250 corridas
-[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: [Errno 101] Network is unreachable
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[RunSignup] página 4: 250 corridas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[RunSignup] página 4: 250 corridas
 [RunSignup] página 5: 250 corridas
 [RunSignup] página 6: 250 corridas
 [RunSignup] página 7: 250 corridas
 [RunSignup] página 8: 250 corridas
+[Ticket Sports] 920 corridas encontradas
 [RunSignup] página 9: 250 corridas
-[Ticket Sports] 921 corridas encontradas
 [RunSignup] página 10: 250 corridas
 [RunSignup] página 11: 250 corridas
 [RunSignup] página 12: 250 corridas
@@ -59,58 +59,59 @@
 [RunSignup] 3296 corridas válidas (454 ignoradas)
 [HalfMarathons.net] 1950 corrida(s) encontrada(s)
 [main] 9741 registros coletados (antes do merge)
-[main] 6214 registros após validação
-[main] 5607 corridas após merge
-[main] verificando links de 39 evento(s) não encontrado(s) no scrape...
-[main] 'Chester Rotary'S 48Th Four On The Fourth' — link válido, miss_count zerado
+[main] 6213 registros após validação
+[main] 5606 corridas após merge
+[main] verificando links de 40 evento(s) não encontrado(s) no scrape...
 [main] '28Th Annual Olmsted Spirit 5K' — link válido, miss_count zerado
-[main] '6ª Corrida E Caminhada C.H.O.' — link válido, miss_count zerado
-[main] '2ª Corrida 26 Anos Faça Bonito' — link válido, miss_count zerado
-[main] 'Discover Trail - Marumbi 2026' — link válido, miss_count zerado
-[main] 'Vai Brasil (Virtual)' — link válido, miss_count zerado
-[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
-[main] 'Maratona Internacional De Piracicaba - 2ª Edição' — link válido, miss_count zerado
-[main] 'Desafio Pico Do Olho D'Água Sunset' — link válido, miss_count zerado
 [main] 'Corrida São Roque 2026' — link válido, miss_count zerado
+[main] '1ª Corrida Engel' — link válido, miss_count zerado
+[main] '2ª Corrida 26 Anos Faça Bonito' — link válido, miss_count zerado
+[main] '6ª Corrida E Caminhada C.H.O.' — link válido, miss_count zerado
+[main] 'Desafio Pico Do Olho D'Água Sunset' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] 'Discover Trail - Marumbi 2026' — link válido, miss_count zerado
+[main] 'Chester Rotary'S 48Th Four On The Fourth' — link válido, miss_count zerado
+[main] 'Vai Brasil (Virtual)' — link válido, miss_count zerado
 [main] 'Corrida Da Independência' — link válido, miss_count zerado
+[main] 'Corrida Virtual - Eu Corro É Pra Comer' — link válido, miss_count zerado
+[main] 'Corrida Virtual Pátria Amada' — link válido, miss_count zerado
 [main] 'Corrida Movimento Rosa 2026' — link válido, miss_count zerado
 [main] '1 Desafio Elementos - Natureza Em Fúria Combo' — link válido, miss_count zerado
-[main] 'Corrida Virtual Pátria Amada' — link válido, miss_count zerado
-[main] '1º Desafio Yeshua' — link válido, miss_count zerado
-[main] 'Corrida Virtual - Eu Corro É Pra Comer' — link válido, miss_count zerado
-[main] 'Corrida Virtual Borá Correr Por Gabi Oliveira 2026' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
 [main] '1 Desafio Elementos - 1 Etapa Fogo' — link válido, miss_count zerado
 [main] 'Corrida Kazamigas Kit Rosa' — link válido, miss_count zerado
+[main] 'Corrida Virtual Borá Correr Por Gabi Oliveira 2026' — link válido, miss_count zerado
 [main] 'Desafio Virtual Destrava Rp 5K 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Big Five Run Series - Etapa Búfalo 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Crazy Animals - Cat 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Candy Run - Donuts 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Big Five Run - Elefante 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Desafio Do Guerreiro 19K - 2026' — link válido, miss_count zerado
-[main] 'Corrida Aumigo' — link válido, miss_count zerado
 [main] 'Corrida Virtual Vikings Run - Desafio Solo - 2026' — link válido, miss_count zerado
-[main] 'Desafio Corro Feliz, Corro Com Orgulho' — link válido, miss_count zerado
-[main] '1º Desafio Guerreiras Run' — link válido, miss_count zerado
-[main] 'Corrida Virtual Be A Star 2026' — link válido, miss_count zerado
-[main] 'Desafio Virtual Recicle Transparente' — link válido, miss_count zerado
+[main] 'Corrida Aumigo' — link válido, miss_count zerado
 [main] 'Corrida Virtual Vikings Valhalla 2026' — link válido, miss_count zerado
+[main] 'Corrida Virtual Be A Star 2026' — link válido, miss_count zerado
+[main] 'Maratona Internacional De Piracicaba - 2ª Edição' — link válido, miss_count zerado
+[main] '1º Desafio Guerreiras Run' — link válido, miss_count zerado
+[main] 'Desafio Corro Feliz, Corro Com Orgulho' — link válido, miss_count zerado
+[main] '1º Desafio Yeshua' — link válido, miss_count zerado
+[main] 'Meow Run' — link válido, miss_count zerado
+[main] 'Desafio Virtual Recicle Transparente' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 1ª Etapa Leão - Disciplina' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 2ª Etapa Lobo - Execução' — link válido, miss_count zerado
-[main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
 [main] '1º Desafio Gladiador Run' — link válido, miss_count zerado
 [main] '1º Desafio Fenix Run' — link válido, miss_count zerado
-[main] 'Meow Run' — link válido, miss_count zerado
+[main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
 [main] 5649 corridas após reconciliação
 [main] 5649 corridas após dedup final
-[main] buscando imagens para 200 evento(s) sem foto...
+[main] buscando imagens para 199 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 3/200 imagens encontradas
+[main] 2/199 imagens encontradas
 [main] removendo imagem inválida de 'Walt Disney World Marathon, Weekend Half Marathon': https://www.rundisney.com/events/disneyworld/media_102d0003d
 [main] removendo imagem inválida de 'Springmaid Trail Race Half Marathon': https://www.ascgreenway.org/wp-content/uploads/2022/12/medal
 [main] 2 imagem(ns) inválida(s) removida(s)

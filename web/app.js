@@ -746,7 +746,8 @@ function _updateEstadoLabel() {
       } else {
         const locData = _loadedLocations.get(pais);
         const sub = locData?.subdivisions?.find(s => s.code === estado);
-        estadoFilterLabel.textContent = _localizeSubdiv(pais, estado, _ESTADO_LABELS[estado] || (sub ? sub.name : estado));
+        const brLabel = pais === 'BR' ? _ESTADO_LABELS[estado] : null;
+        estadoFilterLabel.textContent = _localizeSubdiv(pais, estado, brLabel || (sub ? sub.name : estado));
       }
     } else {
       estadoFilterLabel.textContent = v;
@@ -853,14 +854,15 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     const localCountryLabel = pais === 'BR' ? T.groupBrasil : _localizeCountryByIso2(pais);
 
     // Known subdivisions present in data, sorted by display name
+    const _brLabel = s => pais === 'BR' ? _ESTADO_LABELS[s] : null;
     const subdivisions = [...estadoSet]
-      .filter(s => s && (_ESTADO_LABELS[s] || subdivByCode[s]))
+      .filter(s => s && (_brLabel(s) || subdivByCode[s]))
       .sort((a, b) => {
-        const la = _localizeSubdiv(pais, a, _ESTADO_LABELS[a] || subdivByCode[a] || a);
-        const lb = _localizeSubdiv(pais, b, _ESTADO_LABELS[b] || subdivByCode[b] || b);
+        const la = _localizeSubdiv(pais, a, _brLabel(a) || subdivByCode[a] || a);
+        const lb = _localizeSubdiv(pais, b, _brLabel(b) || subdivByCode[b] || b);
         return la.localeCompare(lb, LANG);
       });
-    const hasCountryLevel = estadoSet.has('') || [...estadoSet].some(s => !s || (!_ESTADO_LABELS[s] && !subdivByCode[s]));
+    const hasCountryLevel = estadoSet.has('') || [...estadoSet].some(s => !s || (!_brLabel(s) && !subdivByCode[s]));
 
     allGroups.push({ label: localCountryLabel, pais, build: () => {
       const isActive = state.estado === countryValue || state.estado.startsWith(pais + ':');
@@ -870,7 +872,7 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
         body.appendChild(makeOption(countryValue, allLabel));
       }
       for (const code of subdivisions) {
-        const label = _localizeSubdiv(pais, code, _ESTADO_LABELS[code] || subdivByCode[code] || code);
+        const label = _localizeSubdiv(pais, code, _brLabel(code) || subdivByCode[code] || code);
         body.appendChild(makeOption(pais + ':' + code, label));
       }
       return wrapper;

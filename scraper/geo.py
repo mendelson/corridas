@@ -139,5 +139,9 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
 
 
 def validate_estado(pais: str, estado: str) -> str:
-    """Return estado if it exists in the locations index for pais, else ''."""
-    return estado if estado in _SUBDIV_BY_CODE.get(pais, {}) else ""
+    """Return the subdivision code if estado is a known code or full name for pais, else ''."""
+    if not estado:
+        return ""
+    if estado in _SUBDIV_BY_CODE.get(pais, {}):
+        return estado
+    return _match_subdiv(pais, estado) or ""

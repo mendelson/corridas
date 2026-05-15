@@ -276,7 +276,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
                         addr = f"{addr}, {country}"
                     pais_iso2 = iso2
                     break
-            estado = ""
+            _r_pais, _r_estado = _geo.resolve(addr_lower, "", pais_iso2)
+            estado = _r_estado if _r_pais == pais_iso2 else ""
         else:
             _pais_geo, _estado_geo = _geo.resolve(addr, "", "BR")
             if _pais_geo and _pais_geo != "BR":

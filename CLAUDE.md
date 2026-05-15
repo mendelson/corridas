@@ -72,7 +72,7 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 
 ### CI workflows
 
-- **`scrape.yml`** — twice daily (06:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
+- **`scrape.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
 - **`test-sources.yml`** — daily 09:00 UTC + on push to `scraper/sources/`. Builds a job matrix dynamically: when shared infra (`models.py`, `utils.py`, `http_client.py`, `playwright_client.py`) changes, all sources are tested; otherwise only changed source files. Each job uploads a single-result artifact, then a final `update-readme` job aggregates all artifacts and runs `scripts/update_source_status.py` to refresh README tables and `data/source-status.json` (the source's row in README.md uses an embedded HTML comment `<!--module_name-->` for stable matching).
 - **`debug-scraper.yml`** — manual trigger with a `source` input; uploads full log as artifact.
 

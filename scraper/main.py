@@ -45,6 +45,9 @@ from .sources import (
     halfmarathons,
     asdeporte,
     fmaa,
+    # raceroster,    # inviável: API requer OAuth (client_id/secret) — ver README
+    # letsdothis,   # inviável: API requer Bearer token registrado — ver README
+    world_athletics,
 )
 from .sources.majors import (
     tokyo,
@@ -132,6 +135,8 @@ SOURCES = [
     # Mexican running calendars
     asdeporte,
     fmaa,
+    # IAAF Label Road Races
+    world_athletics,
 ]
 
 DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"

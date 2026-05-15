@@ -867,10 +867,8 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
     allGroups.push({ label: localCountryLabel, pais, build: () => {
       const isActive = state.estado === countryValue || state.estado.startsWith(pais + ':');
       const { wrapper, body } = _makeAccordionGroup(localCountryLabel, isActive);
-      if (subdivisions.length !== 1 || hasCountryLevel) {
-        const allLabel = pais === 'BR' ? T.allBrazil : T.allCountry(_localizeCountryByIso2(pais));
-        body.appendChild(makeOption(countryValue, allLabel));
-      }
+      const allLabel = pais === 'BR' ? T.allBrazil : T.allCountry(_localizeCountryByIso2(pais));
+      body.appendChild(makeOption(countryValue, allLabel));
       for (const code of subdivisions) {
         const label = _localizeSubdiv(pais, code, _brLabel(code) || subdivByCode[code] || code);
         body.appendChild(makeOption(pais + ':' + code, label));

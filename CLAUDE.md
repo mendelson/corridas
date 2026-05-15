@@ -28,6 +28,10 @@ python -m scraper.test_source majors/london
 # Manually re-run all source tests (workflow updates README + data/source-status.json)
 # → run "Test Sources" workflow with input="all"
 
+# Probe any URL before writing a scraper — shows JSON structure, __NEXT_DATA__,
+# auth requirements, pagination. Completes in ~1 min. Full response saved as artifact.
+# → run "Probe URL" workflow with inputs: url, method (GET/POST), params, body, headers
+
 # Serve the static site locally (any static server works, e.g.):
 python -m http.server -d web 8000
 ```
@@ -72,7 +76,7 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 
 ### CI workflows
 
-- **`scrape.yml`** — twice daily (06:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
+- **`scrape.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
 - **`test-sources.yml`** — daily 09:00 UTC + on push to `scraper/sources/`. Builds a job matrix dynamically: when shared infra (`models.py`, `utils.py`, `http_client.py`, `playwright_client.py`) changes, all sources are tested; otherwise only changed source files. Each job uploads a single-result artifact, then a final `update-readme` job aggregates all artifacts and runs `scripts/update_source_status.py` to refresh README tables and `data/source-status.json` (the source's row in README.md uses an embedded HTML comment `<!--module_name-->` for stable matching).
 - **`debug-scraper.yml`** — manual trigger with a `source` input; uploads full log as artifact.
 
@@ -107,6 +111,123 @@ The correct process before removing a source:
    - No events in the date range → not a failure; leave the source active.
 3. **Only drop a source** once you have unambiguous confirmation (explicit HTTP blocks across all proxy layers, or Cloudflare challenge HTML confirmed in logs) that the block is at datacenter-IP level and no bypass exists. Document the reason in the README commit message and the source-status.json.
 4. When dropping: remove the `.py` file, remove from `__init__.py`, `main.py` SOURCES list, `.github/workflows/test-sources.yml` dropdown, the README table row, and `data/source-status.json`.
+
+## Exploring and validating new sources
+
+**Never write a scraper before probing the target.** The correct flow is:
+probe → understand → implement → test via CI. Skipping the probe phase leads
+to scrapers that guess at field names and API paths, which wastes CI minutes
+and produces false "inviable" conclusions.
+
+### Phase 1 — Probe (before writing any code)
+
+Use the **"Probe URL"** GitHub Actions workflow (Actions → Probe URL → Run
+workflow). It runs in ~1 minute, uses the full proxy chain
+(direct → Scrapestack → Apify), and uploads the full response as an artifact.
+
+**Always probe at least two URLs per source:**
+
+1. The **HTML listing page** (e.g. `https://raceroster.com/events`) — even if
+   you suspect there's an API. Many platforms that protect their API still
+   serve all data in `__NEXT_DATA__` on the public HTML page.
+2. Any **suspected API endpoint** (e.g. `https://raceroster.com/api/v2/events`).
+
+**Interpreting probe output:**
+
+| Result | Meaning | Strategy |
+|---|---|---|
+| HTTP 200 + JSON with event list | Public REST API ✅ | REST scraper, paginate |
+| HTTP 200 + HTML with `__NEXT_DATA__` containing events | Next.js SSR ✅ | Extract `__NEXT_DATA__` (see `asdeporte.py`) |
+| HTTP 200 + HTML, no `__NEXT_DATA__`, no embedded JSON | Client-side SPA | Playwright or inviable |
+| HTTP 401 / 403 on API, but 200 on HTML page | API requires auth, HTML is public | Scrape HTML instead |
+| HTTP 401 / 403 on both | Auth required or WAF | Check if there's a widget/embed endpoint |
+| HTTP 200 + JSON `{"errors": [...]}` | API exists but auth/schema wrong | Fix query or headers |
+
+**Probe inputs reference:**
+
+```
+URL:     https://example.com/events?category=running
+Method:  GET
+Params:  {"page": 1, "per_page": 5}          ← query string params (GET)
+Body:    {"operationName":"X","variables":{}} ← POST body (GraphQL)
+Headers: {"Authorization": "Bearer token"}   ← extra headers
+```
+
+### Phase 2 — Understand the data structure
+
+From the probe artifact (`probe-output/response.txt`) and console output, map:
+
+- **Event name**: which field? (`name`, `title`, `nameEvent`, …)
+- **Date**: which field and format? ISO `YYYY-MM-DD`, Unix timestamp, `dd/mm/yyyy`?
+- **Location**: city, state/region, country — separate fields or a single string?
+- **Distances**: structured sub-events array, or embedded in the event name?
+- **Pagination**: `page`/`per_page` params? `Link` response header? Cursor-based?
+- **Auth**: did the probe succeed without credentials? If 401/403, is there a
+  public HTML alternative?
+
+Spend five minutes reading the probe output before writing a single line of code.
+
+### Phase 3 — Implement
+
+Choose the right pattern:
+
+| Probe finding | Reference scraper |
+|---|---|
+| Paginated REST JSON API | `runsignup.py`, `halfmarathons.py` |
+| Next.js `__NEXT_DATA__` | `asdeporte.py` |
+| Strapi / Next.js with token in JS bundle | `tf_sports.py` |
+| Single known event page | `scraper/sources/majors/_base.py` |
+| Playwright needed | `largada_esportiva.py` |
+
+Multi-sport platforms (anything listing cycling, triathlon, yoga, …) **must**
+have both `_RUNNING_KW` (inclusion) and `_NON_RUNNING` (exclusion) regexes.
+Check `sympla.py` for the canonical pattern.
+
+### Phase 4 — Test via CI (not locally)
+
+Outbound HTTP is blocked in the Claude Code sandbox. Do not attempt local
+`python -m scraper.test_source` runs and conclude a source is broken — it
+will always return 0 events in the sandbox. Use CI exclusively:
+
+```
+# Quick test — matrix job, result visible in ~3 min:
+Actions → "Test Sources" → Run workflow → source: <name>
+
+# Full log with all print() output — best for debugging field parsing:
+Actions → "Debug Scraper"  → Run workflow → source: <name>
+```
+
+Download the log artifact and look for:
+- The HTTP status on each attempt (direct / Scrapestack / Apify)
+- How many raw events were fetched before filtering
+- Which filter (`_is_running_event`, `_parse_distances`, date check) dropped events
+- Whether the JSON structure matched what you saw in the probe
+
+### Phase 5 — Validate results
+
+A passing CI run (`✅ N eventos`) is necessary but not sufficient. Check:
+
+- **Diversity**: are events from multiple cities/regions, or all the same?
+- **Distances**: do they look right? (1–250 km, or `"N mi"` for miles)
+- **Dates**: all in the future and within the lookahead window?
+- **No garbage**: titles that look like nav links, JS variable names, empty strings?
+- **No non-running**: spot-check for cycling, triathlon, swimming events
+- **Stable IDs**: run twice — do the same events get the same `id`?
+
+### Common pitfalls
+
+- **Only testing the API, not the HTML page.** Platforms like Race Roster have
+  a public `/events` page that may have `__NEXT_DATA__` even when their API
+  requires OAuth. Always probe both.
+- **Assuming "0 eventos" = inviable.** Could be: wrong date range, seasonal
+  lull, filter too strict, or the scraper crashed silently. Read the full log.
+- **Rotating credentials.** If a GraphQL API needs a key that rotates (e.g.
+  World Athletics), the HTML page is often the viable alternative.
+- **Sandbox HTTP block.** `httpx`, `WebFetch`, and local `test_source` all
+  return 403 in the Claude Code sandbox. Never declare a source inviable based
+  on local/sandbox results alone.
+- **Baking dates into IDs.** IDs must be stable across runs. `event_123_2026`
+  is fine; `event_123_2026-05-15` forces re-creation on every scrape run.
 
 ## Sandbox / local-dev caveats
 

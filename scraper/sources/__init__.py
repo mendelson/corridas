@@ -23,4 +23,7 @@ from . import (
     halfmarathons,
     asdeporte,
     fmaa,
+    raceroster,
+    letsdothis,
+    world_athletics,
 )

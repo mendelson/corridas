@@ -60,6 +60,9 @@ GitHub Actions.
 | --- | --- | --- | --- | --- | --- | --- |
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Desde 2026-05-12: 429 direto + 429 Scrapestack + 403 Apify em todas as tentativas — todos os métodos bloqueados. Miss_count acumulando nos ~3100 eventos em cache. | 2026-05-15 18:36 | ❌ 0 eventos | 2026-05-12 11:21 |
+| Race Roster<!--raceroster--> | ✅ | `raceroster.com/api/v2/events/search` | REST API paginada; principal plataforma de cadastro CA/EUA; distâncias em milhas preservadas como string | — | 🆕 | — |
+| Let's Do This<!--letsdothis--> | ✅ | `api.letsdothis.com/v1/events` | REST API; plataforma UK/global multi-esporte — filtros rígidos de inclusão/exclusão para corridas | — | 🆕 | — |
+| World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/api/graphql/query` | GraphQL API; calendário IAAF — apenas corridas de rua com Label (Platinum/Gold/Silver/Bronze) | — | 🆕 | — |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 
 ---

@@ -226,7 +226,8 @@ def _is_road_running(comp: dict) -> bool:
 
 
 def _has_label(comp: dict) -> bool:
-    category = (comp.get("rankingCategory") or "").lower()
+    # rankingCategory may be "GOLD_LABEL_ROAD_RACE" or "Gold Label" — normalise both
+    category = (comp.get("rankingCategory") or "").lower().replace("_", " ")
     return any(kw in category for kw in _LABEL_KW)
 
 

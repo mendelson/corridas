@@ -1,0 +1,72 @@
+name: Probe URL
+
+# Quick API probe for source discovery.
+# Run this before writing a scraper to see exactly what a URL returns:
+# field names, pagination structure, auth requirements, etc.
+# Completes in ~1 minute. Full response saved as artifact.
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'URL to probe'
+        required: true
+        type: string
+      method:
+        description: 'HTTP method'
+        required: false
+        default: 'GET'
+        type: choice
+        options: [GET, POST]
+      params:
+        description: 'Query params (JSON object, e.g. {"page":1,"per_page":5})'
+        required: false
+        default: ''
+        type: string
+      body:
+        description: 'POST body (JSON object, e.g. {"query":"...","variables":{}})'
+        required: false
+        default: ''
+        type: string
+      headers:
+        description: 'Extra headers (JSON object, e.g. {"Authorization":"Bearer token"})'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  probe:
+    name: Probe ${{ inputs.method }} ${{ inputs.url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run probe
+        env:
+          SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
+        run: |
+          python scripts/probe_url.py \
+            "${{ inputs.url }}" \
+            "${{ inputs.method }}" \
+            '${{ inputs.params }}' \
+            '${{ inputs.body }}' \
+            '${{ inputs.headers }}'
+
+      - name: Upload full response
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: probe-response
+          path: probe-output/
+          retention-days: 3

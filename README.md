@@ -16,7 +16,7 @@ GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-12 20:30 | ❌ | 2026-05-12 18:27 |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-15 17:43 | ✅ | 2026-05-15 17:43 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-12 11:15 | ✅ | 2026-05-12 11:15 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:15 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-12 20:30 | ❌ | 2026-05-12 11:16 |
@@ -59,7 +59,7 @@ GitHub Actions.
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-12 20:30 | ❌ | 2026-05-12 11:19 |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Estava retornando 0 eventos porque a API mudou o formato esperado de datas de `MM/DD/YYYY` para ISO `YYYY-MM-DD` — corrigido em 2026-05-11. | 2026-05-12 20:30 | ❌ | 2026-05-12 11:21 |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Estava retornando 0 eventos porque a API mudou o formato esperado de datas de `MM/DD/YYYY` para ISO `YYYY-MM-DD` — corrigido em 2026-05-11. | 2026-05-15 17:42 | ❌ 0 eventos | 2026-05-12 11:21 |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-12 11:16 | ✅ | 2026-05-12 11:16 |
 
 ---

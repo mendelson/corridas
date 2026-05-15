@@ -142,11 +142,19 @@ def run_probe(cfg: dict) -> list[str]:
             )
             lines.append(f"\n[direct POST] HTTP {resp.status_code}")
         else:
-            kw = {}
-            if params:  kw["params"] = params
-            if extra_h: kw["headers"] = extra_h
-            resp = get(url, source="probe", timeout=30, **kw)
-            lines.append(f"\n[get chain]   HTTP {resp.status_code}")
+            if extra_h:
+                # get() doesn't accept extra headers — use httpx directly with merged headers
+                merged = {**HEADERS, **extra_h}
+                resp = httpx.get(
+                    url, params=params, headers=merged,
+                    follow_redirects=True, timeout=TIMEOUT,
+                )
+                lines.append(f"\n[direct GET]  HTTP {resp.status_code}")
+            else:
+                kw = {}
+                if params: kw["params"] = params
+                resp = get(url, source="probe", timeout=30, **kw)
+                lines.append(f"\n[get chain]   HTTP {resp.status_code}")
     except Exception as e:
         lines.append(f"\nERROR: {e}")
         return lines

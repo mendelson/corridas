@@ -1,42 +1,39 @@
-"""Scraper for World Athletics Competition Calendar — IAAF Label Road Races.
+"""Scraper for World Athletics Label Road Races — public HTML page.
 
-Targets Platinum, Gold, Silver and Bronze Label road races worldwide from the
-World Athletics official competition calendar.
+Targets the annually-updated labeled road race list at:
+  https://worldathletics.org/competitions/world-athletics-label-road-races
 
-Strategy:
-  1. POST a GraphQL query to the public WA API endpoint to get labeled road
-     race competitions. Falls back to the HTML label-road-races page if the
-     API fails.
-  2. Filter client-side: road-running disciplines only, IAAF label required.
-  3. Infer distances from competition name (marathon, half, 10K, 5K…).
+The page is a Next.js SSR page.  We extract the embedded __NEXT_DATA__ JSON
+from the page HTML and parse competition entries from the page props.
 
-Note: The WA GraphQL API uses POST with a well-known operationName and
-schema; this is the same endpoint the WA website itself uses.
+Only events with an IAAF label are included (Platinum, Gold, Silver, Bronze).
+Distances are inferred from the competition name.
+
+Note: The WA GraphQL API requires rotating credentials that are embedded in
+the site's JS and change periodically — that approach is not maintainable.
+This HTML-scraping approach uses the public page directly, with the standard
+http_client proxy chain (Scrapestack / Apify) as fallback for Cloudflare.
 """
 from __future__ import annotations
+import json
 import re
 from datetime import date, timedelta
 
-import httpx
+from bs4 import BeautifulSoup
 
-from ..http_client import HEADERS, TIMEOUT
+from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 
 BASE        = "https://worldathletics.org"
 SOURCE_NAME = "World Athletics"
 
-_LOOKAHEAD_DAYS = 730   # two years ahead — majors announce early
-_PAGE_SIZE      = 100
+_PAGE_URL   = f"{BASE}/competitions/world-athletics-label-road-races"
+_LOOKAHEAD_DAYS = 730  # two years — labeled races announced well in advance
 
-_GQL_ENDPOINT = f"{BASE}/api/graphql/query"
-
-# Road-running WA discipline codes
-_ROAD_DISC: set[str] = {"RD", "MAR", "HMR"}
-
-# Text fragments that indicate an IAAF label (case-insensitive substring match)
+# Text fragments that signal an IAAF label (matched after underscore→space normalisation)
 _LABEL_KW: tuple[str, ...] = (
-    "platinum", "gold label", "silver label", "bronze label",
+    "platinum", "gold", "silver", "bronze",
     "world athletics label", "iaaf label", "elite label",
 )
 
@@ -47,88 +44,43 @@ _NON_RUNNING = re.compile(
 
 # ISO-2 → Portuguese country name
 _ISO_TO_PT: dict[str, str] = {
-    "JP": "Japão",       "US": "EUA",            "GB": "Reino Unido",
-    "DE": "Alemanha",    "FR": "França",          "IT": "Itália",
-    "ES": "Espanha",     "KE": "Quênia",          "ET": "Etiópia",
-    "MA": "Marrocos",    "NG": "Nigéria",          "ZA": "África do Sul",
-    "AU": "Austrália",   "NZ": "Nova Zelândia",   "KR": "Coreia do Sul",
-    "CN": "China",       "BR": "Brasil",           "AR": "Argentina",
-    "CL": "Chile",       "MX": "México",           "NL": "Países Baixos",
-    "SE": "Suécia",      "NO": "Noruega",          "DK": "Dinamarca",
-    "FI": "Finlândia",   "BE": "Bélgica",          "AT": "Áustria",
-    "CH": "Suíça",       "PL": "Polônia",          "CZ": "República Tcheca",
-    "HU": "Hungria",     "GR": "Grécia",           "PT": "Portugal",
-    "IE": "Irlanda",     "CA": "Canadá",           "IN": "Índia",
-    "AE": "Emirados Árabes", "BH": "Barein",       "QA": "Catar",
-    "TZ": "Tanzânia",    "UG": "Uganda",           "RW": "Ruanda",
-    "EG": "Egito",       "CM": "Camarões",         "GH": "Gana",
-    "TH": "Tailândia",   "SG": "Singapura",        "MY": "Malásia",
-    "IL": "Israel",      "TR": "Turquia",           "RU": "Rússia",
-    "UA": "Ucrânia",     "RO": "Romênia",          "HR": "Croácia",
-    "OM": "Omã",         "KW": "Kuwait",           "SA": "Arábia Saudita",
-    "CO": "Colômbia",    "PE": "Peru",             "EC": "Equador",
-    "BO": "Bolívia",     "PY": "Paraguai",         "UY": "Uruguai",
+    "JP": "Japão",    "US": "EUA",         "GB": "Reino Unido",
+    "DE": "Alemanha", "FR": "França",       "IT": "Itália",
+    "ES": "Espanha",  "KE": "Quênia",       "ET": "Etiópia",
+    "MA": "Marrocos", "NG": "Nigéria",      "ZA": "África do Sul",
+    "AU": "Austrália","NZ":"Nova Zelândia", "KR": "Coreia do Sul",
+    "CN": "China",    "BR": "Brasil",       "AR": "Argentina",
+    "CL": "Chile",    "MX": "México",       "NL": "Países Baixos",
+    "SE": "Suécia",   "NO": "Noruega",      "DK": "Dinamarca",
+    "FI": "Finlândia","BE": "Bélgica",      "AT": "Áustria",
+    "CH": "Suíça",    "PL": "Polônia",      "CZ": "República Tcheca",
+    "HU": "Hungria",  "GR": "Grécia",       "PT": "Portugal",
+    "IE": "Irlanda",  "CA": "Canadá",       "IN": "Índia",
+    "AE": "Emirados Árabes", "BH": "Barein", "QA": "Catar",
+    "TZ": "Tanzânia", "UG": "Uganda",       "RW": "Ruanda",
+    "EG": "Egito",    "CM": "Camarões",     "GH": "Gana",
+    "TH": "Tailândia","SG": "Singapura",    "IL": "Israel",
+    "TR": "Turquia",  "CO": "Colômbia",     "PE": "Peru",
+    "BM": "Bermuda",  "OM": "Omã",          "SA": "Arábia Saudita",
 }
-
-# GraphQL query using the same shape the WA website sends
-_GQL_QUERY = """
-query GetCalendarEvents(
-  $startDate: String
-  $endDate: String
-  $regionType: String
-  $disciplineCode: String
-  $currentPage: Int
-  $pageSize: Int
-) {
-  getCalendarEvents(
-    startDate: $startDate
-    endDate: $endDate
-    regionType: $regionType
-    disciplineCode: $disciplineCode
-    currentPage: $currentPage
-    pageSize: $pageSize
-  ) {
-    currentPage
-    pageSize
-    totalCount
-    competitions {
-      id
-      name
-      startDate
-      endDate
-      venue
-      rankingCategory
-      disciplines {
-        name
-        disciplineCode
-      }
-      country {
-        name
-        code
-      }
-    }
-  }
-}
-"""
 
 
 # ---------------------------------------------------------------------------
 def scrape() -> list[Corrida]:
     today_s = today_iso()
-    start   = date.today().strftime("%Y-%m-%d")
-    end     = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).strftime("%Y-%m-%d")
 
-    competitions = _fetch_all(start, end)
+    competitions = _fetch_competitions()
     if not competitions:
-        print(f"[{SOURCE_NAME}] nenhum resultado da API")
+        print(f"[{SOURCE_NAME}] nenhum dado obtido da página")
         return []
 
     print(f"[{SOURCE_NAME}] {len(competitions)} competições brutas")
 
     corridas: list[Corrida] = []
     skipped = 0
+    end_date = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).isoformat()
     for comp in competitions:
-        c = _parse_competition(comp, today_s)
+        c = _parse_competition(comp, today_s, end_date)
         if c:
             corridas.append(c)
         else:
@@ -138,96 +90,101 @@ def scrape() -> list[Corrida]:
     return corridas
 
 
-def _fetch_all(start: str, end: str) -> list[dict]:
-    result: list[dict] = []
-    page = 1
-    while True:
-        batch = _fetch_page(start, end, page)
-        if batch is None:
-            break
-        comps     = batch.get("competitions") or []
-        total     = batch.get("totalCount") or 0
-        page_size = batch.get("pageSize") or _PAGE_SIZE
-        result.extend(comps)
-        print(f"[{SOURCE_NAME}] página {page}: {len(comps)} eventos (total={total})")
-        if not comps or len(result) >= total or len(comps) < page_size:
-            break
-        page += 1
-    return result
-
-
-def _fetch_page(start: str, end: str, page: int) -> dict | None:
-    payload = {
-        "operationName": "GetCalendarEvents",
-        "query": _GQL_QUERY,
-        "variables": {
-            "startDate":      start,
-            "endDate":        end,
-            "regionType":     "world",
-            "disciplineCode": "RD",
-            "currentPage":    page,
-            "pageSize":       _PAGE_SIZE,
-        },
-    }
-    gql_headers = {
-        **HEADERS,
-        "Content-Type": "application/json",
-        "Accept":        "application/json",
-        "x-app-type":   "web",
-    }
+def _fetch_competitions() -> list[dict]:
+    """Fetch the WA label road races page and extract the competition list."""
     try:
-        resp = httpx.post(
-            _GQL_ENDPOINT,
-            json=payload,
-            headers=gql_headers,
-            follow_redirects=True,
-            timeout=TIMEOUT,
-        )
+        resp = get(_PAGE_URL, source=SOURCE_NAME, timeout=30)
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro HTTP página {page}: {e}")
-        return None
+        print(f"[{SOURCE_NAME}] erro ao buscar página: {e}")
+        return []
 
     if resp.status_code != 200:
-        print(f"[{SOURCE_NAME}] HTTP {resp.status_code} página {page}")
-        return None
+        print(f"[{SOURCE_NAME}] HTTP {resp.status_code}")
+        return []
 
+    # Strategy 1: extract __NEXT_DATA__ embedded JSON
+    comps = _parse_next_data(resp.text)
+    if comps:
+        return comps
+
+    # Strategy 2: parse HTML tables / cards directly
+    comps = _parse_html_table(resp.text)
+    if comps:
+        return comps
+
+    print(f"[{SOURCE_NAME}] nenhuma estrutura de dados reconhecida na página")
+    return []
+
+
+def _parse_next_data(html: str) -> list[dict]:
+    """Extract competition list from Next.js __NEXT_DATA__ script tag."""
+    soup = BeautifulSoup(html, "lxml")
+    tag  = soup.find("script", id="__NEXT_DATA__")
+    if not tag or not tag.string:
+        return []
     try:
-        data = resp.json()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] JSON inválido página {page}: {e}")
-        return None
+        data = json.loads(tag.string)
+    except Exception:
+        return []
 
-    if page == 1:
-        errors = data.get("errors")
-        if errors:
-            print(f"[{SOURCE_NAME}] erros GraphQL: {errors}")
+    # Walk common pageProps structures
+    pp = data.get("props", {}).get("pageProps", {})
+    for key in (
+        "competitions", "labelRaces", "events", "races",
+        "calendarEvents", "roadRaces", "results",
+    ):
+        items = pp.get(key) or []
+        if isinstance(items, list) and items:
+            print(f"[{SOURCE_NAME}] __NEXT_DATA__['{key}']: {len(items)} itens")
+            return items
 
-    return (
-        (data.get("data") or {}).get("getCalendarEvents")
-        or data.get("getCalendarEvents")
-        or {}
-    )
+    # Try nested structures
+    for v in pp.values():
+        if isinstance(v, dict):
+            for key2 in ("competitions", "events", "races", "items", "data"):
+                items = v.get(key2) or []
+                if isinstance(items, list) and items:
+                    return items
+        if isinstance(v, list) and v and isinstance(v[0], dict):
+            if any(k in v[0] for k in ("name", "startDate", "venue", "country")):
+                return v
+
+    return []
+
+
+def _parse_html_table(html: str) -> list[dict]:
+    """Fallback: try to extract event data from HTML tables or structured divs."""
+    soup  = BeautifulSoup(html, "lxml")
+    items = []
+
+    # Look for JSON-like data in any script tag
+    for script in soup.find_all("script"):
+        src = script.string or ""
+        if "startDate" in src or "rankingCategory" in src:
+            # Try to extract a JSON array from JS assignment
+            for m in re.finditer(r'(\[\s*\{.*?\}\s*\])', src, re.DOTALL):
+                try:
+                    parsed = json.loads(m.group(1))
+                    if isinstance(parsed, list) and parsed:
+                        if any(k in parsed[0] for k in ("name", "startDate")):
+                            items.extend(parsed)
+                except Exception:
+                    pass
+
+    return items
 
 
 # ---------------------------------------------------------------------------
-def _is_road_running(comp: dict) -> bool:
-    disciplines = comp.get("disciplines") or []
-    for d in disciplines:
-        code = (d.get("disciplineCode") or d.get("code") or "").upper()
-        name = (d.get("name") or "").lower()
-        if code in _ROAD_DISC:
-            return True
-        if any(kw in name for kw in ("road", "marathon", "half marathon")):
-            return True
-    if not disciplines:
-        # API was queried with disciplineCode=RD so absence is fine
-        return True
-    return False
-
-
 def _has_label(comp: dict) -> bool:
-    # rankingCategory may be "GOLD_LABEL_ROAD_RACE" or "Gold Label" — normalise both
-    category = (comp.get("rankingCategory") or "").lower().replace("_", " ")
+    # rankingCategory can be "GOLD_LABEL_ROAD_RACE" or "Gold Label"
+    category = (
+        comp.get("rankingCategory")
+        or comp.get("labelCode")
+        or comp.get("label")
+        or comp.get("category")
+        or ""
+    )
+    category = str(category).lower().replace("_", " ")
     return any(kw in category for kw in _LABEL_KW)
 
 
@@ -241,7 +198,6 @@ def _parse_date(raw: str | None) -> str | None:
 
 
 def _infer_distances(name: str) -> list[Distancia]:
-    """Infer race distances from competition name."""
     name_l = name.lower()
     dists: list[float | str] = []
 
@@ -249,13 +205,11 @@ def _infer_distances(name: str) -> list[Distancia]:
         dists.append(42.195)
     if "half marathon" in name_l or "half-marathon" in name_l or "21k" in name_l:
         dists.append(21.097)
-
     for m in re.finditer(r"\b(\d+(?:\.\d+)?)\s*k(?:m)?\b", name_l):
         try:
             dists.append(float(m.group(1)))
         except ValueError:
             pass
-
     for m in re.finditer(r"\b(\d+(?:\.\d+)?)\s*mi(?:le)?\b", name_l):
         try:
             n = float(m.group(1))
@@ -273,8 +227,8 @@ def _infer_distances(name: str) -> list[Distancia]:
     return result
 
 
-def _parse_competition(comp: dict, today: str) -> Corrida | None:
-    name_raw = (comp.get("name") or "").strip()
+def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
+    name_raw = (comp.get("name") or comp.get("title") or "").strip()
     if not name_raw:
         return None
 
@@ -285,19 +239,17 @@ def _parse_competition(comp: dict, today: str) -> Corrida | None:
     if _NON_RUNNING.search(titulo):
         return None
 
-    if not _is_road_running(comp):
-        return None
-
     if not _has_label(comp):
         return None
 
-    data_evento = _parse_date(comp.get("startDate") or comp.get("endDate"))
-    if not data_evento or data_evento < today:
+    data_evento = _parse_date(
+        comp.get("startDate") or comp.get("start_date") or comp.get("date")
+    )
+    if not data_evento or data_evento < today or data_evento > end_date:
         return None
 
     distancias = _infer_distances(titulo)
     if not distancias:
-        # Infer from keywords when no distance appears in the title
         name_l = titulo.lower()
         if "marathon" in name_l and "half" not in name_l:
             distancias = [Distancia(km=42.195, data=None, horario=None)]
@@ -310,17 +262,24 @@ def _parse_competition(comp: dict, today: str) -> Corrida | None:
         else:
             return None
 
+    # Location
     country_info = comp.get("country") or {}
-    pais         = (country_info.get("code") or "").strip().upper() or "INT"
-    country_name = (country_info.get("name") or "").strip()
-    country_pt   = _ISO_TO_PT.get(pais, country_name or pais)
+    if isinstance(country_info, str):
+        pais        = country_info.upper()
+        country_pt  = _ISO_TO_PT.get(pais, pais)
+    else:
+        pais        = (country_info.get("code") or "").strip().upper() or "INT"
+        country_name = (country_info.get("name") or "").strip()
+        country_pt  = _ISO_TO_PT.get(pais, country_name or pais)
 
-    venue      = (comp.get("venue") or "").strip()
+    venue = (comp.get("venue") or comp.get("city") or "").strip()
     localizacao = ", ".join(p for p in (venue, country_pt) if p) or "Internacional"
 
     comp_id = comp.get("id") or slugify(titulo)
     year    = data_evento[:4]
-    link    = f"{BASE}/competition/{slugify(titulo)}/{comp_id}"
+    link    = (comp.get("url") or comp.get("link") or f"{BASE}/competition/{slugify(titulo)}/{comp_id}")
+    if link and not link.startswith("http"):
+        link = BASE + ("" if link.startswith("/") else "/") + link
 
     now = now_iso()
     return Corrida(

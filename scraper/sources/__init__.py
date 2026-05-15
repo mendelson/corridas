@@ -23,7 +23,7 @@ from . import (
     halfmarathons,
     asdeporte,
     fmaa,
-    raceroster,
-    letsdothis,
+    # raceroster,     # inviável: API requer OAuth (client_id/secret)
+    # letsdothis,    # inviável: API requer Bearer token de conta registrada
     world_athletics,
 )

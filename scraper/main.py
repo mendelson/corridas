@@ -45,8 +45,8 @@ from .sources import (
     halfmarathons,
     asdeporte,
     fmaa,
-    raceroster,
-    letsdothis,
+    # raceroster,    # inviável: API requer OAuth (client_id/secret) — ver README
+    # letsdothis,   # inviável: API requer Bearer token registrado — ver README
     world_athletics,
 )
 from .sources.majors import (
@@ -132,10 +132,6 @@ SOURCES = [
     # US/global running calendar
     runsignup,
     halfmarathons,
-    # North American race registration
-    raceroster,
-    # UK/global sports events (running category)
-    letsdothis,
     # Mexican running calendars
     asdeporte,
     fmaa,

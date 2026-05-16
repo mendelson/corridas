@@ -22,8 +22,10 @@ _STRAPI_PARAMS = (
 )
 # run-series: public circuit events (accessible with token)
 LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
-# events: individual events like Flying Run, etc. (requires Bearer token)
-LIST_URL_EVENTS = f"{API_BASE}/events{_STRAPI_PARAMS}"
+# events: individual events — use preview to capture draft/unpublished events like Flying Run
+LIST_URL_EVENTS = f"{API_BASE}/events{_STRAPI_PARAMS}".replace(
+    "publicationState=live", "publicationState=preview"
+)
 SOURCE_NAME = "TF Sports"
 
 _TIMEOUT = 30

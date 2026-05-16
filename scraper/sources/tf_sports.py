@@ -615,15 +615,18 @@ def scrape() -> list[Corrida]:
 
     events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
     print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")
-    corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
+    ev_running = [e for e in events_raw if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(ev_running, now, "tfse_", f"{BASE}/aulas-e-eventos")
 
     events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
     print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
-    corridas += _events_to_corridas(events_no_date, now, "tfse_", f"{BASE}/events")
+    ev_nd_running = [e for e in events_no_date if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(ev_nd_running, now, "tfse_", f"{BASE}/aulas-e-eventos")
 
     events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
     print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
-    corridas += _events_to_corridas(events_recent, now, "tfse_", f"{BASE}/events")
+    ev_rec_running = [e for e in events_recent if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(ev_rec_running, now, "tfse_", f"{BASE}/aulas-e-eventos")
 
     experiences_raw = _fetch_all_pages(_experiences_url(), api_headers, token, "experiences")
     print(f"[{SOURCE_NAME}] experiences: {len(experiences_raw)} eventos brutos")

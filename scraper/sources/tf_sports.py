@@ -13,15 +13,41 @@ from .. import geo as _geo
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
-_STRAPI_PARAMS = (
+def _run_series_url() -> str:
+    """Upcoming run-series events (published + drafts) with startDate >= today."""
+    today = today_iso()
+    return (
+        f"{API_BASE}/run-series"
+        "?publicationState=preview"
+        "&populate[eventData][populate]=*"
+        "&populate[pageSeo][populate]=*"
+        "&sort=eventData.startDate:asc"
+        f"&filters[eventData][startDate][$gte]={today}"
+        "&pagination[pageSize]=100"
+    )
+
+
+# run-series drafts without a startDate yet — sort newest first so Flying Run-style
+# events that are still being set up don't get buried behind historical records.
+_RUN_SERIES_NO_DATE = (
+    f"{API_BASE}/run-series"
     "?publicationState=preview"
     "&populate[eventData][populate]=*"
     "&populate[pageSeo][populate]=*"
-    "&sort=eventData.startDate:asc"
+    "&sort=id:desc"
+    "&filters[eventData][startDate][$null]=true"
     "&pagination[pageSize]=100"
 )
-# run-series: circuit events including unpublished drafts (preview mode)
-LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
+# 100 most recently created run-series entries — catches drafts with eventData=null
+# (where even the null-date filter above wouldn't match).
+_RUN_SERIES_RECENT = (
+    f"{API_BASE}/run-series"
+    "?publicationState=preview"
+    "&populate[eventData][populate]=*"
+    "&populate[pageSeo][populate]=*"
+    "&sort=id:desc"
+    "&pagination[pageSize]=100"
+)
 
 
 def _events_list_url() -> str:
@@ -534,9 +560,17 @@ def scrape() -> list[Corrida]:
 
     now = now_iso()
 
-    run_series = _fetch_all_pages(LIST_URL, api_headers, token, "run-series")
+    run_series = _fetch_all_pages(_run_series_url(), api_headers, token, "run-series")
     print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
     corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
+
+    run_series_nd = _fetch_all_pages(_RUN_SERIES_NO_DATE, api_headers, token, "run-series(sem data)")
+    print(f"[{SOURCE_NAME}] run-series(sem data): {len(run_series_nd)} eventos brutos")
+    corridas += _events_to_corridas(run_series_nd, now, "tfs_", f"{BASE}/run-series")
+
+    run_series_recent = _fetch_all_pages(_RUN_SERIES_RECENT, api_headers, token, "run-series(recentes)")
+    print(f"[{SOURCE_NAME}] run-series(recentes): {len(run_series_recent)} eventos brutos")
+    corridas += _events_to_corridas(run_series_recent, now, "tfs_", f"{BASE}/run-series")
 
     events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
     print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")

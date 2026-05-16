@@ -7,23 +7,124 @@ import httpx
 from bs4 import BeautifulSoup
 
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, infer_estado, now_iso
+from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
 from ..http_client import get as _http_get
 from .. import geo as _geo
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
-_STRAPI_PARAMS = (
-    "?publicationState=live"
+def _run_series_url() -> str:
+    """Upcoming run-series events (published + drafts) with startDate >= today."""
+    today = today_iso()
+    return (
+        f"{API_BASE}/run-series"
+        "?publicationState=preview"
+        "&populate[eventData][populate]=*"
+        "&populate[pageSeo][populate]=*"
+        "&sort=eventData.startDate:asc"
+        f"&filters[eventData][startDate][$gte]={today}"
+        "&pagination[pageSize]=100"
+    )
+
+
+# run-series drafts without a startDate yet — sort newest first so Flying Run-style
+# events that are still being set up don't get buried behind historical records.
+_RUN_SERIES_NO_DATE = (
+    f"{API_BASE}/run-series"
+    "?publicationState=preview"
     "&populate[eventData][populate]=*"
     "&populate[pageSeo][populate]=*"
-    "&sort=eventData.startDate:asc"
+    "&sort=id:desc"
+    "&filters[eventData][startDate][$null]=true"
     "&pagination[pageSize]=100"
 )
-# run-series: public circuit events (accessible with token)
-LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
-# events: individual events like Flying Run, etc. (requires Bearer token)
-LIST_URL_EVENTS = f"{API_BASE}/events{_STRAPI_PARAMS}"
+# 100 most recently created run-series entries — catches drafts with eventData=null
+# (where even the null-date filter above wouldn't match).
+_RUN_SERIES_RECENT = (
+    f"{API_BASE}/run-series"
+    "?publicationState=preview"
+    "&populate[eventData][populate]=*"
+    "&populate[pageSeo][populate]=*"
+    "&sort=id:desc"
+    "&pagination[pageSize]=100"
+)
+
+
+def _events_list_url() -> str:
+    """Upcoming events (startDate >= today) in preview mode."""
+    today = today_iso()
+    return (
+        f"{API_BASE}/events"
+        "?publicationState=preview"
+        "&populate[eventData][populate]=*"
+        "&populate[pageSeo][populate]=*"
+        "&sort=eventData.startDate:asc"
+        f"&filters[eventData][startDate][$gte]={today}"
+        "&pagination[pageSize]=100"
+    )
+
+
+# Events with no startDate set (draft events pending date fill-in).
+_EVENTS_URL_NO_DATE = (
+    f"{API_BASE}/events"
+    "?publicationState=preview"
+    "&populate[eventData][populate]=*"
+    "&populate[pageSeo][populate]=*"
+    "&sort=id:desc"
+    "&filters[eventData][startDate][$null]=true"
+    "&pagination[pageSize]=100"
+)
+# 100 most recently created events regardless of date — captures events that use
+# a non-standard date field or have startDate stored in an unexpected format.
+_EVENTS_URL_RECENT = (
+    f"{API_BASE}/events"
+    "?publicationState=preview"
+    "&populate[eventData][populate]=*"
+    "&populate[pageSeo][populate]=*"
+    "&sort=id:desc"
+    "&pagination[pageSize]=100"
+)
+
+
+def _experiences_url() -> str:
+    """Upcoming TF Experience events (startDate >= today) in preview mode."""
+    today = today_iso()
+    return (
+        f"{API_BASE}/experiences"
+        "?publicationState=preview"
+        "&populate=deep,5"
+        "&sort=eventData.startDate:asc"
+        f"&filters[eventData][startDate][$gte]={today}"
+        "&pagination[pageSize]=100"
+    )
+
+
+# Experiences with no startDate yet (drafts still being set up).
+_EXPERIENCES_NO_DATE = (
+    f"{API_BASE}/experiences"
+    "?publicationState=preview"
+    "&populate=deep,5"
+    "&sort=id:desc"
+    "&filters[eventData][startDate][$null]=true"
+    "&pagination[pageSize]=100"
+)
+
+_RUNNING_AREAS = {"running", "corrida", "trail", "trilha"}
+
+
+def _exp_is_running(attrs: dict) -> bool:
+    """Return True when an experience belongs to a running-type area."""
+    area = attrs.get("area") or {}
+    if isinstance(area, dict):
+        area_data = area.get("data") or {}
+        if not area_data:
+            return True  # no area → include (may not be tagged yet)
+        area_attrs = area_data.get("attributes") or {}
+        area_name = (area_attrs.get("name") or area_attrs.get("slug") or "").lower()
+        return not area_name or any(kw in area_name for kw in _RUNNING_AREAS)
+    return True
+
+
 SOURCE_NAME = "TF Sports"
 
 _TIMEOUT = 30
@@ -500,13 +601,39 @@ def scrape() -> list[Corrida]:
 
     now = now_iso()
 
-    run_series = _fetch_all_pages(LIST_URL, api_headers, token, "run-series")
+    run_series = _fetch_all_pages(_run_series_url(), api_headers, token, "run-series")
     print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
     corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
 
-    events_raw = _fetch_all_pages(LIST_URL_EVENTS, api_headers, token, "events")
-    print(f"[{SOURCE_NAME}] events: {len(events_raw)} eventos brutos")
+    run_series_nd = _fetch_all_pages(_RUN_SERIES_NO_DATE, api_headers, token, "run-series(sem data)")
+    print(f"[{SOURCE_NAME}] run-series(sem data): {len(run_series_nd)} eventos brutos")
+    corridas += _events_to_corridas(run_series_nd, now, "tfs_", f"{BASE}/run-series")
+
+    run_series_recent = _fetch_all_pages(_RUN_SERIES_RECENT, api_headers, token, "run-series(recentes)")
+    print(f"[{SOURCE_NAME}] run-series(recentes): {len(run_series_recent)} eventos brutos")
+    corridas += _events_to_corridas(run_series_recent, now, "tfs_", f"{BASE}/run-series")
+
+    events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
+    print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")
     corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
+
+    events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
+    print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
+    corridas += _events_to_corridas(events_no_date, now, "tfse_", f"{BASE}/events")
+
+    events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
+    print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
+    corridas += _events_to_corridas(events_recent, now, "tfse_", f"{BASE}/events")
+
+    experiences_raw = _fetch_all_pages(_experiences_url(), api_headers, token, "experiences")
+    print(f"[{SOURCE_NAME}] experiences: {len(experiences_raw)} eventos brutos")
+    exp_running = [e for e in experiences_raw if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience")
+
+    experiences_nd = _fetch_all_pages(_EXPERIENCES_NO_DATE, api_headers, token, "experiences(sem data)")
+    print(f"[{SOURCE_NAME}] experiences(sem data): {len(experiences_nd)} eventos brutos")
+    exp_nd_running = [e for e in experiences_nd if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

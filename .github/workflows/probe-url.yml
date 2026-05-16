@@ -74,17 +74,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          # Install playwright only when running a scraper source test
-          python3 -c "
-          import json, sys
-          try:
-              cfg = json.load(open('probe-config.json'))
-              needs = isinstance(cfg, dict) and 'source' in cfg
-          except: needs = False
-          sys.exit(0 if needs else 1)
-          " && playwright install chromium --with-deps || true
+        run: pip install -r requirements.txt
 
       - name: Run probe (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'

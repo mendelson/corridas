@@ -23,7 +23,7 @@ from . import (
     halfmarathons,
     asdeporte,
     fmaa,
-    # raceroster,     # inviável: API requer OAuth (client_id/secret)
-    # letsdothis,    # inviável: API requer Bearer token de conta registrada
+    raceroster,
+    # letsdothis,    # inviável: WAF bloqueia todos os proxies (direct 403, Scrapestack 500, Apify 403)
     world_athletics,
 )

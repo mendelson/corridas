@@ -45,8 +45,8 @@ from .sources import (
     halfmarathons,
     asdeporte,
     fmaa,
-    # raceroster,    # inviável: API requer OAuth (client_id/secret) — ver README
-    # letsdothis,   # inviável: API requer Bearer token registrado — ver README
+    raceroster,
+    # letsdothis,   # inviável: WAF bloqueia todos os proxies — ver README
     world_athletics,
 )
 from .sources.majors import (

@@ -70,7 +70,17 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          # Install playwright only when running a scraper source test
+          python3 -c "
+          import json, sys
+          try:
+              cfg = json.load(open('probe-config.json'))
+              needs = isinstance(cfg, dict) and 'source' in cfg
+          except: needs = False
+          sys.exit(0 if needs else 1)
+          " && playwright install chromium --with-deps || true
 
       - name: Run probe (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
@@ -95,8 +105,23 @@ jobs:
           APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
         run: |
           mkdir -p probe-output
-          python scripts/probe_url.py --config probe-config.json \
-            2>&1 | tee probe-output/result.md
+          # If probe-config.json has {"source": "..."}, run scraper test.
+          # Otherwise run URL probe as usual.
+          SOURCE=$(python3 -c "
+          import json, sys
+          try:
+              cfg = json.load(open('probe-config.json'))
+              if isinstance(cfg, dict) and 'source' in cfg:
+                  print(cfg['source'])
+          except: pass
+          ")
+          if [ -n "$SOURCE" ]; then
+            echo "=== scraper test: $SOURCE ===" | tee probe-output/result.md
+            python -m scraper.test_source "$SOURCE" 2>&1 | tee -a probe-output/result.md
+          else
+            python scripts/probe_url.py --config probe-config.json \
+              2>&1 | tee probe-output/result.md
+          fi
 
       - name: Commit result back to probe branch
         if: github.event_name == 'push'

@@ -8,6 +8,8 @@
 [Brasil Corrida] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
+[SESC DF] 9 corridas encontradas
+[Circuito das Estações] 104 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
@@ -15,9 +17,9 @@
 [Ativo] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
 [Yescom] 14 corridas encontradas
+[Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Prague Marathon] nenhuma edição futura identificada
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
@@ -34,6 +36,9 @@
 [TF Sports] 55 corridas encontradas
 [Race Roster] '10k': 36 upcoming de 400
 [proxy] Scrapestack retornou 429 para runsignup.com, tentando Apify...
+[Race Roster] '5k': 70 upcoming de 400
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [proxy] Apify falhou para runsignup.com: 403 Forbidden
 [RunSignup] erro ao buscar página 1: todos os métodos falharam para https://runsignup.com/Rest/races?format=json&events=T&start_date=2026-05-16&end_date=2027-05-16&page=1&results_per_page=250
 [RunSignup] nenhuma corrida retornada pela API
@@ -56,7 +61,11 @@
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[Ticket Sports] 930 corridas encontradas
+[Ticket Sports] 929 corridas encontradas
+[World Athletics] calendarEvents.results: 265 itens
+[World Athletics] 265 competições brutas
+[World Athletics] 128 corridas válidas (137 ignoradas)
+[TF Sports] 555 corridas encontradas
 [HalfMarathons.net] 1982 corrida(s) encontrada(s)
 [main] 6812 registros coletados (antes do merge)
 [main] 3217 registros após validação
@@ -214,6 +223,9 @@
 [main] 'Run For Breast Cancer 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'The Inferno 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Ruidoso Grindstone Trail Runs' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] '2026 Handloggers Half Marathon' — link válido, miss_count zerado
 [main] 'Sloth Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] '2026 Handloggers Half Marathon' — link válido, miss_count zerado
@@ -232,7 +244,6 @@
 [main] 'Run For Mental Health 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
 [main] 'Dashing To Summer’S End 5K & 10K' — link válido, miss_count zerado
 [main] 'Family Fun Bubble Run 5K' — link válido, miss_count zerado
-[main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Philadelphia' — link válido, miss_count zerado
 [main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Shining Hope Farms Salute Trail Run' — link válido, miss_count zerado
@@ -242,6 +253,8 @@
 [main] 'Nedned Trail Fest' — link válido, miss_count zerado
 [main] 'Oktoberfest 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Alcatraz Open Swim 2026' — link válido, miss_count zerado
+[main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 San Diego' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 San Diego' — link válido, miss_count zerado
 [main] 'Heeling House 5K' — link válido, miss_count zerado
 [main] 'Castle Alpine Trail Race' — link válido, miss_count zerado
@@ -288,6 +301,7 @@
 [main] 'The Hustle At Pinehurst' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
 [main] 'Fast & Furriest 5K' — link válido, miss_count zerado
+[main] 'Ers Season Pass' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Ers Season Pass' — link válido, miss_count zerado
 [main] 'The 2026 Run For Education' — link válido, miss_count zerado

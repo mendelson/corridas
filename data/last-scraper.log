@@ -5,7 +5,9 @@
 [Minhas Inscrições] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
 [Brasil Corrida] 14 corridas encontradas
-[Correr Brasília] 1 corridas encontradas
+[Iguana Sports] 8 corridas encontradas
+[Ativo] 9 corridas encontradas
+[Circuito das Estações] 104 corridas encontradas
 [SESC DF] 9 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
@@ -26,6 +28,8 @@
 [Race Roster] 'running': 55 upcoming de 400
 [Race Roster] 'marathon': 75 upcoming de 400
 [proxy] Scrapestack retornou 429 para runsignup.com, tentando Apify...
+[Race Roster] '10k': 92 upcoming de 400
+[Asdeporte] 35 corrida(s) encontrada(s)
 [proxy] Apify falhou para runsignup.com: 403 Forbidden
 [RunSignup] erro ao buscar página 1: todos os métodos falharam para https://runsignup.com/Rest/races?format=json&events=T&start_date=2026-05-16&end_date=2027-05-16&page=1&results_per_page=250
 [RunSignup] nenhuma corrida retornada pela API
@@ -47,13 +51,14 @@
 [Corridas Brasil] 3346 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Corridas Brasil] 3346 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [World Athletics] calendarEvents.results: 265 itens
 [World Athletics] 265 competições brutas
 [World Athletics] 128 corridas válidas (137 ignoradas)
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[Ticket Sports] 941 corridas encontradas
+[Ticket Sports] 940 corridas encontradas
 [HalfMarathons.net] 1982 corrida(s) encontrada(s)
 [main] 6911 registros coletados (antes do merge)
 [main] 3247 registros após validação
@@ -76,6 +81,7 @@
 [main] '2026 Windsor Kiwanis Shad Derby Road Race' — link válido, miss_count zerado
 [main] 'Minions Run - Etapa Balneário Camboriú' — link válido, miss_count zerado
 [main] '2026 Savannah Mile ~ 1 Mile ~ 200 Club' — link válido, miss_count zerado
+[main] '2026 Windsor Kiwanis Shad Derby Road Race' — link válido, miss_count zerado
 [main] '2026 Teal Ribbon Run / Walk - Hope For Heather' — link válido, miss_count zerado
 [main] '12.84 Lavalley Relay' — link válido, miss_count zerado
 [main] '2026 Toadstrangler 5K Run/Walk' — link válido, miss_count zerado
@@ -90,7 +96,8 @@
 [main] '2Nd Annual Gaudreau 5K & Family Fun Day' — link válido, miss_count zerado
 [main] '2026 Downtown Patterson Run' — link válido, miss_count zerado
 [main] '31St Annual Healing Hands 5K Run/Walk' — link válido, miss_count zerado
-[main] '2Nd Annual 5K Esopus Fire Department Run/Walk' — link válido, miss_count zerado
+[main] '2026 Downtown Patterson Run' — link válido, miss_count zerado
+[main] '3Rd Annual Race For A Summer Of Second Chances Benefiting Care' — link válido, miss_count zerado
 [main] '51St Annual Oakwood'S That Day In May Fun Run, 5K, 10K And Virtual Run' — link válido, miss_count zerado
 [main] '2026 Wood County, Texas - Ruck For The Fallen' — link válido, miss_count zerado
 [main] '3Rd Annual Run To Remember' — link válido, miss_count zerado
@@ -134,15 +141,16 @@
 [main] 'Awesome 3000' — link válido, miss_count zerado
 [main] 'Asher'S Answer 5K Walk/Run' — link válido, miss_count zerado
 [main] 'Bethel Temple 5K Walk/Run' — link válido, miss_count zerado
+[main] 'Berryman 50 Mile And Marathon Trail Races' — link válido, miss_count zerado
 [main] '22 Miles To Break Boundaries- 24 Hour Ultra Trail' — link válido, miss_count zerado
 [main] 'Big Bay Relay' — link válido, miss_count zerado
 [main] 'Bayou Rum Run 5K' — link válido, miss_count zerado
 [main] 'Berryman 50 Mile And Marathon Trail Races' — link válido, miss_count zerado
 [main] 'Beactive' — link válido, miss_count zerado
 [main] 'Ascv 5K & Family Fun Day' — link válido, miss_count zerado
+[main] 'Beactive' — link válido, miss_count zerado
 [main] 'Bikes & Beers Wildwood' — link válido, miss_count zerado
 [main] 'Born To Run 5K' — link válido, miss_count zerado
-[main] 'Blazer Dash' — link válido, miss_count zerado
 [main] 'Bluff Spasslauf 5K' — link válido, miss_count zerado
 [main] 'Breezin’ Through Beaumont' — link válido, miss_count zerado
 [main] '5K Del 25º Aniversario Del Divino Niño Jesús' — link válido, miss_count zerado
@@ -153,26 +161,25 @@
 [main] 'Braveheart 5 K' — link válido, miss_count zerado
 [main] 'Burning Off The Bbq 5K' — link válido, miss_count zerado
 [main] 'Black Canyon Ascent' — link válido, miss_count zerado
+[main] 'Braveheart 5 K' — link válido, miss_count zerado
 [main] 'Camp Challenge' — link válido, miss_count zerado
 [main] 'Bulldog Buddies Race For Inclusion' — link válido, miss_count zerado
 [main] 'Brave Run 2026' — link válido, miss_count zerado
 [main] 'Brooks Century' — link válido, miss_count zerado
-[main] 'Cancelled' — link válido, miss_count zerado
-[main] 'Bucket Run 5K' — link válido, miss_count zerado
 [main] 'Caribbean Qarnival Mental Health Awareness 5K & Mental Health Fair 2026' — link válido, miss_count zerado
 [main] 'Cardio For Cosmo Memorial 5K/1Mile' — link válido, miss_count zerado
 [main] 'Cannoli Run 5K & 1-Mile Fun Run' — link válido, miss_count zerado
 [main] 'Chasing Memphis - A Legacy Run' — link válido, miss_count zerado
+[main] 'Cannoli Run 5K & 1-Mile Fun Run' — link válido, miss_count zerado
 [main] 'Capital City Marathon' — link válido, miss_count zerado
-[main] 'Catfish Classic 5K By Winnsboro Sports' — link válido, miss_count zerado
 [main] 'Canyon City Classic' — link válido, miss_count zerado
 [main] 'Brad Schoener Musicman 5K Run & 1 Mile Spirit Walk' — link válido, miss_count zerado
 [main] 'Catch Me If You Can 5K & Fun Run' — link válido, miss_count zerado
 [main] 'Angelman Strong 5K' — link válido, miss_count zerado
 [main] 'Centerton Fire Company Ed Myers Sr. Memorial 5K' — link válido, miss_count zerado
 [main] 'Cen-Tex Crime Stoppers Donut Dash' — link válido, miss_count zerado
-[main] 'Catch Me If You Can 5K' — link válido, miss_count zerado
 [main] 'Cassella Waste Presents Bailey'S Garden 5K' — link válido, miss_count zerado
+[main] 'Catch Me If You Can 5K' — link válido, miss_count zerado
 [main] 'Chasing The Rainbows Bursting Bubble 5K - Gilbert, Az' — link válido, miss_count zerado
 [main] 'Corrida Maio Amarelo 2026' — link válido, miss_count zerado
 [main] 'Attorneys & Kids Together 5K' — link válido, miss_count zerado
@@ -180,10 +187,9 @@
 [main] 'Caveman Challenge 2026' — link válido, miss_count zerado
 [main] 'Chateau Meichtry 5K' — link válido, miss_count zerado
 [main] 'Boots And Brews 5K' — link válido, miss_count zerado
-[main] 'Desafio Pico Do Olho D'Água Sunset' — link válido, miss_count zerado
-[main] '2026 Asics Blue Jean Mile Presented By Fleet Feet Fox Valley' — link válido, miss_count zerado
 [main] '2026 Prairie Dash 5K' — link válido, miss_count zerado
-[main] '21St Annual Ben Layton 5K Run/Walk' — link válido, miss_count zerado
+[main] '2026 Asics Blue Jean Mile Presented By Fleet Feet Fox Valley' — link válido, miss_count zerado
+[main] 'Desafio Pico Do Olho D'Água Sunset' — link válido, miss_count zerado
 [main] 'Brain Foundation Spectrum Run 5K/10K' — link válido, miss_count zerado
 [main] '5K Glow Run/Walk “Glow & Go!”' — link válido, miss_count zerado
 [main] '12Th Annual Keris Kares Royal Run: The Superhero Edition' — link válido, miss_count zerado
@@ -203,10 +209,11 @@
 [main] '42Nd Annual Guthrie Gallop 5K & 10K Live Race' — link válido, miss_count zerado
 [main] 'Meia Maratona De Patos - 2026' — link válido, miss_count zerado
 [main] '1ª Corrida Reev + Marista' — link válido, miss_count zerado
+[main] 'Meia Maratona De Patos - 2026' — link válido, miss_count zerado
 [main] '1ª Ananin Runner 2026' — link válido, miss_count zerado
+[main] 'Dia A Dia Sunset Run - Goiânia' — link válido, miss_count zerado
 [main] 'Sun Race Saquarema' — link válido, miss_count zerado
 [main] 'Circuito Sesc De Corridas 80 Anos' — link válido, miss_count zerado
-[main] 'Corrida Time Brasil 2026' — link válido, miss_count zerado
 [main] 'Corrida Da Assembleia Legislativa 2026' — link válido, miss_count zerado
 [main] '15Th Annual Run For Heaven'S Sake 2026' — link válido, miss_count zerado
 [main] 'Gp Das Montanhas' — link válido, miss_count zerado
@@ -219,10 +226,12 @@
 [main] '"Using Our Voices" Mental Health Run- Patchogue-Medford' — link válido, miss_count zerado
 [main] '13Th Annual Pwp 5K' — link válido, miss_count zerado
 [main] '2026 Capitol Hill Classic 10K, 3K, And Fun Run' — link válido, miss_count zerado
-[main] '2026 Willard 5K Fun Run' — link válido, miss_count zerado
+[main] '13Th Annual Pwp 5K' — link válido, miss_count zerado
 [main] '2026 Runludington Pere Marquette Xc 5K' — link válido, miss_count zerado
+[main] '2026 Willard 5K Fun Run' — link válido, miss_count zerado
 [main] '29Th Annual Race Against Domestic Violence 5K' — link válido, miss_count zerado
 [main] '19Th Ypd Blue 5K Run \ Walk For A Reason' — link válido, miss_count zerado
+[main] '16Th Annual Joe Sazyc 5K Race @ 12Pm In Wayne State Main Campus' — link válido, miss_count zerado
 [main] '26Th Annual Kiwanis-Herald Sesame Place Classic-2026' — link válido, miss_count zerado
 [main] '20Th Annual Walk The Walk For Mental Health - Hope In Every Step' — link válido, miss_count zerado
 [main] '16Th Annual Joe Sazyc 5K Race @ 12Pm In Wayne State Main Campus' — link válido, miss_count zerado
@@ -233,8 +242,8 @@
 [main] '5Th Annual Head & Neck Cancer Foundation Walk/Run' — link válido, miss_count zerado
 [main] '5Th Annual Trail Days 5K, Half Marathon, And Run Happy Kids K' — link válido, miss_count zerado
 [main] '4ª Maratona Internacional Fmo' — link válido, miss_count zerado
-[main] '3ª Force Run' — link válido, miss_count zerado
 [main] '9Th Annual Om Memorial 5K Run And 1 Mile Walk' — link válido, miss_count zerado
+[main] '3ª Force Run' — link válido, miss_count zerado
 [main] 'Barre Town Spring Run' — link válido, miss_count zerado
 [main] 'Any Which Way 5K & Walk-A-Thon' — link válido, miss_count zerado
 [main] '5K Against Als' — link válido, miss_count zerado
@@ -249,12 +258,12 @@
 [main] 'Bear Lake Ultra Preview' — link válido, miss_count zerado
 [main] 'Can'T Sit Still Run / Walk' — link válido, miss_count zerado
 [main] 'Bay To Breakers Bus' — link válido, miss_count zerado
-[main] 'Bulldog Color Run' — link válido, miss_count zerado
 [main] 'Canine On The Creek' — link válido, miss_count zerado
+[main] 'Bulldog Color Run' — link válido, miss_count zerado
 [main] 'Casey'S Run' — link válido, miss_count zerado
-[main] 'Chasing Chad'S Recovery 5K And 1 Mile Kids' Trot' — link válido, miss_count zerado
 [main] 'Brain Fitness 5K' — link válido, miss_count zerado
 [main] '3ª Corrida Solidária Apae Palhoça' — link válido, miss_count zerado
+[main] 'Chasing Chad'S Recovery 5K And 1 Mile Kids' Trot' — link válido, miss_count zerado
 [main] 'Charles Warren Stanley '67 Memorial 5K' — link válido, miss_count zerado
 [main] '8Th Annual Als Run For Hope 5K' — link válido, miss_count zerado
 [main] 'Discover Trail - Marumbi 2026' — link válido, miss_count zerado
@@ -276,6 +285,7 @@
 [main] '3Rrc Summer Training Group' — link válido, miss_count zerado
 [main] '4Th Annual Asics Blue Jean Mile Newport' — link válido, miss_count zerado
 [main] '4K Trail Run' — link válido, miss_count zerado
+[main] '4Th Annual Asics Blue Jean Mile Newport' — link válido, miss_count zerado
 [main] 'Adventhealth Race To Rebuild' — link válido, miss_count zerado
 [main] 'Boogie Nights Summer Run Series - Ventura' — link válido, miss_count zerado
 [main] 'Cancer Survivorship' — link válido, miss_count zerado
@@ -298,8 +308,8 @@
 [main] '2026 Texas Roller Games Speed' — link válido, miss_count zerado
 [main] '2026 Average Joe Run 5K - West Palm Beach' — link válido, miss_count zerado
 [main] '2026 Memorial Day 5K Virtual Run - Abilene' — link válido, miss_count zerado
-[main] '2Nd Annual Honoring The Brave 5K Run & Walk' — link válido, miss_count zerado
 [main] '2026 Jamestown Rotary 5K Chicken Run & 1 Mile Fun Run' — link válido, miss_count zerado
+[main] '2Nd Annual Honoring The Brave 5K Run & Walk' — link válido, miss_count zerado
 [main] '15Th Annual Live The "Green" Way Liquid Color 5K' — link válido, miss_count zerado
 [main] '33 Horas De Solidaridad' — link válido, miss_count zerado
 [main] '2Nd Annual Memorial Day 5K' — link válido, miss_count zerado
@@ -311,11 +321,12 @@
 [main] 'Amity Island Youth Running Club' — link válido, miss_count zerado
 [main] 'Alma Highland Festival Road Race' — link válido, miss_count zerado
 [main] '30Th Annual Melody Miles 5K Fundraiser' — link válido, miss_count zerado
-[main] 'Amani Brewing 5K & Beer Mile' — link válido, miss_count zerado
+[main] 'Alma Highland Festival Road Race' — link válido, miss_count zerado
 [main] 'Acoma Sky City Jamboree' — link válido, miss_count zerado
 [main] 'Almost Memorial Day 4K' — link válido, miss_count zerado
 [main] '*Spring Lake Memorial Classic* 2Mile / 5K / 10K' — link válido, miss_count zerado
 [main] 'Asco Spartacus Dash' — link válido, miss_count zerado
+[main] 'Almost Memorial Day 4K' — link válido, miss_count zerado
 [main] 'Art For Your Heart 5K Run And Walk' — link válido, miss_count zerado
 [main] 'Annual Polkafest Run-Walk/5K/10K/1Mi' — link válido, miss_count zerado
 [main] 'Batr Preview Run' — link válido, miss_count zerado
@@ -336,7 +347,8 @@
 [main] 'Brooklyn Queens Brewery Express 10K' — link válido, miss_count zerado
 [main] 'Catch The Wave 5K' — link válido, miss_count zerado
 [main] '46Th Annual Memorial T-Rail Run' — link válido, miss_count zerado
-[main] 'Big Lex 4 Miler' — link válido, miss_count zerado
+[main] 'Catch The Wave 5K' — link válido, miss_count zerado
+[main] 'Brooklyn Queens Brewery Express 10K' — link válido, miss_count zerado
 [main] 'Beauregard Watermelon Fest 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Boots On The Ground 5K & Fun Run' — link válido, miss_count zerado
 [main] '28Th Annual Olmsted Spirit 5K' — link válido, miss_count zerado
@@ -355,10 +367,11 @@
 [main] 'Corrida Terra Dos Coqueiros' — link válido, miss_count zerado
 [main] '2026 Cape Town Marathon Semper Fi & America'S Fund Team' — link válido, miss_count zerado
 [main] '2026 Ckf Cape Town Marathon' — link válido, miss_count zerado
+[main] '2026 Cape Town Marathon Semper Fi & America'S Fund Team' — link válido, miss_count zerado
 [main] '43Rd Annual Providence Saint John'S Health Center Brentwood Run' — link válido, miss_count zerado
 [main] '2026 Rock N' Roll Riesling Run' — link válido, miss_count zerado
-[main] '16Th Walk/Jog For The "Well" Of It 5K' — link válido, miss_count zerado
 [main] '2026 Superhero 5K' — link válido, miss_count zerado
+[main] '16Th Walk/Jog For The "Well" Of It 5K' — link válido, miss_count zerado
 [main] '32Nd Annual Martha'S Vineyard Memorial Road Race' — link válido, miss_count zerado
 [main] 'Alloy5 Downtown Easton 5K At Easton Criterium' — link válido, miss_count zerado
 [main] 'Uma Run' — link válido, miss_count zerado
@@ -366,30 +379,30 @@
 [main] '33Rd Masser 5 Miler (Ss Summer Series #1)' — link válido, miss_count zerado
 [main] '2Nd Sunshine Stride 5K' — link válido, miss_count zerado
 [main] 'Blossom Time Run' — link válido, miss_count zerado
-[main] '2026 Meatballs On The Run 5K' — link válido, miss_count zerado
+[main] '2Nd Sunshine Stride 5K' — link válido, miss_count zerado
 [main] '5K Meowathon: A Benefit For Colony Cats' — link válido, miss_count zerado
 [main] 'Corrida Da Infantaria PE Bg' — link válido, miss_count zerado
+[main] '2026 Meatballs On The Run 5K' — link válido, miss_count zerado
 [main] '1ª Corrida Engel' — link válido, miss_count zerado
 [main] 'American Hero 25K Relay & Half Marathon' — link válido, miss_count zerado
 [main] '38Th Annual Memorial Day Classic United States Of America' — link válido, miss_count zerado
 [main] '2026 Rotary Stride For S.T.R.I.V.E. 5K' — link válido, miss_count zerado
 [main] '20Th Annual Mickler Mile' — link válido, miss_count zerado
 [main] '2026 Michigan Fruit Belt Series 20Th Anniversary' — link válido, miss_count zerado
-[main] '26Th Annual Memorial Day Dash 5K A Virtual Race*' — link válido, miss_count zerado
 [main] '2026 Ssjfx Jubilee Jog 5K' — link válido, miss_count zerado
 [main] '9Th Annual Memorial Day Run' — link válido, miss_count zerado
 [main] '5K Home Run Supporting Family Promise Of Lawrence' — link válido, miss_count zerado
 [main] 'A Race To Remember 5K, 10K, 15K Oakes Quarry Trail Run' — link válido, miss_count zerado
 [main] 'Bloomingdale High School Red, White & Blueberry Memorial Day 5K Run And Walk' — link válido, miss_count zerado
 [main] 'Babcock Run To Remember 5K Run Or Walk' — link válido, miss_count zerado
+[main] 'Bloomingdale High School Red, White & Blueberry Memorial Day 5K Run And Walk' — link válido, miss_count zerado
 [main] '39Th Annual Loudoun Street Mile' — link válido, miss_count zerado
-[main] 'Because Of The Brave 5K' — link válido, miss_count zerado
 [main] 'Bigfoot Challenge 5K/8K Memorial Day Run/Walk' — link válido, miss_count zerado
+[main] 'Because Of The Brave 5K' — link válido, miss_count zerado
 [main] '30Th Annual Mosquito Lake Chase' — link válido, miss_count zerado
 [main] 'Brew With A View 5K' — link válido, miss_count zerado
-[main] 'Boalsburg Memorial Day Run' — link válido, miss_count zerado
 [main] '2026 Foothills Strong Run' — link válido, miss_count zerado
-[main] 'Big Timber Trot 6K/10K' — link válido, miss_count zerado
+[main] 'Boalsburg Memorial Day Run' — link válido, miss_count zerado
 [main] '250 Challenge Run For America' — link válido, miss_count zerado
 [main] 'Africa Day Race' — link válido, miss_count zerado
 [main] '2026 Tallmadge Memorial 5K And 1 Mile' — link válido, miss_count zerado
@@ -407,10 +420,10 @@
 [main] '10K And 5K Run/Walk Harvest 30Th May 2026 (Run Only On Sidewalks)' — link válido, miss_count zerado
 [main] '10Th Annual Kiwanis Run For Badger Camp: 5K Run/Walk' — link válido, miss_count zerado
 [main] '"Beer Me 5K" Presented By Tucker Brewing Company' — link válido, miss_count zerado
+[main] 'Bee The Change Walk And Roll 5K' — link válido, miss_count zerado
+[main] '10K And 5K Run/Walk Harvest 30Th May 2026 (Run Only On Sidewalks)' — link válido, miss_count zerado
 [main] '1.8 Atalanta Amrap' — link válido, miss_count zerado
 [main] '13Th Annual 4 Miles 4 Water' — link válido, miss_count zerado
-[main] '"Take A Walk With Huhh" 5K Run/Walk-A-Thon' — link válido, miss_count zerado
-[main] '16Th Annual Beachfront Run' — link válido, miss_count zerado
 [main] '2026 Drew Dragon Dash' — link válido, miss_count zerado
 [main] '2026 Bam Fi 'Hope Without Boundaries' 5K Run/Walk' — link válido, miss_count zerado
 [main] '10Th Annual Jaime Pinaire 5K Race & Fun Run' — link válido, miss_count zerado
@@ -419,14 +432,12 @@
 [main] '2026 Ray Of Hope Run For Ovarian Cancer Research' — link válido, miss_count zerado
 [main] '2026 Cox 5K For Cerf' — link válido, miss_count zerado
 [main] '21St Annual Feat 5K Walk/Run For Autism' — link válido, miss_count zerado
+[main] '36Th Annual Fire Hydrant 5K & Expo' — link válido, miss_count zerado
 [main] '2026 Comanche Academy Charter School Pta Color Run' — link válido, miss_count zerado
+[main] '2026 Wolfpack Regional Modern Pentathlon Sanctioned By Usa Pentathlon Multisport (Usapm)' — link válido, miss_count zerado
 [main] '2026 Ride For Levi Beer Mile' — link válido, miss_count zerado
 [main] '2026 Mthcf 5K' — link válido, miss_count zerado
-[main] '36Th Annual Fire Hydrant 5K & Expo' — link válido, miss_count zerado
-[main] '2026 Wolfpack Regional Modern Pentathlon Sanctioned By Usa Pentathlon Multisport (Usapm)' — link válido, miss_count zerado
 [main] '4Th Annual Live Well 5K Run/Walk' — link válido, miss_count zerado
-[main] '24+ Hours Of Brake The Habit' — link válido, miss_count zerado
-[main] '2026 Smith Rock Classic' — link válido, miss_count zerado
 [main] '2026 Unified 5K - Lancaster' — link válido, miss_count zerado
 [main] '2026 Walk & Roll Chicago' — link válido, miss_count zerado
 [main] '5K Color Run' — link válido, miss_count zerado
@@ -450,12 +461,15 @@
 [main] 'Autism Awareness 2 Mile Color Run' — link válido, miss_count zerado
 [main] 'Ascutney Mountain Run' — link válido, miss_count zerado
 [main] 'Bandit Grand Prix' — link válido, miss_count zerado
+[main] 'Aware Wildlife Night Owl 5K' — link válido, miss_count zerado
+[main] 'Autism Awareness 2 Mile Color Run' — link válido, miss_count zerado
+[main] 'Ascutney Mountain Run' — link válido, miss_count zerado
 [main] 'Avon 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Association Of Black Social Workers 5 K Mental Health Awareness Walk' — link válido, miss_count zerado
 [main] 'Be A Warrior 5K' — link válido, miss_count zerado
 [main] 'Beacon Of Hope For Als' — link válido, miss_count zerado
-[main] '5Th Annual Proyouth Color Run' — link válido, miss_count zerado
 [main] 'Badge On The Trails' — link válido, miss_count zerado
+[main] '5Th Annual Proyouth Color Run' — link válido, miss_count zerado
 [main] 'Big Rig Weagle Run' — link válido, miss_count zerado
 [main] 'Apex Predator Lionfish Derby' — link válido, miss_count zerado
 [main] 'Big River Adventure' — link válido, miss_count zerado
@@ -469,6 +483,8 @@
 [main] 'Bike N' Trike 2026' — link válido, miss_count zerado
 [main] 'Betterton Swimfest' — link válido, miss_count zerado
 [main] 'Brews Cruise' — link válido, miss_count zerado
+[main] 'Caswell Center Foundation Community Champion 5K' — link válido, miss_count zerado
+[main] 'Cerritos 5K Run/Walk Celebrate In Stride Moo-Ve With The Herd' — link válido, miss_count zerado
 [main] 'Cavalier 5K' — link válido, miss_count zerado
 [main] 'Cerritos 5K Run/Walk Celebrate In Stride Moo-Ve With The Herd' — link válido, miss_count zerado
 [main] 'Catskill Spring Rush & 5K' — link válido, miss_count zerado
@@ -490,8 +506,9 @@
 [main] 'Buns On The Run 5K' — link válido, miss_count zerado
 [main] '2026 Girls On The Run Spring 5K - Frederick County' — link válido, miss_count zerado
 [main] '5K For Als' — link válido, miss_count zerado
-[main] '3Rd Annual 'Say Her Name' 5K: A Walk For Maternal Justice' — link válido, miss_count zerado
+[main] '2026 14Th Annual Penn Alexander School Run For Art & Science 5K & 1-Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] '5Th Annual Tommy'S Olympic Speed Walk' — link válido, miss_count zerado
+[main] '3Rd Annual 'Say Her Name' 5K: A Walk For Maternal Justice' — link válido, miss_count zerado
 [main] '5Th Annual Run For Raegan' — link válido, miss_count zerado
 [main] '17Th Annual Barkhamsted River Run 5K' — link válido, miss_count zerado
 [main] 'Bleu'S Run For Rescue 5K' — link válido, miss_count zerado
@@ -500,19 +517,20 @@
 [main] 'Band On The Run' — link válido, miss_count zerado
 [main] 'Billings Skyline Races' — link válido, miss_count zerado
 [main] 'Albany Move'N'Groove 2026' — link válido, miss_count zerado
-[main] 'Canceled' — link válido, miss_count zerado
-[main] 'Corrida Vida E Saúde' — link válido, miss_count zerado
 [main] 'Cheers To 15 Years - Point 2 Community Celebration' — link válido, miss_count zerado
+[main] 'Corrida Vida E Saúde' — link válido, miss_count zerado
 [main] 'Corrida São Roque 2026' — link válido, miss_count zerado
-[main] 'Balmorhea Family 1 Mile & 5K Race' — link válido, miss_count zerado
 [main] 'Carmel Marathon Weekend' — link válido, miss_count zerado
+[main] 'Balmorhea Family 1 Mile & 5K Race' — link válido, miss_count zerado
 [main] 'Build-N-Athlete 10K, 5K, & Kids Fun Run' — link válido, miss_count zerado
 [main] '44Th Manila International Marathon 2026' — link válido, miss_count zerado
 [main] 'Blue Moon 5K. 10K. Half Marathon By Califlow Runs' — link válido, miss_count zerado
 [main] 'Bluegrass Mountain Cup - Green River Xc' — link válido, miss_count zerado
 [main] '2026 Badass Human Race Presented By Gecu' — link válido, miss_count zerado
 [main] 'Brookline Bolt 5K Run/Walk By Scribbles' — link válido, miss_count zerado
+[main] '2026 Badass Human Race Presented By Gecu' — link válido, miss_count zerado
 [main] 'Bandit Htk Virtual 100' — link válido, miss_count zerado
+[main] '100 Miles To Auburn' — link válido, miss_count zerado
 [main] 'Abe'S Army' — link válido, miss_count zerado
 [main] '100 Miles To Auburn' — link válido, miss_count zerado
 [main] '2026 Cullman Summer Track And Field Camp' — link válido, miss_count zerado
@@ -521,14 +539,15 @@
 [main] '2026 Pride Global Celebration' — link válido, miss_count zerado
 [main] '2026 D-Day Dash 10K/5K/Fun Run (Ranger Memorial Triad)' — link válido, miss_count zerado
 [main] '433 Airlift Wing Summer Dash' — link válido, miss_count zerado
+[main] '2026 D-Day Dash 10K/5K/Fun Run (Ranger Memorial Triad)' — link válido, miss_count zerado
 [main] 'Carrera De Las Rosas' — link válido, miss_count zerado
 [main] 'Corrida E Caminhada Para Cristo' — link válido, miss_count zerado
 [main] '2026 First Mondays Summer Trail Series' — link válido, miss_count zerado
 [main] 'Bike The 915' — link válido, miss_count zerado
 [main] '2026 Srrl Women'S Running Clinic' — link válido, miss_count zerado
 [main] 'Belltown Spring Sprint 2M Run & Walk, Kids Run' — link válido, miss_count zerado
+[main] '2026 Srrl Women'S Running Clinic' — link válido, miss_count zerado
 [main] 'Brooks Extreme Global Running Day Challenge' — link válido, miss_count zerado
-[main] 'Bay Saint Louis Running Company 2026 Summer Boot Camp' — link válido, miss_count zerado
 [main] '2026 Open Water Series Race #2' — link válido, miss_count zerado
 [main] '5K@Ada Challenge' — link válido, miss_count zerado
 [main] 'Asfpm Chapter 5K Run/Walk' — link válido, miss_count zerado
@@ -571,19 +590,20 @@
 [main] '3Rd Annual Rhs Xc/T&F Bulldog Dash 5K' — link válido, miss_count zerado
 [main] '2026 Vineyard Days 5K & Kids 1K' — link válido, miss_count zerado
 [main] '2026 Unified 5K - Cumberland' — link válido, miss_count zerado
+[main] '2026 Vineyard Days 5K & Kids 1K' — link válido, miss_count zerado
 [main] '45Th Annual Fwrc J.P. Jones Just Plain 10K Run/Walk, 3.3K Run/Walk, And Breakfast Picnic' — link válido, miss_count zerado
 [main] '2Nd Annual Shrewsbury Pride 5K' — link válido, miss_count zerado
 [main] '25Th Annual Run For Life And Learning' — link válido, miss_count zerado
 [main] '3Rd Annual Run To Remember #Vitostrong' — link válido, miss_count zerado
 [main] '4Th Annual Hud’S Heart 5K & Fun Run' — link válido, miss_count zerado
 [main] '3Rd Annual Sweat For A Vet 5K Fun Run' — link válido, miss_count zerado
-[main] '45Th Annual Gary Brown Memorial C&O Canal Five Mile Run' — link válido, miss_count zerado
 [main] '47Th Annual Kac 5K Run & Walk' — link válido, miss_count zerado
 [main] '5K Run/1Mile Walk To End Alzheimer'S' — link válido, miss_count zerado
 [main] '5K Run & Rave Party' — link válido, miss_count zerado
 [main] '53Rd Annual Run In The Sun' — link válido, miss_count zerado
 [main] '4Uben 5K Walk/Run' — link válido, miss_count zerado
 [main] '5Th Annual Miles For Meag 5K Trail Run/Walk & We Are Loved Kids Run' — link válido, miss_count zerado
+[main] '4Uben 5K Walk/Run' — link válido, miss_count zerado
 [main] '5K/1K For Lyme Awareness' — link válido, miss_count zerado
 [main] '5K Run & Walk For Opc Meals On Wheels' — link válido, miss_count zerado
 [main] '6Th Annual Summer Heat 5K Run/Walk' — link válido, miss_count zerado
@@ -594,6 +614,7 @@
 [main] '8Th Annual Ptsd Awareness 5K Run/Walk' — link válido, miss_count zerado
 [main] '9 Hours For 9 Lives Ultra' — link válido, miss_count zerado
 [main] 'Alaska Run For Women' — link válido, miss_count zerado
+[main] '27Th Annual D&R Canal Towpath "Train"Ing Run' — link válido, miss_count zerado
 [main] '8Th Annual “Blast Fun Run Bubble 5K Family Fun Run/Walk' — link válido, miss_count zerado
 [main] '27Th Annual D&R Canal Towpath "Train"Ing Run' — link válido, miss_count zerado
 [main] 'All Babies Cherished Run Baby Run' — link válido, miss_count zerado
@@ -617,8 +638,8 @@
 [main] 'Another Clucking 5K' — link válido, miss_count zerado
 [main] 'Ashtabula Greenway Trail 10K & 2 Mile' — link válido, miss_count zerado
 [main] 'Animal Friends 5K And Dog Jog' — link válido, miss_count zerado
-[main] 'Ari Oxbow Adventure Trek And 5K' — link válido, miss_count zerado
 [main] 'Athletic Brewing Company Fairfield Road Races' — link válido, miss_count zerado
+[main] 'Ari Oxbow Adventure Trek And 5K' — link válido, miss_count zerado
 [main] 'Baltimore 10 Miler' — link válido, miss_count zerado
 [main] 'Arsenal Test Teams' — link válido, miss_count zerado
 [main] 'Awesum Possum Lake Trail Adventure In Memory Of Steve Fealtman' — link válido, miss_count zerado
@@ -631,6 +652,7 @@
 [main] 'Bartow County Lions Club "Roar Run 5K"' — link válido, miss_count zerado
 [main] 'Asymca Village People 5K' — link válido, miss_count zerado
 [main] 'Bennie'S Journey' — link válido, miss_count zerado
+[main] 'Asymca Village People 5K' — link válido, miss_count zerado
 [main] 'Big Turtle Trail Runs' — link válido, miss_count zerado
 [main] 'Bashore Bash 6Hr & 12Hr Ultra' — link válido, miss_count zerado
 [main] 'Bk5K Greensboro Nc' — link válido, miss_count zerado
@@ -648,6 +670,7 @@
 [main] 'Cape Girardeau One & Done 1-Mile Race' — link válido, miss_count zerado
 [main] 'Beginner Sailing: June 6/7' — link válido, miss_count zerado
 [main] 'Brew To Brew' — link válido, miss_count zerado
+[main] 'Bluegrass River Run 2026' — link válido, miss_count zerado
 [main] 'Britton District Day Food & Fun Run' — link válido, miss_count zerado
 [main] 'Broad Ripple Duck Race 5K' — link válido, miss_count zerado
 [main] 'Buffalo Days Run 4A Cause' — link válido, miss_count zerado
@@ -679,7 +702,7 @@
 [main] 'Carleton Choo Choo 5K & 1-Mile Chugga Chugga Fun Run' — link válido, miss_count zerado
 [main] 'Cherohala Challenge' — link válido, miss_count zerado
 [main] 'Catfish Crawl' — link válido, miss_count zerado
-[main] '2026 Unified 5K - Salt Lake City' — link válido, miss_count zerado
+[main] 'Carleton Choo Choo 5K & 1-Mile Chugga Chugga Fun Run' — link válido, miss_count zerado
 [main] '"Paso A Paso'S 5K Run/Walk To End Diabetes"' — link válido, miss_count zerado
 [main] 'Asha 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Corrida E Caminhada Mulher Determinada - Reino Do Amor' — link válido, miss_count zerado
@@ -687,6 +710,7 @@
 [main] '25Th Annual Run For Justice' — link válido, miss_count zerado
 [main] 'Bikes & Beers Anaheim' — link válido, miss_count zerado
 [main] '17Th Annual Steve Olsen Run For Rogosin' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Mulher Determinada - Reino Do Amor' — link válido, miss_count zerado
 [main] '2026 Atlanta Divine Nine 5K | 9K (In-Person Or Virtual)' — link válido, miss_count zerado
 [main] '11Th Annual Running With Pride 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 Jersey City Ward Tour' — link válido, miss_count zerado
@@ -716,12 +740,14 @@
 [main] 'Cbhm For Zack'S Place' — link válido, miss_count zerado
 [main] 'Bruce Barnes Mile' — link válido, miss_count zerado
 [main] 'Celebrate! West Hartford Fund Runs' — link válido, miss_count zerado
+[main] 'Cbhm For Zack'S Place' — link válido, miss_count zerado
 [main] 'Champaign Firefighters Local 1260 5K' — link válido, miss_count zerado
 [main] 'Brunch And Walk With League 5K' — link válido, miss_count zerado
 [main] 'Chastain Chase 5K-Celebrating National Cancer Survivors Day' — link válido, miss_count zerado
 [main] 'Cedar Rapids Marathon Weekend' — link válido, miss_count zerado
 [main] 'Bridgewater 1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Big Steps For Little Feet 5K/1M' — link válido, miss_count zerado
+[main] 'Baltimore Harbor 1-Mile Swim' — link válido, miss_count zerado
 [main] '6 7 Fun Run' — link válido, miss_count zerado
 [main] 'Baltimore Harbor 1-Mile Swim' — link válido, miss_count zerado
 [main] 'Bangor Marathon - Full/Half/10K/5K - Running Festival' — link válido, miss_count zerado
@@ -729,6 +755,7 @@
 [main] 'Appleseeds Summer Running Program' — link válido, miss_count zerado
 [main] '2026 Csc 5K Fun Run / 2 Mile Walk' — link válido, miss_count zerado
 [main] '$5K - June' — link válido, miss_count zerado
+[main] 'Bctc Splash & Dash' — link válido, miss_count zerado
 [main] 'Bloomsburg Food Cupboard Filling Bellies 5K Run, Walk & Festival' — link válido, miss_count zerado
 [main] '5K Brew Run At Bozeman Brewing' — link válido, miss_count zerado
 [main] 'Bctc Splash & Dash' — link válido, miss_count zerado
@@ -741,20 +768,20 @@
 [main] '9/11 National Memorial Trail Tour' — link válido, miss_count zerado
 [main] '4Th Annual New Body Fitness 5K' — link válido, miss_count zerado
 [main] '4X4X48' — link válido, miss_count zerado
-[main] '"Bacon & Bubbles" 5K Or 1 Mile To Support A Beautiful Me' — link válido, miss_count zerado
+[main] '4Th Annual New Body Fitness 5K' — link válido, miss_count zerado
 [main] '10Th Redding Health Expo Run/Walk' — link válido, miss_count zerado
 [main] '15Th Annual Running Of The Blueberries' — link válido, miss_count zerado
 [main] '12Th Annual Dash Around The Lake' — link válido, miss_count zerado
 [main] '2026 Hartford Strawberry Run' — link válido, miss_count zerado
 [main] '#Honorconnor' — link válido, miss_count zerado
 [main] '2026 All For Abs 5K Color Run' — link válido, miss_count zerado
+[main] '2026 Bad Boy Kids Splash And Dash' — link válido, miss_count zerado
 [main] '2026 Ibe-Fit 5K Invitational' — link válido, miss_count zerado
-[main] '$5 5K Series 2026 Dad'S Day Run' — link válido, miss_count zerado
+[main] '#Honorconnor' — link válido, miss_count zerado
 [main] '2026 Soul Run 5K' — link válido, miss_count zerado
 [main] '2026 Keweenaw Chain Drive Festival' — link válido, miss_count zerado
 [main] '2026 Celebrate Life Hybrid 5K Fun Run Or Ride' — link válido, miss_count zerado
 [main] '2 Annual Hot In Bowie Music Festival 5K Walk/Run' — link válido, miss_count zerado
-[main] '17Th Annual Crossroads Trail Run' — link válido, miss_count zerado
 [main] '2026 Outrun Hunger' — link válido, miss_count zerado
 [main] '2026 Healthy Achievement 5K | 8K --- Run | Walk | Ruck' — link válido, miss_count zerado
 [main] '2026 Incrediblebank Hope Starts Here Challenge' — link válido, miss_count zerado
@@ -778,6 +805,7 @@
 [main] '27Th Annual Ladies Auxiliary Of F.O.E. Apache Run 5K, Alex'S One Mile/Half Mile Fun Run, & Jason Kline Memorial Color Runs (.60/1.2 Mile)' — link válido, miss_count zerado
 [main] '5K Run & Walk: Roy Flores Scholarship Fund' — link válido, miss_count zerado
 [main] 'Abide Better Together 5K' — link válido, miss_count zerado
+[main] '5K Run & Walk: Roy Flores Scholarship Fund' — link válido, miss_count zerado
 [main] 'A New Dawn 5K' — link válido, miss_count zerado
 [main] '3Rd Annual Nfyaa 5K' — link válido, miss_count zerado
 [main] 'A Run To Remember' — link válido, miss_count zerado
@@ -789,7 +817,6 @@
 [main] 'Alex'S Duck Duck Run' — link válido, miss_count zerado
 [main] 'Arkansas Runner 2M' — link válido, miss_count zerado
 [main] 'Apex 5 & 10Km' — link válido, miss_count zerado
-[main] 'Alaska Men'S Run' — link válido, miss_count zerado
 [main] 'Be Courageous: What'S Your Natural High 5K' — link válido, miss_count zerado
 [main] 'Bigfoot'S Backyard Bash' — link válido, miss_count zerado
 [main] 'Beat The Bridge 5K Challenge - 1911 Initiative Scholarship Run/Walk' — link válido, miss_count zerado
@@ -809,15 +836,17 @@
 [main] 'Buffalo Trace Stampede' — link válido, miss_count zerado
 [main] 'Buck Creek Streak 5K Trail Run (Clothing Optional)' — link válido, miss_count zerado
 [main] 'Blazing Trails For Brain Injury' — link válido, miss_count zerado
+[main] 'Buck Creek Streak 5K Trail Run (Clothing Optional)' — link válido, miss_count zerado
 [main] 'Bookin' It 5K' — link válido, miss_count zerado
 [main] 'Around The Beach' — link válido, miss_count zerado
 [main] 'Canisteo Crazee Daze 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Buzzard Day Runs' — link válido, miss_count zerado
 [main] 'Charcoal Challenge 5K Fun Run' — link válido, miss_count zerado
 [main] 'Cancer Crush 5K' — link válido, miss_count zerado
+[main] 'Buzzard Day Runs' — link válido, miss_count zerado
+[main] 'Canisteo Crazee Daze 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Byoc - Wild West 5K' — link válido, miss_count zerado
 [main] 'Camp Woodsmoke Roar & Explore 5K' — link válido, miss_count zerado
-[main] 'Bobbi Morse 5K Benefit' — link válido, miss_count zerado
 [main] 'Celebrate Highland Village 5K And Fun Run At Doubletree Ranch Park' — link válido, miss_count zerado
 [main] 'Cac Root Beer Float Run' — link válido, miss_count zerado
 [main] '3Rd Annual Equal Footing 5K Run/Walk' — link válido, miss_count zerado
@@ -868,21 +897,23 @@
 [main] 'Alpine Hill Climb' — link válido, miss_count zerado
 [main] '2 Dam Fun' — link válido, miss_count zerado
 [main] '2026 Camp Jewell 5K Fun Run/Walk & Kids 1M' — link válido, miss_count zerado
+[main] '2 Dam Fun' — link válido, miss_count zerado
 [main] '2026 Dsm World Refugee Day 5K' — link válido, miss_count zerado
 [main] '#Teamlance Fun Run' — link válido, miss_count zerado
 [main] '2026 Dpf 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 Equinox Trail Run' — link válido, miss_count zerado
 [main] '2026 Juneteenth Freedom 5K' — link válido, miss_count zerado
+[main] '2026 Equinox Trail Run' — link válido, miss_count zerado
 [main] '2026 Big Muddy Monster 5K Run/Walk' — link válido, miss_count zerado
-[main] '2026 Lvrr June Kids Series' — link válido, miss_count zerado
 [main] '3Rd Annual Juneteenth Freedom 5K Run/Walk' — link válido, miss_count zerado
+[main] '2026 Lvrr June Kids Series' — link válido, miss_count zerado
 [main] '22Nd Annual Sgt Nutter 5K - 2026' — link válido, miss_count zerado
 [main] 'Chase Summer 5K' — link válido, miss_count zerado
 [main] '26Th Annual June Jamboree 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 Viking 5K-A Memorial Run For Captain Michael "Buzzy" Andersen' — link válido, miss_count zerado
 [main] '5Th Annual Fox Trot 5K' — link válido, miss_count zerado
-[main] '2026 Schoolyard Run + Walk' — link válido, miss_count zerado
 [main] '2026 Rushford’S Race For Recovery 5K Color Run' — link válido, miss_count zerado
+[main] '2026 Schoolyard Run + Walk' — link válido, miss_count zerado
 [main] '2Nd Annual Dreamers Of Achievement 5K Run/Walk' — link válido, miss_count zerado
 [main] '4Th Annual Bloomfield Juneteenth 5K' — link válido, miss_count zerado
 [main] '3Rd Annual Lsc Soccer Stride' — link válido, miss_count zerado
@@ -898,11 +929,12 @@
 [main] 'Alan Jones Vestal Xx' — link válido, miss_count zerado
 [main] 'Bacon Around The Bend 5K' — link válido, miss_count zerado
 [main] 'Barrackville Covered Bridge Festival 5K Run/Walk & Kids Sprint' — link válido, miss_count zerado
+[main] 'Bacon Around The Bend 5K' — link válido, miss_count zerado
 [main] 'Amber Waves Of Gains' — link válido, miss_count zerado
 [main] 'Big Brothers Big Sisters Ignite 5K' — link válido, miss_count zerado
+[main] 'Bear Track' — link válido, miss_count zerado
 [main] 'Beacon Of Hope 5K' — link válido, miss_count zerado
 [main] 'Alzheimer'S Disease Resource Center Walk & Brain Health Festival 2026' — link válido, miss_count zerado
-[main] 'Bear Track' — link válido, miss_count zerado
 [main] 'Bakersfield Father'S Day Run' — link válido, miss_count zerado
 [main] 'Bizz Johnson'S Southside Scramble' — link válido, miss_count zerado
 [main] 'Alive And Running Iowa Run/Walk' — link válido, miss_count zerado
@@ -914,26 +946,25 @@
 [main] 'Berry Dairy Days 5K And 10K Race' — link válido, miss_count zerado
 [main] 'Boise Marathon' — link válido, miss_count zerado
 [main] 'Braveheart 5K Of Nc' — link válido, miss_count zerado
-[main] 'Blue Bluff River Run W Vfw 4490 Aberdeen 5K' — link válido, miss_count zerado
 [main] 'Butch'S Bucket Brigade' — link válido, miss_count zerado
 [main] 'Black Swamp Dash' — link válido, miss_count zerado
+[main] 'Blue Bluff River Run W Vfw 4490 Aberdeen 5K' — link válido, miss_count zerado
 [main] 'Bikes & Beers Hamilton Township' — link válido, miss_count zerado
 [main] '8Th Annual Roger’S Run & Walk June 20, 2026 Free Signups Below Sponsored By Modesto Moves' — link válido, miss_count zerado
-[main] 'Chef Joe'S Omelet Run' — link válido, miss_count zerado
 [main] 'Boston Square Wellness Collective'S 3Rd Annual Spring Into Action 5K' — link válido, miss_count zerado
 [main] 'Casa Of Marion County Superhero Run' — link válido, miss_count zerado
-[main] 'Chasing Daylight 5K' — link válido, miss_count zerado
+[main] 'Chef Joe'S Omelet Run' — link válido, miss_count zerado
 [main] '2026 Flutterby Cincinnati Walk - Miami Whitewater' — link válido, miss_count zerado
+[main] 'Chasing Daylight 5K' — link válido, miss_count zerado
 [main] 'Cape May Point 5 Mile And 2 Mile' — link válido, miss_count zerado
-[main] 'Cedar Hill Kids, Family And Try A Tri' — link válido, miss_count zerado
 [main] 'Associated Churches Father'S Day 5K' — link válido, miss_count zerado
-[main] 'Big Chief Tire One Mile Championships - Fishweir Brewing' — link válido, miss_count zerado
 [main] '5Th Annual Fit To Be Tied - Father'S Day 5K' — link válido, miss_count zerado
+[main] 'Cedar Hill Kids, Family And Try A Tri' — link válido, miss_count zerado
+[main] 'Big Chief Tire One Mile Championships - Fishweir Brewing' — link válido, miss_count zerado
 [main] '14Th Annual Buffs4Life Kyle Macintosh Memorial 5K Run/Walk' — link válido, miss_count zerado
 [main] '36Th Fathers Day 5K Run (Ss Summer Series #4) & (Triple Crown Series #3)' — link válido, miss_count zerado
 [main] '=Pr= Races: Run With Dad 5K' — link válido, miss_count zerado
 [main] '17Th Annual Peter De Mott Peace Trot 5K & 1 Mile' — link válido, miss_count zerado
-[main] 'All-American 5K' — link válido, miss_count zerado
 [main] 'Bird Ridge Hill Climb' — link válido, miss_count zerado
 [main] 'Bombs Away 5K' — link válido, miss_count zerado
 [main] 'Acrisure Branford Road Race' — link válido, miss_count zerado
@@ -941,6 +972,8 @@
 [main] 'Cherry Garcia Run: 10K, 5K Run Or Walk And Kids K' — link válido, miss_count zerado
 [main] 'Awesome 80S Summer Solstice Boardwalk Run Presented By Moe Moon'S' — link válido, miss_count zerado
 [main] '46Th Annual Springfield Jcc Father'S Day Road Race' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada No Ritmo Da Mocidade' — link válido, miss_count zerado
+[main] 'Cherry Garcia Run: 10K, 5K Run Or Walk And Kids K' — link válido, miss_count zerado
 [main] 'Central Kentucky All-Comers Track Meet 2026' — link válido, miss_count zerado
 [main] 'Brecksville Home Days Run' — link válido, miss_count zerado
 [main] 'Bedford Veterans Center 5K Run/Walk & 1 Mile Walk' — link válido, miss_count zerado
@@ -948,6 +981,7 @@
 [main] '2026 Open Water Series Race #3' — link válido, miss_count zerado
 [main] '8000 Steps For 8P' — link válido, miss_count zerado
 [main] '8Th Annual 5K Walk/Run For Overdose Awareness' — link válido, miss_count zerado
+[main] 'After Work Dirt Trail Races Fka Tiny Trails' — link válido, miss_count zerado
 [main] '5K For Fireworks' — link válido, miss_count zerado
 [main] 'After Work Dirt Trail Races Fka Tiny Trails' — link válido, miss_count zerado
 [main] 'Brookdale Shop Rite Tom Fleming Sunset Classic' — link válido, miss_count zerado
@@ -963,19 +997,18 @@
 [main] '2026 Brew-To-Brew Trail Day Fundraiser' — link válido, miss_count zerado
 [main] '2026 Penmet Crush The Cushman 5K, 1-Mile & Kids Dash' — link válido, miss_count zerado
 [main] '13Th Annual Running With Ryan 5K Run/Walk' — link válido, miss_count zerado
-[main] '2026 Houston Pride Annual Run - 5K, 10K, Walk' — link válido, miss_count zerado
 [main] '3Rd Annual Beer Run' — link válido, miss_count zerado
 [main] '2026 Lta Foundation 1.975 Walk/Run' — link válido, miss_count zerado
 [main] '1812 Challenge Weekend' — link válido, miss_count zerado
 [main] '2026 Turtle Lake Resort Clothing Optional 5K "Fun Run"' — link válido, miss_count zerado
 [main] '2026 Brookville Canoefest' — link válido, miss_count zerado
 [main] '4 Hour Warm Up @ Shadyside' — link válido, miss_count zerado
-[main] '2026 Dash 'N Splash Race For Brain And Spinal Cord Injury' — link válido, miss_count zerado
+[main] '2026 Turtle Lake Resort Clothing Optional 5K "Fun Run"' — link válido, miss_count zerado
 [main] '22Nd Jungle Jim'S 5K Splash (Ss Summer Series #5)' — link válido, miss_count zerado
+[main] '2026 Brookville Canoefest' — link válido, miss_count zerado
 [main] '25Th Annual Race For Open Space' — link válido, miss_count zerado
 [main] '39Th Bradford 5K Road Race' — link válido, miss_count zerado
-[main] '2026 Tillamook Ymca Milk Run' — link válido, miss_count zerado
-[main] '3Rd Annual Blackberry Festival 5K' — link válido, miss_count zerado
+[main] '2026 Dash 'N Splash Race For Brain And Spinal Cord Injury' — link válido, miss_count zerado
 [main] '4.01K Family Color Run By The Investment Centre At Cbc Bank' — link válido, miss_count zerado
 [main] '3Rd Annual Run For Fathers 5K Walk/Run' — link válido, miss_count zerado
 [main] '4Th Annual Teal Ribbon Family Fun Walk At The Oregon Zoo To Raise Ovarian Cancer Awareness!' — link válido, miss_count zerado
@@ -987,11 +1020,10 @@
 [main] '6Th Annual Chesterfest 5K Run / Walk' — link válido, miss_count zerado
 [main] 'Adelyn'S Rainbow Run 5K' — link válido, miss_count zerado
 [main] 'Albert City Summerfest 5K' — link válido, miss_count zerado
-[main] '45Th Annual Ymca Brickyard Run 5Mi/5K' — link válido, miss_count zerado
 [main] 'Abdi Bile Run' — link válido, miss_count zerado
 [main] 'Adam Puchta Wine & Swine Vineyard 5K' — link válido, miss_count zerado
+[main] '45Th Annual Ymca Brickyard Run 5Mi/5K' — link válido, miss_count zerado
 [main] 'Afgm 5K Walk/Run' — link válido, miss_count zerado
-[main] 'Armstrong County Rim-To-Rim 15K Challenge' — link válido, miss_count zerado
 [main] 'Aberdeen 250 Freedom 5K Run And Walk' — link válido, miss_count zerado
 [main] 'Anytime Fitness Rigby Lake Run' — link válido, miss_count zerado
 [main] 'All American Amble 5K' — link válido, miss_count zerado
@@ -1000,6 +1032,8 @@
 [main] 'Balic Wine Run 5K' — link válido, miss_count zerado
 [main] 'Al-Van’S Furry 5K' — link válido, miss_count zerado
 [main] 'Beach Bash Run/Walk' — link válido, miss_count zerado
+[main] 'Balic Wine Run 5K' — link válido, miss_count zerado
+[main] 'Belvidere Heritage Days 5K' — link válido, miss_count zerado
 [main] 'Annapolis Striders John Wall Memorial One Mile Track Run' — link válido, miss_count zerado
 [main] 'Bear Cupboard Run' — link válido, miss_count zerado
 [main] 'Big Red And Barbacoa 5K Run/Walk' — link válido, miss_count zerado
@@ -1012,25 +1046,31 @@
 [main] 'Boogie Nights 5K & 10K' — link válido, miss_count zerado
 [main] 'Bikes & Beers New Bedford' — link válido, miss_count zerado
 [main] 'Blue Crab Bolt Trail Run - Seneca Creek' — link válido, miss_count zerado
+[main] 'Bmc Midsummer Bengal Classic' — link válido, miss_count zerado
 [main] 'Berry Big Run For The Kids' — link válido, miss_count zerado
 [main] 'Brave 5K' — link válido, miss_count zerado
 [main] 'Camcare Health Mindful Miles 5K' — link válido, miss_count zerado
-[main] 'Canton Depot Days 5K' — link válido, miss_count zerado
+[main] 'Blueberry Pie 5K, 1 Mile, Pie Eating Contest' — link válido, miss_count zerado
 [main] 'Canaan Valley Trail Run' — link válido, miss_count zerado
 [main] 'Blueberry Pie 5K, 1 Mile, Pie Eating Contest' — link válido, miss_count zerado
 [main] 'Bourbonnais Friendship Festival 5K Run Or 1.5 Mile Fitness Walk' — link válido, miss_count zerado
 [main] 'Bearhole Road Race' — link válido, miss_count zerado
+[main] 'Bourbonnais Friendship Festival 5K Run Or 1.5 Mile Fitness Walk' — link válido, miss_count zerado
 [main] 'Chautauqua Festival In The Park 5K' — link válido, miss_count zerado
+[main] 'Canton Depot Days 5K' — link válido, miss_count zerado
 [main] 'Centurion Trail 33 Hour Ultra' — link válido, miss_count zerado
 [main] 'Cecil Jarvis Greater Clarksburg 10K' — link válido, miss_count zerado
 [main] 'Cardinal Crew 5K And 1 Mile Glow Run' — link válido, miss_count zerado
 [main] 'Carrier Mills - Stonefort Cross Country 5K!' — link válido, miss_count zerado
 [main] 'Advanced Sailing June 27 U S Sailing 101' — link válido, miss_count zerado
 [main] '5K Color Run & Walk' — link válido, miss_count zerado
-[main] 'Capt'N Karl'S Trail Series - Muleshoe Bend' — link válido, miss_count zerado
+[main] 'Advanced Sailing June 27 U S Sailing 101' — link válido, miss_count zerado
+[main] 'Carrier Mills - Stonefort Cross Country 5K!' — link válido, miss_count zerado
+[main] 'Cecil Jarvis Greater Clarksburg 10K' — link válido, miss_count zerado
 [main] '14Th Annual Outrun The Cops 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Capt'N Karl'S Trail Series - Muleshoe Bend' — link válido, miss_count zerado
 [main] 'Cheetah Chase 5K' — link válido, miss_count zerado
-[main] '2026 Annual Optimist 5K Walk/Run (All Ages!) Bringing Out The Best In Kids!' — link válido, miss_count zerado
+[main] '2026 Fiesta Topeka 5K' — link válido, miss_count zerado
 [main] '4Th Annual Freedom 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Captain Thurmond'S Challenge 2026' — link válido, miss_count zerado
 [main] '2026 Fiesta Topeka 5K' — link válido, miss_count zerado
@@ -1056,10 +1096,14 @@
 [main] 'Buckeye Trail' — link válido, miss_count zerado
 [main] 'A Most Excellent Race' — link válido, miss_count zerado
 [main] 'Camping At San Onofre State Park !' — link válido, miss_count zerado
+[main] 'A Most Excellent Race' — link válido, miss_count zerado
 [main] 'Acpa Race Challenges' — link válido, miss_count zerado
 [main] '4Th Annual 5K Race For Recovery' — link válido, miss_count zerado
 [main] '6Th Annual Viva Frida 50 Mile Challenge' — link válido, miss_count zerado
 [main] 'Bluffton Independence Day 5K' — link válido, miss_count zerado
+[main] '8Th Annual Red, White & Blue 5K Run/Walk Presented By United Bank' — link válido, miss_count zerado
+[main] 'Alderson 4Th Of July Run For Snacks' — link válido, miss_count zerado
+[main] 'Bike Hut Classic' — link válido, miss_count zerado
 [main] '5K For Fun' — link válido, miss_count zerado
 [main] 'Alderson 4Th Of July Run For Snacks' — link válido, miss_count zerado
 [main] 'America 250 Blue Devil Dash 5K' — link válido, miss_count zerado
@@ -1070,9 +1114,9 @@
 [main] '17Th Annual Independence Day 5K Run/Walk Presented By Maguire Law Firm' — link válido, miss_count zerado
 [main] '18Th Annual Breezy Point 5K' — link válido, miss_count zerado
 [main] '"We The People” Freedom Fest 5K' — link válido, miss_count zerado
+[main] '2026 Gcr Firecracker 5K' — link válido, miss_count zerado
 [main] '2026 Carlisle Summerfair 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 Beecher Freedom 5K Run/Walk' — link válido, miss_count zerado
-[main] '2026 Gcr Firecracker 5K' — link válido, miss_count zerado
 [main] '2026 Freedom 5K - Keystone Heights' — link válido, miss_count zerado
 [main] '2026 Galeton 5K For Fireworks' — link válido, miss_count zerado
 [main] '16Th Annual Telluride Foundation Rundola: Run For Good' — link válido, miss_count zerado
@@ -1088,26 +1132,26 @@
 [main] '20Th Annual Hungry Duck Half Marathon, 10K & 5K Run/Walk' — link válido, miss_count zerado
 [main] '26Th Annual Firecracker 5000 Presented By Fleet Feet' — link válido, miss_count zerado
 [main] '29Th Annual Chief Joseph Uphill Run' — link válido, miss_count zerado
-[main] '21St Annual Fair Haven Run-Walk For Hospice - Presented By Novelis' — link válido, miss_count zerado
 [main] '2026 Harlan Hustle' — link válido, miss_count zerado
 [main] '4 Miles On The 4Th' — link válido, miss_count zerado
 [main] '29Th Annual Merrimack Sparkler 5K Run/Walk' — link válido, miss_count zerado
 [main] '37Th Annual Four On The Fourth' — link válido, miss_count zerado
 [main] '2Nd Annual San Diego 4Th Of July 5K & 10K' — link válido, miss_count zerado
-[main] '4 On The 4Th' — link válido, miss_count zerado
 [main] '4 On The 4Th Road Race' — link válido, miss_count zerado
+[main] '29Th Annual Merrimack Sparkler 5K Run/Walk' — link válido, miss_count zerado
 [main] '4 On The 4Th' — link válido, miss_count zerado
-[main] '33Rd Annual Village Runner 4Th Of July Runs' — link válido, miss_count zerado
+[main] '4 On The 4Th' — link válido, miss_count zerado
 [main] '4 On The Fourth Presented By Novant Health' — link válido, miss_count zerado
+[main] '33Rd Annual Village Runner 4Th Of July Runs' — link válido, miss_count zerado
 [main] '4 On The Fourth' — link válido, miss_count zerado
-[main] '28Th Annual Firecracker 5K' — link válido, miss_count zerado
 [main] '4 On The 4Th Run To The Top' — link válido, miss_count zerado
-[main] '44Th Annual Milton Optimist Independence Day 10K Run/5K Walk/1 Mile Run' — link válido, miss_count zerado
 [main] '4Th Of July Flagstaff Downtown Mile' — link válido, miss_count zerado
-[main] '40Th Annual Boogie'S Buddy Race, Presented By Aspen Valley Health' — link válido, miss_count zerado
+[main] '44Th Annual Milton Optimist Independence Day 10K Run/5K Walk/1 Mile Run' — link válido, miss_count zerado
+[main] '28Th Annual Firecracker 5K' — link válido, miss_count zerado
 [main] '48Th Annual Freedom Fest 5K' — link válido, miss_count zerado
-[main] '48Th Annual Springfield'S Big Fourth 5K!' — link válido, miss_count zerado
+[main] '40Th Annual Boogie'S Buddy Race, Presented By Aspen Valley Health' — link válido, miss_count zerado
 [main] '2026 Santa Cruz Sunrise Rotary Firecracker Run' — link válido, miss_count zerado
+[main] '48Th Annual Springfield'S Big Fourth 5K!' — link válido, miss_count zerado
 [main] '47Th Annual Douglas R. Lynn Sebree Firecracker Run' — link válido, miss_count zerado
 [main] '48Th Annual Jack Gamble Melon Run' — link válido, miss_count zerado
 [main] '4Th Of July 5K' — link válido, miss_count zerado
@@ -1115,6 +1159,7 @@
 [main] '4Th Of July 4Mi Ruck & Flag Carry' — link válido, miss_count zerado
 [main] '5-Mile Dragin' Tail Run/Walk' — link válido, miss_count zerado
 [main] '52Nd Freeport Lng Firecracker 4' — link válido, miss_count zerado
+[main] '5-Mile Dragin' Tail Run/Walk' — link válido, miss_count zerado
 [main] '4Th Of July Shoe House Shuffle' — link válido, miss_count zerado
 [main] '4Th Of July Mini-Marathon (2.6 Miles)' — link válido, miss_count zerado
 [main] '5K Run For Glory' — link válido, miss_count zerado
@@ -1126,7 +1171,6 @@
 [main] '5Th Annual 5K Firecracker Run' — link válido, miss_count zerado
 [main] 'A Revolutionary Celebration Run' — link válido, miss_count zerado
 [main] 'Age-Graded 4-Miler' — link válido, miss_count zerado
-[main] '9Th Annual Freedom Fighter 5K & Lil' Firecracker Kids Dash' — link válido, miss_count zerado
 [main] 'Alameda July 4Th Parade R.A.C.E.' — link válido, miss_count zerado
 [main] 'All American 5K' — link válido, miss_count zerado
 [main] '5K Race For Recovery 4Th Of July' — link válido, miss_count zerado
@@ -1141,12 +1185,10 @@
 [main] 'Arbutus Firecracker 10K' — link válido, miss_count zerado
 [main] 'America'S 5K And 1 Mile Fun Run' — link válido, miss_count zerado
 [main] '6Th Annual Sand Lake Run 4 The 4Th' — link válido, miss_count zerado
+[main] 'Avery Brewing Co. 4K On The 4Th' — link válido, miss_count zerado
 [main] 'Ashtabula Ymca Firecracker 5K & 10K' — link válido, miss_count zerado
 [main] 'Annual - Dieterich Firecracker 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Avery Brewing Co. 4K On The 4Th' — link válido, miss_count zerado
 [main] 'Bemidji Downtown Dash' — link válido, miss_count zerado
-[main] 'Batavia Kiwanis Independence Day 5K' — link válido, miss_count zerado
-[main] 'Bay Days 5 Miler, 1 Mile, & Kids Track Dash' — link válido, miss_count zerado
 [main] 'Beechmont Bolt' — link válido, miss_count zerado
 [main] 'Bangtail Divide 38K' — link válido, miss_count zerado
 [main] 'Annual Leonide J. Lemire Road Race 5 Mile Run' — link válido, miss_count zerado
@@ -1155,12 +1197,12 @@
 [main] 'Berlin Parade 5K' — link válido, miss_count zerado
 [main] 'Beastlake 5K & Obstacle Course Race' — link válido, miss_count zerado
 [main] 'Bainbridge Youth Services Fun Run 2026' — link válido, miss_count zerado
-[main] 'Bill Bone 5K' — link válido, miss_count zerado
+[main] 'Berlin Parade 5K' — link válido, miss_count zerado
 [main] 'Bill Feeney 5K' — link válido, miss_count zerado
 [main] 'Billington Memorial 5K' — link válido, miss_count zerado
-[main] 'Arukah Freedom 5K Color Run' — link válido, miss_count zerado
 [main] 'Big Bang 5K/10K' — link válido, miss_count zerado
 [main] 'Blackberry Festival 5K' — link válido, miss_count zerado
+[main] 'Arukah Freedom 5K Color Run' — link válido, miss_count zerado
 [main] 'Blue Ridge Freedom 5K' — link válido, miss_count zerado
 [main] 'Black Bear Run 6K/12K' — link válido, miss_count zerado
 [main] 'Big Rex'S Bottle Rocket 5K' — link válido, miss_count zerado
@@ -1171,7 +1213,7 @@
 [main] 'Boscobel Firecracker Run/Walk' — link válido, miss_count zerado
 [main] 'Btc Peavine Falls Run' — link válido, miss_count zerado
 [main] 'Boxford July 4Th Road Race' — link válido, miss_count zerado
-[main] 'Boyne City Independence Day Run' — link válido, miss_count zerado
+[main] 'Boscobel Firecracker Run/Walk' — link válido, miss_count zerado
 [main] 'Bulldog Bolt 5K / 1 Mile Pet Walk' — link válido, miss_count zerado
 [main] 'Brighton July 4Th 5K' — link válido, miss_count zerado
 [main] 'Burro Buster 5K' — link válido, miss_count zerado
@@ -1181,14 +1223,13 @@
 [main] 'Captains Grand Slam 5K' — link válido, miss_count zerado
 [main] 'Caledonia Kilt Klassic 5K' — link válido, miss_count zerado
 [main] 'Care 5K Run/Walk & 10K Run' — link válido, miss_count zerado
-[main] 'Cape Gazette 36Th Firecracker 5K Run & Walk "& Kid'S Tot Trot" (Ssrs #7)' — link válido, miss_count zerado
 [main] 'Chester Rotary'S 48Th Four On The Fourth' — link válido, miss_count zerado
+[main] 'Cape Gazette 36Th Firecracker 5K Run & Walk "& Kid'S Tot Trot" (Ssrs #7)' — link válido, miss_count zerado
 [main] 'Camp Patriot 4Th Of July Fun Run' — link válido, miss_count zerado
 [main] 'Anaheim Firecracker 5K/10K' — link válido, miss_count zerado
 [main] 'Boy With The Boot 5K Walk/Run' — link válido, miss_count zerado
 [main] '4 On The 4Th Presented By Visions Federal Credit Union' — link válido, miss_count zerado
 [main] '42Nd Annual Independence Day 5K' — link válido, miss_count zerado
-[main] '2026 Nisswa Firecracker 5K & 10K' — link válido, miss_count zerado
 [main] 'Chester 4Th Of July Fun Run' — link válido, miss_count zerado
 [main] 'Brrc 4Th July Fun Run' — link válido, miss_count zerado
 [main] '42Nd Annual Whiskey Rebellion 5K Run And Walk' — link válido, miss_count zerado
@@ -1228,6 +1269,8 @@
 [main] '2026 Women'S 6K Festival Presented By Pnc Bank' — link válido, miss_count zerado
 [main] '5K Famous Racing Sausages Run/Walk' — link válido, miss_count zerado
 [main] '52 Taphouse - Hwy 6/34 Series' — link válido, miss_count zerado
+[main] '5K Famous Racing Sausages Run/Walk' — link válido, miss_count zerado
+[main] '46Th Toughest 10K In Texas 5K & 1-Mile Run' — link válido, miss_count zerado
 [main] '5K With 5-0' — link válido, miss_count zerado
 [main] '46Th Toughest 10K In Texas 5K & 1-Mile Run' — link válido, miss_count zerado
 [main] '4Th Annual Christmas In July Tree.1 Walk And Run For Fun' — link válido, miss_count zerado
@@ -1243,12 +1286,14 @@
 [main] '8Th Annual Madison Gospel 5K, 10K, Run/Walk & Health Fair' — link válido, miss_count zerado
 [main] 'Beaverhead Endurance Runs 100K And 55K' — link válido, miss_count zerado
 [main] 'Beartooth Run' — link válido, miss_count zerado
+[main] '8Th Annual Madison Gospel 5K, 10K, Run/Walk & Health Fair' — link válido, miss_count zerado
 [main] '8-Hour Dream Endurance Race & Cat Nap 5K' — link válido, miss_count zerado
 [main] 'Aquarun 5K/10K/Kids 1K Fun Run' — link válido, miss_count zerado
 [main] 'Blessing Of The Bikes And Runners 2026' — link válido, miss_count zerado
 [main] 'Apritrot 0.5K At Apricot Fest' — link válido, miss_count zerado
 [main] 'Blue Mountain 30K And 10K' — link válido, miss_count zerado
 [main] 'Boilermaker Walk Presented By Slocum-Dickson Medical Group' — link válido, miss_count zerado
+[main] 'Building Hope 5K: Run/Walk' — link válido, miss_count zerado
 [main] 'Blade 5K And 1Mile Walk + Virtual Event' — link válido, miss_count zerado
 [main] 'Cahaba Medical Care 5K' — link válido, miss_count zerado
 [main] 'Building Hope 5K: Run/Walk' — link válido, miss_count zerado
@@ -1263,17 +1308,19 @@
 [main] 'Bridgman 5K Run/Walk, 10K Run, & 1.1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Byron Fest 5K & 1 Mile Fun Run' — link válido, miss_count zerado
 [main] '5K On The Runway' — link válido, miss_count zerado
+[main] 'Bridgman 5K Run/Walk, 10K Run, & 1.1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Cheesehead Chase - 2 Mile Run/Walk - 5 Mile Run' — link válido, miss_count zerado
+[main] 'Byron Fest 5K & 1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Beginner Sailing July 11/12' — link válido, miss_count zerado
 [main] '2026 Crush Cancer Lobster Crawl 5K Walk/Run And 1/2 Mile Kids Dash' — link válido, miss_count zerado
 [main] 'Baughman Freedom Run 5K' — link válido, miss_count zerado
 [main] 'Corrida Km 1 - Etapa Londrina' — link válido, miss_count zerado
 [main] '30Th Annual Two Mile Manitou Monster Lake Swim' — link válido, miss_count zerado
 [main] '2Nd Annual Running Of The Bulls Trail Race' — link válido, miss_count zerado
+[main] '30Th Annual Two Mile Manitou Monster Lake Swim' — link válido, miss_count zerado
+[main] 'Corrida Km 1 - Etapa Londrina' — link válido, miss_count zerado
 [main] '12 Corners Wine Run 5K' — link válido, miss_count zerado
 [main] 'Bare Buns Fun Run' — link válido, miss_count zerado
-[main] '43Rd Seashore 5 Miler (Ss Summer Series #8)' — link válido, miss_count zerado
-[main] 'Augusta Marathon - Full/Half/10K/5K - Running Festival' — link válido, miss_count zerado
 [main] 'Califlow Poker Run: High Stakes & Happy Tails 5K. 10K. 1 Miler' — link válido, miss_count zerado
 [main] 'Boilermaker Road Race' — link válido, miss_count zerado
 [main] 'Boogie With Scoogie 8K, 5K, 2 Mile Fun Run & 1/4 Mile Kids' Run' — link válido, miss_count zerado
@@ -1286,25 +1333,26 @@
 [main] 'Bastille Day 5K' — link válido, miss_count zerado
 [main] 'Bluegrass Mountain Cup - Rudy Mines Xc' — link válido, miss_count zerado
 [main] '$5K - July' — link válido, miss_count zerado
-[main] 'Bowdoin Bushwhack Presented By Peace, Love, Trails' — link válido, miss_count zerado
+[main] 'Bluegrass Mountain Cup - Rudy Mines Xc' — link válido, miss_count zerado
 [main] '2026 Fairfield Police Sunset 5K With Myteam Triumph' — link válido, miss_count zerado
+[main] 'Bowdoin Bushwhack Presented By Peace, Love, Trails' — link válido, miss_count zerado
 [main] 'Ambulance Driver 5K At Badsons Brewery' — link válido, miss_count zerado
 [main] 'Cherry Pickers Trot & Pit Spit' — link válido, miss_count zerado
 [main] 'Annual 5K Gardiner Classic Run/Walk' — link válido, miss_count zerado
 [main] 'Berna'S Great Legs 5K For Women' — link válido, miss_count zerado
 [main] '5K On The Beach Presented By Brooks' — link válido, miss_count zerado
 [main] 'Buffalo Subaru 4 Mile Chase - 44Th Annual' — link válido, miss_count zerado
-[main] '14Th Annual Party In Pink 5K/10K Run/Walk' — link válido, miss_count zerado
-[main] '18Th Annual Barnes Drug Store 5K Fun Run & Splash Dash' — link válido, miss_count zerado
-[main] '13Th Annual Westbrook Strong 5K' — link válido, miss_count zerado
 [main] '10Th Annual Hot-To-Trot 5K & Family Fun Run' — link válido, miss_count zerado
-[main] '2026 Chatham Sweetcorn Shuck N' Run 5K' — link válido, miss_count zerado
+[main] '18Th Annual Barnes Drug Store 5K Fun Run & Splash Dash' — link válido, miss_count zerado
 [main] '1St Annual Bridgeville Boro 5K' — link válido, miss_count zerado
+[main] '2026 Chatham Sweetcorn Shuck N' Run 5K' — link válido, miss_count zerado
+[main] '13Th Annual Westbrook Strong 5K' — link válido, miss_count zerado
+[main] '14Th Annual Party In Pink 5K/10K Run/Walk' — link válido, miss_count zerado
+[main] '15Th Annual Patrick Joyce Fund 5K Run/1 Mile Walk' — link válido, miss_count zerado
 [main] '2025 Run That Shall Not Be Named 5K' — link válido, miss_count zerado
 [main] '"For Your Health" 5K Run/Walk & 1-Mile Fun Walk' — link válido, miss_count zerado
-[main] '15Th Annual Patrick Joyce Fund 5K Run/1 Mile Walk' — link válido, miss_count zerado
-[main] '2026 Josh Jacobs Youth Football Camp - Tulsa' — link válido, miss_count zerado
 [main] '2026 Run The Galaxy 5K' — link válido, miss_count zerado
+[main] '2026 Josh Jacobs Youth Football Camp - Tulsa' — link válido, miss_count zerado
 [main] '22Nd Annual Bear River Crawl' — link válido, miss_count zerado
 [main] '2026 Strawberry Fields 5K & 2K' — link válido, miss_count zerado
 [main] '47Th Annual Great Wyoming Buffalo Stampede 10K/5K Run & 5K Competitive Walk' — link válido, miss_count zerado
@@ -1315,18 +1363,18 @@
 [main] 'Amelia Earhart Fun Run/Walk' — link válido, miss_count zerado
 [main] '4Th Annual Dr. Phillip W. Lockhart, Sr. Foundation 5K Run/Walk' — link válido, miss_count zerado
 [main] '8Th Annual Spr Mutt Strut' — link válido, miss_count zerado
+[main] 'Annual Ovl Cape Cod 5K Championship Road Race - "Run For The Library"' — link válido, miss_count zerado
 [main] 'Bad Dog 5000' — link válido, miss_count zerado
 [main] '7 Bridges 7 Brews' — link válido, miss_count zerado
-[main] 'A Run For The Books 5K & 1 Mile' — link válido, miss_count zerado
-[main] 'Audi Power Of Four Trail Run' — link válido, miss_count zerado
 [main] 'Big Dog Heatwave 5 Miler' — link válido, miss_count zerado
-[main] 'Ali Held Herman Memorial Run/Walk' — link válido, miss_count zerado
+[main] 'Audi Power Of Four Trail Run' — link válido, miss_count zerado
+[main] 'A Run For The Books 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Bruin Blitz 5K' — link válido, miss_count zerado
+[main] 'Ali Held Herman Memorial Run/Walk' — link válido, miss_count zerado
 [main] 'Acuity Neonatal Run/Walk' — link válido, miss_count zerado
 [main] 'Chatt-Ar-Nooga 10-Hour Adventure Race' — link válido, miss_count zerado
 [main] 'Bk5K Scranton, PA' — link válido, miss_count zerado
 [main] 'Achilles Charlotte 5K & Fun Run' — link válido, miss_count zerado
-[main] 'Bob Marshall Trail Races' — link válido, miss_count zerado
 [main] '2Yrs With Urban Run Club Satx - Fun Run/Walk & Wellness Fest' — link válido, miss_count zerado
 [main] '2026 Oca Colorado 5K Panda Run' — link válido, miss_count zerado
 [main] 'Big Bang Mile And Science Festival' — link válido, miss_count zerado
@@ -1357,6 +1405,8 @@
 [main] '2026 Open Water Series Race #4' — link válido, miss_count zerado
 [main] 'After Hours 5K Experience' — link válido, miss_count zerado
 [main] '2026 All-Ohio Xc Camp' — link válido, miss_count zerado
+[main] 'After Hours 5K Experience' — link válido, miss_count zerado
+[main] '2026 Cal Tri Williamsburg - 7.19.26' — link válido, miss_count zerado
 [main] '2026 Orrc Dual Duel Run And Race Walk' — link válido, miss_count zerado
 [main] '2026 Ga All Comers Meet Series #2' — link válido, miss_count zerado
 [main] 'Awards Test' — link válido, miss_count zerado
@@ -1368,12 +1418,12 @@
 [main] '54Th Annual Blessing Of The Fleet Road Race/Walk 2026' — link válido, miss_count zerado
 [main] 'Carlton Daze 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Chamber Chase 5K' — link válido, miss_count zerado
+[main] '54Th Annual Blessing Of The Fleet Road Race/Walk 2026' — link válido, miss_count zerado
 [main] '2026 Louisiana Watermelon Festival 5K' — link válido, miss_count zerado
 [main] '15Th Anniversary Run/Walk Bgr! Indy' — link válido, miss_count zerado
 [main] '2026 Jan Bennett Memorial Fund Walk-A-Thon' — link válido, miss_count zerado
 [main] '#Feedthekids Beer Mile' — link válido, miss_count zerado
 [main] '2026 Running To Honor 5K Walk (Or Run)' — link válido, miss_count zerado
-[main] '2026 Niceville Sunset Stampede 5K Run/Walk' — link válido, miss_count zerado
 [main] '2Nd Annual (2026) Marching Mustang 5K Color Run!' — link válido, miss_count zerado
 [main] '2026 Race 4 Independence' — link válido, miss_count zerado
 [main] '2026 Milbridge Days 5K And Fun Run' — link válido, miss_count zerado
@@ -1384,6 +1434,7 @@
 [main] '2026 Flutie 5K For Autism: Martha'S Vineyard' — link válido, miss_count zerado
 [main] 'Alina'S Light Walk, Run & Family Fun 2026' — link válido, miss_count zerado
 [main] 'Adrenaline Rush 5K - Michigan & Virtual' — link válido, miss_count zerado
+[main] '2026 Flutie 5K For Autism: Martha'S Vineyard' — link válido, miss_count zerado
 [main] '33Rd Annual Fast Flash 5K And Back 2 School Bash' — link válido, miss_count zerado
 [main] 'Alien Midnight Run - Virtual Run Only' — link válido, miss_count zerado
 [main] '27Th Annual Allen Stone Braveheart Memorial Races - 7/25/26 - 31St Street Park' — link válido, miss_count zerado
@@ -1400,6 +1451,8 @@
 [main] 'Biltmore Forest 5K/10K' — link válido, miss_count zerado
 [main] 'Aberdeen Family Ymca Bull Run' — link válido, miss_count zerado
 [main] 'Arcadia Daze 5K' — link válido, miss_count zerado
+[main] 'Blue Crab Bolt Trail Run - Schaeffer Farms' — link válido, miss_count zerado
+[main] 'Blanchard River 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Bass Lake Festival 5K Run/3K Walk' — link válido, miss_count zerado
 [main] 'Austin Solstice Circuit 52 Miler • 50K • Marathon • 25K • 10K • 5K • 1 Hour' — link válido, miss_count zerado
 [main] 'Blanchard River 5K Run/Walk' — link válido, miss_count zerado
@@ -1411,11 +1464,13 @@
 [main] 'Break The Chains: A Walk For Cult Recovery - 2026 International Cult Awareness Month' — link válido, miss_count zerado
 [main] 'Braselton Police Foundation 5K' — link válido, miss_count zerado
 [main] 'Bp 5K Hero Run' — link válido, miss_count zerado
+[main] 'Break The Chains: A Walk For Cult Recovery - 2026 International Cult Awareness Month' — link válido, miss_count zerado
 [main] 'Breast Cancer Awareness 5K' — link válido, miss_count zerado
 [main] 'Celebration Of Life 5K Walk/Run 2026' — link válido, miss_count zerado
-[main] 'Caboose On The Loose' — link válido, miss_count zerado
+[main] 'Cabo Verdeans 5K - Mile Walk - Kids Run' — link válido, miss_count zerado
 [main] 'Caliente Off Road 5K' — link válido, miss_count zerado
 [main] 'Arch City Xc Festival' — link válido, miss_count zerado
+[main] 'Caboose On The Loose' — link válido, miss_count zerado
 [main] 'Cfj Carousel 5K And Kids Fun Run' — link válido, miss_count zerado
 [main] 'Candy Race 5K Columbus' — link válido, miss_count zerado
 [main] '33ª Seletiva - Caminhada Ecológica - 2026' — link válido, miss_count zerado
@@ -1431,6 +1486,7 @@
 [main] '2026 Race The Mesa Trail Run' — link válido, miss_count zerado
 [main] 'Cabo Verdeans 5K - Mile Walk - Kids Run' — link válido, miss_count zerado
 [main] '3Rd Annual Trans Pride 5K – 10K, Picnic, Resource Fair' — link válido, miss_count zerado
+[main] '2026 Race The Mesa Trail Run' — link válido, miss_count zerado
 [main] 'Brooklyn Bridge Swim' — link válido, miss_count zerado
 [main] 'Annual Benefit 5K Run/Walk Supporting Veterans And Their Needs Sponsored By The Vfw Post 133' — link válido, miss_count zerado
 [main] '43Rd Dam Mill 5K Run & 5K Walk (Ss Summer Series #9)' — link válido, miss_count zerado
@@ -1447,36 +1503,44 @@
 [main] 'Cbiz Workplace Challenge' — link válido, miss_count zerado
 [main] 'Burnin' Rubber 5K Run And Walk' — link válido, miss_count zerado
 [main] 'Betty Zane Days 5K' — link válido, miss_count zerado
+[main] 'Burnin' Rubber 5K Run And Walk' — link válido, miss_count zerado
+[main] 'Camp Run Moore - 5-Day Sleepaway Running Camp | July 27–31' — link válido, miss_count zerado
+[main] '2026 Cambr Chicagoland Race Series Powered By Sram' — link válido, miss_count zerado
+[main] 'Cbiz Workplace Challenge' — link válido, miss_count zerado
 [main] 'Big 5 Run' — link válido, miss_count zerado
 [main] 'Boise Front Trail Festival' — link válido, miss_count zerado
 [main] '14Th Annual Richmond Hill Red Hot Chili Pepper 5K' — link válido, miss_count zerado
 [main] 'Aquaman' — link válido, miss_count zerado
 [main] '174Th Attack Wing Runway 5K - Presented By Syracuse Hancock International Airport' — link válido, miss_count zerado
 [main] '2026 Crush Cancer Glow Walk/Run' — link válido, miss_count zerado
+[main] '12Th Annual Run For The Ring' — link válido, miss_count zerado
 [main] '2026 Bemidji Dragon Boat 5K Run/Walk & .5K Kids Run' — link válido, miss_count zerado
 [main] '12Th Annual Run For The Ring' — link válido, miss_count zerado
 [main] '18Th Run For The Paws 5K, 5K Walk & 1M Dog Walk (Ss Summer Series #10)' — link válido, miss_count zerado
 [main] '2026 Hanover Harvest Festival 5K' — link válido, miss_count zerado
-[main] '2026 Milk Miles Virtual 5K By Michigan Breastfeeding Network' — link válido, miss_count zerado
 [main] '3Rd In Annual Love For Lexy'S Color Run' — link válido, miss_count zerado
-[main] '2026 Nashville Urban Runoff 5K & Water Quality Festival' — link válido, miss_count zerado
 [main] '2026 Virtual G-Man 5K' — link válido, miss_count zerado
+[main] '2026 Milk Miles Virtual 5K By Michigan Breastfeeding Network' — link válido, miss_count zerado
+[main] '2026 Nashville Urban Runoff 5K & Water Quality Festival' — link válido, miss_count zerado
 [main] '5K To End Overdose' — link válido, miss_count zerado
 [main] '2026 Lvrr August Kids Series' — link válido, miss_count zerado
 [main] '2Nd Annual Corn To Run' — link válido, miss_count zerado
 [main] 'All You Can East Bluffet' — link válido, miss_count zerado
-[main] 'Aotk Nourish The Nations 5K Color Run/Walk' — link válido, miss_count zerado
 [main] 'Angry Cow Night Run Trail Run # 2' — link válido, miss_count zerado
+[main] 'Aotk Nourish The Nations 5K Color Run/Walk' — link válido, miss_count zerado
 [main] 'Bath Fest 5K' — link válido, miss_count zerado
 [main] '60 Minute Race' — link válido, miss_count zerado
 [main] 'Badges And Bravery 5K And Kids' Fun Run' — link válido, miss_count zerado
 [main] 'Aug 1 - Social Ride @ Location Tbd' — link válido, miss_count zerado
 [main] 'Alaska Distance Classic' — link válido, miss_count zerado
 [main] 'Blazin' Saddle 75 Bicycle Rally' — link válido, miss_count zerado
+[main] 'Antigo Tater Trot' — link válido, miss_count zerado
+[main] 'Alaska Distance Classic' — link válido, miss_count zerado
 [main] 'Beat The Heat 5K+' — link válido, miss_count zerado
 [main] 'Antigo Tater Trot' — link válido, miss_count zerado
 [main] '8Th Annual Megan'S Ride And Walk 2026 Benefiting Nine13Sports' — link válido, miss_count zerado
 [main] 'Bike To The Beat With Myteam Triumph' — link válido, miss_count zerado
+[main] '8Th Annual Megan'S Ride And Walk 2026 Benefiting Nine13Sports' — link válido, miss_count zerado
 [main] 'Blueberry Fun Run' — link válido, miss_count zerado
 [main] 'Captain Bill Gallagher Island 10 Mile Run' — link válido, miss_count zerado
 [main] 'Bushwacker 5K' — link válido, miss_count zerado
@@ -1484,8 +1548,6 @@
 [main] 'Bordeleau Vineyards Wine Run 5K' — link válido, miss_count zerado
 [main] 'Blue Crab Bolt Trail Run - Little Bennett' — link válido, miss_count zerado
 [main] 'Boggy Draw Beat Down' — link válido, miss_count zerado
-[main] '80S Flashback 5K' — link válido, miss_count zerado
-[main] 'Brayden'S Trail Of Strength' — link válido, miss_count zerado
 [main] 'Breathe N Run 5K For Pulmonary Fibrosis' — link válido, miss_count zerado
 [main] 'Buzzard'S Glory 5K' — link válido, miss_count zerado
 [main] 'Desafio Corro Feliz, Corro Com Orgulho' — link válido, miss_count zerado
@@ -1503,9 +1565,8 @@
 [main] 'Asa Color Run' — link válido, miss_count zerado
 [main] '4Th Annual Ice Cream 5K Tampa' — link válido, miss_count zerado
 [main] '3Rd Annual Schweizer Fest Pickleball Tournament' — link válido, miss_count zerado
-[main] 'Boys & Girls Club Of Milford Ice Cream Run (5K)' — link válido, miss_count zerado
-[main] 'Central Upper Peninsula Cism Donut Dash Presented By The Ben Lauren Memorial Foundation' — link válido, miss_count zerado
 [main] 'A Race For The Rest Of Us' — link válido, miss_count zerado
+[main] 'Boys & Girls Club Of Milford Ice Cream Run (5K)' — link válido, miss_count zerado
 [main] 'Blue Lobster 4-Miler' — link válido, miss_count zerado
 [main] 'Bike Race V' — link válido, miss_count zerado
 [main] '2026 Encompass Recreation Charity Golf Tournament-August 3, 2026-Presented By New York Air Brake' — link válido, miss_count zerado
@@ -1515,12 +1576,15 @@
 [main] 'Bush Park Thursday Nights In August Race Series' — link válido, miss_count zerado
 [main] 'Bad Blood 5K Run/Walk 2026' — link válido, miss_count zerado
 [main] 'Anchor Down Ultra' — link válido, miss_count zerado
-[main] '44Th Annual Draper Mile (2026)' — link válido, miss_count zerado
+[main] 'Bad Blood 5K Run/Walk 2026' — link válido, miss_count zerado
+[main] '2026 Mk 5K Run & Family Fun Walk' — link válido, miss_count zerado
 [main] '2026 Aurora Colony Days 5K And Kids 1K' — link válido, miss_count zerado
 [main] '2026 Kennedy Community Health 5K Walk & Run' — link válido, miss_count zerado
+[main] '44Th Annual Draper Mile (2026)' — link válido, miss_count zerado
+[main] 'Bush Park Thursday Nights In August Race Series' — link válido, miss_count zerado
 [main] '15Th Annual Breeze In The Trees 5K' — link válido, miss_count zerado
-[main] '2026 Cat Day 1M 5K 10K 13.1 26.2' — link válido, miss_count zerado
 [main] '2026 Woofstock Survivor 5K And Dog Walk' — link válido, miss_count zerado
+[main] '2026 Cat Day 1M 5K 10K 13.1 26.2' — link válido, miss_count zerado
 [main] '2026 Sprint For Spina Bifida' — link válido, miss_count zerado
 [main] '20Th Annual Nvrc/Herbie'S Home "Town Loop" (Hhl) 4 Mile Run/Walk' — link válido, miss_count zerado
 [main] '2026 Natchaug 5K Color Run & Walk' — link válido, miss_count zerado
@@ -1529,6 +1593,8 @@
 [main] '20Th Annual East Nashville Tomato 5K' — link válido, miss_count zerado
 [main] '45Th Annual Rotary Ramble 5K Run Or Run/Walk' — link válido, miss_count zerado
 [main] '3Rd Annual Hustle For Health Centers 5K Fun Run/Walk And Community Block Party (Shirt Deadline Has Ended As Of 8/6/2025)' — link válido, miss_count zerado
+[main] '-Tri Columbus' — link válido, miss_count zerado
+[main] '45Th Annual Rotary Ramble 5K Run Or Run/Walk' — link válido, miss_count zerado
 [main] '26Th Annual Hank Aaron State Trail 5K Run/Walk' — link válido, miss_count zerado
 [main] '4Th Annual First Street Beer Mile' — link válido, miss_count zerado
 [main] '37Th Annual Library Run Walk' — link válido, miss_count zerado
@@ -1547,13 +1613,14 @@
 [main] 'Back-To-School Family Fun 5K' — link válido, miss_count zerado
 [main] 'Allen Park 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Atkins Watermelon Days 5K Walk/Run Or 1-Mile Fun Run 2026' — link válido, miss_count zerado
+[main] 'Allen Park 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Back-To-School Family Fun 5K' — link válido, miss_count zerado
 [main] '5K For Foxp1' — link válido, miss_count zerado
 [main] 'Bashy'S Golden Run' — link válido, miss_count zerado
 [main] 'Bay Saint Louis Run+Sup' — link válido, miss_count zerado
 [main] 'Belmont 10 Mile Road Race' — link válido, miss_count zerado
 [main] 'Baltimore Festival 5K' — link válido, miss_count zerado
 [main] 'Arapahoe Warrior 5K' — link válido, miss_count zerado
-[main] 'Ben'S Memorial Mile & Community Festival' — link válido, miss_count zerado
 [main] 'Bellwood Daze River Run' — link válido, miss_count zerado
 [main] 'Bergen 5K' — link válido, miss_count zerado
 [main] 'Brew Run 5K To The Narragansett Brewery' — link válido, miss_count zerado
@@ -1585,6 +1652,8 @@
 [main] 'Bobby Doyle Summer Classic 5-Miler' — link válido, miss_count zerado
 [main] 'Beat The Heat Maryland Indoor 5K Or Family Fun Run At Arundel Mills Mall!' — link válido, miss_count zerado
 [main] 'Blacklick Creek 5 Miler' — link válido, miss_count zerado
+[main] 'A Long Swim' — link válido, miss_count zerado
+[main] 'Bobby Doyle Summer Classic 5-Miler' — link válido, miss_count zerado
 [main] 'Akron Pickle Fest 5K' — link válido, miss_count zerado
 [main] 'Brule 2 & 5 Miler' — link válido, miss_count zerado
 [main] 'Charm City Run 5K At Boordy Vineyards Presented By Hoka' — link válido, miss_count zerado
@@ -1594,6 +1663,8 @@
 [main] '18Th Annual Young And Wyld 5K Race' — link válido, miss_count zerado
 [main] '5K Brew Run At Bridger Brewing' — link válido, miss_count zerado
 [main] 'Anna'S Run 4-Miler' — link válido, miss_count zerado
+[main] '$5K - August' — link válido, miss_count zerado
+[main] 'Appleseeds Cross Country' — link válido, miss_count zerado
 [main] 'Birchleggings Club Third Annual Dakota Trail Bicycle Ride' — link válido, miss_count zerado
 [main] 'Back The Track 5K & Woodford Track Challenge' — link válido, miss_count zerado
 [main] '12Th Annual Kc 5K Run/Walk For Food Pantries' — link válido, miss_count zerado
@@ -1613,6 +1684,7 @@
 [main] 'Cancelled - Ruck For The Fallen 2026' — link válido, miss_count zerado
 [main] 'Aether'S Traverse' — link válido, miss_count zerado
 [main] '5K For Kelli' — link válido, miss_count zerado
+[main] 'Aether'S Traverse' — link válido, miss_count zerado
 [main] '605 Trail Fest' — link válido, miss_count zerado
 [main] 'Arts And Dash 5K' — link válido, miss_count zerado
 [main] 'Aaron Butler Memorial Purple Heart Run: Idaho' — link válido, miss_count zerado
@@ -1626,7 +1698,6 @@
 [main] 'Anchorage Runfest' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Chicago/Evanston' — link válido, miss_count zerado
 [main] '5K On The Fairway 2026' — link válido, miss_count zerado
-[main] 'Bagel Run 5K/10K/13.1 Los Angeles' — link válido, miss_count zerado
 [main] 'Believe In Home 5K And 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Miami' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
@@ -1639,12 +1710,14 @@
 [main] 'Brews Cruise' — link válido, miss_count zerado
 [main] 'Bingo Challenge Races' — link válido, miss_count zerado
 [main] 'Breakaway 5K' — link válido, miss_count zerado
+[main] 'Chesaning Chamber Of Commerce Dry-Tri' — link válido, miss_count zerado
 [main] 'Bridger Ridge Run' — link válido, miss_count zerado
 [main] 'Buckner Park Dash-Kid Race' — link válido, miss_count zerado
 [main] 'Chesaning Chamber Of Commerce Dry-Tri' — link válido, miss_count zerado
 [main] 'Brimfield Wine Run 5K' — link válido, miss_count zerado
 [main] 'C.H.H.I.P.S. Trot 'N Brew' — link válido, miss_count zerado
 [main] '7-Lakes Trail Run (3.5Mile & 7Mile)' — link válido, miss_count zerado
+[main] 'C.H.H.I.P.S. Trot 'N Brew' — link válido, miss_count zerado
 [main] 'Bikes & Beers Branford' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Seattle' — link válido, miss_count zerado
 [main] 'Butts & Guts 5K' — link válido, miss_count zerado
@@ -1656,6 +1729,7 @@
 [main] '34Th Anniversary Hook O'Malley 1 Mile Firecracker Race Run/Walk Against Cancer' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] '2026 Montrose Blueberry Festival 5K & 8K Road Races' — link válido, miss_count zerado
+[main] 'Bagel Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Arthur E. Schumacher Memorial 5K Race' — link válido, miss_count zerado
 [main] 'Caleb Smail Memorial 5K' — link válido, miss_count zerado
 [main] 'Another Dam 50K & 25K' — link válido, miss_count zerado
@@ -1684,7 +1758,6 @@
 [main] '2Nd Annual Run & Brews Fun Run At Katy Beer Garden' — link válido, miss_count zerado
 [main] '2026 True Impact Ministries 5K/10K' — link válido, miss_count zerado
 [main] 'Advanced Sailing August 22 Us Sailing 101' — link válido, miss_count zerado
-[main] 'Back The Blue 5K/10K Fun Run/Walk In Remembrance Of Matthew "Adam" Jimenez' — link válido, miss_count zerado
 [main] '911 Dispatch "Live Virtual" 5K/10K' — link válido, miss_count zerado
 [main] 'Big Orange Summer Kids Run' — link válido, miss_count zerado
 [main] '18Th Annual Canine Classic At Paws Up' — link válido, miss_count zerado
@@ -1694,6 +1767,7 @@
 [main] 'Beach To Beach 5K Run' — link válido, miss_count zerado
 [main] 'Back In The Day 5K' — link válido, miss_count zerado
 [main] 'Ben And Tim Day' — link válido, miss_count zerado
+[main] 'Beach To Beach 5K Run' — link válido, miss_count zerado
 [main] 'Alana'S Eternal Light 5K' — link válido, miss_count zerado
 [main] 'Butternut Valley 5K Fun Run' — link válido, miss_count zerado
 [main] 'Bt5K Cleveland' — link válido, miss_count zerado
@@ -1705,19 +1779,18 @@
 [main] 'Chateau Vineyard Wine Run 5K' — link válido, miss_count zerado
 [main] 'Celtic Blue Day 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Casa Superhero Run' — link válido, miss_count zerado
+[main] 'Bikes & Beers Ocean County' — link válido, miss_count zerado
 [main] 'Belchertown First Responders 5K Run And 1 Mile Walk' — link válido, miss_count zerado
-[main] 'Albert Rivera Menudo Run' — link válido, miss_count zerado
 [main] '2026 Blondie Dh' — link válido, miss_count zerado
 [main] '11Th Annual Log Hill Hustle' — link válido, miss_count zerado
+[main] 'Albert Rivera Menudo Run' — link válido, miss_count zerado
 [main] '8Th Annual Corazon De Ninos Run' — link válido, miss_count zerado
 [main] '3Rd Annual Ppp3Ca Race For Rare 5K Run/Walk' — link válido, miss_count zerado
 [main] '10Th Annual Ditch Diggers Dash & Touch A Truck' — link válido, miss_count zerado
 [main] '12Th Rbvfc Fire Fightin' 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Abe'S Amble' — link válido, miss_count zerado
 [main] '2026 Unite To Fight 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Nocterra Quitter’S Run' — link válido, miss_count zerado
-[main] 'Abe'S Amble' — link válido, miss_count zerado
-[main] 'Brady'S Run Happy 5K & 10K' — link válido, miss_count zerado
-[main] '2026 Nova Running Club 5K' — link válido, miss_count zerado
 [main] '2026 Open Water Series Race #6' — link válido, miss_count zerado
 [main] '2026 Flutie 5K For Autism: Fairport, Ny' — link válido, miss_count zerado
 [main] 'Cabernet Canter Cross Country 5K/10K' — link válido, miss_count zerado
@@ -1725,13 +1798,13 @@
 [main] '10Th Annual Red Moon Trail Run Presented By Bayne'S Apple Valley' — link válido, miss_count zerado
 [main] '2026 Killingworth Road Race 4 Miles' — link válido, miss_count zerado
 [main] '3Rd Annual Dobro Dash' — link válido, miss_count zerado
-[main] '3Rd Annual Less Society Table Rock Run' — link válido, miss_count zerado
+[main] '10Th Annual Red Moon Trail Run Presented By Bayne'S Apple Valley' — link válido, miss_count zerado
 [main] '20Th Annual Seedorf / Mcmeekin 5K Run' — link válido, miss_count zerado
 [main] 'Adventure Awaits 5K' — link válido, miss_count zerado
 [main] '4Th Annual Clayton-Henry Nphc 5K Fun Run/Walk' — link válido, miss_count zerado
 [main] '11Th Annual Jeffrey E. Turner Fitness 5K Run/Walk' — link válido, miss_count zerado
 [main] '5Th Annual Rise & Connect 5K, 10K, Kids' Fun Run, Wheelchair Fun Race Benefiting Marcus Autism Center' — link válido, miss_count zerado
-[main] '2026 Run The Runway' — link válido, miss_count zerado
+[main] '4Th Annual Clayton-Henry Nphc 5K Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Amplify! Operation Juliet 5K' — link válido, miss_count zerado
 [main] 'Apex Predator Summer Showdown' — link válido, miss_count zerado
 [main] 'Beaufort Dog Obstacle Course Run/Walk 5K' — link válido, miss_count zerado
@@ -1747,15 +1820,13 @@
 [main] 'Beats For A Cure' — link válido, miss_count zerado
 [main] 'Bob Schul Invitational' — link válido, miss_count zerado
 [main] 'Bikes & Beers Herndon' — link válido, miss_count zerado
-[main] 'Bikes & Beers Columbus' — link válido, miss_count zerado
-[main] 'Cedar Polka Fest – Race Series' — link válido, miss_count zerado
-[main] '954 Iguana Man 5K/10K' — link válido, miss_count zerado
 [main] '4Th Boardwalk Mile Open Water Swim' — link válido, miss_count zerado
 [main] '2026 Unified 5K - Dexter' — link válido, miss_count zerado
 [main] 'Annapolis 10 Mile Run' — link válido, miss_count zerado
 [main] '4Th Annual Strongliketom' — link válido, miss_count zerado
 [main] 'Apple City 5K' — link válido, miss_count zerado
 [main] 'Bk5K Waterloo, Canada' — link válido, miss_count zerado
+[main] 'Apple City 5K' — link válido, miss_count zerado
 [main] 'Campaign For Shane 5K' — link válido, miss_count zerado
 [main] 'Cedar Island 5K Swim' — link válido, miss_count zerado
 [main] 'Blackacre Barnstormer' — link válido, miss_count zerado
@@ -1767,16 +1838,16 @@
 [main] 'Apwa - Pwx 2026 - 5K' — link válido, miss_count zerado
 [main] 'Big Island International Marathon 2027' — link válido, miss_count zerado
 [main] '5K Fun Run And Family Walk' — link válido, miss_count zerado
-[main] 'Belmar Five Mile Run' — link válido, miss_count zerado
 [main] '13Th Annual Delaware Tech Run, White, & Blue 5K Run/1-Mi Walk' — link válido, miss_count zerado
-[main] '9/11 Heroes Run - Shadow Events' — link válido, miss_count zerado
-[main] '09/05/25: Lakad For Rights' — link válido, miss_count zerado
+[main] 'Belmar Five Mile Run' — link válido, miss_count zerado
 [main] '16Th Annual Mini Raider Boot Camp' — link válido, miss_count zerado
 [main] '36Th Last Blast Prediction 5K' — link válido, miss_count zerado
-[main] '45Th Annual Ark 5K Classic' — link válido, miss_count zerado
+[main] '09/05/25: Lakad For Rights' — link válido, miss_count zerado
+[main] '9/11 Heroes Run - Shadow Events' — link válido, miss_count zerado
 [main] '"Track The Future 5K"' — link válido, miss_count zerado
-[main] '2026 Run For Sight 5K' — link válido, miss_count zerado
+[main] '45Th Annual Ark 5K Classic' — link válido, miss_count zerado
 [main] '24Th Randall'S Run/Walk For The Gym 5K' — link válido, miss_count zerado
+[main] '2026 Run For Sight 5K' — link válido, miss_count zerado
 [main] '9/11 Remembrance "Live Virtual" 5K/10K' — link válido, miss_count zerado
 [main] '46Th Mike Sterling 10K/5K' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Canton, Georgia' — link válido, miss_count zerado
@@ -1784,21 +1855,22 @@
 [main] '9/11 Heroes Run - Salt Lake City, Utah' — link válido, miss_count zerado
 [main] 'All Rise For Ryan'S Run For Recovery 5K & 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Aliferis Memorial Race' — link válido, miss_count zerado
-[main] '5Th Annual Pints And Paws 5K And 1 Mile Run Walk And Pup Strut' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - New York City' — link válido, miss_count zerado
-[main] 'Art City Tri - Virtual Race!' — link válido, miss_count zerado
 [main] 'A Snail'S Pace X Asics Sunset Mile' — link válido, miss_count zerado
+[main] '5Th Annual Pints And Paws 5K And 1 Mile Run Walk And Pup Strut' — link válido, miss_count zerado
+[main] 'Art City Tri - Virtual Race!' — link válido, miss_count zerado
 [main] 'Achilles Nashville 13Th Annual Hope & Possibility In-Person/Virtual Race 2026' — link válido, miss_count zerado
 [main] 'Back 9 Dash' — link válido, miss_count zerado
 [main] 'Altra Charles Street 12 And 2-Person Relay Presented By Kelly Benefits' — link válido, miss_count zerado
 [main] 'Alicia'S Closet 5K' — link válido, miss_count zerado
 [main] 'Annual Fun Run For Charities' — link válido, miss_count zerado
 [main] 'American Cancer Society Color Run' — link válido, miss_count zerado
+[main] 'Altra Charles Street 12 And 2-Person Relay Presented By Kelly Benefits' — link válido, miss_count zerado
 [main] 'Annal'S Angels 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Caddo River Fest 5K' — link válido, miss_count zerado
 [main] 'Book It For The Olive Free Library 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Beginner Sailing September 5/6' — link válido, miss_count zerado
 [main] 'Brazilnation #Run5K Atlanta 2026 | Rise Up Now!' — link válido, miss_count zerado
+[main] 'Beginner Sailing September 5/6' — link válido, miss_count zerado
 [main] 'Big Brothers Big Sisters 5K' — link válido, miss_count zerado
 [main] 'Bloody Mary 5K' — link válido, miss_count zerado
 [main] 'Bulldog Dash 5K' — link válido, miss_count zerado
@@ -1810,7 +1882,7 @@
 [main] '6Th Annual Lakeside Ten Mile 5K Fun Run' — link válido, miss_count zerado
 [main] 'Charleston Distance Run' — link válido, miss_count zerado
 [main] 'Charles Bender Memorial Swim And Relay' — link válido, miss_count zerado
-[main] 'Cassadagaman' — link válido, miss_count zerado
+[main] '6Th Annual Lakeside Ten Mile 5K Fun Run' — link válido, miss_count zerado
 [main] 'Cherokee National Holiday Veterans Run' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Chicago, Illinois' — link válido, miss_count zerado
 [main] 'Cadillac Ymca Festival Of Races' — link válido, miss_count zerado
@@ -1820,12 +1892,13 @@
 [main] '9/11 Heroes Run - Louisville, Ky' — link válido, miss_count zerado
 [main] '19Th Annual King Of The Hill 5K' — link válido, miss_count zerado
 [main] 'Bear Trail Half Marathon & 10K' — link válido, miss_count zerado
-[main] '9/11 Heroes Run - Huntington, New York' — link válido, miss_count zerado
 [main] 'Alternatives Inc. Dignity Dash' — link válido, miss_count zerado
-[main] '10K At 10,000 Feet' — link válido, miss_count zerado
+[main] '9/11 Heroes Run - Huntington, New York' — link válido, miss_count zerado
 [main] 'Bootleg Marathon' — link válido, miss_count zerado
+[main] '10K At 10,000 Feet' — link válido, miss_count zerado
 [main] 'Brrc Cross Country Series' — link válido, miss_count zerado
 [main] 'Buckeyethon 5K' — link válido, miss_count zerado
+[main] 'Burrito Biathlon' — link válido, miss_count zerado
 [main] '4Th Annual Greendale Run For The Parks And Trails' — link válido, miss_count zerado
 [main] 'Burrito Biathlon' — link válido, miss_count zerado
 [main] 'Becca'S Soldiers Present The 7Th Annual Family Fun Day And Awareness Stroll In Memory Of Rebecca Pennington' — link válido, miss_count zerado
@@ -1837,33 +1910,36 @@
 [main] 'Castle Run For Hope' — link válido, miss_count zerado
 [main] 'Blueberry Stomp' — link válido, miss_count zerado
 [main] '53Rd Annual Walpole Labor Day Road Race' — link válido, miss_count zerado
-[main] '4Th Annual Live. Love. Thrive. Run! 5K Run & 2.5K Walk' — link válido, miss_count zerado
 [main] '2026 Hbcu Stem Education Run - Raleigh' — link válido, miss_count zerado
+[main] '4Th Annual Live. Love. Thrive. Run! 5K Run & 2.5K Walk' — link válido, miss_count zerado
 [main] '$5K - September' — link válido, miss_count zerado
 [main] 'Around The World Run' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Virtual Runner' — link válido, miss_count zerado
 [main] '2026 Run For Recovery' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Cleveland, Ohio' — link válido, miss_count zerado
-[main] '3Rd Annual Windcrest 9/11 Remembrance Race: 5K' — link válido, miss_count zerado
+[main] '2026 Run For Recovery' — link válido, miss_count zerado
 [main] '41St Annual Zoo Relay' — link válido, miss_count zerado
+[main] '3Rd Annual Windcrest 9/11 Remembrance Race: 5K' — link válido, miss_count zerado
 [main] '9/11 24 Hour Ruck' — link válido, miss_count zerado
 [main] '5K Brew Run & Shakeout' — link válido, miss_count zerado
 [main] '9 / 11 First Responders Remembrance 5K' — link válido, miss_count zerado
 [main] '2026 Saint Aidan Harvest Home Twilight 5K/1 Mile Run' — link válido, miss_count zerado
 [main] 'Battle Of The Badges - 5K' — link válido, miss_count zerado
 [main] 'Blue Ridge Relay' — link válido, miss_count zerado
+[main] 'Battle Of The Badges - 5K' — link válido, miss_count zerado
 [main] '9/11 Stair Climb/1 Mile Walk' — link válido, miss_count zerado
 [main] '18Th Annual Night Owl Run' — link válido, miss_count zerado
 [main] 'Bird-In-Hand Half Marathon, 5K, And Kid'S Fun Run' — link válido, miss_count zerado
 [main] '14Th Annual Omega Prostate Cancer Awareness 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Chasing Hope 5K Run & 1 Mile Hope Stride' — link válido, miss_count zerado
 [main] 'Brothers Of Mercy Oktoberfest 5K' — link válido, miss_count zerado
+[main] '14Th Annual Omega Prostate Cancer Awareness 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 Cedar Park Cross Country Invitational' — link válido, miss_count zerado
 [main] '2026 Forest Park Cross Country Festival' — link válido, miss_count zerado
-[main] '15Th Annual Cassie Hines Shoes Cancer Foundation Glow Run' — link válido, miss_count zerado
 [main] '2026 East Fork Challenge' — link válido, miss_count zerado
 [main] '15Th Annual Canby Dahlia Run' — link válido, miss_count zerado
 [main] '2026 Moose Loop Trail Challenge' — link válido, miss_count zerado
+[main] '16Th Annual Steps Of Success 5K & 1 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] '2026 Four Leaf Clover Run' — link válido, miss_count zerado
 [main] '2026 Duo Dash' — link válido, miss_count zerado
 [main] '16Th Annual Steps Of Success 5K & 1 Mile Fun Run/Walk' — link válido, miss_count zerado
@@ -1883,8 +1959,8 @@
 [main] '9/11 Heroes Run - Charleston, South Carolina' — link válido, miss_count zerado
 [main] '8Th Annual Healthy Kappa 5K Run/Walk/Ride' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Harrisburg, PA' — link válido, miss_count zerado
-[main] '9/11 Heroes Run - Cape Girardeau, Mo' — link válido, miss_count zerado
 [main] '4 Town 5K' — link válido, miss_count zerado
+[main] '9/11 Heroes Run - Cape Girardeau, Mo' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Philadelphia, Pennsylvania' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Dallas-Fort Worth, Texas' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Raritan, Nj' — link válido, miss_count zerado
@@ -1893,8 +1969,9 @@
 [main] '9Th Annual Live Like Lukas 5K' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Tampa, Florida' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Huntsville, Alabama' — link válido, miss_count zerado
-[main] '9/11 Run To Remember 5K' — link válido, miss_count zerado
 [main] 'Ana Banana 5K & Fun Run' — link válido, miss_count zerado
+[main] '9/11 Run To Remember 5K' — link válido, miss_count zerado
+[main] 'Air Force Birthday "Live Virtual" 5K/10K' — link válido, miss_count zerado
 [main] '9/11 Never Forget Trail Run/Walk 5K' — link válido, miss_count zerado
 [main] '9/11 Commemorative 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Air Force Birthday "Live Virtual" 5K/10K' — link válido, miss_count zerado
@@ -1924,8 +2001,8 @@
 [main] 'Brooklyn Rose Strong 5K' — link válido, miss_count zerado
 [main] 'Bushwick 5K' — link válido, miss_count zerado
 [main] 'Ccs 5K - Fall Sports Fundraiser' — link válido, miss_count zerado
+[main] 'Brooklyn Rose Strong 5K' — link válido, miss_count zerado
 [main] 'Camptown Races 10K, 5K, And Relay' — link válido, miss_count zerado
-[main] 'Beer City Half Bishop Ranch' — link válido, miss_count zerado
 [main] 'Center For Disabilities 2026 Run Walk & Roll' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Baton Rouge' — link válido, miss_count zerado
 [main] 'Charity Dog Walk + Pool Pawty' — link válido, miss_count zerado
@@ -1938,6 +2015,7 @@
 [main] '9/11 Memorial Tribute Challenge' — link válido, miss_count zerado
 [main] '5Th Annual Latinas Leading Tomorrow (Llt) Reach For The Stars 5K Run/Walk' — link válido, miss_count zerado
 [main] '26Th Annual African American Wellness Walk: Moving Hearts & Soles' — link válido, miss_count zerado
+[main] '9/11 Memorial Tribute Challenge' — link válido, miss_count zerado
 [main] '6 Dot Dash' — link válido, miss_count zerado
 [main] 'Cere-Bration Walk, Roll, Run Mount Vernon' — link válido, miss_count zerado
 [main] 'Bikes & Beers Cape May' — link válido, miss_count zerado
@@ -1954,10 +2032,12 @@
 [main] '5K Road Race' — link válido, miss_count zerado
 [main] 'Bennett Park At Dark' — link válido, miss_count zerado
 [main] 'Al Briede Gold Cup' — link válido, miss_count zerado
+[main] '30Th Annual Run Wild For The Detroit Zoo' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Denver, Colorado' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Austin, Texas' — link válido, miss_count zerado
 [main] 'Bishstrong Foundation 5K Run, Walk & Roll' — link válido, miss_count zerado
 [main] 'Aloha Run San Diego' — link válido, miss_count zerado
+[main] '9/11 Heroes Run - Austin, Texas' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Pittsburgh, PA' — link válido, miss_count zerado
 [main] 'Big Babies 5K' — link válido, miss_count zerado
 [main] 'Brightstar Downtown 5K' — link válido, miss_count zerado
@@ -1984,7 +2064,9 @@
 [main] 'Black Hills Veterans March And Marathon' — link válido, miss_count zerado
 [main] 'Autumn Chase Fun Run' — link válido, miss_count zerado
 [main] '"Run De Boeuf" 5K' — link válido, miss_count zerado
+[main] 'Alpharetta Mayors Corporate Challenge' — link válido, miss_count zerado
 [main] 'Blake’S Haunted Orchard 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Annapolis Run For The Light House' — link válido, miss_count zerado
 [main] '2026 Seaworld'S Howl-O-Sprint 5K Run & Walk' — link válido, miss_count zerado
 [main] 'Annapolis Run For The Light House' — link válido, miss_count zerado
 [main] '10Th Annual Blue Ribbon Run' — link válido, miss_count zerado
@@ -1992,6 +2074,8 @@
 [main] '2026 - Northshore Inline Marathon' — link válido, miss_count zerado
 [main] '13Th Annual Norma E. Boyd 5K Race For Education' — link válido, miss_count zerado
 [main] '2026 Marine Corps Half Marathon Presented By Firstlight Home Care & Usaa' — link válido, miss_count zerado
+[main] '13Th Annual Norma E. Boyd 5K Race For Education' — link válido, miss_count zerado
+[main] '13Th Annual Casa Of The Northern Bluegrass Region 5K Superhero Run/Walk' — link válido, miss_count zerado
 [main] '16Th Annual Woodforest Charity Run' — link válido, miss_count zerado
 [main] '10Th Annual Road Home Race' — link válido, miss_count zerado
 [main] '1Lt Mark Dooley 5K Race Of Remembrance (Walk, Run And Kids Fun Run)' — link válido, miss_count zerado
@@ -2002,6 +2086,7 @@
 [main] '2026 Mlk Dream Run' — link válido, miss_count zerado
 [main] '12Th Annual Christmas Without Cancer 5K Run/Walk (In-Person Or Virtual Option)' — link válido, miss_count zerado
 [main] '2Nd Annual Pcs Harvest Hustle 5K & Kids Run' — link válido, miss_count zerado
+[main] '12Th Annual Christmas Without Cancer 5K Run/Walk (In-Person Or Virtual Option)' — link válido, miss_count zerado
 [main] '25Th Annual International Race For Research' — link válido, miss_count zerado
 [main] '2026 Kansas City Zoo Run, "Run For The Hornbills"' — link válido, miss_count zerado
 [main] '3Rd Annual Carman-Ainsworth Charge On! 5K Run/Walk & Color Run!' — link válido, miss_count zerado
@@ -2013,8 +2098,8 @@
 [main] '3 Pits 5K' — link válido, miss_count zerado
 [main] '35Th Annual Run For The Hills' — link válido, miss_count zerado
 [main] '5K For Pizza: Hoboken' — link válido, miss_count zerado
-[main] '6Th Annual Pete Leneghan Entrepreneurship Foundation Run' — link válido, miss_count zerado
 [main] '6Th Annual Celebrate Your Life 5K Hosted By Tony’S Tribe' — link válido, miss_count zerado
+[main] '6Th Annual Pete Leneghan Entrepreneurship Foundation Run' — link válido, miss_count zerado
 [main] '4Th Annual Amelia 5K' — link válido, miss_count zerado
 [main] '5Th Annual Brett J Morris Avenger Foundation Defenders Of Mental Health 5K' — link válido, miss_count zerado
 [main] '10Th Annual Hydro Warrior Walk' — link válido, miss_count zerado
@@ -2022,15 +2107,13 @@
 [main] 'Acorn'S Tour De Farms' — link válido, miss_count zerado
 [main] 'Alexa Brown 5K' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Phoenix, Arizona' — link válido, miss_count zerado
-[main] '6Th Annual United Way 5K Run/Walk/1K In Memory Of Suzanne Kresser (Student Pricing At Check Out)' — link válido, miss_count zerado
 [main] 'Aroostook House Of Comfort'S 4Th Annual Walk For Hospice' — link válido, miss_count zerado
-[main] '9/11 Heroes Run - Quantico, Virginia' — link válido, miss_count zerado
-[main] 'Adk 5K' — link válido, miss_count zerado
+[main] '6Th Annual United Way 5K Run/Walk/1K In Memory Of Suzanne Kresser (Student Pricing At Check Out)' — link válido, miss_count zerado
 [main] 'Alkebu-Lan Village 8Th Annual 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Anime Fan And Fitness Festival' — link válido, miss_count zerado
 [main] 'Amery Fall Festival 5K' — link válido, miss_count zerado
 [main] 'Advanced Sailing September 19 U S Sailing 101' — link válido, miss_count zerado
-[main] 'Arrowhead Obstacle Trail Run' — link válido, miss_count zerado
+[main] 'Anime Fan And Fitness Festival' — link válido, miss_count zerado
 [main] 'Apex Hispanic Heritage 5K' — link válido, miss_count zerado
 [main] 'Back Your Badge Marathon' — link válido, miss_count zerado
 [main] 'Battle By The Brook' — link válido, miss_count zerado
@@ -2053,13 +2136,13 @@
 [main] 'Bridging The Gap Walk' — link válido, miss_count zerado
 [main] 'Boys & Girls Club Of Newark 5K To Wellness' — link válido, miss_count zerado
 [main] 'Calumet Park Light The Darkness 5K Run' — link válido, miss_count zerado
+[main] 'Bethany Of Central PA - Walk In Love' — link válido, miss_count zerado
 [main] 'Breacher 5K' — link válido, miss_count zerado
 [main] 'Bubble Blast Kathleen Depiero Memorial 5K And 1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Bvrmc Aware 5K' — link válido, miss_count zerado
 [main] 'Burris Hoot Scoot 2026' — link válido, miss_count zerado
 [main] 'Blue Bridges 5K' — link válido, miss_count zerado
 [main] 'Centerville Striders - Attack The Hill Elementary Cross- Country Invitational' — link válido, miss_count zerado
-[main] 'Celebration 5K / 10K' — link válido, miss_count zerado
 [main] 'Capital City Century' — link válido, miss_count zerado
 [main] 'Cape Cod Canal Day' — link válido, miss_count zerado
 [main] 'Caleb Brown Memorial 5K' — link válido, miss_count zerado
@@ -2073,8 +2156,6 @@
 [main] 'Camp Leavenworth 5K' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Tacoma, Washington' — link válido, miss_count zerado
 [main] '+ Navajo Hopi Health Foundation + Run For Hope' — link válido, miss_count zerado
-[main] 'Arc Run' — link válido, miss_count zerado
-[main] 'Centerstone'S 24Th Annual Life;Story 5K/10K Run/Walk For Suicide Prevention - Florida' — link válido, miss_count zerado
 [main] 'Autumn Run' — link válido, miss_count zerado
 [main] 'Santa Fe International Half Marathon & 5K' — link válido, miss_count zerado
 [main] '17Th Annual Farmington River Run 5K Trail Race' — link válido, miss_count zerado
@@ -2088,13 +2169,12 @@
 [main] 'Almost Half Way To St. Patrick'S Day 5K' — link válido, miss_count zerado
 [main] '2025 Darien Road Race & Family Fun Day Charity Fundraiser' — link válido, miss_count zerado
 [main] 'Adventhealth Waterman Foundation Shades Of Hope 5K' — link válido, miss_count zerado
-[main] 'Adrenaline Races' — link válido, miss_count zerado
 [main] 'Better Than Yesterday 5K' — link válido, miss_count zerado
+[main] 'Adrenaline Races' — link válido, miss_count zerado
 [main] 'Arm Practice Page' — link válido, miss_count zerado
 [main] 'Alameda Island Running Festival' — link válido, miss_count zerado
 [main] 'Almont Heritage Festival' — link válido, miss_count zerado
 [main] 'Arc'Teryx Run Boston 10K' — link válido, miss_count zerado
-[main] 'Broome Oncology Sock Out Cancer 5K' — link válido, miss_count zerado
 [main] 'Bridge To Recovery Walk' — link válido, miss_count zerado
 [main] '2026 Pgxc Race Series' — link válido, miss_count zerado
 [main] 'Chase A Cop - Miami 5K' — link válido, miss_count zerado
@@ -2124,8 +2204,8 @@
 [main] '2026 Cops Vs Cancer: Lights & Sirens Run/Walk' — link válido, miss_count zerado
 [main] '2026 Celtic Classic 5K' — link válido, miss_count zerado
 [main] '2Nd Annual Moco Out Of The Darkness; Into The Light Suicide Prevention Walk' — link válido, miss_count zerado
-[main] '14Th Annual 'Due Run 4 Education' — link válido, miss_count zerado
 [main] '22 Strong Walk' — link válido, miss_count zerado
+[main] '14Th Annual 'Due Run 4 Education' — link válido, miss_count zerado
 [main] '1St Annual Aprcc Coqui 5K Run/Walk' — link válido, miss_count zerado
 [main] '5K Pumpkin Run & Munchkin Mile' — link válido, miss_count zerado
 [main] '2026 Peshtigo Fire Tower Walk/Run' — link válido, miss_count zerado
@@ -2133,9 +2213,8 @@
 [main] '4Th Annual Brighton Believes 5K "Hit The Ground Running"' — link válido, miss_count zerado
 [main] '2026 Mogadishu Mile 10K/5K/Fun Run (Ranger Memorial Triad)' — link válido, miss_count zerado
 [main] '5 Mile Fall Classic @Lpp' — link válido, miss_count zerado
-[main] '6Th Annual Hannah Mansell Happy Day Memorial 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Anderson 5K Run/Walk' — link válido, miss_count zerado
-[main] '6Th Annual Jayco 5K' — link válido, miss_count zerado
+[main] '6Th Annual Hannah Mansell Happy Day Memorial 5K Run/Walk' — link válido, miss_count zerado
 [main] '5Th Annual Steven Derks Memorial 5K' — link válido, miss_count zerado
 [main] 'Adam Zook Memorial Run' — link válido, miss_count zerado
 [main] 'Anmed Cannon'S Fall For Health 5K' — link válido, miss_count zerado
@@ -2149,18 +2228,21 @@
 [main] 'Ascot Hills Challenge 5K' — link válido, miss_count zerado
 [main] 'Aimee Romero Memorial Cupcake 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Beach To Behr Brewing 10K' — link válido, miss_count zerado
+[main] 'Ascot Hills Challenge 5K' — link válido, miss_count zerado
 [main] '77Th Annual Pancake Day Fun Run' — link válido, miss_count zerado
 [main] 'Annual Knights Of Columbus Race For St. Marys Police K-9S' — link válido, miss_count zerado
 [main] 'Bayside Five And Wine' — link válido, miss_count zerado
 [main] 'Bear Lake Tavern'S 2Nd Annual 5K Run/Walk For Brain Aneurysm Awareness' — link válido, miss_count zerado
 [main] 'Be The Light 5K' — link válido, miss_count zerado
 [main] 'Bailey Bernstein'S 5K Glow Walk/Run' — link válido, miss_count zerado
-[main] 'Barely Running' — link válido, miss_count zerado
-[main] 'Belgium Beer Run' — link válido, miss_count zerado
+[main] 'Be The Light 5K' — link válido, miss_count zerado
 [main] 'Bourbon & Beyond 5K' — link válido, miss_count zerado
+[main] 'Applefest 5K-10K-15K Run/Walk' — link válido, miss_count zerado
+[main] 'Belgium Beer Run' — link válido, miss_count zerado
 [main] 'Beckley Half Marathon & 5K' — link válido, miss_count zerado
 [main] 'Be A Beast 5K' — link válido, miss_count zerado
 [main] 'Brayden'S Benefit 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Bergholz 5K' — link válido, miss_count zerado
 [main] 'Building Dreams Southland Regional Association Of Realtors 5K' — link válido, miss_count zerado
 [main] 'Bergholz 5K' — link válido, miss_count zerado
 [main] 'Big South Fork Trail Race' — link válido, miss_count zerado
@@ -2168,8 +2250,6 @@
 [main] 'Blazin' Eagles 5K Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Bwell Saginaw Strides Toward Wellness 2026' — link válido, miss_count zerado
 [main] 'Britta'S Chase 5K @ Sa Zoo' — link válido, miss_count zerado
-[main] 'Celebrate Recovery 5K' — link válido, miss_count zerado
-[main] 'Calvin Classic 5K And Youth Fun Run' — link válido, miss_count zerado
 [main] 'Central Children'S Home Cross Country Festival Run' — link válido, miss_count zerado
 [main] 'Autumn Breeze Road Race' — link válido, miss_count zerado
 [main] 'Applefest 5K-10K-15K Run/Walk' — link válido, miss_count zerado
@@ -2179,6 +2259,7 @@
 [main] 'Bloomingdale Trail 5K' — link válido, miss_count zerado
 [main] 'C3 Rolling Donuts Ride' — link válido, miss_count zerado
 [main] 'Best Damn Leftover 5K' — link válido, miss_count zerado
+[main] 'C3 Rolling Donuts Ride' — link válido, miss_count zerado
 [main] 'Big Hurt' — link válido, miss_count zerado
 [main] '5K For The Children' — link válido, miss_count zerado
 [main] 'Centerstone'S 4Th Annual Life;Story 5K Run/Walk For Suicide Prevention - Illinois' — link válido, miss_count zerado
@@ -2191,13 +2272,11 @@
 [main] '2026 Berlin Marathon Semper Fi & America'S Fund Team' — link válido, miss_count zerado
 [main] '14Er Fest 14K & 5K' — link válido, miss_count zerado
 [main] '17Th Annual Iowa Remembrance Run' — link válido, miss_count zerado
-[main] '10Th Annual Geisinger Marworth Recovery Fun Run; Celebrating National Recovery Month 5K And 1 Mile Walk' — link válido, miss_count zerado
 [main] '9Th Annual Run For Recovery 5K In Tewksbury' — link válido, miss_count zerado
 [main] '18Th Annual Celebrate Pink 5K Run & Walk' — link válido, miss_count zerado
 [main] '4Th Annual Ted'S Run 5K' — link válido, miss_count zerado
 [main] '2026 Chi-Care 5K Run/Walk' — link válido, miss_count zerado
 [main] '8Th Annual Weighted Angels 5K Run & Walk' — link válido, miss_count zerado
-[main] 'Berlin Marathon - Srps Charity Team' — link válido, miss_count zerado
 [main] '561 Iguana Man 5K/10K' — link válido, miss_count zerado
 [main] 'Adams Light "Run For Recovery" 5K' — link válido, miss_count zerado
 [main] 'Campfire 5K' — link válido, miss_count zerado
@@ -2226,20 +2305,16 @@
 [main] '17Th Annual Captain Seth Mitchell Hero 5K Run And Walk' — link válido, miss_count zerado
 [main] '2026 Chessie Trail Marathon, Half Marathon, 10K, 5K, & 26.2 Relay' — link válido, miss_count zerado
 [main] '11Th Annual Brain Bolt 5K' — link válido, miss_count zerado
-[main] '13Th Annual Run, Walk Or Roll 5K' — link válido, miss_count zerado
-[main] '12Th Annual Cmsaf Binnicker Memorial Run Presented By Eglin Federal Credit Union' — link válido, miss_count zerado
 [main] '2026 Nchc Save Your Pumpkins 5K Run/Walk' — link válido, miss_count zerado
 [main] '17Th Annual Williamsburg Landing 5K Run/Walk For The Arc' — link válido, miss_count zerado
 [main] '2025 Runtoberfest - Support Mcminnville Schools!' — link válido, miss_count zerado
 [main] '1St Annual Ostomy 5K, Portland Or' — link válido, miss_count zerado
 [main] '10Th Annual Kj'S 5K For Mental Health And Animal Rescue' — link válido, miss_count zerado
-[main] '1St Annual Ostomy 5K, Ann Arbor Mi' — link válido, miss_count zerado
 [main] '2026 Fueled By Fire 5K & Challenge' — link válido, miss_count zerado
 [main] '2026 Hpwc Orphan Run 4 Hope' — link válido, miss_count zerado
 [main] '2026 Heart Diggity Dog 5K Run/Walk' — link válido, miss_count zerado
 [main] '2Nd Annual Salute To Service 5K' — link válido, miss_count zerado
 [main] '34Th Annual Women'S 5K Classic Live & Virtual Run/Walk-2026' — link válido, miss_count zerado
-[main] '2026 Lace'N It Up 5K Run/Walk & Celebration Walk' — link válido, miss_count zerado
 [main] '49Th Annual Manhattan Beach 10K' — link válido, miss_count zerado
 [main] '2026 Unhinged And Feral 5K, 10K, 13.1, 26.2' — link válido, miss_count zerado
 [main] '5Th Annual Purple Light Project 5K' — link válido, miss_count zerado
@@ -2253,11 +2328,13 @@
 [main] '9Th Annual Birmingham, AL Ostomy 5K' — link válido, miss_count zerado
 [main] '5K Run/Funwalk For Epilepsy Awareness' — link válido, miss_count zerado
 [main] 'Angels Against Abuse 5K Walk/Run' — link válido, miss_count zerado
+[main] '9Th Annual Birmingham, AL Ostomy 5K' — link válido, miss_count zerado
 [main] 'A Midknight 5K + 1K Glow Run' — link válido, miss_count zerado
 [main] 'Apple Harvest Run - 10K - 5K - 1 Mile' — link válido, miss_count zerado
 [main] 'Anxious For Nothing 5K Color Run!' — link válido, miss_count zerado
 [main] 'A Pace For Petey' — link válido, miss_count zerado
 [main] 'Arkansas Traveller 100' — link válido, miss_count zerado
+[main] 'Apple Harvest Run - 10K - 5K - 1 Mile' — link válido, miss_count zerado
 [main] 'Amy'S Adventure Race For The Lake' — link válido, miss_count zerado
 [main] 'Anchor Scholarship Foundation 5K And Funrun' — link válido, miss_count zerado
 [main] 'Ainsley'S Angels 9Th Annual Twilight 5K' — link válido, miss_count zerado
@@ -2271,6 +2348,7 @@
 [main] '4Th Annual 5K Honor And Remember Walk/Run' — link válido, miss_count zerado
 [main] 'Beer & Bbq 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Bear Lake Ultra' — link válido, miss_count zerado
+[main] '4Th Annual 5K Honor And Remember Walk/Run' — link válido, miss_count zerado
 [main] '3Rd Annual Cleveland, Oh Ostomy 5K' — link válido, miss_count zerado
 [main] 'Balloon Run' — link válido, miss_count zerado
 [main] 'Beach Roses Walk' — link válido, miss_count zerado
@@ -2288,44 +2366,53 @@
 [main] 'Casa 0.5K "Run"' — link válido, miss_count zerado
 [main] 'Carrboro 5K/10K' — link válido, miss_count zerado
 [main] 'Bridging The Gap Ride #7' — link válido, miss_count zerado
+[main] 'Carrboro 5K/10K' — link válido, miss_count zerado
 [main] '7Th Annual GO Forward Together Ride' — link válido, miss_count zerado
+[main] 'Casa 0.5K "Run"' — link válido, miss_count zerado
 [main] 'Cancer Care 5K Fun Run/ Walk' — link válido, miss_count zerado
+[main] 'Chernisky Ghost Town Trail-A-Thon' — link válido, miss_count zerado
 [main] 'Braille Trail Walk For Independence' — link válido, miss_count zerado
 [main] 'Champion Paws 5K' — link válido, miss_count zerado
-[main] 'Casa Fall Family Run Presented By Mcdonald'S Of The Gorge' — link válido, miss_count zerado
 [main] '2025 Monster Mash 1M, 5K, 10K, 13.1, 26.2 - Now Only $12!' — link válido, miss_count zerado
 [main] 'Charm Field & Trail Challenge' — link válido, miss_count zerado
+[main] '9Th Annual Outrun Hunger 5K' — link válido, miss_count zerado
 [main] '2026 Hua Sports 5K, Half Marathon And Marathon' — link válido, miss_count zerado
 [main] 'Chernisky Ghost Town Trail-A-Thon' — link válido, miss_count zerado
 [main] '11 Miles To Paradise' — link válido, miss_count zerado
 [main] '10Th Annual Meridian, Id Ostomy 5K' — link válido, miss_count zerado
 [main] '9Th Annual Outrun Hunger 5K' — link válido, miss_count zerado
 [main] '2026 Heaven Can Wait 5K' — link válido, miss_count zerado
+[main] '2026 Hit The Barlow Trail Run/Walk & Kid'S Dash' — link válido, miss_count zerado
 [main] '4 In The Forest Presented By Peace, Love, Trails' — link válido, miss_count zerado
 [main] '20Th Annual Run For Riley 5 Mile & 5K' — link válido, miss_count zerado
-[main] '2026 Hit The Barlow Trail Run/Walk & Kid'S Dash' — link válido, miss_count zerado
 [main] '2026 Ncs Take The Hill 5K & Kids Fun Run' — link válido, miss_count zerado
 [main] '2Nd Annual New England Ostomy 5K' — link válido, miss_count zerado
 [main] '15Th Annual Green Bulldog Dash 5K, 1 Mile Fun Run And 200 Meter Dash' — link válido, miss_count zerado
 [main] '12Th Annual Heroes For Education 5K' — link válido, miss_count zerado
 [main] 'Annual Occ Viking 5K And Fun Run' — link válido, miss_count zerado
+[main] '2Nd Annual New England Ostomy 5K' — link válido, miss_count zerado
+[main] '15Th Annual Green Bulldog Dash 5K, 1 Mile Fun Run And 200 Meter Dash' — link válido, miss_count zerado
 [main] '4Th Annual Chris Titcomb Memorial 3.34 Mile Road Race' — link válido, miss_count zerado
+[main] '12Th Annual Heroes For Education 5K' — link válido, miss_count zerado
 [main] '5Kforjk: Moving Together To Change Parkinson'S' — link válido, miss_count zerado
 [main] 'Adventhealth Sebring Foundation Pink On Parade 5K & 1 Mile Run/Walk Presented By Chen Dental' — link válido, miss_count zerado
 [main] 'Apple Harvest Road Races' — link válido, miss_count zerado
 [main] '7Th Annual Walk For Women’S Cancers - The Lewin Fund To Fight Women'S Cancers' — link válido, miss_count zerado
+[main] 'Adventhealth Sebring Foundation Pink On Parade 5K & 1 Mile Run/Walk Presented By Chen Dental' — link válido, miss_count zerado
 [main] '2026 Lemons Of Love Pink Lemonade 5K Run/Walk' — link válido, miss_count zerado
 [main] '9/11 Heroes Run - Doylestown, Pennsylvania' — link válido, miss_count zerado
 [main] '7Th Annual Walla Walla Sunrise Rotary Point .5K The "Race" For The Rest Of Us' — link válido, miss_count zerado
 [main] 'Baby Steps 5K 2026' — link válido, miss_count zerado
+[main] 'Bryon Martini Jr. 5K Memorial Run/Walk' — link válido, miss_count zerado
+[main] 'Carlos Negron Memorial Run' — link válido, miss_count zerado
 [main] '3Rd Annual Lighthouse For Life "From Sea To Shining Sea" Run Across America 5,540 Mile Challenge, By F3 Midlands' — link válido, miss_count zerado
 [main] 'Carlos Negron Memorial Run' — link válido, miss_count zerado
 [main] 'Cak5K On The Runway' — link válido, miss_count zerado
 [main] 'Bryon Martini Jr. 5K Memorial Run/Walk' — link válido, miss_count zerado
 [main] 'Bhm26.2 2026- The Alabama Race Series' — link válido, miss_count zerado
+[main] 'Butterfly Effect Project 5K' — link válido, miss_count zerado
 [main] '2026 Average Joe Run 5K - Miami' — link válido, miss_count zerado
 [main] 'Catch A Cure Family 5K Walk/Run' — link válido, miss_count zerado
-[main] 'Butterfly Effect Project 5K' — link válido, miss_count zerado
 [main] 'Cere-Bration Walk, Roll, Run Akron' — link válido, miss_count zerado
 [main] 'Cheesy Pretzel 5K And 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Capalbo Strong Walk' — link válido, miss_count zerado
@@ -2341,18 +2428,19 @@
 [main] '2026 Golden Helix 5K' — link válido, miss_count zerado
 [main] '2025 New Year Challenge - Year Of The Snake 2.025 Mile 20.25 Mile 202.5 Mile - Now Only $12!' — link válido, miss_count zerado
 [main] '1 Million Steps 2 Safety 5K Run/Walk' — link válido, miss_count zerado
-[main] '2026 Harry Chapin Memorial Run/Walk Against Hunger' — link válido, miss_count zerado
 [main] '3Rd Annual Shauna Smith Heroes 5K Trail Run /Walk Or 2K Trail Walk' — link válido, miss_count zerado
 [main] '2026 Grove Trotter 5K/10K Bridge Run At Chickahominy Riverfront Park' — link válido, miss_count zerado
 [main] '5K Zombie Run & One Mile Spooky Family Fun Run' — link válido, miss_count zerado
 [main] '2026 Rat 1000 And Mini Rat' — link válido, miss_count zerado
 [main] '2026 Pedra Dash For Discovery' — link válido, miss_count zerado
+[main] '5K Zombie Run & One Mile Spooky Family Fun Run' — link válido, miss_count zerado
+[main] '2026 Rat 1000 And Mini Rat' — link válido, miss_count zerado
 [main] '4 Hours In The Woods - Endurance Style Fun Run - Sponsored By Community In Motion' — link válido, miss_count zerado
-[main] '14Th Annual Honea Family Dentistry & Revival Center Missions 10K/5K & 1 Mile' — link válido, miss_count zerado
 [main] '4Th Annual Pink Pumpkin 5K Run & Walk' — link válido, miss_count zerado
-[main] '2026 Bone Dash Iowa' — link válido, miss_count zerado
+[main] '14Th Annual Honea Family Dentistry & Revival Center Missions 10K/5K & 1 Mile' — link válido, miss_count zerado
 [main] '4Th Annual Ymca Run For The Hills 5K/2K' — link válido, miss_count zerado
 [main] '5K For Peace' — link válido, miss_count zerado
+[main] '2026 Bone Dash Iowa' — link válido, miss_count zerado
 [main] '84 Runners/Shipley 5K Donut Dash' — link válido, miss_count zerado
 [main] 'A Snail'S Pace X Saucony Sunset Relays' — link válido, miss_count zerado
 [main] 'Always Ready 5K' — link válido, miss_count zerado
@@ -2362,11 +2450,12 @@
 [main] 'Anderson Lake Backyard Ultra' — link válido, miss_count zerado
 [main] 'Ann'S Run For Life' — link válido, miss_count zerado
 [main] 'Ache Around The Lake' — link válido, miss_count zerado
+[main] 'Anderson Lake Backyard Ultra' — link válido, miss_count zerado
 [main] 'Back The Blue Pump N Run' — link válido, miss_count zerado
 [main] 'Angry Cow Trail Run # 3' — link válido, miss_count zerado
 [main] '2026 Run 4 All 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Antelope Island Fall Classic' — link válido, miss_count zerado
-[main] 'Bagel Run 5K/10K/13.1 Austin/Roundrock' — link válido, miss_count zerado
+[main] 'Athhalf Half Marathon And Athfest Educates 5K' — link válido, miss_count zerado
 [main] 'Avondale 5K Run & Walk' — link válido, miss_count zerado
 [main] 'Badger South Prediction 5K' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
@@ -2374,6 +2463,8 @@
 [main] 'Barrio Dogs Tails & Trails 2026' — link válido, miss_count zerado
 [main] '9Th Annual Nashville, Tn Ostomy 5K' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Nyc' — link válido, miss_count zerado
+[main] 'Autumn Harvest Trail Run | Bastrop Last Standing • 50K • 20-Miler • 10-Miler • 5-Miler • Full • Half • 10K • 5K' — link válido, miss_count zerado
+[main] '9Th Annual Nashville, Tn Ostomy 5K' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Autumn Harvest Trail Run | Bastrop Last Standing • 50K • 20-Miler • 10-Miler • 5-Miler • Full • Half • 10K • 5K' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Miami' — link válido, miss_count zerado
@@ -2384,6 +2475,7 @@
 [main] 'Bookin' It 5K' — link válido, miss_count zerado
 [main] 'Beer City Half Fort Worth' — link válido, miss_count zerado
 [main] 'Camp Challenge 5K Trail Run' — link válido, miss_count zerado
+[main] 'Be Fast 5K Run & 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Brat Trot 5K' — link válido, miss_count zerado
 [main] 'Big Brothers Big Sisters Dino Dash 5K' — link válido, miss_count zerado
 [main] 'Big Pig Cancer Foundation : Ray Porter Memorial 6 Hour Endurance Race & Fundraiser' — link válido, miss_count zerado
@@ -2392,6 +2484,9 @@
 [main] 'Burke Day For Life 5K And Fun Run' — link válido, miss_count zerado
 [main] 'Blackfoot Tater Trot' — link válido, miss_count zerado
 [main] 'Bras Across The Causeway 5K & Festival' — link válido, miss_count zerado
+[main] 'Burke Day For Life 5K And Fun Run' — link válido, miss_count zerado
+[main] 'Breckenridge Runfest' — link válido, miss_count zerado
+[main] 'Blackfoot Tater Trot' — link válido, miss_count zerado
 [main] 'Cape Fear 24 Hour Endurance Run' — link válido, miss_count zerado
 [main] 'Candy Corn 5K' — link válido, miss_count zerado
 [main] 'Chasing The Sun Endurance Run' — link válido, miss_count zerado
@@ -2402,8 +2497,10 @@
 [main] 'Bikes & Beers San Diego' — link válido, miss_count zerado
 [main] 'Athhalf Half Marathon And Athfest Educates 5K' — link válido, miss_count zerado
 [main] 'Boston 10K For Women' — link válido, miss_count zerado
+[main] 'Care4 Breast Cancer Hybrid 5K' — link válido, miss_count zerado
 [main] 'Awaken 5K / 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Bikes & Beers San Diego' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Los Angeles' — link válido, miss_count zerado
 [main] 'Apple Festival 5K' — link válido, miss_count zerado
 [main] 'Bit Of Hope Ranch 5K Trail Run, 2K Walk, & Half-Pint Run' — link válido, miss_count zerado
@@ -2413,7 +2510,6 @@
 [main] 'Canlake Ultras' — link válido, miss_count zerado
 [main] '5K Any Way And Color Fun Run' — link válido, miss_count zerado
 [main] '2026 Harra Warm-Up Series Bundles' — link válido, miss_count zerado
-[main] '13Th Annual Every Boob Counts 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Batsto Village 5K' — link válido, miss_count zerado
 [main] 'Able2 Guts & Grit 5K & 1-Miler' — link válido, miss_count zerado
 [main] '5K Fun Run/Walk For Blood Clot Awareness' — link válido, miss_count zerado
@@ -2421,7 +2517,6 @@
 [main] '16Th Annual Bill Cross 5K' — link válido, miss_count zerado
 [main] '2026 Fall Prairie Fire Marathon Presented By Davis-Moore Automotive Group' — link válido, miss_count zerado
 [main] 'Austin Reardon Memorial 5K Road Race' — link válido, miss_count zerado
-[main] 'Bms Athletic Booster Club 5K' — link válido, miss_count zerado
 [main] 'Cerebral Palsy Awareness 5K' — link válido, miss_count zerado
 [main] 'Bizz Johnson' — link válido, miss_count zerado
 [main] 'Blue Ribbon Run' — link válido, miss_count zerado
@@ -2433,15 +2528,15 @@
 [main] 'Bike To Hope 2026' — link válido, miss_count zerado
 [main] '2026 Jog Your Memory 5K Run And 1.5 Mile Walk For Alzheimer'S' — link válido, miss_count zerado
 [main] 'Cannonball Running Festival - Marathon, Half Marathon, 10K & 5K' — link válido, miss_count zerado
+[main] 'Bike To Hope 2026' — link válido, miss_count zerado
 [main] 'Breast Reconstruction Awareness Close The Loop 5K 2026' — link válido, miss_count zerado
 [main] 'Booksmiles 5K Run & 1 Mile Walk For Literacy' — link válido, miss_count zerado
 [main] 'Badgerpalooza' — link válido, miss_count zerado
 [main] '2026 Bethlehem Running Festival Presented By Lehigh Valley Health Network' — link válido, miss_count zerado
 [main] '2026 Race For Campus Safety - Pullman, Washington' — link válido, miss_count zerado
 [main] '14Th Annual Happy Jack 5K' — link válido, miss_count zerado
+[main] 'Badgerpalooza' — link válido, miss_count zerado
 [main] '"Loop The Lake" The Great New York State Marathon Weekend' — link válido, miss_count zerado
-[main] '13Th Annual Unite For Her Run/Walk' — link válido, miss_count zerado
-[main] '2026 Hell Hole Gator Run 5K & 10K' — link válido, miss_count zerado
 [main] '2026 Child Advocates 5K And 1K Superhero Run' — link válido, miss_count zerado
 [main] '2026 Loris "Chicken Run" Bog Off' — link válido, miss_count zerado
 [main] '#Be A Buddy 5K' — link válido, miss_count zerado
@@ -2457,10 +2552,12 @@
 [main] 'Autumn March For Als' — link válido, miss_count zerado
 [main] '3Dpt Oktoberfest 5K' — link válido, miss_count zerado
 [main] 'Ardmore Rah! 10K, 5K, Fun Run And Food Drive' — link válido, miss_count zerado
+[main] 'Bark Side Of The Moon 5K Glow Run & Pet Walk' — link válido, miss_count zerado
 [main] 'Ashland Harvest Run/Walk 10K/5K' — link válido, miss_count zerado
 [main] 'Advanced Sailing October 17 Us Sailing 101' — link válido, miss_count zerado
-[main] 'Back To The Future: 88 Mph Dash 5K, 10K & Half' — link válido, miss_count zerado
 [main] 'Barrow Volksride 2026' — link válido, miss_count zerado
+[main] '3Dpt Oktoberfest 5K' — link válido, miss_count zerado
+[main] 'Back To The Future: 88 Mph Dash 5K, 10K & Half' — link válido, miss_count zerado
 [main] 'Bee The Light 5K - The Shelby Foundation For Kindness Delivered' — link válido, miss_count zerado
 [main] 'Bernard Greene Memorial 5K' — link válido, miss_count zerado
 [main] 'Amerihealth Atlantic City Marathon, Half Marathon, 10K & G. Larry James 5K' — link válido, miss_count zerado
@@ -2470,7 +2567,6 @@
 [main] 'Bridge Day 5K Run' — link válido, miss_count zerado
 [main] 'Adventhealth Great Floridian Multisport Festival' — link válido, miss_count zerado
 [main] 'Cantigny 5K Run/Walk 2026 - Benefiting The Midwest Shelter For Homeless Veterans' — link válido, miss_count zerado
-[main] 'Boulder Dash At Pinesburg Quarry' — link válido, miss_count zerado
 [main] 'Bethlehem Lutheran Fall Fest' — link válido, miss_count zerado
 [main] 'Bluffton Oyster Run 5K' — link válido, miss_count zerado
 [main] 'Chappie James Bridge Run' — link válido, miss_count zerado
@@ -2480,7 +2576,6 @@
 [main] 'Chemin-A-Haut 4 Mile Trail Run And 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Casa Of Wise & Jack Counties Superhero 5K' — link válido, miss_count zerado
 [main] '4Th Annual Oah Strides Race And Family Fun Day' — link válido, miss_count zerado
-[main] 'Boos & Brews 5K (Rochester)' — link válido, miss_count zerado
 [main] 'Camo & Cobwebs 5K & 1 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Behind Their Smile For 22Toomany' — link válido, miss_count zerado
 [main] 'Century Farm Haunted Wine Run 5K' — link válido, miss_count zerado
@@ -2491,7 +2586,6 @@
 [main] '2026 Market Street Run For Blue - Date Tbd' — link válido, miss_count zerado
 [main] '5Th Annual Evansville Zombie 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Baystate Marathon' — link válido, miss_count zerado
-[main] '26Th Annual River City Rat Race' — link válido, miss_count zerado
 [main] '23Rd Annual This Run'S For Jack 2026' — link válido, miss_count zerado
 [main] 'Apple Harvest Run 2026' — link válido, miss_count zerado
 [main] '4Th Annual Chesterfield Fall Terrain 5K' — link válido, miss_count zerado
@@ -2534,11 +2628,9 @@
 [main] 'Aiken Trailblazer Halloween Marathon, Half Marathon - 10K - 5K - Kids Fun Run At Stable View' — link válido, miss_count zerado
 [main] 'Badger High School 5K Glow Run/Walk' — link válido, miss_count zerado
 [main] 'Apex Foundation Trick Or Trot 5K & Halloween Hunt' — link válido, miss_count zerado
-[main] 'Believe In Tomorrow Port To Fort 6K 2026' — link válido, miss_count zerado
 [main] 'Bay Saint Louis Cult Classics 5K' — link válido, miss_count zerado
+[main] 'Believe In Tomorrow Port To Fort 6K 2026' — link válido, miss_count zerado
 [main] 'Asp'S Franconia Notch Half Marathon' — link válido, miss_count zerado
-[main] 'Arkansas Rasta Fest + 5K & 10K Run/Walk' — link válido, miss_count zerado
-[main] 'Beyond The Grave 5K' — link válido, miss_count zerado
 [main] 'Boo & Brew 5K' — link válido, miss_count zerado
 [main] 'Bulldogs On The Run 5K & Bark' — link válido, miss_count zerado
 [main] 'Bath Area Family Ymca Haunted Hustle 5K Walk Run & Kids Fun Run' — link válido, miss_count zerado
@@ -2547,27 +2639,28 @@
 [main] 'Batavia United Way Bat Race 5K & 10K' — link válido, miss_count zerado
 [main] 'Bike The Coast' — link válido, miss_count zerado
 [main] 'Brew To Boo Relay' — link válido, miss_count zerado
+[main] 'Bike The Coast' — link válido, miss_count zerado
 [main] 'Camp Spirit 5K' — link válido, miss_count zerado
-[main] 'Cape Fear Haunted Wine Run 5K' — link válido, miss_count zerado
 [main] 'Casa Superhero Run' — link válido, miss_count zerado
 [main] 'Arkansas 20K' — link válido, miss_count zerado
 [main] 'Cape May Hallowed Half Marathon' — link válido, miss_count zerado
 [main] '633 Run' — link válido, miss_count zerado
 [main] 'Calaverita Run 5K & Family Walk' — link válido, miss_count zerado
 [main] 'Big Sur River Run' — link válido, miss_count zerado
-[main] 'Chattajack' — link válido, miss_count zerado
 [main] '10Th Annual Summer Smith 5K Addiction Awareness Memorial Run' — link válido, miss_count zerado
 [main] 'Cedar Creek Haunted Wine Run 5K' — link válido, miss_count zerado
 [main] 'Bloomington Montessori 2025 Fall Fun Run 5K Trail Race And Family Fun Run' — link válido, miss_count zerado
 [main] 'Cancer Can Suck A Cactus 5K/10K' — link válido, miss_count zerado
 [main] '2026 Sfa Marine Corps Marathon Team' — link válido, miss_count zerado
 [main] 'Bikes & Beers Austin' — link válido, miss_count zerado
+[main] '2026 Sfa Marine Corps Marathon Team' — link válido, miss_count zerado
 [main] '2026 Marine Corp Marathon With Girls On The Run' — link válido, miss_count zerado
 [main] '16Th Annual Día De Los Muertos: 5K Run/Walk:' — link válido, miss_count zerado
 [main] '2026 Dublin Marathon Semper Fi & America'S Fund Team' — link válido, miss_count zerado
 [main] '2Nd Annual Power Of Sports 5K + Wellness Social Hosted By Lynn University' — link válido, miss_count zerado
-[main] '2026 Winters Spooktacular Fun Run And Costume Contest' — link válido, miss_count zerado
 [main] '5K For Ballet!' — link válido, miss_count zerado
+[main] '2026 Dublin Marathon Semper Fi & America'S Fund Team' — link válido, miss_count zerado
+[main] '2026 Winters Spooktacular Fun Run And Costume Contest' — link válido, miss_count zerado
 [main] '36Th Seawitch 5K Classic & 1M Fright Walk (Seawitch Racing Festival Weekend)' — link válido, miss_count zerado
 [main] '6Th Banja Luka Marathon' — link válido, miss_count zerado
 [main] 'Captain Jack'S Treasure Run' — link válido, miss_count zerado
@@ -2575,6 +2668,7 @@
 [main] 'Bakersfield Monster Mash Dash' — link válido, miss_count zerado
 [main] '=Pr= Races: Monster Mash Dash 5K & 1Mile' — link válido, miss_count zerado
 [main] 'Boos & Brews 5K (Utica)' — link válido, miss_count zerado
+[main] '=Pr= Races: Monster Mash Dash 5K & 1Mile' — link válido, miss_count zerado
 [main] 'Allerton Park Trail Run' — link válido, miss_count zerado
 [main] 'Adams County Winery Haunted Wine Run 5K' — link válido, miss_count zerado
 [main] 'Adventhealth Clermont Clay 15K & 5K Presented By Livetrends Design Group' — link válido, miss_count zerado
@@ -2586,6 +2680,7 @@
 [main] '2026 Ohio Cross Country Middle School State Championships' — link válido, miss_count zerado
 [main] '5K For The Kids: Race Through The Decades' — link válido, miss_count zerado
 [main] '2026 Syrathon Race Series' — link válido, miss_count zerado
+[main] '5K For The Kids: Race Through The Decades' — link válido, miss_count zerado
 [main] '2026 Spooktacular 5K & Monster Mile' — link válido, miss_count zerado
 [main] '2026 Runludington Run For Your Lives 5K/10K' — link válido, miss_count zerado
 [main] 'Among The Trees' — link válido, miss_count zerado
@@ -2594,11 +2689,12 @@
 [main] '1St Annual To Infinity & Beyond Halloween 5K' — link válido, miss_count zerado
 [main] '14Th Annual Casa Ogeechee Superhero Run' — link válido, miss_count zerado
 [main] '5K Monster Dash' — link válido, miss_count zerado
+[main] '14Th Annual Casa Ogeechee Superhero Run' — link válido, miss_count zerado
 [main] 'Big Dog Howl 5K' — link válido, miss_count zerado
 [main] 'Chasing Freedom 5K' — link válido, miss_count zerado
 [main] 'Band On The Run' — link válido, miss_count zerado
-[main] 'Cats & Bats Haunted 5K' — link válido, miss_count zerado
 [main] '2026 Race For Campus Safety - Salt Lake City, Utah' — link válido, miss_count zerado
+[main] 'Cats & Bats Haunted 5K' — link válido, miss_count zerado
 [main] 'Alextru Foundation - 4Th Annual 5K — Now On October 31, 2026!' — link válido, miss_count zerado
 [main] 'Centra Foundation Boo Bash Costume Dash 5K And Trick Or Trot Kids Fun Run' — link válido, miss_count zerado
 [main] 'Boo! On Broad' — link válido, miss_count zerado
@@ -2610,7 +2706,7 @@
 [main] 'All Saints 5K Shuffle' — link válido, miss_count zerado
 [main] 'Amberly Sugar Rush' — link válido, miss_count zerado
 [main] '6Th Annual Duck Donut 5K/10K And New 2K Pup Strut' — link válido, miss_count zerado
-[main] '2026 Xracers 10K Ride And Run Day Of The Dead' — link válido, miss_count zerado
+[main] 'Amberly Sugar Rush' — link válido, miss_count zerado
 [main] 'Annual Miner Dash & Family Fitness Fiesta' — link válido, miss_count zerado
 [main] 'Almond Bowl 5K & 10K November 1St, 2026' — link válido, miss_count zerado
 [main] 'Capes & Courage: Toughest Kids Halloween Run' — link válido, miss_count zerado
@@ -2620,16 +2716,18 @@
 [main] '2026 Optimism Cal Tri Newport Dunes - 11.1.26' — link válido, miss_count zerado
 [main] 'Cedar Park Run Mile Challenge (Fall Edition)' — link válido, miss_count zerado
 [main] 'C26 Run Camp - Nov '26' — link válido, miss_count zerado
-[main] '"Running For The Heart 5K | 10K" Run/Walk New Orleans 2026' — link válido, miss_count zerado
-[main] '6Th Annual Bont Florida Inline Skating Marathon!' — link válido, miss_count zerado
+[main] 'Autumn Squatch 10K, 20K & 50K' — link válido, miss_count zerado
+[main] '2026 Optimism Cal Tri Newport Dunes - 11.1.26' — link válido, miss_count zerado
 [main] '12Th Annual Veterans Haven 5K Run And 1 Mile Walk' — link válido, miss_count zerado
+[main] '"Running For The Heart 5K | 10K" Run/Walk New Orleans 2026' — link válido, miss_count zerado
 [main] '14Th Annual Run 4 Life 5K And Fan Fest' — link válido, miss_count zerado
+[main] '6Th Annual Bont Florida Inline Skating Marathon!' — link válido, miss_count zerado
 [main] '2026 Vineyard City Blizzard 5K, & Kids 1K' — link válido, miss_count zerado
 [main] '18Th Annual Rotary Club Of Little River 5K' — link válido, miss_count zerado
 [main] '#Runfordylan 5K, 1M & Virtual Run' — link válido, miss_count zerado
 [main] '12Th Annual Granite City 5K' — link válido, miss_count zerado
-[main] '1St Annual Health, Hope & Heroes 5K Walk/Run And Kids' Fun Run Presented By Gipa' — link válido, miss_count zerado
 [main] '17Th Annual Pecan Classic 10K And 5K Run/Walk' — link válido, miss_count zerado
+[main] '1St Annual Health, Hope & Heroes 5K Walk/Run And Kids' Fun Run Presented By Gipa' — link válido, miss_count zerado
 [main] '2025 Trot Thru The Terrace 5K, 10K & 1 Mile' — link válido, miss_count zerado
 [main] '25Th Annual Leatherneck Run' — link válido, miss_count zerado
 [main] '14Th Annual Veteran Suicide Awareness March' — link válido, miss_count zerado
@@ -2640,8 +2738,8 @@
 [main] 'Arfs Annual 5K Walk/Run' — link válido, miss_count zerado
 [main] '3Rd Annual Ghost-To-Gobble 1-Mile, 5K, & 8K' — link válido, miss_count zerado
 [main] 'Ainsley'S Angels 11Th Annual Rollin On The River 5K' — link válido, miss_count zerado
-[main] 'Angry Cow Trail Run # 4 Vets Run' — link válido, miss_count zerado
 [main] 'Beer & Bagel Run - Pennsylvania' — link válido, miss_count zerado
+[main] 'Angry Cow Trail Run # 4 Vets Run' — link válido, miss_count zerado
 [main] 'Anthony’S Amici 5K Trail Run And 1.4 Mile Walk' — link válido, miss_count zerado
 [main] 'Alpha Run - Wichita' — link válido, miss_count zerado
 [main] '3Rd Annual Celebration Of Life 5K/Kids Run/Walk' — link válido, miss_count zerado
@@ -2652,19 +2750,19 @@
 [main] 'Beginner Sailing November 7/8' — link válido, miss_count zerado
 [main] 'Bell Ringer 2 Miler' — link válido, miss_count zerado
 [main] 'Buddy The Bull Stampede' — link válido, miss_count zerado
-[main] 'Big Tex Backyard Ultra' — link válido, miss_count zerado
-[main] 'Battle Of The Branches 5K (Syracuse)' — link válido, miss_count zerado
+[main] 'Beginner Sailing November 7/8' — link válido, miss_count zerado
 [main] 'Blue Ostrich Wine Run Turkey Trot 5K' — link válido, miss_count zerado
 [main] 'Btc Vulcan Run' — link válido, miss_count zerado
 [main] 'Canton Run Ruck 5K' — link válido, miss_count zerado
 [main] 'Bunyan Battle 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Bobcat' — link válido, miss_count zerado
 [main] 'Anime For Miles 5K' — link válido, miss_count zerado
+[main] 'Bunyan Battle 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Chasing Zero 5K & 1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Ccus The Stateline Sprint' — link válido, miss_count zerado
-[main] 'Cannonball 5K & Fun Run' — link válido, miss_count zerado
 [main] 'Bay Bridge Run' — link válido, miss_count zerado
 [main] 'Casa Superhero 5K And Kids 1 Mile' — link válido, miss_count zerado
+[main] 'Cannonball 5K & Fun Run' — link válido, miss_count zerado
 [main] '4-H Fall Goat For It 4K' — link válido, miss_count zerado
 [main] '5 Miles Home' — link válido, miss_count zerado
 [main] '15Th Annual Spend Yourself 5K Run/3K Walk' — link válido, miss_count zerado
@@ -2673,6 +2771,7 @@
 [main] 'Autumn Leaves Fall 4 Miler' — link válido, miss_count zerado
 [main] '2026 Colony Grill 'Hot Oil' 5K' — link válido, miss_count zerado
 [main] 'Cades Cove Loop Lope' — link válido, miss_count zerado
+[main] 'Autumn Leaves Fall 4 Miler' — link válido, miss_count zerado
 [main] 'Bill Steers 5K' — link válido, miss_count zerado
 [main] '=Pr= Races: Veterans Day 5K & 1K' — link válido, miss_count zerado
 [main] 'Agape Run 4 Love 5K' — link válido, miss_count zerado
@@ -2683,17 +2782,16 @@
 [main] 'Camp Turkey Terror: Night- Friday The 13Th Deranged Turkey Trot: 5K. 10K. Half Marathon By Califlow Runs' — link válido, miss_count zerado
 [main] '2026 Running Richmond - Youth Programs Charity Entries' — link válido, miss_count zerado
 [main] '13Th Annual Wells Veterans Day 5K' — link válido, miss_count zerado
+[main] '2026 Running Richmond - Youth Programs Charity Entries' — link válido, miss_count zerado
 [main] '2026 Hytrol Industrial Park 5K/10K' — link válido, miss_count zerado
 [main] '4Th Annual Shamong Turkey Trot' — link válido, miss_count zerado
-[main] 'Addiestrong 5K Race And The Addiestrong 1 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] '2026 Labelle Turkey Trot 5K Run And 1K Fun Run/Walk' — link válido, miss_count zerado
+[main] 'Addiestrong 5K Race And The Addiestrong 1 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] '33Rd Annual Pawleys Island Turtle Strut 5K/8K Run/Walk Presented By Pawleys Island Realty' — link válido, miss_count zerado
 [main] 'Angels On The Run 5K' — link válido, miss_count zerado
 [main] 'Berryville Turkey Trot 5K & 1 Mile Kids Fun Run' — link válido, miss_count zerado
 [main] 'Allianz Richmond Marathon, Carmax Richmond Half Marathon, & Capital One Richmond 8K' — link válido, miss_count zerado
 [main] '4Th Annual Monk Strong Memorial Rugged Trail Run & So Much More!' — link válido, miss_count zerado
-[main] 'Adventhealth Presents The Central Florida Legends Marathon, Half Marathon And 5K' — link válido, miss_count zerado
-[main] 'Abominable Trail Race' — link válido, miss_count zerado
 [main] 'Bridgetogether For Autism 5K' — link válido, miss_count zerado
 [main] 'Battle Of Leon Creek: 20-Miles, 13.1, 10-Mile, 5K' — link válido, miss_count zerado
 [main] 'Bleeding Disorders Of Kentucky Hemo Hustle' — link válido, miss_count zerado
@@ -2716,6 +2814,8 @@
 [main] '2025 Turkey Trot' — link válido, miss_count zerado
 [main] '32Nd Annual Turkey Trot 5K' — link válido, miss_count zerado
 [main] '43Rd El Tour De Tucson' — link válido, miss_count zerado
+[main] '2025 Turkey Trot' — link válido, miss_count zerado
+[main] '64Th Annual Jfk 50 Mile Presented By Altra' — link válido, miss_count zerado
 [main] '2Nd Annual Saline County Strider Turkey Trot 5K' — link válido, miss_count zerado
 [main] '64Th Annual Jfk 50 Mile Presented By Altra' — link válido, miss_count zerado
 [main] '5K With The 5-0' — link válido, miss_count zerado
@@ -2747,13 +2847,13 @@
 [main] '10Th Annual Cleveland Turkey Trot' — link válido, miss_count zerado
 [main] '14Th Annual Old North State 5K Turkey Trot Run' — link válido, miss_count zerado
 [main] '17Th Annual Surfside Beach Turkey Trot 5K Presented By Maguire Law Firm' — link válido, miss_count zerado
-[main] '17Th Annual Levis Jcc Turkey Trot 5K' — link válido, miss_count zerado
 [main] '18Th Annual United Way Turkey Trot' — link válido, miss_count zerado
-[main] '19Th Annual Trot Against Poverty 5K' — link válido, miss_count zerado
 [main] '2026 Mukilteo Turkey Trot 5K And 10K' — link válido, miss_count zerado
+[main] '19Th Annual Trot Against Poverty 5K' — link válido, miss_count zerado
 [main] '2026 Aiken Turkey Trot And 1-Mile Fun Run' — link válido, miss_count zerado
 [main] '2026 Cayucos Turkey Trot' — link válido, miss_count zerado
 [main] '14Th Annual Stuffing Strut' — link válido, miss_count zerado
+[main] '2026 Cea/Johanna Foods Turkey Trot' — link válido, miss_count zerado
 [main] '2026 Green Family Ymca Turkey Trot 5K And 1 Mile' — link válido, miss_count zerado
 [main] '2026 Cea/Johanna Foods Turkey Trot' — link válido, miss_count zerado
 [main] '2026 Annual Keene Wobble Gobble 4-Mile Run/Walk' — link válido, miss_count zerado
@@ -2769,7 +2869,6 @@
 [main] '34Th Annual Turkey Trot 5K Run/Walk' — link válido, miss_count zerado
 [main] '45Th Iroquois Hill Runners Thanksgiving Day Run' — link válido, miss_count zerado
 [main] '3Rd Annual White Squirrel Trot 5K Run/Walk Or 1 Mile Walk- Oberlin, Oh' — link válido, miss_count zerado
-[main] '22Nd Annual Lars Race Against Hunger & Homelessness (The Turkey Trot)' — link válido, miss_count zerado
 [main] '30A 10K Thanksgiving Day Races' — link válido, miss_count zerado
 [main] '5K Turkey Trot Family Tradition 2026' — link válido, miss_count zerado
 [main] '5Th Annual American Legion Auxiliary Turkey Trot' — link válido, miss_count zerado
@@ -2779,8 +2878,8 @@
 [main] '4Th Annual Gulf Coast State College Athletics 5K Turkey Trot' — link válido, miss_count zerado
 [main] '20Th Annual Guthrie Sayre Turkey Trot 5K Race - Celebrating 20 Years On Thanksgiving Day!' — link válido, miss_count zerado
 [main] 'Addi'S Faith Turkey Day 5K & Kids Wishbone 1K' — link válido, miss_count zerado
-[main] '=Pr= Races - Turkey Day 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Beau'S Buddies Turkey Trot For Tots' — link válido, miss_count zerado
+[main] '=Pr= Races - Turkey Day 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Ashenfelter 8K Classic & The Tom Fleming 2K' — link válido, miss_count zerado
 [main] 'B-Town Turkey Trot' — link válido, miss_count zerado
 [main] 'Aurora Turkey Trot 5K & Mashed Potato Mile' — link válido, miss_count zerado
@@ -2788,6 +2887,9 @@
 [main] 'Baycare Wobble Turkey Trot' — link válido, miss_count zerado
 [main] 'Ames Turkey Trot' — link válido, miss_count zerado
 [main] 'Bank Of Ocean City Bethany-Fenwick Turkey Trot' — link válido, miss_count zerado
+[main] 'Adventhealth Groveland Turkey Trot 5K & 10K Presented By Livetrends Design Group' — link válido, miss_count zerado
+[main] 'Ames Turkey Trot' — link válido, miss_count zerado
+[main] 'Baycare Wobble Turkey Trot' — link válido, miss_count zerado
 [main] 'Big Bear Turkey Trot' — link válido, miss_count zerado
 [main] 'Better Together - Turkey Trot, Sponsored By Kids R Kids' — link válido, miss_count zerado
 [main] '26Th Annual Irvington Turkey Trot & Animal Rescue Donation Drive' — link válido, miss_count zerado
@@ -2797,6 +2899,8 @@
 [main] 'Bishop Ranch Turkey Trot' — link válido, miss_count zerado
 [main] 'Bay St. Louis Turkey Trot 5K & 1 Mile Fun Run' — link válido, miss_count zerado
 [main] 'Birds Of A Feather Trail Trot' — link válido, miss_count zerado
+[main] 'Bishop Ranch Turkey Trot' — link válido, miss_count zerado
+[main] 'Blue Talon Bistro Turkey Trot' — link válido, miss_count zerado
 [main] 'Broomfield Turkey Day 5K/10K' — link válido, miss_count zerado
 [main] 'Birdie Derby 5K/10K Run/Walk' — link válido, miss_count zerado
 [main] 'Branford Thanksgiving 5K' — link válido, miss_count zerado
@@ -2806,7 +2910,7 @@
 [main] 'Bradenton Runners Club Turkey Trot 5K' — link válido, miss_count zerado
 [main] 'Burn The Bird 10K, 5K And 1.33 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Carlisle Ymca Turkey Trot' — link válido, miss_count zerado
-[main] 'Celina Turkey Trot' — link válido, miss_count zerado
+[main] 'Burn The Bird 10K, 5K And 1.33 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Charlotte County Habitat'S 28Th Annual Turkey Trot 5K Run / Walk' — link válido, miss_count zerado
 [main] 'Bulle Rock Turkey Trot 5K - Thanksgiving Day 2026' — link válido, miss_count zerado
 [main] '2026 Kent Turkey Trot' — link válido, miss_count zerado
@@ -2819,22 +2923,24 @@
 [main] '2025 Turkey Trot Athens Tx 5K & Fun Run Benefiting Hope Springs Water On Thanksgiving Day 11/27/25' — link válido, miss_count zerado
 [main] 'Cedar Rapids Turkey Trot 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Altavista On Track Giblet Jog 5K' — link válido, miss_count zerado
+[main] '2026 University City Turkey Trot' — link válido, miss_count zerado
 [main] '48Th Annual Oglesby Turkey Trot' — link válido, miss_count zerado
 [main] '2026 University City Turkey Trot' — link válido, miss_count zerado
 [main] 'Bakersfield Turkey Day Run' — link válido, miss_count zerado
 [main] 'Bolt For The Heart - Thanksgiving Day 5K' — link válido, miss_count zerado
 [main] 'Black Friday Relays Leftover Race' — link válido, miss_count zerado
 [main] 'Black Friday 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Black Friday 5K Fun Run/Walk For Covenant Academy' — link válido, miss_count zerado
 [main] '2026 Seattle Ghost Marathon, Half & 50K' — link válido, miss_count zerado
-[main] 'Candy Land Run' — link válido, miss_count zerado
+[main] 'Black Friday 5K Fun Run/Walk For Covenant Academy' — link válido, miss_count zerado
+[main] 'Black Friday Relays Leftover Race' — link válido, miss_count zerado
 [main] '17Th Huffin' For Pumpkin Pie 5K Run & 1M Walk' — link válido, miss_count zerado
 [main] '2026 Shay 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Candy Land Run' — link válido, miss_count zerado
 [main] '2026 Route 66 Race Across Kansas' — link válido, miss_count zerado
-[main] 'Brigantine Ugly Sweater Run & Family Frolic' — link válido, miss_count zerado
 [main] '2026 Hot Diggity Dog 5K' — link válido, miss_count zerado
-[main] '23Rd Sea Colony Turkey Trot 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Brigantine Ugly Sweater Run & Family Frolic' — link válido, miss_count zerado
 [main] 'Bobbie’S Staff Presents Turkey Trot, 2026' — link válido, miss_count zerado
+[main] '23Rd Sea Colony Turkey Trot 5K Run/Walk' — link válido, miss_count zerado
 [main] '3Rd Annual Duck Donut Holiday 5K And 2K Pup Strut' — link válido, miss_count zerado
 [main] '9Th Annual Doylestown Jingle Bell Turkey Trot 5K, 10K, 2 Mile Fun Reindeer Run/Walk & Li'L Elves Kids' Run!' — link válido, miss_count zerado
 [main] 'Binghamton Ugly Sweater 5K' — link válido, miss_count zerado
@@ -2861,36 +2967,41 @@
 [main] '2026 Jingle Bell Run - Raleigh, Nc' — link válido, miss_count zerado
 [main] 'Care Net 5K Reindeer Run/Walk' — link válido, miss_count zerado
 [main] 'Candy Cane Course- St. Paul' — link válido, miss_count zerado
+[main] 'Angry Bear Holiday Fun Run And 5K' — link válido, miss_count zerado
 [main] 'Candy Cane Course-Louisville' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Colorado Springs' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Dallas' — link válido, miss_count zerado
 [main] 'Angry Bear Holiday Fun Run And 5K' — link válido, miss_count zerado
 [main] '2026 Montclair Doughnut Run' — link válido, miss_count zerado
+[main] 'Candy Cane Course - Dallas' — link válido, miss_count zerado
 [main] '2026 South Berkeley Christmas 5K ~ 16Th Annual' — link válido, miss_count zerado
 [main] 'Checkers A.C. Christmas 3K Race' — link válido, miss_count zerado
 [main] '=Pr= Races: Run With Santa 5K' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Indianapolis' — link válido, miss_count zerado
 [main] 'Ash Foundation Run/Walk 5K/3K' — link válido, miss_count zerado
-[main] 'Candy Cane Course - Denver' — link válido, miss_count zerado
-[main] 'Candy Cane Course- Rochester' — link válido, miss_count zerado
 [main] 'Boley Centers' 44Th Annual Jingle Bell Run' — link válido, miss_count zerado
+[main] 'Candy Cane Course- Rochester' — link válido, miss_count zerado
 [main] '2026 Jingle All The Way 5/10K And Fun Run' — link válido, miss_count zerado
 [main] '2026 Sweetwater Mission Santa Run 5K' — link válido, miss_count zerado
 [main] '35Th Annual Reindeer Run/Walk' — link válido, miss_count zerado
 [main] '50Th Annual Sandy Claws Beach Run' — link válido, miss_count zerado
 [main] '12K'S Of Christmas' — link válido, miss_count zerado
 [main] '2026 Auburn Toys For Tots 5K/10K' — link válido, miss_count zerado
+[main] '50Th Annual Sandy Claws Beach Run' — link válido, miss_count zerado
+[main] '35Th Annual Reindeer Run/Walk' — link válido, miss_count zerado
 [main] 'Adventhealth Howey-In-The-Hills Reindeer Dash 5K Presented By Livetrends Design Group' — link válido, miss_count zerado
-[main] 'Bridge & Trestle 17 Mile Run' — link válido, miss_count zerado
+[main] '12K'S Of Christmas' — link válido, miss_count zerado
 [main] 'Anacortes Santa Run' — link válido, miss_count zerado
+[main] 'Bridge & Trestle 17 Mile Run' — link válido, miss_count zerado
 [main] '7Th Annual Medal Of Honor 5K Run & Walk' — link válido, miss_count zerado
-[main] 'Adventhealth Santa'S Twilight 5K - Cocoa Village' — link válido, miss_count zerado
 [main] 'Celtic Solstice Five-Miler' — link válido, miss_count zerado
-[main] 'Cape Canaveral Reindeer Run 5K' — link válido, miss_count zerado
+[main] 'Adventhealth Santa'S Twilight 5K - Cocoa Village' — link válido, miss_count zerado
 [main] 'Cheese And Sauerkraut 10 Miler' — link válido, miss_count zerado
 [main] 'Centennial Athletics December Dash' — link válido, miss_count zerado
+[main] 'Cape Canaveral Reindeer Run 5K' — link válido, miss_count zerado
 [main] 'C3'S 3Rd Annual Santa Trot - 5K!' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Cincinnati' — link válido, miss_count zerado
+[main] 'Candy Cane Course- Greater Chicago' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Tulsa' — link válido, miss_count zerado
 [main] 'Arutisuse Run 5K' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Springfield' — link válido, miss_count zerado
@@ -2904,6 +3015,7 @@
 [main] 'Chase The Dreidel 5K' — link válido, miss_count zerado
 [main] 'Candy Cane Course - San Antonio' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Lincoln' — link válido, miss_count zerado
+[main] 'Chase The Dreidel 5K' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Fayetteville' — link válido, miss_count zerado
 [main] 'Candy Cane Course-Columbus' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Oklahoma City' — link válido, miss_count zerado
@@ -2918,6 +3030,7 @@
 [main] 'Candy Cane Course - Austin' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Fort Worth' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Nashville' — link válido, miss_count zerado
+[main] 'Candy Cane Course - Austin' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Omaha' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Lee'S Summit' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Milwaukee' — link válido, miss_count zerado
@@ -2925,6 +3038,7 @@
 [main] 'Candy Cane Course - Greater Atlanta' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Grand Rapids' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Memphis' — link válido, miss_count zerado
+[main] 'Candy Cane Course- Chattanooga' — link válido, miss_count zerado
 [main] 'Candy Cane Course - Des Moines' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Wichita' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Chattanooga' — link válido, miss_count zerado
@@ -2933,13 +3047,11 @@
 [main] 'A Merry Christmas Run 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Austin/Roundrock' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Los Angeles' — link válido, miss_count zerado
-[main] 'A Merry Christmas Run 5K/10K/13.1 Nyc' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'A Merry Christmas Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Seattle' — link válido, miss_count zerado
+[main] 'A Merry Christmas Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Miami' — link válido, miss_count zerado
-[main] 'A Merry Christmas Run 5K/10K/13.1 Philadelphia' — link válido, miss_count zerado
 [main] '63Rd Annual Asbury Park Polar Bear Races' — link válido, miss_count zerado
 [main] 'Candy Cane Course- Tampa' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes Combo' — link válido, miss_count zerado
@@ -2950,6 +3062,7 @@
 [main] '1 Desafio Elementos - 1 Etapa Fogo' — link válido, miss_count zerado
 [main] '44Th Annual Reeds Lake Resolution Run' — link válido, miss_count zerado
 [main] 'Corrida Kazamigas Kit Rosa' — link válido, miss_count zerado
+[main] 'Corrida Virtual Crazy Animals - Cat 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Big Five Run Series - Etapa Búfalo 2026' — link válido, miss_count zerado
 [main] '23Rd Annual New Year'S Eve Loop-The-Lake Run' — link válido, miss_count zerado
 [main] '2026 Unified 5K Virtual' — link válido, miss_count zerado
@@ -2960,19 +3073,20 @@
 [main] '22Nd Race Into The New Year 5K & 1/4 Mile Fun Dash' — link válido, miss_count zerado
 [main] 'Corrida Aumigo' — link válido, miss_count zerado
 [main] 'Corrida Virtual Borá Correr Por Gabi Oliveira 2026' — link válido, miss_count zerado
-[main] 'Corrida Virtual Desafio Do Guerreiro 19K - 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Vikings Run - Desafio Solo - 2026' — link válido, miss_count zerado
 [main] 'Corrida Virtual Candy Run - Donuts 2026' — link válido, miss_count zerado
 [main] 'Desafio Virtual Destrava Rp 5K 2026' — link válido, miss_count zerado
 [main] '1St Day Live And Virtual 5K Run & 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Brookfield Lions Run For Sight 4-Miler' — link válido, miss_count zerado
+[main] '1St Day Live And Virtual 5K Run & 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Cheers To New Year'S 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Badwater 267 Vr' — link válido, miss_count zerado
 [main] '2027 New Years 3/6 Mile Run & Pup Strut' — link válido, miss_count zerado
+[main] 'Badwater 267 Vr' — link válido, miss_count zerado
 [main] 'Champagne 5K' — link válido, miss_count zerado
 [main] 'Canyon Of The Eagles 100: New Year’S Trail Challenge' — link válido, miss_count zerado
 [main] 'Charlotte New Year'S Day 5K 2027' — link válido, miss_count zerado
 [main] '8Th Annual Kiwanis Resolution 5K Run/Walk, And 10K Run/Walk' — link válido, miss_count zerado
+[main] '48Th Annual Lone Star Stampede' — link válido, miss_count zerado
 [main] 'Break Every Chain' — link válido, miss_count zerado
 [main] '48Th Annual Lone Star Stampede' — link válido, miss_count zerado
 [main] 'Battle Creek Fifty K' — link válido, miss_count zerado
@@ -2983,6 +3097,7 @@
 [main] 'Bikes & Beers Tampa' — link válido, miss_count zerado
 [main] '44Th Annual Bridge-Buster 5K Run' — link válido, miss_count zerado
 [main] 'Bandera Endurance Trail Race' — link válido, miss_count zerado
+[main] '14Th Annual Andrew Monroe Memorial Scholarship 5K Run/Walk' — link válido, miss_count zerado
 [main] '30Th Annual Dunn'S Run Presented By Jm Family Enterprises' — link válido, miss_count zerado
 [main] '14Th Annual Andrew Monroe Memorial Scholarship 5K Run/Walk' — link válido, miss_count zerado
 [main] '15Th Annual Lcec 5K' — link válido, miss_count zerado
@@ -2995,6 +3110,7 @@
 [main] 'Battle Of The Run Clubs' — link válido, miss_count zerado
 [main] 'Beat The Bridge 10K/5K' — link válido, miss_count zerado
 [main] 'Bikes & Beers St. Petersburg' — link válido, miss_count zerado
+[main] 'Abominable Snow Race' — link válido, miss_count zerado
 [main] 'C26 Run Camp - Feb '27' — link válido, miss_count zerado
 [main] 'Abominable Snow Race' — link válido, miss_count zerado
 [main] '12Hr Frenzy @ The Fairgrounds' — link válido, miss_count zerado
@@ -3014,37 +3130,38 @@
 [main] '=Pr= Races: Run Your Heart Out 5K/1K' — link válido, miss_count zerado
 [main] '5Th Annual Awaken Recovery Run' — link válido, miss_count zerado
 [main] 'Bakersfield Coffee Run' — link válido, miss_count zerado
+[main] '12 Th Annual Love Run 5K Presented By Dekalb County D.A. Sherry Boston ---- February 27, 2027' — link válido, miss_count zerado
 [main] 'Cabin Fever Trail Race' — link válido, miss_count zerado
 [main] '18Th Annual Street2Feet 5K Run/ Walk & Kids K Fundraiser (Virtual Option Available)' — link válido, miss_count zerado
-[main] '12 Th Annual Love Run 5K Presented By Dekalb County D.A. Sherry Boston ---- February 27, 2027' — link válido, miss_count zerado
 [main] 'Brianna Marie Foundation 5K' — link válido, miss_count zerado
 [main] '2027 Hot Cocoa Races' — link válido, miss_count zerado
 [main] 'Carter Creek Wine Run 5K' — link válido, miss_count zerado
 [main] '2027 Swamp Stomp 5K' — link válido, miss_count zerado
-[main] '45Th Annual - Polar Bear Winter Classic' — link válido, miss_count zerado
 [main] 'Arktos' — link válido, miss_count zerado
 [main] '5Th Annual Rising Sun 5K' — link válido, miss_count zerado
+[main] '45Th Annual - Polar Bear Winter Classic' — link válido, miss_count zerado
 [main] '17Th Annual Mardi Gras Madness 5K/10K!' — link válido, miss_count zerado
 [main] '2027 Tokyo Marathon Semper Fi & America'S Fund Team' — link válido, miss_count zerado
 [main] 'Akash Wine Run 5K' — link válido, miss_count zerado
 [main] 'Bradenton Riverwalk Half Marathon 10K 5K' — link válido, miss_count zerado
 [main] '25Th Annual Little Rock Marathon Weekend' — link válido, miss_count zerado
+[main] 'Bradenton Riverwalk Half Marathon 10K 5K' — link válido, miss_count zerado
 [main] '3 Bridges 5K & 10K' — link válido, miss_count zerado
 [main] 'C.D. Fulkes Pta Heart Of Round Rock Run' — link válido, miss_count zerado
 [main] 'Chamblee Bulldog Dash 5K' — link válido, miss_count zerado
-[main] 'Best Damn Race Orlando' — link válido, miss_count zerado
 [main] '2027 Zydeco Marathon - 26.2 Full | 13.1 Half | Team Relay | 5K | 1 Mile' — link válido, miss_count zerado
+[main] 'Best Damn Race Orlando' — link válido, miss_count zerado
 [main] '41St Annual 2027 Pepsi Challenge 50K/Great River Energy Rush 25K/Giants Ridge 8K Nordic Ski Races At Giants Ridge' — link válido, miss_count zerado
-[main] 'Ainsley'S Angels 13Th Annual Run With Your Heart 5K/10K/15K' — link válido, miss_count zerado
 [main] 'Celebrate Women 5K & 10K' — link válido, miss_count zerado
+[main] 'Ainsley'S Angels 13Th Annual Run With Your Heart 5K/10K/15K' — link válido, miss_count zerado
 [main] '99.1 Plr *Shamrock And Roll 5K*' — link válido, miss_count zerado
 [main] '=Pr= Races: Reston 10 Miler' — link válido, miss_count zerado
 [main] '3Rd Annual Feeney'S 5K Fun Run & Virtual Run--Ajc Peachtree Road Race Qualifier' — link válido, miss_count zerado
 [main] '6Th Annual St Patrick’S Day 5K And Pub Crawl' — link válido, miss_count zerado
 [main] 'Chase The Rainbow 5K Run/Walk' — link válido, miss_count zerado
 [main] '7Th Annual Crosstown Shamrock 5K' — link válido, miss_count zerado
-[main] '22Nd Annual Run Through Time Trail Marathon And Half Marathon' — link válido, miss_count zerado
 [main] '21St Annual Bear Foot 5K And Half Mile Fun Run' — link válido, miss_count zerado
+[main] '22Nd Annual Run Through Time Trail Marathon And Half Marathon' — link válido, miss_count zerado
 [main] '5K & Family Health Day For Maternal Health Awareness' — link válido, miss_count zerado
 [main] 'Catch A Leprechaun 5K' — link válido, miss_count zerado
 [main] 'Catalina Island Marathon, 10K, 5K' — link válido, miss_count zerado
@@ -3077,6 +3194,7 @@
 [main] 'Big Cheese 5K' — link válido, miss_count zerado
 [main] '2027 15Th Annual Black Squirrel 5K Walk/Run/Roll & 1-Mile Walk/Run/Roll' — link válido, miss_count zerado
 [main] '30Th Annual Gloucester Twp Scholarship Run-2027' — link válido, miss_count zerado
+[main] '2027 15Th Annual Black Squirrel 5K Walk/Run/Roll & 1-Mile Walk/Run/Roll' — link válido, miss_count zerado
 [main] 'Annual 5K Butterfly Run!' — link válido, miss_count zerado
 [main] '2027 Run Sunset Beach' — link válido, miss_count zerado
 [main] 'Ainsley'S Angels 2Nd Annual Heart And Sole' — link válido, miss_count zerado
@@ -3089,6 +3207,8 @@
 [main] '2026 Run For Autism And Resource Event' — link válido, miss_count zerado
 [main] 'Brandon True Memorial Heroes For The Homeless 5K Presented By Anderson Communities' — link válido, miss_count zerado
 [main] 'Apex Health Run 2027' — link válido, miss_count zerado
+[main] 'Brandon True Memorial Heroes For The Homeless 5K Presented By Anderson Communities' — link válido, miss_count zerado
+[main] 'A Run Through History' — link válido, miss_count zerado
 [main] '33 Ultra' — link válido, miss_count zerado
 [main] 'A Run Through History' — link válido, miss_count zerado
 [main] '2026 Ywca Race For A Reason' — link válido, miss_count zerado
@@ -3098,9 +3218,7 @@
 [main] 'Beechwood Ptsa Tiger Trail 5K' — link válido, miss_count zerado
 [main] 'All-Out Beat The Heat' — link válido, miss_count zerado
 [main] 'Bright Ideas 5K' — link válido, miss_count zerado
-[main] '12Th Annual Cream City 5K Run/Walk | 3K Walk & Kellan'S Kids Run' — link válido, miss_count zerado
 [main] 'Catch Me If You Can 5K' — link válido, miss_count zerado
-[main] '2027 Walk For Autism Resource Fair' — link válido, miss_count zerado
 [main] 'Badwater 267 Vr Elite' — link válido, miss_count zerado
 [main] 'Canaan Valley Half Marathon, 10K, And 5K' — link válido, miss_count zerado
 [main] 'Bloomin' 5K And 1 Mile Walk' — link válido, miss_count zerado
@@ -3117,6 +3235,8 @@
 [main] '2027 Market To Market Relay Iowa' — link válido, miss_count zerado
 [main] 'Back The Blue "Live Virtual" 5K/10K' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 2ª Etapa Lobo - Execução' — link válido, miss_count zerado
+[main] 'Cherokee Choices Mother'S Day 5K' — link válido, miss_count zerado
+[main] '2027 Market To Market Relay Iowa' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 3ª Etapa Águia - Foco' — link válido, miss_count zerado
 [main] '1º Desafio Gladiador Run' — link válido, miss_count zerado
 [main] '2ª Maratona Virtudes - 1ª Etapa Leão - Disciplina' — link válido, miss_count zerado

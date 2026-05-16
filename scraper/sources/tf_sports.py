@@ -8,16 +8,19 @@ from bs4 import BeautifulSoup
 
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from ..http_client import get as _http_get
 from .. import geo as _geo
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
 # Deep-populate eventData so modalities/distances/times come back inline.
+# Sort ascending by start date so upcoming events are on page 1.
 LIST_URL = (
     f"{API_BASE}/run-series"
     "?publicationState=live"
     "&populate[eventData][populate]=*"
     "&populate[pageSeo][populate]=*"
+    "&sort=eventData.startDate:asc"
     "&pagination[pageSize]=100"
 )
 SOURCE_NAME = "TF Sports"
@@ -77,27 +80,31 @@ def _state_from_cep(text: str) -> str | None:
 def _get_bearer_token() -> str | None:
     """Extract Bearer token from the compiled Next.js app bundle.
 
-    Next.js minifies the Authorization header as:
-      "Bearer ".concat("TOKEN...") — so we need patterns for that form.
+    Uses the proxy chain for the HTML page (handles Cloudflare).
+    Searches _app and chunked bundles — Next.js may split the token across
+    any static chunk, not only the _app entry point.
     """
     try:
-        resp = httpx.get(
-            f"{BASE}/run-series/",
-            headers=_HEADERS_HTML,
-            timeout=_TIMEOUT,
-            follow_redirects=True,
-        )
-        resp.raise_for_status()
+        resp = _http_get(f"{BASE}/run-series/", source=SOURCE_NAME, timeout=_TIMEOUT)
+        if resp.status_code != 200:
+            return None
         soup = BeautifulSoup(resp.text, "lxml")
         for script in soup.find_all("script", src=True):
             src = script.get("src", "")
-            if "_app" not in src or not src.endswith(".js"):
+            if not src.endswith(".js"):
+                continue
+            # "_app" is primary; also check other chunked bundles
+            if not any(kw in src for kw in ("_app", "pages/_", "chunks/")):
                 continue
             bundle_url = src if src.startswith("http") else f"{BASE}{src}"
-            bundle = httpx.get(
-                bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
-            )
-            bundle.raise_for_status()
+            try:
+                bundle = httpx.get(
+                    bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
+                )
+                if bundle.status_code != 200:
+                    continue
+            except Exception:
+                continue
             text = bundle.text
             for pat in [
                 # "Bearer ".concat("TOKEN") — typical Next.js minified bundle pattern
@@ -387,15 +394,36 @@ def scrape() -> list[Corrida]:
     if token:
         api_headers["Authorization"] = f"Bearer {token}"
 
-    try:
-        resp = httpx.get(LIST_URL, headers=api_headers, timeout=_TIMEOUT, follow_redirects=True)
-        resp.raise_for_status()
-        data = resp.json()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar API: {e}")
-        return []
+    all_events: list[dict] = []
+    for page in range(1, 6):  # max 500 events across 5 pages
+        page_url = f"{LIST_URL}&pagination[page]={page}"
+        try:
+            if token:
+                resp = httpx.get(
+                    page_url, headers=api_headers, timeout=_TIMEOUT, follow_redirects=True
+                )
+                if resp.status_code in (401, 403):
+                    # Token rejected — fall back to proxy chain without auth
+                    print(f"[{SOURCE_NAME}] token rejeitado ({resp.status_code}), tentando sem auth")
+                    resp = _http_get(page_url, source=SOURCE_NAME, timeout=_TIMEOUT)
+            else:
+                resp = _http_get(page_url, source=SOURCE_NAME, timeout=_TIMEOUT)
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] erro ao buscar página {page}: {e}")
+            break
 
-    events = data.get("data", [])
+        batch = data.get("data", [])
+        if not batch:
+            break
+        all_events.extend(batch)
+
+        meta_pag = data.get("meta", {}).get("pagination", {})
+        if page >= meta_pag.get("pageCount", 1):
+            break
+
+    events = all_events
     now = now_iso()
     today = today_iso()
     corridas: list[Corrida] = []

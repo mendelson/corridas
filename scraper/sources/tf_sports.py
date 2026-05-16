@@ -7,7 +7,7 @@ import httpx
 from bs4 import BeautifulSoup
 
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, infer_estado, now_iso
+from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
 from ..http_client import get as _http_get
 from .. import geo as _geo
 
@@ -20,12 +20,27 @@ _STRAPI_PARAMS = (
     "&sort=eventData.startDate:asc"
     "&pagination[pageSize]=100"
 )
-# run-series: public circuit events (accessible with token)
+# run-series: public circuit events (live only, token required)
 LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
-# events: individual events — use preview to capture draft/unpublished events like Flying Run
-LIST_URL_EVENTS = f"{API_BASE}/events{_STRAPI_PARAMS}".replace(
-    "publicationState=live", "publicationState=preview"
-)
+
+
+def _events_list_url() -> str:
+    """URL for individual events endpoint — preview mode with a future-date filter.
+
+    publicationState=preview includes draft entries (like Flying Run Sunset Brasília).
+    The date filter avoids pulling thousands of historical archived drafts, keeping
+    results to upcoming events only.
+    """
+    today = today_iso()
+    return (
+        f"{API_BASE}/events"
+        "?publicationState=preview"
+        "&populate[eventData][populate]=*"
+        "&populate[pageSeo][populate]=*"
+        "&sort=eventData.startDate:asc"
+        f"&filters[eventData][startDate][$gte]={today}"
+        "&pagination[pageSize]=100"
+    )
 SOURCE_NAME = "TF Sports"
 
 _TIMEOUT = 30
@@ -506,7 +521,7 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
     corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
 
-    events_raw = _fetch_all_pages(LIST_URL_EVENTS, api_headers, token, "events")
+    events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events")
     print(f"[{SOURCE_NAME}] events: {len(events_raw)} eventos brutos")
     corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
 

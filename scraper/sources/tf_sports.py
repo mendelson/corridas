@@ -534,28 +534,20 @@ def scrape() -> list[Corrida]:
 
     now = now_iso()
 
-    def _log_batch(label: str, items: list[dict]) -> None:
-        titles = [e.get("attributes", {}).get("title", "?") for e in items]
-        print(f"[{SOURCE_NAME}] {label}: {len(items)} eventos brutos")
-        for t in titles:
-            if "flying" in t.lower():
-                print(f"[{SOURCE_NAME}] *** FLYING ENCONTRADO em {label}: {t!r}")
-        print(f"[{SOURCE_NAME}] {label} títulos: {titles[:30]}")
-
     run_series = _fetch_all_pages(LIST_URL, api_headers, token, "run-series")
-    _log_batch("run-series", run_series)
+    print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
     corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
 
     events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
-    _log_batch("events(data)", events_raw)
+    print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")
     corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
 
     events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
-    _log_batch("events(sem data)", events_no_date)
+    print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
     corridas += _events_to_corridas(events_no_date, now, "tfse_", f"{BASE}/events")
 
     events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
-    _log_batch("events(recentes)", events_recent)
+    print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
     corridas += _events_to_corridas(events_recent, now, "tfse_", f"{BASE}/events")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")

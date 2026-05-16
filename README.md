@@ -61,6 +61,7 @@ GitHub Actions.
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Desde 2026-05-12: 429 direto + 429 Scrapestack + 403 Apify em todas as tentativas — todos os métodos bloqueados. Miss_count acumulando nos ~3100 eventos em cache. | 2026-05-15 18:36 | ❌ 0 eventos | 2026-05-12 11:21 |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | Página HTML pública; __NEXT_DATA__; Label IAAF (Platinum/Gold/Silver/Bronze). GraphQL descartado — requer credenciais rotativas não públicas. | 2026-05-16 01:14 | ✅ | 2026-05-16 01:14 |
+| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública (sem auth); paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi`. | — | 🆕 | — |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 
 ---
@@ -128,8 +129,7 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 | Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. | — | — | — |
 | Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. | — | — | — |
 | GoDream<!--godream--> | `godream.com.br/corrida-de-rua` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 + Playwright `ERR_TUNNEL_CONNECTION_FAILED`. | 2026-05-11 15:57 | ❌ | — |
-| Race Roster | `raceroster.com` | API requer OAuth (client_id/secret); não há endpoint público de listagem de eventos sem credenciais. Confirmado via developers.raceroster.com. | 2026-05-15 | ❌ | — |
-| Let's Do This<!--lets_do_this--> | `letsdothis.com` | Marketplace API requer Bearer token de conta registrada. Confirmado via marketplace-api-docs.letsdothis.com. | 2026-05-15 | ❌ | — |
+| Let's Do This<!--lets_do_this--> | `letsdothis.com` | WAF confirmado: 403 direto + Scrapestack 500 + Apify 403 em todas as tentativas. | 2026-05-15 | ❌ | — |
 | Road Runners | `roadrunners.run` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 em todos os 27 estados. | — | — | — |
 | Running in the USA | `runningintheusa.com` | Cloudflare WAF: 403 direto + Scrapestack 429 + Playwright bloqueado. | 2026-05-11 | ❌ | — |
 | MarathonGuide | `marathonguide.com` | Retorna HTTP 200, mas busca é client-side (Elasticsearch via JS). Scraping HTML inviável sem execução completa de JS. | 2026-05-11 | ❌ | — |

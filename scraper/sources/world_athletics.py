@@ -64,6 +64,24 @@ _ISO_TO_PT: dict[str, str] = {
     "BM": "Bermuda",  "OM": "Omã",          "SA": "Arábia Saudita",
 }
 
+# 3-letter IOC/ISO-alpha3 → 2-letter ISO-alpha2 (WA API uses 3-letter codes)
+_ISO3_TO_ISO2: dict[str, str] = {
+    "CHN": "CN", "ESP": "ES", "USA": "US", "BRA": "BR", "THA": "TH",
+    "JPN": "JP", "ITA": "IT", "GER": "DE", "CZE": "CZ", "POR": "PT",
+    "GBR": "GB", "FRA": "FR", "KEN": "KE", "ETH": "ET", "MAR": "MA",
+    "AUS": "AU", "NZL": "NZ", "KOR": "KR", "NLD": "NL", "SWE": "SE",
+    "NOR": "NO", "DNK": "DK", "FIN": "FI", "BEL": "BE", "AUT": "AT",
+    "CHE": "CH", "POL": "PL", "HUN": "HU", "GRC": "GR", "IRL": "IE",
+    "CAN": "CA", "IND": "IN", "ARE": "AE", "BHR": "BH", "QAT": "QA",
+    "TZA": "TZ", "UGA": "UG", "RWA": "RW", "EGY": "EG", "CMR": "CM",
+    "GHA": "GH", "THA": "TH", "SGP": "SG", "ISR": "IL", "TUR": "TR",
+    "COL": "CO", "PER": "PE", "BMU": "BM", "OMN": "OM", "SAU": "SA",
+    "ARG": "AR", "CHL": "CL", "MEX": "MX", "ZAF": "ZA", "NGA": "NG",
+    "ALB": "AL", "PRT": "PT", "RSA": "ZA", "ECU": "EC", "VEN": "VE",
+    "URY": "UY", "CRI": "CR", "SLO": "SI", "SVK": "SK", "ROU": "RO",
+    "BLR": "BY", "UKR": "UA", "SRB": "RS", "CRO": "HR", "SVN": "SI",
+}
+
 
 # ---------------------------------------------------------------------------
 def scrape() -> list[Corrida]:
@@ -127,21 +145,27 @@ def _parse_next_data(html: str) -> list[dict]:
     except Exception:
         return []
 
-    # Walk common pageProps structures
     pp = data.get("props", {}).get("pageProps", {})
-    for key in (
-        "competitions", "labelRaces", "events", "races",
-        "calendarEvents", "roadRaces", "results",
-    ):
+
+    # Primary: calendarEvents.results (confirmed structure as of 2026)
+    cal = pp.get("calendarEvents") or {}
+    if isinstance(cal, dict):
+        items = cal.get("results") or []
+        if isinstance(items, list) and items:
+            print(f"[{SOURCE_NAME}] calendarEvents.results: {len(items)} itens")
+            return items
+
+    # Fallback: top-level list keys
+    for key in ("competitions", "labelRaces", "events", "races", "roadRaces", "results"):
         items = pp.get(key) or []
         if isinstance(items, list) and items:
             print(f"[{SOURCE_NAME}] __NEXT_DATA__['{key}']: {len(items)} itens")
             return items
 
-    # Try nested structures
+    # Fallback: nested dicts
     for v in pp.values():
         if isinstance(v, dict):
-            for key2 in ("competitions", "events", "races", "items", "data"):
+            for key2 in ("competitions", "events", "races", "results", "items", "data"):
                 items = v.get(key2) or []
                 if isinstance(items, list) and items:
                     return items
@@ -176,7 +200,13 @@ def _parse_html_table(html: str) -> list[dict]:
 
 # ---------------------------------------------------------------------------
 def _has_label(comp: dict) -> bool:
-    # rankingCategory can be "GOLD_LABEL_ROAD_RACE" or "Gold Label"
+    # competitionSubgroup: "Label", "Gold", "Platinum", "Elite" (2026 API)
+    # rankingCategory:     "E", "B", "GW", "A", "C", "GL"  (codes)
+    # Older/fallback fields may use full text labels.
+    subgroup = (comp.get("competitionSubgroup") or "").strip()
+    if subgroup:
+        return True  # all items returned by this page are WA Label Road Races
+
     category = (
         comp.get("rankingCategory")
         or comp.get("labelCode")
@@ -262,22 +292,28 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
         else:
             return None
 
-    # Location
-    country_info = comp.get("country") or {}
-    if isinstance(country_info, str):
-        pais        = country_info.upper()
-        country_pt  = _ISO_TO_PT.get(pais, pais)
+    # Location — country field may be 3-letter ISO (e.g. "BRA") or 2-letter ("BR")
+    country_raw = comp.get("country") or comp.get("countryCode") or ""
+    if isinstance(country_raw, str):
+        country_raw = country_raw.strip().upper()
+        # Normalise 3-letter IOC/ISO-3166-alpha3 to 2-letter
+        pais = _ISO3_TO_ISO2.get(country_raw, country_raw if len(country_raw) == 2 else "INT")
     else:
-        pais        = (country_info.get("code") or "").strip().upper() or "INT"
-        country_name = (country_info.get("name") or "").strip()
-        country_pt  = _ISO_TO_PT.get(pais, country_name or pais)
+        pais = "INT"
+    country_pt = _ISO_TO_PT.get(pais, pais)
 
-    venue = (comp.get("venue") or comp.get("city") or "").strip()
-    localizacao = ", ".join(p for p in (venue, country_pt) if p) or "Internacional"
+    # venueWithoutCountry is city-only; fall back to venue (may include country in parens)
+    city = (comp.get("venueWithoutCountry") or comp.get("venue") or comp.get("city") or "").strip()
+    # Strip trailing "  (XXX)" artefact from venueWithoutCountry if present
+    city = re.sub(r"\s*\([A-Z]{2,3}\)\s*$", "", city).strip()
+    localizacao = ", ".join(p for p in (city, country_pt) if p) or "Internacional"
 
     comp_id = comp.get("id") or slugify(titulo)
     year    = data_evento[:4]
-    link    = (comp.get("url") or comp.get("link") or f"{BASE}/competition/{slugify(titulo)}/{comp_id}")
+    # Build URL from slugified name + id (WA URL pattern)
+    name_slug = re.sub(r"[^a-z0-9]+", "-", titulo.lower()).strip("-")
+    link = (comp.get("url") or comp.get("link")
+            or f"{BASE}/competitions/road-running/{name_slug}-{comp_id}")
     if link and not link.startswith("http"):
         link = BASE + ("" if link.startswith("/") else "/") + link
 

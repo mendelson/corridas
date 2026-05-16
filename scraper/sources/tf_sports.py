@@ -84,6 +84,47 @@ _EVENTS_URL_RECENT = (
     "&sort=id:desc"
     "&pagination[pageSize]=100"
 )
+
+
+def _experiences_url() -> str:
+    """Upcoming TF Experience events (startDate >= today) in preview mode."""
+    today = today_iso()
+    return (
+        f"{API_BASE}/experiences"
+        "?publicationState=preview"
+        "&populate=deep,5"
+        "&sort=eventData.startDate:asc"
+        f"&filters[eventData][startDate][$gte]={today}"
+        "&pagination[pageSize]=100"
+    )
+
+
+# Experiences with no startDate yet (drafts still being set up).
+_EXPERIENCES_NO_DATE = (
+    f"{API_BASE}/experiences"
+    "?publicationState=preview"
+    "&populate=deep,5"
+    "&sort=id:desc"
+    "&filters[eventData][startDate][$null]=true"
+    "&pagination[pageSize]=100"
+)
+
+_RUNNING_AREAS = {"running", "corrida", "trail", "trilha"}
+
+
+def _exp_is_running(attrs: dict) -> bool:
+    """Return True when an experience belongs to a running-type area."""
+    area = attrs.get("area") or {}
+    if isinstance(area, dict):
+        area_data = area.get("data") or {}
+        if not area_data:
+            return True  # no area → include (may not be tagged yet)
+        area_attrs = area_data.get("attributes") or {}
+        area_name = (area_attrs.get("name") or area_attrs.get("slug") or "").lower()
+        return not area_name or any(kw in area_name for kw in _RUNNING_AREAS)
+    return True
+
+
 SOURCE_NAME = "TF Sports"
 
 _TIMEOUT = 30
@@ -583,6 +624,16 @@ def scrape() -> list[Corrida]:
     events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
     print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
     corridas += _events_to_corridas(events_recent, now, "tfse_", f"{BASE}/events")
+
+    experiences_raw = _fetch_all_pages(_experiences_url(), api_headers, token, "experiences")
+    print(f"[{SOURCE_NAME}] experiences: {len(experiences_raw)} eventos brutos")
+    exp_running = [e for e in experiences_raw if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience")
+
+    experiences_nd = _fetch_all_pages(_EXPERIENCES_NO_DATE, api_headers, token, "experiences(sem data)")
+    print(f"[{SOURCE_NAME}] experiences(sem data): {len(experiences_nd)} eventos brutos")
+    exp_nd_running = [e for e in experiences_nd if _exp_is_running(e.get("attributes", {}))]
+    corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

@@ -38,8 +38,7 @@ def _events_list_url() -> str:
     )
 
 
-# Events with no startDate set (draft events pending date) — sorted newest first so
-# Flying Run and similar recently-created events appear within the first 100.
+# Events with no startDate set (draft events pending date fill-in).
 _EVENTS_URL_NO_DATE = (
     f"{API_BASE}/events"
     "?publicationState=preview"
@@ -47,6 +46,16 @@ _EVENTS_URL_NO_DATE = (
     "&populate[pageSeo][populate]=*"
     "&sort=id:desc"
     "&filters[eventData][startDate][$null]=true"
+    "&pagination[pageSize]=100"
+)
+# 100 most recently created events regardless of date — captures events that use
+# a non-standard date field or have startDate stored in an unexpected format.
+_EVENTS_URL_RECENT = (
+    f"{API_BASE}/events"
+    "?publicationState=preview"
+    "&populate[eventData][populate]=*"
+    "&populate[pageSeo][populate]=*"
+    "&sort=id:desc"
     "&pagination[pageSize]=100"
 )
 SOURCE_NAME = "TF Sports"
@@ -537,6 +546,11 @@ def scrape() -> list[Corrida]:
     events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
     print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
     corridas += _events_to_corridas(events_no_date, now, "tfse_", f"{BASE}/events")
+
+    # 100 most recently created events — catches events using non-standard date fields
+    events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
+    print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
+    corridas += _events_to_corridas(events_recent, now, "tfse_", f"{BASE}/events")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

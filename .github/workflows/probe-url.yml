@@ -1,6 +1,6 @@
 name: Probe URL
 
-# Quick API probe for source discovery.
+# Quick API probe for source discovery, or scraper source test.
 #
 # TWO ways to trigger:
 #
@@ -10,14 +10,18 @@ name: Probe URL
 #    The workflow runs and commits probe-output/result.md back to the same
 #    branch so Claude can git pull and read the results without human copy-paste.
 #
-#    probe-config.json format (single probe):
+#    probe-config.json format — URL probe (single):
 #      {"url": "https://...", "method": "GET", "params": {}, "body": null, "headers": {}}
 #
-#    probe-config.json format (multiple probes in one run):
+#    probe-config.json format — URL probe (multiple):
 #      [
 #        {"url": "https://...", "method": "GET"},
 #        {"url": "https://...", "method": "POST", "body": {"query": "..."}}
 #      ]
+#
+#    probe-config.json format — scraper source test:
+#      {"source": "tf_sports"}        ← runs python -m scraper.test_source tf_sports
+#      {"source": "majors/london"}    ← works for majors/ sub-sources too
 
 on:
   workflow_dispatch:

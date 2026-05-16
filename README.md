@@ -19,7 +19,7 @@ GitHub Actions.
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-16 13:39 | ✅ | 2026-05-16 13:39 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-16 15:04 | ✅ | 2026-05-16 15:04 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-15 18:38 | ✅ | 2026-05-15 18:38 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |

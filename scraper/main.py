@@ -132,6 +132,7 @@ SOURCES = [
     # US/global running calendar
     runsignup,
     halfmarathons,
+    raceroster,
     # Mexican running calendars
     asdeporte,
     fmaa,

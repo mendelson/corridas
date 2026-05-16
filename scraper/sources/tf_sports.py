@@ -25,12 +25,7 @@ LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
 
 
 def _events_list_url() -> str:
-    """URL for individual events endpoint — preview mode with a future-date filter.
-
-    publicationState=preview includes draft entries (like Flying Run Sunset Brasília).
-    The date filter avoids pulling thousands of historical archived drafts, keeping
-    results to upcoming events only.
-    """
+    """Upcoming events (startDate >= today) in preview mode."""
     today = today_iso()
     return (
         f"{API_BASE}/events"
@@ -41,6 +36,19 @@ def _events_list_url() -> str:
         f"&filters[eventData][startDate][$gte]={today}"
         "&pagination[pageSize]=100"
     )
+
+
+# Events with no startDate set (draft events pending date) — sorted newest first so
+# Flying Run and similar recently-created events appear within the first 100.
+_EVENTS_URL_NO_DATE = (
+    f"{API_BASE}/events"
+    "?publicationState=preview"
+    "&populate[eventData][populate]=*"
+    "&populate[pageSeo][populate]=*"
+    "&sort=id:desc"
+    "&filters[eventData][startDate][$null]=true"
+    "&pagination[pageSize]=100"
+)
 SOURCE_NAME = "TF Sports"
 
 _TIMEOUT = 30
@@ -521,9 +529,14 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
     corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
 
-    events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events")
-    print(f"[{SOURCE_NAME}] events: {len(events_raw)} eventos brutos")
+    events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
+    print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")
     corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
+
+    # Also fetch draft events where startDate is not yet set
+    events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
+    print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
+    corridas += _events_to_corridas(events_no_date, now, "tfse_", f"{BASE}/events")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

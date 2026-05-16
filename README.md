@@ -19,7 +19,7 @@ GitHub Actions.
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-16 02:49 | ✅ | 2026-05-16 02:49 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-15 18:38 | ✅ | 2026-05-15 18:38 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
@@ -61,7 +61,7 @@ GitHub Actions.
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Desde 2026-05-12: 429 direto + 429 Scrapestack + 403 Apify em todas as tentativas — todos os métodos bloqueados. Miss_count acumulando nos ~3100 eventos em cache. | 2026-05-15 18:36 | ❌ 0 eventos | 2026-05-12 11:21 |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | Página HTML pública; __NEXT_DATA__; Label IAAF (Platinum/Gold/Silver/Bronze). GraphQL descartado — requer credenciais rotativas não públicas. | 2026-05-16 01:14 | ✅ | 2026-05-16 01:14 |
-| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública (sem auth); paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi`. | — | 🆕 | — |
+| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública (sem auth); paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi`. | 2026-05-16 01:14 | ✅ | 2026-05-16 01:14 |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 
 ---

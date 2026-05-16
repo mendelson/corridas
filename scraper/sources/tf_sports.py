@@ -7,19 +7,23 @@ import httpx
 from bs4 import BeautifulSoup
 
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, infer_estado, now_iso
+from ..http_client import get as _http_get
 from .. import geo as _geo
 
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
-# Deep-populate eventData so modalities/distances/times come back inline.
-LIST_URL = (
-    f"{API_BASE}/run-series"
+_STRAPI_PARAMS = (
     "?publicationState=live"
     "&populate[eventData][populate]=*"
     "&populate[pageSeo][populate]=*"
+    "&sort=eventData.startDate:asc"
     "&pagination[pageSize]=100"
 )
+# run-series: public circuit events (accessible with token)
+LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
+# events: individual events like Flying Run, etc. (requires Bearer token)
+LIST_URL_EVENTS = f"{API_BASE}/events{_STRAPI_PARAMS}"
 SOURCE_NAME = "TF Sports"
 
 _TIMEOUT = 30
@@ -77,27 +81,31 @@ def _state_from_cep(text: str) -> str | None:
 def _get_bearer_token() -> str | None:
     """Extract Bearer token from the compiled Next.js app bundle.
 
-    Next.js minifies the Authorization header as:
-      "Bearer ".concat("TOKEN...") — so we need patterns for that form.
+    Uses the proxy chain for the HTML page (handles Cloudflare).
+    Searches _app and chunked bundles — Next.js may split the token across
+    any static chunk, not only the _app entry point.
     """
     try:
-        resp = httpx.get(
-            f"{BASE}/run-series/",
-            headers=_HEADERS_HTML,
-            timeout=_TIMEOUT,
-            follow_redirects=True,
-        )
-        resp.raise_for_status()
+        resp = _http_get(f"{BASE}/run-series/", source=SOURCE_NAME, timeout=_TIMEOUT)
+        if resp.status_code != 200:
+            return None
         soup = BeautifulSoup(resp.text, "lxml")
         for script in soup.find_all("script", src=True):
             src = script.get("src", "")
-            if "_app" not in src or not src.endswith(".js"):
+            if not src.endswith(".js"):
+                continue
+            # "_app" is primary; also check other chunked bundles
+            if not any(kw in src for kw in ("_app", "pages/_", "chunks/")):
                 continue
             bundle_url = src if src.startswith("http") else f"{BASE}{src}"
-            bundle = httpx.get(
-                bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
-            )
-            bundle.raise_for_status()
+            try:
+                bundle = httpx.get(
+                    bundle_url, headers=_HEADERS_HTML, timeout=_TIMEOUT, follow_redirects=True
+                )
+                if bundle.status_code != 200:
+                    continue
+            except Exception:
+                continue
             text = bundle.text
             for pat in [
                 # "Bearer ".concat("TOKEN") — typical Next.js minified bundle pattern
@@ -375,31 +383,46 @@ def _extract_image(attrs: dict) -> str | None:
 # Main scraper
 # ---------------------------------------------------------------------------
 
-def scrape() -> list[Corrida]:
-    token = _get_bearer_token()
-    if not token:
-        print(f"[{SOURCE_NAME}] token não encontrado, tentando sem autenticação")
+def _fetch_all_pages(base_url: str, api_headers: dict, token: str | None, label: str) -> list[dict]:
+    """Paginate a Strapi v4 list endpoint, returning all raw items."""
+    all_items: list[dict] = []
+    for page in range(1, 6):  # max 500 events across 5 pages
+        page_url = f"{base_url}&pagination[page]={page}"
+        try:
+            if token:
+                resp = httpx.get(
+                    page_url, headers=api_headers, timeout=_TIMEOUT, follow_redirects=True
+                )
+                if resp.status_code in (401, 403):
+                    print(f"[{SOURCE_NAME}] {label}: token rejeitado ({resp.status_code}), tentando sem auth")
+                    resp = _http_get(page_url, source=SOURCE_NAME, timeout=_TIMEOUT)
+            else:
+                resp = _http_get(page_url, source=SOURCE_NAME, timeout=_TIMEOUT)
+            if resp.status_code in (401, 403):
+                print(f"[{SOURCE_NAME}] {label}: acesso negado ({resp.status_code}), pulando endpoint")
+                return all_items
+            resp.raise_for_status()
+            data = resp.json()
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] {label}: erro ao buscar página {page}: {e}")
+            break
 
-    api_headers = {
-        "User-Agent": _UA,
-        "Accept": "application/json",
-    }
-    if token:
-        api_headers["Authorization"] = f"Bearer {token}"
+        batch = data.get("data", [])
+        if not batch:
+            break
+        all_items.extend(batch)
 
-    try:
-        resp = httpx.get(LIST_URL, headers=api_headers, timeout=_TIMEOUT, follow_redirects=True)
-        resp.raise_for_status()
-        data = resp.json()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar API: {e}")
-        return []
+        meta_pag = data.get("meta", {}).get("pagination", {})
+        if page >= meta_pag.get("pageCount", 1):
+            break
 
-    events = data.get("data", [])
-    now = now_iso()
-    today = today_iso()
+    return all_items
+
+
+def _events_to_corridas(
+    events: list[dict], now: str, id_prefix: str, link_prefix: str
+) -> list[Corrida]:
     corridas: list[Corrida] = []
-
     for event in events:
         try:
             attrs = event.get("attributes", {})
@@ -428,21 +451,19 @@ def scrape() -> list[Corrida]:
             distancias = _get_distances(attrs, slug)
             imagem_url = _extract_image(attrs)
 
-            # Earliest distance horario becomes the event-level start time
             horarios_dist = [d.horario for d in distancias if d.horario]
             horario_evento = min(horarios_dist) if horarios_dist else None
 
-            link_evento = f"{BASE}/run-series/{slug}"
+            link_evento = f"{link_prefix}/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)
-            links_insc = [link_evento]
 
             fonte = FonteInfo(
                 nome=SOURCE_NAME,
                 link_evento=link_evento,
-                links_inscricao=links_insc,
+                links_inscricao=[link_evento],
             )
             corridas.append(Corrida(
-                id=f"tfs_{event.get('id') or slug or slugify(titulo)}",
+                id=f"{id_prefix}{event.get('id') or slug or slugify(titulo)}",
                 titulo=titulo,
                 data_evento=data_evento,
                 horario=horario_evento,
@@ -460,7 +481,32 @@ def scrape() -> list[Corrida]:
                 updated_at=now,
             ))
         except Exception as e:
+            attrs = event.get("attributes", {}) if isinstance(event, dict) else {}
             print(f"[{SOURCE_NAME}] erro ao processar '{attrs.get('title', '?')}': {e}")
+    return corridas
+
+
+def scrape() -> list[Corrida]:
+    token = _get_bearer_token()
+    if not token:
+        print(f"[{SOURCE_NAME}] token não encontrado, tentando sem autenticação")
+
+    api_headers: dict = {
+        "User-Agent": _UA,
+        "Accept": "application/json",
+    }
+    if token:
+        api_headers["Authorization"] = f"Bearer {token}"
+
+    now = now_iso()
+
+    run_series = _fetch_all_pages(LIST_URL, api_headers, token, "run-series")
+    print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
+    corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
+
+    events_raw = _fetch_all_pages(LIST_URL_EVENTS, api_headers, token, "events")
+    print(f"[{SOURCE_NAME}] events: {len(events_raw)} eventos brutos")
+    corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

@@ -14,13 +14,13 @@ from .. import geo as _geo
 BASE = "https://www.tfsports.com.br"
 API_BASE = "https://painel-website.tfsports.com.br/api"
 _STRAPI_PARAMS = (
-    "?publicationState=live"
+    "?publicationState=preview"
     "&populate[eventData][populate]=*"
     "&populate[pageSeo][populate]=*"
     "&sort=eventData.startDate:asc"
     "&pagination[pageSize]=100"
 )
-# run-series: public circuit events (live only, token required)
+# run-series: circuit events including unpublished drafts (preview mode)
 LIST_URL = f"{API_BASE}/run-series{_STRAPI_PARAMS}"
 
 
@@ -534,22 +534,28 @@ def scrape() -> list[Corrida]:
 
     now = now_iso()
 
+    def _log_batch(label: str, items: list[dict]) -> None:
+        titles = [e.get("attributes", {}).get("title", "?") for e in items]
+        print(f"[{SOURCE_NAME}] {label}: {len(items)} eventos brutos")
+        for t in titles:
+            if "flying" in t.lower():
+                print(f"[{SOURCE_NAME}] *** FLYING ENCONTRADO em {label}: {t!r}")
+        print(f"[{SOURCE_NAME}] {label} títulos: {titles[:30]}")
+
     run_series = _fetch_all_pages(LIST_URL, api_headers, token, "run-series")
-    print(f"[{SOURCE_NAME}] run-series: {len(run_series)} eventos brutos")
+    _log_batch("run-series", run_series)
     corridas = _events_to_corridas(run_series, now, "tfs_", f"{BASE}/run-series")
 
     events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
-    print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")
+    _log_batch("events(data)", events_raw)
     corridas += _events_to_corridas(events_raw, now, "tfse_", f"{BASE}/events")
 
-    # Also fetch draft events where startDate is not yet set
     events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
-    print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
+    _log_batch("events(sem data)", events_no_date)
     corridas += _events_to_corridas(events_no_date, now, "tfse_", f"{BASE}/events")
 
-    # 100 most recently created events — catches events using non-standard date fields
     events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
-    print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
+    _log_batch("events(recentes)", events_recent)
     corridas += _events_to_corridas(events_recent, now, "tfse_", f"{BASE}/events")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")

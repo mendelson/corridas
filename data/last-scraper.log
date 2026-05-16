@@ -1,172 +1,230 @@
 [main] iniciando scraping...
-[main] 3061 corridas no estado anterior
+[main] 3054 corridas no estado anterior
 [Central da Corrida] 78 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [Runner Brasil] 22 corridas encontradas
+[TF Sports] run-series: 48 eventos brutos
+[Brasil Corrida] 14 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
 [Iguana Sports] 8 corridas encontradas
-[TF Sports] run-series: 48 eventos brutos
-[SESC DF] 9 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
-[Brasil Corrida] 14 corridas encontradas
-[Ativo] 9 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
+[Circuito das Estações] 104 corridas encontradas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
-[Circuito das Estações] 104 corridas encontradas
+[SESC DF] 9 corridas encontradas
 [Yescom] 14 corridas encontradas
+[Ativo] 9 corridas encontradas
+[Prague Marathon] nenhuma edição futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Prague Marathon] nenhuma edição futura identificada
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] runsignup.com bloqueado (429), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[Race Roster] 'running': 32 upcoming de 400
+[Race Roster] 'running': 177 upcoming de 400
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Race Roster] 'marathon': 22 upcoming de 400
-[Race Roster] '5k': 20 upcoming de 400
+[Race Roster] 'marathon': 112 upcoming de 400
+[TF Sports] events: 500 eventos brutos
+[Race Roster] '5k': 84 upcoming de 400
 [Asdeporte] 35 corrida(s) encontrada(s)
-[Race Roster] '10k': 21 upcoming de 400
-[TF Sports] events: 5 eventos brutos
-[Race Roster] 'half marathon': 22 upcoming de 400
 [proxy] Scrapestack retornou 429 para runsignup.com, tentando Apify...
 [proxy] Apify falhou para runsignup.com: 403 Forbidden
 [RunSignup] erro ao buscar página 1: todos os métodos falharam para https://runsignup.com/Rest/races?format=json&events=T&start_date=2026-05-16&end_date=2027-05-16&page=1&results_per_page=250
 [RunSignup] nenhuma corrida retornada pela API
+[Race Roster] '10k': 92 upcoming de 400
+[Race Roster] 'half marathon': 112 upcoming de 400
+[Race Roster] 'trail run': 41 upcoming de 400
+[Race Roster] 1515 eventos únicos após dedup
+[Race Roster] 272 corridas válidas (1243 ignoradas)
 [FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
 [FMAA] DEBUG total=0, total_pages=0
 [FMAA] 0 corrida(s) encontrada(s)
-[Race Roster] 'trail run': 34 upcoming de 400
-[Race Roster] 1219 eventos únicos após dedup
-[Race Roster] 59 corridas válidas (1160 ignoradas)
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [World Athletics] calendarEvents.results: 265 itens
 [World Athletics] 265 competições brutas
 [World Athletics] 128 corridas válidas (137 ignoradas)
-[TF Sports] 53 corridas encontradas
 [Corridas Brasil] 3279 corridas encontradas
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
 [Ticket Sports] 927 corridas encontradas
+[TF Sports] 548 corridas encontradas
 [HalfMarathons.net] 1982 corrida(s) encontrada(s)
-[main] 6768 registros coletados (antes do merge)
-[main] 3173 registros após validação
-[main] 3002 corridas após merge
-[main] verificando links de 92 evento(s) não encontrado(s) no scrape...
+[main] 7476 registros coletados (antes do merge)
+[main] 3876 registros após validação
+[main] 3519 corridas após merge
+[main] verificando links de 142 evento(s) não encontrado(s) no scrape...
 [main] 'Corrida Ninja Colombo - PR' — link válido, miss_count zerado
-[main] 'Corrida Supermercado Nogueira' — link válido, miss_count zerado
-[main] 'Asics Golden Run 2026 - Etapa SP' — link válido, miss_count zerado
-[main] 'Paulínia 15K 2026' — link válido, miss_count zerado
 [main] 'Cuidado Humano Na Corrida Do Combate Ao Câncer' — link válido, miss_count zerado
+[main] 'Corrida Supermercado Nogueira' — link válido, miss_count zerado
 [main] '5ª Corrida E Caminhada Pegada Do Rio' — link válido, miss_count zerado
+[main] 'Paulínia 15K 2026' — link válido, miss_count zerado
+[main] 'Asics Golden Run 2026 - Etapa SP' — link válido, miss_count zerado
 [main] 'Maratona Oficial De Belo Horizonte 2026' — link válido, miss_count zerado
-[main] 'Warriors Race Summer' — link válido, miss_count zerado
+[main] '2026 San Carlos Hometown Days Fun Run' — link válido, miss_count zerado
+[main] '10Th Annual Longhorn Stampede 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Bear Mountain Trail Running Race' — link válido, miss_count zerado
 [main] 'Venice Beach Half Marathon And 5K' — link válido, miss_count zerado
-[main] 'Circuito Running Club - 2º Etapa' — link válido, miss_count zerado
+[main] 'Run For The Redwoods!' — link válido, miss_count zerado
+[main] 'Mission Trails Twilight Runs' — link válido, miss_count zerado
+[main] '2026 Run For Water Trail Race' — link válido, miss_count zerado
+[main] 'Trio Race Series Race 2: Heritage Woods Trail Race 2026' — link válido, miss_count zerado
 [main] '2ª Meia Maratona - Corrida Do Leite' — link válido, miss_count zerado
-[main] 'Corrida Para Elas - 2ª Etapa' — link válido, miss_count zerado
+[main] 'Circuito Running Club - 2º Etapa' — link válido, miss_count zerado
+[main] 'Warriors Race Summer' — link válido, miss_count zerado
 [main] 'Az Sunrise Series - Scottsdale Sports Complex' — link válido, miss_count zerado
+[main] 'Corrida Para Elas - 2ª Etapa' — link válido, miss_count zerado
+[main] 'Tracy Pal Donut Dash 2026' — link válido, miss_count zerado
+[main] 'Vedder Mountain Challenge' — link válido, miss_count zerado
 [main] 'Carrollton "Tails & Trails" 5K & 1-Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Az Sunrise Series - Rio Vista Park' — link válido, miss_count zerado
-[main] 'Az Sunrise Series - Freestone Park' — link válido, miss_count zerado
-[main] 'Run For Chocolate 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'July 4Th Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'Az Sunrise Series - Foothills Park' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Port Alberni 2026' — link válido, miss_count zerado
+[main] 'Pprc Team Trail Camp' — link válido, miss_count zerado
+[main] 'Lake Natoma Trail Run 5K & 10K - 2026' — link válido, miss_count zerado
 [main] 'Long Beach Classic Half & 5K' — link válido, miss_count zerado
+[main] 'Az Sunrise Series - Freestone Park' — link válido, miss_count zerado
+[main] 'Stars & Stripes 2026' — link válido, miss_count zerado
+[main] 'Pleasant Hill Firecracker 5K' — link válido, miss_count zerado
+[main] 'Emerald City Trail Series' — link válido, miss_count zerado
+[main] 'Race Across California - 2026' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Ladysmith 2026' — link válido, miss_count zerado
+[main] 'July 4Th Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] 'Run For Chocolate 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] 'San Francisco Pride Run 2026' — link válido, miss_count zerado
 [main] 'Run For Chocolate 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Liberty Station Relay And 5K' — link válido, miss_count zerado
+[main] 'Bloom Energy & Tarana Wireless Stars And Strides 5K-10K Run/Walk & Kids Fun Run' — link válido, miss_count zerado
+[main] 'Az Sunrise Series - Foothills Park' — link válido, miss_count zerado
 [main] 'Az Sunrise Series - Arizona Boardwalk' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'South Bay 24' — link válido, miss_count zerado
 [main] '2026 Rvn3 Bubba Run' — link válido, miss_count zerado
-[main] 'Az Sunrise Series - Riparian Preserve' — link válido, miss_count zerado
-[main] 'Run For Pb&J 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Run For Coffee Lovers 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] '2026 Royal Gorge Whitewater Festival' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Az Sunrise Series - Riparian Preserve' — link válido, miss_count zerado
+[main] '2026 5 Peaks Trail Running Series: Cypress Mountain' — link válido, miss_count zerado
+[main] 'South Bay 24' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Cobble Hill 2026' — link válido, miss_count zerado
+[main] '2026 Angel Island Half Marathon & 10K' — link válido, miss_count zerado
 [main] 'Run For Pb&J 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Ruidoso Grindstone Trail Runs' — link válido, miss_count zerado
+[main] 'Run For Pb&J 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Family Fun Bubble Run 5K' — link válido, miss_count zerado
+[main] '2026 Handloggers Half Marathon' — link válido, miss_count zerado
 [main] 'Sloth Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] '16Th Annual Donor Network West Foundation Run/Walk' — link válido, miss_count zerado
+[main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] 'Family Fun Bubble Run 5K' — link válido, miss_count zerado
+[main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Nedned Trail Fest' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'National Chocolate Day: Run For Chocolates 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] '1In5K Dyslexia Dash' — link válido, miss_count zerado
-[main] 'Castle Alpine Trail Race' — link válido, miss_count zerado
-[main] '14Th Annual Run Fore Cancer' — link válido, miss_count zerado
-[main] 'Oktoberfest Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] 'Oktoberfest Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Alcatraz Open Swim 2026' — link válido, miss_count zerado
+[main] 'Castle Alpine Trail Race' — link válido, miss_count zerado
+[main] 'The 9Th Annual Belmont Water Dog Run' — link válido, miss_count zerado
+[main] '14Th Annual Run Fore Cancer' — link válido, miss_count zerado
+[main] 'San Francisco Aloha Run' — link válido, miss_count zerado
+[main] 'Perseverance Trail Run 2026' — link válido, miss_count zerado
+[main] '2026 5 Peaks Trail Running Series: Mount Seymour' — link válido, miss_count zerado
+[main] 'Be Fearless Trail Marathon, 21K & 11K' — link válido, miss_count zerado
+[main] 'Oktoberfest Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Bh Runners Club Trail Series Championship' — link válido, miss_count zerado
-[main] 'Run For Donuts 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] 'Battle Of The Branches 5K Run' — link válido, miss_count zerado
+[main] '1In5K Dyslexia Dash' — link válido, miss_count zerado
+[main] 'Oktoberfest Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Oktoberfest Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] 'Kyrene Rise 5K' — link válido, miss_count zerado
 [main] '2026 Diamondbacks Race Against Cancer' — link válido, miss_count zerado
+[main] 'Run For Donuts 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'West Elk Challenge' — link válido, miss_count zerado
+[main] 'Kyrene Rise 5K' — link válido, miss_count zerado
+[main] 'Battle Of The Branches 5K Run' — link válido, miss_count zerado
+[main] 'Valley Vertikiller Trail Race 2026' — link válido, miss_count zerado
+[main] 'Carmel Valley Trail Race' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] 'Ers Season Pass' — link válido, miss_count zerado
+[main] 'Bagel Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'The 2026 Run For Education' — link válido, miss_count zerado
 [main] 'Fast & Furriest 5K' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Bagel Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Qualicum Bay 2026' — link válido, miss_count zerado
+[main] 'Spacerock Trail Race' — link válido, miss_count zerado
+[main] 'Miles For Migraine - San Francisco 2026' — link válido, miss_count zerado
 [main] 'Day Of The Dead - Day 1 And Day 2' — link válido, miss_count zerado
-[main] 'Ers Season Pass' — link válido, miss_count zerado
 [main] 'Sanderson Ford Giraffe Jam Family Fun Run 2026' — link válido, miss_count zerado
+[main] 'Pb&J Fuel Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] '2026 Binational Race' — link válido, miss_count zerado
 [main] 'The Monster Dash 5K' — link válido, miss_count zerado
-[main] 'Pb&J Fuel Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Halloween Trick Or Trot Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Loop The Vedder Trail Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Crown Point Relay Runs' — link válido, miss_count zerado
 [main] 'Pb&J Fuel Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Halloween Trick Or Trot Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'Crown Point Relay Runs' — link válido, miss_count zerado
-[main] 'Halloween Trick Or Trot Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Pb&J Fuel Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] 'Az Veterans Day Run' — link válido, miss_count zerado
+[main] 'Halloween Trick Or Trot Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] '2026 Vancouver First Responders Half Marathon- Trail Edition' — link válido, miss_count zerado
 [main] '10Th Annual 5K For Hope' — link válido, miss_count zerado
-[main] 'Mesa Turkey Trot 5K - 10K' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Az Veterans Day Run' — link válido, miss_count zerado
+[main] 'The Animal Run 5K Tofurkey Trot' — link válido, miss_count zerado
 [main] 'Phoenix Turkey Trot' — link válido, miss_count zerado
+[main] 'Mesa Turkey Trot 5K - 10K' — link válido, miss_count zerado
+[main] 'Coffee Lovers Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Coffee Lovers Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'The Leftovers 10K / 5K Run' — link válido, miss_count zerado
-[main] 'Coffee Lovers Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Coffee Lovers Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Frozen Trail Runfest - 2026' — link válido, miss_count zerado
+[main] 'Dixon Lake 10/10 Trail Race' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 San Diego' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Tucson Marathon Events' — link válido, miss_count zerado
+[main] 'Quarry Turkey 2026' — link válido, miss_count zerado
 [main] 'A Merry Christmas Run 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'A Merry Christmas Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Tucson Marathon Events' — link válido, miss_count zerado
 [main] '37Th Annual Midnight Madness Run' — link válido, miss_count zerado
+[main] 'Arizona Rocks! Half Marathon - 10K - 5K Trail Run' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'A Merry Christmas Run 5K/10K/13.1 San Diego' — link válido, miss_count zerado
+[main] 'Coyote Hills 2027' — link válido, miss_count zerado
 [main] 'Mountain To Fountain' — link válido, miss_count zerado
-[main] 'Women'S Half Marathon San Diego 2027' — link válido, miss_count zerado
 [main] '2027 Govx San Diego Half Marathon & 5K' — link válido, miss_count zerado
-[main] 3094 corridas após reconciliação
-[main] 3084 corridas após dedup final
-[main] 2 estado(s) resolvido(s) pelo geo cache
-[main] buscando imagens para 254 evento(s) sem foto...
+[main] 'Victory 2027' — link válido, miss_count zerado
+[main] 'Santa Cruz Westside Half Marathon 10K/5K' — link válido, miss_count zerado
+[main] '2027 Oakland Marathon' — link válido, miss_count zerado
+[main] 'Women'S Half Marathon San Diego 2027' — link válido, miss_count zerado
+[main] 'Diablo Trails Challenge 2027' — link válido, miss_count zerado
+[main] 3661 corridas após reconciliação
+[main] 3658 corridas após dedup final
+[main] 10 estado(s) resolvido(s) pelo geo cache
+[main] buscando imagens para 589 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 12/254 imagens encontradas
+[main] 3/589 imagens encontradas
+[main] removendo imagem inválida de 'Pumpkin Run Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/aqr2zcat5rvpx62f._orig
+[main] removendo imagem inválida de 'Del Dios Trail Race 50K, Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/q2tvc9gja976ny53._orig
+[main] removendo imagem inválida de 'Brazen New Years Day Runs Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/vvjdf49hpuqpp75c._orig
+[main] removendo imagem inválida de 'San Pasqual Valley Trail Race 20M, Half Marathon & 10K': https://cdn.raceroster.com/event-logo/4mxe3naejd4aghwd._orig
 [main] removendo imagem inválida de 'Walt Disney World Marathon, Weekend Half Marathon': https://www.rundisney.com/events/disneyworld/media_102d0003d
+[main] removendo imagem inválida de 'Lost Dutchman Marathon, Half Marathon, 10K & 8K': https://cdn.raceroster.com/event-logo/mb545q5s7t7jmrsh._orig
 [main] removendo imagem inválida de 'Disney Wine & Dine Half Marathon': https://www.rundisney.com/events/disneyworld/media_1cb893c81
+[main] removendo imagem inválida de 'Wildcat Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/xc6n2uby6x4w6zmm._crop
+[main] removendo imagem inválida de 'Bad Bass Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/cphnzt7hnk7sc7sk._orig
+[main] removendo imagem inválida de 'Berkeley Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/35waay3jtxqmamen._orig
 [main] removendo imagem inválida de 'Springmaid Trail Race Half Marathon': https://www.ascgreenway.org/wp-content/uploads/2022/12/medal
-[main] 3 imagem(ns) inválida(s) removida(s)
-[main] 30 corrida(s) removida(s) por data passada (antes de 2026-05-01)
-[main] 3054 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] removendo imagem inválida de 'San Jose Half Marathon & 8K': https://cdn.raceroster.com/event-logo/ru3pvt2bnhcn9nnt._orig
+[main] 12 imagem(ns) inválida(s) removida(s)
+[main] 366 corrida(s) removida(s) por data passada (antes de 2026-05-01)
+[main] 3292 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

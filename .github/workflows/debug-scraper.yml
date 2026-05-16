@@ -9,6 +9,11 @@ on:
           Leave empty or use "all" to run the full pipeline.
         required: false
         default: 'all'
+      ref:
+        description: >
+          Branch or commit to test (defaults to main).
+        required: false
+        default: 'main'
 
 jobs:
   debug:
@@ -16,6 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || 'main' }}
 
       - uses: actions/setup-python@v5
         with:

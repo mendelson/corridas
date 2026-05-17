@@ -59,7 +59,7 @@ GitHub Actions.
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Desde 2026-05-12: 429 direto + 429 Scrapestack + 403 Apify em todas as tentativas — todos os métodos bloqueados. Miss_count acumulando nos ~3100 eventos em cache. | 2026-05-15 18:36 | ❌ 0 eventos | 2026-05-12 11:21 |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string. Desde 2026-05-12: 429 direto + 429 Scrapestack + 403 Apify em todas as tentativas — todos os métodos bloqueados. Miss_count acumulando nos ~3100 eventos em cache. | 2026-05-17 02:26 | ✅ | 2026-05-17 02:26 |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | Página HTML pública; __NEXT_DATA__; Label IAAF (Platinum/Gold/Silver/Bronze). GraphQL descartado — requer credenciais rotativas não públicas. | 2026-05-16 01:14 | ✅ | 2026-05-16 01:14 |
 | Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública (sem auth); paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi`. | 2026-05-16 01:14 | ✅ | 2026-05-16 01:14 |
 | Cardiff Half Marathon<!--majors/cardiff_half--> | ✅ | `cardiffhalfmarathon.co.uk` | Acesso via Scrapestack | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |

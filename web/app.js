@@ -1058,7 +1058,7 @@ function renderCards() {
   emptyState.classList.add('hidden');
 
   const today       = todayStr();
-  const sevenDaysAgo = addDays(today, -7);
+  const sevenDaysAgo = addDays(today, -3);
   const frag        = document.createDocumentFragment();
 
   let toRender   = filteredCorridas;

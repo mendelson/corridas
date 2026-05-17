@@ -140,7 +140,8 @@ SOURCES = [
     world_athletics,
 ]
 
-DATA_PATH = Path(__file__).parent.parent / "data" / "corridas.json"
+DATA_PATH    = Path(__file__).parent.parent / "data" / "corridas.json"
+HIST_DIR     = Path(__file__).parent.parent / "data" / "historico"
 
 
 # ---------------------------------------------------------------------------
@@ -286,18 +287,51 @@ def _resolve_missing_locations(corridas: list[Corrida]) -> None:
         print(f"[main] {fixed} estado(s) resolvido(s) pelo geo cache")
 
 
-_KEEP_PAST_DAYS = 15  # matches frontend's deepest past window (past15 filter)
+_KEEP_PAST_DAYS  = 15   # matches frontend's deepest past window (past15 filter)
+_ARCHIVE_PAST_DAYS = 40  # events older than this move to historico/
+
+
+def _archive(corridas: list[Corrida]) -> None:
+    """Merge events older than _ARCHIVE_PAST_DAYS into data/historico/YYYY-MM.json."""
+    if not corridas:
+        return
+    HIST_DIR.mkdir(parents=True, exist_ok=True)
+    by_month: dict[str, list[Corrida]] = {}
+    for c in corridas:
+        month = c.data_evento[:7]  # "YYYY-MM"
+        by_month.setdefault(month, []).append(c)
+
+    for month, batch in by_month.items():
+        path = HIST_DIR / f"{month}.json"
+        existing: dict[str, dict] = {}
+        if path.exists():
+            try:
+                existing = {e["id"]: e for e in json.loads(path.read_text())["corridas"]}
+            except Exception:
+                pass
+        for c in batch:
+            existing[c.id] = _corrida_to_dict(c)
+        records = sorted(existing.values(), key=lambda r: r.get("data_evento", ""))
+        path.write_text(
+            json.dumps({"mes": month, "total": len(records), "corridas": records},
+                       ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+    total = sum(len(v) for v in by_month.values())
+    print(f"[main] {total} corrida(s) arquivada(s) em {HIST_DIR}")
 
 
 def save(corridas: list[Corrida]) -> None:
-    cutoff = (date.today() - timedelta(days=_KEEP_PAST_DAYS)).isoformat()
-    pruned = [c for c in corridas if not c.data_evento or c.data_evento >= cutoff]
-    dropped = len(corridas) - len(pruned)
-    if dropped:
-        print(f"[main] {dropped} corrida(s) removida(s) por data passada (antes de {cutoff})")
+    archive_cutoff = (date.today() - timedelta(days=_ARCHIVE_PAST_DAYS)).isoformat()
+    display_cutoff = (date.today() - timedelta(days=_KEEP_PAST_DAYS)).isoformat()
+
+    to_archive = [c for c in corridas if c.data_evento and c.data_evento < archive_cutoff]
+    active = [c for c in corridas if not c.data_evento or c.data_evento >= display_cutoff]
+
+    _archive(to_archive)
 
     corridas_sorted = sorted(
-        pruned,
+        active,
         key=lambda c: c.data_evento if c.data_evento else "9999-99-99",
     )
     payload = {

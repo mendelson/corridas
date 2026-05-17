@@ -10,7 +10,8 @@ We preserve the original unit:
     renders them as-is via formatKm()'s string passthrough.
 
 Strategy: hit the public REST API at /Rest/races, paginate, parse each
-race's events array. No HTML scraping needed.
+race's events array. Falls back to scraping the /Races HTML listing if
+the API is WAF-blocked (returns no races).
 """
 from __future__ import annotations
 import re
@@ -29,6 +30,11 @@ SOURCE_NAME = "RunSignup"
 _MAX_PAGES        = 15
 _RESULTS_PER_PAGE = 250          # API max
 _LOOKAHEAD_DAYS   = 365
+
+_HTML_URL           = f"{BASE}/Races"
+_HTML_MAX_PAGES     = 10
+_HTML_TILES_PER_PAGE = 30        # full page has ~30 tiles
+_HTML_DATE_RE       = re.compile(r"(\d{1,2})/(\d{1,2})/(\d{2})")
 
 _US_STATES = {
     "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID",
@@ -66,6 +72,144 @@ _NON_RUNNING = re.compile(
     r"|\bspartan\b|\bobstacle\s*race\b|\bocr\b",
     re.IGNORECASE,
 )
+
+
+# ---------------------------------------------------------------------------
+# HTML fallback — parses /Races listing when the REST API is WAF-blocked
+# ---------------------------------------------------------------------------
+def _parse_html_date(raw: str) -> str | None:
+    """Parse RunSignup HTML card date: 'Sat 5/16/26' → '2026-05-16'."""
+    m = _HTML_DATE_RE.search(raw)
+    if not m:
+        return None
+    try:
+        month, day, yr2 = int(m.group(1)), int(m.group(2)), int(m.group(3))
+        return date(2000 + yr2, month, day).isoformat()
+    except ValueError:
+        return None
+
+
+def _parse_html_distances(vitamin_texts: list[str]) -> list[Distancia]:
+    seen: set = set()
+    result: list[Distancia] = []
+    for text in vitamin_texts:
+        if _NON_RUNNING.search(text):
+            continue
+        km = _parse_distance(text)
+        if km is None or km in seen:
+            continue
+        seen.add(km)
+        result.append(Distancia(km=km, data=None, horario=None))
+    return result
+
+
+def _scrape_html_fallback() -> list[Corrida]:
+    from bs4 import BeautifulSoup  # lazy import — only used as fallback
+
+    today_s = today_iso()
+    corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
+    now = now_iso()
+
+    for page in range(1, _HTML_MAX_PAGES + 1):
+        url = f"{_HTML_URL}?page={page}" if page > 1 else _HTML_URL
+        try:
+            resp = get(url, source=SOURCE_NAME, timeout=30)
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] HTML fallback: erro na página {page}: {e}")
+            break
+        if resp.status_code != 200:
+            print(f"[{SOURCE_NAME}] HTML fallback: HTTP {resp.status_code} na página {page}")
+            break
+
+        soup = BeautifulSoup(resp.text, "lxml")
+        tiles = soup.select("a.rsuTileGrid__item--findRace")
+        if not tiles:
+            print(f"[{SOURCE_NAME}] HTML fallback: sem tiles na página {page}, parando")
+            break
+
+        print(f"[{SOURCE_NAME}] HTML fallback: página {page}: {len(tiles)} tiles")
+
+        for tile in tiles:
+            href = tile.get("href", "")
+            href_clean = href.split("?")[0].rstrip("/")
+            link = BASE + href_clean if href_clean.startswith("/") else href
+
+            # /Race/IL/Chicago/RaceSlug → ["Race", "IL", "Chicago", "RaceSlug"]
+            parts = href_clean.strip("/").split("/")
+            slug = parts[-1] if parts else ""
+
+            content = tile.select_one(".rsuTileGrid__item__content")
+            if not content:
+                continue
+            divs = content.find_all("div", recursive=False)
+            if len(divs) < 3:
+                continue
+
+            name_el = tile.select_one(".fs-md-2")
+            titulo = normalize_titulo(name_el.get_text(strip=True)) if name_el else ""
+            if not titulo or len(titulo) < 4:
+                continue
+            if _NON_RUNNING.search(titulo):
+                continue
+
+            data_evento = _parse_html_date(divs[1].get_text(strip=True))
+            if not data_evento or data_evento < today_s:
+                continue
+
+            loc_text = divs[2].get_text(strip=True)  # "Chicago, IL"
+            loc_parts = [p.strip() for p in loc_text.split(",", 1)]
+            city = loc_parts[0] if loc_parts else ""
+            state = loc_parts[1].upper() if len(loc_parts) >= 2 else ""
+
+            vitamin_texts = [v.get_text(strip=True) for v in tile.select("span.rsuVitamin")]
+            distancias = _parse_html_distances(vitamin_texts)
+            if not distancias:
+                continue
+
+            if state in _US_STATES:
+                pais = "US"
+                estado = state
+                loc = ", ".join(p for p in [city, state, "EUA"] if p)
+            else:
+                pais = "US"
+                estado = ""
+                loc = ", ".join(p for p in [city, state, "EUA"] if p)
+
+            year = data_evento[:4]
+            cid = f"runsignup_{slug}_{year}"
+            if cid in seen_ids:
+                continue
+            seen_ids.add(cid)
+
+            corridas.append(Corrida(
+                id=cid,
+                titulo=titulo,
+                data_evento=data_evento,
+                horario=None,
+                localizacao=loc,
+                cidade=city,
+                estado=estado,
+                pais=pais,
+                distancias=distancias,
+                imagem_url=None,
+                inscricoes_abertas=None,
+                periodo_inscricao=None,
+                fontes=[FonteInfo(
+                    nome=SOURCE_NAME,
+                    link_evento=link,
+                    links_inscricao=[link],
+                )],
+                miss_count=0,
+                first_seen_at=now,
+                updated_at=now,
+            ))
+
+        if len(tiles) < _HTML_TILES_PER_PAGE:
+            break
+
+    print(f"[{SOURCE_NAME}] HTML fallback: {len(corridas)} corridas válidas")
+    return corridas
 
 
 # ---------------------------------------------------------------------------
@@ -112,8 +256,8 @@ def scrape() -> list[Corrida]:
             break
 
     if not races:
-        print(f"[{SOURCE_NAME}] nenhuma corrida retornada pela API")
-        return []
+        print(f"[{SOURCE_NAME}] nenhuma corrida retornada pela API; tentando fallback HTML")
+        return _scrape_html_fallback()
 
     print(f"[{SOURCE_NAME}] {len(races)} corridas brutas no total")
 

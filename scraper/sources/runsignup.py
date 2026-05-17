@@ -167,14 +167,9 @@ def _scrape_html_fallback() -> list[Corrida]:
             if not distancias:
                 continue
 
-            if state in _US_STATES:
-                pais = "US"
-                estado = state
-                loc = ", ".join(p for p in [city, state, "EUA"] if p)
-            else:
-                pais = "US"
-                estado = ""
-                loc = ", ".join(p for p in [city, state, "EUA"] if p)
+            pais = "US"
+            estado = state if state in _US_STATES else ""
+            loc = ", ".join(p for p in [city, state, "EUA"] if p)
 
             year = data_evento[:4]
             cid = f"runsignup_{slug}_{year}"

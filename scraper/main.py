@@ -1,5 +1,6 @@
 """Orchestrator: run all scrapers, merge, persist data/corridas.json"""
 from __future__ import annotations
+import html as _html
 import json
 import os
 import re
@@ -261,9 +262,14 @@ def _find_all_photos(corridas: list[Corrida]) -> None:
 
 
 def _normalize_all_locations(corridas: list[Corrida]) -> None:
-    """Normalize cidade names in-place (handles all-caps, missing accents, etc.)."""
+    """Normalize cidade/localizacao in-place (accents, HTML entities, casing)."""
     for c in corridas:
         c.cidade = normalize_cidade(c.cidade)
+        if c.pais == "BR":
+            parts = [p for p in [c.cidade, c.estado] if p]
+            c.localizacao = ", ".join(parts)
+        else:
+            c.localizacao = _html.unescape(c.localizacao or "").strip().strip(", ")
 
 
 def _resolve_missing_locations(corridas: list[Corrida]) -> None:

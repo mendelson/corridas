@@ -321,7 +321,7 @@ def normalize_cidade(raw: str | None) -> str:
     """Return properly accented, title-cased city name."""
     if not raw:
         return raw or ""
-    raw = raw.strip()
+    raw = html.unescape(raw.strip())
     key = unidecode(raw).lower()
     if key in _CIDADE_NORMALIZED:
         return _CIDADE_NORMALIZED[key]

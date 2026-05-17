@@ -262,7 +262,7 @@ def _parse_location(location: str | None, titulo: str = "") -> tuple[str, str]:
       4. Title fallback for city (e.g. "Aracaju I" → city "Aracaju").
     """
     if not location:
-        return _city_from_titulo(titulo), "??"
+        return "", "??"
     clean = _strip_symbols(location)
     parts = [p.strip() for p in clean.split(",")]
 
@@ -521,7 +521,8 @@ def _fetch_all_pages(base_url: str, api_headers: dict, token: str | None, label:
 
 
 def _events_to_corridas(
-    events: list[dict], now: str, id_prefix: str, link_prefix: str
+    events: list[dict], now: str, id_prefix: str, link_prefix: str,
+    city_from_title: bool = True,
 ) -> list[Corrida]:
     corridas: list[Corrida] = []
     for event in events:
@@ -544,10 +545,11 @@ def _events_to_corridas(
                 _pais_geo, _estado_geo = _geo.resolve(location_raw, city, "BR")
                 pais = _pais_geo or "BR"
                 state = inferred or _estado_geo or ""
-            if not city:
+            if not city and city_from_title:
                 city = _city_from_titulo(titulo)
 
-            localizacao = f"{city}, {state}" if city else state
+            parts = [p for p in [city, state] if p and p != "??"]
+            localizacao = ", ".join(parts)
 
             distancias = _get_distances(attrs, slug)
             imagem_url = _extract_image(attrs)
@@ -616,27 +618,27 @@ def scrape() -> list[Corrida]:
     events_raw = _fetch_all_pages(_events_list_url(), api_headers, token, "events(data)")
     print(f"[{SOURCE_NAME}] events(data): {len(events_raw)} eventos brutos")
     ev_running = [e for e in events_raw if _exp_is_running(e.get("attributes", {}))]
-    corridas += _events_to_corridas(ev_running, now, "tfse_", f"{BASE}/aulas-e-eventos")
+    corridas += _events_to_corridas(ev_running, now, "tfse_", f"{BASE}/aulas-e-eventos", city_from_title=False)
 
     events_no_date = _fetch_all_pages(_EVENTS_URL_NO_DATE, api_headers, token, "events(sem data)")
     print(f"[{SOURCE_NAME}] events(sem data): {len(events_no_date)} eventos brutos")
     ev_nd_running = [e for e in events_no_date if _exp_is_running(e.get("attributes", {}))]
-    corridas += _events_to_corridas(ev_nd_running, now, "tfse_", f"{BASE}/aulas-e-eventos")
+    corridas += _events_to_corridas(ev_nd_running, now, "tfse_", f"{BASE}/aulas-e-eventos", city_from_title=False)
 
     events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
     print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
     ev_rec_running = [e for e in events_recent if _exp_is_running(e.get("attributes", {}))]
-    corridas += _events_to_corridas(ev_rec_running, now, "tfse_", f"{BASE}/aulas-e-eventos")
+    corridas += _events_to_corridas(ev_rec_running, now, "tfse_", f"{BASE}/aulas-e-eventos", city_from_title=False)
 
     experiences_raw = _fetch_all_pages(_experiences_url(), api_headers, token, "experiences")
     print(f"[{SOURCE_NAME}] experiences: {len(experiences_raw)} eventos brutos")
     exp_running = [e for e in experiences_raw if _exp_is_running(e.get("attributes", {}))]
-    corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience")
+    corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
 
     experiences_nd = _fetch_all_pages(_EXPERIENCES_NO_DATE, api_headers, token, "experiences(sem data)")
     print(f"[{SOURCE_NAME}] experiences(sem data): {len(experiences_nd)} eventos brutos")
     exp_nd_running = [e for e in experiences_nd if _exp_is_running(e.get("attributes", {}))]
-    corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience")
+    corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

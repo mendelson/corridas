@@ -17,7 +17,6 @@ SOURCE_NAME = "HalfMarathons.net"
 _BASE       = "https://halfmarathons.net"
 _API        = f"{_BASE}/wp-json/wp/v2/races"
 _PER_PAGE   = 100
-_MAX_PAGES  = 50   # 100 events/page × 50 = up to 5,000 events
 
 # Slug → country label (PT). All non-US slugs explicitly mapped; US slugs fall
 # through to the default "EUA" so they appear grouped under the USA in the filter.
@@ -84,7 +83,9 @@ def scrape() -> list[Corrida]:
     today = today_iso()
     corridas: list[Corrida] = []
 
-    for page in range(1, _MAX_PAGES + 1):
+    page = 0
+    while True:
+        page += 1
         try:
             resp = get(
                 _API,

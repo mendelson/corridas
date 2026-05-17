@@ -19,7 +19,6 @@ from .. import geo as _geo
 SOURCE_NAME = "Asdeporte"
 _BASE       = "https://www.asdeporte.com"
 _LIST_URL   = f"{_BASE}/eventos"
-_MAX_PAGES  = 15
 
 _MX_STATES: dict[str, str] = {
     "aguascalientes": "AGU", "baja california": "BCN", "baja california sur": "BCS",
@@ -109,7 +108,9 @@ def scrape() -> list[Corrida]:
     corridas: list[Corrida] = []
     seen_ids: set[str] = set()
 
-    for page in range(1, _MAX_PAGES + 1):
+    page = 0
+    while True:
+        page += 1
         try:
             resp = get(
                 _LIST_URL,

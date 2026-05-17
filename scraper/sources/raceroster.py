@@ -21,7 +21,6 @@ from ..utils import normalize_titulo, now_iso, today_iso
 SOURCE_NAME = "Race Roster"
 _SEARCH_API = "https://search.raceroster.com/search"
 _PAGE_SIZE  = 100
-_MAX_PAGES  = 4    # per term — cap at 400 events/term; early-exit when page is all-past
 
 _LOOKAHEAD_DAYS = 365
 
@@ -89,7 +88,9 @@ def scrape() -> list[Corrida]:
 
 def _fetch_term(term: str) -> list[dict]:
     results: list[dict] = []
-    for page in range(_MAX_PAGES):
+    page = -1
+    while True:
+        page += 1
         try:
             resp = get(_SEARCH_API, params={"q": term, "l": _PAGE_SIZE, "p": page},
                        source=SOURCE_NAME, timeout=30)

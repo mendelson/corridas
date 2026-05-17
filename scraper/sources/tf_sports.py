@@ -487,7 +487,9 @@ def _extract_image(attrs: dict) -> str | None:
 def _fetch_all_pages(base_url: str, api_headers: dict, token: str | None, label: str) -> list[dict]:
     """Paginate a Strapi v4 list endpoint, returning all raw items."""
     all_items: list[dict] = []
-    for page in range(1, 6):  # max 500 events across 5 pages
+    page = 0
+    while True:
+        page += 1
         page_url = f"{base_url}&pagination[page]={page}"
         try:
             if token:

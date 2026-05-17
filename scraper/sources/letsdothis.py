@@ -24,7 +24,6 @@ SOURCE_NAME = "Let's Do This"
 
 _LOOKAHEAD_DAYS   = 365
 _RESULTS_PER_PAGE = 24
-_MAX_PAGES        = 30   # up to 720 events
 
 # Running-inclusive keywords — at least one must be present
 _RUNNING_KW = re.compile(
@@ -96,7 +95,9 @@ def scrape() -> list[Corrida]:
 
 def _fetch_all_events(start: str, end: str) -> list[dict]:
     result: list[dict] = []
-    for page in range(1, _MAX_PAGES + 1):
+    page = 0
+    while True:
+        page += 1
         batch = _fetch_page(page, start, end)
         if batch is None:
             break

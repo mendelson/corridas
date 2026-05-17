@@ -27,12 +27,10 @@ BASE        = "https://runsignup.com"
 API_URL     = f"{BASE}/Rest/races"
 SOURCE_NAME = "RunSignup"
 
-_MAX_PAGES        = 15
 _RESULTS_PER_PAGE = 250          # API max
 _LOOKAHEAD_DAYS   = 365
 
-_HTML_URL           = f"{BASE}/Races"
-_HTML_MAX_PAGES     = 10
+_HTML_URL            = f"{BASE}/Races"
 _HTML_TILES_PER_PAGE = 30        # full page has ~30 tiles
 _HTML_DATE_RE       = re.compile(r"(\d{1,2})/(\d{1,2})/(\d{2})")
 
@@ -111,7 +109,9 @@ def _scrape_html_fallback() -> list[Corrida]:
     seen_ids: set[str] = set()
     now = now_iso()
 
-    for page in range(1, _HTML_MAX_PAGES + 1):
+    page = 0
+    while True:
+        page += 1
         url = f"{_HTML_URL}?page={page}" if page > 1 else _HTML_URL
         try:
             resp = get(url, source=SOURCE_NAME, timeout=30)
@@ -200,7 +200,7 @@ def _scrape_html_fallback() -> list[Corrida]:
                 updated_at=now,
             ))
 
-        if len(tiles) < _HTML_TILES_PER_PAGE:
+        if len(tiles) < 30:  # fewer than a full page → last page
             break
 
     print(f"[{SOURCE_NAME}] HTML fallback: {len(corridas)} corridas válidas")
@@ -214,7 +214,9 @@ def scrape() -> list[Corrida]:
     end     = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).strftime("%Y-%m-%d")
 
     races: list[dict] = []
-    for page in range(1, _MAX_PAGES + 1):
+    page = 0
+    while True:
+        page += 1
         url = (
             f"{API_URL}?format=json"
             f"&events=T"

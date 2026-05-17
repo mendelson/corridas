@@ -484,8 +484,15 @@ def _extract_image(attrs: dict) -> str | None:
 # Main scraper
 # ---------------------------------------------------------------------------
 
-def _fetch_all_pages(base_url: str, api_headers: dict, token: str | None, label: str) -> list[dict]:
-    """Paginate a Strapi v4 list endpoint, returning all raw items."""
+def _fetch_all_pages(
+    base_url: str, api_headers: dict, token: str | None, label: str, max_pages: int = 0
+) -> list[dict]:
+    """Paginate a Strapi v4 list endpoint, returning all raw items.
+
+    max_pages=0 means unlimited (follow pageCount from API metadata).
+    max_pages=1 is used for "recent" catch-all endpoints that are intentionally
+    designed as a top-N sample, not a full scan.
+    """
     all_items: list[dict] = []
     page = 0
     while True:
@@ -517,6 +524,8 @@ def _fetch_all_pages(base_url: str, api_headers: dict, token: str | None, label:
 
         meta_pag = data.get("meta", {}).get("pagination", {})
         if page >= meta_pag.get("pageCount", 1):
+            break
+        if max_pages and page >= max_pages:
             break
 
     return all_items
@@ -613,7 +622,7 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] run-series(sem data): {len(run_series_nd)} eventos brutos")
     corridas += _events_to_corridas(run_series_nd, now, "tfs_", f"{BASE}/run-series")
 
-    run_series_recent = _fetch_all_pages(_RUN_SERIES_RECENT, api_headers, token, "run-series(recentes)")
+    run_series_recent = _fetch_all_pages(_RUN_SERIES_RECENT, api_headers, token, "run-series(recentes)", max_pages=1)
     print(f"[{SOURCE_NAME}] run-series(recentes): {len(run_series_recent)} eventos brutos")
     corridas += _events_to_corridas(run_series_recent, now, "tfs_", f"{BASE}/run-series")
 
@@ -627,7 +636,7 @@ def scrape() -> list[Corrida]:
     ev_nd_running = [e for e in events_no_date if _exp_is_running(e.get("attributes", {}))]
     corridas += _events_to_corridas(ev_nd_running, now, "tfse_", f"{BASE}/aulas-e-eventos", city_from_title=False)
 
-    events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)")
+    events_recent = _fetch_all_pages(_EVENTS_URL_RECENT, api_headers, token, "events(recentes)", max_pages=1)
     print(f"[{SOURCE_NAME}] events(recentes): {len(events_recent)} eventos brutos")
     ev_rec_running = [e for e in events_recent if _exp_is_running(e.get("attributes", {}))]
     corridas += _events_to_corridas(ev_rec_running, now, "tfse_", f"{BASE}/aulas-e-eventos", city_from_title=False)

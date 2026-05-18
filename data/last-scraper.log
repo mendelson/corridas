@@ -1,93 +1,94 @@
 [main] iniciando scraping...
-[main] 3771 corridas no estado anterior
-[MKS Esportes] 3 corridas encontradas
+[main] 13140 corridas no estado anterior
 [Central da Corrida] 73 corridas encontradas
-[Runner Brasil] 18 corridas encontradas
-[TF Sports] run-series: 47 eventos brutos
 [Iguana Sports] 8 corridas encontradas
+[TF Sports] run-series: 47 eventos brutos
+[Runner Brasil] 18 corridas encontradas
 [Minhas Inscrições] 14 corridas encontradas
-[Ativo] 7 corridas encontradas
 [Brasil Corrida] 13 corridas encontradas
 [Correr Brasília] 1 corridas encontradas
+[Ativo] 7 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
 [SESC DF] 9 corridas encontradas
 [Circuito das Estações] 104 corridas encontradas
 [Yescom] 14 corridas encontradas
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[MKS Esportes] 3 corridas encontradas
 [Prague Marathon] nenhuma edição futura identificada
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
-[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Ticket Sports] erro ao buscar API: Server error '504 Gateway Timeout' for url 'https://www.ticketsports.app/api/events/list?quantity=2000&atlheteId=0&term='
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/504
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[TF Sports] run-series(sem data): 0 eventos brutos
+[TF Sports] run-series(recentes): 100 eventos brutos
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
-[TF Sports] run-series(sem data): 0 eventos brutos
-[TF Sports] run-series(recentes): 100 eventos brutos
-[Asdeporte] 29 corrida(s) encontrada(s)
-[RunSignup] página 2: 250 corridas
-[Race Roster] 'running': 221 upcoming de 2000
 [FMAA] DEBUG keys: ['events', 'rest_url', 'total', 'total_pages']
 [FMAA] DEBUG total=0, total_pages=0
 [FMAA] 0 corrida(s) encontrada(s)
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Race Roster] 'running': 399 upcoming de 2000
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Asdeporte] 29 corrida(s) encontrada(s)
+[Corridas Brasil] 3006 corridas encontradas
+[RunSignup] página 2: 250 corridas
 [World Athletics] calendarEvents.results: 265 itens
 [World Athletics] 265 competições brutas
 [World Athletics] 122 corridas válidas (143 ignoradas)
+[Race Roster] 'marathon': 267 upcoming de 2000
 [RunSignup] página 3: 250 corridas
-[Corridas Brasil] 3006 corridas encontradas
-[Race Roster] 'marathon': 221 upcoming de 2000
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Race Roster] '5k': 277 upcoming de 2000
+[RunSignup] página 4: 250 corridas
+[Race Roster] '10k': 299 upcoming de 2000
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[RunSignup] página 4: 250 corridas
-[Race Roster] '5k': 140 upcoming de 2000
 [RunSignup] página 5: 250 corridas
+[TF Sports] events(data): 7 eventos brutos
+[Race Roster] 'half marathon': 286 upcoming de 2000
+[TF Sports] events(sem data): 0 eventos brutos
+[TF Sports] events(recentes): 100 eventos brutos
+[Race Roster] 'trail run': 188 upcoming de 2000
+[Race Roster] 7436 eventos únicos após dedup
+[Race Roster] 716 corridas válidas (6720 ignoradas)
+[RunSignup] página 6: 250 corridas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
-[Race Roster] '10k': 175 upcoming de 2000
-[RunSignup] página 6: 250 corridas
-[Race Roster] 'half marathon': 242 upcoming de 2000
 [RunSignup] página 7: 250 corridas
 [RunSignup] página 8: 250 corridas
-[Race Roster] 'trail run': 185 upcoming de 2000
-[Race Roster] 6941 eventos únicos após dedup
-[Race Roster] 545 corridas válidas (6396 ignoradas)
 [RunSignup] página 9: 250 corridas
-[Ticket Sports] 919 corridas encontradas
-[TF Sports] events(data): 7 eventos brutos
+[TF Sports] experiences: 158 eventos brutos
 [RunSignup] página 10: 250 corridas
-[TF Sports] events(sem data): 0 eventos brutos
-[TF Sports] events(recentes): 100 eventos brutos
 [RunSignup] página 11: 250 corridas
 [RunSignup] página 12: 250 corridas
 [RunSignup] página 13: 250 corridas
 [RunSignup] página 14: 250 corridas
 [RunSignup] página 15: 250 corridas
 [RunSignup] página 16: 250 corridas
-[TF Sports] experiences: 157 eventos brutos
 [RunSignup] página 17: 250 corridas
+[TF Sports] experiences(sem data): 1 eventos brutos
+[TF Sports] 336 corridas encontradas
 [RunSignup] página 18: 250 corridas
 [RunSignup] página 19: 250 corridas
 [RunSignup] página 20: 250 corridas
 [RunSignup] página 21: 250 corridas
 [RunSignup] página 22: 250 corridas
-[HalfMarathons.net] 1925 corrida(s) encontrada(s)
 [RunSignup] página 23: 250 corridas
 [RunSignup] página 24: 250 corridas
-[TF Sports] experiences(sem data): 1 eventos brutos
-[TF Sports] 335 corridas encontradas
 [RunSignup] página 25: 250 corridas
 [RunSignup] página 26: 250 corridas
 [RunSignup] página 27: 250 corridas
 [RunSignup] página 28: 250 corridas
+[HalfMarathons.net] 1925 corrida(s) encontrada(s)
 [RunSignup] página 29: 250 corridas
 [RunSignup] página 30: 250 corridas
 [RunSignup] página 31: 250 corridas
@@ -111,170 +112,794 @@
 [RunSignup] página 49: 250 corridas
 [RunSignup] página 50: 250 corridas
 [RunSignup] 12500 corridas brutas no total
-[RunSignup] 10931 corridas válidas (1569 ignoradas)
-[main] 18105 registros coletados (antes do merge)
-[main] 14705 registros após validação
-[main] 12960 corridas após merge
-[main] verificando links de 261 evento(s) não encontrado(s) no scrape...
-[main] '3ª Night Run Blumenau' — link válido, miss_count zerado
+[RunSignup] 10937 corridas válidas (1563 ignoradas)
+[main] 17364 registros coletados (antes do merge)
+[main] 14064 registros após validação
+[main] 12309 corridas após merge
+[main] verificando links de 1198 evento(s) não encontrado(s) no scrape...
 [main] 'Richard B. "Dick" And Peggy 5K Fun Run/Walk' — link válido, miss_count zerado
-[main] 'Marvin Night Run And Beer' — link válido, miss_count zerado
-[main] 'Awake The Grapes' — link válido, miss_count zerado
-[main] 'Hearts On The Run' — link válido, miss_count zerado
-[main] '1º Corrida E Caminhada Beneficente Apae De Matinhos' — link válido, miss_count zerado
-[main] 'John Wayne Birthday Celebration 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Circuito Moove Ilha Carioca - Etapa Guanabara 2026' — link válido, miss_count zerado
-[main] 'Corrida Rio Bossa Nossa 2026' — link válido, miss_count zerado
-[main] 'Farmstand 50' — link válido, miss_count zerado
-[main] 'Circuito De Corridas Caixa 2026 - (5Km E 10Km) Etapa Foz Do Iguaçu' — link válido, miss_count zerado
+[main] 'Dobro Running | Usp' — link válido, miss_count zerado
+[main] 'Chesley Community Classic' — link válido, miss_count zerado
+[main] 'Run For The Redwoods!' — link válido, miss_count zerado
+[main] 'Shoppers Drug Mart Run For Women - Oakville 2026' — link válido, miss_count zerado
 [main] 'Dash & Dine 5K #4 - Series Finale' — link válido, miss_count zerado
-[main] 'Maratona Internacional De Pg' — link válido, miss_count zerado
-[main] 'Little Souls 2026' — link válido, miss_count zerado
-[main] 'Run For The Door' — link válido, miss_count zerado
-[main] 'Weld Your Mettle Running Festival' — link válido, miss_count zerado
-[main] 'Corrida Nu Vai Bem - Etapa Brasília' — link válido, miss_count zerado
+[main] 'The Bterry 5K Race' — link válido, miss_count zerado
+[main] 'Mission Trails Twilight Runs' — link válido, miss_count zerado
+[main] 'Corrida Marata Night Race Aracaju 2026' — link válido, miss_count zerado
+[main] 'Race For The Red 5K' — link válido, miss_count zerado
+[main] '10º Corrida Rio Pinheiros' — link válido, miss_count zerado
+[main] 'Pedra Azul Night Run' — link válido, miss_count zerado
+[main] 'John Wayne Birthday Celebration 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Autismo Night Run' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Lagoinha São Paulo | Alphaville' — link válido, miss_count zerado
+[main] '3ª Night Run Blumenau' — link válido, miss_count zerado
+[main] 'Hearts On The Run' — link válido, miss_count zerado
+[main] '1º Super Treino Wolf Run' — link válido, miss_count zerado
+[main] 'Marvin Night Run And Beer' — link válido, miss_count zerado
+[main] '12ª Corrida Feminina Cbmpe' — link válido, miss_count zerado
+[main] 'Corrida Favorito' — link válido, miss_count zerado
+[main] 'Sudburyrocks 2026' — link válido, miss_count zerado
+[main] '21K Parque D. Sarah Kubitschek 2026' — link válido, miss_count zerado
+[main] 'Furacão Runners - 2026' — link válido, miss_count zerado
+[main] '3ª Maratona Internacional De Goiânia Wr' — link válido, miss_count zerado
+[main] 'Corrida São Vicente Meia Maratona Tivoli Shopping 2026' — link válido, miss_count zerado
+[main] 'Corre Caeté Nucec' — link válido, miss_count zerado
+[main] 'Sun Day Run - Etapa Fortaleza' — link válido, miss_count zerado
+[main] 'Corrida Brasil Paralímpico' — link válido, miss_count zerado
+[main] 'Corrida Da Panini | São Paulo' — link válido, miss_count zerado
+[main] 'Circuito Runaway 2026 - Etapa Meta' — link válido, miss_count zerado
+[main] 'Corrida Do Pioneiro 2026' — link válido, miss_count zerado
+[main] 'Caruaru Series Run 2026 - Etapa 1 (Outono)' — link válido, miss_count zerado
+[main] 'Corrida Do Naça' — link válido, miss_count zerado
+[main] 'Blue Special Edition Estrada Velha 2026' — link válido, miss_count zerado
+[main] 'Lançamento Da Equipe Valcorredor' — link válido, miss_count zerado
+[main] '1ª Corrida Pela Vida' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Londrina' — link válido, miss_count zerado
+[main] 'Corrida Polícia Militar - 191 Anos Florianópolins' — link válido, miss_count zerado
+[main] 'Treinão 5 Estrelas 2026' — link válido, miss_count zerado
+[main] '3ª Corrida Do Bem Hospital Nossa Senhora Das Graças 2026' — link válido, miss_count zerado
+[main] '3 Corrida Maio Amarelo "No Trânsito, Enxergar O Outro É Salvar Vidas".' — link válido, miss_count zerado
+[main] 'Corrida Celebration Engenheiro Coelho' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] 'Yellow Run 2026' — link válido, miss_count zerado
+[main] 'Awake The Grapes' — link válido, miss_count zerado
+[main] 'Corrida Extreme Reverse 2026' — link válido, miss_count zerado
+[main] '7ª Corrida De Fátima' — link válido, miss_count zerado
+[main] 'Garganta Do Diabo Trail Run - 2ª Edição Versão Outono' — link válido, miss_count zerado
+[main] 'Farmstand 50' — link válido, miss_count zerado
+[main] 'Circuito Moove Ilha Carioca - Etapa Guanabara 2026' — link válido, miss_count zerado
+[main] '1º Corrida E Caminhada Beneficente Apae De Matinhos' — link válido, miss_count zerado
+[main] 'Corrida Rio Bossa Nossa 2026' — link válido, miss_count zerado
+[main] 'Circuito De Corridas Caixa 2026 - (5Km E 10Km) Etapa Foz Do Iguaçu' — link válido, miss_count zerado
 [main] 'Ridge Run 2026' — link válido, miss_count zerado
 [main] 'Quad Cities Running Festival - 2026' — link válido, miss_count zerado
+[main] 'Pedra Grande Ultra Trail Challenge 2026' — link válido, miss_count zerado
+[main] 'Barks & Brews 5K' — link válido, miss_count zerado
+[main] 'Little Souls 2026' — link válido, miss_count zerado
+[main] 'Maratona Internacional De Pg' — link válido, miss_count zerado
+[main] 'Ii Corrida E Caminhada Cacau - Salve O Rim De Uma Criança' — link válido, miss_count zerado
+[main] 'Springbank Relays' — link válido, miss_count zerado
+[main] 'Marathon For Mental Health And Addiction' — link válido, miss_count zerado
+[main] 'Pardinho Trail Experience' — link válido, miss_count zerado
+[main] 'Sunset Run Sinop 6K' — link válido, miss_count zerado
+[main] 'Ultra Oxy 2026' — link válido, miss_count zerado
+[main] '2º Corrida Caminhada Smcc' — link válido, miss_count zerado
+[main] '2 Corrida De Rua Ivanovo Run' — link válido, miss_count zerado
+[main] 'Ato - 2ª Edição' — link válido, miss_count zerado
+[main] 'Tricolor Run Noturna 2026 - 1ª Etapa' — link válido, miss_count zerado
+[main] 'Corrida Noturna De Campo Do Tenente' — link válido, miss_count zerado
+[main] 'Run 21K - Meia Da Estrada Velha 2026 - Sunset' — link válido, miss_count zerado
+[main] 'Weld Your Mettle Running Festival' — link válido, miss_count zerado
+[main] 'Corrida Do Vinho Expovits Brasil 2026' — link válido, miss_count zerado
+[main] 'Run For The Door' — link válido, miss_count zerado
+[main] '15K Run Series Curitiba 2026' — link válido, miss_count zerado
 [main] 'Warrior Rush 5K, 10K, And Half' — link válido, miss_count zerado
-[main] 'Bearlodge 10K' — link válido, miss_count zerado
-[main] 'Pelee Island Winery Half Marathon 2026' — link válido, miss_count zerado
-[main] 'Oak Bay Half-Marathon, Relay, 10K & Kids Run' — link válido, miss_count zerado
-[main] 'Warriors Race Summer' — link válido, miss_count zerado
-[main] 'Stepup For Women And Recovery' — link válido, miss_count zerado
-[main] 'Glazin' The Trail' — link válido, miss_count zerado
+[main] 'Hometown Half Marathon - Portsmouth, Nh' — link válido, miss_count zerado
+[main] '3ª Night Run Itarana' — link válido, miss_count zerado
+[main] 'Circuito 17ºbpm De Corridas De Rua - Etapa Araucária' — link válido, miss_count zerado
+[main] 'Lil Chiggy 2026' — link válido, miss_count zerado
+[main] '2026 Oregon Wine Country Half Marathon' — link válido, miss_count zerado
+[main] '1º Treinão - Senna'S Fitness - Run' — link válido, miss_count zerado
+[main] 'Vascorrida 2026 - Maceió' — link válido, miss_count zerado
+[main] '44ª Corrida Da Infantaria' — link válido, miss_count zerado
+[main] '21ª Corrida Das Pontes Do Recife' — link válido, miss_count zerado
+[main] 'Meia Maratona Herois Do 21' — link válido, miss_count zerado
+[main] '2ª Corrida E Caminhada Da Guarda De Nazaré - Guarda Run 2026 - Etapa 1' — link válido, miss_count zerado
+[main] 'Caixa | Corridas Pelo Nordeste - Juazeiro-Ba' — link válido, miss_count zerado
+[main] 'Dg Rota Extreme' — link válido, miss_count zerado
+[main] 'Desafio Do Cimentão 2026' — link válido, miss_count zerado
+[main] 'Corrida Do Cruzeiro - Governador Valadares' — link válido, miss_count zerado
+[main] '6ª Corrida Bestway Mundo Melhor' — link válido, miss_count zerado
+[main] '3ª Corrida E Caminhada Serramar' — link válido, miss_count zerado
+[main] 'Corrida Da Copa' — link válido, miss_count zerado
+[main] 'Circuito Oscar 2026-2027 - 1ª Etapa - Mogi' — link válido, miss_count zerado
+[main] 'Muay Thai Run Arena 5K' — link válido, miss_count zerado
+[main] 'Hidrauli Run 2026' — link válido, miss_count zerado
+[main] 'Circuito Planet Run 2026 - Etapa Brasil' — link válido, miss_count zerado
+[main] 'Circuito Caminho Das Colônias - Caminho Do Vinho Sjp' — link válido, miss_count zerado
+[main] 'Piratas Do Asfalto 2026 - 2ª Edição' — link válido, miss_count zerado
+[main] 'Corrida Do Farmacêutico - 2026' — link válido, miss_count zerado
+[main] 'Meia Maratona Rústica De Porto Feliz 2026' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Salvador' — link válido, miss_count zerado
+[main] '5ª Corrida Daae Araraquara' — link válido, miss_count zerado
+[main] '2ª Corrida Da Ordem' — link válido, miss_count zerado
+[main] 'Love Run 2026' — link válido, miss_count zerado
+[main] 'Xco 3 Horas' — link válido, miss_count zerado
+[main] '9ª Corrida De São José' — link válido, miss_count zerado
+[main] '2ª Corrida Med Run' — link válido, miss_count zerado
+[main] '2ª Corrida Movimento Pela Vida' — link válido, miss_count zerado
+[main] 'Corrida Aki Tem Run Paulínia 5K - 2026' — link válido, miss_count zerado
+[main] 'Movete Seguro' — link válido, miss_count zerado
 [main] 'The Barmen Mile' — link válido, miss_count zerado
+[main] 'Blackbird Golden Run' — link válido, miss_count zerado
+[main] 'Warriors Race Summer' — link válido, miss_count zerado
+[main] 'Corrida Nu Vai Bem - Etapa Brasília' — link válido, miss_count zerado
+[main] '4º Amp Run' — link válido, miss_count zerado
+[main] 'Bearlodge 10K' — link válido, miss_count zerado
+[main] '1ª Filipe Brandão Run' — link válido, miss_count zerado
+[main] 'Randee Mile Kickoff' — link válido, miss_count zerado
+[main] 'Alcal Scoop Scoot 2026' — link válido, miss_count zerado
+[main] 'Tracy Pal Donut Dash 2026' — link válido, miss_count zerado
+[main] 'Race Through Alabama 1M, 5K, 10K, 13.1, 26.2 - Now Only $20!' — link válido, miss_count zerado
+[main] 'Cambridge Montessori School Webster O'Brien 5K' — link válido, miss_count zerado
+[main] 'Race Through California 1M, 5K, 10K, 13.1, 26.2 - Now Only $20!' — link válido, miss_count zerado
+[main] 'Stepup For Women And Recovery' — link válido, miss_count zerado
+[main] 'Race Through America 1M, 5K, 10K, 13.1, 26.2 - Now Only $20!' — link válido, miss_count zerado
 [main] 'Summits Trail Runs' — link válido, miss_count zerado
+[main] 'Corrida Das Nações' — link válido, miss_count zerado
+[main] 'Circuito Junino 2026' — link válido, miss_count zerado
+[main] '10 Km Chaleur Uni Ckle 2026' — link válido, miss_count zerado
+[main] 'Carrollton "Tails & Trails" 5K & 1-Mile Fun Run/Walk' — link válido, miss_count zerado
+[main] 'Village Northwest Unlimited Run, Walk & Roll' — link válido, miss_count zerado
 [main] 'Boots On The Meridian 5K - Cattlemen'S Ball 2026' — link válido, miss_count zerado
 [main] 'Centennial Airport Runway 5K 2026' — link válido, miss_count zerado
-[main] 'Village Northwest Unlimited Run, Walk & Roll' — link válido, miss_count zerado
-[main] 'Whistler Half Marathon' — link válido, miss_count zerado
-[main] 'Hamden Fest Half Marathon' — link válido, miss_count zerado
-[main] 'Saw Wee Kee - Summer Trail Run' — link válido, miss_count zerado
-[main] 'Vertical Slam Ultimate Challenge Beatton River Valley' — link válido, miss_count zerado
-[main] 'The Big Run Presented By Brooks' — link válido, miss_count zerado
 [main] 'Bull Valley Monster Hill Challenge' — link válido, miss_count zerado
-[main] 'Screaming Chicken Relay Race' — link válido, miss_count zerado
+[main] 'Puma Socks Apresenta 14ª Meia Maratona De Campinas Adn 2026' — link válido, miss_count zerado
+[main] 'Kaiser Permanente Women'S Fitness Festival 2026' — link válido, miss_count zerado
+[main] 'The Parklands & Wlky 5K Run/Walk 2026' — link válido, miss_count zerado
+[main] 'Niles Township Food Pantry Fun Run 2026' — link válido, miss_count zerado
+[main] 'Krista Johnson Memorial Run' — link válido, miss_count zerado
+[main] 'Exulta Run' — link válido, miss_count zerado
+[main] 'Meia Maratona Internacional De Curitiba - 2026' — link válido, miss_count zerado
+[main] 'La Grande Virée Des Sentiers Du Mont-Saint-Bruno Présentée Par Iga - Marchés Lambert' — link válido, miss_count zerado
+[main] '33ª Corrida Da Colina Do Santo Antonio 2026' — link válido, miss_count zerado
+[main] 'Corrida De Obstáculos Lord Race' — link válido, miss_count zerado
+[main] 'Corrida Das Conchas Piúma' — link válido, miss_count zerado
+[main] 'Etapa Caruaru - PE 5ª Edição' — link válido, miss_count zerado
+[main] 'Corrida Do Empresário 2026 - Acip' — link válido, miss_count zerado
+[main] '2ª Meia Maratona Rio Do Sul' — link válido, miss_count zerado
+[main] 'Caixa | Corridas Pelo Nordeste - Arapiraca-Al' — link válido, miss_count zerado
+[main] '3ª Trail Run Serra Alta - São Bento Do Sul (Sc)' — link válido, miss_count zerado
+[main] 'Bpa Eco Running 2026- Pmal' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Mulher Determinada - Reino Do Amor' — link válido, miss_count zerado
+[main] '43ª Cicorre Etapa Campus Ufpe' — link válido, miss_count zerado
+[main] 'A Corrida Do He-Man - Masters Of The Universe' — link válido, miss_count zerado
+[main] 'Corrida Solidaria Agromil Pets 2026' — link válido, miss_count zerado
+[main] 'Vii Meia Maratona Timbó' — link válido, miss_count zerado
+[main] 'Corremos Juntos - Acipg' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Fortaleza' — link válido, miss_count zerado
+[main] 'Trail In Motion 17 - Recanto Das Pedras 2026' — link válido, miss_count zerado
+[main] '3ª Corrida Homens Do Fogo De Colider' — link válido, miss_count zerado
+[main] 'The Big Run Presented By Brooks' — link válido, miss_count zerado
+[main] 'Corrida Kazamigas São Paulo Usp' — link válido, miss_count zerado
+[main] 'Treinão Runners Em Construção By Dinâmica' — link válido, miss_count zerado
 [main] 'Greenway 5K' — link válido, miss_count zerado
 [main] '2026 - 402 Squadron Grizzly Ride' — link válido, miss_count zerado
-[main] 'Hickory Knolls Trail Run' — link válido, miss_count zerado
+[main] 'Corrida Copa Do Mundo 2026' — link válido, miss_count zerado
+[main] 'Copa Run - Etapa Bra X Mar' — link válido, miss_count zerado
+[main] 'Sacfit 2026 Summer/Fall Marathon Training Program' — link válido, miss_count zerado
+[main] '24 Maratona Kids - Corrida Ecológica' — link válido, miss_count zerado
+[main] 'Corrida Solidária Allp Fit Academia 2026' — link válido, miss_count zerado
+[main] 'International Hallers' Run' — link válido, miss_count zerado
+[main] '3ª Corrida Odisseia 2026 - Iftm' — link válido, miss_count zerado
+[main] 'Corrida Dos Namorados 2026' — link válido, miss_count zerado
+[main] 'Copa Run 2026' — link válido, miss_count zerado
+[main] 'Corrida Run Rumo Ao Hexa' — link válido, miss_count zerado
+[main] 'Corrida Estação Brasil Run 5K' — link válido, miss_count zerado
+[main] 'Jurerê Wine Run | Super Imperatriz' — link válido, miss_count zerado
+[main] 'Race For The Kids' — link válido, miss_count zerado
+[main] 'Screaming Chicken Relay Race' — link válido, miss_count zerado
+[main] 'Race For The Watershed Duck Derby And 5K' — link válido, miss_count zerado
+[main] '1ª Pier Night Run' — link válido, miss_count zerado
 [main] 'The Hundo And The Hundito' — link válido, miss_count zerado
 [main] 'Sam'S Rainbow Run' — link válido, miss_count zerado
-[main] 'Niles Township Food Pantry Fun Run 2026' — link válido, miss_count zerado
+[main] '2ª Corrida The Way Move' — link válido, miss_count zerado
+[main] 'Correndo Pelo Hexa' — link válido, miss_count zerado
 [main] 'Treat Trot - Denver' — link válido, miss_count zerado
 [main] 'Tutu Dash 5K' — link válido, miss_count zerado
+[main] '4º Santos Night Run' — link válido, miss_count zerado
 [main] 'Rattler 5 Miler' — link válido, miss_count zerado
-[main] 'Corrida De Arraiá' — link válido, miss_count zerado
-[main] 'Smoky Hill River Run' — link válido, miss_count zerado
 [main] 'Angie Barry Memorial 5K/10K' — link válido, miss_count zerado
-[main] 'Gigifit Acceptance Challenge' — link válido, miss_count zerado
-[main] 'Rt66 Road Race' — link válido, miss_count zerado
-[main] 'Tideline Classic' — link válido, miss_count zerado
+[main] 'Smoky Hill River Run' — link válido, miss_count zerado
 [main] 'Fear Mke 5K And 10K' — link válido, miss_count zerado
+[main] 'Corrida De Arraiá' — link válido, miss_count zerado
+[main] 'Gigifit Acceptance Challenge' — link válido, miss_count zerado
+[main] 'Footsteps For Families' — link válido, miss_count zerado
+[main] '2026 Rock Tahoe Sponsorship & Vendors' — link válido, miss_count zerado
+[main] '30Th Annual Race With Your Heart' — link válido, miss_count zerado
+[main] '44Th Annual Lake Wyola Road Race' — link válido, miss_count zerado
+[main] 'Rosy Rhubarb Walk / Run 2026 - Postponed To 2027' — link válido, miss_count zerado
+[main] 'Urban Challenge Run São José Dos Campos 2026' — link válido, miss_count zerado
+[main] 'The Forever 29 Run' — link válido, miss_count zerado
+[main] 'Meia Maratona Quiriri 2026' — link válido, miss_count zerado
+[main] 'Tour Du Lac Brome Sun Life' — link válido, miss_count zerado
+[main] '48ª Corrida Guararapes' — link válido, miss_count zerado
+[main] 'Asics Run Challenge 2026 - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] '2ª Edição Da Corrida Do Empreendedor' — link válido, miss_count zerado
+[main] 'Corrida Turística De Sorocaba' — link válido, miss_count zerado
+[main] 'Circuito De Corridas Pague Menos - 4ª Etapa Ribeirão Preto 2026' — link válido, miss_count zerado
+[main] 'Atletismo Búzios Trail Run' — link válido, miss_count zerado
+[main] 'Corrida E Samba Rock - 9 Edição' — link válido, miss_count zerado
+[main] '4º Edição - Ultra Desafio Boituva' — link válido, miss_count zerado
+[main] 'Corrida Rustica Verde Oliva - 2ª Edição' — link válido, miss_count zerado
+[main] 'Corrida Medsênior 2026' — link válido, miss_count zerado
+[main] 'Cats Run SE 2026' — link válido, miss_count zerado
+[main] 'Minions Run | São Paulo 2026' — link válido, miss_count zerado
+[main] '2ª Meia Maratona De Foz Do Iguaçu - 2026' — link válido, miss_count zerado
+[main] '2ª Corrida E Caminhada Casa De David' — link válido, miss_count zerado
+[main] 'Desafio Dos Fortes - Edição Forte São Luís' — link válido, miss_count zerado
+[main] 'Rústica Do Meio Ambiente 2026' — link válido, miss_count zerado
+[main] 'Sb Run' — link válido, miss_count zerado
+[main] '4ª Nissei Run' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Recife' — link válido, miss_count zerado
+[main] '2ª Corrida Padaria Do Jarbas 2026' — link válido, miss_count zerado
+[main] 'Circuito Sesi De Corridas Das Indústrias - Etapa Londrina' — link válido, miss_count zerado
+[main] 'Ica Run 2026' — link válido, miss_count zerado
+[main] 'Circuito Allrunning 2º Etapa Parque Olimpico' — link válido, miss_count zerado
+[main] 'Circuito Unimed Off Road - Etapa Selva' — link válido, miss_count zerado
+[main] '3º Passos Solidários' — link válido, miss_count zerado
+[main] '4ª Corrida Amigão' — link válido, miss_count zerado
+[main] 'Corrida Angel Run 2026 Alphaville Barueri' — link válido, miss_count zerado
+[main] 'Evolua Em Movimento Francisco Beltrão 2026' — link válido, miss_count zerado
+[main] '6ª Corrida Dos Bombeiros - Batalhão De Aço' — link válido, miss_count zerado
+[main] 'Circuito Voa Run 2026 - Etapa Novo Hamburgo' — link válido, miss_count zerado
+[main] 'Treino Junino Corre Brasil' — link válido, miss_count zerado
+[main] 'Circuito Rotary Sicredi Run 2026' — link válido, miss_count zerado
+[main] 'Corrida De São João' — link válido, miss_count zerado
+[main] 'Maple Kids Run - 2026' — link válido, miss_count zerado
+[main] 'Corre E Plante - Etapa Ar' — link válido, miss_count zerado
+[main] 'Love Run 5Km' — link válido, miss_count zerado
 [main] 'Juneteenth Wellness 5K' — link válido, miss_count zerado
+[main] 'Run Juneteenth Day 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
+[main] 'The Fab 5K' — link válido, miss_count zerado
+[main] 'Rock The Ride Napa, Ca' — link válido, miss_count zerado
+[main] 'Shipwright'S Run' — link válido, miss_count zerado
+[main] 'Xterra São Sebastião 2026' — link válido, miss_count zerado
+[main] 'Ultra Brigadeiro 2026' — link válido, miss_count zerado
+[main] 'Night Run Floripa Airport 2026' — link válido, miss_count zerado
+[main] 'Super Action Indaiatuba Sunset 2026' — link válido, miss_count zerado
+[main] 'Desafio Maiandeua Circuito Das Águas' — link válido, miss_count zerado
+[main] 'The Pulse Run' — link válido, miss_count zerado
+[main] 'Barra Tri' — link válido, miss_count zerado
+[main] 'Circuito Caixa Sunset Run - Etapa Manaus' — link válido, miss_count zerado
+[main] 'Iv Corrida Noturna 5K Guarujá - 2026' — link válido, miss_count zerado
+[main] 'Race Of Thrones' — link válido, miss_count zerado
+[main] 'Race The Wolf' — link válido, miss_count zerado
 [main] 'Run For The River 5K Boulder' — link válido, miss_count zerado
 [main] 'Unicorn 5K (North)' — link válido, miss_count zerado
-[main] 'Footsteps For Families' — link válido, miss_count zerado
 [main] 'Sierra'S 5K Run/Walk Race Against Meningitis' — link válido, miss_count zerado
-[main] '30Th Annual Race With Your Heart' — link válido, miss_count zerado
 [main] 'The Earl 'Helge' Byleen Road Race' — link válido, miss_count zerado
 [main] 'Stuart Good Egg Days - A Father'S Day Race' — link válido, miss_count zerado
+[main] 'Cristão Run' — link válido, miss_count zerado
+[main] 'Campos Music Night Run' — link válido, miss_count zerado
 [main] 'Frozen Fun Run' — link válido, miss_count zerado
 [main] 'Fertile Nature Center 5K' — link válido, miss_count zerado
 [main] '2026 Elkhart City Festival 5K And Kids Run' — link válido, miss_count zerado
 [main] 'Avon Spunktacular Days 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Harvey Mills Longest Day 10K' — link válido, miss_count zerado
-[main] 'Deep Physio Summer Solstice Run 2026' — link válido, miss_count zerado
+[main] 'Black Wellness 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Hope K' — link válido, miss_count zerado
 [main] 'Pépère Gerry Run' — link válido, miss_count zerado
-[main] 'Black Wellness 5K Run/Walk' — link válido, miss_count zerado
 [main] '34Th Annual Hopkinton Against The Tide' — link válido, miss_count zerado
 [main] 'Run Juneteenth Day 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
 [main] 'The Longest Day Run' — link válido, miss_count zerado
-[main] 'Sunset Trail Running Festival' — link válido, miss_count zerado
+[main] 'John P. Mckeon Post Father'S Day Race' — link válido, miss_count zerado
+[main] 'Stouffville Main Street 5K' — link válido, miss_count zerado
+[main] 'Johnny Miles Weekend 2026 (Johnny Miles Running Event)' — link válido, miss_count zerado
 [main] 'Ymca River Run' — link válido, miss_count zerado
-[main] 'Race Devils Tower' — link válido, miss_count zerado
-[main] '2026 - Champions In Training Program' — link válido, miss_count zerado
+[main] 'Cavendish Race Weekend' — link válido, miss_count zerado
+[main] '21K Oficial De Ribeirão Preto Multi' — link válido, miss_count zerado
+[main] 'Etapa Maceió - 1ª Edição' — link válido, miss_count zerado
+[main] 'Etapa Guepardo - Circuito Zoo Run' — link válido, miss_count zerado
+[main] 'Fresh Run Super Muffato 2026 - Londrina' — link válido, miss_count zerado
+[main] 'Corrida Trail Trilha Das Bruxas 2026' — link válido, miss_count zerado
+[main] '4ª Corrida Do Fogo - Marabá-Pa' — link válido, miss_count zerado
+[main] '3ª Corrida Vitoriosa' — link válido, miss_count zerado
+[main] 'Minions Run - Brasília 2026' — link válido, miss_count zerado
+[main] 'Corrida Da Academia Fox Fit - Perus' — link válido, miss_count zerado
+[main] 'Deu Match - 2026' — link válido, miss_count zerado
+[main] 'Maratona Da Serra 2026 - Ultra' — link válido, miss_count zerado
+[main] 'Corrida Capixaba De Ferro - Junho 2026' — link válido, miss_count zerado
+[main] '10 Milhas De Joinville (12ª Corrida 8º Bpm)' — link válido, miss_count zerado
+[main] 'Corrida Edan Run - Villa Lobos' — link válido, miss_count zerado
+[main] '1º Corrida Q2 Eventos De Revezamento De Americana' — link válido, miss_count zerado
+[main] '1ª Corrida Verde De Blumenau' — link válido, miss_count zerado
+[main] 'Corrida Do 13 Bib - 2026' — link válido, miss_count zerado
+[main] 'Milwaukee Run Ride 2026' — link válido, miss_count zerado
+[main] 'Corrida Do Porto 2026' — link válido, miss_count zerado
+[main] 'Corrida Da Polícia Científica Do Paraná' — link válido, miss_count zerado
+[main] 'Corrida Escoteira - Sempre Alerta - 3ª Etapa Do Circuito Procorrer 2026' — link válido, miss_count zerado
+[main] 'Corrida Beneficiente Em Prol Dos Animais - Morillo'S Pet Run - 1ª Edição- 2026' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Belém Do Pará' — link válido, miss_count zerado
+[main] 'Circuito De Corridas Dos Distritos De Campinas 2026 - Etapa Ouro Verde' — link válido, miss_count zerado
+[main] 'Circuito Sustentável - Crc - Etapa Guarapuava' — link válido, miss_count zerado
+[main] 'Bike And Run Etapa Ii' — link válido, miss_count zerado
+[main] '40º Corrida Pedestre De Itu' — link válido, miss_count zerado
+[main] 'Corridas Unimed - Unimed Campos' — link válido, miss_count zerado
+[main] 'Solidariedade Em Movimento' — link válido, miss_count zerado
+[main] 'Corrida Do Choque 2026' — link válido, miss_count zerado
+[main] '2ª Corrida Do Leão' — link válido, miss_count zerado
+[main] 'Corrida E Aniversario 14 Anos Parque Madureira' — link válido, miss_count zerado
+[main] 'Cats Run SP 2026' — link válido, miss_count zerado
+[main] 'Corrida Ori Run' — link válido, miss_count zerado
+[main] 'Corrida Nu Vai Bem - Etapa Belo Horizonte' — link válido, miss_count zerado
+[main] 'Endorfina Run - Recreio' — link válido, miss_count zerado
+[main] 'Praias Secretas - Restinga De Bertioga Trail Running - 2026' — link válido, miss_count zerado
+[main] 'Arraiá Run 2026' — link válido, miss_count zerado
+[main] 'Corrida Do Autismo Angelo Chaves 2026' — link válido, miss_count zerado
+[main] 'Sunset Trail Running Festival' — link válido, miss_count zerado
 [main] 'Manitoba Marathon 2026' — link válido, miss_count zerado
-[main] 'The Red Schoolhouse Run' — link válido, miss_count zerado
 [main] 'Hustle For The Heroes 5K' — link válido, miss_count zerado
 [main] '2026 Daisy Dash 5K And Kids Fun Run' — link válido, miss_count zerado
 [main] '2026 Mchenry County Patriot Run' — link válido, miss_count zerado
-[main] '2026 Fleet Feet Training Programs' — link válido, miss_count zerado
+[main] 'The Red Schoolhouse Run' — link válido, miss_count zerado
 [main] 'Race Against Hate 2026' — link válido, miss_count zerado
+[main] '2026 Fleet Feet Training Programs' — link válido, miss_count zerado
+[main] 'Race In The Clouds - Alma Dirt Festival 2026' — link válido, miss_count zerado
+[main] 'High Line Canal Summer Scamper' — link válido, miss_count zerado
+[main] '2026 East Coast Beast Coast' — link válido, miss_count zerado
+[main] 'San Francisco Pride Run 2026' — link válido, miss_count zerado
+[main] 'Rise Above 5K' — link válido, miss_count zerado
+[main] '2026 Pride & Remembrance Run' — link válido, miss_count zerado
+[main] '55Th Annual Worthington Hills Firecracker Trot 5K' — link válido, miss_count zerado
+[main] 'Pdr Trail Running 2026' — link válido, miss_count zerado
+[main] '1ª Corrida Do Agricultor' — link válido, miss_count zerado
+[main] '9ª Meia Maratona De Uberaba' — link válido, miss_count zerado
+[main] 'Soldados De Cristo 9ª Missão - Corrida E Caminhada Solidária' — link válido, miss_count zerado
+[main] 'Jaragua Night Race - Edição Especial 150 Anos' — link válido, miss_count zerado
+[main] 'Circuito Orgulho De Viver Etapa Junho Vermelho Colégio Prevest' — link válido, miss_count zerado
+[main] 'Espinhaço Xtreme 2026' — link válido, miss_count zerado
+[main] 'Mata Viva Run 2026' — link válido, miss_count zerado
 [main] 'Run For A Resident 2026' — link válido, miss_count zerado
 [main] 'Red White And Blessed 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Stewart Memorial Hospital And Clinics 2-Mile Fun Run/Walk' — link válido, miss_count zerado
-[main] 'High Line Canal Summer Scamper' — link válido, miss_count zerado
+[main] 'Desafio Estrada Real - Night Run' — link válido, miss_count zerado
 [main] 'The Beat Goes On, Hosted By Firth Rural Fire And Rescue' — link válido, miss_count zerado
 [main] 'Miles For Maddog' — link válido, miss_count zerado
+[main] '15ª Corrida Turística De Piracicaba' — link válido, miss_count zerado
+[main] 'Sertão Run' — link válido, miss_count zerado
+[main] 'Pound Ridge 5K And Kids Dash' — link válido, miss_count zerado
+[main] 'Rio 21K 2026' — link válido, miss_count zerado
 [main] 'Neighborhood Food Pantries (Nfp) Shopping Cart Shuffle' — link válido, miss_count zerado
-[main] 'Red Feather Lakes 3.6 Mile Fun Run' — link válido, miss_count zerado
-[main] '2026 Beneva Vancouver Half Marathon' — link válido, miss_count zerado
+[main] '7ª Meia Maratona De Sao José 2026' — link válido, miss_count zerado
+[main] 'Circuito Pela Vida' — link válido, miss_count zerado
+[main] 'Circuito Vtr - Etapa Rota Do Vulcão' — link válido, miss_count zerado
+[main] '2ª Edição - Desafio 1.6K' — link válido, miss_count zerado
+[main] 'Corrida De Inverno De Confraternização Do Cristo Redentor' — link válido, miss_count zerado
+[main] '7 Circuito Samel Planos De Saúde De Corrida Manaus - AM' — link válido, miss_count zerado
+[main] 'Eco Run Hutchinson' — link válido, miss_count zerado
+[main] 'Corridas Sanepar 2026 - Válido Pelo Ranking Corridas Aent - Etapa 3' — link válido, miss_count zerado
+[main] '8ª Corrida Do Alto Do Moura' — link válido, miss_count zerado
+[main] 'Minions Run - Rio De Janeiro' — link válido, miss_count zerado
+[main] 'Corrida Km 1 - Etapa Maringá' — link válido, miss_count zerado
+[main] 'Corrida Santos Dumont - Estilo Do Corpo 21K' — link válido, miss_count zerado
+[main] 'Desafio Do Vale - Trilhas De Indaial' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Rio De Janeiro' — link válido, miss_count zerado
+[main] 'Xxii Corrida Do Artilheiro' — link válido, miss_count zerado
+[main] '2 Tbflovers Run 2026 - Parque Ecolôgico Do Tiete' — link válido, miss_count zerado
+[main] '2ª Corrida Do Meio Ambiente De Joinville' — link válido, miss_count zerado
+[main] 'V Meia Maratona Chapada Das Mesas' — link válido, miss_count zerado
+[main] 'Dash Run' — link válido, miss_count zerado
+[main] '3º Edição - Desafie-Se - Vença O Seminário' — link válido, miss_count zerado
+[main] 'X Force Run - 2ª Etapa' — link válido, miss_count zerado
+[main] 'Ladies' Run - Corrida Feminina - Edição De Inverno' — link válido, miss_count zerado
+[main] 'Corrida Conto Clássico Da Bela E A Fera' — link válido, miss_count zerado
+[main] '2ª Corrida E Caminhada São Pedro Apóstolo' — link válido, miss_count zerado
+[main] '2ª Rústica Do Colégio Tiradentes' — link válido, miss_count zerado
+[main] 'Endorfina Run - Santo André' — link válido, miss_count zerado
+[main] 'Circuito De Corridas Caixa 2026 - Etapa Ponta Grossa' — link válido, miss_count zerado
+[main] 'Pirassununga' — link válido, miss_count zerado
+[main] 'Smart Running Belém 3Km' — link válido, miss_count zerado
+[main] 'Corrida Moridrilha 2026' — link válido, miss_count zerado
+[main] '2º Corrida Modelo Fm' — link válido, miss_count zerado
+[main] '4 Corrida E Caminhada Da Paróquia De São Pedro E São Paulo' — link válido, miss_count zerado
+[main] 'Pleasant Hill Firecracker 5K' — link válido, miss_count zerado
+[main] 'Stars & Stripes 2026' — link válido, miss_count zerado
+[main] 'Liberty Station Relay And 5K' — link válido, miss_count zerado
 [main] 'The Land We Love Run' — link válido, miss_count zerado
-[main] 'Belle Fourche Rodeo Run 5K/10K' — link válido, miss_count zerado
-[main] 'Mount Evans Freedom Run 5K' — link válido, miss_count zerado
-[main] '2026 Niwot Mile' — link válido, miss_count zerado
+[main] '8ª Corrida De Montanha Paraíso Da Serra' — link válido, miss_count zerado
+[main] 'Love Run 2026' — link válido, miss_count zerado
+[main] 'Maratona Kids Boulevard - Campeões Do Mundo' — link válido, miss_count zerado
+[main] '9ª Corrida Do Fogo - Corpo De Bombeiros Militar De Sergipe 2026' — link válido, miss_count zerado
+[main] 'Desafio De Corrida 60 Anos Do Corpo De Bombeiros Voluntários De Jaraguá Do Sul' — link válido, miss_count zerado
+[main] 'Iii Corrida Do Choque' — link válido, miss_count zerado
+[main] 'Red Feather Lakes 3.6 Mile Fun Run' — link válido, miss_count zerado
+[main] 'Srb Paraty 2026' — link válido, miss_count zerado
+[main] 'Race Across California - 2026' — link válido, miss_count zerado
 [main] 'Seward Freedom Run - 2026' — link válido, miss_count zerado
-[main] '4Th Of July Annual Freedom Fun Run - Dexter' — link válido, miss_count zerado
-[main] 'Urbandale Independence Day Races' — link válido, miss_count zerado
+[main] 'Mount Evans Freedom Run 5K' — link válido, miss_count zerado
+[main] 'Belle Fourche Rodeo Run 5K/10K' — link válido, miss_count zerado
 [main] 'Deerfield Rotary Club Race' — link válido, miss_count zerado
-[main] 'Freedom Four' — link válido, miss_count zerado
+[main] 'Urbandale Independence Day Races' — link válido, miss_count zerado
+[main] '2026 Niwot Mile' — link válido, miss_count zerado
+[main] 'Run For Chocolate 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Freedom Run' — link válido, miss_count zerado
 [main] 'Run For Chocolate 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'Treinão Na Marra Vai' — link válido, miss_count zerado
-[main] '1ª Corrida Bom Treino Runners' — link válido, miss_count zerado
+[main] '4Th Of July Annual Freedom Fun Run - Dexter' — link válido, miss_count zerado
 [main] '4Th Of July Barrington' — link válido, miss_count zerado
+[main] 'Claro Maratona Do Sol 2026' — link válido, miss_count zerado
+[main] 'Freedom Four' — link válido, miss_count zerado
+[main] '28ª Maratona Internacional De Blumenau - 2026' — link válido, miss_count zerado
+[main] 'Festival Internacional | Estrada Real' — link válido, miss_count zerado
+[main] 'Circuito Grupo Central - Etapa S. Paraíso 2026' — link válido, miss_count zerado
 [main] 'Firecracker Run Presented By Mercy One Genesis' — link válido, miss_count zerado
-[main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
+[main] '15K De Santa - Inverno 2026' — link válido, miss_count zerado
+[main] 'Borboletas Run 2026 - Etapa Parque Ecolôgico Do Tiête' — link válido, miss_count zerado
+[main] 'Picos Pro Race Classic 2026' — link válido, miss_count zerado
+[main] 'Corrida De Rua Hupi - Etapa Joinville - 2026' — link válido, miss_count zerado
+[main] 'Jacutinga Trail Run' — link válido, miss_count zerado
+[main] 'Corrida Bob Esponja | São Caetano' — link válido, miss_count zerado
+[main] 'Smurfs Run Shopping Jardins - Aracaju' — link válido, miss_count zerado
+[main] 'Cats Run GO 2026' — link válido, miss_count zerado
+[main] '1º Corrida E Caminhada Respeita Meu Pace' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Porto Alegre' — link válido, miss_count zerado
+[main] '9 Corrida I Love Run 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada De Cabofrio 2026' — link válido, miss_count zerado
+[main] 'Maratona De Campo Grande 2026' — link válido, miss_count zerado
+[main] 'Corre Sin Comerciarios 2026' — link válido, miss_count zerado
+[main] 'Corrida Inclui Tea' — link válido, miss_count zerado
+[main] 'Corrida Mazza Run - Herois - Osasco' — link válido, miss_count zerado
+[main] 'Corrida Das Poderosas 2026 - 2ª Etapa' — link válido, miss_count zerado
+[main] '10ª Corrida E Caminhada Do Mercado Central' — link válido, miss_count zerado
+[main] '3ª Cdl Run - 2026' — link válido, miss_count zerado
+[main] 'Correr E Arte' — link válido, miss_count zerado
+[main] '2ª Corrida E Caminhada Do Padroeiro De São Pedro Da Aldeia' — link válido, miss_count zerado
+[main] '4ª Corrida Aabb Canoas' — link válido, miss_count zerado
+[main] 'Circuito Xrun 2026 - 2ª Etapa - Cup Edition' — link válido, miss_count zerado
+[main] '4ª Corrida Do Fogo - Rio Negrinho (Sc)' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada São Pedro E São Paulo' — link válido, miss_count zerado
+[main] 'Maratona De Londrina 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Sao Bento' — link válido, miss_count zerado
+[main] '1ª Run Mara Fitness' — link válido, miss_count zerado
+[main] '1ª Corrida Bom Treino Runners' — link válido, miss_count zerado
+[main] 'Treinão Na Marra Vai' — link válido, miss_count zerado
+[main] 'Corrida 9 De Julho' — link válido, miss_count zerado
+[main] '1932 Run Arena 5Km' — link válido, miss_count zerado
 [main] 'America'S 250 Freedom Run 5K' — link válido, miss_count zerado
-[main] 'Will Run For Cannoli 5K' — link válido, miss_count zerado
-[main] 'Polk County Fair 5K' — link válido, miss_count zerado
-[main] 'Cmv Canada Half Marathon' — link válido, miss_count zerado
 [main] 'Ames Midnight Madness Road Race' — link válido, miss_count zerado
+[main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
+[main] 'Corrida Saúde Night Run 2026' — link válido, miss_count zerado
+[main] '3º Trail Run Naturalpuros' — link válido, miss_count zerado
+[main] 'Chester Chipmunk'S Trail Run Challenge' — link válido, miss_count zerado
+[main] 'Will Run For Cannoli 5K' — link válido, miss_count zerado
+[main] 'Circuito Caixa Sunset Run - Etapa Palmas' — link válido, miss_count zerado
+[main] 'Bloom Energy & Tarana Wireless Stars And Strides 5K-10K Run/Walk & Kids Fun Run' — link válido, miss_count zerado
+[main] 'New Balance 42K Porto Alegre - 2026' — link válido, miss_count zerado
+[main] 'Tropeiro Trail Run 2026' — link válido, miss_count zerado
+[main] 'Corrida Das Falésias 2026' — link válido, miss_count zerado
+[main] 'Asics Golden Run 2026 - Etapa RJ' — link válido, miss_count zerado
+[main] 'Corrida Unimed Natal' — link válido, miss_count zerado
+[main] 'Savage Trail Run - Etapa Refúgio Dos Pinheiros' — link válido, miss_count zerado
+[main] 'Fresh Run Super Muffato 2026 - São José Do Rio Preto' — link válido, miss_count zerado
+[main] 'Polk County Fair 5K' — link válido, miss_count zerado
+[main] 'Bemol Run Rio Branco 2026' — link válido, miss_count zerado
+[main] 'Floractive Running' — link válido, miss_count zerado
 [main] 'Madelia Health Foundation 5K/1M Run/Walk' — link válido, miss_count zerado
+[main] 'Corrida Cabo Pm Pereira 11 Gb Caraguatatubasp' — link válido, miss_count zerado
+[main] 'Cats Run DF 2026' — link válido, miss_count zerado
+[main] '4ª Corrida Supermercados Rex - 2026' — link válido, miss_count zerado
+[main] 'Corrida Aniversário Do Musal' — link válido, miss_count zerado
+[main] '6ª Marília Half Marathon - Meia Maratona' — link válido, miss_count zerado
+[main] '3º Corrida E Caminhada Sonhar Acordado' — link válido, miss_count zerado
+[main] 'Corrida Mazza Run 2 Edição Circuito Peruibe' — link válido, miss_count zerado
+[main] 'Circuito Sesi De Corridas Das Indústrias - Etapa Campo Mourão' — link válido, miss_count zerado
+[main] '1ª Run Reis E Vila' — link válido, miss_count zerado
+[main] 'Goya Movimenta Run' — link válido, miss_count zerado
+[main] 'Vcp Run 2026' — link válido, miss_count zerado
+[main] '21K Juquehy (3ª Edição)' — link válido, miss_count zerado
+[main] 'Pedra Rachada 2026' — link válido, miss_count zerado
+[main] 'Corridas Contos Clássicos - Ursinho Pooh' — link válido, miss_count zerado
+[main] 'X Meia Maratona Estrada Real 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Sest Senat Betim' — link válido, miss_count zerado
+[main] 'Botafogo Run' — link válido, miss_count zerado
+[main] 'Run Valinhos 1ª Etapa 2026' — link válido, miss_count zerado
+[main] '2ª Corrida Rede Bom Lugar' — link válido, miss_count zerado
+[main] 'Vascorrida 2026 - Natal' — link válido, miss_count zerado
+[main] 'Safety Run 2026' — link válido, miss_count zerado
+[main] '6ª Etapa Guará Trail Run' — link válido, miss_count zerado
+[main] 'Ultramaratona Dos Perdidos 2026' — link válido, miss_count zerado
+[main] 'C.R.A Air Force Running 5K' — link válido, miss_count zerado
+[main] '1ª Corrida Do Colono | Sociedade Rio Da Prata' — link válido, miss_count zerado
+[main] '5K Run/Walk For Lynne' — link válido, miss_count zerado
+[main] 'Pet Run Cabreúva' — link válido, miss_count zerado
+[main] 'Cmv Canada Half Marathon' — link válido, miss_count zerado
+[main] '3ª Corrida Da Reconciliação - Ano Da Palavra' — link válido, miss_count zerado
+[main] 'Pedra Branca Night Run' — link válido, miss_count zerado
+[main] '1 Corrida Da Suiça Brasileira - Night Gravatá' — link válido, miss_count zerado
+[main] 'Race For Ymca 5K/10K' — link válido, miss_count zerado
+[main] 'Night Run Cabo Frio 2026' — link válido, miss_count zerado
+[main] '2ª O Castelo Trail Run' — link válido, miss_count zerado
+[main] 'Circuito Talimaq De Corrida Nas Estações' — link válido, miss_count zerado
+[main] 'Corrida Julina - Edição Fogueira' — link válido, miss_count zerado
+[main] 'Corrida São Vicente Meia Maratona De Sorocaba 2026' — link válido, miss_count zerado
+[main] 'Circuito Caixa Sunset Run - Etapa Santarém' — link válido, miss_count zerado
+[main] 'Maratona Serra Imperial - 2026' — link válido, miss_count zerado
+[main] 'Desafio Das Torres Meia Maratona' — link válido, miss_count zerado
+[main] 'Meia Maratona Internacional De Ribeirão Preto - 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Matão City Upa Vet 5Km' — link válido, miss_count zerado
 [main] 'Bob Lauterbach Memorial Columbus Downtown Runaround' — link válido, miss_count zerado
+[main] 'Caixa | Corridas Pelo Nordeste - Caruaru-Pe' — link válido, miss_count zerado
+[main] '2ª Corrida Histórica Do Centro De Santos' — link válido, miss_count zerado
+[main] 'Corrida Cdl Blumenau' — link válido, miss_count zerado
+[main] 'Xiv Corrida Da Rone' — link válido, miss_count zerado
+[main] 'Cats Run TO 2026' — link válido, miss_count zerado
+[main] 'Corrida Vlz Esportes 10 Anos' — link válido, miss_count zerado
+[main] 'Corrida Da Padroeira Sant'Ana' — link válido, miss_count zerado
+[main] 'Brasil Go! Run' — link válido, miss_count zerado
+[main] 'As Brabas Run' — link válido, miss_count zerado
+[main] 'Porto Run - 2ª Edição' — link válido, miss_count zerado
+[main] 'Corrida Poseidon 7K, 14K E Kids - 2026' — link válido, miss_count zerado
+[main] 'Corrida Morning Run - Etapa Autodromo Interlagos 2026' — link válido, miss_count zerado
 [main] 'Drewby Dash' — link válido, miss_count zerado
 [main] 'Clive Running Festival - 2026' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa Grande Florianópolis' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Amor E Movimento 2026' — link válido, miss_count zerado
+[main] '1ª Meia Maratona De Balneário Piçarras' — link válido, miss_count zerado
 [main] 'Ashby Appreciation Days 5K/10K' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Correndo Com O Samuel - Etapa Lua' — link válido, miss_count zerado
+[main] 'Xterra Mina De Águas Claras 2026' — link válido, miss_count zerado
+[main] '1 Dog Run Recife' — link válido, miss_count zerado
+[main] 'Mountain Do Costão Do Santinho 2026' — link válido, miss_count zerado
+[main] 'Campo Base Trail Run' — link válido, miss_count zerado
+[main] 'Corrida Toca Raul Porto Real' — link válido, miss_count zerado
+[main] 'Circuito De Corridas Pague Menos - 5ª Etapa Paulínia 2026' — link válido, miss_count zerado
+[main] 'Maratona Do Litoral' — link válido, miss_count zerado
+[main] 'Corrida Da Padroeira 2026' — link válido, miss_count zerado
 [main] 'Floyd Hill Dash' — link válido, miss_count zerado
+[main] 'Circuito Da Lua Mcz 2026 - Sococo 60 Anos' — link válido, miss_count zerado
+[main] 'Run For Coffee Lovers 5K/10K/13.1 Sacramento' — link válido, miss_count zerado
+[main] 'Circuito Buriquioca De Corrida 3º Etapa Night - 2026' — link válido, miss_count zerado
 [main] 'The Hero'S Journey 5K' — link válido, miss_count zerado
-[main] 'Run For Donuts 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
-[main] 'Crystal Lake Aquathon - 2026' — link válido, miss_count zerado
-[main] 'Run For Donuts 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
-[main] 'Haven Half Marathon, 30K & 10K' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
-[main] 'Ncsl Fun Run 5K' — link válido, miss_count zerado
-[main] 'Wild West Relay' — link válido, miss_count zerado
+[main] '9Th Annual Courtney Roderick Run For Recovery' — link válido, miss_count zerado
+[main] 'Heroica Trail Experience' — link válido, miss_count zerado
+[main] 'Corrida Turística De Holambra 2026' — link válido, miss_count zerado
+[main] 'Corrida Comprebem Supermercado 2026' — link válido, miss_count zerado
+[main] 'Iv Corrida Do Bope' — link válido, miss_count zerado
+[main] '6 Milhas Da Reserva - 2026' — link válido, miss_count zerado
+[main] 'Tropa Bruta Trail Run 2026' — link válido, miss_count zerado
+[main] 'Asics Run Challenge 2026 - Etapa Brasília' — link válido, miss_count zerado
+[main] '2º Meia Maratona Do Marco Zero' — link válido, miss_count zerado
+[main] '5ª Corrida De Rua Em Centro De Treinamento' — link válido, miss_count zerado
+[main] 'Bemol Run Porto Velho 2026' — link válido, miss_count zerado
+[main] 'South Bay 24' — link válido, miss_count zerado
+[main] 'Iop Beach Run 2026' — link válido, miss_count zerado
+[main] '4ª Corrida E Caminhada Maricá Run 2026 (Edição - Inverno)' — link válido, miss_count zerado
+[main] 'Circuito Dos Elementos Etapa Água' — link válido, miss_count zerado
+[main] '12 Corrida Farmácia Santa Lúcia' — link válido, miss_count zerado
+[main] '2ª Corrida E Caminhada Da Cooperação' — link válido, miss_count zerado
+[main] '2ª Forest Run' — link válido, miss_count zerado
+[main] 'Corrida Plenitude' — link válido, miss_count zerado
+[main] 'Viii Corrida Dos Fortes 10K 2026' — link válido, miss_count zerado
+[main] '8º Corrida Dos Fortes Guarujá' — link válido, miss_count zerado
 [main] 'Resurrection Run' — link válido, miss_count zerado
-[main] 'Ride For Sight (Rural Ride) And Cheyenne Sunrise Lions Tour De Donut (Greenway Family Ride)' — link válido, miss_count zerado
-[main] '2026 Stride To Save Lives 5K/10K' — link válido, miss_count zerado
-[main] 'Totally Awesome Casa Costume 5K' — link válido, miss_count zerado
-[main] 'Patrick Freeberg Memorial Scholarship 5K' — link válido, miss_count zerado
-[main] 'Lean Horse Ultra Marathon' — link válido, miss_count zerado
+[main] 'Corrida Do Verde - Edição Especial' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa São Miguel Do Oeste' — link válido, miss_count zerado
+[main] '2º Corrida Festival Franco Do Rock 2026' — link válido, miss_count zerado
+[main] 'Discover Trail - Bateias 2026' — link válido, miss_count zerado
+[main] 'Corrida Das Academias 7ª Edição' — link válido, miss_count zerado
+[main] 'Una Run' — link válido, miss_count zerado
+[main] 'Gatas Do Asfalto 5Km' — link válido, miss_count zerado
+[main] 'Mentone Run - A Identidade 3 E 7Km' — link válido, miss_count zerado
+[main] 'Crystal Lake Aquathon - 2026' — link válido, miss_count zerado
+[main] 'Haven Half Marathon, 30K & 10K' — link válido, miss_count zerado
+[main] 'Corrida Da Imigração' — link válido, miss_count zerado
+[main] 'Corrida Dia Da Amizade 4Km' — link válido, miss_count zerado
+[main] 'Wild West Relay' — link válido, miss_count zerado
+[main] '2026 Lindsay Milk Run' — link válido, miss_count zerado
+[main] 'Moreno Night Race' — link válido, miss_count zerado
+[main] 'Circuito Arnoni Fitness' — link válido, miss_count zerado
+[main] '6ª Maratona Internacional De João Pessoa' — link válido, miss_count zerado
+[main] 'Reggie Oeltjen Douglas Trail 11-Mile Race' — link válido, miss_count zerado
+[main] 'Ncsl Fun Run 5K' — link válido, miss_count zerado
+[main] 'Music Night Run - Etapa Embu Das Artes' — link válido, miss_count zerado
+[main] 'Susan B Anthony Women’S 5K' — link válido, miss_count zerado
 [main] 'A Sundae In July 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Meia Maratona De Petrópolis' — link válido, miss_count zerado
+[main] 'Prf Run 2026 - 1ª Corrida Da Polícia Rodoviária Federal De Pernambuco' — link válido, miss_count zerado
+[main] 'RR Test Mmt' — link válido, miss_count zerado
+[main] '5K Race For Plates (Stockthesummer.Ca)' — link válido, miss_count zerado
+[main] 'Asics Run Challenge 2026 - Etapa Fortaleza' — link válido, miss_count zerado
+[main] 'Big Conradinho Run' — link válido, miss_count zerado
+[main] 'Copa Lagoa Da Jansen' — link válido, miss_count zerado
+[main] 'Corrida Bmbrrun' — link válido, miss_count zerado
+[main] 'Bonshaw Trail Races' — link válido, miss_count zerado
+[main] '2ª Menegotti Run Together' — link válido, miss_count zerado
+[main] 'Meia Maratona Prime Run 2026' — link válido, miss_count zerado
+[main] 'Desafio 21K Comprevalle' — link válido, miss_count zerado
+[main] '2026 Stride To Save Lives 5K/10K' — link válido, miss_count zerado
+[main] 'Corrida Hiperideal - 2ª Edição Feira De Santana' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Frísia 2026' — link válido, miss_count zerado
+[main] 'Top Five Run' — link válido, miss_count zerado
+[main] '2ª Edição Da Corrida E Caminhada Corre Liber' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Teresina' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Ribeirão Preto' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Pequeno Príncipe' — link válido, miss_count zerado
+[main] 'Totally Awesome Casa Costume 5K' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa Brasília' — link válido, miss_count zerado
+[main] 'Circuito RJ 2026 - 2ª Etapa' — link válido, miss_count zerado
+[main] '4ª Corrida De Rua Corre Sto' — link válido, miss_count zerado
+[main] '2ª Corrida Intent Gym Blumenau - SC' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa Joinvile' — link válido, miss_count zerado
+[main] '2ª Princesas Run Alphaville Barueri' — link válido, miss_count zerado
+[main] '1ª Corrida Acep - Edição Comemorativa 60 Anos' — link válido, miss_count zerado
+[main] 'Circuito Sesi De Corridas Das Indústrias - Etapa Maringá' — link válido, miss_count zerado
+[main] 'Race Of Hope Southampton' — link válido, miss_count zerado
+[main] 'Ride For Sight (Rural Ride) And Cheyenne Sunrise Lions Tour De Donut (Greenway Family Ride)' — link válido, miss_count zerado
+[main] '1ª Night Run Parque Do Trote' — link válido, miss_count zerado
+[main] 'Night Run Joinville 2026' — link válido, miss_count zerado
 [main] '2026 Rvn3 Bubba Run' — link válido, miss_count zerado
+[main] 'Chad’S Day For Change Urban Trail Race' — link válido, miss_count zerado
+[main] 'Eclipse Night Run - Lua Minguante' — link válido, miss_count zerado
+[main] 'Race The Reserve Whidbey Island' — link válido, miss_count zerado
+[main] 'Race The Runway 5.02K' — link válido, miss_count zerado
 [main] 'Summer Sizzler- Denver' — link válido, miss_count zerado
 [main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
+[main] '4ª Corrida Ccrn Run' — link válido, miss_count zerado
+[main] 'For You Run 2026' — link válido, miss_count zerado
+[main] 'Maracatu Atomico Run' — link válido, miss_count zerado
+[main] 'Fresh Run Super Muffato 2026 - Maringá' — link válido, miss_count zerado
+[main] 'Demi-Marathon Sun Life Des Vignobles' — link válido, miss_count zerado
+[main] 'Corrida Do Bob Esponja | Ribeirão Preto' — link válido, miss_count zerado
+[main] 'Rio Maravilha Etapa Inverno 2026' — link válido, miss_count zerado
+[main] 'Chocorun - Ribeirão Pires' — link válido, miss_count zerado
+[main] '2026 Demi-Marathon Mont-Tremblant' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa Tubarão' — link válido, miss_count zerado
+[main] '3ª Corrida Agosto Lilás De Combate À Violência Contra A Mulher - Etapa Autódromo De Interlagos 2026' — link válido, miss_count zerado
+[main] 'Foz Run 2026' — link válido, miss_count zerado
+[main] '19ª Corrida Da Padroeira De Cabo Frio Nossa Senhora Da Assunção 2026' — link válido, miss_count zerado
+[main] '3ª Corrida Boca Amarela' — link válido, miss_count zerado
+[main] 'Corrida Top Run 5Km' — link válido, miss_count zerado
+[main] '1ª Corrida Dos Pais' — link válido, miss_count zerado
 [main] 'The Bullfrog Summer Surge' — link válido, miss_count zerado
 [main] 'Race Judicata 2026' — link válido, miss_count zerado
+[main] 'Mindful Miles 5K' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Cobble Hill 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Lagoinha | Cuiabá' — link válido, miss_count zerado
+[main] 'Circuito Caixa Sunset Run - Etapa Rio Branco' — link válido, miss_count zerado
+[main] 'Corrida Mundo Livre 2026' — link válido, miss_count zerado
+[main] '1ª Corrida Hora Do Horror Hopi Hari' — link válido, miss_count zerado
+[main] 'Ultramaratona 100K Night Run Londrina 2026' — link válido, miss_count zerado
 [main] 'Sunrise Stampede' — link válido, miss_count zerado
 [main] '2026 Mt. Sneffels Half Marathon-10K-Kids-Fun Run' — link válido, miss_count zerado
-[main] 'Dundee Dash 5K' — link válido, miss_count zerado
 [main] '2Nd Annual Father Arul Memorial 5K Run/Walk & 1 Mile Fun Run' — link válido, miss_count zerado
-[main] 'Rebel Run 5K' — link válido, miss_count zerado
-[main] 'Run Like The Wind 5K / 2K / Dog Jog' — link válido, miss_count zerado
-[main] 'I Love Regina Run & Walk' — link válido, miss_count zerado
+[main] 'The Wooly Bully Races' — link válido, miss_count zerado
+[main] 'Pátio Gourmet Run 2026' — link válido, miss_count zerado
+[main] 'Corrida Do Chaves' — link válido, miss_count zerado
+[main] '50 Anos Café Ouro Verde' — link válido, miss_count zerado
+[main] 'Corrida Nu Vai Bem - Etapa Salvador' — link válido, miss_count zerado
+[main] '2º Corrida Kairós Run' — link válido, miss_count zerado
+[main] '26ª Corrida Duque De Caxias 2026' — link válido, miss_count zerado
+[main] 'Corrida Movimento Movimenta' — link válido, miss_count zerado
+[main] 'Flashback Morning Run 2026' — link válido, miss_count zerado
+[main] '1ª Acqualinda Volcano Run' — link válido, miss_count zerado
+[main] 'Meia Maratona De Pinhais' — link válido, miss_count zerado
+[main] 'Santo Run' — link válido, miss_count zerado
+[main] '2ª Corrida Viiv' — link válido, miss_count zerado
+[main] 'Festival Vamos Passear - Etapa São Paulo' — link válido, miss_count zerado
+[main] 'Corrida Da Paz 2026' — link válido, miss_count zerado
+[main] 'Corrida Do Hc - Movimento Que Cuida' — link válido, miss_count zerado
+[main] 'Circuito Allrunning 3º Etapa Recreio Dos Bandeirantes' — link válido, miss_count zerado
+[main] 'Furiosas Run' — link válido, miss_count zerado
 [main] 'Xterra Sleeping Giant - 2026' — link válido, miss_count zerado
+[main] 'Triton 3 Rio De Janeiro 2026' — link válido, miss_count zerado
+[main] 'Jaguars Prowl 5K' — link válido, miss_count zerado
+[main] 'Desafio Do Anjo 2026' — link válido, miss_count zerado
+[main] '24Th Annual Beat The Heat 5K' — link válido, miss_count zerado
+[main] 'Pajamas All Day 5K & Fun Run' — link válido, miss_count zerado
+[main] 'Circuito Runaway 2026 - Etapa Garra' — link válido, miss_count zerado
+[main] 'Corrida Dos Bancários Do RN 2026 - 6ª Edição' — link válido, miss_count zerado
+[main] '1ª Corrida Prf MS - 2026' — link válido, miss_count zerado
+[main] '1ª Meia Maratona De Jundiaí' — link válido, miss_count zerado
+[main] 'Maratona Fila 2026' — link válido, miss_count zerado
+[main] 'Circuito De Corridas Pague Menos - 6ª Etapa Piracicaba - 2026' — link válido, miss_count zerado
+[main] 'I Love Regina Run & Walk' — link válido, miss_count zerado
+[main] 'Mountain Do Campos Do Jordão 2026' — link válido, miss_count zerado
+[main] 'Chama Riacho 2026' — link válido, miss_count zerado
+[main] 'Corrida Pela Proteção Dos Animais 2026 - Joinville-Sc' — link válido, miss_count zerado
+[main] 'Desafio 15K Casa Esportiva 2026' — link válido, miss_count zerado
+[main] 'Sorocaba Speed Series - Evolution Run' — link válido, miss_count zerado
+[main] '2ª Corrida Com O Senhor Bom Jesus' — link válido, miss_count zerado
+[main] 'Super 5K 2026' — link válido, miss_count zerado
+[main] '12ª Corrida Rústica Solidária' — link válido, miss_count zerado
+[main] 'Hap Crim Festival Of Races' — link válido, miss_count zerado
+[main] 'Corrida Fit Company No Paraíso - 2ª Edição' — link válido, miss_count zerado
+[main] '3ª Corrida Agosto Lilás De Combate À Violência Contra A Mulher - Etapa Parque Ecolôgico Do Tiête 2026' — link válido, miss_count zerado
+[main] 'Passos Da Inclusão Run' — link válido, miss_count zerado
+[main] '5ª Corrida Da Equipe Vapor 2026' — link válido, miss_count zerado
+[main] '21K Buenos Aires 2026' — link válido, miss_count zerado
+[main] 'Circuito Goitacá Run - Etapa Folhas E Raízes' — link válido, miss_count zerado
+[main] '1ª Corrida Do 24º Bpm' — link válido, miss_count zerado
+[main] '3ª Corrida E Caminhada Instituto Netuno' — link válido, miss_count zerado
+[main] 'A Corrida I-Run - Corrida Do Forte' — link válido, miss_count zerado
+[main] 'Rebel Run 5K' — link válido, miss_count zerado
+[main] '2026 Angel Island Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Lost And Found' — link válido, miss_count zerado
+[main] 'Run Like The Wind 5K / 2K / Dog Jog' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre São José Do Rio Preto' — link válido, miss_count zerado
 [main] 'Speedy Pd' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
+[main] 'Maratona Internacional De Floripa Fibra 2026' — link válido, miss_count zerado
+[main] 'Maratona De Vitória 2026' — link válido, miss_count zerado
+[main] 'Corporate Run 2026' — link válido, miss_count zerado
+[main] '13 Maratona Em Movimento Em Goiania' — link válido, miss_count zerado
+[main] '3 Corrida De Rua Tr Performance' — link válido, miss_count zerado
+[main] 'Maratona De Assunção 2026' — link válido, miss_count zerado
+[main] 'Meia Maratona Laghetto 2026' — link válido, miss_count zerado
+[main] 'Corrida Das Marés 2026' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Boa Vista' — link válido, miss_count zerado
 [main] 'See Dick Run Grand Forks 10' — link válido, miss_count zerado
 [main] 'Sloth Run 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'The Denver 5K' — link válido, miss_count zerado
+[main] 'Parque Shopping Run 2026 - Maceió Alagoas' — link válido, miss_count zerado
+[main] 'Oab Run 2026' — link válido, miss_count zerado
+[main] 'Plaza Running Edição 40 Anos' — link válido, miss_count zerado
+[main] 'Smurfs Run Salvador Norte Shopping' — link válido, miss_count zerado
+[main] 'Carioca Family Run 2026' — link válido, miss_count zerado
+[main] '1ª Corrida Da Polícia Federal Em Ponta Grossa - PR' — link válido, miss_count zerado
+[main] 'Só Vai Trail Run - Etapa Amparo' — link válido, miss_count zerado
+[main] '19ª Corrida Juventus' — link válido, miss_count zerado
+[main] 'Nutrição Brasil Run 2026' — link válido, miss_count zerado
+[main] 'Barça Run São Paulo 2026' — link válido, miss_count zerado
+[main] 'Circuito Histórico Da Lapa - Etapa General Carneiro' — link válido, miss_count zerado
+[main] 'Corrida Km 1 - Etapa São José Dos Pinhais' — link válido, miss_count zerado
+[main] '10ª Corrida Unimed Cascavel - 2026' — link válido, miss_count zerado
+[main] '1ª Corrida De Rua Running On' — link válido, miss_count zerado
+[main] 'Corrida Das Patroas 2026 - Recreio' — link válido, miss_count zerado
+[main] '5ª Corrida Do Sintese 2026' — link válido, miss_count zerado
+[main] '5ª Corrida Ilk Pantera Negra' — link válido, miss_count zerado
+[main] 'Corrida Do Soldado 2026' — link válido, miss_count zerado
+[main] 'Cats Run RS 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Contos Clássicos - Branca De Neve' — link válido, miss_count zerado
+[main] 'Cassino Ultra Race 2026 A Maior Ultramaratona De Praia Do Mundo' — link válido, miss_count zerado
+[main] 'Cyborg Run 5K' — link válido, miss_count zerado
+[main] 'Run For Ottawa 2026' — link válido, miss_count zerado
+[main] 'Course Du Festival Acadien / Acadian Festival Road Race' — link válido, miss_count zerado
+[main] '13º Ultradesafio Sana - Macaérj 2026.' — link válido, miss_count zerado
+[main] 'Missionária Night Run | 4ª Edição' — link válido, miss_count zerado
+[main] 'Independence Night Run 2026' — link válido, miss_count zerado
+[main] '5 Edição Night Trail Running Passa Quatro-Mg' — link válido, miss_count zerado
+[main] 'Maratona De Bonito' — link válido, miss_count zerado
+[main] 'Bota Pra Correr Olympikus - Chapada Dos Guimarães' — link válido, miss_count zerado
+[main] '9ª Corrida Turística De Jaguariúna' — link válido, miss_count zerado
+[main] '3º Corre Corinthians' — link válido, miss_count zerado
+[main] 'Maratona De Punta Del Este 2026' — link válido, miss_count zerado
+[main] 'Vascorrida 2026 - Floripa' — link válido, miss_count zerado
+[main] 'Meia Maratona Guarda Do Embaú Banlek 2026' — link válido, miss_count zerado
+[main] 'Circuito Correndo Pelo Rio 2026 - Fundão' — link válido, miss_count zerado
+[main] '9ª Corrida E Caminhada De Combate Ao Avc' — link válido, miss_count zerado
+[main] 'Xxi Troféu Da Independência' — link válido, miss_count zerado
 [main] 'Newbo Run' — link válido, miss_count zerado
 [main] 'Victory Races' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
+[main] '16Th Annual Donor Network West Foundation Run/Walk' — link válido, miss_count zerado
+[main] '31St Annual Run To The Rock' — link válido, miss_count zerado
+[main] '2026 Call To Duty Memorial 10K & 5K' — link válido, miss_count zerado
+[main] 'South End Shuffle 5K & 1 Mile' — link válido, miss_count zerado
+[main] 'Jace'S Journey 5K & Fun Run' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Course De La Cité-Limoilou 2026' — link válido, miss_count zerado
+[main] 'She.Is.Beautiful 5K & 10K Santa Barbara 2026' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Tampa' — link válido, miss_count zerado
+[main] 'Desafio Rota Da Baleia 80K 2026' — link válido, miss_count zerado
+[main] 'Trail Run Serra Da Bodoquena 2026' — link válido, miss_count zerado
+[main] 'Maggie'S Run' — link válido, miss_count zerado
+[main] 'Iron Biker Brasil 2026 Cc' — link válido, miss_count zerado
+[main] 'Ii Corrida Da Linguiça 2026' — link válido, miss_count zerado
+[main] 'Race The River: Saspamco' — link válido, miss_count zerado
+[main] 'The Denver 5K' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada Noturna Do 4º Cpm - Maringá' — link válido, miss_count zerado
 [main] '14Th Annual 5K Walk/Run' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
 [main] 'Impact The Cause' — link válido, miss_count zerado
 [main] '2026 Rino 5K + Larimer Mile' — link válido, miss_count zerado
 [main] '42Nd Annual Healthy Human Race' — link válido, miss_count zerado
@@ -282,132 +907,370 @@
 [main] 'Run For Mental Health 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
 [main] 'Volunteer Registration - Gospel Run 2026' — link válido, miss_count zerado
-[main] 'Tiger Prowl 5K' — link válido, miss_count zerado
-[main] '2026 Too Hot To Handle 5K, 10K & Half' — link válido, miss_count zerado
-[main] 'Rmrr September Trophy Series' — link válido, miss_count zerado
-[main] 'Chicago Gospel Run 2026' — link válido, miss_count zerado
+[main] 'Alcatraz Open Swim 2026' — link válido, miss_count zerado
 [main] 'Pirate'S Booty' — link válido, miss_count zerado
+[main] 'Chicago Gospel Run 2026' — link válido, miss_count zerado
+[main] 'Buffalo Stampede 10-Mile And 4-Mile Run/Walk' — link válido, miss_count zerado
+[main] '2026 Too Hot To Handle 5K, 10K & Half' — link válido, miss_count zerado
+[main] 'Run For Barrie 2026' — link válido, miss_count zerado
+[main] 'Challenge Esprit Montreal' — link válido, miss_count zerado
+[main] 'Asics Run Challenge 2026 - Etapa Salvador' — link válido, miss_count zerado
+[main] '12ª Corrida Da Ame' — link válido, miss_count zerado
+[main] 'Marathon Groupe Ouellet Bolduc De Rimouski 2026 Propulsé Par Desjardins' — link válido, miss_count zerado
+[main] 'Urban Run' — link válido, miss_count zerado
+[main] '5º Corridão Rotam- Pm Alagoas' — link válido, miss_count zerado
+[main] 'Corrida Do Gigante - Itu 2026' — link válido, miss_count zerado
+[main] '3ª Saea Run 2026' — link válido, miss_count zerado
+[main] 'Barra Run 2026' — link válido, miss_count zerado
+[main] '4ª Corrida Da Esperança' — link válido, miss_count zerado
+[main] 'Jtc Run 2026 - Joinville - SC' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Florianópolis' — link válido, miss_count zerado
+[main] 'Vale Race 2026 - 2ª Edição' — link válido, miss_count zerado
+[main] 'Meia Maratona De Limeira' — link válido, miss_count zerado
+[main] '10ª Corrida Avenida Brasil 2026' — link válido, miss_count zerado
+[main] '1ª Progresssive Run' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa Criciúma' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada Setembro Amarelo 2026' — link válido, miss_count zerado
+[main] 'Corridas Unimed Patos De Minas 2026' — link válido, miss_count zerado
+[main] 'Corrida Da Independência' — link válido, miss_count zerado
+[main] 'Run Aruja 2026' — link válido, miss_count zerado
+[main] 'Tiger Prowl 5K' — link válido, miss_count zerado
+[main] 'Rmrr September Trophy Series' — link válido, miss_count zerado
+[main] 'Corrida Toca Raul Barreiro Bh' — link válido, miss_count zerado
+[main] 'Patifaria Runners 5Km ...Ou Quase Isso!!' — link válido, miss_count zerado
+[main] 'Meia Maratona Do Porto 2026' — link válido, miss_count zerado
 [main] 'Sundance To Spearfish Marathon' — link válido, miss_count zerado
+[main] 'Lead King Loop 25K, 8M, Kids Run' — link válido, miss_count zerado
 [main] 'Nun Run' — link válido, miss_count zerado
 [main] 'Colorado Mountain Half+ Series 2026' — link válido, miss_count zerado
-[main] 'Lead King Loop 25K, 8M, Kids Run' — link válido, miss_count zerado
 [main] 'Konza 25K & 10K' — link válido, miss_count zerado
-[main] 'Hap Crim Festival Of Races' — link válido, miss_count zerado
-[main] 'Gms Queen City Marathon - 2026' — link válido, miss_count zerado
-[main] 'Heroes And Villains – Austin' — link válido, miss_count zerado
-[main] 'Wellington Star Foundation 5K 10K' — link válido, miss_count zerado
 [main] 'Severance Glow 5K Run Or Walk' — link válido, miss_count zerado
+[main] 'Gms Queen City Marathon - 2026' — link válido, miss_count zerado
 [main] 'The Boiler Dash' — link válido, miss_count zerado
+[main] 'Trirex 2026 - 2ª Etapa Trail Run' — link válido, miss_count zerado
+[main] 'Floripa Ultra Trail Run - Ocean Drop' — link válido, miss_count zerado
+[main] 'Run With The Cops 5K' — link válido, miss_count zerado
+[main] 'Ascent At Mountain Air 5K' — link válido, miss_count zerado
+[main] 'Race The Helix - Greenwood' — link válido, miss_count zerado
+[main] 'Wellington Star Foundation 5K 10K' — link válido, miss_count zerado
+[main] 'Tepequém Up 2026' — link válido, miss_count zerado
+[main] '4ª Corrida Do Fogo - 100 Anos Do Corpo De Bombeiros Militar De Santa Catarina' — link válido, miss_count zerado
 [main] 'Fe For A Cure Race/Walk' — link válido, miss_count zerado
 [main] 'The Bismarck Marathon' — link válido, miss_count zerado
 [main] 'King Turkey Day 5K/10K' — link válido, miss_count zerado
-[main] 'Hinton'S Run In The Rockies' — link válido, miss_count zerado
 [main] 'Thumbs Up Run/Walk/Bike Event - 13Th Annual' — link válido, miss_count zerado
-[main] 'Riding Mountain Half Marathon, 10K, & 5K' — link válido, miss_count zerado
-[main] 'Runway 5K - Run For The Angels' — link válido, miss_count zerado
-[main] 'Red Feather Trail Jamboree' — link válido, miss_count zerado
+[main] 'San Francisco Aloha Run' — link válido, miss_count zerado
+[main] 'Inaugural Treherne Pinker-Ten Trail Race' — link válido, miss_count zerado
 [main] '2026 - 2Nd Annual Hbcu Run & Brunch' — link válido, miss_count zerado
+[main] 'Meia Maratona Do Sol Sicredi 2026' — link válido, miss_count zerado
+[main] 'Meia Maratona Coop 2026 - Maceió' — link válido, miss_count zerado
+[main] '2ª Maratona De São José' — link válido, miss_count zerado
+[main] '7º Meia Maratona Da Reserva' — link válido, miss_count zerado
+[main] '11ª Corrida E Caminhada De Santa Terezinha' — link válido, miss_count zerado
+[main] 'Corrida Da Saúde Farmácia Brito 2026' — link válido, miss_count zerado
+[main] 'Fresh Run Super Muffato 2026 - Cascavel' — link válido, miss_count zerado
+[main] 'Asics Run Challenge 2026 - Etapa Recife' — link válido, miss_count zerado
+[main] 'Lupo Sport Corre Goiânia' — link válido, miss_count zerado
+[main] 'Cats Run SC 2026' — link válido, miss_count zerado
+[main] '1ª Corrida Do Icia Ano 2026' — link válido, miss_count zerado
+[main] 'Maratona De Buenos Aires 2026' — link válido, miss_count zerado
+[main] 'Corrida Da Baleia - Arraial Do Cabo' — link válido, miss_count zerado
+[main] 'Eco-Trail Cabeço Negro' — link válido, miss_count zerado
+[main] 'Red Feather Trail Jamboree' — link válido, miss_count zerado
 [main] 'Treherne Run For The Hills 2026' — link válido, miss_count zerado
+[main] 'The 9Th Annual Belmont Water Dog Run' — link válido, miss_count zerado
+[main] '13Th Annual Represent Yourself 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Bh Runners Club Trail Series Championship' — link válido, miss_count zerado
+[main] 'Perseverance Trail Run 2026' — link válido, miss_count zerado
+[main] 'Lençóis Maranhenses Trail 2026' — link válido, miss_count zerado
+[main] '3ª Corrida Glossy' — link válido, miss_count zerado
+[main] 'Runway 5K - Run For The Angels' — link válido, miss_count zerado
+[main] 'Biorun Experience 2026' — link válido, miss_count zerado
 [main] 'St. Joseph Marathon' — link válido, miss_count zerado
-[main] 'Inside Out Club Fall Family 5K' — link válido, miss_count zerado
 [main] 'Cousins Memorial Run' — link válido, miss_count zerado
-[main] 'Moraine Hills Run For The Hills' — link válido, miss_count zerado
 [main] 'Chick-Fil-A 5K' — link válido, miss_count zerado
-[main] 'Brookings Marathon' — link válido, miss_count zerado
-[main] 'Flatlanders Road Race' — link válido, miss_count zerado
-[main] '2026 Jackass Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Moraine Hills Run For The Hills' — link válido, miss_count zerado
+[main] 'Urban Cow Weekend 2026' — link válido, miss_count zerado
+[main] 'Warrior Way 5K' — link válido, miss_count zerado
+[main] '2026 5 Peaks Trail Running Series: Devon' — link válido, miss_count zerado
+[main] 'Navy Mid-South Half Marathon' — link válido, miss_count zerado
+[main] 'Maratona Salvador 2026' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada Run Visão Nordeste' — link válido, miss_count zerado
+[main] 'Maratona De Niterói 2026' — link válido, miss_count zerado
+[main] '5ª Corrida Monte Bom Jesus - Cmbj' — link válido, miss_count zerado
+[main] '2ª Corre Rd - Floripa' — link válido, miss_count zerado
+[main] '2ª Corrida Delta Running' — link válido, miss_count zerado
+[main] 'Desafio Speedo 2026' — link válido, miss_count zerado
+[main] '42ª Meia Maratona Bela Vista Country Club' — link válido, miss_count zerado
+[main] 'Smurfs Run Shopping Del Rey Bh' — link válido, miss_count zerado
+[main] 'Forte Run 2026' — link válido, miss_count zerado
+[main] 'Vascorrida 2026 - São Luis' — link válido, miss_count zerado
+[main] 'Mentone Run - A Identidade' — link válido, miss_count zerado
+[main] '9ª Corrida Princesa Dos Campos' — link válido, miss_count zerado
+[main] 'Mountain Do Deserto Do Atacama' — link válido, miss_count zerado
+[main] '3ª Corrida De Rua Solida' — link válido, miss_count zerado
+[main] 'Race For The Refuge' — link válido, miss_count zerado
+[main] 'Paris Versailles 2026' — link válido, miss_count zerado
+[main] 'Inside Out Club Fall Family 5K' — link válido, miss_count zerado
+[main] 'Xterra Costa Verde 2026' — link válido, miss_count zerado
 [main] 'Tbk Bank Quad Cities Marathon' — link válido, miss_count zerado
+[main] 'Wine Run Vale Dos Vinhedos 2026' — link válido, miss_count zerado
+[main] 'Nutri Run 2026' — link válido, miss_count zerado
+[main] 'Race Judicata' — link válido, miss_count zerado
+[main] 'Flatlanders Road Race' — link válido, miss_count zerado
+[main] 'Brookings Marathon' — link válido, miss_count zerado
+[main] '2026 Jackass Half Marathon & 5K' — link válido, miss_count zerado
 [main] 'Wheat City Run' — link válido, miss_count zerado
 [main] 'Rut Run 5K' — link válido, miss_count zerado
-[main] '23Rd Annual Perogy Run' — link válido, miss_count zerado
 [main] '43Rd Annual Creighton University School Of Medicine Walk For Wishes' — link válido, miss_count zerado
-[main] 'Tryon Farm 4 Miler/8 Miler/25K/50K And 2 Mile Fun Run/Walk' — link válido, miss_count zerado
-[main] 'Panting Four Paws' — link válido, miss_count zerado
-[main] 'Rmrr October Trophy Series' — link válido, miss_count zerado
 [main] 'Montgomery River Run 2026' — link válido, miss_count zerado
-[main] 'The Long View Marathon' — link válido, miss_count zerado
-[main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
+[main] 'Panting Four Paws' — link válido, miss_count zerado
+[main] '6Th Annual Nick'S 5K Run & Fitness Walk' — link válido, miss_count zerado
+[main] 'Ajax Waterfront Race' — link válido, miss_count zerado
+[main] '2026 Muskoka Marathon' — link válido, miss_count zerado
+[main] '6ª Rústica Da Assgapa - Alusiva Ao Dia Da Força Aérea' — link válido, miss_count zerado
+[main] 'Legs For Literacy' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada Outubro Rosa - Hospital Paranaguá E Instituto Peito Aberto' — link válido, miss_count zerado
+[main] 'Rmrr October Trophy Series' — link válido, miss_count zerado
+[main] '1ª Storm Run - Womans Edition' — link válido, miss_count zerado
 [main] 'Monster Mash' — link válido, miss_count zerado
+[main] 'The Rogue Marathon' — link válido, miss_count zerado
+[main] 'Tour De Essex' — link válido, miss_count zerado
 [main] 'Run Crazy Horse' — link válido, miss_count zerado
+[main] 'Valley Vertikiller Trail Race 2026' — link válido, miss_count zerado
+[main] 'Race Of The Redeemed- Distinguished' — link válido, miss_count zerado
+[main] 'The Long View Marathon' — link válido, miss_count zerado
+[main] '1ª Night Run - Outubro Rosa Irineópolis 2026' — link válido, miss_count zerado
+[main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
 [main] 'Bagel Run 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
-[main] 'Saw Wee Kee - Fall Trail Run' — link válido, miss_count zerado
-[main] 'Edge2Edge 2026' — link válido, miss_count zerado
-[main] '14Th Annual Wfps Run' — link válido, miss_count zerado
-[main] 'Day Of The Dead - Day 1 And Day 2' — link válido, miss_count zerado
-[main] 'Run With The Nuns 2026' — link válido, miss_count zerado
-[main] 'The 14Th Annual Odyssey Odyssey - 2026' — link válido, miss_count zerado
+[main] 'The 2026 Run For Education' — link válido, miss_count zerado
+[main] 'Bemol Run Boa Vista 2026' — link válido, miss_count zerado
+[main] 'Circuito Do Bem (Ano Iii)' — link válido, miss_count zerado
+[main] 'Smurfs Run Riomar Fortaleza Shopping' — link válido, miss_count zerado
+[main] 'Corrida Pela Vida 2026 - Joinville-Sc' — link válido, miss_count zerado
+[main] 'Sports + Run 2026' — link válido, miss_count zerado
+[main] 'Sorocity Half Marathon - 2026' — link válido, miss_count zerado
+[main] 'Corrida Vera Cruz 2026' — link válido, miss_count zerado
+[main] 'Beer And Brats 5K' — link válido, miss_count zerado
+[main] 'Ultra Bm 2026' — link válido, miss_count zerado
+[main] '21K De Pipa - Festival 2026' — link válido, miss_count zerado
+[main] 'Xc Run Buzios 2026' — link válido, miss_count zerado
+[main] 'Indomit Columbia Bombinhas - Trail Marathon 2026' — link válido, miss_count zerado
 [main] 'Mankato Marathon' — link válido, miss_count zerado
-[main] 'Sycamore Pumpkin 10K Run & 1 Mile Fun Run' — link válido, miss_count zerado
-[main] 'Rmrr November Trophy Series' — link válido, miss_count zerado
 [main] 'Red Sneakers Peoria 5K & Teal Pumpkin Festival' — link válido, miss_count zerado
-[main] 'Gobbler Hobbler 10K & Mashed Potato Mile' — link válido, miss_count zerado
-[main] 'Pen Park Trails Fest' — link válido, miss_count zerado
-[main] 'Xv Aguascalientes 2026 Marathon' — link válido, miss_count zerado
-[main] 'Ooh Lala Chocolate Run * Walk' — link válido, miss_count zerado
+[main] 'Cloverdale Vineyard Races: 10K And 5K' — link válido, miss_count zerado
+[main] 'Urban Trail Run - Etapa 2 Parque Horto Florestal' — link válido, miss_count zerado
+[main] '9º Circuito Permanente Run' — link válido, miss_count zerado
+[main] '3ª Corrida Drogaria Recife Run' — link válido, miss_count zerado
+[main] '22Nd Annual Prince Edward Island Marathon' — link válido, miss_count zerado
+[main] 'Meia Maratona De Goiânia 2026' — link válido, miss_count zerado
+[main] '8ª Corrida Outlet Premium São Paulo' — link válido, miss_count zerado
+[main] 'Instituto Mary Kay Corrida E Caminhada Protea 2026' — link válido, miss_count zerado
+[main] '5ª Unimed Run Barretos' — link válido, miss_count zerado
+[main] '12ª Corrida Pink Do Bem' — link válido, miss_count zerado
+[main] 'Corrida Das Flores 2026 - Edição Dos Lírios' — link válido, miss_count zerado
+[main] 'Fresh Run Super Muffato 2026 - Ponta Grossa' — link válido, miss_count zerado
+[main] 'Cats Run RJ 2026' — link válido, miss_count zerado
+[main] '2ª Corrida Dos Bombeiros Voluntários De São Francisco Do Sul' — link válido, miss_count zerado
+[main] 'Women'S Day Outubro Rosa' — link válido, miss_count zerado
+[main] '14Th Annual Wfps Run' — link válido, miss_count zerado
+[main] 'Run With The Nuns 2026' — link válido, miss_count zerado
+[main] '2026 Napa Fall Wine Country Marathon, Half Marathon, 10K, & 5K' — link válido, miss_count zerado
+[main] 'Desafio Da Saúde' — link válido, miss_count zerado
+[main] '1ª Corrida E Caminhada Da Rede Feminina De Combate Ao Câncer' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Qualicum Bay 2026' — link válido, miss_count zerado
+[main] 'Hallorun 2026' — link válido, miss_count zerado
+[main] 'Night Run Icaraí Beach - 19ª Edição 2026 - Niterói RJ' — link válido, miss_count zerado
+[main] 'Day Of The Dead - Day 1 And Day 2' — link válido, miss_count zerado
+[main] 'Race To Cure Sarcoma Denver' — link válido, miss_count zerado
+[main] 'Maratona De Veneza 2026' — link válido, miss_count zerado
 [main] 'Justice Run Fort Worth' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
+[main] '2026 Dia De Los Miles' — link válido, miss_count zerado
+[main] 'Intracoastal Waterway Century' — link válido, miss_count zerado
+[main] 'Crown Point Relay Runs' — link válido, miss_count zerado
+[main] '18ª Corrida Ecológica De Sanamacaé-Rj +Maratona Traill (42K) 2026' — link válido, miss_count zerado
+[main] 'Demi-Marathon Sun Life Au Parc Jean-Drapeau' — link válido, miss_count zerado
+[main] '2026 Binational Race' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Contos Clássicos - Pequena Sereia' — link válido, miss_count zerado
+[main] 'Race For The Greenway 5K Run / Walk' — link válido, miss_count zerado
+[main] 'The 14Th Annual Odyssey Odyssey - 2026' — link válido, miss_count zerado
+[main] 'Race The Dead' — link válido, miss_count zerado
+[main] 'Sycamore Pumpkin 10K Run & 1 Mile Fun Run' — link válido, miss_count zerado
+[main] 'Kennesaw Grand Prix Race Series: Nightmare On Main 5K' — link válido, miss_count zerado
+[main] 'Loop The Vedder Trail Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Corrida Maratoninha Kids 2026' — link válido, miss_count zerado
+[main] '10 Corrida São Vicente Uaçai Night Run 2026' — link válido, miss_count zerado
+[main] 'Corrida Noturna Runlloween 2º Edição' — link válido, miss_count zerado
+[main] 'Salve Run 2026' — link válido, miss_count zerado
+[main] 'Halloween Run' — link válido, miss_count zerado
+[main] 'Race The Base Trail Run' — link válido, miss_count zerado
+[main] 'Maratona De Aracaju 2026' — link válido, miss_count zerado
+[main] 'Meia Maratona Blue Run Salvador 2026' — link válido, miss_count zerado
+[main] 'Taíba Trail Race' — link válido, miss_count zerado
+[main] 'Maratona Pedra Azul 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Com A Mãe Do Rocio - Padroeira Do Paraná' — link válido, miss_count zerado
+[main] 'Rmrr November Trophy Series' — link válido, miss_count zerado
+[main] 'Race The River: Downtown Riverwalk' — link válido, miss_count zerado
+[main] 'Corrida Solidária Das Nações Piracicaba - 2026' — link válido, miss_count zerado
+[main] 'Rio Del Lago 100 Mile + 50K Endurance Runs' — link válido, miss_count zerado
+[main] 'Mackrun 2026 - Etapa São Paulo' — link válido, miss_count zerado
+[main] 'Feira Night Run Análise 2026' — link válido, miss_count zerado
+[main] 'Whiskey Run Knoxville' — link válido, miss_count zerado
+[main] '2026 Nubank Ultravioleta Triday Series - Bertioga Ii' — link válido, miss_count zerado
+[main] 'Amazonas Shopping Run Day 2026' — link válido, miss_count zerado
+[main] '5ª Corrida E Caminhada Um Só Sangue' — link válido, miss_count zerado
+[main] 'Asics Run Challenge 2026 - Etapa Florianópolis' — link válido, miss_count zerado
+[main] 'Smurfs Run Rio De Janeiro' — link válido, miss_count zerado
+[main] 'Meia Maratona Internacional De Cabo Frio De 2026' — link válido, miss_count zerado
+[main] 'Corrida Santuário Frei Galvão' — link válido, miss_count zerado
+[main] '8º Desafio Serra Da Água Limpa' — link válido, miss_count zerado
+[main] 'Corrida Iron' — link válido, miss_count zerado
+[main] 'Last Rider' — link válido, miss_count zerado
+[main] 'Corrida Para Elas - 4ª Etapa' — link válido, miss_count zerado
+[main] '3º Cross Country Ultimate Bee Run 5K 2026' — link válido, miss_count zerado
+[main] 'Gobbler Hobbler 10K & Mashed Potato Mile' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Ooh Lala Chocolate Run * Walk' — link válido, miss_count zerado
 [main] 'Bourbonnais Turkey Trot' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
+[main] 'Mons Ultra Trail 2026' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
-[main] 'Turkey Trek (13.1, 10K, 5K & 2K)' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
+[main] 'Desafio Minalba 2026' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
-[main] 'The Pilgrimage Run 2026' — link válido, miss_count zerado
-[main] 'Mile High United Way Turkey Trot 2026' — link válido, miss_count zerado
+[main] '3 Meia Maratona Governador Celso Ramos' — link válido, miss_count zerado
+[main] 'Meia Maratona De João Pessoa - 2026' — link válido, miss_count zerado
+[main] '2026 Madison Marathon' — link válido, miss_count zerado
+[main] 'Corrida Do Alvinegro 2026' — link válido, miss_count zerado
+[main] 'Etapa Coiote - Circuito Zoo Run' — link válido, miss_count zerado
+[main] 'Rota Do Pico - Etapa 4X4 Run - 3ª Edição' — link válido, miss_count zerado
+[main] '12ª Corrida Princesa Da Colina Itatiba - SP' — link válido, miss_count zerado
+[main] 'Corrida Do Guardião Da Região Dos Lagos - 2026' — link válido, miss_count zerado
+[main] 'Corrida Kilombo - 2026' — link válido, miss_count zerado
+[main] 'Corrida Raízes' — link válido, miss_count zerado
+[main] 'Select Run' — link válido, miss_count zerado
+[main] 'Turkey Trek (13.1, 10K, 5K & 2K)' — link válido, miss_count zerado
+[main] '2026 Hilly Half' — link válido, miss_count zerado
+[main] 'Ultra Trail Chapada Diamantina 2026' — link válido, miss_count zerado
+[main] 'Maratona Monumental De Brasília 2026' — link válido, miss_count zerado
 [main] 'Feed Your Soul Turkey Trot 5K' — link válido, miss_count zerado
+[main] 'Storm Riders - Etapa 7' — link válido, miss_count zerado
+[main] 'Circuito Runaway 2026 - Etapa Êxito' — link válido, miss_count zerado
+[main] 'Run For Cancer Floripa 2026' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Lagoinha | São José Dos Campos - SP' — link válido, miss_count zerado
+[main] 'The Animal Run 5K Tofurkey Trot' — link válido, miss_count zerado
+[main] 'Bank Of Marin Turkey Trot' — link válido, miss_count zerado
+[main] 'The Pilgrimage Run 2026' — link válido, miss_count zerado
+[main] '2026 Hope The Mission - Drumstick Dash La' — link válido, miss_count zerado
+[main] 'Maratona Do Porto' — link válido, miss_count zerado
 [main] 'Mesa Turkey Trot 5K - 10K' — link válido, miss_count zerado
-[main] 'Mhk Turkey Trot' — link válido, miss_count zerado
+[main] '14ª Corrida E Caminhada Aniversário De Mongaguá Cláudio Luís Arena' — link válido, miss_count zerado
+[main] 'Quarry Turkey 2026' — link válido, miss_count zerado
+[main] 'Coffee Lovers Run 5K/10K/13.1 Austin/Roundrock' — link válido, miss_count zerado
+[main] '2ª Corrida Do Fogo Papanduva' — link válido, miss_count zerado
+[main] 'Meia Maratona Coop 2026 - Recife' — link válido, miss_count zerado
+[main] '6ª Corrida Hopi Hari' — link válido, miss_count zerado
+[main] 'Fla Run 2026 - Etapa Ii' — link válido, miss_count zerado
+[main] '5º Valinhos Trail Running' — link válido, miss_count zerado
+[main] '9º Desafio Do Forte Itaipu' — link válido, miss_count zerado
+[main] 'Corrida E Caminhada Inclusão A Toda Prova - DF 2026' — link válido, miss_count zerado
+[main] 'Circuito Oscar 2026-2027 - 2ª Etapa - São José Dos Campos' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa Porto União' — link válido, miss_count zerado
+[main] 'Bonito 21K 2026' — link válido, miss_count zerado
+[main] 'La Etapa | Patagônia Argentina 2026' — link válido, miss_count zerado
+[main] 'Corrida De Natal Livora Pernas Solidárias' — link válido, miss_count zerado
 [main] 'Idaho’S Ugliest Sweater Run, Brought To You By The Dirty U' — link válido, miss_count zerado
+[main] '2026 California International Marathon' — link válido, miss_count zerado
+[main] 'Corridas Unimed Circuito SC - 2026 - Etapa Chapecó' — link válido, miss_count zerado
+[main] '2ª Corrida E Caminhada Da Inclusão Apae Poá' — link válido, miss_count zerado
+[main] 'Corrida Flashow Resenha' — link válido, miss_count zerado
 [main] 'Rmrr December Trophy Series' — link válido, miss_count zerado
-[main] 'Coffee Lovers Run 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
+[main] '6ª Corrida - Apaexonados Por Corrida' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Corrida Meia Da Conceição 2026 - Ano 12' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Tampa' — link válido, miss_count zerado
 [main] 'Santa Catch 5K & 10K' — link válido, miss_count zerado
+[main] 'Cotrirun 2026' — link válido, miss_count zerado
 [main] 'Winterfest 5K & Fun Run' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
-[main] 'Santa'S Dash For Ca$H' — link válido, miss_count zerado
-[main] 'Ugly Sweater 5K' — link válido, miss_count zerado
-[main] 'Resolution Run - Fort Collins' — link válido, miss_count zerado
-[main] 'Resolute Runner 5K' — link válido, miss_count zerado
-[main] 'A Merry Christmas Run 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
-[main] 'Tombstone 30K/50K/50 Mile' — link válido, miss_count zerado
-[main] 'Unicorn 5K (Denver-East)' — link válido, miss_count zerado
-[main] 'The 2027 Cowtown Race Weekend' — link válido, miss_count zerado
+[main] 'Run Santa Run Tampa' — link válido, miss_count zerado
+[main] '9ª Caminhada Ecológica Forte Itaipu' — link válido, miss_count zerado
+[main] 'Meia Maratona De Piracicaba 2026' — link válido, miss_count zerado
+[main] 'Niagara-On-The-Lake Og Santa Run' — link válido, miss_count zerado
+[main] 'Trilhas Da Virada - 6ª Edição' — link válido, miss_count zerado
+[main] 'Inclusão A Toda Prova - Rio De Janeiro 2026' — link válido, miss_count zerado
+[main] 'Kong Race Bivolt #5' — link válido, miss_count zerado
+[main] 'Corrida Da Porcelana Em Pedreira 2026' — link válido, miss_count zerado
+[main] '2º Corrida Speed Life Run' — link válido, miss_count zerado
+[main] 'Santa'S Dash For Ca$H' — link válido, miss_count zerado
+[main] 'Ugly Sweater 5K' — link válido, miss_count zerado
 [main] 'Tucson Marathon Events' — link válido, miss_count zerado
+[main] 'Run Santa Run Miami' — link válido, miss_count zerado
+[main] '32ª Night Run Show' — link válido, miss_count zerado
+[main] 'A Merry Christmas Run 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
+[main] 'Rosa Chock - Etapa Violência Contra A Mulher' — link válido, miss_count zerado
+[main] 'Resolution Run - Fort Collins' — link válido, miss_count zerado
+[main] 'Race Into The New Year Prediction 5K' — link válido, miss_count zerado
+[main] 'Race Staff 5K & 10K, Panama City, Fl (Training)' — link válido, miss_count zerado
+[main] 'Resolute Runner 5K' — link válido, miss_count zerado
+[main] 'Race Into The New Year "Live Virtual" 5K/10K' — link válido, miss_count zerado
+[main] 'Pirangi Praiano 2027' — link válido, miss_count zerado
+[main] 'V Corrida Do Engenheiro' — link válido, miss_count zerado
+[main] '4ª Corrida Moderna Home Center - 7Km' — link válido, miss_count zerado
+[main] 'Videira Wine Run 2027' — link válido, miss_count zerado
+[main] '12º Desafio Rota Do Vinho' — link válido, miss_count zerado
+[main] 'Victory 2027' — link válido, miss_count zerado
+[main] 'Women'S Half Marathon San Diego 2027' — link válido, miss_count zerado
+[main] '2027 Publix Gasparilla Distance Classic' — link válido, miss_count zerado
+[main] 'The 2027 Cowtown Race Weekend' — link válido, miss_count zerado
+[main] 'Aluminio Backyard Ultra' — link válido, miss_count zerado
+[main] '2027 Shamrock'N Weekend' — link válido, miss_count zerado
+[main] 'Copa Nordeste E Circuito Brasileiro Longa Distância 2027 - Etapa Salvador' — link válido, miss_count zerado
+[main] 'Maratona De Fortaleza - 2027' — link válido, miss_count zerado
+[main] 'Triton 1 Salvador' — link válido, miss_count zerado
+[main] '2027 Govx San Diego Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Trilha Encantada 2027' — link válido, miss_count zerado
+[main] 'Unicorn 5K (Denver-East)' — link válido, miss_count zerado
+[main] 'Santa Cruz Westside Half Marathon 10K/5K' — link válido, miss_count zerado
+[main] '2ª Maratona De Piracicaba' — link válido, miss_count zerado
 [main] 'Chicken Run' — link válido, miss_count zerado
+[main] 'American River Parkway Half Marathon 2027' — link válido, miss_count zerado
+[main] 'Maratona De João Pessoa - 2027' — link válido, miss_count zerado
+[main] 'R&B Running Series' — link válido, miss_count zerado
 [main] '2027 500 Festival Running Events' — link válido, miss_count zerado
-[main] 13300 corridas após reconciliação
-[main] 13294 corridas após dedup final
-[main] 21 estado(s) resolvido(s) pelo geo cache
-[main] buscando imagens para 721 evento(s) sem foto...
+[main] 'Corrida Da Virada - Cabo Frio 2027' — link válido, miss_count zerado
+[main] '2ª Corrida Da Biblia' — link válido, miss_count zerado
+[main] 'Corrida Da Virada 2026' — link válido, miss_count zerado
+[main] 'Corrida 6K Do Rosa 2026' — link válido, miss_count zerado
+[main] 13586 corridas após reconciliação
+[main] 13574 corridas após dedup final
+[main] 3 estado(s) resolvido(s) pelo geo cache
+[main] buscando imagens para 572 evento(s) sem foto...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] marathonguide.com bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para marathonguide.com, tentando Apify...
 [proxy] Apify falhou para marathonguide.com: 403 Forbidden
-[main] 160/721 imagens encontradas
-[main] removendo imagem inválida de 'Harvest Half Marathon & 10K': https://cdn.raceroster.com/event-logo/gv625htrquum222c._orig
-[main] removendo imagem inválida de 'Gear Western Country Half Marathon & 5K': https://cdn.raceroster.com/event-logo/453dhzb3pfnwueqw._orig
-[main] removendo imagem inválida de 'Bigfoot Half Trail Run': https://cdn.raceroster.com/event-logo/zh7d5pk4ybxfyvb9._orig
-[main] removendo imagem inválida de 'Georgetown To Idaho Springs Half Marathon': https://cdn.raceroster.com/event-logo/uyutkj7yvwbby5fy._orig
-[main] removendo imagem inválida de 'Nebraska State Fair Marathon, Half Marathon & 5K': https://cdn.raceroster.com/event-logo/nd3gcxx2b7xbezfu._orig
-[main] removendo imagem inválida de 'Beer & Bagel – Nebraska Half Marathon & 4M': https://cdn.raceroster.com/event-logo/2usbpku3ccx4xkb2._orig
-[main] removendo imagem inválida de 'Ruidoso Runfest': https://cdn.raceroster.com/event-logo/n43eqh9uptepj2j3._orig
+[main] 21/572 imagens encontradas
+[main] removendo imagem inválida de 'Pumpkin Run Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/aqr2zcat5rvpx62f._orig
+[main] removendo imagem inválida de 'Clo Cow Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/5uf3sscncga436x4._orig
+[main] removendo imagem inválida de 'Black Mountain Turkey Burner Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/am3w33xveq9zw6ne._orig
+[main] removendo imagem inválida de 'Del Dios Trail Race 50K, Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/q2tvc9gja976ny53._orig
+[main] removendo imagem inválida de 'Brazen New Years Day Runs Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/vvjdf49hpuqpp75c._orig
+[main] removendo imagem inválida de 'Carlsbad Marathon, Half Marathon & 5K': https://cdn.raceroster.com/event-logo/h4zhxcgppx6fxup9._orig
+[main] removendo imagem inválida de 'The Auburn Half Marathon, 12K & 5K': https://cdn.raceroster.com/event-logo/5hqsa62k9pe9urvt._orig
 [main] removendo imagem inválida de 'Walt Disney World Marathon, Weekend Half Marathon': https://www.rundisney.com/events/disneyworld/media_102d0003d
-[main] removendo imagem inválida de 'State 47 Las Cruces Marathon, Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/9xc2pvf4p2xu77j6._orig
-[main] removendo imagem inválida de 'Palace City Kiwanis Half Marathon': https://cdn.raceroster.com/event-logo/t5mbeef373bhstvw._orig
-[main] removendo imagem inválida de 'Leading Ladies Marathon & Half Marathon': https://cdn.raceroster.com/event-logo/zszk4g9rgxhxyc6w._orig
-[main] removendo imagem inválida de 'City Of Lakes Half Marathon': https://cdn.raceroster.com/event-logo/sy59wkqfft4jmh9y._orig
-[main] removendo imagem inválida de 'Salina Crossroads Marathon, Half Marathon & 5K': https://cdn.raceroster.com/event-logo/d6tsvsbrwa3nprnk._orig
-[main] removendo imagem inválida de 'Ad Astra Kansas Half Marathon & 5K': https://cdn.raceroster.com/event-logo/dy7xgy32cfmn7p37._orig
+[main] removendo imagem inválida de 'Crystal Lake Half Marathon': https://cdn.raceroster.com/event-logo/tfwg99s37tewrcse._orig
+[main] removendo imagem inválida de 'Painted Hills Half, 10K & 5K': https://cdn.raceroster.com/event-logo/25np9w6a2yw9622a._orig
+[main] removendo imagem inválida de 'Hidden Gem Half Marathon': https://cdn.raceroster.com/event-logo/s4yhxxhve567925w._orig
+[main] removendo imagem inválida de 'Berkeley Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/35waay3jtxqmamen._orig
 [main] removendo imagem inválida de 'Springmaid Trail Race Half Marathon': https://www.ascgreenway.org/wp-content/uploads/2022/12/medal
-[main] removendo imagem inválida de 'Pumpkin Spice Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/bsabbnrj3rxrux4j._orig
-[main] removendo imagem inválida de 'Toyota Music Factory Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/zkj3zhygg6hspwy2._orig
-[main] removendo imagem inválida de 'Bill Snyder Highway Half & 5K': https://cdn.raceroster.com/event-logo/3aauyuh62m9sgte2._orig
-[main] removendo imagem inválida de 'Santa Fe International Half Marathon & 5K': https://cdn.raceroster.com/event-logo/rcuw42wrumydg95b._orig
-[main] removendo imagem inválida de 'Phoenix Wicked Half Marathon, 10K, 5K And Spooky Kids Sprint': https://cdn.raceroster.com/event_logo/2016-06-30_00-51-06_lo
-[main] removendo imagem inválida de 'Hot Trot Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/cdxgqpx4u2xbcyvh._orig
-[main] 21 imagem(ns) inválida(s) removida(s)
+[main] removendo imagem inválida de 'Run For Donuts Race 5K, 10K & 13.1 Las Vegas': https://cdn.raceroster.com/event-logo/7v2ht5ybgvpq9ejz._orig
+[main] removendo imagem inválida de 'Pacific Beach Half Marathon & 5K': https://cdn.raceroster.com/event-logo/avpa4zjyvzjgmrbb._orig
+[main] removendo imagem inválida de 'America’S Finest City Half Marathon & 5K': https://cdn.raceroster.com/event-logo/pj3c4tr2qqt7zefu._orig
+[main] 16 imagem(ns) inválida(s) removida(s)
 [main] 143 corrida(s) arquivada(s) em /home/runner/work/corridas/corridas/data/historico
-[main] 13140 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 13420 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

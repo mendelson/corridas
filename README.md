@@ -18,23 +18,23 @@ GitHub Actions.
 | --- | --- | --- | --- | --- | --- | --- |
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
-| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | JSON API + HTML | 2026-05-17 02:41 | ❌ | 2026-05-16 18:47 |
-| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-15 18:38 | ✅ | 2026-05-15 18:38 |
-| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
+| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML. Plataforma com evento único (Volta do Lago), já capturado via `volta_do_lago.py`. | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-17 02:40 | ❌ | 2026-05-15 18:36 |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 
 ### Fontes brasileiras — eventos específicos

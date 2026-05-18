@@ -1058,7 +1058,7 @@ function renderCards() {
   emptyState.classList.add('hidden');
 
   const today       = todayStr();
-  const sevenDaysAgo = addDays(today, -3);
+  const threeDaysAgo = addDays(today, -3);
   const frag        = document.createDocumentFragment();
 
   let toRender   = filteredCorridas;
@@ -1081,22 +1081,22 @@ function renderCards() {
     const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
     const expand = hasFuture && !firstFutureMonthFound;
     if (expand) firstFutureMonthFound = true;
-    const hasNew = corridas.some(c => c.first_seen_at && c.first_seen_at >= sevenDaysAgo);
+    const hasNew = corridas.some(c => c.first_seen_at && c.first_seen_at >= threeDaysAgo);
     const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNew);
     for (const corrida of corridas) {
-      cardsContainer.appendChild(buildCard(corrida, today, sevenDaysAgo));
+      cardsContainer.appendChild(buildCard(corrida, today, threeDaysAgo));
     }
     frag.appendChild(section);
   }
 
   if (recentPast.length > 0) {
-    frag.prepend(buildPastSection(recentPast, today, sevenDaysAgo));
+    frag.prepend(buildPastSection(recentPast, today, threeDaysAgo));
   }
 
   cardsList.appendChild(frag);
 }
 
-function buildPastSection(corridas, today, sevenDaysAgo) {
+function buildPastSection(corridas, today, threeDaysAgo) {
   const sorted = [...corridas].sort((a, b) =>
     (b.data_evento || '').localeCompare(a.data_evento || ''));
 
@@ -1117,7 +1117,7 @@ function buildPastSection(corridas, today, sevenDaysAgo) {
   cardsContainer.className = 'month-cards month-cards--collapsed';
 
   for (const corrida of sorted) {
-    cardsContainer.appendChild(buildCard(corrida, today, sevenDaysAgo));
+    cardsContainer.appendChild(buildCard(corrida, today, threeDaysAgo));
   }
 
   btn.addEventListener('click', () => {
@@ -1163,7 +1163,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
   return { section, cardsContainer };
 }
 
-function buildCard(c, today, sevenDaysAgo) {
+function buildCard(c, today, threeDaysAgo) {
   const tmpl = document.getElementById('cardTemplate');
   const node  = tmpl.content.cloneNode(true);
   const card  = node.querySelector('.card');
@@ -1204,7 +1204,7 @@ function buildCard(c, today, sevenDaysAgo) {
   // "Novo" badge
   const badgeNovo = card.querySelector('.badge-novo');
   if (badgeNovo) {
-    const isNew = c.first_seen_at && c.first_seen_at >= sevenDaysAgo;
+    const isNew = c.first_seen_at && c.first_seen_at >= threeDaysAgo;
     badgeNovo.textContent = T.badgeNovo;
     badgeNovo.classList.toggle('hidden', !isNew);
   }

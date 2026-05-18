@@ -70,7 +70,7 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 
 ### Source naming conventions
 
-- `id` field on `Corrida`: stable identifier the scraper produces. Used by `reconcile()` to match across runs. Common patterns: `ts_<event_id>` for Ticket Sports, `runsignup_<race_id>_<year>`, `<slug>_<state>_<today>`. Don't bake the run date into IDs of stable events — it forces re-creation on every run.
+- `id` field on `Corrida`: stable identifier the scraper produces. Used by `reconcile()` to match across runs. Common patterns: `ts_<event_id>` for Ticket Sports, `runsignup_<race_id>_<year>`, `<slug>_<state>_<event_date>` for scraped calendar sources. Never use the scrape/run date in an ID — it changes every run, breaking exact-ID reconciliation and resetting `first_seen_at`.
 - Brazilian states use 2-letter UFs (`SP`, `DF`, `SE`…). International events use `INT`. The `Corrida.estado` field drives the frontend's location filter.
 - For TF Sports specifically: many addresses end with `, SP` regardless of the actual state. The `tf_sports.py` scraper has a CEP→UF range table (`_CEP_RANGES`) that overrides a contradictory trailing UF — preserve this when modifying.
 

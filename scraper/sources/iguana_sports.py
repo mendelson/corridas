@@ -90,7 +90,7 @@ def scrape() -> list[Corrida]:
             )
 
             corridas.append(Corrida(
-                id=f"{slugify(titulo)}_{estado.lower()}_{today}",
+                id=f"{slugify(titulo)}_{estado.lower()}_{data_evento or 'sd'}",
                 titulo=titulo,
                 data_evento=data_evento,
                 horario=card["horario"],

@@ -88,7 +88,7 @@ def _parse_event(el) -> Corrida | None:
 
     estado = _geo.resolve("Brasília-DF", "Brasília", "BR")[1] or "DF"
     return Corrida(
-        id=f"{slugify(titulo)}_df_{today}",
+        id=f"{slugify(titulo)}_df_{data or 'sd'}",
         titulo=titulo,
         data_evento=data or "",
         horario=normalize_time(text),

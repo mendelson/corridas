@@ -1,4 +1,26 @@
+[Carreras México] PROBE raw len=377 first 1500 chars:
+$("#tiempometa_event_list_div").html('<div id=\"tm_js_container\">\n	<div class=\"row\">\n		<div class=\"col-md-2\">\n                <span onclick=\"Tiempometa.events(50,0);\"><img id=\"paginate_left\" src=\"https://www.tiempometa.com/images/left_up_32.png\"/><\/span>\n		<\/div>\n		<div class=\"col-md-8\"><\/div>\n		<div class=\"col-md-2\">\n		<\/div>\n	<\/div>\n<\/div>');
+
+[Carreras México] PROBE raw last 500 chars:
+$("#tiempometa_event_list_div").html('<div id=\"tm_js_container\">\n	<div class=\"row\">\n		<div class=\"col-md-2\">\n                <span onclick=\"Tiempometa.events(50,0);\"><img id=\"paginate_left\" src=\"https://www.tiempometa.com/images/left_up_32.png\"/><\/span>\n		<\/div>\n		<div class=\"col-md-8\"><\/div>\n		<div class=\"col-md-2\">\n		<\/div>\n	<\/div>\n<\/div>');
+
+[Carreras México] PROBE extracted html len=310; first 1500 chars:
+<div id="tm_js_container">
+	<div class="row">
+		<div class="col-md-2">
+                <span onclick="Tiempometa.events(50,0);"><img id="paginate_left" src="https://www.tiempometa.com/images/left_up_32.png"/><\/span>
+		<\/div>
+		<div class="col-md-8"><\/div>
+		<div class="col-md-2">
+		<\/div>
+	<\/div>
+<\/div>
 [Carreras México] PROBE page 1: 0 items; first item:
+[Carreras México] PROBE selector 'div.row': 1 elements
+[Carreras México] PROBE selector '.tm_event_list_item': 0 elements
+[Carreras México] PROBE selector '[class*=event]': 0 elements
+[Carreras México] PROBE selector 'a': 0 elements
+[Carreras México] PROBE selector 'img': 1 elements
 [Carreras México] 0 corridas encontradas
 ⚠️   carreras_mexico: 0 eventos retornados
 FAILURE_NOTE:0 eventos

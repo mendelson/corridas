@@ -1,267 +1,202 @@
-"""Scraper for carrerasmexico.com — calendar of Mexican road running events.
+"""Scraper for carrerasmexico.com — uses the Tiempometa public JS API.
 
-Listing page: /eventos.php
-State-filtered: /eventos.php?edo=<CODE>  (e.g. DIF=CDMX, MEX, NLE, JAL...)
+The carrerasmexico.com homepage embeds a Tiempometa widget. We bypass the
+widget and call its API directly:
 
-This is a probe-first scraper: on the first invocation it logs the HTML
-structure so the CI log reveals the actual page layout. Subsequent runs
-parse based on what we learned.
+  GET https://www.tiempometa.com/api3/js_site/event_search
+    ?api_key=<public-api-key>
+    &type=Calle        # road races only ("Carreras de Calle")
+    &month=YYYY-MM     # optional
+    &state=<UF>        # optional
+    &page=<n>
+    &page_size=<n>
+    &callback=<jsonp>  # JSONP wrapper
+
+The response is JSONP: `callback({...json...});`. We strip the wrapper.
 """
 from __future__ import annotations
+import json
 import re
-from bs4 import BeautifulSoup
+from datetime import date, timedelta
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
 
-BASE = "https://www.carrerasmexico.com"
-LISTING = f"{BASE}/eventos.php"
 SOURCE_NAME = "Carreras México"
+BASE = "https://carrerasmexico.com"
+API = "https://www.tiempometa.com/api3/js_site/event_search"
 
-# carrerasmexico organizes events by state via ?edo=<CODE>. These are the codes
-# we've observed in indexed URLs. Confirmed: DIF (CDMX), MEX, NLE, JAL, PUE,
-# MIC, QUE, MOR, TAM. Other 3-letter ISO-like codes inferred for remaining states.
-_STATE_PARAMS = [
-    "DIF",  # CDMX (Distrito Federal)
-    "MEX",  # Estado de México
-    "NLE",  # Nuevo León
-    "JAL",  # Jalisco
-    "PUE",  # Puebla
-    "MIC",  # Michoacán
-    "QUE",  # Querétaro
-    "MOR",  # Morelos
-    "TAM",  # Tamaulipas
-    "AGU", "BCN", "BCS", "CAM", "CHP", "CHH", "COA", "COL",
-    "DUR", "GUA", "GRO", "HID", "NAY", "OAX", "QUI", "ROO",
-    "SLP", "SIN", "SON", "TAB", "TLA", "VER", "YUC", "ZAC",
-]
+# Public API key exposed in carrerasmexico's #tm_event_list div
+API_KEY = "48513987f33edea8"
+PAGE_SIZE = 100
 
-# Spanish month names → ISO month
-_MX_MONTHS = {
-    "enero": "01", "febrero": "02", "marzo": "03", "abril": "04",
-    "mayo": "05", "junio": "06", "julio": "07", "agosto": "08",
-    "septiembre": "09", "setiembre": "09", "octubre": "10",
-    "noviembre": "11", "diciembre": "12",
-    "ene": "01", "feb": "02", "mar": "03", "abr": "04",
-    "may": "05", "jun": "06", "jul": "07", "ago": "08",
-    "sep": "09", "oct": "10", "nov": "11", "dic": "12",
+# Tiempometa state codes (verbatim, as the widget accepts them)
+_STATE_FULL_BY_CODE: dict[str, str] = {
+    "AGU": "Aguascalientes", "BCN": "Baja California", "BCS": "Baja California Sur",
+    "CAM": "Campeche", "CHP": "Chiapas", "CHH": "Chihuahua",
+    "COA": "Coahuila", "COL": "Colima", "DIF": "Ciudad de México",
+    "DUR": "Durango", "GUA": "Guanajuato", "GRO": "Guerrero",
+    "HID": "Hidalgo", "JAL": "Jalisco", "MEX": "Estado de México",
+    "MIC": "Michoacán", "MOR": "Morelos", "NAY": "Nayarit",
+    "NLE": "Nuevo León", "OAX": "Oaxaca", "PUE": "Puebla",
+    "QUE": "Querétaro", "ROO": "Quintana Roo", "SLP": "San Luis Potosí",
+    "SIN": "Sinaloa", "SON": "Sonora", "TAB": "Tabasco",
+    "TAM": "Tamaulipas", "TLA": "Tlaxcala", "VER": "Veracruz",
+    "YUC": "Yucatán", "ZAC": "Zacatecas",
 }
 
-# carrerasmexico state code → standard MX UF used by the rest of the codebase
-_STATE_CODE_MAP = {
-    "DIF": "CMX",  # Distrito Federal → Ciudad de México
-}
+# carrerasmexico uses DIF for Mexico City; the rest of the codebase uses CMX
+_NORMALIZE_UF = {"DIF": "CMX"}
 
-# Title-keyword filtering — running events only
-_RUNNING_KW = re.compile(
-    r"\b(carrera|caminata|maraton|maratón|medio[- ]?marat[oó]n|"
-    r"half[- ]?marathon|trail|run(ning)?|10\s*k|5\s*k|21\s*k|42\s*k|"
-    r"ultra(maratón|marathon)?)\b",
-    re.IGNORECASE,
-)
-_NON_RUNNING_KW = re.compile(
-    r"\b(triatl[oó]n|aquat(h|l)on|duatl[oó]n|ciclismo|natación|"
-    r"swim|bike|cycling|spartan|crossfit|mtb|open\s*water)\b",
-    re.IGNORECASE,
-)
+# Canonical distances
+_CANON_KM = {21: 21.097, 42: 42.195}
 
-_DATE_DMY = re.compile(r"(\d{1,2})[/\-\.](\d{1,2})[/\-\.](\d{4})")
-_DATE_ES = re.compile(
-    r"(\d{1,2})\s+(?:de\s+)?([a-záéíóú]+)\s+(?:de(?:l)?\s+)?(\d{4})",
-    re.IGNORECASE,
-)
+# Months to query — current month + next 12 months
+def _months_ahead(n: int = 12) -> list[str]:
+    today = date.today()
+    months: list[str] = []
+    y, m = today.year, today.month
+    for _ in range(n + 1):
+        months.append(f"{y:04d}-{m:02d}")
+        m += 1
+        if m > 12:
+            m = 1
+            y += 1
+    return months
 
 
 def scrape() -> list[Corrida]:
-    # PROBE: dump full Tiempometa JS to find API host
-    try:
-        js = get("https://www.tiempometa.com/assets/tm3_js_api.js", source=SOURCE_NAME, timeout=30)
-        if js.status_code == 200:
-            txt = js.text
-            print(f"[{SOURCE_NAME}] PROBE tm3_js_api.js length={len(txt)}")
-            import re as _re
-            # Find all hard-coded hostnames in the file
-            hosts = set(_re.findall(r"https?://[a-z0-9.\-]+\b", txt, _re.IGNORECASE))
-            print(f"[{SOURCE_NAME}] DEBUG hosts in JS: {sorted(hosts)}")
-            # Print everything around references to "/events", "/event_search", "/api"
-            for kw in ("/events", "event_search", "/api", "ajax", "$.get", "$.post", "$.ajax"):
-                for m in _re.finditer(_re.escape(kw), txt):
-                    ctx = txt[max(0, m.start()-100):m.end()+200].replace("\n", " ")
-                    print(f"[{SOURCE_NAME}] DEBUG '{kw}' ctx: …{ctx}…")
-            # Dump the FULL bodies of the relevant functions (need to balance braces)
-            for fn in ("events_template", "events_carousel", "event_search"):
-                start = txt.find(f"{fn}:")
-                if start < 0:
-                    start = txt.find(f"{fn} =")
-                if start >= 0:
-                    chunk = txt[start:start+2500]
-                    print(f"[{SOURCE_NAME}] FN {fn}:")
-                    print(chunk)
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] PROBE failed: {e}")
-
     today = today_iso()
     now = now_iso()
-    corridas: list[Corrida] = []
-    seen_ids: set[str] = set()
+    corridas: dict[str, Corrida] = {}
+
     debugged = False
-
-    for edo in _STATE_PARAMS:
-        url = f"{LISTING}?edo={edo}"
-        try:
-            resp = get(url, source=SOURCE_NAME, timeout=30)
-            resp.raise_for_status()
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] {edo}: erro {e}")
-            continue
-
-        soup = BeautifulSoup(resp.text, "lxml")
-        if not debugged:
-            print(f"[{SOURCE_NAME}] === PROBE state={edo} ===")
-            _debug_structure(soup, resp.text)
-            debugged = True
-
-        state_corridas: list[Corrida] = []
-        for el in _find_events(soup):
+    for month in _months_ahead(12):
+        page = 1
+        while True:
+            params = {
+                "api_key": API_KEY,
+                "type": "Calle",       # road races only
+                "month": month,
+                "state": "",
+                "page": page,
+                "page_size": PAGE_SIZE,
+                "callback": "cb",
+            }
             try:
-                corrida = _parse_event(el, today, now, default_estado=edo)
-                if corrida and corrida.id not in seen_ids:
-                    seen_ids.add(corrida.id)
-                    state_corridas.append(corrida)
+                resp = get(API, params=params, source=SOURCE_NAME, timeout=30)
+                resp.raise_for_status()
             except Exception as e:
-                print(f"[{SOURCE_NAME}] {edo}: erro ao parsear: {e}")
+                print(f"[{SOURCE_NAME}] {month} p{page}: erro {e}")
+                break
 
-        print(f"[{SOURCE_NAME}] {edo}: {len(state_corridas)} corridas")
-        corridas.extend(state_corridas)
+            data = _parse_jsonp(resp.text)
+            if data is None:
+                print(f"[{SOURCE_NAME}] {month} p{page}: jsonp parse falhou; raw[:200]={resp.text[:200]}")
+                break
 
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas (total)")
-    return corridas
+            if not debugged:
+                print(f"[{SOURCE_NAME}] PROBE month={month} keys={list(data.keys())}")
+                events_dbg = data.get("events") or data.get("data") or []
+                if events_dbg:
+                    print(f"[{SOURCE_NAME}] PROBE first event keys: {list(events_dbg[0].keys())}")
+                    print(f"[{SOURCE_NAME}] PROBE first event: {json.dumps(events_dbg[0], ensure_ascii=False)[:600]}")
+                debugged = True
 
+            events = data.get("events") or data.get("data") or []
+            if not events:
+                break
 
-def _debug_structure(soup: BeautifulSoup, raw: str) -> None:
-    """Log enough to diagnose missing event content."""
-    title = soup.title.string.strip() if soup.title and soup.title.string else "no title"
-    print(f"[{SOURCE_NAME}] DEBUG title: {title}")
-    print(f"[{SOURCE_NAME}] DEBUG response length: {len(raw)} chars")
-    links = soup.find_all("a", href=True)
-    print(f"[{SOURCE_NAME}] DEBUG {len(links)} links")
-    for a in links[:20]:
-        print(f"[{SOURCE_NAME}]   href: {a['href'][:120]}")
-    # Look for keywords that signal events are present (or absent)
-    raw_lower = raw.lower()
-    for kw in ("evento", "carrera", "fecha", "inscrip", "5k", "10k", "21k", "42k", "maratón", "maraton"):
-        n = raw_lower.count(kw)
-        if n > 0:
-            print(f"[{SOURCE_NAME}] DEBUG keyword '{kw}': {n} occurrences in raw HTML")
-    # Look for embedded JSON or data attributes
-    scripts = soup.find_all("script")
-    print(f"[{SOURCE_NAME}] DEBUG {len(scripts)} <script> tags")
-    for i, s in enumerate(scripts):
-        src = s.get("src", "")
-        if src:
-            print(f"[{SOURCE_NAME}]   script[{i}] src={src}")
-    # Any tiempometa references in raw HTML
-    import re as _re
-    for m in _re.finditer(r"https?://[^\s\"']+tiempometa[^\s\"']*", raw, _re.IGNORECASE):
-        print(f"[{SOURCE_NAME}] DEBUG tiempometa URL: {m.group(0)}")
-    # The Tiempometa() bootstrap call — show params
-    for m in _re.finditer(r"Tiempometa\.\w+\([^)]+\)", raw):
-        print(f"[{SOURCE_NAME}] DEBUG Tiempometa call: {m.group(0)}")
-    # Look for any data-* attributes that might carry the widget config
-    for el in soup.find_all(attrs={"id": _re.compile(r"tm_|tiempometa", _re.IGNORECASE)}):
-        print(f"[{SOURCE_NAME}] DEBUG widget element: {str(el)[:300]}")
-    # Dump first 3000 chars of <body> verbatim — last resort to see what's there
-    body = soup.find("body")
-    body_str = str(body)[:3000] if body else "no body"
-    print(f"[{SOURCE_NAME}] DEBUG body[:3000]: {body_str}")
+            for ev in events:
+                try:
+                    c = _parse_event(ev, today, now)
+                    if c and c.id not in corridas:
+                        corridas[c.id] = c
+                except Exception as e:
+                    print(f"[{SOURCE_NAME}] erro parse: {e}")
+
+            total = data.get("total") or data.get("total_count") or 0
+            if page * PAGE_SIZE >= total or len(events) < PAGE_SIZE:
+                break
+            page += 1
+
+    result = list(corridas.values())
+    print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
+    return result
 
 
-def _find_events(soup: BeautifulSoup) -> list:
-    """Try common selectors. Returns list of event elements."""
-    for sel in [
-        "tr.evento", "div.evento", "article.evento", "li.evento",
-        ".race-card", ".event-card", "article", "tr", ".carrera",
-    ]:
-        els = soup.select(sel)
-        if len(els) >= 3:
-            return els
-    # Fallback: any element that contains both a date and the word "carrera"
-    return [el for el in soup.find_all(["div", "tr", "li", "article"])
-            if _looks_like_event(el)]
-
-
-def _looks_like_event(el) -> bool:
-    txt = el.get_text(" ", strip=True)
-    if len(txt) < 20 or len(txt) > 1000:
-        return False
-    has_date = bool(_DATE_DMY.search(txt) or _DATE_ES.search(txt))
-    return has_date and _RUNNING_KW.search(txt) is not None
-
-
-def _parse_event(el, today: str, now: str, default_estado: str = "") -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 10:
+def _parse_jsonp(text: str) -> dict | None:
+    """Strip the JSONP wrapper: cb({...}); → {...}"""
+    text = text.strip()
+    # Find first '(' and last ')'
+    lp = text.find("(")
+    rp = text.rfind(")")
+    if lp < 0 or rp < 0 or rp <= lp:
+        # Maybe already JSON
+        try:
+            return json.loads(text)
+        except Exception:
+            return None
+    inner = text[lp + 1:rp]
+    try:
+        return json.loads(inner)
+    except Exception:
         return None
 
-    # Title from heading or strong; fallback to first link
-    heading = el.find(["h1", "h2", "h3", "h4", "h5", "strong"])
-    titulo_raw = heading.get_text(strip=True) if heading else None
-    if not titulo_raw:
-        link = el.find("a")
-        titulo_raw = link.get_text(strip=True) if link else text[:80]
 
-    titulo = normalize_titulo(titulo_raw)
-    if not titulo or len(titulo) < 4:
+def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
+    # Tiempometa event field names — discovered from the probe
+    nombre = (ev.get("name") or ev.get("title") or ev.get("event_name") or "").strip()
+    titulo = normalize_titulo(nombre)
+    if not titulo or len(titulo) < 3:
         return None
 
-    # Title-keyword gate
-    if not _RUNNING_KW.search(titulo) and not _RUNNING_KW.search(text[:200]):
-        return None
-    if _NON_RUNNING_KW.search(titulo):
+    # Date: try multiple field names
+    date_raw = (
+        ev.get("event_date") or ev.get("date") or ev.get("start_date")
+        or ev.get("fecha") or ""
+    )
+    data_evento = _normalize_date(date_raw)
+    if not data_evento or data_evento < today:
         return None
 
-    data = _extract_date(text)
-    if not data or data < today:
-        return None
-
-    cidade, estado = _extract_location(el, text)
-    if estado:
-        estado = _STATE_CODE_MAP.get(estado, estado)
+    # Location
+    estado_raw = (ev.get("state") or ev.get("estado") or "").strip()
+    estado = _NORMALIZE_UF.get(estado_raw, estado_raw)
+    cidade = (ev.get("city") or ev.get("ciudad") or ev.get("location") or "").strip()
     if not estado:
-        estado = _STATE_CODE_MAP.get(default_estado, default_estado)
-    if not estado:
-        _pais_geo, estado = _geo.resolve(cidade, "", "MX")
+        _pais_geo, est_geo = _geo.resolve(cidade, "", "MX")
+        estado = est_geo or ""
     localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or "México"
 
-    distancias = _extract_distances(text)
+    # Distances
+    distancias = _extract_distances(ev)
 
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else LISTING
-    if link.startswith("/"):
-        link = BASE + link
-    elif not link.startswith("http"):
-        link = f"{BASE}/{link}"
+    # Event URL — registration or info page
+    event_url = (
+        ev.get("registration_url") or ev.get("url") or ev.get("link")
+        or ev.get("event_url") or BASE
+    )
 
-    img = el.find("img")
-    imagem_url = (img.get("src") or img.get("data-src")) if img else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = BASE + imagem_url
+    # Image
+    imagem_url = ev.get("image_url") or ev.get("image") or ev.get("photo") or None
 
+    event_id = ev.get("id") or ev.get("event_id") or slugify(titulo)
     fonte = FonteInfo(
         nome=SOURCE_NAME,
-        link_evento=link,
-        links_inscricao=[link] if link != LISTING else [],
+        link_evento=str(event_url),
+        links_inscricao=[str(event_url)] if event_url and event_url != BASE else [],
     )
     return Corrida(
-        id=f"cm_{slugify(titulo)}_{estado.lower()}_{data}",
+        id=f"cm_{event_id}",
         titulo=titulo,
-        data_evento=data,
-        horario=None,
+        data_evento=data_evento,
+        horario=_extract_time(ev),
         localizacao=localizacao,
         cidade=cidade,
-        estado=estado,
+        estado=estado or "",
         pais="MX",
         distancias=distancias,
         imagem_url=imagem_url,
@@ -274,44 +209,77 @@ def _parse_event(el, today: str, now: str, default_estado: str = "") -> Corrida 
     )
 
 
-def _extract_date(text: str) -> str | None:
-    m = _DATE_DMY.search(text)
+def _normalize_date(raw: str) -> str | None:
+    if not raw:
+        return None
+    s = str(raw).strip()
+    # Already ISO?
+    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})", s)
     if m:
-        d, mo, y = m.group(1), m.group(2), m.group(3)
-        return f"{y}-{mo.zfill(2)}-{d.zfill(2)}"
-    m = _DATE_ES.search(text)
+        return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+    # DD/MM/YYYY
+    m = re.match(r"^(\d{1,2})[/-](\d{1,2})[/-](\d{4})$", s)
     if m:
-        d, mes, y = m.group(1), m.group(2).lower(), m.group(3)
-        mo = _MX_MONTHS.get(mes)
-        if mo:
-            return f"{y}-{mo}-{d.zfill(2)}"
+        return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
     return None
 
 
-def _extract_location(el, text: str) -> tuple[str, str]:
-    """Return (cidade, estado) — estado is a UF code or empty."""
-    # Try elements with a location-ish class
-    for cls in ("ciudad", "city", "lugar", "localidad", "estado", "venue"):
-        loc = el.find(class_=re.compile(cls, re.IGNORECASE))
-        if loc:
-            val = loc.get_text(strip=True)
-            if val:
-                # "Ciudad, Estado" or "Ciudad - Estado"
-                parts = re.split(r"[,\-–]", val)
-                return parts[0].strip(), (parts[1].strip() if len(parts) > 1 else "")
-    return "", ""
+def _extract_time(ev: dict) -> str | None:
+    for k in ("start_time", "time", "horario", "hora"):
+        v = ev.get(k)
+        if v:
+            m = re.search(r"(\d{1,2}):(\d{2})", str(v))
+            if m:
+                return f"{int(m.group(1)):02d}:{m.group(2)}"
+    return None
 
 
-def _extract_distances(text: str) -> list[Distancia]:
+def _extract_distances(ev: dict) -> list[Distancia]:
+    """Pull km values from any distance field or from the title."""
     seen: set[float] = set()
     result: list[Distancia] = []
-    for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[kK](?:m|M)?\b", text):
-        km = float(n.replace(",", "."))
-        if 21.0 <= km <= 21.2:
-            km = 21.097
-        elif 41.5 <= km <= 43.0:
-            km = 42.195
-        if km not in seen and 3 <= km <= 200:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    return sorted(result, key=lambda d: d.km)
+
+    # Try structured distances
+    for k in ("distances", "subevents", "categorias", "modalidades"):
+        items = ev.get(k)
+        if isinstance(items, list):
+            for it in items:
+                if isinstance(it, dict):
+                    raw = it.get("distance") or it.get("km") or it.get("name") or it.get("title")
+                elif isinstance(it, (int, float)):
+                    raw = it
+                else:
+                    raw = str(it)
+                km = _parse_km(raw)
+                if km is not None and km not in seen:
+                    seen.add(km)
+                    result.append(Distancia(km=km, data=None, horario=None))
+
+    # Fallback: parse from title/description
+    if not result:
+        text = " ".join(str(ev.get(k) or "") for k in ("name", "title", "description", "subtitle"))
+        for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[kK](?:m|M)?\b", text):
+            km = float(n.replace(",", "."))
+            key = round(km)
+            canon = _CANON_KM.get(key, km)
+            if canon not in seen and 3 <= canon <= 200:
+                seen.add(canon)
+                result.append(Distancia(km=canon, data=None, horario=None))
+
+    return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
+
+
+def _parse_km(raw) -> float | None:
+    if raw is None:
+        return None
+    if isinstance(raw, (int, float)):
+        km = float(raw)
+        return km if 1 <= km <= 200 else None
+    s = str(raw).strip().lower()
+    m = re.search(r"(\d+(?:[.,]\d+)?)\s*k", s)
+    if not m:
+        return None
+    km = float(m.group(1).replace(",", "."))
+    key = round(km)
+    km = _CANON_KM.get(key, km)
+    return km if 1 <= km <= 200 else None

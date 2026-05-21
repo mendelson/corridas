@@ -19,6 +19,7 @@ on:
       - 'scraper/utils.py'
       - 'scraper/http_client.py'
       - 'scraper/playwright_client.py'
+      - 'scraper/test_source.py'
   workflow_dispatch:
     inputs:
       source:
@@ -119,7 +120,8 @@ jobs:
             # If shared infra changed, test everything
             INFRA=$(git diff --name-only HEAD~1 HEAD \
               -- 'scraper/models.py' 'scraper/utils.py' \
-              'scraper/http_client.py' 'scraper/playwright_client.py')
+              'scraper/http_client.py' 'scraper/playwright_client.py' \
+              'scraper/test_source.py')
 
             if [ -n "$INFRA" ]; then
               echo "Shared infra changed — testing all sources"

@@ -1,38 +1,4 @@
-[Carreras México] === probing endpoint variations ===
-[Carreras México] PROBE events-bare: HTTP 200; len=7928; body[:300]=$("#tiempometa_event_list_div").html('<div id=\"tm_js_container\">\n	<div class=\"row tm_event_list_item\">\n		<div class=\"col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1\">\n			<a class=\"tiempometa tiempometa_event_link\" href=\"evento.html?event=f5957281fe421d71503e10d
-[Carreras México] PROBE events-with-target: HTTP 200; len=8168; body[:300]=$("#tiempometa_event_list_div").html('<div id=\"tm_js_container\">\n	<div class=\"row tm_event_list_item\">\n		<div class=\"col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1\">\n			<a class=\"tiempometa tiempometa_event_link\" href=\"https://carrerasmexico.com/?event=f595728
-[Carreras México] PROBE event_search-bare: HTTP 500; len=643; body[:300]=<!DOCTYPE html> <html> <head>   <title>We're sorry, but something went wrong (500)</title>   <style type="text/css">     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }     div.dialog {       width: 25em;       padding: 0 4em;       margin: 4em auto 
-[Carreras México] PROBE event_search-all: HTTP 500; len=643; body[:300]=<!DOCTYPE html> <html> <head>   <title>We're sorry, but something went wrong (500)</title>   <style type="text/css">     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }     div.dialog {       width: 25em;       padding: 0 4em;       margin: 4em auto 
-[Carreras México] PROBE event_search-typeCalle: HTTP 500; len=643; body[:300]=<!DOCTYPE html> <html> <head>   <title>We're sorry, but something went wrong (500)</title>   <style type="text/css">     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }     div.dialog {       width: 25em;       padding: 0 4em;       margin: 4em auto 
-[Carreras México] PROBE events_carousel: HTTP 500; len=643; body[:300]=<!DOCTYPE html> <html> <head>   <title>We're sorry, but something went wrong (500)</title>   <style type="text/css">     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }     div.dialog {       width: 25em;       padding: 0 4em;       margin: 4em auto 
-[Carreras México] PROBE smart_events: HTTP 500; len=643; body[:300]=<!DOCTYPE html> <html> <head>   <title>We're sorry, but something went wrong (500)</title>   <style type="text/css">     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }     div.dialog {       width: 25em;       padding: 0 4em;       margin: 4em auto 
-[Carreras México] === end probe ===
-[Carreras México] 2026-05 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-05&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-06 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-06&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-07 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-07&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-08 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-08&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-09 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-09&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-10 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-10&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-11 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-11&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2026-12 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2026-12&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2027-01 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2027-01&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2027-02 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2027-02&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2027-03 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2027-03&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2027-04 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2027-04&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Carreras México] 2027-05 p1: erro Server error '500 Internal Server Error' for url 'https://www.tiempometa.com/api3/js_site/event_search?api_key=48513987f33edea8&type=Calle&month=2027-05&state=&page=1&page_size=100&callback=cb'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+[Carreras México] PROBE page 1: 0 items; first item:
 [Carreras México] 0 corridas encontradas
 ⚠️   carreras_mexico: 0 eventos retornados
 FAILURE_NOTE:0 eventos

@@ -20,6 +20,7 @@ on:
       - 'scraper/http_client.py'
       - 'scraper/playwright_client.py'
       - 'scraper/test_source.py'
+      - '.github/workflows/test-sources.yml'
   workflow_dispatch:
     inputs:
       source:

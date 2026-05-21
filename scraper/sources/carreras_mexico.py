@@ -86,28 +86,43 @@ def scrape() -> list[Corrida]:
 
 
 def _debug_structure(soup: BeautifulSoup, raw: str) -> None:
-    """Log the HTML structure once so we can see what the actual page looks like."""
-    print(f"[{SOURCE_NAME}] DEBUG title: {soup.title.string.strip() if soup.title and soup.title.string else 'no title'}")
+    """Log the HTML structure so the failure log reveals the page layout."""
+    title = soup.title.string.strip() if soup.title and soup.title.string else "no title"
+    print(f"[{SOURCE_NAME}] DEBUG title: {title}")
     print(f"[{SOURCE_NAME}] DEBUG response length: {len(raw)} chars")
-    # Print first 500 chars of body for visibility
-    body = soup.find("body")
-    body_text = body.get_text(" ", strip=True)[:300] if body else "no body"
-    print(f"[{SOURCE_NAME}] DEBUG body sample: {body_text}")
-    # Try common containers
+    # If the response was blocked / redirected, the body itself is the signal.
+    if len(raw) < 5000:
+        print(f"[{SOURCE_NAME}] DEBUG short response, full body follows:")
+        print(raw[:5000])
+        return
+    # Dump links and headings — first sign of an event listing
+    links = soup.find_all("a", href=True)
+    print(f"[{SOURCE_NAME}] DEBUG {len(links)} links found on page")
+    sample_hrefs = [a["href"] for a in links[:15]]
+    print(f"[{SOURCE_NAME}] DEBUG first 15 hrefs: {sample_hrefs}")
+    for tag in ("h1", "h2", "h3", "h4"):
+        hs = [h.get_text(" ", strip=True)[:80] for h in soup.find_all(tag)]
+        if hs:
+            print(f"[{SOURCE_NAME}] DEBUG {tag}: {hs[:10]}")
+    # Try common containers and dump the first match snippet
     candidates = [
         ".evento", ".event", ".race", ".carrera", "article",
         "tr.evento", "tr", ".item", ".post", "li.evento", "li",
         "div.evento", "div.fila", ".lista-evento", ".calendar-item",
-        ".row.evento", "table tr",
+        ".row.evento", "table tr", "table.tabla tr", ".eventos",
     ]
     for sel in candidates:
         els = soup.select(sel)
         n = len(els)
         if n >= 3:
-            sample = str(els[0])[:400]
-            print(f"[{SOURCE_NAME}] DEBUG selector '{sel}' → {n} elements; first: {sample}")
+            print(f"[{SOURCE_NAME}] DEBUG selector '{sel}' → {n} elements")
+            print(f"[{SOURCE_NAME}] DEBUG first element: {str(els[0])[:600]}")
             return
     print(f"[{SOURCE_NAME}] DEBUG no common container matched ≥3 elements")
+    # Last resort: dump first 2000 chars of body
+    body = soup.find("body")
+    if body:
+        print(f"[{SOURCE_NAME}] DEBUG body[:2000]: {str(body)[:2000]}")
 
 
 def _find_events(soup: BeautifulSoup) -> list:

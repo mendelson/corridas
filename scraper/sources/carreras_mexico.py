@@ -72,6 +72,37 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: dict[str, Corrida] = {}
 
+    # PROBE: try multiple endpoints/param shapes to find one that returns 200
+    print(f"[{SOURCE_NAME}] === probing endpoint variations ===")
+    probe_variations = [
+        # (label, url, params)
+        ("events-bare", f"https://www.tiempometa.com/api3/js_site/events",
+         {"api_key": API_KEY, "page": 1, "page_size": 5}),
+        ("events-with-target", f"https://www.tiempometa.com/api3/js_site/events",
+         {"api_key": API_KEY, "page": 1, "page_size": 5, "target_url": "https://carrerasmexico.com/"}),
+        ("event_search-bare", f"https://www.tiempometa.com/api3/js_site/event_search",
+         {"api_key": API_KEY, "page": 1, "page_size": 5}),
+        ("event_search-all", f"https://www.tiempometa.com/api3/js_site/event_search",
+         {"api_key": API_KEY, "state": "", "month": "", "type": "", "page": 1, "page_size": 5}),
+        ("event_search-typeCalle", f"https://www.tiempometa.com/api3/js_site/event_search",
+         {"api_key": API_KEY, "state": "", "month": "", "type": "Calle", "page": 1, "page_size": 5}),
+        ("events_carousel", f"https://www.tiempometa.com/api3/js_site/events_carousel",
+         {"api_key": API_KEY, "ranking": "C", "page_size": 5}),
+        ("smart_events", f"https://www.tiempometa.com/api/js_site/smart_events",
+         {"api_key": API_KEY, "page": 1, "page_size": 5}),
+    ]
+    headers_with_referer = {"Referer": "https://carrerasmexico.com/", "Origin": "https://carrerasmexico.com"}
+    import httpx as _httpx
+    for label, url, params in probe_variations:
+        try:
+            # Try direct httpx call so we control headers entirely (skip http_client proxy chain)
+            r = _httpx.get(url, params={**params, "callback": "cb"}, headers=headers_with_referer, timeout=20, follow_redirects=True)
+            body_preview = r.text[:300].replace("\n", " ")
+            print(f"[{SOURCE_NAME}] PROBE {label}: HTTP {r.status_code}; len={len(r.text)}; body[:300]={body_preview}")
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] PROBE {label}: exception {e}")
+    print(f"[{SOURCE_NAME}] === end probe ===")
+
     debugged = False
     for month in _months_ahead(12):
         page = 1

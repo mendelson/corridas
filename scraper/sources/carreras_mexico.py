@@ -75,29 +75,30 @@ _DATE_ES = re.compile(
 
 
 def scrape() -> list[Corrida]:
-    # PROBE: fetch the Tiempometa JS widget once, dump the API URL patterns
+    # PROBE: dump full Tiempometa JS to find API host
     try:
         js = get("https://www.tiempometa.com/assets/tm3_js_api.js", source=SOURCE_NAME, timeout=30)
         if js.status_code == 200:
             txt = js.text
             print(f"[{SOURCE_NAME}] PROBE tm3_js_api.js length={len(txt)}")
-            # Dump any AJAX URL templates / endpoint references
             import re as _re
-            for pat in [
-                r"url\s*[:=]\s*['\"]([^'\"]+)['\"]",
-                r"\$\.(get|post|ajax|getJSON)\s*\(\s*['\"]([^'\"]+)['\"]",
-                r"fetch\s*\(\s*['\"]([^'\"]+)['\"]",
-                r"https?://[^\s\"'<>]+(?:events|api|carreras|json)[^\s\"'<>]*",
-                r"(events_template|events_carousel|event_search)\s*[=:].*?function\s*\([^)]*\)\s*\{[^}]{0,500}",
-            ]:
-                for m in _re.finditer(pat, txt):
-                    print(f"[{SOURCE_NAME}]   match: {m.group(0)[:300]}")
-            # Look for the function bodies specifically
+            # Find all hard-coded hostnames in the file
+            hosts = set(_re.findall(r"https?://[a-z0-9.\-]+\b", txt, _re.IGNORECASE))
+            print(f"[{SOURCE_NAME}] DEBUG hosts in JS: {sorted(hosts)}")
+            # Print everything around references to "/events", "/event_search", "/api"
+            for kw in ("/events", "event_search", "/api", "ajax", "$.get", "$.post", "$.ajax"):
+                for m in _re.finditer(_re.escape(kw), txt):
+                    ctx = txt[max(0, m.start()-100):m.end()+200].replace("\n", " ")
+                    print(f"[{SOURCE_NAME}] DEBUG '{kw}' ctx: …{ctx}…")
+            # Dump the FULL bodies of the relevant functions (need to balance braces)
             for fn in ("events_template", "events_carousel", "event_search"):
-                m = _re.search(rf"{fn}\s*[=:]\s*function[^{{]*\{{(.*?)\}}\s*[,;]?", txt, _re.DOTALL)
-                if m:
-                    print(f"[{SOURCE_NAME}] FN {fn} body (first 600 chars):")
-                    print(m.group(1)[:600])
+                start = txt.find(f"{fn}:")
+                if start < 0:
+                    start = txt.find(f"{fn} =")
+                if start >= 0:
+                    chunk = txt[start:start+2500]
+                    print(f"[{SOURCE_NAME}] FN {fn}:")
+                    print(chunk)
     except Exception as e:
         print(f"[{SOURCE_NAME}] PROBE failed: {e}")
 

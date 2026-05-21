@@ -434,17 +434,13 @@ async function initFilters() {
   populateEstadoFilter({ skipGeo: true });
   populateFontesFilter();
 
-  // Geolocation (only if no persisted location preference)
-  const saved = loadSavedFilters();
-  if (!saved || !saved.estado) {
-    const geo = await detectGeoEstado();
-    if (geo && _estadoAvailableValues.has(geo)) {
-      state.estado = geo;
-      _geoApplied  = geo;
-      _updateEstadoLabel();
-      // Refresh selected state in accordion
-      populateEstadoFilter({ skipGeo: true });
-    }
+  // Geolocation
+  const geo = await detectGeoEstado();
+  if (geo && _estadoAvailableValues.has(geo)) {
+    state.estado = geo;
+    _geoApplied  = geo;
+    _updateEstadoLabel();
+    populateEstadoFilter({ skipGeo: true });
   }
 
   applyFilters();
@@ -455,73 +451,9 @@ async function initFilters() {
 // ---------------------------------------------------------------------------
 // Persistence
 // ---------------------------------------------------------------------------
-function loadSavedFilters() {
-  try { return JSON.parse(localStorage.getItem('corridas_filters') || 'null'); }
-  catch (_) { return null; }
-}
-
-function restoreFilters() {
-  const saved = loadSavedFilters();
-  if (!saved) return;
-
-  if (saved.searchQuery) {
-    state.searchQuery = saved.searchQuery;
-    searchInput.value = saved.searchQuery;
-  }
-  if (saved.periodo) {
-    state.periodo = saved.periodo;
-    periodoSelect.value = saved.periodo;
-    toggleCustomDateRow(saved.periodo === 'custom');
-  }
-  if (saved.dateFrom) { state.dateFrom = saved.dateFrom; dateFrom.value = saved.dateFrom; }
-  if (saved.dateTo)   { state.dateTo   = saved.dateTo;   dateTo.value   = saved.dateTo; }
-  if (saved.estado) {
-    let est = saved.estado;
-    if (est !== 'todos') {
-      if (est.startsWith('INT:')) {
-        est = 'todos';
-      } else if (!est.includes(':')) {
-        est = est === 'BR' ? 'BR:' : 'BR:' + est;
-      }
-    }
-    state.estado = est;
-  }
-  if (saved.fontes && Array.isArray(saved.fontes)) {
-    state.fontes = new Set(saved.fontes);
-  }
-  if (saved.activePills && Array.isArray(saved.activePills)) {
-    state.activePills = new Set(saved.activePills);
-    for (const pill of pillsContainer.querySelectorAll('.pill')) {
-      pill.setAttribute('aria-pressed', state.activePills.has(pill.dataset.km) ? 'true' : 'false');
-      pill.classList.toggle('active', state.activePills.has(pill.dataset.km));
-    }
-  }
-  if (saved.distMode === 'interval') {
-    state.distMode = 'interval';
-    modeSelect.classList.remove('active'); modeSelect.setAttribute('aria-pressed', 'false');
-    modeInterval.classList.add('active');  modeInterval.setAttribute('aria-pressed', 'true');
-    pillsContainer.classList.add('hidden');
-    intervalContainer.classList.remove('hidden');
-  }
-  if (saved.distMin !== undefined && saved.distMin !== null) { state.distMin = saved.distMin; distMin.value = saved.distMin; }
-  if (saved.distMax !== undefined && saved.distMax !== null) { state.distMax = saved.distMax; distMax.value = saved.distMax; }
-}
-
-function saveFilters() {
-  const obj = {
-    searchQuery: state.searchQuery,
-    periodo:     state.periodo,
-    dateFrom:    state.dateFrom,
-    dateTo:      state.dateTo,
-    estado:      state.estado,
-    fontes:      [...state.fontes],
-    activePills: [...state.activePills],
-    distMode:    state.distMode,
-    distMin:     state.distMin,
-    distMax:     state.distMax,
-  };
-  localStorage.setItem('corridas_filters', JSON.stringify(obj));
-}
+function loadSavedFilters() { return null; }
+function restoreFilters() {}
+function saveFilters() {}
 
 // ---------------------------------------------------------------------------
 // Estado dropdown (custom multi-region selector)
@@ -1478,6 +1410,9 @@ function toggleCustomDateRow(show) {
 // Event wiring
 // ---------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+  // Clear any stale persisted filter state from previous sessions
+  try { localStorage.removeItem('corridas_filters'); } catch (_) {}
+
   // DOM refs
   searchInput         = document.getElementById('searchInput');
   cardsList           = document.getElementById('cardsList');
@@ -1679,10 +1614,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Switch to browser language if different
     const targetLang = BROWSER_LANG;
     if (targetLang !== LANG) {
-      try {
-        const saved = JSON.parse(localStorage.getItem('corridas_filters') || 'null');
-        if (saved) { delete saved.estado; localStorage.setItem('corridas_filters', JSON.stringify(saved)); }
-      } catch (_) {}
       window.location.href = LANG_URLS[targetLang];
     }
   });

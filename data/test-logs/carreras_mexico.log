@@ -19,11 +19,41 @@
 [Carreras México] DEBUG keyword 'maratón': 1 occurrences in raw HTML
 [Carreras México] DEBUG keyword 'maraton': 8 occurrences in raw HTML
 [Carreras México] DEBUG 20 <script> tags
-[Carreras México]   script[17] src= body[:200]=
-        //  Tiempometa.events_carousel('tm_event_list', 'proximos_eventos', 'C', 50, 'none');
-        Tiempometa.events_template('tm_event_list', 'proximos_eventos', 50, 0);
-
-        $('.tm_prev_page
+[Carreras México]   script[2] src=https://www.googletagmanager.com/gtag/js?id=UA-149384284-1
+[Carreras México]   script[4] src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js
+[Carreras México]   script[6] src=https://app.mailjet.com/statics/js/iframeResizer.min.js
+[Carreras México]   script[8] src=https://www.googletagmanager.com/gtag/js?id=G-DFS1R08BP6
+[Carreras México]   script[11] src=https://www.tiempometa.com/assets/jquery.js?body=1
+[Carreras México]   script[12] src=https://www.tiempometa.com/assets/jquery_ujs.js?body=1
+[Carreras México]   script[13] src=js/custom.js
+[Carreras México]   script[14] src=js/bootstrap.min.js
+[Carreras México]   script[15] src=plugins/owl-carousel/owl.carousel.js
+[Carreras México]   script[16] src=https://www.tiempometa.com/assets/tm3_js_api.js?body=1
+[Carreras México]   script[19] src=js/funciones.js?v=2
+[Carreras México] DEBUG tiempometa URL: https://www.tiempometa.com
+[Carreras México] DEBUG tiempometa URL: https://www.tiempometa.com/assets/jquery.js?body=1
+[Carreras México] DEBUG tiempometa URL: https://www.tiempometa.com/assets/jquery_ujs.js?body=1
+[Carreras México] DEBUG tiempometa URL: https://www.tiempometa.com/assets/tm3_js_api.js?body=1
+[Carreras México] DEBUG Tiempometa call: Tiempometa.events_carousel('tm_event_list', 'proximos_eventos', 'C', 50, 'none')
+[Carreras México] DEBUG Tiempometa call: Tiempometa.events_template('tm_event_list', 'proximos_eventos', 50, 0)
+[Carreras México] DEBUG Tiempometa call: Tiempometa.event_search('tm_search_list', 'proximos_eventos', 12, 0)
+[Carreras México] DEBUG Tiempometa call: Tiempometa.event_search('tm_search_list', 'proximos_eventos', 24, 0)
+[Carreras México] DEBUG widget element: <select class="form-control input-lg search-form" id="tm_search_state">
+<option selected="selected" value="">En todo México</option>
+<option id="edo_AGU" value="AGU">Aguascalientes</option>
+<option id="edo_BCN" value="BCN">Baja California</option>
+<option id="edo_BCS" value="BCS">Baja California Sur
+[Carreras México] DEBUG widget element: <select class="form-control input-lg search-form" id="tm_search_month">
+<option selected="selected" value="">En Cualquier Mes</option>
+<option value="2026-05">Mayo 2026</option><option value="2026-06">Junio 2026</option><option value="2026-07">Julio 2026</option><option value="2026-08">Agosto 2026</
+[Carreras México] DEBUG widget element: <select class="form-control input-lg search-form" id="tm_search_type">
+<option selected="selected" value="">Todas las Disciplinas</option>
+<option disabled="disabled" style="background-color:#4611a742;font-weight:bold;" value="Calle"> - Carreras de Calle - </option>
+<option value="Infantiles"> Infan
+[Carreras México] DEBUG widget element: <div class="row" data-api-key="48513987f33edea8" id="tm_search_list">
+</div>
+[Carreras México] DEBUG widget element: <div class="row" data-api-key="48513987f33edea8" id="tm_event_list">
+</div>
 [Carreras México] DEBUG body[:3000]: <body>
 <div class="opacidad"></div>
 <!-- Preloder -->

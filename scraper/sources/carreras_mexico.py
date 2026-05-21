@@ -133,9 +133,18 @@ def _debug_structure(soup: BeautifulSoup, raw: str) -> None:
     print(f"[{SOURCE_NAME}] DEBUG {len(scripts)} <script> tags")
     for i, s in enumerate(scripts):
         src = s.get("src", "")
-        body = (s.string or "")[:200]
-        if "evento" in body.lower() or "json" in src.lower() or len(body) > 500:
-            print(f"[{SOURCE_NAME}]   script[{i}] src={src} body[:200]={body}")
+        if src:
+            print(f"[{SOURCE_NAME}]   script[{i}] src={src}")
+    # Any tiempometa references in raw HTML
+    import re as _re
+    for m in _re.finditer(r"https?://[^\s\"']+tiempometa[^\s\"']*", raw, _re.IGNORECASE):
+        print(f"[{SOURCE_NAME}] DEBUG tiempometa URL: {m.group(0)}")
+    # The Tiempometa() bootstrap call — show params
+    for m in _re.finditer(r"Tiempometa\.\w+\([^)]+\)", raw):
+        print(f"[{SOURCE_NAME}] DEBUG Tiempometa call: {m.group(0)}")
+    # Look for any data-* attributes that might carry the widget config
+    for el in soup.find_all(attrs={"id": _re.compile(r"tm_|tiempometa", _re.IGNORECASE)}):
+        print(f"[{SOURCE_NAME}] DEBUG widget element: {str(el)[:300]}")
     # Dump first 3000 chars of <body> verbatim — last resort to see what's there
     body = soup.find("body")
     body_str = str(body)[:3000] if body else "no body"

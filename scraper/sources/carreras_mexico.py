@@ -75,6 +75,32 @@ _DATE_ES = re.compile(
 
 
 def scrape() -> list[Corrida]:
+    # PROBE: fetch the Tiempometa JS widget once, dump the API URL patterns
+    try:
+        js = get("https://www.tiempometa.com/assets/tm3_js_api.js", source=SOURCE_NAME, timeout=30)
+        if js.status_code == 200:
+            txt = js.text
+            print(f"[{SOURCE_NAME}] PROBE tm3_js_api.js length={len(txt)}")
+            # Dump any AJAX URL templates / endpoint references
+            import re as _re
+            for pat in [
+                r"url\s*[:=]\s*['\"]([^'\"]+)['\"]",
+                r"\$\.(get|post|ajax|getJSON)\s*\(\s*['\"]([^'\"]+)['\"]",
+                r"fetch\s*\(\s*['\"]([^'\"]+)['\"]",
+                r"https?://[^\s\"'<>]+(?:events|api|carreras|json)[^\s\"'<>]*",
+                r"(events_template|events_carousel|event_search)\s*[=:].*?function\s*\([^)]*\)\s*\{[^}]{0,500}",
+            ]:
+                for m in _re.finditer(pat, txt):
+                    print(f"[{SOURCE_NAME}]   match: {m.group(0)[:300]}")
+            # Look for the function bodies specifically
+            for fn in ("events_template", "events_carousel", "event_search"):
+                m = _re.search(rf"{fn}\s*[=:]\s*function[^{{]*\{{(.*?)\}}\s*[,;]?", txt, _re.DOTALL)
+                if m:
+                    print(f"[{SOURCE_NAME}] FN {fn} body (first 600 chars):")
+                    print(m.group(1)[:600])
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] PROBE failed: {e}")
+
     today = today_iso()
     now = now_iso()
     corridas: list[Corrida] = []

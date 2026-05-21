@@ -52,7 +52,6 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| FMAA<!--fmaa--> | ✅ | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | The Events Calendar API; nenhum evento publicado atualmente | 2026-05-15 18:36 | ❌ 0 eventos | — |
 
 ### Fontes internacionais — plataformas agregadoras
 
@@ -132,6 +131,7 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 | --- | --- | --- | --- | --- | --- |
 | Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. | — | — | — |
 | Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. | — | — | — |
+| FMAA<!--fmaa--> | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | (1) WAF: 403 em todos os domínios FMAA (`fmaa.apps-mexico.com`, `fmaa.mx`); domínios secundários (`fmaa.com.mx`, `fmaa.planin.mx`) fora do ar. (2) Escopo incompatível: federação de atletismo competitivo (campeonatos nacionais sub-18/sub-20, pista, cross country), não corridas de participação em massa. Corridas mexicanas de público geral cobertas pelo Asdeporte. | 2026-05-15 18:36 | ❌ 0 eventos | nunca |
 | GoDream<!--godream--> | `godream.com.br/corrida-de-rua` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 + Playwright `ERR_TUNNEL_CONNECTION_FAILED`. | 2026-05-11 15:57 | ❌ | — |
 | Let's Do This<!--lets_do_this--> | `letsdothis.com` | WAF confirmado: 403 direto + Scrapestack 500 + Apify 403 em todas as tentativas. | 2026-05-15 | ❌ | — |
 | Road Runners | `roadrunners.run` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 em todos os 27 estados. | — | — | — |

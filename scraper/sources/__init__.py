@@ -22,7 +22,6 @@ from . import (
     runsignup,
     halfmarathons,
     asdeporte,
-    fmaa,
     raceroster,
     # letsdothis,    # inviável: WAF bloqueia todos os proxies (direct 403, Scrapestack 500, Apify 403)
     world_athletics,

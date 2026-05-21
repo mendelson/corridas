@@ -18,6 +18,7 @@ Endpoint that works (HTTP 200):
 `/api3/js_site/event_search` returns 500 — broken upstream; don't use it.
 """
 from __future__ import annotations
+import html as _html_mod
 import re
 from typing import Optional
 
@@ -26,7 +27,6 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
-from .. import geo as _geo
 
 SOURCE_NAME = "Carreras México"
 BASE = "https://carrerasmexico.com"
@@ -60,41 +60,33 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page}: erro {e}")
             break
 
-        if page == 1:
-            print(f"[{SOURCE_NAME}] PROBE raw len={len(resp.text)} first 1500 chars:")
-            print(resp.text[:1500])
-            print(f"[{SOURCE_NAME}] PROBE raw last 500 chars:")
-            print(resp.text[-500:])
+        if page == 0:
+            print(f"[{SOURCE_NAME}] PROBE page0 raw repr[:400]: {resp.text[:400]!r}")
 
         html = _extract_html(resp.text)
         if html is None:
             print(f"[{SOURCE_NAME}] page {page}: payload inesperado; raw[:200]={resp.text[:200]}")
             break
 
-        if page == 1:
-            print(f"[{SOURCE_NAME}] PROBE extracted html len={len(html)}; first 1500 chars:")
-            print(html[:1500])
+        if page == 0:
+            print(f"[{SOURCE_NAME}] PROBE page0 html repr[:400]: {html[:400]!r}")
 
         soup = BeautifulSoup(html, "lxml")
         items = soup.select(".tm_event_list_item")
 
         if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items")
-            if items:
-                print(f"[{SOURCE_NAME}] PROBE first item raw HTML:")
-                print(str(items[0])[:2000])
-                # Try to parse it and dump intermediate values
-                el = items[0]
-                txt = el.get_text(" ", strip=True)
-                print(f"[{SOURCE_NAME}] PROBE first item text: {txt[:300]}")
-                t_el = el.find(class_=re.compile(r"event_title|tiempometa_event_link", re.IGNORECASE))
-                print(f"[{SOURCE_NAME}] PROBE title_el match: {t_el}")
-                if not t_el:
-                    t_el = el.find("a")
-                    print(f"[{SOURCE_NAME}] PROBE fallback first <a>: {t_el}")
-                print(f"[{SOURCE_NAME}] PROBE extracted date: {_extract_date(el, txt)}")
-                print(f"[{SOURCE_NAME}] PROBE extracted loc: {_extract_location(el, txt)}")
-                print(f"[{SOURCE_NAME}] PROBE today: {today}")
+            print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items; today={today}")
+            for i, el in enumerate(items[:5]):
+                title_div = el.find(class_="tm_event_list_title")
+                titulo_raw = title_div.get_text(" ", strip=True) if title_div else "<NOT FOUND>"
+                month_el = el.find(class_="tm_date_month")
+                day_el = el.find(class_="tm_date_day")
+                month_raw = month_el.get_text(" ", strip=True) if month_el else "<NOT FOUND>"
+                day_raw = day_el.get_text(" ", strip=True) if day_el else "<NOT FOUND>"
+                data_evento = _extract_date_from_widget(el, today)
+                link_a = el.find("a", href=True)
+                href = link_a["href"] if link_a else "<none>"
+                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo_raw={titulo_raw[:60]!r} month={month_raw!r} day={day_raw!r} date={data_evento!r} href={href[:80]!r}")
 
         if not items:
             break
@@ -119,69 +111,68 @@ def scrape() -> list[Corrida]:
 
 
 def _extract_html(payload: str) -> Optional[str]:
-    """Strip the jQuery wrapper to get the raw HTML payload.
+    """Strip the jQuery wrapper to get the inner HTML payload.
 
-    The response looks like:
+    Tiempometa returns:
         $("#tiempometa_event_list_div").html('<div…>…</div>');
-    We need the unescaped content inside the .html('...') call.
+
+    The payload has two layers of escaping:
+      1. JS string escapes (\\', \\", \\/) — Tiempometa uses \\/ for closing tags
+      2. Some tags are entity-encoded (&lt;\\/a&gt; instead of </a>)
+    Both must be undone for BeautifulSoup to parse correctly.
     """
-    # Match $(...).html('...'); — content is single-quoted with \' escapes
     m = re.search(r"\.html\(\s*'(.*?)'\s*\)\s*;?\s*$", payload, re.DOTALL)
     if not m:
-        # Try double quotes
         m = re.search(r'\.html\(\s*"(.*?)"\s*\)\s*;?\s*$', payload, re.DOTALL)
     if not m:
         return None
     raw = m.group(1)
-    # JS escape sequences: \' \" \\ \n \t — undo them
-    raw = raw.replace("\\'", "'").replace('\\"', '"').replace("\\n", "\n").replace("\\t", "\t").replace("\\\\", "\\")
+    # Undo JS string escapes (order matters: \\ first so we don't double-convert)
+    raw = (raw
+           .replace("\\\\", "\\")
+           .replace("\\'", "'")
+           .replace('\\"', '"')
+           .replace("\\/", "/")
+           .replace("\\n", "\n")
+           .replace("\\t", "\t"))
+    # Decode HTML entities — two passes handle double-encoded &amp;lt; → &lt; → <
+    raw = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), raw)
+    raw = _html_mod.unescape(raw)
+    raw = _html_mod.unescape(raw)
     return raw
 
 
 def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     """Parse a .tm_event_list_item div into a Corrida."""
-    text = el.get_text(" ", strip=True)
-    if not text:
-        return None
-
-    # Title — usually inside a link to the event detail
-    title_el = el.find(class_=re.compile(r"event_title|tiempometa_event_link", re.IGNORECASE))
-    if not title_el:
-        title_el = el.find("a")
-    titulo_raw = title_el.get_text(strip=True) if title_el else ""
+    # Title: <div class="tm_event_list_title">…</div>
+    title_div = el.find(class_="tm_event_list_title")
+    titulo_raw = title_div.get_text(" ", strip=True) if title_div else ""
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None
 
-    # Date — usually in a dedicated span/div with day/month
-    data_evento = _extract_date(el, text)
+    # Date: 3 separate divs (weekday/month/day) from the Tiempometa widget
+    data_evento = _extract_date_from_widget(el, today)
     if not data_evento or data_evento < today:
         return None
 
-    # Location — city + state
-    cidade, estado = _extract_location(el, text)
-    if estado:
-        estado = _NORMALIZE_UF.get(estado, estado)
-    if not estado:
-        _pais_geo, est_geo = _geo.resolve(cidade, "", "MX")
-        estado = est_geo or ""
-    localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or "México"
+    # Location not present in the list card; default to Mexico-wide
+    estado = ""
+    cidade = ""
+    localizacao = "México"
 
-    # Event link — href on the title link or any "event=<id>" reference
-    link = ""
+    # Event link + Tiempometa event_id for a stable scraper id
+    link = BASE
     event_id_param = ""
     for a in el.find_all("a", href=True):
         href = a["href"]
         m = re.search(r"event=([a-f0-9]+)", href)
         if m:
             event_id_param = m.group(1)
-        if "event=" in href and not link:
-            link = href if href.startswith("http") else f"{BASE}/{href.lstrip('/')}"
+            link = href
             break
-    if not link:
-        link = BASE
 
-    # Image
+    # Image (first <img> in the card)
     imagem_url = None
     img = el.find("img")
     if img:
@@ -189,7 +180,7 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         if imagem_url and imagem_url.startswith("//"):
             imagem_url = "https:" + imagem_url
 
-    distancias = _extract_distances(text)
+    distancias = _extract_distances(titulo)
 
     event_id = event_id_param or slugify(titulo)
     fonte = FonteInfo(
@@ -204,7 +195,7 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         horario=None,
         localizacao=localizacao,
         cidade=cidade,
-        estado=estado or "",
+        estado=estado,
         pais="MX",
         distancias=distancias,
         imagem_url=imagem_url,
@@ -215,6 +206,37 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         first_seen_at=now,
         updated_at=now,
     )
+
+
+# Tiempometa abbreviates Spanish month names. "May" appears as "Mai" on the widget.
+_TM_MONTH_ABBR = {
+    "ene": "01", "feb": "02", "mar": "03", "abr": "04",
+    "may": "05", "mai": "05",  # both spellings
+    "jun": "06", "jul": "07", "ago": "08",
+    "sep": "09", "oct": "10", "nov": "11", "dic": "12",
+}
+
+
+def _extract_date_from_widget(el, today_iso_str: str) -> Optional[str]:
+    """Combine the three Tiempometa date divs (weekday/month/day) + infer year."""
+    month_el = el.find(class_="tm_date_month")
+    day_el = el.find(class_="tm_date_day")
+    if not month_el or not day_el:
+        return None
+    month_raw = month_el.get_text(" ", strip=True).lower()
+    day_raw = day_el.get_text(" ", strip=True)
+    mo = _TM_MONTH_ABBR.get(month_raw[:3])
+    if not mo:
+        return None
+    m = re.search(r"(\d{1,2})", day_raw)
+    if not m:
+        return None
+    day = m.group(1).zfill(2)
+    # Year inference: current year if the date is still upcoming, else next year
+    year, today_mo, today_day = today_iso_str.split("-")
+    if (mo, day) >= (today_mo, today_day):
+        return f"{year}-{mo}-{day}"
+    return f"{int(year) + 1}-{mo}-{day}"
 
 
 _MX_MONTHS = {

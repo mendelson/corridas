@@ -114,43 +114,32 @@ def scrape() -> list[Corrida]:
 
 
 def _debug_structure(soup: BeautifulSoup, raw: str) -> None:
-    """Log the HTML structure so the failure log reveals the page layout."""
+    """Log enough to diagnose missing event content."""
     title = soup.title.string.strip() if soup.title and soup.title.string else "no title"
     print(f"[{SOURCE_NAME}] DEBUG title: {title}")
     print(f"[{SOURCE_NAME}] DEBUG response length: {len(raw)} chars")
-    # If the response was blocked / redirected, the body itself is the signal.
-    if len(raw) < 5000:
-        print(f"[{SOURCE_NAME}] DEBUG short response, full body follows:")
-        print(raw[:5000])
-        return
-    # Dump links and headings — first sign of an event listing
     links = soup.find_all("a", href=True)
-    print(f"[{SOURCE_NAME}] DEBUG {len(links)} links found on page")
-    sample_hrefs = [a["href"] for a in links[:15]]
-    print(f"[{SOURCE_NAME}] DEBUG first 15 hrefs: {sample_hrefs}")
-    for tag in ("h1", "h2", "h3", "h4"):
-        hs = [h.get_text(" ", strip=True)[:80] for h in soup.find_all(tag)]
-        if hs:
-            print(f"[{SOURCE_NAME}] DEBUG {tag}: {hs[:10]}")
-    # Try common containers and dump the first match snippet
-    candidates = [
-        ".evento", ".event", ".race", ".carrera", "article",
-        "tr.evento", "tr", ".item", ".post", "li.evento", "li",
-        "div.evento", "div.fila", ".lista-evento", ".calendar-item",
-        ".row.evento", "table tr", "table.tabla tr", ".eventos",
-    ]
-    for sel in candidates:
-        els = soup.select(sel)
-        n = len(els)
-        if n >= 3:
-            print(f"[{SOURCE_NAME}] DEBUG selector '{sel}' → {n} elements")
-            print(f"[{SOURCE_NAME}] DEBUG first element: {str(els[0])[:600]}")
-            return
-    print(f"[{SOURCE_NAME}] DEBUG no common container matched ≥3 elements")
-    # Last resort: dump first 2000 chars of body
+    print(f"[{SOURCE_NAME}] DEBUG {len(links)} links")
+    for a in links[:20]:
+        print(f"[{SOURCE_NAME}]   href: {a['href'][:120]}")
+    # Look for keywords that signal events are present (or absent)
+    raw_lower = raw.lower()
+    for kw in ("evento", "carrera", "fecha", "inscrip", "5k", "10k", "21k", "42k", "maratón", "maraton"):
+        n = raw_lower.count(kw)
+        if n > 0:
+            print(f"[{SOURCE_NAME}] DEBUG keyword '{kw}': {n} occurrences in raw HTML")
+    # Look for embedded JSON or data attributes
+    scripts = soup.find_all("script")
+    print(f"[{SOURCE_NAME}] DEBUG {len(scripts)} <script> tags")
+    for i, s in enumerate(scripts):
+        src = s.get("src", "")
+        body = (s.string or "")[:200]
+        if "evento" in body.lower() or "json" in src.lower() or len(body) > 500:
+            print(f"[{SOURCE_NAME}]   script[{i}] src={src} body[:200]={body}")
+    # Dump first 3000 chars of <body> verbatim — last resort to see what's there
     body = soup.find("body")
-    if body:
-        print(f"[{SOURCE_NAME}] DEBUG body[:2000]: {str(body)[:2000]}")
+    body_str = str(body)[:3000] if body else "no body"
+    print(f"[{SOURCE_NAME}] DEBUG body[:3000]: {body_str}")
 
 
 def _find_events(soup: BeautifulSoup) -> list:

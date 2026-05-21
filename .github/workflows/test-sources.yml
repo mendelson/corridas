@@ -190,6 +190,10 @@ jobs:
           NOTE="${{ steps.run_test.outputs.note }}"
           printf '{"source":"%s","status":"%s","tested_at":"%s","note":"%s"}\n' \
             "$SOURCE" "$STATUS" "$TIMESTAMP" "$NOTE" > "test-results/${SLUG}.json"
+          # On failure, also save the full stdout for diagnosis (commited to repo by update-readme)
+          if [ "$STATUS" = "fail" ] && [ -f /tmp/test-out.txt ]; then
+            cp /tmp/test-out.txt "test-results/${SLUG}.log"
+          fi
           echo "Result: $SOURCE → $STATUS${NOTE:+ ($NOTE)}"
 
       - name: Upload result
@@ -224,11 +228,20 @@ jobs:
       - name: Update README
         run: python scripts/update_source_status.py test-results/
 
+      - name: Stash failure logs
+        run: |
+          mkdir -p data/test-logs
+          # Remove logs for sources that are no longer failing (keep dir clean)
+          if ls test-results/*.log >/dev/null 2>&1; then
+            # Copy current run's failure logs (overwrite stale ones)
+            cp test-results/*.log data/test-logs/
+          fi
+
       - name: Commit README update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md data/source-status.json
+          git add README.md data/source-status.json data/test-logs/
           git diff --cached --quiet || git commit -m "ci: update source status in README [skip ci]"
           git pull --rebase -X ours origin main
           git push

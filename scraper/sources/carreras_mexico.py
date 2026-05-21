@@ -60,10 +60,20 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page}: erro {e}")
             break
 
+        if page == 1:
+            print(f"[{SOURCE_NAME}] PROBE raw len={len(resp.text)} first 1500 chars:")
+            print(resp.text[:1500])
+            print(f"[{SOURCE_NAME}] PROBE raw last 500 chars:")
+            print(resp.text[-500:])
+
         html = _extract_html(resp.text)
         if html is None:
             print(f"[{SOURCE_NAME}] page {page}: payload inesperado; raw[:200]={resp.text[:200]}")
             break
+
+        if page == 1:
+            print(f"[{SOURCE_NAME}] PROBE extracted html len={len(html)}; first 1500 chars:")
+            print(html[:1500])
 
         soup = BeautifulSoup(html, "lxml")
         items = soup.select(".tm_event_list_item")
@@ -72,6 +82,11 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] PROBE page 1: {len(items)} items; first item:")
             if items:
                 print(f"[{SOURCE_NAME}] {str(items[0])[:800]}")
+            else:
+                # Try alternative selectors
+                for sel in ["div.row", ".tm_event_list_item", "[class*=event]", "a", "img"]:
+                    n = len(soup.select(sel))
+                    print(f"[{SOURCE_NAME}] PROBE selector '{sel}': {n} elements")
 
         if not items:
             break

@@ -17,8 +17,26 @@ from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
 
 BASE = "https://www.carrerasmexico.com"
-URL = f"{BASE}/eventos.php"
+LISTING = f"{BASE}/eventos.php"
 SOURCE_NAME = "Carreras México"
+
+# carrerasmexico organizes events by state via ?edo=<CODE>. These are the codes
+# we've observed in indexed URLs. Confirmed: DIF (CDMX), MEX, NLE, JAL, PUE,
+# MIC, QUE, MOR, TAM. Other 3-letter ISO-like codes inferred for remaining states.
+_STATE_PARAMS = [
+    "DIF",  # CDMX (Distrito Federal)
+    "MEX",  # Estado de México
+    "NLE",  # Nuevo León
+    "JAL",  # Jalisco
+    "PUE",  # Puebla
+    "MIC",  # Michoacán
+    "QUE",  # Querétaro
+    "MOR",  # Morelos
+    "TAM",  # Tamaulipas
+    "AGU", "BCN", "BCS", "CAM", "CHP", "CHH", "COA", "COL",
+    "DUR", "GUA", "GRO", "HID", "NAY", "OAX", "QUI", "ROO",
+    "SLP", "SIN", "SON", "TAB", "TLA", "VER", "YUC", "ZAC",
+]
 
 # Spanish month names → ISO month
 _MX_MONTHS = {
@@ -57,31 +75,41 @@ _DATE_ES = re.compile(
 
 
 def scrape() -> list[Corrida]:
-    try:
-        resp = get(URL, source=SOURCE_NAME, timeout=30)
-        resp.raise_for_status()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
-        return []
-
-    soup = BeautifulSoup(resp.text, "lxml")
-    _debug_structure(soup, resp.text)
-
-    corridas: list[Corrida] = []
     today = today_iso()
     now = now_iso()
-
+    corridas: list[Corrida] = []
     seen_ids: set[str] = set()
-    for el in _find_events(soup):
-        try:
-            corrida = _parse_event(el, today, now)
-            if corrida and corrida.id not in seen_ids:
-                seen_ids.add(corrida.id)
-                corridas.append(corrida)
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] erro ao parsear: {e}")
+    debugged = False
 
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
+    for edo in _STATE_PARAMS:
+        url = f"{LISTING}?edo={edo}"
+        try:
+            resp = get(url, source=SOURCE_NAME, timeout=30)
+            resp.raise_for_status()
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] {edo}: erro {e}")
+            continue
+
+        soup = BeautifulSoup(resp.text, "lxml")
+        if not debugged:
+            print(f"[{SOURCE_NAME}] === PROBE state={edo} ===")
+            _debug_structure(soup, resp.text)
+            debugged = True
+
+        state_corridas: list[Corrida] = []
+        for el in _find_events(soup):
+            try:
+                corrida = _parse_event(el, today, now, default_estado=edo)
+                if corrida and corrida.id not in seen_ids:
+                    seen_ids.add(corrida.id)
+                    state_corridas.append(corrida)
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] {edo}: erro ao parsear: {e}")
+
+        print(f"[{SOURCE_NAME}] {edo}: {len(state_corridas)} corridas")
+        corridas.extend(state_corridas)
+
+    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas (total)")
     return corridas
 
 
@@ -147,7 +175,7 @@ def _looks_like_event(el) -> bool:
     return has_date and _RUNNING_KW.search(txt) is not None
 
 
-def _parse_event(el, today: str, now: str) -> Corrida | None:
+def _parse_event(el, today: str, now: str, default_estado: str = "") -> Corrida | None:
     text = el.get_text(" ", strip=True)
     if not text or len(text) < 10:
         return None
@@ -177,13 +205,15 @@ def _parse_event(el, today: str, now: str) -> Corrida | None:
     if estado:
         estado = _STATE_CODE_MAP.get(estado, estado)
     if not estado:
+        estado = _STATE_CODE_MAP.get(default_estado, default_estado)
+    if not estado:
         _pais_geo, estado = _geo.resolve(cidade, "", "MX")
     localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or "México"
 
     distancias = _extract_distances(text)
 
     link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
+    link = link_tag["href"] if link_tag else LISTING
     if link.startswith("/"):
         link = BASE + link
     elif not link.startswith("http"):
@@ -197,7 +227,7 @@ def _parse_event(el, today: str, now: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if link != URL else [],
+        links_inscricao=[link] if link != LISTING else [],
     )
     return Corrida(
         id=f"cm_{slugify(titulo)}_{estado.lower()}_{data}",

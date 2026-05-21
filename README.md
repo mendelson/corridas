@@ -82,21 +82,21 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 | Bank of America Chicago Marathon<!--majors/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
 | TCS New York City Marathon<!--majors/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-05-17 02:40 | ❌ | 2026-05-15 18:37 |
 | TCS Sydney Marathon<!--majors/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
-| Schneider Electric Paris Marathon<!--majors/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
-| Brighton Marathon<!--majors/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Volkswagen Prague Marathon<!--majors/prague--> |  | ✅ | `runczech.com/en/events` | 2026-05-21 20:28 | ✅ | 2026-05-21 20:28 |
-| Copenhagen Marathon<!--majors/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| Edinburgh Marathon Festival<!--majors/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Stockholm Marathon<!--majors/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| Manchester Marathon<!--majors/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Great North Run<!--majors/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Cardiff Half Marathon<!--majors/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
-| Manchester Half Marathon<!--majors/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-05-17 02:40 | ❌ | 2026-05-15 18:36 |
-| TCS Amsterdam Marathon<!--majors/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
-| Venice Marathon<!--majors/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Dublin City Marathon<!--majors/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| Athens Classic Marathon<!--majors/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
-| Valencia Trinidad Alfonso Marathon<!--majors/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
+| Schneider Electric Paris Marathon<!--majors/paris--> | | ✅ | `schneiderelectricparismarathon.com/en` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
+| Brighton Marathon<!--majors/brighton--> | | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Volkswagen Prague Marathon<!--majors/prague--> | | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-05-15 18:36 | ❌ 0 eventos | 2026-05-10 22:35 |
+| Copenhagen Marathon<!--majors/copenhagen--> | | ✅ | `copenhagenmarathon.dk/en` | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
+| Edinburgh Marathon Festival<!--majors/edinburgh--> | | ✅ | `edinburghmarathon.com` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Stockholm Marathon<!--majors/stockholm--> | | ✅ | `stockholmmarathon.se/eng` | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
+| Manchester Marathon<!--majors/manchester--> | | ✅ | `manchestermarathon.co.uk` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Great North Run<!--majors/great_north_run--> | | ✅ | `greatrun.org/events/great-north-run` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Cardiff Half Marathon<!--majors/cardiff_half--> | | ✅ | `cardiffhalfmarathon.co.uk` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
+| Manchester Half Marathon<!--majors/manchester_half--> | | ✅ | `manchesterhalfmarathon.com` | 2026-05-17 02:40 | ❌ | 2026-05-15 18:36 |
+| TCS Amsterdam Marathon<!--majors/amsterdam--> | | ✅ | `tcsamsterdammarathon.nl/en` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
+| Venice Marathon<!--majors/venice--> | | ✅ | `venicemarathon.it/en` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Dublin City Marathon<!--majors/dublin--> | | ✅ | `irishlifedublinmarathon.ie` | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
+| Athens Classic Marathon<!--majors/athens--> | | ✅ | `athensauthenticmarathon.gr/en` | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Valencia Trinidad Alfonso Marathon<!--majors/valencia--> | | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-05-17 02:41 | ❌ | 2026-05-15 18:37 |
 
 ---
 

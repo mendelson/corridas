@@ -46,7 +46,7 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: dict[str, Corrida] = {}
 
-    for page in range(1, MAX_PAGES + 1):
+    for page in range(0, MAX_PAGES):  # Tiempometa pages are 0-indexed
         params = {
             "api_key": API_KEY,
             "page": page,

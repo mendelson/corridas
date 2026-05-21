@@ -45,6 +45,7 @@ from .sources import (
     runsignup,
     halfmarathons,
     asdeporte,
+    carreras_mexico,
     raceroster,
     # letsdothis,   # inviável: WAF bloqueia todos os proxies — ver README
     world_athletics,
@@ -135,6 +136,7 @@ SOURCES = [
     raceroster,
     # Mexican running calendars
     asdeporte,
+    carreras_mexico,
     # IAAF Label Road Races
     world_athletics,
 ]

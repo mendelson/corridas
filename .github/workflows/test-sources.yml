@@ -148,8 +148,6 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     runs-on: ubuntu-latest
-    # Always complete — never cancel sibling jobs on failure
-    continue-on-error: true
 
     steps:
       - uses: actions/checkout@v4
@@ -166,7 +164,6 @@ jobs:
 
       - name: Test ${{ matrix.source }}
         id: run_test
-        continue-on-error: true
         env:
           SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
           APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}

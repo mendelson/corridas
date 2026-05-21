@@ -78,15 +78,23 @@ def scrape() -> list[Corrida]:
         soup = BeautifulSoup(html, "lxml")
         items = soup.select(".tm_event_list_item")
 
-        if page == 1:
-            print(f"[{SOURCE_NAME}] PROBE page 1: {len(items)} items; first item:")
+        if page == 0:
+            print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items")
             if items:
-                print(f"[{SOURCE_NAME}] {str(items[0])[:800]}")
-            else:
-                # Try alternative selectors
-                for sel in ["div.row", ".tm_event_list_item", "[class*=event]", "a", "img"]:
-                    n = len(soup.select(sel))
-                    print(f"[{SOURCE_NAME}] PROBE selector '{sel}': {n} elements")
+                print(f"[{SOURCE_NAME}] PROBE first item raw HTML:")
+                print(str(items[0])[:2000])
+                # Try to parse it and dump intermediate values
+                el = items[0]
+                txt = el.get_text(" ", strip=True)
+                print(f"[{SOURCE_NAME}] PROBE first item text: {txt[:300]}")
+                t_el = el.find(class_=re.compile(r"event_title|tiempometa_event_link", re.IGNORECASE))
+                print(f"[{SOURCE_NAME}] PROBE title_el match: {t_el}")
+                if not t_el:
+                    t_el = el.find("a")
+                    print(f"[{SOURCE_NAME}] PROBE fallback first <a>: {t_el}")
+                print(f"[{SOURCE_NAME}] PROBE extracted date: {_extract_date(el, txt)}")
+                print(f"[{SOURCE_NAME}] PROBE extracted loc: {_extract_location(el, txt)}")
+                print(f"[{SOURCE_NAME}] PROBE today: {today}")
 
         if not items:
             break

@@ -35,7 +35,6 @@ from .sources import (
     corridas_brasil,
     minhas_inscricoes,
     correr_brasilia,
-    # corridas_br,  # removido — ver SOURCES abaixo
     sesc_df,
     runner_brasil,
     brasil_corrida,
@@ -91,8 +90,6 @@ SOURCES = [
     brasil_corrida,
     # DF-specific sources
     correr_brasilia,
-    # corridas_br,  # removido: agrega eventos sem links de inscrição reais;
-    #               # 37 eventos DF exclusivos perdem-se (incl. Circuito das Estações)
     sesc_df,
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,

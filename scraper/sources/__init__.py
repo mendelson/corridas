@@ -1,5 +1,4 @@
 from . import (
-    corridas_br,
     correr_brasilia,
     central_da_corrida,
     minhas_inscricoes,

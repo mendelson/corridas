@@ -96,7 +96,7 @@ def _parse_event(el) -> Corrida | None:
         pais="BR",
         distancias=_extract_distances(text),
         imagem_url=imagem_url,
-        inscricoes_abertas=True if has_link else None,
+        inscricoes_abertas=True if link_tag else None,
         periodo_inscricao=None,
         fontes=[fonte],
         miss_count=0,

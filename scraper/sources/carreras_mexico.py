@@ -27,7 +27,7 @@ from bs4 import BeautifulSoup
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from ..http_client import get, get_direct
+from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
@@ -132,7 +132,7 @@ def _enrich_locations(corridas: list[Corrida]) -> None:
         cidade, estado = _fetch_location_from_convocatoria(ev_id)
         return c, cidade, estado
 
-    with ThreadPoolExecutor(max_workers=8) as pool:
+    with ThreadPoolExecutor(max_workers=3) as pool:
         futures = {pool.submit(fetch, c): c for c in needs_location}
         for future in as_completed(futures):
             try:
@@ -334,11 +334,12 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
     """Fetch convocatoria.php and extract (cidade, estado) from JSON-LD SportsEvent schema."""
     url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
     try:
-        resp = get_direct(url, timeout=15)
+        resp = get(url, source=SOURCE_NAME, timeout=20)
         resp.raise_for_status()
     except Exception as e:
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
         return "", ""
+    print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: {resp.status_code} {len(resp.text)}b")
     soup = BeautifulSoup(resp.text, "lxml")
     for script in soup.find_all("script", type="application/ld+json"):
         try:

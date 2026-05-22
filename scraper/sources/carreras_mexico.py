@@ -26,8 +26,9 @@ from typing import Optional
 from bs4 import BeautifulSoup
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import httpx
 
-from ..http_client import get
+from ..http_client import get, HEADERS
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
@@ -333,14 +334,23 @@ def _extract_date(el, text: str) -> Optional[str]:
 def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
     """Fetch convocatoria.php and extract (cidade, estado) from JSON-LD SportsEvent schema."""
     url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
+    # Stream and stop after 30KB — JSON-LD is in the first ~5KB of the <head>
     try:
-        resp = get(url, source=SOURCE_NAME, timeout=20)
-        resp.raise_for_status()
+        with httpx.stream("GET", url, headers=HEADERS, follow_redirects=True,
+                          timeout=httpx.Timeout(connect=8, read=8, write=5, pool=5)) as r:
+            if r.status_code >= 400:
+                print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {r.status_code}")
+                return "", ""
+            content = b""
+            for chunk in r.iter_bytes(chunk_size=4096):
+                content += chunk
+                if len(content) >= 30_000:
+                    break
+        html = content.decode("utf-8", errors="replace")
     except Exception as e:
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
         return "", ""
-    print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: {resp.status_code} {len(resp.text)}b")
-    soup = BeautifulSoup(resp.text, "lxml")
+    soup = BeautifulSoup(html, "lxml")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             schema = json.loads(script.string or "")

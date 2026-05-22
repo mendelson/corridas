@@ -2,8 +2,13 @@
 from __future__ import annotations
 import importlib
 import json
+import os
 import sys
 from datetime import date, timedelta
+
+# Signal scrapers to skip expensive per-event enrichment steps (e.g. fetching
+# individual event pages for location data) that are not needed for source health checks.
+os.environ.setdefault("SCRAPER_TEST", "1")
 
 
 def run(source: str) -> int:

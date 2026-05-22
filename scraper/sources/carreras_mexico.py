@@ -123,6 +123,9 @@ def scrape() -> list[Corrida]:
 
 def _enrich_locations(corridas: list[Corrida]) -> None:
     """Fetch convocatoria.php in parallel to populate cidade/estado from JSON-LD."""
+    import os
+    if os.environ.get("SCRAPER_TEST"):
+        return  # skip in test_source CI — only needed in full pipeline
     needs_location = [c for c in corridas if not c.cidade]
     if not needs_location:
         return

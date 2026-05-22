@@ -84,9 +84,10 @@ def scrape() -> list[Corrida]:
                 month_raw = month_el.get_text(" ", strip=True) if month_el else "<NOT FOUND>"
                 day_raw = day_el.get_text(" ", strip=True) if day_el else "<NOT FOUND>"
                 data_evento = _extract_date_from_widget(el, today)
-                link_a = el.find("a", href=True)
-                href = link_a["href"] if link_a else "<none>"
-                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo_raw={titulo_raw[:60]!r} month={month_raw!r} day={day_raw!r} date={data_evento!r} href={href[:80]!r}")
+                all_hrefs = [a["href"] for a in el.find_all("a", href=True)]
+                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo_raw={titulo_raw[:60]!r} month={month_raw!r} day={day_raw!r} date={data_evento!r}")
+                for j, h in enumerate(all_hrefs):
+                    print(f"[{SOURCE_NAME}] PROBE item[{i}] anchor[{j}]: {h[:140]!r}")
 
         if not items:
             break
@@ -161,29 +162,35 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     cidade = ""
     localizacao = "México"
 
-    # Event link + Tiempometa event_id for a stable scraper id
-    link = ""
+    # Event link + Tiempometa event_id for a stable scraper id.
+    # The Tiempometa widget on carrerasmexico.com does not honour the
+    # ?event= query param when navigating fresh, so the carrerasmexico
+    # URL just shows the full list. We therefore prefer any external
+    # registration URL present in the card, and only fall back to the
+    # carrerasmexico URL when nothing better is available.
     event_id_param = ""
+    cm_link = ""
+    external_link = ""
     for a in el.find_all("a", href=True):
         href = a["href"].strip()
         if not href or href.startswith(("#", "javascript")):
             continue
-        # Resolve relative paths against the Tiempometa domain
         if href.startswith("/"):
             href = "https://www.tiempometa.com" + href
         elif not href.startswith("http"):
             continue
-        # Prefer links that carry a Tiempometa hex event ID
         m = re.search(r"event=([a-f0-9]+)", href)
-        if m:
+        if m and not event_id_param:
             event_id_param = m.group(1)
-            link = href
-            break
-        # Fall back to the first non-generic absolute URL found in the card
-        if not link and href != BASE:
-            link = href
-    if not link:
-        link = BASE
+        host_is_cm = "carrerasmexico.com" in href
+        host_is_tm = "tiempometa.com" in href
+        if host_is_cm or host_is_tm:
+            if not cm_link:
+                cm_link = href
+        elif href != BASE:
+            if not external_link:
+                external_link = href
+    link = external_link or cm_link or BASE
 
     # Image (first <img> in the card)
     imagem_url = None

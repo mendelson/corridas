@@ -1384,7 +1384,6 @@ function stateColor(estado) {
     DF: '#1a3a4a', SP: '#3a1a1a', RJ: '#1a3a1a', MG: '#2a1a3a',
     RS: '#1a2a3a', PR: '#2a3a1a', SC: '#3a2a1a', CE: '#3a3a1a',
     BA: '#3a1a2a', PE: '#1a3a3a', AM: '#1a3a2a', GO: '#2a2a3a',
-    INT: '#2a2a2a',
   };
   return map[estado] || '#2a2a2a';
 }

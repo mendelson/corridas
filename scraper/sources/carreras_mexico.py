@@ -25,7 +25,9 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+from ..http_client import get, get_direct
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
@@ -113,8 +115,38 @@ def scrape() -> list[Corrida]:
             break
 
     result = list(corridas.values())
+    _enrich_locations(result)
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
+
+
+def _enrich_locations(corridas: list[Corrida]) -> None:
+    """Fetch convocatoria.php in parallel to populate cidade/estado from JSON-LD."""
+    needs_location = [c for c in corridas if not c.cidade]
+    if not needs_location:
+        return
+    print(f"[{SOURCE_NAME}] buscando localização para {len(needs_location)} eventos...")
+
+    def fetch(c: Corrida) -> tuple[Corrida, str, str]:
+        ev_id = c.id.replace("cm_", "")
+        cidade, estado = _fetch_location_from_convocatoria(ev_id)
+        return c, cidade, estado
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futures = {pool.submit(fetch, c): c for c in needs_location}
+        for future in as_completed(futures):
+            try:
+                c, cidade, estado = future.result()
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] enrich erro: {e}")
+                continue
+            if cidade:
+                c.cidade = cidade
+                c.estado = estado
+                c.localizacao = f"{cidade}, {estado or 'México'}"
+                for f in c.fontes:
+                    pass  # fontes unchanged
+                print(f"[{SOURCE_NAME}] localização: {c.titulo[:30]} → {c.localizacao}")
 
 
 def _extract_html(payload: str) -> Optional[str]:
@@ -196,18 +228,8 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         cm_link = BASE
     link = external_link or cm_link
 
-    # Location: fetch convocatoria.php for JSON-LD structured data (has Place.name)
-    if event_id_param:
-        cidade, estado = _fetch_location_from_convocatoria(event_id_param)
-    else:
-        cidade, estado = "", ""
-    if not cidade:
-        cidade, estado_raw = _extract_location(el, titulo_raw or "")
-        estado = _state_to_code(estado_raw) if estado_raw else ""
-    if cidade and not estado:
-        _, resolved_estado = _geo.resolve(cidade, "", "MX")
-        estado = resolved_estado or ""
-    localizacao = f"{cidade}, {estado or 'México'}" if cidade else "México"
+    # Location populated later in _enrich_locations (parallel convocatoria.php fetch)
+    cidade, estado, localizacao = "", "", "México"
 
     distancias = _extract_distances(titulo)
 
@@ -312,7 +334,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
     """Fetch convocatoria.php and extract (cidade, estado) from JSON-LD SportsEvent schema."""
     url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
     try:
-        resp = get(url, source=SOURCE_NAME, timeout=20)
+        resp = get_direct(url, timeout=15)
         resp.raise_for_status()
     except Exception as e:
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")

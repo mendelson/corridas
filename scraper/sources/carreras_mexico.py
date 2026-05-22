@@ -19,12 +19,16 @@ Endpoint that works (HTTP 200):
 """
 from __future__ import annotations
 import html as _html_mod
+import json
 import re
 from typing import Optional
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import httpx
+
+from ..http_client import get, HEADERS
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
@@ -112,8 +116,41 @@ def scrape() -> list[Corrida]:
             break
 
     result = list(corridas.values())
+    _enrich_locations(result)
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
+
+
+def _enrich_locations(corridas: list[Corrida]) -> None:
+    """Fetch convocatoria.php in parallel to populate cidade/estado from JSON-LD."""
+    import os
+    if os.environ.get("SCRAPER_TEST"):
+        return  # skip in test_source CI — only needed in full pipeline
+    needs_location = [c for c in corridas if not c.cidade]
+    if not needs_location:
+        return
+    print(f"[{SOURCE_NAME}] buscando localização para {len(needs_location)} eventos...")
+
+    def fetch(c: Corrida) -> tuple[Corrida, str, str]:
+        ev_id = c.id.replace("cm_", "")
+        cidade, estado = _fetch_location_from_convocatoria(ev_id)
+        return c, cidade, estado
+
+    with ThreadPoolExecutor(max_workers=3) as pool:
+        futures = {pool.submit(fetch, c): c for c in needs_location}
+        for future in as_completed(futures):
+            try:
+                c, cidade, estado = future.result()
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] enrich erro: {e}")
+                continue
+            if cidade:
+                c.cidade = cidade
+                c.estado = estado
+                c.localizacao = f"{cidade}, {estado or 'México'}"
+                for f in c.fontes:
+                    pass  # fontes unchanged
+                print(f"[{SOURCE_NAME}] localização: {c.titulo[:30]} → {c.localizacao}")
 
 
 def _extract_html(payload: str) -> Optional[str]:
@@ -162,7 +199,6 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     if not data_evento or data_evento < today:
         return None
 
-    # Image first (needed to derive tiempometa.com numeric event URL)
     imagem_url = None
     img = el.find("img")
     if img:
@@ -170,13 +206,10 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         if imagem_url and imagem_url.startswith("//"):
             imagem_url = "https:" + imagem_url
 
-    # Event link + Tiempometa event_id for a stable scraper id.
-    # carrerasmexico.com ignores ?event= query param, so we derive the
-    # numeric event ID from the S3 image path (Paperclip sharding:
-    # events/avatars/AAA/BBB/CCC/ → ID = AAA*1M + BBB*1K + CCC)
-    # and use a direct tiempometa.com/event/<id> URL instead.
+    # The individual event page is convocatoria.php?event=<hex>&api_key=<key>.
+    # The widget anchors point to the root /?event=<hex> (which shows the full list),
+    # so we extract the hex event_id and build the convocatoria.php URL ourselves.
     event_id_param = ""
-    cm_link = ""
     external_link = ""
     for a in el.find_all("a", href=True):
         href = a["href"].strip()
@@ -189,24 +222,18 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         ma = re.search(r"event=([a-f0-9]+)", href)
         if ma and not event_id_param:
             event_id_param = ma.group(1)
-        host_is_cm = "carrerasmexico.com" in href
-        host_is_tm = "tiempometa.com" in href
-        if host_is_cm or host_is_tm:
-            if not cm_link:
-                cm_link = href
-        elif href != BASE:
+        if "carrerasmexico.com" not in href and "tiempometa.com" not in href and href != BASE:
             if not external_link:
                 external_link = href
 
-    link = external_link or cm_link or BASE
+    if event_id_param:
+        cm_link = f"{BASE}/convocatoria.php?event={event_id_param}&api_key={API_KEY}"
+    else:
+        cm_link = BASE
+    link = external_link or cm_link
 
-    # Location: try extracting from card HTML; fall back to geo resolution
-    cidade, estado_raw = _extract_location(el, titulo_raw or "")
-    estado = _state_to_code(estado_raw) if estado_raw else ""
-    if cidade and not estado:
-        _, resolved_estado = _geo.resolve(cidade, "", "MX")
-        estado = resolved_estado or ""
-    localizacao = f"{cidade}, {estado or 'México'}" if cidade else "México"
+    # Location populated later in _enrich_locations (parallel convocatoria.php fetch)
+    cidade, estado, localizacao = "", "", "México"
 
     distancias = _extract_distances(titulo)
 
@@ -305,6 +332,50 @@ def _extract_date(el, text: str) -> Optional[str]:
         if m:
             return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
     return None
+
+
+def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
+    """Fetch convocatoria.php and extract (cidade, estado) from JSON-LD SportsEvent schema."""
+    url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
+    # Stream and stop after 30KB — JSON-LD is in the first ~5KB of the <head>
+    try:
+        with httpx.stream("GET", url, headers=HEADERS, follow_redirects=True,
+                          timeout=httpx.Timeout(connect=8, read=8, write=5, pool=5)) as r:
+            if r.status_code >= 400:
+                print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {r.status_code}")
+                return "", ""
+            content = b""
+            for chunk in r.iter_bytes(chunk_size=4096):
+                content += chunk
+                if len(content) >= 30_000:
+                    break
+        html = content.decode("utf-8", errors="replace")
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
+        return "", ""
+    soup = BeautifulSoup(html, "lxml")
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            schema = json.loads(script.string or "")
+        except Exception:
+            continue
+        if isinstance(schema, list):
+            schema = next((s for s in schema if isinstance(s, dict) and s.get("@type") == "SportsEvent"), None)
+        if not isinstance(schema, dict) or schema.get("@type") != "SportsEvent":
+            continue
+        loc = schema.get("location", {})
+        loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
+        if not loc_name:
+            continue
+        parts = re.split(r",\s*", loc_name, maxsplit=1)
+        cidade = parts[0].strip()
+        estado_raw = parts[1].strip() if len(parts) > 1 else ""
+        estado = _state_to_code(estado_raw)
+        if not estado and cidade:
+            _, estado = _geo.resolve(cidade, "", "MX")
+            estado = estado or ""
+        return cidade, estado
+    return "", ""
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

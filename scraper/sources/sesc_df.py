@@ -40,6 +40,9 @@ def scrape() -> list[Corrida]:
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro: {e}")
 
+    # Deduplicate by id (broad selectors may yield the same element via different paths)
+    seen: set[str] = set()
+    corridas = [c for c in corridas if not (c.id in seen or seen.add(c.id))]  # type: ignore[func-returns-value]
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
@@ -64,6 +67,8 @@ def _parse_event(el) -> Corrida | None:
         return None
 
     data = _extract_date(text)
+    if not data:
+        return None  # navigation elements and headings never have event dates
 
     img = el.find("img")
     imagem_url = (img.get("src") or img.get("data-src")) if img else None

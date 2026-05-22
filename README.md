@@ -34,8 +34,8 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-22 17:46 | ❌ 0 eventos | 2026-05-18 16:34 |
-| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-22 17:45 | ❌ 0 eventos | 2026-05-15 18:36 |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-22 19:17 | ✅ | 2026-05-22 19:17 |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-22 19:17 | ❌ 1 IDs duplicados no batch: 'sescdf_caminho-de-navegacao'×2 | 2026-05-15 18:36 |
 
 ### Fontes brasileiras — eventos específicos
 
@@ -119,7 +119,7 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-22 17:44 | ❌ 0 eventos | 2026-05-15 18:36 |
+| Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-22 19:17 | ❌ 403 no CI | — |
 | Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Seletores CSS genéricos nunca casaram com o HTML real do site. | 2026-05-11 15:57 | ❌ | — |
 | Brasil que Corre<!--brasil_que_corre--> | ❌ | `brasilquecorre.com/distritofederal` | Seletores CSS genéricos não casam com o HTML real do site. | 2026-05-11 15:57 | ❌ | — |
 | Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-11 15:57 | ❌ | — |

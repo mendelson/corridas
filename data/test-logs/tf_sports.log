@@ -6,14 +6,14 @@
 [TF Sports] events(recentes): 100 eventos brutos
 [TF Sports] experiences: 161 eventos brutos
 [TF Sports] experiences(sem data): 1 eventos brutos
-[TF Sports] 339 corridas encontradas
-✅  tf_sports: 339 evento(s)
+[TF Sports] 311 corridas encontradas
+✅  tf_sports: 311 evento(s)
     {"titulo": "Motiva Aeroportos - Teresina", "data": "2026-05-23", "estado": "PI", "km": "5.0, 10.0"}
     {"titulo": "Iguatemi São José Do Rio Preto", "data": "2026-05-24", "estado": "SP", "km": "5.0, 10.0"}
     {"titulo": "Iguatemi Campinas", "data": "2026-05-31", "estado": "SP", "km": "5.0, 10.0"}
-    {"titulo": "Villa Lobos Ii", "data": "2026-06-14", "estado": "SP", "km": "5.0, 10.0"}
     {"titulo": "Shopping Recife", "data": "2026-06-14", "estado": "PE", "km": "5.0, 10.0"}
-    ... e mais 334
-⚠️   tf_sports: 143/339 eventos com data > 30 dias no passado
+    {"titulo": "Villa Lobos Ii", "data": "2026-06-14", "estado": "SP", "km": "5.0, 10.0"}
+    ... e mais 306
+⚠️   tf_sports: 117/311 eventos com data > 30 dias no passado
 ❌  tf_sports: 53 IDs duplicados no batch: 'tfs_428'×2, 'tfs_429'×2, 'tfs_434'×2
 FAILURE_NOTE:53 IDs duplicados no batch: 'tfs_428'×2, 'tfs_429'×2, 'tfs_434'×2

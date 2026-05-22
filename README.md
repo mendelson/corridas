@@ -19,7 +19,7 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-22 18:48 | ✅ | 2026-05-22 18:48 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-22 18:54 | ❌ 53 IDs duplicados no batch: 'tfs_428'×2, 'tfs_429'×2, 'tfs_434'×2 | 2026-05-16 18:47 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-22 19:02 | ❌ 53 IDs duplicados no batch: 'tfs_428'×2, 'tfs_429'×2, 'tfs_434'×2 | 2026-05-16 18:47 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
@@ -51,7 +51,7 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-22 18:58 | ✅ | 2026-05-22 18:58 |
 
 ### Fontes internacionais — plataformas agregadoras
 

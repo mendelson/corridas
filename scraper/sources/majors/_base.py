@@ -105,6 +105,14 @@ def scrape_major(
     city_only = cidade.split(",")[0].strip()
     _, resolved_estado = _geo.resolve(city_only, "", pais)
 
+    # Keep only earliest date per year — multi-day festivals share the same event id
+    dates_by_year: dict[str, str] = {}
+    for d in dates_to_use:
+        yr = d[:4]
+        if yr not in dates_by_year or d < dates_by_year[yr]:
+            dates_by_year[yr] = d
+    dates_to_use = sorted(dates_by_year.values())
+
     results = []
     for data in dates_to_use:
         year = data[:4]

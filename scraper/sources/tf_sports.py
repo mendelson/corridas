@@ -707,4 +707,13 @@ def scrape() -> list[Corrida]:
     corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
-    return corridas
+    # Deduplicate by id — RECENT catch-all endpoints overlap with dated ones
+    seen: set[str] = set()
+    unique: list[Corrida] = []
+    for c in corridas:
+        if c.id not in seen:
+            seen.add(c.id)
+            unique.append(c)
+    if len(unique) < len(corridas):
+        print(f"[{SOURCE_NAME}] {len(corridas) - len(unique)} duplicata(s) removida(s)")
+    return unique

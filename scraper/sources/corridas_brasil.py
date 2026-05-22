@@ -36,6 +36,9 @@ def scrape() -> list[Corrida]:
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro: {e}")
 
+    # Deduplicate by id
+    seen: set[str] = set()
+    corridas = [c for c in corridas if not (c.id in seen or seen.add(c.id))]  # type: ignore[func-returns-value]
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 

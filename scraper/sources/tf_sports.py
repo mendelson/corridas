@@ -110,11 +110,25 @@ _EXPERIENCES_NO_DATE = (
 )
 
 _RUNNING_AREAS = {"running", "corrida", "trail", "trilha"}
-_NON_RUNNING_EXP_RE = re.compile(r"\byoga\b|\bpilates\b|\bzumba\b|\bdança\b|\bdanca\b", re.IGNORECASE)
+_NON_RUNNING_EXP_RE = re.compile(
+    r"\b(yoga|pilates|zumba|dança|danca|tenis|tennis|vôlei|volei|ciclismo|natação|natacao|crossfit)\b",
+    re.IGNORECASE,
+)
+_RUNNING_TITLE_RE = re.compile(
+    r"\b(run|corrida|trail|maratona|meia|5k|10k|21k|42k|\d+\s*km|marathon|race|atletismo|trilha)\b",
+    re.IGNORECASE,
+)
 
 
 def _exp_is_running(attrs: dict) -> bool:
-    """Return True when an experience belongs to a running-type area."""
+    """Return True when an experience is a running-type event.
+
+    Logic:
+      1. Title contains obvious non-running sport → exclude.
+      2. area.data is null/empty → include (untagged, assume running).
+      3. area name contains a running keyword → include.
+      4. area name is non-running → rescue if title contains a running keyword.
+    """
     titulo = attrs.get("title") or ""
     if _NON_RUNNING_EXP_RE.search(titulo):
         return False
@@ -125,7 +139,10 @@ def _exp_is_running(attrs: dict) -> bool:
             return True  # no area → include (may not be tagged yet)
         area_attrs = area_data.get("attributes") or {}
         area_name = (area_attrs.get("name") or area_attrs.get("slug") or "").lower()
-        return not area_name or any(kw in area_name for kw in _RUNNING_AREAS)
+        if not area_name or any(kw in area_name for kw in _RUNNING_AREAS):
+            return True
+        # Non-running area tag: rescue if title strongly suggests a running event
+        return bool(_RUNNING_TITLE_RE.search(titulo))
     return True
 
 

@@ -19,7 +19,7 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-22 18:48 | ✅ | 2026-05-22 18:48 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-22 23:31 | ✅ | 2026-05-22 23:31 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-22 23:49 | ✅ | 2026-05-22 23:49 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |

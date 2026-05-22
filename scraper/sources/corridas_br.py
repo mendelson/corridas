@@ -122,11 +122,10 @@ def _parse_row(row) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
-    has_link = link != URL
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if has_link else [],
+        links_inscricao=[link],
     )
 
     estado = _geo.resolve("Brasília-DF", "Brasília", "BR")[1] or "DF"
@@ -169,7 +168,7 @@ def _parse_div(el) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[])
+    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link])
     estado = _geo.resolve("Brasília-DF", "Brasília", "BR")[1] or "DF"
     return Corrida(
         id=f"{slugify(titulo)}_df_{today}",

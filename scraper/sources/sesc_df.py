@@ -78,11 +78,10 @@ def _parse_event(el) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
-    has_link = link != URL
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if has_link else [],
+        links_inscricao=[link],
     )
 
     estado = _geo.resolve("Brasília, DF", "Brasília", "BR")[1] or "DF"

@@ -89,7 +89,7 @@ def _parse_event(el) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if link != URL else [],
+        links_inscricao=[link],
     )
 
     return Corrida(

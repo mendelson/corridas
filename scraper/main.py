@@ -294,6 +294,23 @@ def _resolve_missing_locations(corridas: list[Corrida]) -> None:
         print(f"[main] {fixed} estado(s) resolvido(s) pelo geo cache")
 
 
+def _ensure_inscricao_links(corridas: list[Corrida]) -> None:
+    """Guarantee every FonteInfo has links_inscricao non-empty.
+
+    Per CLAUDE.md: every event must surface at least one working link in
+    the UI. When a scraper produces links_inscricao=[] we fall back to
+    [link_evento] so the register button is never silently absent.
+    """
+    fixed = 0
+    for c in corridas:
+        for fonte in c.fontes:
+            if not fonte.links_inscricao and fonte.link_evento:
+                fonte.links_inscricao = [fonte.link_evento]
+                fixed += 1
+    if fixed:
+        print(f"[main] {fixed} fonte(s) com links_inscricao preenchido a partir de link_evento")
+
+
 _KEEP_PAST_DAYS  = 15   # matches frontend's deepest past window (past15 filter)
 _ARCHIVE_PAST_DAYS = 40  # events older than this move to historico/
 
@@ -752,6 +769,7 @@ def main() -> None:
     _demote_directory_links(final)
     _normalize_all_locations(final)
     _resolve_missing_locations(final)
+    _ensure_inscricao_links(final)
     # _find_all_photos(final)
     _enrich_images(final)
     _sanitize_images(final)

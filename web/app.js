@@ -1292,7 +1292,7 @@ function buildExpanded(card, c) {
       const div = document.createElement('div');
       div.className = 'fonte-item';
       const link = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
-        ? fonte.links_inscricao[0] : null;
+        ? fonte.links_inscricao[0] : (fonte.link_evento || null);
       const btnHtml = link
         ? `<a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-inscricao">${T.registerBtn}</a>`
         : '';

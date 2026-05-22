@@ -93,6 +93,7 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 - The expanded card's distance table only renders the **Date** or **Horário** column when values differ across distances. If every `Distancia` shares the same date or horário, that column is suppressed (the value is already on the card-level header).
 - `periodo_inscricao` is stored in the data model but **never displayed** in the frontend. Do not add any UI for it — no section title, no dates, no block of any kind.
 - `links_inscricao` in each `FonteInfo` should always be `[link_evento]` — the source page where the event data was scraped from. **No conditional logic based on `inscricoes_abertas`.** The button always shows and always leads to the source event page.
+- **Every event must have at least one real, working link.** Never emit `links_inscricao=[]` from a scraper; if a more specific registration URL isn't available, fall back to `[link_evento]`. The pipeline (`_ensure_inscricao_links()` in `scraper/main.py`) also enforces this as a final safety net, and the frontend falls back to `link_evento` when `links_inscricao` is missing — but scrapers should still produce non-empty links to begin with.
 
 ### Frontend distances are unit-aware
 

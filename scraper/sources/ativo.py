@@ -95,7 +95,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=event_page,
-        links_inscricao=[pay_link] if pay_link else [],
+        links_inscricao=[pay_link] if pay_link else [event_page],
     )
 
     return Corrida(

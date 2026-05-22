@@ -27,6 +27,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from .. import geo as _geo
 
 SOURCE_NAME = "Carreras México"
 BASE = "https://carrerasmexico.com"
@@ -76,7 +77,7 @@ def scrape() -> list[Corrida]:
 
         if page == 0:
             print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items; today={today}")
-            for i, el in enumerate(items[:5]):
+            for i, el in enumerate(items[:3]):
                 title_div = el.find(class_="tm_event_list_title")
                 titulo_raw = title_div.get_text(" ", strip=True) if title_div else "<NOT FOUND>"
                 month_el = el.find(class_="tm_date_month")
@@ -85,7 +86,11 @@ def scrape() -> list[Corrida]:
                 day_raw = day_el.get_text(" ", strip=True) if day_el else "<NOT FOUND>"
                 data_evento = _extract_date_from_widget(el, today)
                 all_hrefs = [a["href"] for a in el.find_all("a", href=True)]
-                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo_raw={titulo_raw[:60]!r} month={month_raw!r} day={day_raw!r} date={data_evento!r}")
+                all_classes = sorted({cls for tag in el.find_all(class_=True) for cls in tag.get("class", [])})
+                img_el = el.find("img")
+                img_src = (img_el.get("src") or img_el.get("data-src") or "") if img_el else ""
+                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo={titulo_raw[:60]!r} date={data_evento!r} img={img_src[:100]!r}")
+                print(f"[{SOURCE_NAME}] PROBE item[{i}] classes: {all_classes}")
                 for j, h in enumerate(all_hrefs):
                     print(f"[{SOURCE_NAME}] PROBE item[{i}] anchor[{j}]: {h[:140]!r}")
 
@@ -157,17 +162,19 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     if not data_evento or data_evento < today:
         return None
 
-    # Location not present in the list card; default to Mexico-wide
-    estado = ""
-    cidade = ""
-    localizacao = "México"
+    # Image first (needed to derive tiempometa.com numeric event URL)
+    imagem_url = None
+    img = el.find("img")
+    if img:
+        imagem_url = img.get("src") or img.get("data-src")
+        if imagem_url and imagem_url.startswith("//"):
+            imagem_url = "https:" + imagem_url
 
     # Event link + Tiempometa event_id for a stable scraper id.
-    # The Tiempometa widget on carrerasmexico.com does not honour the
-    # ?event= query param when navigating fresh, so the carrerasmexico
-    # URL just shows the full list. We therefore prefer any external
-    # registration URL present in the card, and only fall back to the
-    # carrerasmexico URL when nothing better is available.
+    # carrerasmexico.com ignores ?event= query param, so we derive the
+    # numeric event ID from the S3 image path (Paperclip sharding:
+    # events/avatars/AAA/BBB/CCC/ → ID = AAA*1M + BBB*1K + CCC)
+    # and use a direct tiempometa.com/event/<id> URL instead.
     event_id_param = ""
     cm_link = ""
     external_link = ""
@@ -179,9 +186,9 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
             href = "https://www.tiempometa.com" + href
         elif not href.startswith("http"):
             continue
-        m = re.search(r"event=([a-f0-9]+)", href)
-        if m and not event_id_param:
-            event_id_param = m.group(1)
+        ma = re.search(r"event=([a-f0-9]+)", href)
+        if ma and not event_id_param:
+            event_id_param = ma.group(1)
         host_is_cm = "carrerasmexico.com" in href
         host_is_tm = "tiempometa.com" in href
         if host_is_cm or host_is_tm:
@@ -190,15 +197,24 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         elif href != BASE:
             if not external_link:
                 external_link = href
-    link = external_link or cm_link or BASE
 
-    # Image (first <img> in the card)
-    imagem_url = None
-    img = el.find("img")
-    if img:
-        imagem_url = img.get("src") or img.get("data-src")
-        if imagem_url and imagem_url.startswith("//"):
-            imagem_url = "https:" + imagem_url
+    # Derive tiempometa.com direct event URL from S3 image path
+    tm_event_url = None
+    if imagem_url:
+        mi = re.search(r"/events/avatars/(\d+)/(\d+)/(\d+)/", imagem_url)
+        if mi:
+            num_id = int(mi.group(1)) * 1_000_000 + int(mi.group(2)) * 1_000 + int(mi.group(3))
+            tm_event_url = f"https://www.tiempometa.com/event/{num_id}"
+
+    link = external_link or tm_event_url or cm_link or BASE
+
+    # Location: try extracting from card HTML; fall back to geo resolution
+    cidade, estado_raw = _extract_location(el, titulo_raw or "")
+    estado = _state_to_code(estado_raw) if estado_raw else ""
+    if cidade and not estado:
+        _, resolved_estado = _geo.resolve(cidade, "", "MX")
+        estado = resolved_estado or ""
+    localizacao = f"{cidade}, {estado or 'México'}" if cidade else "México"
 
     distancias = _extract_distances(titulo)
 
@@ -301,8 +317,11 @@ def _extract_date(el, text: str) -> Optional[str]:
 
 def _extract_location(el, text: str) -> tuple[str, str]:
     """Return (cidade, estado_code). estado_code is a Tiempometa UF (DIF, MEX, NLE, …)."""
-    # Try classes that signal location
-    loc_el = el.find(class_=re.compile(r"event_(city|state|location|place)|ciudad|lugar", re.IGNORECASE))
+    # Try classes that signal location (including Tiempometa tm_* prefix variants)
+    loc_el = el.find(class_=re.compile(
+        r"tm_(event_)?(city|state|location|place|ciudad|lugar)|event_(city|state|location|place)|ciudad|lugar",
+        re.IGNORECASE,
+    ))
     if loc_el:
         loc_text = loc_el.get_text(" ", strip=True)
         # Often "City, State" or "City - State"

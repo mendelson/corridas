@@ -441,6 +441,7 @@ async function initFilters() {
     _geoApplied  = geo;
     _updateEstadoLabel();
     populateEstadoFilter({ skipGeo: true });
+    populateFontesFilter();
   }
 
   applyFilters();
@@ -732,9 +733,9 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
   _estadoAvailableValues = new Set(['todos']);
   const today = todayStr();
 
-  const base = state.fontes.size === 0
-    ? allCorridas
-    : allCorridas.filter(c => matchesFonte(c));
+  const base = allCorridas.filter(c =>
+    matchesPeriodo(c) && matchesFonte(c) && matchesDistancia(c) && matchesSearch(c)
+  );
 
   function makeOption(value, text) {
     _estadoAvailableValues.add(value);
@@ -824,9 +825,8 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
 // Fonte filter (multi-select checkboxes, shows only available sources)
 // ---------------------------------------------------------------------------
 function populateFontesFilter() {
-  const today = todayStr();
   const base = allCorridas.filter(c =>
-    c.data_evento >= today && _matchEstadoValue(c, state.estado)
+    matchesPeriodo(c) && matchesEstado(c) && matchesDistancia(c) && matchesSearch(c)
   );
   const availableNomes = new Set(base.flatMap(c => (c.fontes || []).map(f => f.nome)));
 

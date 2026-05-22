@@ -20,22 +20,22 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-17 02:41 | ❌ | 2026-05-16 18:47 |
-| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-22 03:12 | ✅ | 2026-05-22 03:12 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-15 18:38 | ✅ | 2026-05-15 18:38 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
-| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-17 02:41 | ❌ | 2026-05-15 18:36 |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-22 03:12 | ✅ | 2026-05-22 03:12 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-22 03:12 | ❌ 7 IDs duplicados no batch: 'data-cidade-prova-distancia__sd'×12, '31-05-26-joao-pessoa-live-run-xp-joao-pessoa-10-5km__sd'×2, '07-06-26-camacari-corre-abrantes-5km__sd'×2 | 2026-05-18 16:34 |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-22 03:12 | ❌ 4 IDs duplicados no batch: 'calendario-completo__sd'×3, 'resultados__sd'×3, 'organizador__sd'×3 | 2026-05-18 16:34 |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-22 03:12 | ✅ | 2026-05-22 03:12 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-15 18:37 | ✅ | 2026-05-15 18:37 |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-18 16:34 | ✅ | 2026-05-18 16:34 |
-| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-22 03:12 | ❌ 0 eventos | 2026-05-18 16:34 |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-22 03:12 | ❌ 0 eventos | 2026-05-15 18:36 |
 
 ### Fontes brasileiras — eventos específicos
 
@@ -119,7 +119,7 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-15 18:36 | ✅ | 2026-05-15 18:36 |
+| Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-22 03:12 | ❌ 0 eventos | 2026-05-15 18:36 |
 | Bora Correr<!--bora_correr--> | ❌ | `coelhodeprograma.com.br/boracorrer` | Implementado mas nunca ativado. Seletores CSS genéricos nunca casaram com o HTML real do site. | 2026-05-11 15:57 | ❌ | — |
 | Brasil que Corre<!--brasil_que_corre--> | ❌ | `brasilquecorre.com/distritofederal` | Seletores CSS genéricos não casam com o HTML real do site. | 2026-05-11 15:57 | ❌ | — |
 | Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-11 15:57 | ❌ | — |

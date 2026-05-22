@@ -1053,9 +1053,19 @@ function buildPastSection(corridas, today, threeDaysAgo) {
   }
 
   btn.addEventListener('click', () => {
-    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
-    btn.setAttribute('aria-expanded', String(!collapsed));
-    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
+    const anchorTop = btn.getBoundingClientRect().top;
+    const isCollapsed = cardsContainer.classList.contains('month-cards--collapsed');
+    if (isCollapsed) {
+      closeAllOtherMonths(section);
+    } else {
+      _closeMonthSection(btn, cardsContainer);
+      window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
+      return;
+    }
+    cardsContainer.classList.remove('month-cards--collapsed');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.querySelector('.month-chevron').textContent = '▾';
+    window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
   });
 
   section.appendChild(btn);
@@ -1085,9 +1095,19 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
   cardsContainer.className = expanded ? 'month-cards' : 'month-cards month-cards--collapsed';
 
   btn.addEventListener('click', () => {
-    const collapsed = cardsContainer.classList.toggle('month-cards--collapsed');
-    btn.setAttribute('aria-expanded', String(!collapsed));
-    btn.querySelector('.month-chevron').textContent = collapsed ? '▸' : '▾';
+    const anchorTop = btn.getBoundingClientRect().top;
+    const isCollapsed = cardsContainer.classList.contains('month-cards--collapsed');
+    if (isCollapsed) {
+      closeAllOtherMonths(section);
+    } else {
+      _closeMonthSection(btn, cardsContainer);
+      window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
+      return;
+    }
+    cardsContainer.classList.remove('month-cards--collapsed');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.querySelector('.month-chevron').textContent = '▾';
+    window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
   });
 
   section.appendChild(btn);
@@ -1155,9 +1175,36 @@ function buildCard(c, today, threeDaysAgo) {
   return card;
 }
 
+function _closeMonthSection(btn, container) {
+  for (const openCard of container.querySelectorAll('.card.open')) {
+    openCard.classList.remove('open');
+    openCard.querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
+    openCard.querySelector('.card-expanded').classList.add('hidden');
+    openCard.querySelector('.card-expanded').setAttribute('aria-hidden', 'true');
+  }
+  container.classList.add('month-cards--collapsed');
+  btn.setAttribute('aria-expanded', 'false');
+  btn.querySelector('.month-chevron').textContent = '▸';
+}
+
+function closeAllOtherMonths(exceptSection) {
+  for (const btn of cardsList.querySelectorAll('.month-separator')) {
+    const section = btn.parentElement;
+    if (section === exceptSection) continue;
+    const container = btn.nextElementSibling;
+    if (container && !container.classList.contains('month-cards--collapsed')) {
+      _closeMonthSection(btn, container);
+    }
+  }
+}
+
 function toggleCard(card, c, e) {
   if (e.target.closest('a, button')) return;
   const isOpen = card.classList.contains('open');
+
+  // Anchor: remember where the card sits in the viewport before any layout change
+  const anchorTop = card.getBoundingClientRect().top;
+
   // Close all other open cards
   for (const other of cardsList.querySelectorAll('.card.open')) {
     if (other !== card) {
@@ -1167,6 +1214,10 @@ function toggleCard(card, c, e) {
       other.querySelector('.card-expanded').setAttribute('aria-hidden', 'true');
     }
   }
+
+  // Close all other month sections (keep the one this card lives in)
+  closeAllOtherMonths(card.closest('.month-section'));
+
   if (isOpen) {
     card.classList.remove('open');
     card.querySelector('.card-collapsed').setAttribute('aria-expanded', 'false');
@@ -1182,8 +1233,10 @@ function toggleCard(card, c, e) {
       buildExpanded(card, c);
       expPanel.dataset.built = '1';
     }
-    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+
+  // Restore viewport position so the card doesn't jump
+  window.scrollBy({ top: card.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
 }
 
 function buildExpanded(card, c) {

@@ -60,6 +60,7 @@ _INTL_CITY_KW = {
     "porto", "lisboa", "lisbon",          # Portugal — not Porto Alegre (has ", RS")
     "new york", "boston", "chicago", "tokyo", "tóquio", "sydney",
     "patagonia argentina", "patagônia argentina",
+    "durazno",
 }
 
 # Maps city keyword → (country name PT, ISO2)
@@ -68,7 +69,7 @@ _CITY_TO_COUNTRY: list[tuple[str, str, str]] = [
     ("patagônia argentina", "Argentina", "AR"),
     ("assunção", "Paraguai", "PY"), ("assuncao", "Paraguai", "PY"),
     ("montevideo", "Uruguai", "UY"), ("montevidéu", "Uruguai", "UY"),
-    ("punta del este", "Uruguai", "UY"),
+    ("punta del este", "Uruguai", "UY"), ("durazno", "Uruguai", "UY"),
     ("santiago", "Chile", "CL"),
     ("lima", "Peru", "PE"),
     ("bogotá", "Colômbia", "CO"), ("bogota", "Colômbia", "CO"),

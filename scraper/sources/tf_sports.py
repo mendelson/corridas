@@ -303,6 +303,41 @@ _TITULO_CITY_STRIP = re.compile(
     re.IGNORECASE,
 )
 
+# Matches edition markers like "2ª Edição", "3 Ed.", "Round 2"
+_EDITION_RE = re.compile(r'^(\d+[aª°.]?\s*)?(edi[çc]|ed\.|round)\b', re.IGNORECASE)
+
+
+def _venue_candidates(titulo: str) -> list[str]:
+    """Return candidate location strings to try geocoding for experience events.
+
+    Titles follow patterns like 'EventName | VenueName | Edition'.
+    The venue part (after the first |) or single-word titles are the best hints.
+    """
+    candidates: list[str] = []
+    parts = [p.strip() for p in titulo.split("|")]
+
+    if len(parts) > 1:
+        # Non-edition parts after the first segment are venue/location hints
+        for part in parts[1:]:
+            if not _EDITION_RE.match(part):
+                candidates.append(part)
+    # Sliding window of 1–2 words (right to left) across all parts
+    for part in parts:
+        words = [w for w in part.split() if len(w) > 2]
+        for i in range(len(words) - 1, -1, -1):
+            candidates.append(words[i])
+            if i > 0:
+                candidates.append(f"{words[i - 1]} {words[i]}")
+
+    seen: set[str] = set()
+    result: list[str] = []
+    for c in candidates:
+        c = c.strip()
+        if c and c not in seen:
+            seen.add(c)
+            result.append(c)
+    return result
+
 
 def _city_from_titulo(titulo: str) -> str:
     """Best-effort city extraction from event title, e.g. 'Aracaju I' → 'Aracaju'.
@@ -552,10 +587,26 @@ def _events_to_corridas(
             city, state = _parse_location(location_raw, titulo)
             pais = "BR"
             if state == "??":
-                inferred = infer_estado(location_raw + " " + titulo)
-                _pais_geo, _estado_geo = _geo.resolve(location_raw, city, "BR")
-                pais = _pais_geo or "BR"
-                state = inferred or _estado_geo or ""
+                if city_from_title:
+                    # Run-series: location_raw is a proper address
+                    inferred = infer_estado(location_raw + " " + titulo)
+                    _pais_geo, _estado_geo = _geo.resolve(location_raw, city, "BR")
+                    pais = _pais_geo or "BR"
+                    state = inferred or _estado_geo or ""
+                else:
+                    # Experience/events: location_raw is the event name, not an address.
+                    # Try candidate venue strings extracted from the title.
+                    inferred = infer_estado(titulo)
+                    pais = "BR"
+                    state = ""
+                    for candidate in _venue_candidates(titulo):
+                        _pais_geo, _estado_geo = _geo.resolve(candidate, "", "BR")
+                        if _estado_geo and _pais_geo == "BR":
+                            city = candidate
+                            state = _estado_geo
+                            break
+                    if not state:
+                        state = inferred or ""
             if not city and city_from_title:
                 city = _city_from_titulo(titulo)
 

@@ -392,8 +392,11 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
     if incoming.titulo:
         existing.titulo = incoming.titulo
         existing.id = incoming.id
-    if incoming.cidade:
-        existing.cidade = incoming.cidade
+    # Always refresh cidade from the latest scrape so stale values
+    # (e.g. event names incorrectly stored as city) don't persist.
+    # Sources that enrich cidade in-process (e.g. carreras_mexico) do so
+    # before reconcile runs, so enriched values are already in incoming.
+    existing.cidade = incoming.cidade
     if incoming.estado and incoming.estado not in ("??", "INT"):
         existing.estado = incoming.estado
     elif existing.estado in ("??", "INT"):

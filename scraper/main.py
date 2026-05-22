@@ -141,8 +141,9 @@ SOURCES = [
     world_athletics,
 ]
 
-DATA_PATH    = Path(__file__).parent.parent / "data" / "corridas.json"
-HIST_DIR     = Path(__file__).parent.parent / "data" / "historico"
+DATA_PATH       = Path(__file__).parent.parent / "data" / "corridas.json"
+HIST_DIR        = Path(__file__).parent.parent / "data" / "historico"
+STATUS_PATH     = Path(__file__).parent.parent / "data" / "source-status.json"
 
 
 # ---------------------------------------------------------------------------
@@ -646,11 +647,47 @@ def _is_valid(c: Corrida) -> bool:
     return True
 
 
+def _source_status_key(src) -> str:
+    """Map a source module to its key in source-status.json.
+
+    scraper.sources.carreras_mexico → carreras_mexico
+    scraper.sources.majors.london   → majors/london
+    """
+    name = src.__name__
+    prefix = "scraper.sources."
+    return name[len(prefix):].replace(".", "/") if name.startswith(prefix) else name
+
+
+def _prioritize_failed(sources: list) -> tuple[list, list]:
+    """Return (ordered_sources, failed_sources).
+
+    Failed sources (status == 'fail' in the previous run) come first so they
+    are submitted to the thread pool immediately. The relative order within
+    each group is preserved.
+    """
+    try:
+        prev: dict = json.loads(STATUS_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return list(sources), []
+
+    failed, healthy = [], []
+    for src in sources:
+        if prev.get(_source_status_key(src), {}).get("status") == "fail":
+            failed.append(src)
+        else:
+            healthy.append(src)
+    return failed + healthy, failed
+
+
 def run_all_scrapers() -> list[Corrida]:
     all_corridas: list[Corrida] = []
+    ordered, failed = _prioritize_failed(SOURCES)
+    if failed:
+        print(f"[main] priorizando {len(failed)} fonte(s) com falha anterior: "
+              f"{', '.join(_source_status_key(s) for s in failed)}")
 
     with ThreadPoolExecutor(max_workers=8) as executor:
-        futures = {executor.submit(src.scrape): src.__name__ for src in SOURCES}
+        futures = {executor.submit(src.scrape): src.__name__ for src in ordered}
         for future in as_completed(futures):
             source_name = futures[future]
             try:

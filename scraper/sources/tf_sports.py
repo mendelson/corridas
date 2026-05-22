@@ -698,7 +698,17 @@ def scrape() -> list[Corrida]:
 
     experiences_raw = _fetch_all_pages(_experiences_url(), api_headers, token, "experiences")
     print(f"[{SOURCE_NAME}] experiences: {len(experiences_raw)} eventos brutos")
-    exp_running = [e for e in experiences_raw if _exp_is_running(e.get("attributes", {}))]
+    exp_running = []
+    for e in experiences_raw:
+        attrs = e.get("attributes", {})
+        if _exp_is_running(attrs):
+            exp_running.append(e)
+        else:
+            area = attrs.get("area") or {}
+            area_data = area.get("data") or {} if isinstance(area, dict) else {}
+            area_attrs = area_data.get("attributes") or {} if area_data else {}
+            area_name = area_attrs.get("name") or area_attrs.get("slug") or "?"
+            print(f"[{SOURCE_NAME}] filtrado(exp): '{attrs.get('title', '?')}' area={area_name!r}")
     corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
 
     experiences_nd = _fetch_all_pages(_EXPERIENCES_NO_DATE, api_headers, token, "experiences(sem data)")

@@ -198,15 +198,7 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
             if not external_link:
                 external_link = href
 
-    # Derive tiempometa.com direct event URL from S3 image path
-    tm_event_url = None
-    if imagem_url:
-        mi = re.search(r"/events/avatars/(\d+)/(\d+)/(\d+)/", imagem_url)
-        if mi:
-            num_id = int(mi.group(1)) * 1_000_000 + int(mi.group(2)) * 1_000 + int(mi.group(3))
-            tm_event_url = f"https://www.tiempometa.com/event/{num_id}"
-
-    link = external_link or tm_event_url or cm_link or BASE
+    link = external_link or cm_link or BASE
 
     # Location: try extracting from card HTML; fall back to geo resolution
     cidade, estado_raw = _extract_location(el, titulo_raw or "")

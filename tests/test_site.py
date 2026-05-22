@@ -197,6 +197,11 @@ def test_all_events_have_inscricao_button(page_pt, live_server):
 
     cards_without_btn = []
     for card in cards:
+        # Re-expand the card's month section in case the accordion closed it
+        page_pt.evaluate(
+            "(el) => { const mc = el.closest('.month-cards'); if (mc) mc.classList.remove('month-cards--collapsed'); }",
+            card,
+        )
         # btn-inscricao is inside the expanded section; click to expand first
         collapsed = card.query_selector(".card-collapsed")
         if collapsed:
@@ -285,7 +290,8 @@ def test_new_event_badge_visible_for_recent(page_pt, live_server):
     from datetime import datetime, timezone, timedelta
 
     now = datetime.now(tz=timezone.utc)
-    cutoff = (now - timedelta(days=7)).isoformat()
+    # Use same 3-day window and date-string format as the app's threeDaysAgo
+    cutoff = (now - timedelta(days=3)).date().isoformat()
 
     # Find a new event among what's currently visible (respects active location filter)
     titulo = page_pt.evaluate(
@@ -636,6 +642,11 @@ def test_cards_have_link_buttons(page_pt, live_server):
     # Expand first 10 cards
     cards = page_pt.query_selector_all(".card")
     for card in cards[:10]:
+        # Re-expand the card's month section in case the accordion closed it
+        page_pt.evaluate(
+            "(el) => { const mc = el.closest('.month-cards'); if (mc) mc.classList.remove('month-cards--collapsed'); }",
+            card,
+        )
         collapsed = card.query_selector(".card-collapsed")
         if collapsed:
             collapsed.click()

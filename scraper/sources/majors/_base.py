@@ -138,7 +138,15 @@ def scrape_major(
     if not results:
         print(f"[{source_name}] nenhuma edição futura identificada")
 
-    return results
+    # Safety dedup — year-dedup above handles the common case; this catches
+    # any edge where two ISO-formatted dates resolve to the same year key.
+    seen_ids: set[str] = set()
+    unique: list[Corrida] = []
+    for r in results:
+        if r.id not in seen_ids:
+            seen_ids.add(r.id)
+            unique.append(r)
+    return unique
 
 
 def _og_image(soup, page_url: str) -> str | None:

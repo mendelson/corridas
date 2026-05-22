@@ -15,6 +15,7 @@ import re
 from datetime import date, timedelta
 
 from ..http_client import get
+from .. import geo as _geo
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, now_iso, today_iso
 
@@ -215,13 +216,19 @@ def _parse_event(ev: dict, today: str, end_date: str) -> "Corrida | None":
     pais   = (loc.get("countryISO") or "US").strip().upper()
 
     if pais == "CA":
-        estado, country_pt = (state if state in _CA_PROVINCES else "INT"), "Canadá"
+        estado, country_pt = (state if state in _CA_PROVINCES else ""), "Canadá"
     elif pais == "US":
-        estado, country_pt = (state if state in _US_STATES else "INT"), "EUA"
+        estado, country_pt = (state if state in _US_STATES else ""), "EUA"
     else:
-        estado, country_pt = "INT", _ISO_TO_PT.get(pais, pais)
+        estado, country_pt = "", _ISO_TO_PT.get(pais, pais)
 
-    localizacao = ", ".join(p for p in (city, state, country_pt) if p) or "Internacional"
+    # Try geo resolution for any unresolved state
+    if not estado and city:
+        _r_pais, _r_estado = _geo.resolve(city, "", pais)
+        if _r_pais == pais:
+            estado = _r_estado or ""
+
+    localizacao = ", ".join(p for p in (city, estado or country_pt) if p) or country_pt or pais
 
     link  = ev.get("url") or f"https://raceroster.com/events/{ev.get('eventId', '')}"
     image = ev.get("logo") or None

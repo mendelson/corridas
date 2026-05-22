@@ -277,7 +277,7 @@ def _resolve_missing_locations(corridas: list[Corrida]) -> None:
     """Fill in empty estado (and incorrect pais) using geo.resolve() + cache."""
     fixed = 0
     for c in corridas:
-        needs_estado = not c.estado or c.estado in ("??", "INT")
+        needs_estado = not c.estado or c.estado == "??"
         needs_pais   = not c.pais  or c.pais  in ("??", "")
         if not (needs_estado or needs_pais):
             continue
@@ -373,9 +373,9 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
         existing.id = incoming.id
     if incoming.cidade:
         existing.cidade = incoming.cidade
-    if incoming.estado and incoming.estado not in ("??", "INT"):
+    if incoming.estado and incoming.estado != "??":
         existing.estado = incoming.estado
-    elif existing.estado in ("INT", "??"):
+    elif existing.estado == "??":
         existing.estado = ""
     if incoming.pais and incoming.pais not in ("??", ""):
         existing.pais = incoming.pais

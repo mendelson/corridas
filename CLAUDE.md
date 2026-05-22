@@ -71,7 +71,11 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 ### Source naming conventions
 
 - `id` field on `Corrida`: stable identifier the scraper produces. Used by `reconcile()` to match across runs. Common patterns: `ts_<event_id>` for Ticket Sports, `runsignup_<race_id>_<year>`, `<slug>_<state>_<event_date>` for scraped calendar sources. Never use the scrape/run date in an ID — it changes every run, breaking exact-ID reconciliation and resetting `first_seen_at`.
-- Brazilian states use 2-letter UFs (`SP`, `DF`, `SE`…). International events use `INT`. The `Corrida.estado` field drives the frontend's location filter.
+- **Every event must be mapped to exactly one country (`pais`) and one state/province (`estado`).** `"INT"` is never an acceptable value for either field.
+  - `pais` must be a valid ISO-3166-1 alpha-2 code (e.g. `"BR"`, `"US"`, `"MX"`).
+  - `estado` must be a recognised subdivision code for that country as defined in `web/locations/{pais}.json`, or an empty string `""` if the subdivision is unknown or the country has no subdivisions in the repo. Leave it `""` — the pipeline's `_resolve_missing_locations()` will attempt to fill it in via `geo.resolve()` and the persistent Nominatim cache.
+  - **Never discard an event solely because its country or state is hard to determine.** Always try `geo.resolve(city, "", pais_hint)` before giving up. Only skip the event if even the country cannot be resolved.
+  - Brazilian states: 2-letter UFs (`SP`, `DF`, `SE`…). The `Corrida.estado` field drives the frontend's location filter.
 - For TF Sports specifically: many addresses end with `, SP` regardless of the actual state. The `tf_sports.py` scraper has a CEP→UF range table (`_CEP_RANGES`) that overrides a contradictory trailing UF — preserve this when modifying.
 
 ### CI workflows

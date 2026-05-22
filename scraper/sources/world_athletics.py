@@ -21,6 +21,7 @@ from datetime import date, timedelta
 
 from bs4 import BeautifulSoup
 
+from .. import geo as _geo
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
@@ -296,17 +297,25 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
     country_raw = comp.get("country") or comp.get("countryCode") or ""
     if isinstance(country_raw, str):
         country_raw = country_raw.strip().upper()
-        # Normalise 3-letter IOC/ISO-3166-alpha3 to 2-letter
-        pais = _ISO3_TO_ISO2.get(country_raw, country_raw if len(country_raw) == 2 else "INT")
+        pais = _ISO3_TO_ISO2.get(country_raw, country_raw if len(country_raw) == 2 else None)
     else:
-        pais = "INT"
-    country_pt = _ISO_TO_PT.get(pais, pais)
+        pais = None
 
     # venueWithoutCountry is city-only; fall back to venue (may include country in parens)
     city = (comp.get("venueWithoutCountry") or comp.get("venue") or comp.get("city") or "").strip()
-    # Strip trailing "  (XXX)" artefact from venueWithoutCountry if present
     city = re.sub(r"\s*\([A-Z]{2,3}\)\s*$", "", city).strip()
-    localizacao = ", ".join(p for p in (city, country_pt) if p) or "Internacional"
+
+    if not pais:
+        # Try geo resolution from the city name before giving up
+        resolved_pais, _ = _geo.resolve(city, "", None)
+        if resolved_pais and resolved_pais != "??":
+            pais = resolved_pais
+        else:
+            print(f"[{SOURCE_NAME}] país desconhecido ({country_raw!r}) para {city!r} — ignorado")
+            return None
+
+    country_pt = _ISO_TO_PT.get(pais, pais)
+    localizacao = ", ".join(p for p in (city, country_pt) if p) or country_pt or pais
 
     comp_id = comp.get("id") or slugify(titulo)
     year    = data_evento[:4]

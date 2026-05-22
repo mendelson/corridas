@@ -162,15 +162,28 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     localizacao = "México"
 
     # Event link + Tiempometa event_id for a stable scraper id
-    link = BASE
+    link = ""
     event_id_param = ""
     for a in el.find_all("a", href=True):
-        href = a["href"]
+        href = a["href"].strip()
+        if not href or href.startswith(("#", "javascript")):
+            continue
+        # Resolve relative paths against the Tiempometa domain
+        if href.startswith("/"):
+            href = "https://www.tiempometa.com" + href
+        elif not href.startswith("http"):
+            continue
+        # Prefer links that carry a Tiempometa hex event ID
         m = re.search(r"event=([a-f0-9]+)", href)
         if m:
             event_id_param = m.group(1)
             link = href
             break
+        # Fall back to the first non-generic absolute URL found in the card
+        if not link and href != BASE:
+            link = href
+    if not link:
+        link = BASE
 
     # Image (first <img> in the card)
     imagem_url = None
@@ -186,7 +199,7 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     fonte = FonteInfo(
         nome=SOURCE_NAME,
         link_evento=link,
-        links_inscricao=[link] if link != BASE else [],
+        links_inscricao=[link],
     )
     return Corrida(
         id=f"cm_{event_id}",

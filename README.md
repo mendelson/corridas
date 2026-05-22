@@ -19,14 +19,14 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-22 18:48 | ✅ | 2026-05-22 18:48 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-22 19:02 | ❌ 53 IDs duplicados no batch: 'tfs_428'×2, 'tfs_429'×2, 'tfs_434'×2 | 2026-05-16 18:47 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-22 19:21 | ✅ | 2026-05-22 19:21 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-22 17:45 | ✅ | 2026-05-22 17:45 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-22 17:44 | ❌ 7 IDs duplicados no batch: 'data-cidade-prova-distancia__sd'×12, '31-05-26-joao-pessoa-live-run-xp-joao-pessoa-10-5km__sd'×2, '07-06-26-camacari-corre-abrantes-5km__sd'×2 | 2026-05-18 16:34 |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-22 17:44 | ❌ 4 IDs duplicados no batch: 'calendario-completo__sd'×3, 'resultados__sd'×3, 'organizador__sd'×3 | 2026-05-18 16:34 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-22 19:16 | ✅ | 2026-05-22 19:16 |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-22 19:15 | ✅ | 2026-05-22 19:15 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-22 17:45 | ✅ | 2026-05-22 17:45 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 

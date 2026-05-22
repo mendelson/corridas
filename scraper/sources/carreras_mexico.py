@@ -162,7 +162,6 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     if not data_evento or data_evento < today:
         return None
 
-    # Image first (needed to derive tiempometa.com numeric event URL)
     imagem_url = None
     img = el.find("img")
     if img:
@@ -170,11 +169,10 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         if imagem_url and imagem_url.startswith("//"):
             imagem_url = "https:" + imagem_url
 
-    # Event link + Tiempometa event_id for a stable scraper id.
-    # carrerasmexico.com ignores ?event= query param, so we derive the
-    # numeric event ID from the S3 image path (Paperclip sharding:
-    # events/avatars/AAA/BBB/CCC/ → ID = AAA*1M + BBB*1K + CCC)
-    # and use a direct tiempometa.com/event/<id> URL instead.
+    # The Tiempometa widget generates carrerasmexico.com/?event=<hex>&api_key=<key>
+    # links. carrerasmexico.com renders a client-side event list — the ?event= param
+    # is not used for server-side routing — so there is no individual event deep-link.
+    # Use the carrerasmexico.com event URL as-is; it's the same link the widget uses.
     event_id_param = ""
     cm_link = ""
     external_link = ""
@@ -189,24 +187,14 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         ma = re.search(r"event=([a-f0-9]+)", href)
         if ma and not event_id_param:
             event_id_param = ma.group(1)
-        host_is_cm = "carrerasmexico.com" in href
-        host_is_tm = "tiempometa.com" in href
-        if host_is_cm or host_is_tm:
+        if "carrerasmexico.com" in href or "tiempometa.com" in href:
             if not cm_link:
                 cm_link = href
         elif href != BASE:
             if not external_link:
                 external_link = href
 
-    # Derive tiempometa.com direct event URL from S3 image path
-    tm_event_url = None
-    if imagem_url:
-        mi = re.search(r"/events/avatars/(\d+)/(\d+)/(\d+)/", imagem_url)
-        if mi:
-            num_id = int(mi.group(1)) * 1_000_000 + int(mi.group(2)) * 1_000 + int(mi.group(3))
-            tm_event_url = f"https://www.tiempometa.com/event/{num_id}"
-
-    link = external_link or tm_event_url or cm_link or BASE
+    link = external_link or cm_link or BASE
 
     # Location: try extracting from card HTML; fall back to geo resolution
     cidade, estado_raw = _extract_location(el, titulo_raw or "")

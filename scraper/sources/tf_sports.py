@@ -108,6 +108,15 @@ _EXPERIENCES_NO_DATE = (
     "&filters[eventData][startDate][$null]=true"
     "&pagination[pageSize]=100"
 )
+# 100 most recently created experience entries — catches any experience
+# whose date filter or null-date filter above wouldn't match.
+_EXPERIENCES_RECENT = (
+    f"{API_BASE}/experiences"
+    "?publicationState=preview"
+    "&populate=deep,5"
+    "&sort=id:desc"
+    "&pagination[pageSize]=100"
+)
 
 _RUNNING_AREAS = {"running", "corrida", "trail", "trilha"}
 _NON_RUNNING_EXP_RE = re.compile(
@@ -730,8 +739,33 @@ def scrape() -> list[Corrida]:
 
     experiences_nd = _fetch_all_pages(_EXPERIENCES_NO_DATE, api_headers, token, "experiences(sem data)")
     print(f"[{SOURCE_NAME}] experiences(sem data): {len(experiences_nd)} eventos brutos")
-    exp_nd_running = [e for e in experiences_nd if _exp_is_running(e.get("attributes", {}))]
+    exp_nd_running = []
+    for e in experiences_nd:
+        attrs = e.get("attributes", {})
+        if _exp_is_running(attrs):
+            exp_nd_running.append(e)
+        else:
+            area = attrs.get("area") or {}
+            area_data = area.get("data") or {} if isinstance(area, dict) else {}
+            area_attrs = area_data.get("attributes") or {} if area_data else {}
+            area_name = area_attrs.get("name") or area_attrs.get("slug") or "?"
+            print(f"[{SOURCE_NAME}] filtrado(exp-nd): '{attrs.get('title', '?')}' area={area_name!r}")
     corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
+
+    experiences_recent = _fetch_all_pages(_EXPERIENCES_RECENT, api_headers, token, "experiences(recentes)", max_pages=1)
+    print(f"[{SOURCE_NAME}] experiences(recentes): {len(experiences_recent)} eventos brutos")
+    exp_rec_running = []
+    for e in experiences_recent:
+        attrs = e.get("attributes", {})
+        if _exp_is_running(attrs):
+            exp_rec_running.append(e)
+        else:
+            area = attrs.get("area") or {}
+            area_data = area.get("data") or {} if isinstance(area, dict) else {}
+            area_attrs = area_data.get("attributes") or {} if area_data else {}
+            area_name = area_attrs.get("name") or area_attrs.get("slug") or "?"
+            print(f"[{SOURCE_NAME}] filtrado(exp-rec): '{attrs.get('title', '?')}' area={area_name!r}")
+    corridas += _events_to_corridas(exp_rec_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     # Deduplicate by id — RECENT catch-all endpoints overlap with dated ones

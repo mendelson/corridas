@@ -238,6 +238,10 @@ A passing CI run (`✅ N eventos`) is necessary but not sufficient. Check:
 
 This repository is often touched from a Claude Code sandbox where outbound HTTP is restricted (`Host not in allowlist` returning 403). When a scraper appears to fail locally with 403 from `httpx`, that's almost always the sandbox — not the source. Validate fixes by pushing and watching `Test Sources` CI rather than relying on local runs.
 
+## Never infer event data from opaque IDs
+
+Event information (dates, location, title) must be obtained **explicitly** from page content, API response fields, or structured data — never inferred from ID strings, URL slugs, or opaque identifiers. Platform IDs like `02605131942` in a URL are opaque: they encode nothing meaningful and must never be decoded as a date, location, or any other value. If explicit data is not available from a page or API field, leave the field empty or unset — do not guess.
+
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.

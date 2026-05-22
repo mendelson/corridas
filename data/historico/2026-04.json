@@ -1,6 +1,6 @@
 {
   "mes": "2026-04",
-  "total": 1,
+  "total": 2,
   "corridas": [
     {
       "id": "tfs_451",
@@ -35,8 +35,61 @@
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-21T20:05:54+00:00",
-      "updated_at": "2026-05-21T20:05:54+00:00",
+      "first_seen_at": "2026-05-22T01:13:29+00:00",
+      "updated_at": "2026-05-22T01:13:29+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "30a-maratona-int-l-de-sao-paulo-sao-paulo-int-l-marathon_sp_2026-04-11",
+      "titulo": "30ª Maratona Int'L De São Paulo - Sao Paulo Int'L Marathon",
+      "data_evento": "2026-04-11",
+      "horario": null,
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.yescom.com.br/maratonasp/2026/img/og-image_30.jpg",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Yescom",
+          "link_evento": "https://www.yescom.com.br/maratonasp/2026/index.asp",
+          "links_inscricao": [
+            "http://rotinas.minhasinscricoes.com.br/inscricaomobile/default.aspx?keycode=ce21f45b-16ed-4fae-a3ef-06a47f40ff9f&chave=8983cf1d-e0f0-4e5c-8435-85d37f86d01b"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-22T01:13:37+00:00",
+      "updated_at": "2026-05-22T01:13:37+00:00",
       "pais": "BR",
       "fotos": []
     }

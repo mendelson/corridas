@@ -19,6 +19,7 @@ Endpoint that works (HTTP 200):
 """
 from __future__ import annotations
 import html as _html_mod
+import json
 import re
 from typing import Optional
 
@@ -195,9 +196,14 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         cm_link = BASE
     link = external_link or cm_link
 
-    # Location: try extracting from card HTML; fall back to geo resolution
-    cidade, estado_raw = _extract_location(el, titulo_raw or "")
-    estado = _state_to_code(estado_raw) if estado_raw else ""
+    # Location: fetch convocatoria.php for JSON-LD structured data (has Place.name)
+    if event_id_param:
+        cidade, estado = _fetch_location_from_convocatoria(event_id_param)
+    else:
+        cidade, estado = "", ""
+    if not cidade:
+        cidade, estado_raw = _extract_location(el, titulo_raw or "")
+        estado = _state_to_code(estado_raw) if estado_raw else ""
     if cidade and not estado:
         _, resolved_estado = _geo.resolve(cidade, "", "MX")
         estado = resolved_estado or ""
@@ -300,6 +306,40 @@ def _extract_date(el, text: str) -> Optional[str]:
         if m:
             return f"{m.group(3)}-{m.group(2).zfill(2)}-{m.group(1).zfill(2)}"
     return None
+
+
+def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
+    """Fetch convocatoria.php and extract (cidade, estado) from JSON-LD SportsEvent schema."""
+    url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=20)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
+        return "", ""
+    soup = BeautifulSoup(resp.text, "lxml")
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            schema = json.loads(script.string or "")
+        except Exception:
+            continue
+        if isinstance(schema, list):
+            schema = next((s for s in schema if isinstance(s, dict) and s.get("@type") == "SportsEvent"), None)
+        if not isinstance(schema, dict) or schema.get("@type") != "SportsEvent":
+            continue
+        loc = schema.get("location", {})
+        loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
+        if not loc_name:
+            continue
+        parts = re.split(r",\s*", loc_name, maxsplit=1)
+        cidade = parts[0].strip()
+        estado_raw = parts[1].strip() if len(parts) > 1 else ""
+        estado = _state_to_code(estado_raw)
+        if not estado and cidade:
+            _, estado = _geo.resolve(cidade, "", "MX")
+            estado = estado or ""
+        return cidade, estado
+    return "", ""
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

@@ -110,10 +110,14 @@ _EXPERIENCES_NO_DATE = (
 )
 
 _RUNNING_AREAS = {"running", "corrida", "trail", "trilha"}
+_NON_RUNNING_EXP_RE = re.compile(r"\byoga\b|\bpilates\b|\bzumba\b|\bdança\b|\bdanca\b", re.IGNORECASE)
 
 
 def _exp_is_running(attrs: dict) -> bool:
     """Return True when an experience belongs to a running-type area."""
+    titulo = attrs.get("title") or ""
+    if _NON_RUNNING_EXP_RE.search(titulo):
+        return False
     area = attrs.get("area") or {}
     if isinstance(area, dict):
         area_data = area.get("data") or {}

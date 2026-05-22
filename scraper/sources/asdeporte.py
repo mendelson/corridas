@@ -50,7 +50,10 @@ _MX_CITY_STATE: dict[str, str] = {
     "san luis potosi": "SLP", "san luis potosí": "SLP",
     "aguascalientes": "AGU",
     "oaxaca": "OAX",
-    "toluca": "MEX", "ecatepec": "MEX", "naucalpan": "MEX",
+    "toluca": "MEX", "ecatepec": "MEX", "naucalpan": "MEX", "metepec": "MEX",
+    "huehuetoca": "MEX", "texcoco": "MEX", "tlalnepantla": "MEX",
+    "bosque de aragon": "CMX", "bosque de aragón": "CMX",
+    "azcapotzalco": "CMX", "iztapalapa": "CMX", "xochimilco": "CMX",
     "morelia": "MIC", "uruapan": "MIC",
     "veracruz": "VER", "xalapa": "VER",
     "chihuahua": "CHH", "ciudad juarez": "CHH", "ciudad juárez": "CHH",
@@ -196,6 +199,15 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     ciudad, estado = _parse_location(place, api_city, api_state)
     if not estado:
         _, estado = _geo.resolve(place or api_city, "", "MX")
+    if not estado:
+        # Last resort: scan title for known city names
+        title_norm = re.sub(r"[^\w\s]", "", titulo).lower()
+        for city, city_code in sorted(_MX_CITY_STATE.items(), key=lambda x: -len(x[0])):
+            if re.search(r"\b" + re.escape(city) + r"\b", title_norm):
+                estado = city_code
+                if not ciudad or ciudad.lower() in ("mexico", "méxico"):
+                    ciudad = city.title() + ", México"
+                break
 
     route = ev.get("routeConvocatoria") or ""
     event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)

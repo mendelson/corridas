@@ -169,12 +169,10 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         if imagem_url and imagem_url.startswith("//"):
             imagem_url = "https:" + imagem_url
 
-    # The Tiempometa widget generates carrerasmexico.com/?event=<hex>&api_key=<key>
-    # links. carrerasmexico.com renders a client-side event list — the ?event= param
-    # is not used for server-side routing — so there is no individual event deep-link.
-    # Use the carrerasmexico.com event URL as-is; it's the same link the widget uses.
+    # The individual event page is convocatoria.php?event=<hex>&api_key=<key>.
+    # The widget anchors point to the root /?event=<hex> (which shows the full list),
+    # so we extract the hex event_id and build the convocatoria.php URL ourselves.
     event_id_param = ""
-    cm_link = ""
     external_link = ""
     for a in el.find_all("a", href=True):
         href = a["href"].strip()
@@ -187,14 +185,15 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         ma = re.search(r"event=([a-f0-9]+)", href)
         if ma and not event_id_param:
             event_id_param = ma.group(1)
-        if "carrerasmexico.com" in href or "tiempometa.com" in href:
-            if not cm_link:
-                cm_link = href
-        elif href != BASE:
+        if "carrerasmexico.com" not in href and "tiempometa.com" not in href and href != BASE:
             if not external_link:
                 external_link = href
 
-    link = external_link or cm_link or BASE
+    if event_id_param:
+        cm_link = f"{BASE}/convocatoria.php?event={event_id_param}&api_key={API_KEY}"
+    else:
+        cm_link = BASE
+    link = external_link or cm_link
 
     # Location: try extracting from card HTML; fall back to geo resolution
     cidade, estado_raw = _extract_location(el, titulo_raw or "")

@@ -85,7 +85,7 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 | Brighton Marathon<!--majors/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-05-22 17:44 | ✅ | 2026-05-22 17:44 |
 | Volkswagen Prague Marathon<!--majors/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-05-22 17:45 | ❌ 0 eventos | 2026-05-21 20:28 |
 | Copenhagen Marathon<!--majors/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-05-22 17:45 | ✅ | 2026-05-22 17:45 |
-| Edinburgh Marathon Festival<!--majors/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-05-22 17:45 | ❌ 2 IDs duplicados no batch: 'edinburgh-marathon-festival_gb_2026'×2, 'edinburgh-marathon-festival_gb_2027'×2 | 2026-05-15 18:36 |
+| Edinburgh Marathon Festival<!--majors/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-05-23 01:15 | ✅ | 2026-05-23 01:15 |
 | Stockholm Marathon<!--majors/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-05-22 17:46 | ✅ | 2026-05-22 17:46 |
 | Manchester Marathon<!--majors/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-05-22 17:45 | ✅ | 2026-05-22 17:45 |
 | Great North Run<!--majors/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-05-22 17:45 | ✅ | 2026-05-22 17:45 |

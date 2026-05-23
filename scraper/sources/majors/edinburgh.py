@@ -1,4 +1,5 @@
-"""Edinburgh Marathon Festival scraper (edinburghmarathon.com)"""
+"""Edinburgh Marathon Festival scraper (edinburghmarathon.com)
+Known dates are deliberately minimal — only add officially announced editions."""
 from ._base import scrape_major
 
 SOURCE_NAME = "Edinburgh Marathon Festival"

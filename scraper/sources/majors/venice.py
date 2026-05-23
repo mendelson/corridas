@@ -19,6 +19,7 @@ URL_TIMETABLE = "https://www.venicemarathon.it/en/race/timetable/"
 
 KNOWN_DATE  = "2026-10-25"  # confirmed; only used as fallback when site is unreachable
 LOCALIZACAO = "Veneza, Itália"
+CIDADE      = "Veneza"
 
 _DISTANCES: list[tuple[float, str]] = [
     (42.195, "09:15"),
@@ -92,8 +93,8 @@ def scrape() -> list[Corrida]:
             data_evento=data,
             horario=_DISTANCES[0][1],
             localizacao=LOCALIZACAO,
-            cidade=LOCALIZACAO,
-            estado="",
+            cidade=CIDADE,
+            estado="VE",
             pais="IT",
             distancias=distancias,
             imagem_url=imagem_url,

@@ -76,6 +76,11 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
   - `estado` must be a recognised subdivision code for that country as defined in `web/locations/{pais}.json`, or an empty string `""` if the subdivision is unknown or the country has no subdivisions in the repo. Leave it `""` — the pipeline's `_resolve_missing_locations()` will attempt to fill it in via `geo.resolve()` and the persistent Nominatim cache.
   - **Never discard an event solely because its country or state is hard to determine.** Always try `geo.resolve(city, "", pais_hint)` before giving up. Only skip the event if even the country cannot be resolved.
   - Brazilian states: 2-letter UFs (`SP`, `DF`, `SE`…). The `Corrida.estado` field drives the frontend's location filter.
+- **Location display in the frontend must use only values from the JSON files.** The `_buildCardLocation()` function in `app.js` enforces this: for non-BR events it validates `c.estado` against the loaded `web/locations/{pais}.json` subdivisions and uses the localized subdivision name (via `_SUBDIV_LABELS`) when the code is valid. If `estado` is empty or not in the JSON, it falls back to `c.cidade` (first comma-segment). This means:
+  - A scraper that sets `estado="VE"` for an Italian event will show "Venice" (EN) / "Veneza" (PT) / "Venecia" (ES) / "Venedig" (DE) / "Venise" (FR) — automatically in all languages.
+  - A scraper that sets a free-text city or wrong-country code will display the raw city name instead.
+  - **Never invent subdivision codes.** Only use codes present in `web/locations/{pais}.json`. If the correct province/state isn't in the file, add it to both the JSON file and `_SUBDIV_LABELS` in `app.js`.
+  - **`_SUBDIV_LABELS` in `app.js`** must be kept in sync: whenever a new country's `web/locations/{country}.json` is used and its subdivisions appear in events, add localized labels for those subdivisions. Current countries with labels beyond BR/US/CA/GB/AU: IT, JP, GR, DK, SE, IE, FR, PT, PL, CZ, NO, FI, CH, NL.
 - For TF Sports specifically: many addresses end with `, SP` regardless of the actual state. The `tf_sports.py` scraper has a CEP→UF range table (`_CEP_RANGES`) that overrides a contradictory trailing UF — preserve this when modifying.
 
 ### CI workflows

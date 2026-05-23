@@ -1,6 +1,6 @@
 {
   "mes": "2026-04",
-  "total": 2,
+  "total": 6,
   "corridas": [
     {
       "id": "tfs_451",
@@ -35,8 +35,8 @@
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-22T19:58:11+00:00",
-      "updated_at": "2026-05-22T19:58:11+00:00",
+      "first_seen_at": "2026-05-22T23:42:40+00:00",
+      "updated_at": "2026-05-22T23:42:40+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -88,8 +88,165 @@
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-22T19:58:20+00:00",
-      "updated_at": "2026-05-22T19:58:20+00:00",
+      "first_seen_at": "2026-05-22T23:42:49+00:00",
+      "updated_at": "2026-05-22T23:42:49+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "circuito-das-estacoes-salvador-outono",
+      "titulo": "Circuito das Estações - Outono - Salvador",
+      "data_evento": "2026-04-12",
+      "horario": null,
+      "localizacao": "Salvador, BA",
+      "cidade": "Salvador",
+      "estado": "BA",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 13.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Circuito das Estações",
+          "link_evento": "https://www.circuitodasestacoes.com.br/salvador/outono",
+          "links_inscricao": [
+            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-salvador"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-22T23:42:49+00:00",
+      "updated_at": "2026-05-22T23:42:49+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "circuito-das-estacoes-florianopolis-outono",
+      "titulo": "Circuito das Estações - Outono - Florianópolis",
+      "data_evento": "2026-04-12",
+      "horario": null,
+      "localizacao": "Florianópolis, SC",
+      "cidade": "Florianópolis",
+      "estado": "SC",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Circuito das Estações",
+          "link_evento": "https://www.circuitodasestacoes.com.br/florianopolis/outono",
+          "links_inscricao": [
+            "https://www.runningland.com.br/circuito-das-estacoes-2026-outono-florianopolis"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-22T23:42:49+00:00",
+      "updated_at": "2026-05-22T23:42:49+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "tfs_453",
+      "titulo": "Jundiaí Shopping",
+      "data_evento": "2026-04-12",
+      "horario": null,
+      "localizacao": "Jundiaí, SP",
+      "cidade": "Jundiaí",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d1au5iau2exwyo.cloudfront.net/small_21km_cd5e395f81.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TF Sports",
+          "link_evento": "https://www.tfsports.com.br/run-series/jundiai-shopping-2026",
+          "links_inscricao": [
+            "https://www.tfsports.com.br/run-series/jundiai-shopping-2026"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-22T23:42:40+00:00",
+      "updated_at": "2026-05-22T23:42:40+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "tfs_423",
+      "titulo": "Motiva Aeroportos - Pampulha",
+      "data_evento": "2026-04-12",
+      "horario": null,
+      "localizacao": "Belo Horizonte, MG",
+      "cidade": "Belo Horizonte",
+      "estado": "MG",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d1au5iau2exwyo.cloudfront.net/small_CAMISETA_FINISHER_c438b39c1a.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TF Sports",
+          "link_evento": "https://www.tfsports.com.br/run-series/motiva-aeroportos-pampulha-2026",
+          "links_inscricao": [
+            "https://www.tfsports.com.br/run-series/motiva-aeroportos-pampulha-2026"
+          ]
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-22T23:42:40+00:00",
+      "updated_at": "2026-05-22T23:42:40+00:00",
       "pais": "BR",
       "fotos": []
     }

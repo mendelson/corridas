@@ -611,6 +611,61 @@ const _SUBDIV_LABELS = {
     ZH:  { pt: 'Holanda do Sul',                en: 'South Holland',             es: 'Holanda del Sur',                 de: 'Südholland',                        fr: 'Hollande-Méridionale' },
     NB:  { pt: 'Brabante do Norte',             en: 'North Brabant',             es: 'Brabante del Norte',              de: 'Nordbrabant',                       fr: 'Brabant-Septentrional' },
   },
+  IT: {
+    VE:  { pt: 'Veneza',      en: 'Venice',      es: 'Venecia',    de: 'Venedig',     fr: 'Venise' },
+    RM:  { pt: 'Roma',        en: 'Rome',         es: 'Roma',       de: 'Rom',         fr: 'Rome' },
+    MI:  { pt: 'Milão',       en: 'Milan',        es: 'Milán',      de: 'Mailand',     fr: 'Milan' },
+    NA:  { pt: 'Nápoles',     en: 'Naples',       es: 'Nápoles',    de: 'Neapel',      fr: 'Naples' },
+    TO:  { pt: 'Turim',       en: 'Turin',        es: 'Turín',      de: 'Turin',       fr: 'Turin' },
+    BZ:  { pt: 'Bolzano',     en: 'Bolzano',      es: 'Bolzano',    de: 'Bozen',       fr: 'Bolzano' },
+    FI:  { pt: 'Florença',    en: 'Florence',     es: 'Florencia',  de: 'Florenz',     fr: 'Florence' },
+    BO:  { pt: 'Bolonha',     en: 'Bologna',      es: 'Bolonia',    de: 'Bologna',     fr: 'Bologne' },
+  },
+  JP: {
+    13:  { pt: 'Tóquio',      en: 'Tokyo',        es: 'Tokio',      de: 'Tokio',       fr: 'Tokyo' },
+    27:  { pt: 'Osaka',       en: 'Osaka',        es: 'Osaka',      de: 'Osaka',       fr: 'Osaka' },
+  },
+  GR: {
+    A:   { pt: 'Atenas',      en: 'Athens',       es: 'Atenas',     de: 'Athen',       fr: 'Athènes' },
+    B:   { pt: 'Salônica',    en: 'Thessaloniki',  es: 'Salónica',  de: 'Thessaloniki', fr: 'Thessalonique' },
+  },
+  DK: {
+    84:  { pt: 'Copenhague',  en: 'Copenhagen',   es: 'Copenhague', de: 'Kopenhagen',  fr: 'Copenhague' },
+  },
+  SE: {
+    AB:  { pt: 'Estocolmo',   en: 'Stockholm',    es: 'Estocolmo',  de: 'Stockholm',   fr: 'Stockholm' },
+  },
+  IE: {
+    D:   { pt: 'Dublin',      en: 'Dublin',       es: 'Dublín',     de: 'Dublin',      fr: 'Dublin' },
+  },
+  FR: {
+    75:  { pt: 'Paris',       en: 'Paris',        es: 'París',      de: 'Paris',       fr: 'Paris' },
+    69:  { pt: 'Lyon',        en: 'Lyon',         es: 'Lyon',       de: 'Lyon',        fr: 'Lyon' },
+    13:  { pt: 'Marselha',    en: 'Marseille',    es: 'Marsella',   de: 'Marseille',   fr: 'Marseille' },
+    33:  { pt: 'Bordeaux',    en: 'Bordeaux',     es: 'Burdeos',    de: 'Bordeaux',    fr: 'Bordeaux' },
+    67:  { pt: 'Estrasburgo', en: 'Strasbourg',   es: 'Estrasburgo',de: 'Straßburg',   fr: 'Strasbourg' },
+    '06':  { pt: 'Nice',        en: 'Nice',         es: 'Niza',       de: 'Nizza',       fr: 'Nice' },
+  },
+  PT: {
+    11:  { pt: 'Lisboa',      en: 'Lisbon',       es: 'Lisboa',     de: 'Lissabon',    fr: 'Lisbonne' },
+    13:  { pt: 'Porto',       en: 'Porto',        es: 'Oporto',     de: 'Porto',       fr: 'Porto' },
+  },
+  PL: {
+    14:  { pt: 'Varsóvia',    en: 'Warsaw',       es: 'Varsovia',   de: 'Warschau',    fr: 'Varsovie' },
+  },
+  CZ: {
+    PR:  { pt: 'Praga',       en: 'Prague',       es: 'Praga',      de: 'Prag',        fr: 'Prague' },
+  },
+  NO: {
+    '03':  { pt: 'Oslo',        en: 'Oslo',         es: 'Oslo',       de: 'Oslo',        fr: 'Oslo' },
+  },
+  FI: {
+    18:  { pt: 'Helsínquia',  en: 'Helsinki',     es: 'Helsinki',   de: 'Helsinki',    fr: 'Helsinki' },
+  },
+  CH: {
+    GE:  { pt: 'Genebra',     en: 'Geneva',       es: 'Ginebra',    de: 'Genf',        fr: 'Genève' },
+    ZH:  { pt: 'Zurique',     en: 'Zurich',       es: 'Zúrich',     de: 'Zürich',      fr: 'Zurich' },
+  },
 };
 
 function _localizeCountry(ptName) {
@@ -896,11 +951,8 @@ function onFilterChange() {
 }
 
 function applyFilters() {
-  // When the user has typed a search query, bypass the estado filter so
-  // searching "Flying Run Brasília" works regardless of the active location.
-  const bypassEstado = state.searchQuery.trim().length > 0;
   filteredCorridas = allCorridas.filter(c =>
-    matchesPeriodo(c) && (bypassEstado || matchesEstado(c)) && matchesFonte(c) &&
+    matchesPeriodo(c) && matchesEstado(c) && matchesFonte(c) &&
     matchesDistancia(c) && matchesSearch(c)
   );
 }
@@ -1118,6 +1170,29 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
   return { section, cardsContainer };
 }
 
+function _buildCardLocation(c) {
+  const pais = c.pais || 'BR';
+  if (pais === 'BR') return c.localizacao || '';
+
+  const locData   = _loadedLocations.get(pais);
+  const subdivMap = {};
+  for (const s of (locData?.subdivisions || [])) subdivMap[s.code] = s.name;
+
+  const parts = [];
+
+  if (c.estado && subdivMap[c.estado]) {
+    parts.push(_localizeSubdiv(pais, c.estado, subdivMap[c.estado]));
+  } else {
+    const city = (c.cidade || '').split(',')[0].trim();
+    if (city) parts.push(city);
+  }
+
+  const country = _localizeCountryByIso2(pais);
+  if (country) parts.push(country);
+
+  return parts.join(', ') || c.localizacao || '';
+}
+
 function buildCard(c, today, threeDaysAgo) {
   const tmpl = document.getElementById('cardTemplate');
   const node  = tmpl.content.cloneNode(true);
@@ -1146,7 +1221,7 @@ function buildCard(c, today, threeDaysAgo) {
 
   card.querySelector('.card-title').textContent    = c.titulo;
   card.querySelector('.card-date').textContent     = formatDate(c.data_evento, c.horario, c.distancias);
-  card.querySelector('.card-location').textContent = c.localizacao || '';
+  card.querySelector('.card-location').textContent = _buildCardLocation(c);
 
   const distContainer = card.querySelector('.card-distances');
   for (const km of formatDistancesPills(c.distancias)) {

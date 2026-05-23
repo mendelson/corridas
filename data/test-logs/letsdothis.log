@@ -1,10 +1,1 @@
-[Let's Do This] https://api.letsdothis.com/v1/events → HTTP 404
-[Let's Do This] https://api.letsdothis.com/v2/events → HTTP 404
-[proxy] www.letsdothis.com bloqueado (403), tentando Scrapestack...
-[proxy] Scrapestack retornou 500 para www.letsdothis.com, tentando Apify...
-[proxy] Apify falhou para www.letsdothis.com: 403 Forbidden
-[Let's Do This] erro https://www.letsdothis.com/api/events: todos os métodos falharam para https://www.letsdothis.com/api/events
-[Let's Do This] 0 eventos brutos
-[Let's Do This] 0 corridas válidas (0 ignoradas)
-⚠️   letsdothis: 0 eventos retornados
-FAILURE_NOTE:0 eventos
+❌  fonte 'letsdothis' não encontrada

@@ -1,0 +1,12 @@
+[
+  {
+    "url": "https://www.tfsports.com.br/aulas-e-eventos",
+    "method": "GET",
+    "comment": "TF Sports listing page — check if Flying Run appears in HTML or __NEXT_DATA__"
+  },
+  {
+    "url": "https://painel-website.tfsports.com.br/api/events?publicationState=preview&populate=deep,6&sort=id:desc&locale=pt-BR&pagination[pageSize]=12&pagination[page]=1",
+    "method": "GET",
+    "comment": "Strapi events page 1 locale=pt-BR — check what 12 events the listing shows"
+  }
+]

@@ -242,6 +242,70 @@ This repository is often touched from a Claude Code sandbox where outbound HTTP 
 
 Event information (dates, location, title) must be obtained **explicitly** from page content, API response fields, or structured data — never inferred from ID strings, URL slugs, or opaque identifiers. Platform IDs like `02605131942` in a URL are opaque: they encode nothing meaningful and must never be decoded as a date, location, or any other value. If explicit data is not available from a page or API field, leave the field empty or unset — do not guess.
 
+## Source-specific research notes
+
+These are findings from past deep-dives. Read before touching the relevant sources.
+
+### correr_brasilia.py — EventOn JSON-LD (fixed 2026-05-23)
+
+**Root cause of "1 event returned" bug**: The original scraper used
+`soup.select("article") or soup.select(".event") or ...`. WordPress injects
+`<article>` tags for every post, so the `article` selector always matched first
+and returned only 1 generic article — the `.eventon_list_event` CSS path was
+never reached.
+
+**Fix**: Switch to parsing `<script type="application/ld+json">` blocks. The
+EventOn WordPress plugin embeds a full `schema.org/Event` JSON-LD object per
+event with `@type`, `name`, `startDate`, `url`, `image`, and `location`.
+This is far more reliable than HTML structure. See current `correr_brasilia.py`.
+
+ID scheme: EventOn emits `@id` values like `"event_44938_0"` — use those when
+present (`correrbsb_event_44938_0`) for stability; fall back to
+`correrbsb_{slug}_{year}` for events that lack a numeric ID.
+
+### TF Sports — architecture map (researched 2026-05-23)
+
+TF Sports operates **three separate backend systems**. Know which one you're
+dealing with before probing:
+
+| Domain | What it is | Auth |
+|---|---|---|
+| `painel-website.tfsports.com.br/api` | Strapi CMS (website content) | Public for `run-series`; 403 for `events` |
+| `api.prod.tfsports.com.br` | Mobile app backend (REST + GraphQL) | **All endpoints require Bearer token** |
+| `link.prod.tfsports.com.br/events/{slug}` | Deeplink SPA — opens app | No event data; redirects to app store |
+| `events.tfsports.com.br` | Planned/decommissioned web app | DNS does not resolve (as of 2026-05-23) |
+| `assets-prod.tfsports.com.br` | S3/CloudFront asset storage | Static files only |
+
+**Strapi CMS** (`painel-website.tfsports.com.br/api`): The `run-series`
+collection is publicly paginated at `/api/run-series?populate=...&locale=pt-BR`.
+The `events` collection exists but returns 403. Approximately 1900 events were
+scanned across all locales — Flying Run is **not** in Strapi.
+
+**Mobile API** (`api.prod.tfsports.com.br`): Every endpoint —
+`/events`, `/events/{id}`, `/events?slug=...`, `/graphql` — returns
+`{"message":"Unauthorized"}` or `{"message":"Missing Authentication Token"}`.
+No anonymous/public access path was found. The domain may also be
+geo-restricted (DNS fails from GitHub Actions in some runs, resolves in others).
+
+**Deeplink service**: `link.prod.tfsports.com.br/events/{slug}` is a generic
+SPA. The redirect JS does `window.location.href.replace("https://","tfsports://")`,
+i.e. universal links into the mobile app. No event metadata is in the HTML.
+Flying Run's slug is `flying-run-sunset-braslia-2026` (note: missing "i", typo
+from TF Sports side).
+
+**Bottom line**: Flying Run Sunset Brasília and similar TF Sports app-native
+events are **not accessible** via any public API. They are sourced via
+`correr_brasilia.py` (which aggregates them from correrbrasilia.com.br).
+Do not re-investigate TF Sports mobile auth — the path is closed.
+
+### tf_sports_app.py — what it actually finds
+
+`tf_sports_app.py` queries the Strapi `run-series` collection with
+`locale=pt-BR`. It successfully finds pt-BR-only events (e.g. Run Series IDs
+102824+) that `tf_sports.py` (which uses the pt-BR Bearer token from the Next.js
+bundle) misses. The two scrapers are complementary; keep both active.
+Flying Run is not in Strapi and will never appear via `tf_sports_app.py`.
+
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.

@@ -124,7 +124,7 @@ _NON_RUNNING_EXP_RE = re.compile(
     re.IGNORECASE,
 )
 _RUNNING_TITLE_RE = re.compile(
-    r"\b(run|corrida|trail|maratona|meia|5k|10k|21k|42k|\d+\s*km|marathon|race|atletismo|trilha)\b",
+    r"\b(runn?(?:ing|er)?|corrida|trail|maratona|meia|5k|10k|21k|42k|\d+\s*km|marathon|race|atletismo|trilha)\b",
     re.IGNORECASE,
 )
 

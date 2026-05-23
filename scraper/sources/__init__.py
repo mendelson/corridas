@@ -6,6 +6,7 @@ from . import (
     brasil_corrida,
     runner_brasil,
     tf_sports,
+    tf_sports_app,
     sesc_df,
     ticket_sports,
     maratona_rio,

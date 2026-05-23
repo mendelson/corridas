@@ -1,13 +1,16 @@
-"""Scraper for correrbrasilia.com.br/calendario/"""
+"""Scraper for correrbrasilia.com.br/calendario/
+
+Parses JSON-LD schema.org/Event blocks embedded by the EventOn WordPress
+plugin — more reliable than trying to parse the calendar widget's HTML.
+"""
 from __future__ import annotations
+import json
 import re
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import (
-    normalize_date, normalize_time, normalize_titulo, slugify, now_iso, today_iso
-)
+from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
 
 URL = "https://correrbrasilia.com.br/calendario/"
@@ -23,108 +26,114 @@ def scrape() -> list[Corrida]:
         return []
 
     soup = BeautifulSoup(resp.text, "lxml")
+    today = today_iso()
+    now = now_iso()
+
     corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
 
-    # Each event is typically in an article or table row
-    # Try common patterns: .event, article, table rows
-    events = soup.select("article") or soup.select(".event") or soup.select("tr")
-
-    for el in events:
+    for script in soup.find_all("script", type="application/ld+json"):
         try:
-            corrida = _parse_event(el)
-            if corrida:
-                corridas.append(corrida)
+            data = json.loads(script.string or "")
+        except Exception:
+            continue
+        if not isinstance(data, dict) or data.get("@type") != "Event":
+            continue
+        try:
+            c = _parse_event(data, today, now)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao parsear evento: {e}")
+            continue
+        if c and c.id not in seen_ids:
+            seen_ids.add(c.id)
+            corridas.append(c)
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _parse_event(el) -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 5:
+def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
+    titulo = normalize_titulo(ev.get("name") or "")
+    if not titulo or len(titulo) < 3:
         return None
 
-    # Extract title — first heading or strong text
-    titulo_raw = ""
-    for tag in ["h1", "h2", "h3", "h4", "strong", "b", "a"]:
-        found = el.find(tag)
-        if found and found.get_text(strip=True):
-            titulo_raw = found.get_text(strip=True)
-            break
-    if not titulo_raw:
+    date_str, horario = _parse_start_date(ev.get("startDate") or "")
+    if date_str and date_str < today:
         return None
 
-    titulo = normalize_titulo(titulo_raw)
+    # Use EventOn @id ("event_44938_0") when present for a stable key;
+    # otherwise fall back to slug+year so IDs never embed the run date.
+    eid = ev.get("@id") or ""
+    if eid and re.match(r"event_\d+", eid):
+        stable_id = f"correrbsb_{eid}"
+    else:
+        year = date_str[:4] if date_str else "sd"
+        stable_id = f"correrbsb_{slugify(titulo[:50])}_{year}"
 
-    # Date — search in text
-    data = _extract_date(text)
+    url = ev.get("url") or URL
+    image = ev.get("image") or None
 
-    # Image
-    img = el.find("img")
-    imagem_url = img["src"] if img and img.get("src") else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = "https://correrbrasilia.com.br" + imagem_url
+    location_raw = ev.get("location") or []
+    if isinstance(location_raw, dict):
+        location_raw = [location_raw]
+    place = location_raw[0] if location_raw else {}
+    place_name = place.get("name") or ""
+    address = place.get("address") or {}
+    street = address.get("streetAddress") or ""
 
-    # Link
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
-    if link.startswith("/"):
-        link = "https://correrbrasilia.com.br" + link
+    geo_query = ", ".join(p for p in [place_name, street] if p) or "Brasília, DF"
+    _, estado = _geo.resolve(geo_query, "", "BR")
+    estado = estado or "DF"
+    city = place_name.split(",")[0].strip() if place_name else "Brasília"
+    localizacao = f"{city}, {estado}"
 
-    # Distances
-    distancias = _extract_distances(text)
+    desc = ev.get("description") or ""
+    distancias = _extract_distances(desc + " " + titulo)
 
-    now = now_iso()
-    today = today_iso()
-
-    fonte = FonteInfo(
-        nome=SOURCE_NAME,
-        link_evento=link,
-        links_inscricao=[link],
-    )
-
-    estado = _geo.resolve("Brasília-DF", "Brasília", "BR")[1] or "DF"
     return Corrida(
-        id=f"{slugify(titulo)}_df_{data or 'sd'}",
+        id=stable_id,
         titulo=titulo,
-        data_evento=data or "",
-        horario=normalize_time(text),
-        localizacao="Brasília-DF",
-        cidade="Brasília",
+        data_evento=date_str or "",
+        horario=horario,
+        localizacao=localizacao,
+        cidade=city,
         estado=estado,
         pais="BR",
         distancias=distancias,
-        imagem_url=imagem_url,
-        inscricoes_abertas=True if link_tag else None,
+        imagem_url=image,
+        inscricoes_abertas=None,
         periodo_inscricao=None,
-        fontes=[fonte],
+        fontes=[FonteInfo(
+            nome=SOURCE_NAME,
+            link_evento=url,
+            links_inscricao=[url],
+        )],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
     )
 
 
-def _extract_date(text: str) -> str | None:
-    # Try DD/MM/YYYY
-    m = re.search(r"\d{1,2}/\d{1,2}/\d{4}", text)
-    if m:
-        return normalize_date(m.group(0))
-    # Try "10 de agosto de 2025"
-    m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
-    if m:
-        return normalize_date(m.group(0))
-    return None
+def _parse_start_date(raw: str) -> tuple[str, str | None]:
+    """Parse "2026-8-8T16:00-3:00" → ("2026-08-08", "16:00")."""
+    if not raw:
+        return "", None
+    m = re.match(r"(\d{4})-(\d{1,2})-(\d{1,2})T(\d{2}:\d{2})", raw)
+    if not m:
+        return "", None
+    year, month, day, time_part = m.groups()
+    return f"{year}-{int(month):02d}-{int(day):02d}", time_part
 
 
 def _extract_distances(text: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+)\s*[kK][mM]?\b", text)
     seen: set[float] = set()
     result = []
-    for n in nums:
-        km = float(n)
+    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", text):
+        try:
+            km = float(m.group(1).replace(",", "."))
+        except ValueError:
+            continue
         if km not in seen and 1 <= km <= 200:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
-    return result
+    return sorted(result, key=lambda d: float(d.km))

@@ -896,8 +896,11 @@ function onFilterChange() {
 }
 
 function applyFilters() {
+  // When the user has typed a search query, bypass the estado filter so
+  // searching "Flying Run Brasília" works regardless of the active location.
+  const bypassEstado = state.searchQuery.trim().length > 0;
   filteredCorridas = allCorridas.filter(c =>
-    matchesPeriodo(c) && matchesEstado(c) && matchesFonte(c) &&
+    matchesPeriodo(c) && (bypassEstado || matchesEstado(c)) && matchesFonte(c) &&
     matchesDistancia(c) && matchesSearch(c)
   );
 }

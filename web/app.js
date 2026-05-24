@@ -1008,14 +1008,11 @@ function renderCards() {
     byMonth.get(key).push(corrida);
   }
 
-  // When a specific location or search is active, expand all months so the user sees all results.
-  // Without filters, only the first future month is auto-expanded to avoid overwhelming the page.
-  const expandAll = state.estado !== 'todos' || state.searchQuery.trim().length > 0;
   let firstFutureMonthFound = false;
   for (const [monthKey, corridas] of byMonth) {
     const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
-    const expand = hasFuture && (expandAll || !firstFutureMonthFound);
-    if (hasFuture && !expandAll) firstFutureMonthFound = true;
+    const expand = hasFuture && !firstFutureMonthFound;
+    if (expand) firstFutureMonthFound = true;
     const hasNew = corridas.some(c => c.first_seen_at && c.first_seen_at >= threeDaysAgo);
     const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNew);
     for (const corrida of corridas) {

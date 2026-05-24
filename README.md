@@ -36,6 +36,7 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 | --- | --- | --- | --- | --- | --- | --- |
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-24 03:03 | ✅ | 2026-05-24 03:03 |
 | Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-05-24 03:21 | ✅ | 2026-05-24 03:21 |
+| Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | — | — | — |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-22 23:31 | ✅ | 2026-05-22 23:31 |
 
 ### Fontes brasileiras — eventos específicos
@@ -121,7 +122,6 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-22 19:17 | ❌ 403 no CI | — |
-| Brasil que Corre<!--brasil_que_corre--> | ❌ | `brasilquecorre.com/distritofederal` | Seletores CSS genéricos não casam com o HTML real do site. | 2026-05-11 15:57 | ❌ | — |
 | Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-11 15:57 | ❌ | — |
 | Sympla | ❌ | `sympla.com.br/busca?q=corrida` | URL de busca retorna HTTP 404; Playwright redireciona para página de login. | 2026-05-11 15:57 | ❌ | — |
 

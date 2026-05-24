@@ -37,6 +37,7 @@ from .sources import (
     minhas_inscricoes,
     correr_brasilia,
     bora_correr,
+    brasil_que_corre,
     sesc_df,
     runner_brasil,
     brasil_corrida,
@@ -94,6 +95,7 @@ SOURCES = [
     # DF-specific sources
     correr_brasilia,
     bora_correr,
+    brasil_que_corre,
     sesc_df,
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,

@@ -344,6 +344,28 @@ Use the UUID for stable IDs (`boracorrer_<uuid>`). Distances come from the
 parenthesized hint in cell 2 — apply `_CANONICAL` snapping (21.097 / 42.195)
 and 0.5km near-dedup, same as `correr_brasilia.py`.
 
+### brasil_que_corre.py — Locaweb page builder, plain-text widgets (restored 2026-05-24)
+
+`brasilquecorre.com/distritofederal` is a **custom site built on what looks
+like a Locaweb page builder** (CSS prefix `cs-`). No `/wp-json/`, no RSS,
+no JSON-LD. Each event is a `<div class="cs-text-widget">` whose innerText
+follows a fixed layout:
+
+  `TITLE  &nbsp;  DD[ e DD] de MES de YYYY  CITY [/ UF]  Xkm, Ykm (corrida) ORGANIZER`
+
+Example: `ONERUN SUNSET   23 de Maio de 2026 Brasília / DF 1km, 5km, 10km e 21km (corrida) ONE23 GO`
+
+**Why it was dropped**: same generic-selector pattern as `correr_brasilia` /
+`bora_correr` — `.event/article/.race/.post` never matched `cs-text-widget`.
+The site is reachable and well-structured.
+
+Parser splits on the first `DD de MES de YYYY` match: everything before is
+the title, the date populates `data_evento`, distances are extracted from
+`(corrida)`-annotated segments only (filtering out walking/kids/OCR sections).
+Use the widget `id` attribute (a UUID assigned by the page builder) for
+stable IDs (`bqc_<uuid>`). Each event links back to the listing page since
+no per-event URL exists.
+
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.

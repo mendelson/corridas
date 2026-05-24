@@ -666,6 +666,10 @@ const _SUBDIV_LABELS = {
     GE:  { pt: 'Genebra',     en: 'Geneva',       es: 'Ginebra',    de: 'Genf',        fr: 'Genève' },
     ZH:  { pt: 'Zurique',     en: 'Zurich',       es: 'Zúrich',     de: 'Zürich',      fr: 'Zurich' },
   },
+  BR: {
+    // DF is the only state whose display name differs from the BR.json entry ("Distrito Federal")
+    DF:  { pt: 'Brasília',    en: 'Brasília',     es: 'Brasília',   de: 'Brasília',    fr: 'Brasília' },
+  },
 };
 
 function _localizeCountry(ptName) {
@@ -1172,7 +1176,6 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
 
 function _buildCardLocation(c) {
   const pais = c.pais || 'BR';
-  if (pais === 'BR') return c.localizacao || '';
 
   const locData   = _loadedLocations.get(pais);
   const subdivMap = {};

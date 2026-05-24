@@ -133,24 +133,33 @@ def _parse_start_date(raw: str) -> tuple[str, str | None]:
 # to the exact standard distance (matches ativo.py / mks_esportes.py).
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
+# Matches 2+ distances listed together: "7km e 14km", "7km, 14km, 21km", "7K|14K"
+_DIST_LIST_RE = re.compile(
+    r"(\d+(?:[.,]\d+)?)\s*[kK][mM]?"
+    r"(?:\s*(?:,|e|ou|/|\|)\s*\d+(?:[.,]\d+)?\s*[kK][mM]?)+",
+    re.IGNORECASE,
+)
+
 
 def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     """Extract race distances from description (primary) with title as fallback.
 
-    Canonical ranges snap nearby values to exact distances:
-      41.5–43.0 km → 42.195 (maratona)
-      20.5–21.5 km → 21.097 (meia-maratona)
-    Near-dedup (0.5 km window) prevents duplicates from repeated mentions.
+    Priority:
+      1. Distances in list form ("7km e 14km") — avoids venue/route references
+         like "3,4km de pista" that appear in isolation.
+      2. Any km mention in the description.
+      3. Parenthetical hint in the title (avoids brand names like "LIVE!42K").
     """
-    values = _parse_km_values(desc, min_km=1.0)
+    # Priority 1: grouped list pattern
+    values = _parse_km_values_from_list(desc, min_km=1.0)
     if not values:
-        # Fall back to the parenthetical distance hint in the title only —
-        # avoids false positives from brand names like "LIVE!42K".
-        paren = re.search(r'\([^)]*\d+\s*[kK][mM]?[^)]*\)', titulo)
+        # Priority 2: any km mention in description
+        values = _parse_km_values(desc, min_km=1.0)
+    if not values:
+        # Priority 3: parenthetical hint in title only
+        paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
         if paren:
             values = _parse_km_values(paren.group(0), min_km=1.0)
-    # Cap at 8 distances — more than that suggests the description contains non-race
-    # km references (course route markers, distance-to-venue text, etc.).
     values = values[:8]
     return sorted(
         [Distancia(km=km, data=None, horario=None) for km in values],
@@ -158,23 +167,39 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     )
 
 
-def _parse_km_values(text: str, min_km: float) -> list[float]:
+def _filter_km_values(raw_values: list[float], min_km: float) -> list[float]:
     seen: list[float] = []
-    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", text):
-        try:
-            raw = float(m.group(1).replace(",", "."))
-        except ValueError:
-            continue
+    for raw in raw_values:
         if raw < min_km or raw > 200:
             continue
-        # Snap to canonical distances (meia-maratona, maratona)
         km = raw
         for canon, lo, hi in _CANONICAL:
             if lo <= raw <= hi:
                 km = canon
                 break
-        # Near-dedup: skip if already seen this canonical value
         if any(abs(km - s) < 0.5 for s in seen):
             continue
         seen.append(km)
     return seen
+
+
+def _parse_km_values_from_list(text: str, min_km: float) -> list[float]:
+    """Extract distances only from grouped list patterns like '7km e 14km'."""
+    raw: list[float] = []
+    for list_m in _DIST_LIST_RE.finditer(text):
+        for m in re.finditer(r"(\d+(?:[.,]\d+)?)\s*[kK][mM]?", list_m.group(0), re.IGNORECASE):
+            try:
+                raw.append(float(m.group(1).replace(",", ".")))
+            except ValueError:
+                pass
+    return _filter_km_values(raw, min_km)
+
+
+def _parse_km_values(text: str, min_km: float) -> list[float]:
+    raw: list[float] = []
+    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", text):
+        try:
+            raw.append(float(m.group(1).replace(",", ".")))
+        except ValueError:
+            continue
+    return _filter_km_values(raw, min_km)

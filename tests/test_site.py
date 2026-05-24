@@ -662,6 +662,65 @@ def test_cards_have_link_buttons(page_pt, live_server):
 
 
 # ---------------------------------------------------------------------------
+# Merge integrity (catches over-merging bugs)
+# ---------------------------------------------------------------------------
+
+# Even popular events rarely have more than 3 distinct catalog sources listing
+# them. >=5 fontes per record is a near-certain smell that the merger collapsed
+# unrelated events — usually because some scraper emitted the same inscription
+# URL (catalog page) for every event it found, and union-find chained them.
+_MAX_FONTES_PER_EVENT = 5
+
+
+def test_no_event_has_too_many_fontes():
+    """No single merged event should accumulate more than 4 distinct fontes.
+
+    Trips when a scraper emits a catalog/section URL as links_inscricao for
+    multiple events (the brasil_que_corre regression) — the merger's shared-
+    link rule then collapses them into one record whose fontes accumulate.
+    Distance count alone is a noisy signal (legitimate track meets have 20+
+    track events); fonte count is the cleaner smell.
+    """
+    corridas = _load_corridas()
+    offenders = [
+        (c.get("id"), c.get("titulo"), len(c.get("fontes", [])),
+         [f["nome"] for f in c.get("fontes", [])])
+        for c in corridas
+        if len(c.get("fontes", [])) >= _MAX_FONTES_PER_EVENT
+    ]
+    assert not offenders, (
+        f"{len(offenders)} event(s) have >= {_MAX_FONTES_PER_EVENT} fontes "
+        f"(likely over-merged). First 5: {offenders[:5]}"
+    )
+
+
+def test_no_inscription_link_shared_across_many_events():
+    """A single inscription URL should not appear in 3+ distinct records.
+
+    After merger collapses true duplicates, the same URL appearing in many
+    records means the scraper is using a non-unique URL for events that
+    are genuinely different. Catches the next brasil_que_corre clone.
+    """
+    corridas = _load_corridas()
+    link_to_records: dict[tuple[str, str], list[str]] = {}
+    for c in corridas:
+        for f in c.get("fontes", []):
+            nome = f.get("nome", "")
+            for l in f.get("links_inscricao", []):
+                key = (nome, l.rstrip("/").lower())
+                link_to_records.setdefault(key, []).append(c.get("id"))
+    offenders = [
+        (nome, link, len(ids), ids[:3])
+        for (nome, link), ids in link_to_records.items()
+        if len(set(ids)) >= 3
+    ]
+    assert not offenders, (
+        f"{len(offenders)} (source, link) pair(s) appear in 3+ distinct records "
+        f"— probably a catalog URL used as event link. First 5: {offenders[:5]}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # HTML entity hygiene
 # ---------------------------------------------------------------------------
 

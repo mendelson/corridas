@@ -1,5 +1,6 @@
 from __future__ import annotations
 import difflib
+from collections import defaultdict
 from datetime import date, timedelta
 
 from .models import Corrida, Distancia, FonteInfo
@@ -64,17 +65,44 @@ def _date_ok_relaxed(a: Corrida, b: Corrida) -> bool:
 # Generic/login links that don't identify a specific event
 _GENERIC_LINKS: set[str] = {
     "https://www.ticketagora.com.br/entrar/participante",
+    # brasil_que_corre catalog page — fixed to use #widget-id anchors but kept
+    # here in case stale data still carries the bare URL.
+    "https://brasilquecorre.com/distritofederal",
 }
+
+# Auto-detected generic links: populated per-run with URLs that appear as
+# inscription links across many distinct events from the same source.
+_RUN_GENERIC_LINKS: set[str] = set()
+
+
+def _norm_link(url: str) -> str:
+    return url.rstrip("/").lower()
+
+
+def _detect_overused_links(registros: list[Corrida], threshold: int = 3) -> set[str]:
+    """A scraper that emits the same inscription URL for >=N distinct events is
+    almost certainly producing a catalog/section link, not an event link. Treat
+    such URLs as generic so the merger's shared-link rule doesn't collapse all
+    those events into one record (the brasil_que_corre regression).
+    """
+    counts: dict[tuple[str, str], int] = defaultdict(int)
+    for r in registros:
+        for f in r.fontes:
+            for l in f.links_inscricao:
+                counts[(f.nome, _norm_link(l))] += 1
+    return {link for (_, link), n in counts.items() if n >= threshold}
 
 
 def _shared_inscription_link(a: Corrida, b: Corrida) -> bool:
     """True if both events share at least one event-specific inscription link."""
+    generic = _GENERIC_LINKS | _RUN_GENERIC_LINKS
+
     def specific_links(c: Corrida) -> set[str]:
         return {
-            l.rstrip("/").lower()
+            _norm_link(l)
             for f in c.fontes
             for l in f.links_inscricao
-            if l.rstrip("/").lower() not in _GENERIC_LINKS
+            if _norm_link(l) not in generic
         }
     la, lb = specific_links(a), specific_links(b)
     return bool(la and lb and la & lb)
@@ -167,6 +195,14 @@ def _merge_pair(champion: Corrida, extra: Corrida) -> Corrida:
 # ---------------------------------------------------------------------------
 
 def merge_rodada(registros: list[Corrida]) -> list[Corrida]:
+    global _RUN_GENERIC_LINKS
+    _RUN_GENERIC_LINKS = _detect_overused_links(registros)
+    if _RUN_GENERIC_LINKS:
+        print(
+            f"[merger] {len(_RUN_GENERIC_LINKS)} URL(s) detected as overused inscription "
+            f"links (treating as generic): {sorted(_RUN_GENERIC_LINKS)[:5]}"
+        )
+
     n = len(registros)
     group_id = list(range(n))  # union-find (flat)
 

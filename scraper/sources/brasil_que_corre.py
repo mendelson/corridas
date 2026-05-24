@@ -108,6 +108,11 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
     else:
         stable_id = f"bqc_{slugify(titulo[:40])}_{data_evento}"
 
+    # Catalog page has no per-event URLs; anchor each event by widget id so the
+    # merger's _shared_inscription_link doesn't treat all bqc events as the same
+    # registration link (which collapsed 50+ events into one record).
+    per_event_url = f"{URL}#{widget_id}" if widget_id else f"{URL}#{stable_id}"
+
     return Corrida(
         id=stable_id,
         titulo=titulo,
@@ -123,8 +128,8 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
         periodo_inscricao=None,
         fontes=[FonteInfo(
             nome=SOURCE_NAME,
-            link_evento=URL,
-            links_inscricao=[URL],
+            link_evento=per_event_url,
+            links_inscricao=[per_event_url],
         )],
         miss_count=0,
         first_seen_at=now,

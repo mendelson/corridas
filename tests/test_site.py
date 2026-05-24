@@ -662,6 +662,130 @@ def test_cards_have_link_buttons(page_pt, live_server):
 
 
 # ---------------------------------------------------------------------------
+# HTML entity hygiene
+# ---------------------------------------------------------------------------
+
+_HTML_ENTITY_PATTERNS = [
+    r"&amp;", r"&Amp;", r"&AMP;",      # mishandled & encoding
+    r"&quot;", r"&apos;",
+    r"&lt;", r"&gt;", r"&nbsp;",
+    r"&#x[0-9a-fA-F]+;?", r"&#\d+;?",  # numeric entities
+]
+
+
+def test_no_html_entities_in_event_fields():
+    """No event title/cidade/localizacao may contain unescaped HTML entities.
+
+    Catches the regression where source pages double-encoded "&amp;amp;",
+    normalize_titulo only unescaped one layer, and .title() then mangled the
+    residual "amp" into "Amp" (e.g. "Track&Amp;Field").
+    """
+    corridas = _load_corridas()
+    rx = re.compile("|".join(_HTML_ENTITY_PATTERNS))
+    offenders = []
+    for c in corridas:
+        for field in ("titulo", "cidade", "localizacao"):
+            v = c.get(field) or ""
+            if rx.search(v):
+                offenders.append((c.get("id"), field, v))
+    assert not offenders, (
+        f"{len(offenders)} fields contain raw HTML entities. First 5: {offenders[:5]}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Country/subdivision localization tests
+# ---------------------------------------------------------------------------
+
+_COUNTRY_EXPECTATIONS = {
+    "pt": {"BR": "Brasil",   "US": "EUA",         "DE": "Alemanha",     "FR": "França",  "GB": "Reino Unido",            "IT": "Itália",  "JP": "Japão", "MX": "México"},
+    "en": {"BR": "Brazil",   "US": "USA",         "DE": "Germany",      "FR": "France",  "GB": "United Kingdom",         "IT": "Italy",   "JP": "Japan", "MX": "Mexico"},
+    "es": {"BR": "Brasil",   "US": "EE.UU.",      "DE": "Alemania",     "FR": "Francia", "GB": "Reino Unido",            "IT": "Italia",  "JP": "Japón", "MX": "México"},
+    "de": {"BR": "Brasilien", "US": "USA",        "DE": "Deutschland",  "FR": "Frankreich", "GB": "Vereinigtes Königreich", "IT": "Italien", "JP": "Japan", "MX": "Mexiko"},
+    "fr": {"BR": "Brésil",   "US": "États-Unis",  "DE": "Allemagne",    "FR": "France",  "GB": "Royaume-Uni",            "IT": "Italie",  "JP": "Japon", "MX": "Mexique"},
+}
+
+# Subdivisions for which _SUBDIV_LABELS in app.js must define per-language names.
+_SUBDIV_EXPECTATIONS = {
+    "pt": [("BR", "DF", "Brasília"), ("DE", "BY", "Baviera"),  ("GB", "ENG", "Inglaterra"),       ("GB", "SCT", "Escócia"),  ("IT", "VE", "Veneza"),  ("MX", "CMX", "Cidade do México")],
+    "en": [("BR", "DF", "Brasília"), ("DE", "BY", "Bavaria"),  ("GB", "ENG", "England"),          ("GB", "SCT", "Scotland"), ("IT", "VE", "Venice"),  ("MX", "CMX", "Mexico City")],
+    "es": [("BR", "DF", "Brasília"), ("DE", "BY", "Baviera"),  ("GB", "ENG", "Inglaterra"),       ("GB", "SCT", "Escocia"),  ("IT", "VE", "Venecia"), ("MX", "CMX", "Ciudad de México")],
+    "de": [("BR", "DF", "Brasília"), ("DE", "BY", "Bayern"),   ("GB", "ENG", "England"),          ("GB", "SCT", "Schottland"), ("IT", "VE", "Venedig"), ("MX", "CMX", "Mexiko-Stadt")],
+    "fr": [("BR", "DF", "Brasília"), ("DE", "BY", "Bavière"),  ("GB", "ENG", "Angleterre"),       ("GB", "SCT", "Écosse"),   ("IT", "VE", "Venise"),  ("MX", "CMX", "Mexico")],
+}
+
+
+@pytest.mark.parametrize("lang", ["pt", "en", "es", "de", "fr"])
+def test_country_names_translated(page_factory, live_server, lang):
+    """_localizeCountryByIso2(iso2) must return the country name in the active language.
+
+    Catches the regression where BR was missing from _ISO2_TO_DATA_COUNTRY and
+    fell through to web/locations/BR.json's English "Brazil".
+    """
+    page = page_factory(lang)
+    cases = _COUNTRY_EXPECTATIONS[lang]
+    failures = []
+    for iso2, expected in cases.items():
+        actual = page.evaluate(f"_localizeCountryByIso2({iso2!r})")
+        if actual != expected:
+            failures.append(f"[{lang}] _localizeCountryByIso2({iso2!r}) = {actual!r}, expected {expected!r}")
+    assert not failures, "\n".join(failures)
+
+
+@pytest.mark.parametrize("lang", ["pt", "en", "es", "de", "fr"])
+def test_subdivision_names_translated(page_factory, live_server, lang):
+    """_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.
+
+    Covers Brazil (DF -> Brasília), Germany (BY -> Bayern/Baviera/...), UK
+    (ENG -> England/Inglaterra/...), Italy (VE -> Venezia/Venice/...) and
+    Mexico (CMX -> Mexico City/Cidade do México/...).
+    """
+    page = page_factory(lang)
+    cases = _SUBDIV_EXPECTATIONS[lang]
+    failures = []
+    for pais, code, expected in cases:
+        # Pass the code itself as fallback so a failure is unambiguous.
+        actual = page.evaluate(
+            f"_localizeSubdiv({pais!r}, {code!r}, {code!r})"
+        )
+        if actual != expected:
+            failures.append(
+                f"[{lang}] _localizeSubdiv({pais!r}, {code!r}) = {actual!r}, expected {expected!r}"
+            )
+    assert not failures, "\n".join(failures)
+
+
+@pytest.mark.parametrize("lang,wrong_country", [
+    ("pt", "Brazil"),
+    ("es", "Brazil"),
+    ("de", "Brazil"),
+    ("fr", "Brazil"),
+])
+def test_no_english_brazil_on_localized_pages(page_factory, live_server, lang, wrong_country):
+    """Non-English pages must not show the English country name 'Brazil' in any card location."""
+    page = page_factory(lang)
+    page.evaluate(
+        "() => document.querySelectorAll('.month-cards--collapsed').forEach("
+        "el => el.classList.remove('month-cards--collapsed'))"
+    )
+    page.wait_for_timeout(300)
+    leaked = page.evaluate(
+        "(wrong) => {"
+        " const out = [];"
+        " for (const el of document.querySelectorAll('.card-location')) {"
+        "   const t = el.textContent || '';"
+        "   if (t.includes(wrong)) out.push(t);"
+        " }"
+        " return out.slice(0, 5);"
+        "}",
+        wrong_country,
+    )
+    assert not leaked, (
+        f"[{lang}] {len(leaked)} card-location elements still contain English '{wrong_country}': {leaked}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Internal helper
 # ---------------------------------------------------------------------------
 

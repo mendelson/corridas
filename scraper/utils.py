@@ -123,7 +123,15 @@ _BR_STATES = {
 def normalize_titulo(raw: str | None) -> str:
     if not raw:
         return ""
-    text = html.unescape(raw.strip())
+    # Iteratively unescape: some sources (correrbrasilia.com.br JSON-LD) emit
+    # double-encoded entities like "&amp;amp;". A single html.unescape leaves
+    # "&amp;" intact and the .title() below would mangle it into "&Amp;".
+    text = raw.strip()
+    for _ in range(3):
+        new = html.unescape(text)
+        if new == text:
+            break
+        text = new
     # Remove Symbol-Other (emojis) but keep letters, digits, punctuation
     text = "".join(c for c in text if not unicodedata.category(c).startswith("So"))
     text = re.sub(r"\s+", " ", text).strip()

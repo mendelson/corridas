@@ -2,6 +2,7 @@ from . import (
     correr_brasilia,
     bora_correr,
     brasil_que_corre,
+    portal_das_corridas,
     central_da_corrida,
     minhas_inscricoes,
     corridas_brasil,

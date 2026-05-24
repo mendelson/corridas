@@ -38,6 +38,7 @@ from .sources import (
     correr_brasilia,
     bora_correr,
     brasil_que_corre,
+    portal_das_corridas,
     sesc_df,
     runner_brasil,
     brasil_corrida,
@@ -92,6 +93,7 @@ SOURCES = [
     minhas_inscricoes,
     runner_brasil,
     brasil_corrida,
+    portal_das_corridas,
     # DF-specific sources
     correr_brasilia,
     bora_correr,

@@ -366,6 +366,37 @@ Use the widget `id` attribute (a UUID assigned by the page builder) for
 stable IDs (`bqc_<uuid>`). Each event links back to the listing page since
 no per-event URL exists.
 
+### portal_das_corridas.py — Wix Events site (restored 2026-05-24)
+
+`portaldascorridas.com.br` is a **Wix.com Website Builder** site that doubles
+as a Brazilian race registration platform — Wix Events manages the inscriptions
+("O Portal das Corridas não é responsável pela organização do evento. Apenas
+gerenciamos o processo de inscrição online."). The old scraper used Playwright
+with generic CSS selectors that never matched the Wix DOM — same false-positive
+"broken" pattern as bora_correr / brasil_que_corre.
+
+Architecture:
+- **Discovery**: `event-pages-sitemap.xml` (Wix-generated) lists every event
+  detail page with a `<lastmod>` date — ~570 entries spanning multiple years.
+- **Detail pages**: each `/event-details/<slug>` is a Wix SPA with all event
+  data embedded in the server-rendered HTML — no public REST API needed.
+
+Extraction sources per page (use in this priority order):
+1. **JSON-LD `@type: "Event"`** block — single `<script type="application/ld+json">`
+   element with `name`, `startDate` (already in local TZ — race date), `image.url`.
+2. **Wix `fullAddress` blob** — richer than the JSON-LD freeform `location.address`;
+   gives `country` (ISO-2), `subdivision` (state code), `city`.
+3. **`"label":"Percurso","options":[...]` block** — the registration form's
+   distance field. Source of truth for distances; the page's free-text prose
+   sometimes contradicts it. Only numeric `Xkm` options become `Distancia.km`
+   (drop `KIDS` / `CAMINHADA` etc.).
+4. **`"eventId":"<uuid>"`** for the stable ID (`portaldc_<uuid>`).
+
+Cost discipline: the sitemap has ~570 events but many are years old. The
+scraper filters by `lastmod >= today - 270 days` and caps the per-run fetch
+list at 120 entries to keep proxy budget bounded. The pipeline's date filter
+then drops any past events that slipped through the lastmod window.
+
 ### corridas_br — DO NOT REACTIVATE
 
 `corridasbr.com.br/df/calendario.asp` is **permanently dropped, not because

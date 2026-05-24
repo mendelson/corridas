@@ -1011,9 +1011,9 @@ function renderCards() {
   let firstFutureMonthFound = false;
   for (const [monthKey, corridas] of byMonth) {
     const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
-    const expand = hasFuture && !firstFutureMonthFound;
-    if (expand) firstFutureMonthFound = true;
     const hasNew = corridas.some(c => c.first_seen_at && c.first_seen_at >= threeDaysAgo);
+    const expand = hasFuture && (!firstFutureMonthFound || hasNew);
+    if (hasFuture) firstFutureMonthFound = true;
     const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNew);
     for (const corrida of corridas) {
       cardsContainer.appendChild(buildCard(corrida, today, threeDaysAgo));

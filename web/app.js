@@ -401,7 +401,7 @@ async function loadData() {
   resultCount.textContent = T.loading;
   if (btnRefresh) btnRefresh.classList.add('spinning');
   try {
-    const res = await fetch('/corridas.json');
+    const res = await fetch('/corridas.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
     allCorridas = json.corridas || json;

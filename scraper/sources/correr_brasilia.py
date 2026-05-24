@@ -88,7 +88,7 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     localizacao = f"{city}, {estado}"
 
     desc = ev.get("description") or ""
-    distancias = _extract_distances(desc + " " + titulo)
+    distancias = _extract_distances(titulo, desc)
 
     return Corrida(
         id=stable_id,
@@ -125,15 +125,34 @@ def _parse_start_date(raw: str) -> tuple[str, str | None]:
     return f"{year}-{int(month):02d}-{int(day):02d}", time_part
 
 
-def _extract_distances(text: str) -> list[Distancia]:
-    seen: set[float] = set()
-    result = []
+def _extract_distances(titulo: str, desc: str = "") -> list[Distancia]:
+    from_title = _parse_km_values(titulo, min_km=1.0)
+    if from_title:
+        return _to_distancias(from_title)
+    # Description is noisy (pace, venue proximity, etc.) — use a higher floor
+    # and only fall back when the title has no distances at all.
+    from_desc = _parse_km_values(desc, min_km=3.0)
+    return _to_distancias(from_desc)
+
+
+def _parse_km_values(text: str, min_km: float) -> list[float]:
+    seen: list[float] = []
     for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", text):
         try:
             km = float(m.group(1).replace(",", "."))
         except ValueError:
             continue
-        if km not in seen and 1 <= km <= 200:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    return sorted(result, key=lambda d: float(d.km))
+        if km < min_km or km > 200:
+            continue
+        # Near-dedup: skip if within 0.5 km of an already-seen value
+        if any(abs(km - s) < 0.5 for s in seen):
+            continue
+        seen.append(km)
+    return seen
+
+
+def _to_distancias(values: list[float]) -> list[Distancia]:
+    return sorted(
+        [Distancia(km=km, data=None, horario=None) for km in values],
+        key=lambda d: float(d.km),
+    )

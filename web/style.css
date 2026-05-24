@@ -549,7 +549,14 @@ input { font-family: inherit; }
   border-radius: var(--radius-sm);
   cursor: pointer;
   user-select: none;
-  transition: background 0.15s;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.month-section--open .month-separator {
+  position: sticky;
+  top: calc(var(--header-h) + var(--filters-h, 0px));
+  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .month-separator:hover {

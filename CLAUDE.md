@@ -410,3 +410,14 @@ reactivation.
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.
+
+## Pull Request workflow
+
+**All changes must go through a PR before landing on main.** Never push directly to main except for hotfixes explicitly approved by the user.
+
+1. **Create a feature branch** — `git checkout -b feature/<short-description>` from main.
+2. **Commit and push** to the feature branch.
+3. **Open a PR** using `mcp__github__create_pull_request` targeting `main`. Include a one-paragraph description of what changed and why.
+4. **Validate** — wait for CI (Test Site, Test Sources as applicable) to pass. **A PR must never be merged while any required check is still failing or pending.** Poll `mcp__github__pull_request_read` with `method: get_check_runs` until every check shows `conclusion: success`. For UI changes, also run the `/verify` skill to confirm rendered behaviour before merging.
+5. **Merge** — once validated, merge via `mcp__github__merge_pull_request`. Delete the branch after merge.
+6. **Scrape trigger** — merging any PR to main automatically triggers `scrape.yml` (via the `pull_request: types: [closed]` event), so the live data is refreshed immediately after code lands.

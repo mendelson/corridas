@@ -1124,6 +1124,7 @@ function buildPastSection(corridas, today, threeDaysAgo) {
     cardsContainer.classList.remove('month-cards--collapsed');
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
+    section.classList.add('month-section--open');
     window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
   });
 
@@ -1138,7 +1139,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
   const novoBadge  = hasNew ? `<span class="badge-novo">${T.badgeNovo}</span>` : '';
 
   const section = document.createElement('div');
-  section.className = 'month-section';
+  section.className = expanded ? 'month-section month-section--open' : 'month-section';
 
   const btn = document.createElement('button');
   btn.className = 'month-separator';
@@ -1166,6 +1167,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
     cardsContainer.classList.remove('month-cards--collapsed');
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
+    section.classList.add('month-section--open');
     window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
   });
 
@@ -1266,6 +1268,7 @@ function _closeMonthSection(btn, container) {
   container.classList.add('month-cards--collapsed');
   btn.setAttribute('aria-expanded', 'false');
   btn.querySelector('.month-chevron').textContent = '▸';
+  btn.parentElement.classList.remove('month-section--open');
 }
 
 function closeAllOtherMonths(exceptSection) {
@@ -1598,6 +1601,16 @@ document.addEventListener('DOMContentLoaded', () => {
   btnClear.setAttribute('aria-label',       T.clearFiltersAriaLabel);
   btnClear.textContent      = T.clearFilters;
   btnClearEmpty.textContent = T.clearFilters;
+
+  // Track filters bar height so sticky month headers stop below it
+  const _filtersBar = document.querySelector('.filters-bar');
+  if (_filtersBar) {
+    const _updateFiltersH = () => {
+      document.documentElement.style.setProperty('--filters-h', _filtersBar.offsetHeight + 'px');
+    };
+    new ResizeObserver(_updateFiltersH).observe(_filtersBar);
+    _updateFiltersH();
+  }
   document.querySelector('#emptyState p').textContent = T.noResults;
 
   // Periodo options

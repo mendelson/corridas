@@ -556,7 +556,12 @@ input { font-family: inherit; }
   position: sticky;
   top: calc(var(--header-h) + var(--filters-h, 0px));
   z-index: 50;
+  background: var(--color-surface-2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.month-section--open .month-separator.month-separator--past {
+  background: var(--color-surface);
 }
 
 .month-separator:hover {

@@ -34,7 +34,7 @@ Atualizado automaticamente a cada 4 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-24 02:56 | ❌ 0 eventos | 2026-05-24 02:42 |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-24 03:03 | ✅ | 2026-05-24 03:03 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-22 23:31 | ✅ | 2026-05-22 23:31 |
 
 ### Fontes brasileiras — eventos específicos

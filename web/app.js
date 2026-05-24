@@ -489,13 +489,13 @@ const _CITY_COUNTRY = {
 };
 
 const _ISO2_TO_DATA_COUNTRY = {
-  AR: 'Argentina',  PT: 'Portugal',   IT: 'Itália',     DE: 'Alemanha',  FR: 'França',
-  GB: 'Reino Unido', US: 'EUA',       JP: 'Japão',      AU: 'Austrália', ES: 'Espanha',
-  CL: 'Chile',      CO: 'Colômbia',   MX: 'México',     PE: 'Peru',      NL: 'Países Baixos',
-  AT: 'Áustria',    CH: 'Suíça',      SE: 'Suécia',     NO: 'Noruega',   DK: 'Dinamarca',
-  FI: 'Finlândia',  PL: 'Polônia',    CZ: 'República Tcheca', ZA: 'África do Sul',
-  KE: 'Quênia',     ET: 'Etiópia',    CN: 'China',      KR: 'Coreia do Sul', CA: 'Canadá',
-  NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
+  BR: 'Brasil',     AR: 'Argentina',  PT: 'Portugal',   IT: 'Itália',     DE: 'Alemanha',
+  FR: 'França',     GB: 'Reino Unido', US: 'EUA',       JP: 'Japão',      AU: 'Austrália',
+  ES: 'Espanha',    CL: 'Chile',      CO: 'Colômbia',   MX: 'México',     PE: 'Peru',
+  NL: 'Países Baixos', AT: 'Áustria', CH: 'Suíça',      SE: 'Suécia',     NO: 'Noruega',
+  DK: 'Dinamarca',  FI: 'Finlândia',  PL: 'Polônia',    CZ: 'República Tcheca',
+  ZA: 'África do Sul', KE: 'Quênia',  ET: 'Etiópia',    CN: 'China',      KR: 'Coreia do Sul',
+  CA: 'Canadá',     NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
   IE: 'Irlanda',    GR: 'Grécia',     AD: 'Andorra',    BM: 'Bermuda',
   BO: 'Bolívia',    PH: 'Filipinas',  CG: 'República do Congo', BA: 'Bósnia e Herzegovina',
 };

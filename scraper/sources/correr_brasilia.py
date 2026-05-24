@@ -125,6 +125,8 @@ def _parse_start_date(raw: str) -> tuple[str, str | None]:
     return f"{year}-{int(month):02d}-{int(day):02d}", time_part
 
 
+# Canonical distance windows: snap noisy values from descriptions
+# to the exact standard distance (matches ativo.py / mks_esportes.py).
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
 

@@ -1369,7 +1369,7 @@ function buildExpanded(card, c) {
     h.textContent = T.sourcesHeader;
     expFontes.appendChild(h);
 
-    for (const fonte of c.fontes) {
+    for (const fonte of [...c.fontes].sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))) {
       const div = document.createElement('div');
       div.className = 'fonte-item';
       const link = (fonte.links_inscricao && fonte.links_inscricao.length > 0)

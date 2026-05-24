@@ -122,6 +122,20 @@ The correct process before removing a source:
 3. **Only drop a source** once you have unambiguous confirmation (explicit HTTP blocks across all proxy layers, or Cloudflare challenge HTML confirmed in logs) that the block is at datacenter-IP level and no bypass exists. Document the reason in the README commit message and the source-status.json.
 4. When dropping: remove the `.py` file, remove from `__init__.py`, `main.py` SOURCES list, `.github/workflows/test-sources.yml` dropdown, the README table row, and `data/source-status.json`.
 
+### Recurring failure pattern: "generic CSS selectors never matched"
+
+Several sources have been dropped in the past with notes like *"Seletores CSS
+genéricos nunca casaram com o HTML real do site"* (`bora_correr`,
+`brasil_que_corre`, `portal_das_corridas`) or *"0 eventos retornados"* with
+no other diagnosis. **This is almost always a scraper bug, not a blocked
+site.** The old scraper template tried `article` / `.event` / `.race` /
+`.post` / `.card` in order; `article` matches every WordPress post and stops
+the loop before reaching the real container — but the site itself is
+typically reachable and well-structured (JSON-LD, custom table, REST API,
+sitemap…). Always probe the URL and inspect the real DOM before declaring
+inviability. The `correr_brasilia` (JSON-LD) and `bora_correr` (custom HTML
+table) revivals both followed this exact pattern.
+
 ## Exploring and validating new sources
 
 **Never write a scraper before probing the target.** The correct flow is:
@@ -310,6 +324,25 @@ Do not re-investigate TF Sports mobile auth — the path is closed.
 102824+) that `tf_sports.py` (which uses the pt-BR Bearer token from the Next.js
 bundle) misses. The two scrapers are complementary; keep both active.
 Flying Run is not in Strapi and will never appear via `tf_sports_app.py`.
+
+### bora_correr.py — custom HTML table, not WordPress (restored 2026-05-24)
+
+`coelhodeprograma.com.br/boracorrer/` is a **custom (non-WordPress) DF running
+calendar**. No `/wp-json/`, no RSS, no JSON-LD — but the server-rendered HTML
+contains a `<table id="tabDados">` with one row per event. Each `<tr>` has
+three `<td>`s: date (`DD/MM/YYYY`), `<a href="EVENT_URL">Title<br/>(distance
+hints like "10/5km")</a>`, and an action cell with a UUID accessible via
+`obterDadosReport('UUID', …)`.
+
+**Why it was dropped**: the original scraper used the same generic-selector
+pattern as the old `correr_brasilia.py` (`.event`, `.race`, `.card`,
+`article`, `.post`, `.item`) and none of those match this custom DOM. It was
+declared "broken" without checking the real structure. The site was always
+reachable.
+
+Use the UUID for stable IDs (`boracorrer_<uuid>`). Distances come from the
+parenthesized hint in cell 2 — apply `_CANONICAL` snapping (21.097 / 42.195)
+and 0.5km near-dedup, same as `correr_brasilia.py`.
 
 ## Autonomy: CI and iteration
 

@@ -1,9 +1,11 @@
-# Corridas BR
+# Corridas — Calendário Global de Corridas de Rua
 
-Agrega e exibe corridas de rua — eventos brasileiros (todas as regiões), mexicanos,
-norte-americanos, britânicos e as principais maratonas internacionais.
+Agregador multilíngue (pt/en/es/de/fr) de corridas de rua em todo o mundo.
+Cobre eventos brasileiros (todas as regiões), latino-americanos, norte-americanos,
+britânicos, europeus continentais (Alemanha, França, Itália, Espanha, Holanda etc.),
+asiáticos (Tóquio) e oceânicos (Sydney), incluindo todas as World Marathon Majors.
 Eventos encontrados em múltiplas fontes são consolidados em um único registro.
-Atualizado automaticamente a cada 4 horas via GitHub Actions.
+Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 **App:** [mendelson.github.io/corridas](https://mendelson.github.io/corridas) ·
 **Stack:** Python (httpx + BeautifulSoup4 + Playwright) · JSON · HTML/CSS/JS puro · GitHub Pages
@@ -121,7 +123,6 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 
 | Fonte | Em uso | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Corridas BR<!--corridas_br--> | ❌ | `corridasbr.com.br/df/calendario.asp` | Agrega eventos de outras fontes sem links de inscrição reais. Retorna 403 no CI. | 2026-05-22 19:17 | ❌ 403 no CI | — |
 | Portal das Corridas<!--portal_das_corridas--> | ❌ | `portaldascorridas.com.br` | Playwright retorna 0 — SPA com seletores genéricos que não casam com o DOM real. | 2026-05-11 15:57 | ❌ | — |
 | Sympla | ❌ | `sympla.com.br/busca?q=corrida` | URL de busca retorna HTTP 404; Playwright redireciona para página de login. | 2026-05-11 15:57 | ❌ | — |
 
@@ -129,6 +130,7 @@ Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não con
 
 | Fonte | URL | Motivo | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- |
+| Corridas BR<!--corridas_br--> | `corridasbr.com.br/df/calendario.asp` | **NÃO REATIVAR.** Agregador de baixa qualidade — informações frequentemente erradas, sem links de inscrição reais (apenas redireciona para outras fontes). Mesmo se voltasse a responder com 200, os dados são pouco confiáveis. Permanentemente removido. | 2026-05-22 19:17 | ❌ | — |
 | Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. | — | — | — |
 | Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. | — | — | — |
 | FMAA<!--fmaa--> | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | (1) WAF: 403 em todos os domínios FMAA (`fmaa.apps-mexico.com`, `fmaa.mx`); domínios secundários (`fmaa.com.mx`, `fmaa.planin.mx`) fora do ar. (2) Escopo incompatível: federação de atletismo competitivo (campeonatos nacionais sub-18/sub-20, pista, cross country), não corridas de participação em massa. Corridas mexicanas de público geral cobertas pelo Asdeporte. | 2026-05-21 20:50 | ❌ | — |

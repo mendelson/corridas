@@ -366,6 +366,16 @@ Use the widget `id` attribute (a UUID assigned by the page builder) for
 stable IDs (`bqc_<uuid>`). Each event links back to the listing page since
 no per-event URL exists.
 
+### corridas_br — DO NOT REACTIVATE
+
+`corridasbr.com.br/df/calendario.asp` is **permanently dropped, not because
+of WAF or scraper bugs**. The site itself is a low-quality directory whose
+event data is **frequently wrong** (wrong dates, wrong distances, wrong
+links) and never carries real registration URLs — every "register" link
+just redirects to other aggregators we already scrape directly. Even if it
+starts returning 200 again, do not re-add it. The user explicitly forbids
+reactivation.
+
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.

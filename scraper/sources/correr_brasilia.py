@@ -53,13 +53,13 @@ def scrape() -> list[Corrida]:
 
 
 def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
-    titulo = normalize_titulo(ev.get("name") or "")
-    if not titulo or len(titulo) < 3:
+    titulo_raw = normalize_titulo(ev.get("name") or "")
+    if not titulo_raw or len(titulo_raw) < 3:
         return None
     # Strip trailing distance parentheticals like "(5Km E 10Km)" — correrbrasilia.com.br
     # appends distances to event names when multi-day events are listed as separate entries.
     # The structured `distancias` field already captures this information.
-    titulo = re.sub(r'\s*\([^)]*\d+\s*[kK][mM]?[^)]*\)\s*$', '', titulo).strip()
+    titulo = re.sub(r'\s*\([^)]*\d+\s*[kK][mM]?[^)]*\)\s*$', '', titulo_raw).strip()
 
     date_str, horario = _parse_start_date(ev.get("startDate") or "")
     if date_str and date_str < today:
@@ -92,7 +92,7 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     localizacao = f"{city}, {estado}"
 
     desc = ev.get("description") or ""
-    distancias = _extract_distances(desc, titulo)
+    distancias = _extract_distances(desc, titulo_raw)
 
     return Corrida(
         id=stable_id,
@@ -144,7 +144,11 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     """
     values = _parse_km_values(desc, min_km=1.0)
     if not values:
-        values = _parse_km_values(titulo, min_km=1.0)
+        # Fall back to the parenthetical distance hint in the title only —
+        # avoids false positives from brand names like "LIVE!42K".
+        paren = re.search(r'\([^)]*\d+\s*[kK][mM]?[^)]*\)', titulo)
+        if paren:
+            values = _parse_km_values(paren.group(0), min_km=1.0)
     # Cap at 8 distances — more than that suggests the description contains non-race
     # km references (course route markers, distance-to-venue text, etc.).
     values = values[:8]

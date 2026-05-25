@@ -837,7 +837,8 @@ def main() -> None:
         raw = [c for c in raw if _is_valid(c)]
         merged = merge_rodada(raw)
         final = _selective_patch(merged, estado_anterior)
-        print(f"[main] {len(final)} corridas após patch seletivo")
+        final = merge_rodada(final)  # deduplicate after patch (prevents duplicates when new sources overlap existing)
+        print(f"[main] {len(final)} corridas após patch seletivo + dedup")
     else:
         raw = [c for c in raw if _is_valid(c)]
         print(f"[main] {len(raw)} registros após validação")

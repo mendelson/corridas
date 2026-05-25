@@ -81,6 +81,7 @@ _ISO3_TO_ISO2: dict[str, str] = {
     "ALB": "AL", "PRT": "PT", "RSA": "ZA", "ECU": "EC", "VEN": "VE",
     "URY": "UY", "CRI": "CR", "SLO": "SI", "SVK": "SK", "ROU": "RO",
     "BLR": "BY", "UKR": "UA", "SRB": "RS", "CRO": "HR", "SVN": "SI",
+    "TPE": "TW",  # Chinese Taipei (Taiwan) IOC code
 }
 
 
@@ -317,6 +318,14 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
     country_pt = _ISO_TO_PT.get(pais, pais)
     localizacao = ", ".join(p for p in (city, country_pt) if p) or country_pt or pais
 
+    # Resolve estado via geo cache (uses country-qualified key to avoid cross-country
+    # collisions, e.g. "Brighton" in GB vs AU)
+    estado = ""
+    if city:
+        _r_pais, _r_estado = _geo.resolve(city, "", pais)
+        if _r_pais == pais and _r_estado:
+            estado = _r_estado
+
     comp_id = comp.get("id") or slugify(titulo)
     year    = data_evento[:4]
     # Build URL from slugified name + id (WA URL pattern)
@@ -334,7 +343,7 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
         horario=None,
         localizacao=localizacao,
         cidade=localizacao,
-        estado="",
+        estado=estado,
         pais=pais,
         distancias=distancias,
         imagem_url=None,

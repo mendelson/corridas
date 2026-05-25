@@ -271,13 +271,17 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         combined = (addr + " " + titulo).lower()
         if any(kw in combined for kw in _INTL_CITY_KW):
             addr_lower = (addr or "").lower()
+            # Match keyword against combined string (addr + titulo) to catch
+            # events where the address is empty but the title encodes the location
+            combined_lower = combined
             for kw, country, iso2 in _CITY_TO_COUNTRY:
-                if kw in addr_lower:
+                if kw in addr_lower or (not addr_lower.strip() and kw in combined_lower):
                     if "," not in addr:
-                        addr = f"{addr}, {country}"
+                        addr = f"{kw}, {country}" if not addr_lower.strip() else f"{addr}, {country}"
+                    cidade = cidade or kw.title()
                     pais_iso2 = iso2
                     break
-            _r_pais, _r_estado = _geo.resolve(addr_lower, "", pais_iso2)
+            _r_pais, _r_estado = _geo.resolve(addr_lower or combined_lower, "", pais_iso2)
             estado = _r_estado if _r_pais == pais_iso2 else ""
         else:
             _pais_geo, _estado_geo = _geo.resolve(addr, "", "BR")

@@ -599,6 +599,7 @@ def _fetch_all_pages(
 def _events_to_corridas(
     events: list[dict], now: str, id_prefix: str, link_prefix: str,
     city_from_title: bool = True,
+    require_location: bool = False,
 ) -> list[Corrida]:
     corridas: list[Corrida] = []
     for event in events:
@@ -642,6 +643,11 @@ def _events_to_corridas(
 
             parts = [p for p in [city, state] if p and p != "??"]
             localizacao = ", ".join(parts)
+
+            # Skip events where location is mandatory but could not be determined
+            if require_location and not localizacao:
+                print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem localização determinável)")
+                continue
 
             distancias = _get_distances(attrs, slug)
             imagem_url = _extract_image(attrs)
@@ -735,7 +741,7 @@ def scrape() -> list[Corrida]:
             area_attrs = area_data.get("attributes") or {} if area_data else {}
             area_name = area_attrs.get("name") or area_attrs.get("slug") or "?"
             print(f"[{SOURCE_NAME}] filtrado(exp): '{attrs.get('title', '?')}' area={area_name!r}")
-    corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
+    corridas += _events_to_corridas(exp_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False, require_location=True)
 
     experiences_nd = _fetch_all_pages(_EXPERIENCES_NO_DATE, api_headers, token, "experiences(sem data)")
     print(f"[{SOURCE_NAME}] experiences(sem data): {len(experiences_nd)} eventos brutos")
@@ -750,7 +756,7 @@ def scrape() -> list[Corrida]:
             area_attrs = area_data.get("attributes") or {} if area_data else {}
             area_name = area_attrs.get("name") or area_attrs.get("slug") or "?"
             print(f"[{SOURCE_NAME}] filtrado(exp-nd): '{attrs.get('title', '?')}' area={area_name!r}")
-    corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
+    corridas += _events_to_corridas(exp_nd_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False, require_location=True)
 
     experiences_recent = _fetch_all_pages(_EXPERIENCES_RECENT, api_headers, token, "experiences(recentes)", max_pages=1)
     print(f"[{SOURCE_NAME}] experiences(recentes): {len(experiences_recent)} eventos brutos")
@@ -765,7 +771,7 @@ def scrape() -> list[Corrida]:
             area_attrs = area_data.get("attributes") or {} if area_data else {}
             area_name = area_attrs.get("name") or area_attrs.get("slug") or "?"
             print(f"[{SOURCE_NAME}] filtrado(exp-rec): '{attrs.get('title', '?')}' area={area_name!r}")
-    corridas += _events_to_corridas(exp_rec_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False)
+    corridas += _events_to_corridas(exp_rec_running, now, "tfexp_", f"{BASE}/tf-experience", city_from_title=False, require_location=True)
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     # Deduplicate by id — RECENT catch-all endpoints overlap with dated ones

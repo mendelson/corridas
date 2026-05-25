@@ -1,0 +1,87 @@
+name: Re-scrape Sources
+
+# Selective rescrape for validating scraper/geo-cache fixes within a PR.
+#
+# Usage:
+#   1. Pick the PR branch in the "Run workflow" dropdown.
+#   2. Provide a comma-separated list of source keys to re-scrape
+#      (e.g. "worldathletics,runsignup") or the special value "geo" to only
+#      re-run location resolution without re-scraping any source.
+#   3. The workflow updates corridas.json, runs the data-quality tests, commits
+#      and pushes back to the branch only when they pass. If tests fail the run
+#      is marked as failed and nothing is committed.
+#
+# Source keys match the test-sources.yml dropdown values:
+#   runsignup, world_athletics, raceroster, ticket_sports, tf_sports,
+#   correr_brasilia, bora_correr, brasil_que_corre, portal_das_corridas,
+#   majors/london, majors/berlin, ... (module path without .py)
+#
+# Special value:
+#   geo  — skip all scrapers, just re-run _resolve_missing_locations() using
+#           the updated geo_cache.json already in the branch.
+
+on:
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: >
+          Comma-separated source keys (e.g. "world_athletics,runsignup") or
+          "geo" to only re-resolve locations from the current geo_cache.
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  rescrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+          playwright install chromium --with-deps
+
+      - name: Run selective scraper
+        env:
+          SCRAPER_SOURCES: ${{ github.event.inputs.sources }}
+          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+        run: python -m scraper.main 2>&1 | tee rescrape.log
+
+      - name: Copy to web
+        run: cp data/corridas.json web/corridas.json
+
+      - name: Run data-quality tests
+        run: |
+          python -m pytest tests/test_site.py \
+            -k "test_all_events_have_required_fields or test_no_event_has_too_many_fontes or test_no_inscription_link_shared_across_many_events or test_no_html_entities_in_event_fields" \
+            -v --tb=short
+
+      - name: Commit and push
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add data/corridas.json web/corridas.json
+          git diff --staged --quiet || git commit -m "fix(data): re-scrape [${{ github.event.inputs.sources }}] — testes passando [skip ci]"
+          git pull --rebase -X ours origin ${{ github.ref_name }}
+          git push origin ${{ github.ref_name }}
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rescrape-logs
+          path: |
+            rescrape.log
+          retention-days: 7

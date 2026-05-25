@@ -737,6 +737,21 @@ def test_all_events_have_required_fields():
         if not c.get("horario"):
             missing_hora.append(title)
 
+    def _source_hint(items: list) -> str:
+        """Extract unique source prefixes from event IDs to hint which sources to re-scrape."""
+        from collections import Counter
+        prefixes: Counter = Counter()
+        for item in items:
+            cid = item[0] if isinstance(item, tuple) else item
+            # Extract prefix: everything before the first underscore + digit
+            import re as _re
+            m = _re.match(r"^([a-z][a-z_]*?)(?:_\d|$)", str(cid))
+            if m:
+                prefixes[m.group(1)] += 1
+        if not prefixes:
+            return ""
+        return "  → re-scrape: " + ",".join(f"{k}({v})" for k, v in prefixes.most_common(5))
+
     n = len(corridas)
     if missing_hora:
         pct = 100 * len(missing_hora) / n
@@ -753,14 +768,15 @@ def test_all_events_have_required_fields():
     )
     assert not bad_pais, (
         f"{len(bad_pais)}/{n} events with missing or unknown pais (no locations JSON). "
-        f"First 5: {bad_pais[:5]}"
+        f"First 5: {bad_pais[:5]}\n{_source_hint(bad_pais)}"
     )
     assert not missing_estado, (
-        f"{len(missing_estado)}/{n} events with empty estado. First 5: {missing_estado[:5]}"
+        f"{len(missing_estado)}/{n} events with empty estado. First 5: {missing_estado[:5]}\n"
+        f"{_source_hint(missing_estado)}"
     )
     assert not bad_estado, (
         f"{len(bad_estado)}/{n} events with estado not in locations JSON. "
-        f"First 5: {bad_estado[:5]}"
+        f"First 5: {bad_estado[:5]}\n{_source_hint(bad_estado)}"
     )
     assert not missing_link, (
         f"{len(missing_link)}/{n} events missing all links. First 5: {missing_link[:5]}"

@@ -29,7 +29,6 @@ jobs:
 
       - name: Run site tests
         run: python -m pytest tests/ -v --tb=short --json-report --json-report-file=test-results.json
-        continue-on-error: true
 
       - name: Update test log (main only)
         if: github.ref == 'refs/heads/main'

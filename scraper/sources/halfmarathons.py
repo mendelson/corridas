@@ -168,6 +168,8 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     city: str = meta.get("city") or ""
     if not estado and city:
         _, estado = _geo.resolve(city, "", pais)
+    if not city and not estado:
+        return None  # no location data — can't determine required estado
     cidade = f"{city}, {country}" if city else country
     localizacao = cidade
 

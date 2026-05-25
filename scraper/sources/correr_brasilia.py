@@ -92,21 +92,7 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     localizacao = f"{city}, {estado}"
 
     desc = ev.get("description") or ""
-    # Priority 0: distances explicitly encoded in the URL slug after the 4-digit year
-    # (e.g. ".../live42k-brasilia-2026-5km-e-10km/" → [5, 10]).
-    # More reliable than description text which may describe the event *series*
-    # rather than what is actually offered at this specific edition.
-    url_distances: list[float] = []
-    url_year_suffix = re.search(r"/\d{4}-([^/]+)/?$", url)
-    if url_year_suffix:
-        url_distances = _parse_km_values_from_list(url_year_suffix.group(1), min_km=1.0)
-    if url_distances:
-        distancias = sorted(
-            [Distancia(km=km, data=None, horario=None) for km in url_distances],
-            key=lambda d: float(d.km),
-        )
-    else:
-        distancias = _extract_distances(desc, titulo_raw)
+    distancias = _extract_distances(desc, titulo_raw)
 
     return Corrida(
         id=stable_id,
@@ -157,27 +143,33 @@ _DIST_LIST_RE = re.compile(
 
 
 def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
-    """Extract race distances from description (primary) with title as fallback.
+    """Extract race distances.
 
     Priority:
-      1. Distances in list form ("7km e 14km") — avoids venue/route references
-         like "3,4km de pista" that appear in isolation.
-      2. Any km mention in the description.
-      3. Parenthetical hint in the title (avoids brand names like "LIVE!42K").
+      1. Parenthetical hint in the title — the organiser explicitly appended
+         the distances offered at this specific edition, e.g. "(5Km E 10Km)".
+         This is more precise than description text, which may describe the
+         full event *series* rather than what is available here.
+      2. Grouped list in description ("7km e 14km") — avoids stray references
+         like "3,4km de pista".
+      3. Any km mention in description.
     """
-    # Priority 1: grouped list pattern
+    # Priority 1: explicit parenthetical in title, e.g. "Live!42K (5km e 10km)"
+    paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
+    if paren:
+        values = _parse_km_values(paren.group(0), min_km=1.0)
+        if values:
+            return sorted(
+                [Distancia(km=km, data=None, horario=None) for km in values[:8]],
+                key=lambda d: float(d.km),
+            )
+    # Priority 2: grouped list pattern in description
     values = _parse_km_values_from_list(desc, min_km=1.0)
     if not values:
-        # Priority 2: any km mention in description
+        # Priority 3: any km mention in description
         values = _parse_km_values(desc, min_km=1.0)
-    if not values:
-        # Priority 3: parenthetical hint in title only
-        paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
-        if paren:
-            values = _parse_km_values(paren.group(0), min_km=1.0)
-    values = values[:8]
     return sorted(
-        [Distancia(km=km, data=None, horario=None) for km in values],
+        [Distancia(km=km, data=None, horario=None) for km in values[:8]],
         key=lambda d: float(d.km),
     )
 

@@ -318,6 +318,9 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
         geo_city = city if state else ""
         _, geo_state = _geo.resolve(location_raw or titulo, geo_city, "BR")
         state = geo_state or ""
+    if not state:
+        print(f"[{SOURCE_NAME}] filtrado(sem UF): {titulo!r} location={location_raw!r}")
+        return None
     localizacao = ", ".join(p for p in [city, state] if p)
 
     distancias = _distances_from_attrs(attrs, titulo)

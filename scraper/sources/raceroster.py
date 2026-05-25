@@ -233,6 +233,9 @@ def _parse_event(ev: dict, today: str, end_date: str) -> "Corrida | None":
                 country_pt = _ISO_TO_PT.get(pais, pais)
             estado = _r_estado or ""
 
+    if not estado:
+        return None
+
     localizacao = ", ".join(p for p in (city, estado or country_pt) if p) or country_pt or pais
 
     link  = ev.get("url") or f"https://raceroster.com/events/{ev.get('eventId', '')}"

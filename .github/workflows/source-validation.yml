@@ -1,0 +1,100 @@
+name: Source Validation
+
+# Triggered automatically on PRs that add or modify scraper source files.
+# Runs the affected sources first (rescrape), commits the updated data, then
+# runs the full test suite — all in strict sequence.  Both jobs must pass
+# before the PR can be merged.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'scraper/sources/**'
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    if: "!github.event.pull_request.draft"
+    runs-on: ubuntu-latest
+    outputs:
+      sources: ${{ steps.detect.outputs.sources }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-test.txt
+          playwright install chromium --with-deps
+
+      - name: Detect changed sources
+        id: detect
+        run: |
+          CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+            -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+            | grep -v '__init__\.py' \
+            | sed 's|scraper/sources/||; s|\.py$||' \
+            | tr '\n' ',' | sed 's/,$//')
+          echo "Detected changed sources: $CHANGED"
+          echo "sources=$CHANGED" >> "$GITHUB_OUTPUT"
+
+      - name: Run selective scraper
+        env:
+          SCRAPER_SOURCES: ${{ steps.detect.outputs.sources }}
+          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
+          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+        run: python -m scraper.main 2>&1 | tee rescrape.log
+
+      - name: Copy to web
+        run: cp data/corridas.json web/corridas.json
+
+      - name: Commit updated data
+        run: |
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add data/corridas.json web/corridas.json
+          git diff --staged --quiet || git commit -m "ci: rescrape [${{ steps.detect.outputs.sources }}] [skip ci]"
+          git pull --rebase -X ours origin ${{ github.head_ref }}
+          git push origin ${{ github.head_ref }}
+
+      - name: Upload scrape log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scrape-log
+          path: rescrape.log
+          retention-days: 7
+
+  test:
+    needs: scrape
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies
+        run: pip install -r requirements-test.txt
+
+      - name: Install Playwright browsers
+        run: playwright install chromium --with-deps
+
+      - name: Run site tests
+        run: python -m pytest tests/ -v --tb=short

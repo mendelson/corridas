@@ -268,9 +268,33 @@ def _normalize_all_locations(corridas: list[Corrida]) -> None:
 
 
 def _resolve_missing_locations(corridas: list[Corrida]) -> None:
-    """Fill in empty estado (and incorrect pais) using geo.resolve() + cache."""
+    """Fill in empty or invalid estado (and incorrect pais) using geo.resolve() + cache."""
+    import json as _json
+    from pathlib import Path as _Path
+
+    _valid_states_map: dict[str, set | None] = {}
+
+    def _get_valid_states(pais: str) -> set | None:
+        if pais not in _valid_states_map:
+            try:
+                f = _Path(__file__).parent.parent / "web" / "locations" / f"{pais}.json"
+                if f.exists():
+                    data = _json.loads(f.read_text())
+                    _valid_states_map[pais] = {s["code"] for s in data.get("subdivisions", [])}
+                else:
+                    _valid_states_map[pais] = None
+            except Exception:
+                _valid_states_map[pais] = None
+        return _valid_states_map[pais]
+
     fixed = 0
     for c in corridas:
+        # Clear obviously invalid estado so _geo.resolve() can retry with correct data
+        if c.estado and c.estado not in ("??", "INT") and c.pais:
+            valid = _get_valid_states(c.pais)
+            if valid is not None and c.estado not in valid:
+                c.estado = ""
+
         needs_estado = not c.estado or c.estado in ("??", "INT")
         needs_pais   = not c.pais  or c.pais  in ("??", "", "INT")
         if c.estado == "INT":
@@ -288,6 +312,9 @@ def _resolve_missing_locations(corridas: list[Corrida]) -> None:
         if needs_estado and resolved_estado:
             c.estado = resolved_estado
             fixed += 1
+            # When geo resolves to a different country (wrong-country event), update pais too
+            if resolved_pais and resolved_pais != c.pais and resolved_pais not in ("??", ""):
+                c.pais = resolved_pais
     if fixed:
         print(f"[main] {fixed} estado(s) resolvido(s) pelo geo cache")
 
@@ -634,6 +661,10 @@ _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
 
 def _is_valid(c: Corrida) -> bool:
+    # Events without any location are unusable
+    if not c.localizacao:
+        return False
+
     titulo_lower = c.titulo.lower().strip()
 
     # Reject empty or very short titles

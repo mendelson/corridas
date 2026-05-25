@@ -498,6 +498,7 @@ const _ISO2_TO_DATA_COUNTRY = {
   CA: 'Canadá',     NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
   IE: 'Irlanda',    GR: 'Grécia',     AD: 'Andorra',    BM: 'Bermuda',
   BO: 'Bolívia',    PH: 'Filipinas',  CG: 'República do Congo', BA: 'Bósnia e Herzegovina',
+  HK: 'Hong Kong',
 };
 
 const _COUNTRY_NORMALIZE = {
@@ -553,6 +554,7 @@ const _COUNTRY_LABELS = {
   'Filipinas':             { en: 'Philippines',              es: 'Filipinas',            de: 'Philippinen',               fr: 'Philippines' },
   'República do Congo':    { en: 'Republic of the Congo',    es: 'República del Congo',  de: 'Republik Kongo',            fr: 'République du Congo' },
   'Bósnia e Herzegovina':  { en: 'Bosnia and Herzegovina',   es: 'Bosnia y Herzegovina', de: 'Bosnien und Herzegowina',   fr: 'Bosnie-Herzégovine' },
+  'Hong Kong':             { en: 'Hong Kong',                es: 'Hong Kong',            de: 'Hongkong',                  fr: 'Hong Kong' },
   'Índia':                 { en: 'India',                    es: 'India',                de: 'Indien',                    fr: 'Inde' },
   'Rússia':                { en: 'Russia',                   es: 'Rusia',                de: 'Russland',                  fr: 'Russie' },
 };
@@ -669,6 +671,11 @@ const _SUBDIV_LABELS = {
   BR: {
     // DF is the only state whose display name differs from the BR.json entry ("Distrito Federal")
     DF:  { pt: 'Brasília',    en: 'Brasília',     es: 'Brasília',   de: 'Brasília',    fr: 'Brasília' },
+  },
+  HK: {
+    HKI: { pt: 'Ilha de Hong Kong', en: 'Hong Kong Island', es: 'Isla de Hong Kong', de: 'Hongkong-Insel', fr: 'Île de Hong Kong' },
+    KLN: { pt: 'Kowloon',           en: 'Kowloon',          es: 'Kowloon',           de: 'Kowloon',        fr: 'Kowloon' },
+    NTE: { pt: 'Novos Territórios', en: 'New Territories',  es: 'Nuevos Territorios',de: 'Neue Territorien',fr: 'Nouveaux Territoires' },
   },
 };
 

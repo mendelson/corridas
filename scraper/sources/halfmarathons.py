@@ -197,7 +197,7 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         imagem_url=None,
         inscricoes_abertas=None,
         periodo_inscricao=None,
-        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=event_link, links_inscricao=[reg_link])],
+        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=event_link, links_inscricao=[event_link])],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,

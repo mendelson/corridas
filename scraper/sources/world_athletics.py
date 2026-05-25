@@ -67,7 +67,7 @@ _ISO_TO_PT: dict[str, str] = {
 
 # 3-letter IOC/ISO-alpha3 → 2-letter ISO-alpha2 (WA API uses 3-letter codes)
 _ISO3_TO_ISO2: dict[str, str] = {
-    "CHN": "CN", "ESP": "ES", "USA": "US", "BRA": "BR", "THA": "TH",
+    "CHN": "CN", "HKG": "HK", "ESP": "ES", "USA": "US", "BRA": "BR", "THA": "TH",
     "JPN": "JP", "ITA": "IT", "GER": "DE", "CZE": "CZ", "POR": "PT",
     "GBR": "GB", "FRA": "FR", "KEN": "KE", "ETH": "ET", "MAR": "MA",
     "AUS": "AU", "NZL": "NZ", "KOR": "KR", "NLD": "NL", "SWE": "SE",

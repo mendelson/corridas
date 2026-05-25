@@ -451,6 +451,10 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     state   = (addr.get("state") or "").strip().upper()
     country = (addr.get("country_code") or "").strip().upper() or "US"
 
+    # Skip virtual/online events with non-geographic city names
+    if city.lower() in ("anytime", "virtual", "online"):
+        return None
+
     # Skip virtual/military events that use US Armed Forces postal codes (AA, AE, AP)
     # or that use non-geographic city names
     _VIRTUAL_STATES = {"AA", "AE", "AP"}

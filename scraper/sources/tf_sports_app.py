@@ -335,7 +335,8 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
             imagem_url = img_a.get("url")
 
     sub_cta = ev.get("subscriptionCta") or {}
-    reg_url = sub_cta.get("url") if isinstance(sub_cta, dict) else None
+    _raw_reg = sub_cta.get("url") if isinstance(sub_cta, dict) else None
+    reg_url = _raw_reg if (_raw_reg and _raw_reg.startswith("http")) else None
     link_evento = f"{LISTING_URL}/{slug}" if slug else LISTING_URL
 
     return Corrida(

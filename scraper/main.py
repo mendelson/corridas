@@ -735,12 +735,15 @@ def _prioritize_failed(sources: list) -> tuple[list, list]:
 
 def run_all_scrapers(selective: frozenset[str] = frozenset()) -> list[Corrida]:
     active = SOURCES
-    if selective and "geo" not in selective:
-        active = [s for s in SOURCES if _source_status_key(s) in selective]
-        if not active:
-            print(f"[main] AVISO: SCRAPER_SOURCES={selective!r} não casou nenhuma fonte conhecida")
+    if selective:
+        if "geo" in selective:
+            active = []  # geo-only mode: skip all scrapers, just resolve locations
         else:
-            print(f"[main] modo seletivo: {[_source_status_key(s) for s in active]}")
+            active = [s for s in SOURCES if _source_status_key(s) in selective]
+            if not active:
+                print(f"[main] AVISO: SCRAPER_SOURCES={selective!r} não casou nenhuma fonte conhecida")
+            else:
+                print(f"[main] modo seletivo: {[_source_status_key(s) for s in active]}")
 
     if not active:
         return []

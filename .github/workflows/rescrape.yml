@@ -57,7 +57,9 @@ jobs:
           SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
           APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
-        run: python -m scraper.main 2>&1 | tee rescrape.log
+        run: |
+          set -o pipefail
+          python -m scraper.main 2>&1 | tee rescrape.log
 
       - name: Copy to web
         run: cp data/corridas.json web/corridas.json

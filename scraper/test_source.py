@@ -81,6 +81,9 @@ def _validate(source: str, results: list) -> list[str]:
     today_in_id = 0
     missing_date = 0
     stale_date = 0
+    missing_distancias = 0
+    missing_link = 0
+    missing_horario = 0
     seen_ids: dict[str, int] = {}
 
     for r in results:
@@ -101,6 +104,23 @@ def _validate(source: str, results: list) -> list[str]:
         elif r.data_evento < stale_cutoff:
             stale_date += 1
 
+        # Soft: sem distâncias
+        if not r.distancias:
+            missing_distancias += 1
+
+        # Hard: sem link válido em qualquer FonteInfo
+        has_link = False
+        for f in (r.fontes or []):
+            if f.link_evento or (f.links_inscricao and f.links_inscricao[0]):
+                has_link = True
+                break
+        if not has_link:
+            missing_link += 1
+
+        # Informational: sem horário (muitos eventos não anunciam hora antecipadamente)
+        if not r.horario:
+            missing_horario += 1
+
     n = len(results)
 
     # Hard failures
@@ -118,12 +138,22 @@ def _validate(source: str, results: list) -> list[str]:
             f"{len(dup_ids)} IDs duplicados no batch: "
             + ", ".join(f"'{k}'×{v}" for k, v in examples)
         )
+    if missing_link:
+        failures.append(f"{missing_link}/{n} eventos sem nenhum link válido em fontes")
 
     # Soft warnings (printed but don't fail unless thresholds exceeded)
     if missing_date / n > 0.5:
         warnings.append(f"{missing_date}/{n} eventos sem data_evento")
     if stale_date / n > 0.3:
         warnings.append(f"{stale_date}/{n} eventos com data > 30 dias no passado")
+    if missing_distancias / n > 0.3:
+        warnings.append(f"{missing_distancias}/{n} eventos sem distâncias")
+    elif missing_distancias > 0:
+        print(f"ℹ️   {source}: {missing_distancias}/{n} eventos sem distâncias")
+    if missing_horario / n > 0.5:
+        warnings.append(f"{missing_horario}/{n} eventos sem horário")
+    elif missing_horario > 0:
+        print(f"ℹ️   {source}: {missing_horario}/{n} eventos sem horário")
 
     for w in warnings:
         print(f"⚠️   {source}: {w}")

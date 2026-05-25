@@ -662,6 +662,74 @@ def test_cards_have_link_buttons(page_pt, live_server):
 
 
 # ---------------------------------------------------------------------------
+# Data integrity — required fields in corridas.json
+# ---------------------------------------------------------------------------
+
+def test_all_events_have_required_fields():
+    """Every event in corridas.json must have data_evento, distancias, localizacao, and a link.
+
+    horario coverage is reported informally; missing horario is allowed because
+    many events do not announce their start time in advance.
+    """
+    corridas = _load_corridas()
+    assert corridas, "corridas.json is empty"
+
+    missing_data: list[tuple] = []
+    missing_dist: list[tuple] = []
+    missing_loc:  list[tuple] = []
+    missing_link: list[tuple] = []
+    missing_hora: list[str]   = []
+
+    for c in corridas:
+        cid   = c.get("id", "?")
+        title = c.get("titulo", "?")
+
+        if not c.get("data_evento"):
+            missing_data.append((cid, title))
+
+        if not c.get("distancias"):
+            missing_dist.append((cid, title))
+
+        if not c.get("localizacao"):
+            missing_loc.append((cid, title))
+
+        has_link = any(
+            f.get("link_evento") or (f.get("links_inscricao") or [None])[0]
+            for f in c.get("fontes", [])
+        )
+        if not has_link:
+            missing_link.append((cid, title))
+
+        if not c.get("horario"):
+            missing_hora.append(title)
+
+    n = len(corridas)
+    if missing_hora:
+        pct = 100 * len(missing_hora) / n
+        print(f"\nℹ️  {len(missing_hora)}/{n} eventos sem horário ({pct:.0f}%)")
+    if missing_loc:
+        pct = 100 * len(missing_loc) / n
+        print(f"ℹ️  {len(missing_loc)}/{n} eventos sem localizacao ({pct:.1f}%)")
+
+    assert not missing_data, (
+        f"{len(missing_data)}/{n} events missing data_evento. First 5: {missing_data[:5]}"
+    )
+    assert not missing_dist, (
+        f"{len(missing_dist)}/{n} events missing distancias. First 5: {missing_dist[:5]}"
+    )
+    assert not missing_link, (
+        f"{len(missing_link)}/{n} events missing all links. First 5: {missing_link[:5]}"
+    )
+    # Localizacao: fail if more than 5% of events are missing it.
+    # Will be tightened to zero-tolerance once scraper location requirements are defined.
+    loc_pct = len(missing_loc) / n
+    assert loc_pct <= 0.05, (
+        f"{len(missing_loc)}/{n} events ({100*loc_pct:.1f}%) missing localizacao "
+        f"(threshold: 5%). First 10: {missing_loc[:10]}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Internal helper
 # ---------------------------------------------------------------------------
 

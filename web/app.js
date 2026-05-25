@@ -489,13 +489,13 @@ const _CITY_COUNTRY = {
 };
 
 const _ISO2_TO_DATA_COUNTRY = {
-  AR: 'Argentina',  PT: 'Portugal',   IT: 'Itália',     DE: 'Alemanha',  FR: 'França',
-  GB: 'Reino Unido', US: 'EUA',       JP: 'Japão',      AU: 'Austrália', ES: 'Espanha',
-  CL: 'Chile',      CO: 'Colômbia',   MX: 'México',     PE: 'Peru',      NL: 'Países Baixos',
-  AT: 'Áustria',    CH: 'Suíça',      SE: 'Suécia',     NO: 'Noruega',   DK: 'Dinamarca',
-  FI: 'Finlândia',  PL: 'Polônia',    CZ: 'República Tcheca', ZA: 'África do Sul',
-  KE: 'Quênia',     ET: 'Etiópia',    CN: 'China',      KR: 'Coreia do Sul', CA: 'Canadá',
-  NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
+  BR: 'Brasil',     AR: 'Argentina',  PT: 'Portugal',   IT: 'Itália',     DE: 'Alemanha',
+  FR: 'França',     GB: 'Reino Unido', US: 'EUA',       JP: 'Japão',      AU: 'Austrália',
+  ES: 'Espanha',    CL: 'Chile',      CO: 'Colômbia',   MX: 'México',     PE: 'Peru',
+  NL: 'Países Baixos', AT: 'Áustria', CH: 'Suíça',      SE: 'Suécia',     NO: 'Noruega',
+  DK: 'Dinamarca',  FI: 'Finlândia',  PL: 'Polônia',    CZ: 'República Tcheca',
+  ZA: 'África do Sul', KE: 'Quênia',  ET: 'Etiópia',    CN: 'China',      KR: 'Coreia do Sul',
+  CA: 'Canadá',     NZ: 'Nova Zelândia', PY: 'Paraguai', UY: 'Uruguai',
   IE: 'Irlanda',    GR: 'Grécia',     AD: 'Andorra',    BM: 'Bermuda',
   BO: 'Bolívia',    PH: 'Filipinas',  CG: 'República do Congo', BA: 'Bósnia e Herzegovina',
 };
@@ -1124,6 +1124,7 @@ function buildPastSection(corridas, today, threeDaysAgo) {
     cardsContainer.classList.remove('month-cards--collapsed');
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
+    section.classList.add('month-section--open');
     window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
   });
 
@@ -1138,7 +1139,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
   const novoBadge  = hasNew ? `<span class="badge-novo">${T.badgeNovo}</span>` : '';
 
   const section = document.createElement('div');
-  section.className = 'month-section';
+  section.className = expanded ? 'month-section month-section--open' : 'month-section';
 
   const btn = document.createElement('button');
   btn.className = 'month-separator';
@@ -1166,6 +1167,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
     cardsContainer.classList.remove('month-cards--collapsed');
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
+    section.classList.add('month-section--open');
     window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
   });
 
@@ -1266,6 +1268,7 @@ function _closeMonthSection(btn, container) {
   container.classList.add('month-cards--collapsed');
   btn.setAttribute('aria-expanded', 'false');
   btn.querySelector('.month-chevron').textContent = '▸';
+  btn.parentElement.classList.remove('month-section--open');
 }
 
 function closeAllOtherMonths(exceptSection) {
@@ -1369,7 +1372,7 @@ function buildExpanded(card, c) {
     h.textContent = T.sourcesHeader;
     expFontes.appendChild(h);
 
-    for (const fonte of c.fontes) {
+    for (const fonte of [...c.fontes].sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))) {
       const div = document.createElement('div');
       div.className = 'fonte-item';
       const link = (fonte.links_inscricao && fonte.links_inscricao.length > 0)
@@ -1598,6 +1601,16 @@ document.addEventListener('DOMContentLoaded', () => {
   btnClear.setAttribute('aria-label',       T.clearFiltersAriaLabel);
   btnClear.textContent      = T.clearFilters;
   btnClearEmpty.textContent = T.clearFilters;
+
+  // Track filters bar height so sticky month headers stop below it
+  const _filtersBar = document.querySelector('.filters-bar');
+  if (_filtersBar) {
+    const _updateFiltersH = () => {
+      document.documentElement.style.setProperty('--filters-h', _filtersBar.offsetHeight + 'px');
+    };
+    new ResizeObserver(_updateFiltersH).observe(_filtersBar);
+    _updateFiltersH();
+  }
   document.querySelector('#emptyState p').textContent = T.noResults;
 
   // Periodo options

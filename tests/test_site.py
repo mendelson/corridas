@@ -768,6 +768,189 @@ def test_all_events_have_required_fields():
 
 
 # ---------------------------------------------------------------------------
+# Merge integrity (catches over-merging bugs)
+# ---------------------------------------------------------------------------
+
+# Even popular events rarely have more than 3 distinct catalog sources listing
+# them. >=5 fontes per record is a near-certain smell that the merger collapsed
+# unrelated events — usually because some scraper emitted the same inscription
+# URL (catalog page) for every event it found, and union-find chained them.
+_MAX_FONTES_PER_EVENT = 5
+
+
+def test_no_event_has_too_many_fontes():
+    """No single merged event should accumulate more than 4 distinct fontes.
+
+    Trips when a scraper emits a catalog/section URL as links_inscricao for
+    multiple events (the brasil_que_corre regression) — the merger's shared-
+    link rule then collapses them into one record whose fontes accumulate.
+    Distance count alone is a noisy signal (legitimate track meets have 20+
+    track events); fonte count is the cleaner smell.
+    """
+    corridas = _load_corridas()
+    offenders = [
+        (c.get("id"), c.get("titulo"), len(c.get("fontes", [])),
+         [f["nome"] for f in c.get("fontes", [])])
+        for c in corridas
+        if len(c.get("fontes", [])) >= _MAX_FONTES_PER_EVENT
+    ]
+    assert not offenders, (
+        f"{len(offenders)} event(s) have >= {_MAX_FONTES_PER_EVENT} fontes "
+        f"(likely over-merged). First 5: {offenders[:5]}"
+    )
+
+
+def test_no_inscription_link_shared_across_many_events():
+    """A single inscription URL should not appear in 3+ distinct records.
+
+    After merger collapses true duplicates, the same URL appearing in many
+    records means the scraper is using a non-unique URL for events that
+    are genuinely different. Catches the next brasil_que_corre clone.
+    """
+    corridas = _load_corridas()
+    link_to_records: dict[tuple[str, str], list[str]] = {}
+    for c in corridas:
+        for f in c.get("fontes", []):
+            nome = f.get("nome", "")
+            for l in f.get("links_inscricao", []):
+                key = (nome, l.rstrip("/").lower())
+                link_to_records.setdefault(key, []).append(c.get("id"))
+    offenders = [
+        (nome, link, len(ids), ids[:3])
+        for (nome, link), ids in link_to_records.items()
+        if len(set(ids)) >= 3
+    ]
+    assert not offenders, (
+        f"{len(offenders)} (source, link) pair(s) appear in 3+ distinct records "
+        f"— probably a catalog URL used as event link. First 5: {offenders[:5]}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# HTML entity hygiene
+# ---------------------------------------------------------------------------
+
+_HTML_ENTITY_PATTERNS = [
+    r"&amp;", r"&Amp;", r"&AMP;",      # mishandled & encoding
+    r"&quot;", r"&apos;",
+    r"&lt;", r"&gt;", r"&nbsp;",
+    r"&#x[0-9a-fA-F]+;?", r"&#\d+;?",  # numeric entities
+]
+
+
+def test_no_html_entities_in_event_fields():
+    """No event title/cidade/localizacao may contain unescaped HTML entities.
+
+    Catches the regression where source pages double-encoded "&amp;amp;",
+    normalize_titulo only unescaped one layer, and .title() then mangled the
+    residual "amp" into "Amp" (e.g. "Track&Amp;Field").
+    """
+    corridas = _load_corridas()
+    rx = re.compile("|".join(_HTML_ENTITY_PATTERNS))
+    offenders = []
+    for c in corridas:
+        for field in ("titulo", "cidade", "localizacao"):
+            v = c.get(field) or ""
+            if rx.search(v):
+                offenders.append((c.get("id"), field, v))
+    assert not offenders, (
+        f"{len(offenders)} fields contain raw HTML entities. First 5: {offenders[:5]}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Country/subdivision localization tests
+# ---------------------------------------------------------------------------
+
+_COUNTRY_EXPECTATIONS = {
+    "pt": {"BR": "Brasil",   "US": "EUA",         "DE": "Alemanha",     "FR": "França",  "GB": "Reino Unido",            "IT": "Itália",  "JP": "Japão", "MX": "México"},
+    "en": {"BR": "Brazil",   "US": "USA",         "DE": "Germany",      "FR": "France",  "GB": "United Kingdom",         "IT": "Italy",   "JP": "Japan", "MX": "Mexico"},
+    "es": {"BR": "Brasil",   "US": "EE.UU.",      "DE": "Alemania",     "FR": "Francia", "GB": "Reino Unido",            "IT": "Italia",  "JP": "Japón", "MX": "México"},
+    "de": {"BR": "Brasilien", "US": "USA",        "DE": "Deutschland",  "FR": "Frankreich", "GB": "Vereinigtes Königreich", "IT": "Italien", "JP": "Japan", "MX": "Mexiko"},
+    "fr": {"BR": "Brésil",   "US": "États-Unis",  "DE": "Allemagne",    "FR": "France",  "GB": "Royaume-Uni",            "IT": "Italie",  "JP": "Japon", "MX": "Mexique"},
+}
+
+# Subdivisions for which _SUBDIV_LABELS in app.js must define per-language names.
+_SUBDIV_EXPECTATIONS = {
+    "pt": [("BR", "DF", "Brasília"), ("DE", "BY", "Baviera"),  ("GB", "ENG", "Inglaterra"),       ("GB", "SCT", "Escócia"),  ("IT", "VE", "Veneza"),  ("MX", "CMX", "Cidade do México")],
+    "en": [("BR", "DF", "Brasília"), ("DE", "BY", "Bavaria"),  ("GB", "ENG", "England"),          ("GB", "SCT", "Scotland"), ("IT", "VE", "Venice"),  ("MX", "CMX", "Mexico City")],
+    "es": [("BR", "DF", "Brasília"), ("DE", "BY", "Baviera"),  ("GB", "ENG", "Inglaterra"),       ("GB", "SCT", "Escocia"),  ("IT", "VE", "Venecia"), ("MX", "CMX", "Ciudad de México")],
+    "de": [("BR", "DF", "Brasília"), ("DE", "BY", "Bayern"),   ("GB", "ENG", "England"),          ("GB", "SCT", "Schottland"), ("IT", "VE", "Venedig"), ("MX", "CMX", "Mexiko-Stadt")],
+    "fr": [("BR", "DF", "Brasília"), ("DE", "BY", "Bavière"),  ("GB", "ENG", "Angleterre"),       ("GB", "SCT", "Écosse"),   ("IT", "VE", "Venise"),  ("MX", "CMX", "Mexico")],
+}
+
+
+@pytest.mark.parametrize("lang", ["pt", "en", "es", "de", "fr"])
+def test_country_names_translated(page_factory, live_server, lang):
+    """_localizeCountryByIso2(iso2) must return the country name in the active language.
+
+    Catches the regression where BR was missing from _ISO2_TO_DATA_COUNTRY and
+    fell through to web/locations/BR.json's English "Brazil".
+    """
+    page = page_factory(lang)
+    cases = _COUNTRY_EXPECTATIONS[lang]
+    failures = []
+    for iso2, expected in cases.items():
+        actual = page.evaluate(f"_localizeCountryByIso2({iso2!r})")
+        if actual != expected:
+            failures.append(f"[{lang}] _localizeCountryByIso2({iso2!r}) = {actual!r}, expected {expected!r}")
+    assert not failures, "\n".join(failures)
+
+
+@pytest.mark.parametrize("lang", ["pt", "en", "es", "de", "fr"])
+def test_subdivision_names_translated(page_factory, live_server, lang):
+    """_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.
+
+    Covers Brazil (DF -> Brasília), Germany (BY -> Bayern/Baviera/...), UK
+    (ENG -> England/Inglaterra/...), Italy (VE -> Venezia/Venice/...) and
+    Mexico (CMX -> Mexico City/Cidade do México/...).
+    """
+    page = page_factory(lang)
+    cases = _SUBDIV_EXPECTATIONS[lang]
+    failures = []
+    for pais, code, expected in cases:
+        # Pass the code itself as fallback so a failure is unambiguous.
+        actual = page.evaluate(
+            f"_localizeSubdiv({pais!r}, {code!r}, {code!r})"
+        )
+        if actual != expected:
+            failures.append(
+                f"[{lang}] _localizeSubdiv({pais!r}, {code!r}) = {actual!r}, expected {expected!r}"
+            )
+    assert not failures, "\n".join(failures)
+
+
+@pytest.mark.parametrize("lang,wrong_country", [
+    ("pt", "Brazil"),
+    ("es", "Brazil"),
+    ("de", "Brazil"),
+    ("fr", "Brazil"),
+])
+def test_no_english_brazil_on_localized_pages(page_factory, live_server, lang, wrong_country):
+    """Non-English pages must not show the English country name 'Brazil' in any card location."""
+    page = page_factory(lang)
+    page.evaluate(
+        "() => document.querySelectorAll('.month-cards--collapsed').forEach("
+        "el => el.classList.remove('month-cards--collapsed'))"
+    )
+    page.wait_for_timeout(300)
+    leaked = page.evaluate(
+        "(wrong) => {"
+        " const out = [];"
+        " for (const el of document.querySelectorAll('.card-location')) {"
+        "   const t = el.textContent || '';"
+        "   if (t.includes(wrong)) out.push(t);"
+        " }"
+        " return out.slice(0, 5);"
+        "}",
+        wrong_country,
+    )
+    assert not leaked, (
+        f"[{lang}] {len(leaked)} card-location elements still contain English '{wrong_country}': {leaked}"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Internal helper
 # ---------------------------------------------------------------------------
 

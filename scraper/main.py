@@ -36,6 +36,9 @@ from .sources import (
     corridas_brasil,
     minhas_inscricoes,
     correr_brasilia,
+    bora_correr,
+    brasil_que_corre,
+    portal_das_corridas,
     sesc_df,
     runner_brasil,
     brasil_corrida,
@@ -90,8 +93,11 @@ SOURCES = [
     minhas_inscricoes,
     runner_brasil,
     brasil_corrida,
+    portal_das_corridas,
     # DF-specific sources
     correr_brasilia,
+    bora_correr,
+    brasil_que_corre,
     sesc_df,
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
@@ -200,25 +206,6 @@ def load_existing() -> dict[str, Corrida]:
     except Exception as e:
         print(f"[main] erro ao carregar JSON existente: {e}")
         return {}
-
-
-# Sources that are directories/aggregators, not registration platforms.
-# Their inscription links are removed when the event has a better source.
-_DIRECTORY_SOURCES: set[str] = {"Corridas BR"}
-
-
-def _demote_directory_links(corridas: list[Corrida]) -> None:
-    """Clear inscription links from directory-only sources when a real
-    registration platform also covers the event."""
-    for c in corridas:
-        has_real_link = any(
-            fo.nome not in _DIRECTORY_SOURCES and fo.links_inscricao
-            for fo in c.fontes
-        )
-        if has_real_link:
-            for fo in c.fontes:
-                if fo.nome in _DIRECTORY_SOURCES:
-                    fo.links_inscricao = []
 
 
 def _find_all_photos(corridas: list[Corrida]) -> None:
@@ -777,7 +764,6 @@ def main() -> None:
     final = merge_rodada(final)
     print(f"[main] {len(final)} corridas após dedup final")
 
-    _demote_directory_links(final)
     _normalize_all_locations(final)
     _resolve_missing_locations(final)
     _ensure_inscricao_links(final)

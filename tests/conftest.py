@@ -78,3 +78,23 @@ def page_en(browser, live_server):
     page.wait_for_selector(".card", state="attached", timeout=15000)
     yield page
     ctx.close()
+
+
+@pytest.fixture
+def page_factory(browser, live_server):
+    """Factory yielding a page for the requested UI language ('pt', 'en', 'es', 'de', 'fr')."""
+    _locales = {"pt": "pt-BR", "en": "en-US", "es": "es-ES", "de": "de-DE", "fr": "fr-FR"}
+    contexts = []
+
+    def make(lang: str):
+        ctx = browser.new_context(locale=_locales[lang])
+        _add_geo_mocks(ctx)
+        page = ctx.new_page()
+        page.goto(live_server + f"/{lang}/", wait_until="networkidle")
+        page.wait_for_selector(".card", state="attached", timeout=15000)
+        contexts.append(ctx)
+        return page
+
+    yield make
+    for ctx in contexts:
+        ctx.close()

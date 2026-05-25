@@ -122,6 +122,20 @@ The correct process before removing a source:
 3. **Only drop a source** once you have unambiguous confirmation (explicit HTTP blocks across all proxy layers, or Cloudflare challenge HTML confirmed in logs) that the block is at datacenter-IP level and no bypass exists. Document the reason in the README commit message and the source-status.json.
 4. When dropping: remove the `.py` file, remove from `__init__.py`, `main.py` SOURCES list, `.github/workflows/test-sources.yml` dropdown, the README table row, and `data/source-status.json`.
 
+### Recurring failure pattern: "generic CSS selectors never matched"
+
+Several sources have been dropped in the past with notes like *"Seletores CSS
+genéricos nunca casaram com o HTML real do site"* (`bora_correr`,
+`brasil_que_corre`, `portal_das_corridas`) or *"0 eventos retornados"* with
+no other diagnosis. **This is almost always a scraper bug, not a blocked
+site.** The old scraper template tried `article` / `.event` / `.race` /
+`.post` / `.card` in order; `article` matches every WordPress post and stops
+the loop before reaching the real container — but the site itself is
+typically reachable and well-structured (JSON-LD, custom table, REST API,
+sitemap…). Always probe the URL and inspect the real DOM before declaring
+inviability. The `correr_brasilia` (JSON-LD) and `bora_correr` (custom HTML
+table) revivals both followed this exact pattern.
+
 ## Exploring and validating new sources
 
 **Never write a scraper before probing the target.** The correct flow is:
@@ -311,6 +325,90 @@ Do not re-investigate TF Sports mobile auth — the path is closed.
 bundle) misses. The two scrapers are complementary; keep both active.
 Flying Run is not in Strapi and will never appear via `tf_sports_app.py`.
 
+
+### bora_correr.py — custom HTML table, not WordPress (restored 2026-05-24)
+
+`coelhodeprograma.com.br/boracorrer/` is a **custom (non-WordPress) DF running
+calendar**. No `/wp-json/`, no RSS, no JSON-LD — but the server-rendered HTML
+contains a `<table id="tabDados">` with one row per event. Each `<tr>` has
+three `<td>`s: date (`DD/MM/YYYY`), `<a href="EVENT_URL">Title<br/>(distance
+hints like "10/5km")</a>`, and an action cell with a UUID accessible via
+`obterDadosReport('UUID', …)`.
+
+**Why it was dropped**: the original scraper used the same generic-selector
+pattern as the old `correr_brasilia.py` (`.event`, `.race`, `.card`,
+`article`, `.post`, `.item`) and none of those match this custom DOM. It was
+declared "broken" without checking the real structure. The site was always
+reachable.
+
+Use the UUID for stable IDs (`boracorrer_<uuid>`). Distances come from the
+parenthesized hint in cell 2 — apply `_CANONICAL` snapping (21.097 / 42.195)
+and 0.5km near-dedup, same as `correr_brasilia.py`.
+
+### brasil_que_corre.py — Locaweb page builder, plain-text widgets (restored 2026-05-24)
+
+`brasilquecorre.com/distritofederal` is a **custom site built on what looks
+like a Locaweb page builder** (CSS prefix `cs-`). No `/wp-json/`, no RSS,
+no JSON-LD. Each event is a `<div class="cs-text-widget">` whose innerText
+follows a fixed layout:
+
+  `TITLE  &nbsp;  DD[ e DD] de MES de YYYY  CITY [/ UF]  Xkm, Ykm (corrida) ORGANIZER`
+
+Example: `ONERUN SUNSET   23 de Maio de 2026 Brasília / DF 1km, 5km, 10km e 21km (corrida) ONE23 GO`
+
+**Why it was dropped**: same generic-selector pattern as `correr_brasilia` /
+`bora_correr` — `.event/article/.race/.post` never matched `cs-text-widget`.
+The site is reachable and well-structured.
+
+Parser splits on the first `DD de MES de YYYY` match: everything before is
+the title, the date populates `data_evento`, distances are extracted from
+`(corrida)`-annotated segments only (filtering out walking/kids/OCR sections).
+Use the widget `id` attribute (a UUID assigned by the page builder) for
+stable IDs (`bqc_<uuid>`). Each event links back to the listing page since
+no per-event URL exists.
+
+### portal_das_corridas.py — Wix Events site (restored 2026-05-24)
+
+`portaldascorridas.com.br` is a **Wix.com Website Builder** site that doubles
+as a Brazilian race registration platform — Wix Events manages the inscriptions
+("O Portal das Corridas não é responsável pela organização do evento. Apenas
+gerenciamos o processo de inscrição online."). The old scraper used Playwright
+with generic CSS selectors that never matched the Wix DOM — same false-positive
+"broken" pattern as bora_correr / brasil_que_corre.
+
+Architecture:
+- **Discovery**: `event-pages-sitemap.xml` (Wix-generated) lists every event
+  detail page with a `<lastmod>` date — ~570 entries spanning multiple years.
+- **Detail pages**: each `/event-details/<slug>` is a Wix SPA with all event
+  data embedded in the server-rendered HTML — no public REST API needed.
+
+Extraction sources per page (use in this priority order):
+1. **JSON-LD `@type: "Event"`** block — single `<script type="application/ld+json">`
+   element with `name`, `startDate` (already in local TZ — race date), `image.url`.
+2. **Wix `fullAddress` blob** — richer than the JSON-LD freeform `location.address`;
+   gives `country` (ISO-2), `subdivision` (state code), `city`.
+3. **`"label":"Percurso","options":[...]` block** — the registration form's
+   distance field. Source of truth for distances; the page's free-text prose
+   sometimes contradicts it. Only numeric `Xkm` options become `Distancia.km`
+   (drop `KIDS` / `CAMINHADA` etc.).
+4. **`"eventId":"<uuid>"`** for the stable ID (`portaldc_<uuid>`).
+
+Cost discipline: the sitemap has ~570 events but many are years old. The
+scraper filters by `lastmod >= today - 270 days` and caps the per-run fetch
+list at 120 entries to keep proxy budget bounded. The pipeline's date filter
+then drops any past events that slipped through the lastmod window.
+
+### corridas_br — DO NOT REACTIVATE
+
+`corridasbr.com.br/df/calendario.asp` is **permanently dropped, not because
+of WAF or scraper bugs**. The site itself is a low-quality directory whose
+event data is **frequently wrong** (wrong dates, wrong distances, wrong
+links) and never carries real registration URLs — every "register" link
+just redirects to other aggregators we already scrape directly. Even if it
+starts returning 200 again, do not re-add it. The user explicitly forbids
+reactivation.
+
+
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.
@@ -320,10 +418,10 @@ Claude must run tests and iterate **independently**, without asking the user to 
 Every code change must go through a PR before merging into main.
 
 1. **Create a feature branch** — use a descriptive name.
-2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. Draft PRs skip CI (the `test-site.yml` job has `if: !github.event.pull_request.draft`).
+2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. CI does not run on draft PRs — tests only trigger when the PR is marked ready.
 3. **Develop freely** — push commits to the branch without CI interference.
-4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI.
-5. **Poll CI** — use `mcp__github__pull_request_read` to check check runs. **Never merge with pending or failing checks.** Wait until all checks complete with `conclusion: success`.
+4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI (`test-site.yml` runs on `ready_for_review`).
+5. **Poll CI** — use `mcp__github__pull_request_read` to check check runs. **Never merge with pending or failing checks.** Wait until all checks complete with `conclusion: success`. For UI changes, also run the `/verify` skill to confirm rendered behaviour before merging.
 6. **Merge** via `mcp__github__merge_pull_request` — only after all tests pass.
 7. **Scrape triggers automatically** on merge via `scrape.yml` (`pull_request: types: [closed]` + merged guard).
 

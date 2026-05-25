@@ -66,6 +66,11 @@ def _cache_key(localizacao: str, cidade: str) -> str:
     return unidecode(parts.lower().strip())
 
 
+def _qualified_key(base_key: str, pais_hint: str) -> str:
+    """Return a country-qualified cache key to avoid same-city cross-country collisions."""
+    return f"{base_key}||{pais_hint.lower()}"
+
+
 def _match_subdiv(pais: str, state_name: str) -> str:
     """Match a free-text state name from Nominatim to a known subdivision code."""
     by_name = _SUBDIV_BY_NAME.get(pais, {})
@@ -88,15 +93,32 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
 
     Looks up the persistent cache first; falls back to Nominatim if not found.
     Returns ("??", "") on complete failure.
+
+    Cache lookup order when pais_hint is provided:
+      1. Qualified key  "{base}||{pais_hint.lower()}"  — exact country match
+      2. Base key — accepted only when the cached pais matches pais_hint (or no hint given)
+    This prevents same-city-name collisions across countries (e.g. Brighton AU vs GB).
     """
     global _last_nominatim_call
 
     cache = _load_cache()
-    key = _cache_key(localizacao, cidade)
+    base_key = _cache_key(localizacao, cidade)
 
-    if key in cache:
-        entry = cache[key]
-        return entry.get("pais", "??"), entry.get("estado", "")
+    if pais_hint:
+        qual_key = _qualified_key(base_key, pais_hint)
+        # 1. Check country-qualified key first
+        if qual_key in cache:
+            entry = cache[qual_key]
+            return entry.get("pais", "??"), entry.get("estado", "")
+        # 2. Fall back to base key ONLY if cached pais matches the hint
+        if base_key in cache:
+            entry = cache[base_key]
+            if entry.get("pais", "??") == pais_hint.upper():
+                return entry.get("pais", "??"), entry.get("estado", "")
+    else:
+        if base_key in cache:
+            entry = cache[base_key]
+            return entry.get("pais", "??"), entry.get("estado", "")
 
     query = ", ".join(p for p in (localizacao, cidade) if p)
     if not query:
@@ -133,7 +155,9 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
     estado = _match_subdiv(country_code, state_name)
 
     result = {"pais": country_code, "estado": estado}
-    cache[key] = result
+    # Store under qualified key when a hint was given, else base key
+    store_key = _qualified_key(base_key, pais_hint) if pais_hint else base_key
+    cache[store_key] = result
     _save_cache()
     return country_code, estado
 

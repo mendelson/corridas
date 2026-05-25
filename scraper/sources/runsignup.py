@@ -451,6 +451,12 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     state   = (addr.get("state") or "").strip().upper()
     country = (addr.get("country_code") or "").strip().upper() or "US"
 
+    # Skip virtual/military events that use US Armed Forces postal codes (AA, AE, AP)
+    # or that use non-geographic city names
+    _VIRTUAL_STATES = {"AA", "AE", "AP"}
+    if country == "US" and state in _VIRTUAL_STATES:
+        return None
+
     pais = country
     if country == "US":
         estado    = state if state in _US_STATES else ""

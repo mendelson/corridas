@@ -141,6 +141,7 @@ _DIST_LIST_RE = re.compile(
 )
 
 
+
 def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     """Extract race distances from description (primary) with title as fallback.
 

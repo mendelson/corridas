@@ -325,6 +325,7 @@ Do not re-investigate TF Sports mobile auth — the path is closed.
 bundle) misses. The two scrapers are complementary; keep both active.
 Flying Run is not in Strapi and will never appear via `tf_sports_app.py`.
 
+
 ### bora_correr.py — custom HTML table, not WordPress (restored 2026-05-24)
 
 `coelhodeprograma.com.br/boracorrer/` is a **custom (non-WordPress) DF running
@@ -407,18 +408,85 @@ just redirects to other aggregators we already scrape directly. Even if it
 starts returning 200 again, do not re-add it. The user explicitly forbids
 reactivation.
 
+
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.
 
-## Pull Request workflow
+## PR workflow
 
-**All changes must go through a PR before landing on main.** Never push directly to main except for hotfixes explicitly approved by the user.
+Every code change must go through a PR before merging into main.
 
-1. **Create a feature branch** — `git checkout -b feature/<short-description>` from main.
-2. **Open a draft PR immediately** using `mcp__github__create_pull_request` with `draft: true`. CI does not run on draft PRs — tests only trigger when the PR is marked ready.
-3. **Develop and push commits** to the feature branch. Iterate freely; no CI runs while the PR is a draft.
-4. **Mark as ready** when the implementation is complete: call `mcp__github__update_pull_request` with `draft: false`. This triggers the CI test suite (`test-site.yml` runs on `ready_for_review`).
-5. **Validate** — poll `mcp__github__pull_request_read` with `method: get_check_runs` until every check shows `conclusion: success`. **A PR must never be merged while any required check is still failing or pending.** For UI changes, also run the `/verify` skill to confirm rendered behaviour before merging.
-6. **Merge** — once all checks pass, merge via `mcp__github__merge_pull_request`.
-7. **Scrape trigger** — merging any PR to main automatically triggers `scrape.yml` (via the `pull_request: types: [closed]` event), so the live data is refreshed immediately after code lands.
+1. **Create a feature branch** — use a descriptive name.
+2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. CI does not run on draft PRs — tests only trigger when the PR is marked ready.
+3. **Develop freely** — push commits to the branch without CI interference.
+4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI (`test-site.yml` runs on `ready_for_review`).
+5. **Poll CI** — use `mcp__github__pull_request_read` to check check runs. **Never merge with pending or failing checks.** Wait until all checks complete with `conclusion: success`. For UI changes, also run the `/verify` skill to confirm rendered behaviour before merging.
+6. **Merge** via `mcp__github__merge_pull_request` — only after all tests pass.
+7. **Scrape triggers automatically** on merge via `scrape.yml` (`pull_request: types: [closed]` + merged guard).
+
+**A PR may only be merged when ALL CI test actions pass.** This is a hard requirement — never bypass it.
+
+### Every PR must reach a conclusion
+
+**No PR may be left open indefinitely.** Every PR ends in one of two states:
+
+1. **Merged** — CI is green and the change is accepted into `main`.
+2. **Closed (without merge)** — the change is abandoned, superseded, or no longer needed. Always leave a closing comment explaining why (e.g. "superseded by #N", "approach changed, see #M", "no longer needed because …").
+
+Open PRs without an active task driving them are a maintenance debt: they accumulate merge conflicts, confuse reviewers, and obscure what's actually in flight. When picking up work, audit any open PRs you (or a previous session) authored:
+
+- If still relevant → finish the work, get CI green, merge.
+- If superseded or abandoned → close with a one-line explanation.
+- If blocked on external input → leave a comment with the blocker and check back; close it if the blocker can't be resolved.
+
+When you create a new PR, you own driving it to a conclusion within the same session whenever possible. Do not open a PR and walk away from it.
+
+## Event data quality requirements
+
+These are hard requirements enforced by `tests/test_site.py::test_all_events_have_required_fields` and `scraper/test_source.py`. All tests use **zero tolerance — no thresholds**. A single failing event fails the test.
+
+### Required fields per event
+
+Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all** of the following simultaneously:
+
+1. **`localizacao`** — non-empty string (city + state, or at least city).
+2. **`pais`** — a valid ISO-3166-1 alpha-2 code that exists as a file in `web/locations/{pais}.json`.
+3. **`estado`** — a valid subdivision code that exists in `web/locations/{pais}.json`'s `subdivisions` list. Must be non-empty. If the subdivision cannot be determined, the event must not be stored until it can be resolved.
+4. **`pais` + `estado` are displayed in the same language** (the frontend localizes both via `_localizeCountryByIso2` and `_localizeSubdiv`). This means both must be resolvable in all 5 UI locales.
+5. **`distancias`** — non-empty list of `Distancia` objects.
+6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
+7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
+
+`horario` is not required (many events don't announce start time in advance).
+
+### Location fix policy
+
+- **Never add or modify `web/locations/*.json` files to make a test pass.** The location JSON files are reference data, not scraper output. The correct fix is always to improve the scraper and/or `data/geo_cache.json`.
+- **Only `data/geo_cache.json` can be updated** as a location fix (alongside scraper improvements).
+- When `geo.resolve()` returns a wrong country or empty estado, fix the cache by adding a country-qualified entry: `"{city_query}||{pais.lower()}"` → `{"pais": ..., "estado": ...}`.
+- If an event's state genuinely cannot be determined from available data, the event should be **excluded** from the scraper's output (not stored with empty estado).
+- **Never use thresholds** — even 1 event with invalid location is a failing test.
+
+### Failing-test response policy
+
+**A failing data-quality test must never be "fixed" by removing the offending events from `corridas.json`.** The correct response is always to fix the scraper so it stops producing invalid output. Concretely:
+
+- **Direct edits to `corridas.json` / `web/corridas.json` to drop events are forbidden as a test-fix.** The next scrape will regenerate the file from scraper output anyway, so dropping events from the JSON only masks the bug for one cycle.
+- **Fix at the source.** If a scraper emits events with missing required fields, the scraper itself must either (a) extract the missing data from a deeper page fetch, (b) enrich via `geo.resolve()` / cache, or (c) refuse to emit the event at all (`require_location=True`-style upfront skip). Option (c) is itself a scraper fix — it prevents the invalid event from ever entering the data — and is acceptable when no deeper data source exists.
+- **Adding missing reference data is allowed only for true gaps**, not as a band-aid. Example: a real ISO-3166-1 country with valid subdivisions that genuinely was never added to `web/locations/` is a reference-data gap, not a test-fix. Even so, prefer fixing the scraper to map the event to an existing country when possible.
+- **Always investigate before dropping.** Probe the event's source page (via the Probe URL workflow) to confirm whether the missing data actually exists somewhere fetchable. Only after confirming no fetchable data exists may the scraper skip the event upfront.
+
+### Source test requirements
+
+`scraper/test_source.py` validates each source in isolation. In addition to the existing checks:
+- Events with no `distancias` are flagged as info (>30% is a warning, >70% is a failure).
+- Events with no link in `fontes` are a **hard failure**.
+- Missing `horario` is reported informally (informational only, not a failure).
+
+### Data correction on next scrape
+
+The reconcile pipeline (`main.py`) is designed so that:
+- `_update_from()` always clears `estado` when the incoming scrape returns empty, allowing `_resolve_missing_locations()` to retry.
+- `_resolve_missing_locations()` fills in empty `estado` (and fixes `INT`/`??` values) via `geo.resolve()` with the persistent geo cache.
+- Therefore: fixing the geo cache + scraper is sufficient; the next CI scrape will propagate correct values to `corridas.json`.

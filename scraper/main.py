@@ -385,6 +385,9 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
     existing.cidade = incoming.cidade
     if incoming.estado and incoming.estado not in ("??", "INT"):
         existing.estado = incoming.estado
+    elif not incoming.estado:
+        # Clear wrong estados so _resolve_missing_locations() can retry on next run
+        existing.estado = ""
     elif existing.estado in ("??", "INT"):
         existing.estado = ""
     if existing.pais == "INT":

@@ -23,7 +23,7 @@
   --shadow: 0 2px 12px rgba(0,0,0,0.4);
   --touch: 44px;
   --header-h: 56px;
-  --filters-h: auto;
+  --filters-h: 0px;
 }
 
 /* =====================================================================
@@ -557,7 +557,8 @@ input { font-family: inherit; }
   top: calc(var(--header-h) + var(--filters-h, 0px));
   z-index: 50;
   background: var(--color-surface-2);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .month-section--open .month-separator.month-separator--past {

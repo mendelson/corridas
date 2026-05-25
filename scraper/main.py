@@ -146,6 +146,14 @@ SOURCES = [
     world_athletics,
 ]
 
+# Selective-rescrape mode: when SCRAPER_SOURCES is set, only the listed sources
+# are run and other events are patched in-place without touching their miss_count.
+# Pass a comma-separated list of source keys (e.g. "worldathletics,runsignup").
+# Special value "geo" skips all scrapers and just re-runs _resolve_missing_locations.
+_SELECTIVE_SOURCES: frozenset[str] = frozenset(
+    s.strip() for s in os.environ.get("SCRAPER_SOURCES", "").split(",") if s.strip()
+)
+
 DATA_PATH       = Path(__file__).parent.parent / "data" / "corridas.json"
 HIST_DIR        = Path(__file__).parent.parent / "data" / "historico"
 STATUS_PATH     = Path(__file__).parent.parent / "data" / "source-status.json"
@@ -260,9 +268,33 @@ def _normalize_all_locations(corridas: list[Corrida]) -> None:
 
 
 def _resolve_missing_locations(corridas: list[Corrida]) -> None:
-    """Fill in empty estado (and incorrect pais) using geo.resolve() + cache."""
+    """Fill in empty or invalid estado (and incorrect pais) using geo.resolve() + cache."""
+    import json as _json
+    from pathlib import Path as _Path
+
+    _valid_states_map: dict[str, set | None] = {}
+
+    def _get_valid_states(pais: str) -> set | None:
+        if pais not in _valid_states_map:
+            try:
+                f = _Path(__file__).parent.parent / "web" / "locations" / f"{pais}.json"
+                if f.exists():
+                    data = _json.loads(f.read_text())
+                    _valid_states_map[pais] = {s["code"] for s in data.get("subdivisions", [])}
+                else:
+                    _valid_states_map[pais] = None
+            except Exception:
+                _valid_states_map[pais] = None
+        return _valid_states_map[pais]
+
     fixed = 0
     for c in corridas:
+        # Clear obviously invalid estado so _geo.resolve() can retry with correct data
+        if c.estado and c.estado not in ("??", "INT") and c.pais:
+            valid = _get_valid_states(c.pais)
+            if valid is not None and c.estado not in valid:
+                c.estado = ""
+
         needs_estado = not c.estado or c.estado in ("??", "INT")
         needs_pais   = not c.pais  or c.pais  in ("??", "", "INT")
         if c.estado == "INT":
@@ -280,6 +312,9 @@ def _resolve_missing_locations(corridas: list[Corrida]) -> None:
         if needs_estado and resolved_estado:
             c.estado = resolved_estado
             fixed += 1
+            # When geo resolves to a different country (wrong-country event), update pais too
+            if resolved_pais and resolved_pais != c.pais and resolved_pais not in ("??", ""):
+                c.pais = resolved_pais
     if fixed:
         print(f"[main] {fixed} estado(s) resolvido(s) pelo geo cache")
 
@@ -626,6 +661,10 @@ _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
 
 def _is_valid(c: Corrida) -> bool:
+    # Events without any location are unusable
+    if not c.localizacao:
+        return False
+
     titulo_lower = c.titulo.lower().strip()
 
     # Reject empty or very short titles
@@ -694,9 +733,23 @@ def _prioritize_failed(sources: list) -> tuple[list, list]:
     return failed + healthy, failed
 
 
-def run_all_scrapers() -> list[Corrida]:
+def run_all_scrapers(selective: frozenset[str] = frozenset()) -> list[Corrida]:
+    active = SOURCES
+    if selective:
+        if "geo" in selective:
+            active = []  # geo-only mode: skip all scrapers, just resolve locations
+        else:
+            active = [s for s in SOURCES if _source_status_key(s) in selective]
+            if not active:
+                print(f"[main] AVISO: SCRAPER_SOURCES={selective!r} não casou nenhuma fonte conhecida")
+            else:
+                print(f"[main] modo seletivo: {[_source_status_key(s) for s in active]}")
+
+    if not active:
+        return []
+
     all_corridas: list[Corrida] = []
-    ordered, failed = _prioritize_failed(SOURCES)
+    ordered, failed = _prioritize_failed(active)
     if failed:
         print(f"[main] priorizando {len(failed)} fonte(s) com falha anterior: "
               f"{', '.join(_source_status_key(s) for s in failed)}")
@@ -712,6 +765,34 @@ def run_all_scrapers() -> list[Corrida]:
                 print(f"[main] fonte {source_name} falhou: {e}")
 
     return all_corridas
+
+
+def _selective_patch(
+    fresh: list[Corrida],
+    existing: dict[str, Corrida],
+) -> list[Corrida]:
+    """Patch events from selected sources without touching miss_count of others.
+
+    Used in selective-rescrape mode. Events from non-selected sources are kept
+    exactly as they are. Events from selected sources are updated or added.
+    New events from selected sources not in existing are appended.
+    """
+    fresh_by_id = {c.id: c for c in fresh}
+    result = []
+    for cid, c in existing.items():
+        if cid in fresh_by_id:
+            incoming = fresh_by_id[cid]
+            if _fields_changed(c, incoming):
+                result.append(_update_from(c, incoming))
+            else:
+                result.append(c)
+        else:
+            result.append(c)
+    # Append genuinely new events
+    for c in fresh:
+        if c.id not in existing:
+            result.append(c)
+    return result
 
 
 def _sanitize_images(corridas: list[Corrida]) -> None:
@@ -741,28 +822,39 @@ def _sanitize_images(corridas: list[Corrida]) -> None:
 
 
 def main() -> None:
+    selective = _SELECTIVE_SOURCES
+    if selective:
+        print(f"[main] modo seletivo: fontes={selective!r}")
+
     print("[main] iniciando scraping...")
     estado_anterior = load_existing()
     print(f"[main] {len(estado_anterior)} corridas no estado anterior")
 
-    raw = run_all_scrapers()
+    raw = run_all_scrapers(selective)
     print(f"[main] {len(raw)} registros coletados (antes do merge)")
 
-    raw = [c for c in raw if _is_valid(c)]
-    print(f"[main] {len(raw)} registros após validação")
+    if selective:
+        raw = [c for c in raw if _is_valid(c)]
+        merged = merge_rodada(raw)
+        final = _selective_patch(merged, estado_anterior)
+        final = merge_rodada(final)  # deduplicate after patch (prevents duplicates when new sources overlap existing)
+        print(f"[main] {len(final)} corridas após patch seletivo + dedup")
+    else:
+        raw = [c for c in raw if _is_valid(c)]
+        print(f"[main] {len(raw)} registros após validação")
 
-    merged = merge_rodada(raw)
-    print(f"[main] {len(merged)} corridas após merge")
+        merged = merge_rodada(raw)
+        print(f"[main] {len(merged)} corridas após merge")
 
-    final = reconcile(estado_anterior, merged)
-    _today = today_iso()
-    final = [c for c in final if _is_valid(c) or (c.data_evento and c.data_evento < _today)]
-    print(f"[main] {len(final)} corridas após reconciliação")
+        final = reconcile(estado_anterior, merged)
+        _today = today_iso()
+        final = [c for c in final if _is_valid(c) or (c.data_evento and c.data_evento < _today)]
+        print(f"[main] {len(final)} corridas após reconciliação")
 
-    # Second dedup pass: catches duplicates that survived reconcile (e.g. past events
-    # copied as-is from estado_anterior without cross-checking the full result)
-    final = merge_rodada(final)
-    print(f"[main] {len(final)} corridas após dedup final")
+        # Second dedup pass: catches duplicates that survived reconcile (e.g. past events
+        # copied as-is from estado_anterior without cross-checking the full result)
+        final = merge_rodada(final)
+        print(f"[main] {len(final)} corridas após dedup final")
 
     _normalize_all_locations(final)
     _resolve_missing_locations(final)

@@ -56,10 +56,10 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     titulo_raw = normalize_titulo(ev.get("name") or "")
     if not titulo_raw or len(titulo_raw) < 3:
         return None
-    # Strip trailing distance parentheticals like "(5Km E 10Km)" — correrbrasilia.com.br
-    # appends distances to event names when multi-day events are listed as separate entries.
-    # The structured `distancias` field already captures this information.
-    titulo = re.sub(r'\s*\([^)]*\d+\s*[kK][mM]?[^)]*\)\s*$', '', titulo_raw).strip()
+    # Keep the parenthetical distances in the title — it distinguishes entries like
+    # "Live!42K - Brasília 2026 (5km e 10km)" from "Live!42K - Brasília 2026 (21km e 42km)".
+    # Stripping them caused the merger to collapse distinct events with different distances.
+    titulo = titulo_raw
 
     date_str, horario = _parse_start_date(ev.get("startDate") or "")
     if date_str and date_str < today:
@@ -143,15 +143,16 @@ _DIST_LIST_RE = re.compile(
 
 
 def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
-    """Extract race distances from description (primary) with title as fallback.
+    """Extract race distances.
 
     Priority:
-      1. Distances in list form ("7km e 14km") — avoids venue/route references
-         like "3,4km de pista" that appear in isolation.
-      2. Any km mention in the description.
-      3. Parenthetical hint in the title (avoids brand names like "LIVE!42K").
+      1. Grouped list in description ("7km e 14km") — the EventOn plugin embeds
+         explicit "Distância: Xkm e Ykm" metadata in the description, making this
+         the most reliable source for the specific distances offered at this edition.
+      2. Any km mention in description.
+      3. Parenthetical hint in title as last resort.
     """
-    # Priority 1: grouped list pattern
+    # Priority 1: grouped list pattern in description (e.g. "Distância: 5km e 10km")
     values = _parse_km_values_from_list(desc, min_km=1.0)
     if not values:
         # Priority 2: any km mention in description
@@ -161,9 +162,8 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
         paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
         if paren:
             values = _parse_km_values(paren.group(0), min_km=1.0)
-    values = values[:8]
     return sorted(
-        [Distancia(km=km, data=None, horario=None) for km in values],
+        [Distancia(km=km, data=None, horario=None) for km in values[:8]],
         key=lambda d: float(d.km),
     )
 

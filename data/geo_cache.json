@@ -180,7 +180,11 @@
     "pais": "US"
   },
   "al khobar": {
-    "estado": "",
+    "estado": "04",
+    "pais": "SA"
+  },
+  "al khobar||sa": {
+    "estado": "04",
     "pais": "SA"
   },
   "alagoinhas": {
@@ -935,6 +939,10 @@
     "estado": "",
     "pais": "IE"
   },
+  "ballina||ie": {
+    "estado": "MO",
+    "pais": "IE"
+  },
   "ballwin, mo": {
     "estado": "MO",
     "pais": "US"
@@ -1212,7 +1220,7 @@
     "pais": "US"
   },
   "beijing": {
-    "estado": "",
+    "estado": "BJ",
     "pais": "CN"
   },
   "beijing||cn": {
@@ -4096,7 +4104,7 @@
     "pais": "CA"
   },
   "endeavour||tt": {
-    "estado": "TUP",
+    "estado": "CTT",
     "pais": "TT"
   },
   "endwell, ny": {
@@ -5548,12 +5556,16 @@
     "pais": "US"
   },
   "hong kong": {
-    "estado": "",
-    "pais": "CN"
+    "estado": "HKI",
+    "pais": "HK"
   },
   "hong kong||cn": {
-    "estado": "GD",
-    "pais": "CN"
+    "estado": "HKI",
+    "pais": "HK"
+  },
+  "hong kong||hk": {
+    "estado": "HKI",
+    "pais": "HK"
   },
   "honolulu": {
     "estado": "HI",
@@ -6160,7 +6172,7 @@
     "pais": "IN"
   },
   "koln": {
-    "estado": "",
+    "estado": "NW",
     "pais": "DE"
   },
   "koln||de": {
@@ -7356,7 +7368,7 @@
     "pais": "US"
   },
   "milano||it": {
-    "estado": "",
+    "estado": "MI",
     "pais": "IT"
   },
   "milao": {
@@ -7768,7 +7780,7 @@
     "pais": "US"
   },
   "munchen": {
-    "estado": "",
+    "estado": "BY",
     "pais": "DE"
   },
   "munchen||de": {
@@ -7856,7 +7868,7 @@
     "pais": "PT"
   },
   "nanchang||cn": {
-    "estado": "",
+    "estado": "JX",
     "pais": "CN"
   },
   "nanjing": {
@@ -9010,6 +9022,10 @@
   "piscataway, nj": {
     "estado": "NJ",
     "pais": "US"
+  },
+  "pista de atletismo durazno||uy": {
+    "estado": "DU",
+    "pais": "UY"
   },
   "pittsburgh, pa": {
     "estado": "PA",
@@ -10396,7 +10412,7 @@
     "pais": "BR"
   },
   "sapporo||jp": {
-    "estado": "",
+    "estado": "01",
     "pais": "JP"
   },
   "saquarema": {
@@ -10544,7 +10560,7 @@
     "pais": "US"
   },
   "shanghai": {
-    "estado": "",
+    "estado": "SH",
     "pais": "CN"
   },
   "shanghai||cn": {
@@ -10596,7 +10612,7 @@
     "pais": "CN"
   },
   "shenzhen||cn": {
-    "estado": "",
+    "estado": "GD",
     "pais": "CN"
   },
   "sherman, il": {
@@ -10860,7 +10876,7 @@
     "pais": "GB"
   },
   "southampton||au": {
-    "estado": "WA",
+    "estado": "VIC",
     "pais": "AU"
   },
   "southbridge, ma": {
@@ -10972,16 +10988,16 @@
     "pais": "BE"
   },
   "st david's||bm": {
-    "estado": "",
-    "pais": "GB"
+    "estado": "SGE",
+    "pais": "BM"
   },
   "st davids": {
     "estado": "",
     "pais": "GB"
   },
   "st davids||bm": {
-    "estado": "",
-    "pais": "GB"
+    "estado": "SGE",
+    "pais": "BM"
   },
   "st ives": {
     "estado": "ENG",
@@ -11864,7 +11880,7 @@
     "pais": "ES"
   },
   "valencia||tt": {
-    "estado": "CHA",
+    "estado": "TUP",
     "pais": "TT"
   },
   "valinhos": {
@@ -12760,7 +12776,7 @@
     "pais": "MX"
   },
   "xi'an": {
-    "estado": "",
+    "estado": "SN",
     "pais": "CN"
   },
   "xi'an||cn": {
@@ -12804,7 +12820,7 @@
     "pais": "CN"
   },
   "yiwu||cn": {
-    "estado": "",
+    "estado": "ZJ",
     "pais": "CN"
   },
   "yoga e": {
@@ -12862,5 +12878,21 @@
   "zhenning": {
     "estado": "GZ",
     "pais": "CN"
+  },
+  "vila de são jorge||br": {
+    "pais": "BR",
+    "estado": "GO"
+  },
+  "vila de sao jorge||br": {
+    "pais": "BR",
+    "estado": "GO"
+  },
+  "praça do bambu||br": {
+    "pais": "BR",
+    "estado": "GO"
+  },
+  "praca do bambu||br": {
+    "pais": "BR",
+    "estado": "GO"
   }
 }

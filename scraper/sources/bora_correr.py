@@ -12,6 +12,7 @@ never matched this DOM and was dropped on the wrong assumption it was blocked.
 from __future__ import annotations
 import re
 import html as html_mod
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from ..http_client import get
@@ -92,7 +93,13 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     link_tag = cells[1].find("a")
     if not link_tag:
         return None
-    link = link_tag.get("href", "").strip() or URL
+    _href = link_tag.get("href", "").strip()
+    _parsed = urlparse(_href)
+    if _href and _parsed.path not in ("", "/"):
+        link = _href
+    else:
+        # No specific event page — skip (likely orienteering/non-running events)
+        return None
 
     # The title text and the distance hint are separated by <br />
     inner_html  = link_tag.decode_contents()

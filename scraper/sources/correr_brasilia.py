@@ -61,6 +61,9 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     # Stripping them caused the merger to collapse distinct events with different distances.
     titulo = titulo_raw
 
+    if _NON_RUNNING_RE.search(titulo_raw):
+        return None  # orienteering / non-running event
+
     date_str, horario = _parse_start_date(ev.get("startDate") or "")
     if date_str and date_str < today:
         return None
@@ -132,6 +135,13 @@ def _parse_start_date(raw: str) -> tuple[str, str | None]:
 # Canonical distance windows: snap noisy values from descriptions
 # to the exact standard distance (matches ativo.py / mks_esportes.py).
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
+
+# Orienteering and other non-running events — skip silently
+_NON_RUNNING_RE = re.compile(
+    r"\borientak?[çc]|\bse orienta\b|\bbuss?ola\b|\borienteering\b"
+    r"|\bciclismo\b|\bbike\b|\bnatação\b|\btriathlon\b",
+    re.IGNORECASE,
+)
 
 # Matches 2+ distances listed together: "7km e 14km", "7km, 14km, 21km", "7K|14K"
 _DIST_LIST_RE = re.compile(

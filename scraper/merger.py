@@ -116,11 +116,36 @@ def _title_words_contained(a: Corrida, b: Corrida) -> bool:
     return len(shorter) >= 2 and all(w in longer for w in shorter)
 
 
+def _km_key(km) -> object:
+    """Normalize km for deduplication: 21.0 and 21.097 are the same distance."""
+    if isinstance(km, str):
+        return km
+    return round(km)
+
+
+def _distances_disjoint(a: Corrida, b: Corrida) -> bool:
+    """True when both events have distances and none overlap.
+
+    Two events from the same brand but different editions (e.g. "Event (5km)"
+    vs "Event (21km)") appear similar in title but are truly distinct. Completely
+    disjoint distance sets is a strong signal that they must not be merged.
+    """
+    if not a.distancias or not b.distancias:
+        return False
+    a_km = {_km_key(d.km) for d in a.distancias}
+    b_km = {_km_key(d.km) for d in b.distancias}
+    return not bool(a_km & b_km)
+
+
 def are_duplicates(a: Corrida, b: Corrida) -> bool:
     # Shared event-specific inscription link is conclusive — state mismatch is fine
     if _shared_inscription_link(a, b):
         return True
     if a.estado != b.estado:
+        return False
+    # Completely disjoint distances → different events even if names look similar
+    # (e.g. "Event (5km e 10km)" vs "Event (21km e 42km)")
+    if _distances_disjoint(a, b):
         return False
     sim = _titulo_similarity(a.titulo, b.titulo)
     if sim >= 0.95 and _date_ok_relaxed(a, b):
@@ -139,12 +164,6 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
 # ---------------------------------------------------------------------------
 # Merge two corridas (champion absorbs extra)
 # ---------------------------------------------------------------------------
-
-def _km_key(km) -> object:
-    """Normalize km for deduplication: 21.0 and 21.097 are the same distance."""
-    if isinstance(km, str):
-        return km
-    return round(km)
 
 
 def _merge_distancias(base: list[Distancia], extra: list[Distancia]) -> list[Distancia]:

@@ -56,10 +56,10 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     titulo_raw = normalize_titulo(ev.get("name") or "")
     if not titulo_raw or len(titulo_raw) < 3:
         return None
-    # Strip trailing distance parentheticals like "(5Km E 10Km)" — correrbrasilia.com.br
-    # appends distances to event names when multi-day events are listed as separate entries.
-    # The structured `distancias` field already captures this information.
-    titulo = re.sub(r'\s*\([^)]*\d+\s*[kK][mM]?[^)]*\)\s*$', '', titulo_raw).strip()
+    # Keep the parenthetical distances in the title — it distinguishes entries like
+    # "Live!42K - Brasília 2026 (5km e 10km)" from "Live!42K - Brasília 2026 (21km e 42km)".
+    # Stripping them caused the merger to collapse distinct events with different distances.
+    titulo = titulo_raw
 
     date_str, horario = _parse_start_date(ev.get("startDate") or "")
     if date_str and date_str < today:

@@ -92,7 +92,21 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     localizacao = f"{city}, {estado}"
 
     desc = ev.get("description") or ""
-    distancias = _extract_distances(desc, titulo_raw)
+    # Priority 0: distances explicitly encoded in the URL slug after the 4-digit year
+    # (e.g. ".../live42k-brasilia-2026-5km-e-10km/" → [5, 10]).
+    # More reliable than description text which may describe the event *series*
+    # rather than what is actually offered at this specific edition.
+    url_distances: list[float] = []
+    url_year_suffix = re.search(r"/\d{4}-([^/]+)/?$", url)
+    if url_year_suffix:
+        url_distances = _parse_km_values_from_list(url_year_suffix.group(1), min_km=1.0)
+    if url_distances:
+        distancias = sorted(
+            [Distancia(km=km, data=None, horario=None) for km in url_distances],
+            key=lambda d: float(d.km),
+        )
+    else:
+        distancias = _extract_distances(desc, titulo_raw)
 
     return Corrida(
         id=stable_id,

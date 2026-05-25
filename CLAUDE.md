@@ -329,6 +329,21 @@ Every code change must go through a PR before merging into main.
 
 **A PR may only be merged when ALL CI test actions pass.** This is a hard requirement — never bypass it.
 
+### Every PR must reach a conclusion
+
+**No PR may be left open indefinitely.** Every PR ends in one of two states:
+
+1. **Merged** — CI is green and the change is accepted into `main`.
+2. **Closed (without merge)** — the change is abandoned, superseded, or no longer needed. Always leave a closing comment explaining why (e.g. "superseded by #N", "approach changed, see #M", "no longer needed because …").
+
+Open PRs without an active task driving them are a maintenance debt: they accumulate merge conflicts, confuse reviewers, and obscure what's actually in flight. When picking up work, audit any open PRs you (or a previous session) authored:
+
+- If still relevant → finish the work, get CI green, merge.
+- If superseded or abandoned → close with a one-line explanation.
+- If blocked on external input → leave a comment with the blocker and check back; close it if the blocker can't be resolved.
+
+When you create a new PR, you own driving it to a conclusion within the same session whenever possible. Do not open a PR and walk away from it.
+
 ## Event data quality requirements
 
 These are hard requirements enforced by `tests/test_site.py::test_all_events_have_required_fields` and `scraper/test_source.py`. All tests use **zero tolerance — no thresholds**. A single failing event fails the test.
@@ -354,6 +369,15 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 - When `geo.resolve()` returns a wrong country or empty estado, fix the cache by adding a country-qualified entry: `"{city_query}||{pais.lower()}"` → `{"pais": ..., "estado": ...}`.
 - If an event's state genuinely cannot be determined from available data, the event should be **excluded** from the scraper's output (not stored with empty estado).
 - **Never use thresholds** — even 1 event with invalid location is a failing test.
+
+### Failing-test response policy
+
+**A failing data-quality test must never be "fixed" by removing the offending events from `corridas.json`.** The correct response is always to fix the scraper so it stops producing invalid output. Concretely:
+
+- **Direct edits to `corridas.json` / `web/corridas.json` to drop events are forbidden as a test-fix.** The next scrape will regenerate the file from scraper output anyway, so dropping events from the JSON only masks the bug for one cycle.
+- **Fix at the source.** If a scraper emits events with missing required fields, the scraper itself must either (a) extract the missing data from a deeper page fetch, (b) enrich via `geo.resolve()` / cache, or (c) refuse to emit the event at all (`require_location=True`-style upfront skip). Option (c) is itself a scraper fix — it prevents the invalid event from ever entering the data — and is acceptable when no deeper data source exists.
+- **Adding missing reference data is allowed only for true gaps**, not as a band-aid. Example: a real ISO-3166-1 country with valid subdivisions that genuinely was never added to `web/locations/` is a reference-data gap, not a test-fix. Even so, prefer fixing the scraper to map the event to an existing country when possible.
+- **Always investigate before dropping.** Probe the event's source page (via the Probe URL workflow) to confirm whether the missing data actually exists somewhere fetchable. Only after confirming no fetchable data exists may the scraper skip the event upfront.
 
 ### Source test requirements
 

@@ -666,23 +666,48 @@ def test_cards_have_link_buttons(page_pt, live_server):
 # ---------------------------------------------------------------------------
 
 def test_all_events_have_required_fields():
-    """Every event in corridas.json must have data_evento, distancias, localizacao, and a link.
+    """Every event in corridas.json must satisfy all location and data requirements.
 
-    horario coverage is reported informally; missing horario is allowed because
-    many events do not announce their start time in advance.
+    Required (zero-tolerance — one failure fails the whole test):
+    - data_evento: non-empty date string
+    - distancias: non-empty list
+    - localizacao: non-empty string
+    - pais: ISO-3166-1 alpha-2 code that exists as web/locations/{pais}.json
+    - estado: non-empty subdivision code listed in that country's JSON file
+    - at least one valid link in fontes
+
+    horario is informational only — many events don't announce start time in advance.
     """
     corridas = _load_corridas()
     assert corridas, "corridas.json is empty"
 
-    missing_data: list[tuple] = []
-    missing_dist: list[tuple] = []
-    missing_loc:  list[tuple] = []
-    missing_link: list[tuple] = []
-    missing_hora: list[str]   = []
+    locs_dir = WEB_DIR / "locations"
+    _loc_cache: dict[str, set] = {}
+
+    def _valid_states(pais: str) -> set[str] | None:
+        if pais not in _loc_cache:
+            f = locs_dir / f"{pais}.json"
+            if not f.exists():
+                _loc_cache[pais] = None  # type: ignore[assignment]
+            else:
+                data = json.loads(f.read_text())
+                _loc_cache[pais] = {s["code"] for s in data.get("subdivisions", [])}
+        return _loc_cache[pais]  # type: ignore[return-value]
+
+    missing_data:   list[tuple] = []
+    missing_dist:   list[tuple] = []
+    missing_loc:    list[tuple] = []
+    bad_pais:       list[tuple] = []
+    missing_estado: list[tuple] = []
+    bad_estado:     list[tuple] = []
+    missing_link:   list[tuple] = []
+    missing_hora:   list[str]   = []
 
     for c in corridas:
         cid   = c.get("id", "?")
         title = c.get("titulo", "?")
+        pais  = c.get("pais", "")
+        estado = c.get("estado", "")
 
         if not c.get("data_evento"):
             missing_data.append((cid, title))
@@ -692,6 +717,15 @@ def test_all_events_have_required_fields():
 
         if not c.get("localizacao"):
             missing_loc.append((cid, title))
+
+        states = _valid_states(pais) if pais else None
+        if not pais or states is None:
+            bad_pais.append((cid, title, pais))
+        else:
+            if not estado:
+                missing_estado.append((cid, title, pais))
+            elif estado not in states:
+                bad_estado.append((cid, title, pais, estado))
 
         has_link = any(
             f.get("link_evento") or (f.get("links_inscricao") or [None])[0]
@@ -707,9 +741,6 @@ def test_all_events_have_required_fields():
     if missing_hora:
         pct = 100 * len(missing_hora) / n
         print(f"\nℹ️  {len(missing_hora)}/{n} eventos sem horário ({pct:.0f}%)")
-    if missing_loc:
-        pct = 100 * len(missing_loc) / n
-        print(f"ℹ️  {len(missing_loc)}/{n} eventos sem localizacao ({pct:.1f}%)")
 
     assert not missing_data, (
         f"{len(missing_data)}/{n} events missing data_evento. First 5: {missing_data[:5]}"
@@ -717,15 +748,22 @@ def test_all_events_have_required_fields():
     assert not missing_dist, (
         f"{len(missing_dist)}/{n} events missing distancias. First 5: {missing_dist[:5]}"
     )
+    assert not missing_loc, (
+        f"{len(missing_loc)}/{n} events missing localizacao. First 5: {missing_loc[:5]}"
+    )
+    assert not bad_pais, (
+        f"{len(bad_pais)}/{n} events with missing or unknown pais (no locations JSON). "
+        f"First 5: {bad_pais[:5]}"
+    )
+    assert not missing_estado, (
+        f"{len(missing_estado)}/{n} events with empty estado. First 5: {missing_estado[:5]}"
+    )
+    assert not bad_estado, (
+        f"{len(bad_estado)}/{n} events with estado not in locations JSON. "
+        f"First 5: {bad_estado[:5]}"
+    )
     assert not missing_link, (
         f"{len(missing_link)}/{n} events missing all links. First 5: {missing_link[:5]}"
-    )
-    # Localizacao: fail if more than 5% of events are missing it.
-    # Will be tightened to zero-tolerance once scraper location requirements are defined.
-    loc_pct = len(missing_loc) / n
-    assert loc_pct <= 0.05, (
-        f"{len(missing_loc)}/{n} events ({100*loc_pct:.1f}%) missing localizacao "
-        f"(threshold: 5%). First 10: {missing_loc[:10]}"
     )
 
 

@@ -457,6 +457,10 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     if country == "US" and state in _VIRTUAL_STATES:
         return None
 
+    # Bermuda (BM) has no location JSON in the repo — skip rather than store invalid pais
+    if country == "BM":
+        return None
+
     pais = country
     if country == "US":
         estado    = state if state in _US_STATES else ""

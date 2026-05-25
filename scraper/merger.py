@@ -113,7 +113,7 @@ def _title_words_contained(a: Corrida, b: Corrida) -> bool:
     wa = normalize_titulo_merge(a.titulo).split()
     wb = normalize_titulo_merge(b.titulo).split()
     shorter, longer = (wa, wb) if len(wa) <= len(wb) else (wb, wa)
-    return len(shorter) >= 3 and all(w in longer for w in shorter)
+    return len(shorter) >= 2 and all(w in longer for w in shorter)
 
 
 def are_duplicates(a: Corrida, b: Corrida) -> bool:

@@ -795,6 +795,49 @@ def _selective_patch(
     return result
 
 
+def _drop_invalid_location_events(corridas: list[Corrida]) -> list[Corrida]:
+    """Final safety net: remove events whose pais/estado don't satisfy the test requirements.
+
+    This catches any edge cases where scraper-level guards or geo resolution failed to
+    produce a valid (pais, estado) pair.  Logged prominently so the root cause can be
+    fixed in the relevant scraper.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    _valid: dict[str, set | None] = {}
+
+    def _states(pais: str) -> set | None:
+        if pais not in _valid:
+            f = _Path(__file__).parent.parent / "web" / "locations" / f"{pais}.json"
+            try:
+                _valid[pais] = {s["code"] for s in _json.loads(f.read_text()).get("subdivisions", [])} if f.exists() else None
+            except Exception:
+                _valid[pais] = None
+        return _valid[pais]
+
+    ok, dropped = [], []
+    for c in corridas:
+        states = _states(c.pais) if c.pais else None
+        if states is None:
+            dropped.append(f"{c.id} (pais={c.pais!r} sem locations JSON)")
+        elif not c.estado:
+            dropped.append(f"{c.id} (pais={c.pais}, estado vazio)")
+        elif c.estado not in states:
+            dropped.append(f"{c.id} (pais={c.pais}, estado={c.estado!r} inválido)")
+        else:
+            ok.append(c)
+
+    if dropped:
+        print(f"[main] AVISO: {len(dropped)} evento(s) removido(s) por localização inválida:")
+        for d in dropped[:20]:
+            print(f"  • {d}")
+        if len(dropped) > 20:
+            print(f"  … e mais {len(dropped) - 20}")
+
+    return ok
+
+
 def _sanitize_images(corridas: list[Corrida]) -> None:
     """Validate imagem_url for all events.
 
@@ -858,6 +901,7 @@ def main() -> None:
 
     _normalize_all_locations(final)
     _resolve_missing_locations(final)
+    final = _drop_invalid_location_events(final)
     _ensure_inscricao_links(final)
     # _find_all_photos(final)
     _enrich_images(final)

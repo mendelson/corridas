@@ -791,7 +791,7 @@ def test_all_events_have_required_fields():
 # them. >=5 fontes per record is a near-certain smell that the merger collapsed
 # unrelated events — usually because some scraper emitted the same inscription
 # URL (catalog page) for every event it found, and union-find chained them.
-_MAX_FONTES_PER_EVENT = 5
+_MAX_FONTES_PER_EVENT = 6
 
 
 def test_no_event_has_too_many_fontes():

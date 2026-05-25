@@ -222,10 +222,15 @@ def _parse_event(ev: dict, today: str, end_date: str) -> "Corrida | None":
     else:
         estado, country_pt = "", _ISO_TO_PT.get(pais, pais)
 
-    # Try geo resolution for any unresolved state
+    # Try geo resolution for any unresolved state.
+    # Trust the cache even when it disagrees with the API's countryISO —
+    # the RaceRoster API occasionally mislabels countries (e.g. Eswatini as ZA).
     if not estado and city:
         _r_pais, _r_estado = _geo.resolve(city, "", pais)
-        if _r_pais == pais:
+        if _r_pais not in ("??", ""):
+            if _r_pais != pais:
+                pais = _r_pais
+                country_pt = _ISO_TO_PT.get(pais, pais)
             estado = _r_estado or ""
 
     localizacao = ", ".join(p for p in (city, estado or country_pt) if p) or country_pt or pais

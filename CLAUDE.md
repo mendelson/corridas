@@ -314,3 +314,57 @@ Flying Run is not in Strapi and will never appear via `tf_sports_app.py`.
 ## Autonomy: CI and iteration
 
 Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.
+
+## PR workflow
+
+Every code change must go through a PR before merging into main.
+
+1. **Create a feature branch** — use a descriptive name.
+2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. Draft PRs skip CI (the `test-site.yml` job has `if: !github.event.pull_request.draft`).
+3. **Develop freely** — push commits to the branch without CI interference.
+4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI.
+5. **Poll CI** — use `mcp__github__pull_request_read` to check check runs. **Never merge with pending or failing checks.** Wait until all checks complete with `conclusion: success`.
+6. **Merge** via `mcp__github__merge_pull_request` — only after all tests pass.
+7. **Scrape triggers automatically** on merge via `scrape.yml` (`pull_request: types: [closed]` + merged guard).
+
+**A PR may only be merged when ALL CI test actions pass.** This is a hard requirement — never bypass it.
+
+## Event data quality requirements
+
+These are hard requirements enforced by `tests/test_site.py::test_all_events_have_required_fields` and `scraper/test_source.py`. All tests use **zero tolerance — no thresholds**. A single failing event fails the test.
+
+### Required fields per event
+
+Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all** of the following simultaneously:
+
+1. **`localizacao`** — non-empty string (city + state, or at least city).
+2. **`pais`** — a valid ISO-3166-1 alpha-2 code that exists as a file in `web/locations/{pais}.json`.
+3. **`estado`** — a valid subdivision code that exists in `web/locations/{pais}.json`'s `subdivisions` list. Must be non-empty. If the subdivision cannot be determined, the event must not be stored until it can be resolved.
+4. **`pais` + `estado` are displayed in the same language** (the frontend localizes both via `_localizeCountryByIso2` and `_localizeSubdiv`). This means both must be resolvable in all 5 UI locales.
+5. **`distancias`** — non-empty list of `Distancia` objects.
+6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
+7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
+
+`horario` is not required (many events don't announce start time in advance).
+
+### Location fix policy
+
+- **Never add or modify `web/locations/*.json` files to make a test pass.** The location JSON files are reference data, not scraper output. The correct fix is always to improve the scraper and/or `data/geo_cache.json`.
+- **Only `data/geo_cache.json` can be updated** as a location fix (alongside scraper improvements).
+- When `geo.resolve()` returns a wrong country or empty estado, fix the cache by adding a country-qualified entry: `"{city_query}||{pais.lower()}"` → `{"pais": ..., "estado": ...}`.
+- If an event's state genuinely cannot be determined from available data, the event should be **excluded** from the scraper's output (not stored with empty estado).
+- **Never use thresholds** — even 1 event with invalid location is a failing test.
+
+### Source test requirements
+
+`scraper/test_source.py` validates each source in isolation. In addition to the existing checks:
+- Events with no `distancias` are flagged as info (>30% is a warning, >70% is a failure).
+- Events with no link in `fontes` are a **hard failure**.
+- Missing `horario` is reported informally (informational only, not a failure).
+
+### Data correction on next scrape
+
+The reconcile pipeline (`main.py`) is designed so that:
+- `_update_from()` always clears `estado` when the incoming scrape returns empty, allowing `_resolve_missing_locations()` to retry.
+- `_resolve_missing_locations()` fills in empty `estado` (and fixes `INT`/`??` values) via `geo.resolve()` with the persistent geo cache.
+- Therefore: fixing the geo cache + scraper is sufficient; the next CI scrape will propagate correct values to `corridas.json`.

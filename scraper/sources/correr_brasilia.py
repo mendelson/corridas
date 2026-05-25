@@ -146,28 +146,22 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     """Extract race distances.
 
     Priority:
-      1. Parenthetical hint in the title — the organiser explicitly appended
-         the distances offered at this specific edition, e.g. "(5Km E 10Km)".
-         This is more precise than description text, which may describe the
-         full event *series* rather than what is available here.
-      2. Grouped list in description ("7km e 14km") — avoids stray references
-         like "3,4km de pista".
-      3. Any km mention in description.
+      1. Grouped list in description ("7km e 14km") — the EventOn plugin embeds
+         explicit "Distância: Xkm e Ykm" metadata in the description, making this
+         the most reliable source for the specific distances offered at this edition.
+      2. Any km mention in description.
+      3. Parenthetical hint in title as last resort.
     """
-    # Priority 1: explicit parenthetical in title, e.g. "Live!42K (5km e 10km)"
-    paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
-    if paren:
-        values = _parse_km_values(paren.group(0), min_km=1.0)
-        if values:
-            return sorted(
-                [Distancia(km=km, data=None, horario=None) for km in values[:8]],
-                key=lambda d: float(d.km),
-            )
-    # Priority 2: grouped list pattern in description
+    # Priority 1: grouped list pattern in description (e.g. "Distância: 5km e 10km")
     values = _parse_km_values_from_list(desc, min_km=1.0)
     if not values:
-        # Priority 3: any km mention in description
+        # Priority 2: any km mention in description
         values = _parse_km_values(desc, min_km=1.0)
+    if not values:
+        # Priority 3: parenthetical hint in title only
+        paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
+        if paren:
+            values = _parse_km_values(paren.group(0), min_km=1.0)
     return sorted(
         [Distancia(km=km, data=None, horario=None) for km in values[:8]],
         key=lambda d: float(d.km),

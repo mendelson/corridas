@@ -147,7 +147,7 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
         periodo_inscricao=None,
         fontes=[FonteInfo(
             nome=SOURCE_NAME,
-            link_evento=link,
+            link_evento=URL,
             links_inscricao=[link],
         )],
         miss_count=0,

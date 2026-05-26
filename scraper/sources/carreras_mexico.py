@@ -131,16 +131,16 @@ def _enrich_locations(corridas: list[Corrida]) -> None:
         return
     print(f"[{SOURCE_NAME}] buscando localização para {len(needs_location)} eventos...")
 
-    def fetch(c: Corrida) -> tuple[Corrida, str, str]:
+    def fetch(c: Corrida) -> tuple[Corrida, str, str, str | None]:
         ev_id = c.id.replace("cm_", "")
-        cidade, estado = _fetch_location_from_convocatoria(ev_id)
-        return c, cidade, estado
+        cidade, estado, horario = _fetch_location_from_convocatoria(ev_id)
+        return c, cidade, estado, horario
 
     with ThreadPoolExecutor(max_workers=3) as pool:
         futures = {pool.submit(fetch, c): c for c in needs_location}
         for future in as_completed(futures):
             try:
-                c, cidade, estado = future.result()
+                c, cidade, estado, horario = future.result()
             except Exception as e:
                 print(f"[{SOURCE_NAME}] enrich erro: {e}")
                 continue
@@ -148,9 +148,9 @@ def _enrich_locations(corridas: list[Corrida]) -> None:
                 c.cidade = cidade
                 c.estado = estado
                 c.localizacao = f"{cidade}, {estado or 'México'}"
-                for f in c.fontes:
-                    pass  # fontes unchanged
                 print(f"[{SOURCE_NAME}] localização: {c.titulo[:30]} → {c.localizacao}")
+            if horario and not c.horario:
+                c.horario = horario
 
 
 def _extract_html(payload: str) -> Optional[str]:
@@ -334,8 +334,8 @@ def _extract_date(el, text: str) -> Optional[str]:
     return None
 
 
-def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
-    """Fetch convocatoria.php and extract (cidade, estado) from JSON-LD SportsEvent schema."""
+def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | None]:
+    """Fetch convocatoria.php and extract (cidade, estado, horario) from JSON-LD SportsEvent schema."""
     url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
     # Stream and stop after 30KB — JSON-LD is in the first ~5KB of the <head>
     try:
@@ -374,8 +374,16 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str]:
         if not estado and cidade:
             _, estado = _geo.resolve(cidade, "", "MX")
             estado = estado or ""
-        return cidade, estado
-    return "", ""
+        # Extract time from startDate: "2026-09-26T09:30:00-06:00"
+        horario: str | None = None
+        start_dt = schema.get("startDate") or ""
+        mt = re.search(r"[T ](\d{2}):(\d{2})", start_dt)
+        if mt:
+            h, mi = int(mt.group(1)), int(mt.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                horario = f"{h:02d}:{mi:02d}"
+        return cidade, estado, horario
+    return "", "", None
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

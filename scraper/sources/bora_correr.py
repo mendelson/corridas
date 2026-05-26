@@ -29,6 +29,13 @@ _DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
 _UUID_RE = re.compile(r"obterDadosReport\('([0-9a-f-]+)'", re.I)
 _KM_RE   = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
 
+# Orienteering and other non-running event keywords — skip silently
+_NON_RUNNING_RE = re.compile(
+    r"\borientak?[çc]|\bse orienta\b|\bbuss?ola\b|\borienteering\b"
+    r"|\bciclismo\b|\bbike\b|\bciclo\b|\bnatação\b|\btriathlon\b|\btriatlol\b",
+    re.IGNORECASE,
+)
+
 # Time patterns: "07h30", "07:30h", "07:30", "7h" — must not be followed by km.
 _TIME_RE = re.compile(
     r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
@@ -109,6 +116,8 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None
+    if _NON_RUNNING_RE.search(titulo_raw) or _NON_RUNNING_RE.search(dist_hint):
+        return None  # orienteering / non-running event
 
     # Horario fallback: check dist_hint and full cell 1 text
     if horario is None:

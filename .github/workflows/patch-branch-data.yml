@@ -1,4 +1,4 @@
-name: Re-scrape Sources
+name: Corrigir Dados da Branch
 
 # Selective rescrape for validating scraper/geo-cache fixes within a PR.
 #
@@ -11,7 +11,7 @@ name: Re-scrape Sources
 #      and pushes back to the branch only when they pass. If tests fail the run
 #      is marked as failed and nothing is committed.
 #
-# Source keys match the test-sources.yml dropdown values:
+# Source keys match the monitor-source-health.yml dropdown values:
 #   runsignup, world_athletics, raceroster, ticket_sports, tf_sports,
 #   correr_brasilia, bora_correr, brasil_que_corre, portal_das_corridas,
 #   majors/london, majors/berlin, ... (module path without .py)

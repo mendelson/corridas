@@ -1,4 +1,4 @@
-name: Source Validation
+name: CI — Validar Scrapers
 
 # Triggered automatically on PRs that add or modify scraper source files.
 # Runs the affected sources, then validates the output with the full test suite.

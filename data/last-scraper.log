@@ -11,6 +11,9 @@
 [Yescom] 14 corridas encontradas
 [Minhas Inscrições] 6 corridas encontradas
 [Runner Brasil] 18 corridas encontradas
+[Ativo] 8 corridas encontradas
+[Minhas Inscrições] 6 corridas encontradas
+[Brasil Corrida] 12 corridas encontradas
 [Portal das Corridas] 120 páginas para inspecionar
 [Brasil Corrida] 12 corridas encontradas
 [Bora Correr] 45 corridas encontradas
@@ -26,6 +29,8 @@
 [TF Sports App] events(recentes,pt-BR): 1912 brutos
 [TF Sports App] total Strapi locale=pt-BR: 1912 únicos
 [TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports] run-series(sem data): 0 eventos brutos
 [TF Sports] run-series(recentes): 100 eventos brutos
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
@@ -2056,6 +2061,7 @@
 [RunSignup] página 26: 250 corridas
 [Correr Brasília] 62 corridas encontradas
 [RunSignup] página 27: 250 corridas
+[HalfMarathons.net] 1888 corrida(s) encontrada(s)
 [RunSignup] página 28: 250 corridas
 [RunSignup] página 29: 250 corridas
 [RunSignup] página 30: 250 corridas
@@ -2285,6 +2291,9 @@
 [main] 'Niles Township Food Pantry Fun Run 2026' — link válido, miss_count zerado
 [main] 'Ohio 529 Collegeadvantage Redlegs Run' — link válido, miss_count zerado
 [main] 'Trail In Motion 17 - Recanto Das Pedras 2026' — link válido, miss_count zerado
+[main] 'Conquer The Lake Running Event' — link válido, miss_count zerado
+[main] 'The Parklands & Wlky 5K Run/Walk 2026' — link válido, miss_count zerado
+[main] 'Forest City Road Races 2026' — link válido, miss_count zerado
 [main] 'Chastain Chase 5K-Celebrating National Cancer Survivors Day' — link válido, miss_count zerado
 [main] 'Fox Trot 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'The Parklands & Wlky 5K Run/Walk 2026' — link válido, miss_count zerado
@@ -2373,6 +2382,11 @@
 [main] 'Neighborhood Food Pantries (Nfp) Shopping Cart Shuffle' — link válido, miss_count zerado
 [main] 'Run For A Resident 2026' — link válido, miss_count zerado
 [main] '17Th Chesapeake City Canal Race 5K' — link válido, miss_count zerado
+[main] 'Neighborhood Food Pantries (Nfp) Shopping Cart Shuffle' — link válido, miss_count zerado
+[main] 'Whiskey Run London' — link válido, miss_count zerado
+[main] '2Nd Annual Seq It Forward: Run For Rare 5K + Fun Run' — link válido, miss_count zerado
+[main] 'Summer Session 10K & 5K' — link válido, miss_count zerado
+[main] '703 Warriors 5K & 10K' — link válido, miss_count zerado
 [main] 'Swedish Days Lopp' — link válido, miss_count zerado
 [main] 'Pound Ridge 5K And Kids Dash' — link válido, miss_count zerado
 [main] '2026 Pride & Remembrance Run' — link válido, miss_count zerado
@@ -2771,7 +2785,6 @@
 [main] '3Rd Annual New Garden Gobbler' — link válido, miss_count zerado
 [main] '2026 Seal Beach Turkey Trot' — link válido, miss_count zerado
 [main] 'Dc Turkey Trot 5K & Half' — link válido, miss_count zerado
-[main] 'Maryland Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'The District’S Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'National Harbor Turkey Trot 5K' — link válido, miss_count zerado
 [main] 'Greensboro Gobbler 5K' — link válido, miss_count zerado
@@ -2789,7 +2802,6 @@
 [main] 'The Animal Run 5K Tofurkey Trot' — link válido, miss_count zerado
 [main] '2026 Hope The Mission - Drumstick Dash La' — link válido, miss_count zerado
 [main] 'Turkey Trot La 2026' — link válido, miss_count zerado
-[main] '28Th Milford Cross Country Booster Reindeer Stampede 5K' — link válido, miss_count zerado
 [main] 'The Leftovers 10K / 5K Run' — link válido, miss_count zerado
 [main] 'Lake Anna Turkey Trot 5K, 10K, & Half' — link válido, miss_count zerado
 [main] 'Black Friday 5K & 10K' — link válido, miss_count zerado
@@ -2851,6 +2863,7 @@
 [main] 'The Kook Run' — link válido, miss_count zerado
 [main] 'Falling For You 5K, 10K, & Half' — link válido, miss_count zerado
 [main] 'Winter Carderock 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Coyote Hills 2027' — link válido, miss_count zerado
 [main] 'Valentine’S Day 5K & Half' — link válido, miss_count zerado
 [main] 'A Run Through Redlands Half Marathon, 10K & 5K' — link válido, miss_count zerado
 [main] 'Victory 2027' — link válido, miss_count zerado

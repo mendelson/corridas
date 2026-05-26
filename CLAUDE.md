@@ -465,9 +465,8 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 4. **`pais` + `estado` are displayed in the same language** (the frontend localizes both via `_localizeCountryByIso2` and `_localizeSubdiv`). This means both must be resolvable in all 5 UI locales.
 5. **`distancias`** — non-empty list of `Distancia` objects.
 6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
-7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
-
-`horario` is not required (many events don't announce start time in advance).
+7. **`horario`** — non-empty start time string (`HH:MM`). Scrapers must extract the start time from the event page; if it is genuinely unavailable, the event must not be stored.
+8. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
 
 ### Location fix policy
 
@@ -491,7 +490,7 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 `scraper/test_source.py` validates each source in isolation. In addition to the existing checks:
 - Events with no `distancias` are flagged as info (>30% is a warning, >70% is a failure).
 - Events with no link in `fontes` are a **hard failure**.
-- Missing `horario` is reported informally (informational only, not a failure).
+- Missing `horario` is a **hard failure** — zero tolerance, same as all other required fields.
 
 ### Data correction on next scrape
 

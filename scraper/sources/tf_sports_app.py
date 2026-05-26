@@ -343,9 +343,10 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
     sub_cta = ev.get("subscriptionCta") or {}
     _raw_reg = sub_cta.get("url") if isinstance(sub_cta, dict) else None
     reg_url = _raw_reg if (_raw_reg and _raw_reg.startswith("http")) else None
-    # Use reg_url when present; otherwise link to the listing page.
-    # The /aulas-e-eventos/{slug} path is not a published event page — it 404s.
-    link_evento = reg_url or LISTING_URL
+    # Priority: explicit registration URL > slug page > generic listing.
+    # Slug pages may not always resolve, but they're event-unique — using the
+    # generic listing for every event would trip the shared-inscription-link test.
+    link_evento = reg_url or (f"{LISTING_URL}/{slug}" if slug else LISTING_URL)
 
     return Corrida(
         id=f"tfsapp_{ev_id}",

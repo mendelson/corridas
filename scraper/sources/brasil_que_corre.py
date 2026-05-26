@@ -1,19 +1,30 @@
 """Scraper for brasilquecorre.com/distritofederal
 
 Custom (non-WordPress) site built on what looks like a Locaweb page builder.
-Each event lives in a `<div class="cs-text-widget">` whose text follows a
-fixed layout:
+Each event lives in a `<div class="cs-text-widget">` with this structure:
 
-  TITLE  &nbsp;  DD[ e DD] de MES de YYYY  CITY [/ UF]  DISTANCES (CATEGORIES)  ORGANIZER
+  <h5><a href="EXTERNAL_EVENT_URL">TITLE</a></h5>
+  <p>&nbsp;</p>
+  <p>DD[ e DD] de MES de YYYY</p>
+  <p>CITY [/ UF]</p>
+  <p>Xkm, Ykm... (corrida)</p>
+  <p>ORGANIZER</p>
 
-Example raw text:
-  ONERUN SUNSET   23 de Maio de 2026 Brasília / DF 1km, 5km, 10km e 21km (corrida) ONE23 GO
+47 of 52 event widgets contain a direct link to the registration platform
+(centraldacorrida.com.br, ticketsports.com.br, brasilcorrida.com.br, etc.).
+link_evento is set to that external URL; the platform name is inferred from
+the domain so the merger can correctly attribute the source.
+
+Start times are NOT present on this page. centraldacorrida.com.br (the dominant
+destination, ~38 events) is a Bubble.io SPA and cannot be scraped without JS.
+Those events have horario=None until a dedicated scraper is added.
 
 The original scraper used generic CSS selectors (.event/.race/article) that
 never matched this DOM and was incorrectly dropped as "broken".
 """
 from __future__ import annotations
 import re
+from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from ..http_client import get
@@ -22,6 +33,26 @@ from ..utils import normalize_titulo, slugify, now_iso, today_iso
 
 URL = "https://brasilquecorre.com/distritofederal"
 SOURCE_NAME = "Brasil que Corre"
+
+_DOMAIN_TO_SOURCE: list[tuple[str, str]] = [
+    ("ticketsports.com.br",        "Ticket Sports"),
+    ("ticketagora.com.br",         "Ticket Sports"),
+    ("page.ticketsports.com.br",   "Ticket Sports"),
+    ("sympla.com.br",              "Sympla"),
+    ("tfsports.com.br",            "TF Sports"),
+    ("centraldacorrida.com.br",    "Central da Corrida"),
+    ("minhasinscricoes.com.br",    "Minhas Inscrições"),
+    ("brasilcorrida.com.br",       "Brasil Corrida"),
+    ("circuitodasestacoes.com.br", "Circuito das Estações"),
+    ("brutusrace.com.br",          "Brutus Race"),
+]
+
+def _nome_for_link(url: str) -> str:
+    domain = urlparse(url).netloc.lower().removeprefix("www.")
+    for fragment, nome in _DOMAIN_TO_SOURCE:
+        if fragment in domain:
+            return nome
+    return SOURCE_NAME
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
@@ -78,6 +109,17 @@ def scrape() -> list[Corrida]:
 
 
 def _parse_widget(widget, today: str, now: str) -> Corrida | None:
+    # Extract external event link from <h5><a href> — present in 47 of 52 event widgets.
+    # This is the real event page (CDC, Ticket Sports, Brasil Corrida, etc.), not BQC itself.
+    link: str | None = None
+    h5 = widget.find("h5")
+    if h5:
+        a = h5.find("a", href=True)
+        if a:
+            href = a.get("href", "").strip()
+            if href and href.startswith("http"):
+                link = href
+
     text = widget.get_text(" ", strip=True)
     if not text or len(text) < 20:
         return None
@@ -108,10 +150,14 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
     else:
         stable_id = f"bqc_{slugify(titulo[:40])}_{data_evento}"
 
-    # Catalog page has no per-event URLs; anchor each event by widget id so the
-    # merger's _shared_inscription_link doesn't treat all bqc events as the same
-    # registration link (which collapsed 50+ events into one record).
-    per_event_url = f"{URL}#{widget_id}" if widget_id else f"{URL}#{stable_id}"
+    # link_evento: prefer the external platform URL; fall back to BQC anchor (unique
+    # per widget, so the merger's _shared_inscription_link won't collapse all events).
+    if link:
+        link_evento = link
+        fonte_nome = _nome_for_link(link)
+    else:
+        link_evento = f"{URL}#{widget_id}" if widget_id else f"{URL}#{stable_id}"
+        fonte_nome = SOURCE_NAME
 
     return Corrida(
         id=stable_id,
@@ -127,9 +173,9 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
         inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[FonteInfo(
-            nome=SOURCE_NAME,
-            link_evento=per_event_url,
-            links_inscricao=[per_event_url],
+            nome=fonte_nome,
+            link_evento=link_evento,
+            links_inscricao=[link_evento],
         )],
         miss_count=0,
         first_seen_at=now,

@@ -22,12 +22,40 @@ from ..utils import normalize_titulo, now_iso, today_iso
 URL = "https://coelhodeprograma.com.br/boracorrer/"
 SOURCE_NAME = "Bora Correr"
 
+_DOMAIN_TO_SOURCE: list[tuple[str, str]] = [
+    ("ticketsports.com.br",      "Ticket Sports"),
+    ("ticketagora.com.br",       "Ticket Sports"),
+    ("page.ticketsports.com.br", "Ticket Sports"),
+    ("sympla.com.br",            "Sympla"),
+    ("tfsports.com.br",          "TF Sports"),
+    ("centraldacorrida.com.br",  "Central da Corrida"),
+    ("minhasinscricoes.com.br",  "Minhas Inscrições"),
+    ("brasilcorrida.com.br",     "Brasil Corrida"),
+    ("circuitodasestacoes.com.br", "Circuito das Estações"),
+    ("esportes.agenciasisters.com.br", "Agência Sisters"),
+]
+
+
+def _nome_for_link(url: str) -> str:
+    domain = urlparse(url).netloc.lower().removeprefix("www.")
+    for fragment, nome in _DOMAIN_TO_SOURCE:
+        if fragment in domain:
+            return nome
+    return SOURCE_NAME
+
 # Snap nearby values to the canonical race distance (same pattern as ativo.py).
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
 _DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
 _UUID_RE = re.compile(r"obterDadosReport\('([0-9a-f-]+)'", re.I)
 _KM_RE   = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
+
+# Orienteering and other non-running event keywords — skip silently
+_NON_RUNNING_RE = re.compile(
+    r"\borientak?[çc]|\bse orienta\b|\bbuss?ola\b|\borienteering\b"
+    r"|\bciclismo\b|\bbike\b|\bciclo\b|\bnatação\b|\btriathlon\b|\btriatlol\b",
+    re.IGNORECASE,
+)
 
 # Time patterns: "07h30", "07:30h", "07:30", "7h" — must not be followed by km.
 _TIME_RE = re.compile(
@@ -109,6 +137,8 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None
+    if _NON_RUNNING_RE.search(titulo_raw) or _NON_RUNNING_RE.search(dist_hint):
+        return None  # orienteering / non-running event
 
     # Horario fallback: check dist_hint and full cell 1 text
     if horario is None:
@@ -137,7 +167,7 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
         inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[FonteInfo(
-            nome=SOURCE_NAME,
+            nome=_nome_for_link(link),
             link_evento=link,
             links_inscricao=[link],
         )],

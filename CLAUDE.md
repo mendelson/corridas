@@ -100,6 +100,15 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 - `links_inscricao` in each `FonteInfo` should always be `[link_evento]` — the source page where the event data was scraped from. **No conditional logic based on `inscricoes_abertas`.** The button always shows and always leads to the source event page.
 - **Every event must have at least one real, working link.** Never emit `links_inscricao=[]` from a scraper; if a more specific registration URL isn't available, fall back to `[link_evento]`. The pipeline (`_ensure_inscricao_links()` in `scraper/main.py`) also enforces this as a final safety net, and the frontend falls back to `link_evento` when `links_inscricao` is missing — but scrapers should still produce non-empty links to begin with.
 
+### O objetivo final é a página oficial do evento
+
+Scrapers e fontes são apenas meios de **descoberta**. O objetivo real é sempre fornecer ao usuário a página oficial do evento — aquela com informações completas, inscrições e regulamento. Isso define como scrapers de agregadores devem se comportar:
+
+- **`link_evento` deve apontar para a plataforma do evento, não para o agregador.** Quando um calendário (Bora Correr, Correr Brasília, Brasil que Corre) linka para Ticket Sports, Sympla, TF Sports etc., é essa URL de destino que deve ir para `link_evento` e `links_inscricao` — não a URL do próprio calendário.
+- **O `nome` da `FonteInfo` deve refletir a plataforma do link, não o agregador.** Se o link aponta para `ticketsports.com.br`, o nome deve ser `"Ticket Sports"`, não `"Bora Correr"`. Isso é feito com um mapeamento domínio → nome (ver `bora_correr.py`:`_nome_for_link()`). Use o nome do agregador como fallback apenas quando o domínio não for reconhecido.
+- **Convergência de múltiplas fontes na mesma URL é o sinal mais forte de que essa é a página oficial.** Quando `bora_correr.py` e `tf_sports_app.py` ambos encontram `tfsports.com.br/run-series/x`, o merger os colapsa via `_shared_inscription_link()` em um único evento. Quanto mais fontes convergem para a mesma URL, maior a confiança de que ali está a informação verdadeira.
+- **Agregadores com páginas por evento no próprio domínio são a exceção.** `brasil_que_corre.py` usa âncoras únicas (`brasilquecorre.com/distritofederal#uuid`) que são válidas como `link_evento` porque o BQC tem uma página de detalhes por evento. `correr_brasilia.py` usa `correrbrasilia.com.br/events/<slug>`. Nesses casos manter a URL do agregador é correto.
+
 ### Frontend distances are unit-aware
 
 `Distancia.km` is intentionally polymorphic: `5.0` renders as `5K`, `21.097` as `21K`, the string `"5 mi"` renders verbatim. When adding a source with mixed-unit distances (RunSignup is the canonical example), keep miles as `"<n> mi"` strings — do not convert.

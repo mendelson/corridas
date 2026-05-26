@@ -313,8 +313,14 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
     location_raw = ev.get("location") or attrs.get("location") or ""
     city, state = _parse_location(location_raw, titulo)
     if not state or state == "??":
-        _, geo_state = _geo.resolve(location_raw or titulo, city, "BR")
+        # When _parse_location found no UF pattern, city came from the raw string fallback.
+        # Pass empty city to geo.resolve to avoid doubling the venue name in the cache key.
+        geo_city = city if state else ""
+        _, geo_state = _geo.resolve(location_raw or titulo, geo_city, "BR")
         state = geo_state or ""
+    if not state:
+        print(f"[{SOURCE_NAME}] filtrado(sem UF): {titulo!r} location={location_raw!r}")
+        return None
     localizacao = ", ".join(p for p in [city, state] if p)
 
     distancias = _distances_from_attrs(attrs, titulo)
@@ -337,7 +343,10 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
     sub_cta = ev.get("subscriptionCta") or {}
     _raw_reg = sub_cta.get("url") if isinstance(sub_cta, dict) else None
     reg_url = _raw_reg if (_raw_reg and _raw_reg.startswith("http")) else None
-    link_evento = f"{LISTING_URL}/{slug}" if slug else LISTING_URL
+    # Priority: explicit registration URL > slug page > generic listing.
+    # Slug pages may not always resolve, but they're event-unique — using the
+    # generic listing for every event would trip the shared-inscription-link test.
+    link_evento = reg_url or (f"{LISTING_URL}/{slug}" if slug else LISTING_URL)
 
     return Corrida(
         id=f"tfsapp_{ev_id}",

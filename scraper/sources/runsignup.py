@@ -471,6 +471,8 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
             _r_pais, _r_estado = _geo.resolve(city, "", pais)
             if _r_pais == pais:
                 estado = _r_estado or ""
+        if not estado:
+            return None
         country_pt   = _ISO_TO_PT.get(country, country)
         loc_parts    = [p for p in (city, country_pt) if p]
     localizacao = ", ".join(loc_parts) or "Internacional"

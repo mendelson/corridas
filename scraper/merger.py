@@ -1,5 +1,6 @@
 from __future__ import annotations
 import difflib
+import re
 from collections import defaultdict
 from datetime import date, timedelta
 
@@ -75,7 +76,17 @@ _GENERIC_LINKS: set[str] = {
 _RUN_GENERIC_LINKS: set[str] = set()
 
 
+_TS_ID_RE = re.compile(r"ticketsports\.com\.br/e/[^/]*?-(\d+)/?$", re.IGNORECASE)
+
+
 def _norm_link(url: str) -> str:
+    # Ticket Sports URLs come in two formats for the same event:
+    #   slug:  .../e/minions-run-brasilia-2026-86573   (from bora_correr, html calendars)
+    #   name:  .../e/MINIONS+RUN+-+BRASÍLIA+2026-86573 (from ticket_sports API)
+    # Normalize both to just the numeric event ID so the merger deduplicates them.
+    m = _TS_ID_RE.search(url)
+    if m:
+        return f"ticketsports.com.br/e/{m.group(1)}"
     return url.rstrip("/").lower()
 
 

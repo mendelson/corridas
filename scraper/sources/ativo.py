@@ -67,6 +67,14 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if not data_evento or data_evento < today:
         return None
 
+    horario: str | None = None
+    if len(dt_raw) > 10:
+        m_t = re.search(r"[T ](\d{2}):(\d{2})", dt_raw)
+        if m_t:
+            h, mi = int(m_t.group(1)), int(m_t.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                horario = f"{h:02d}:{mi:02d}"
+
     estado = (ev.get("ds_estado") or "").strip()
     cidade = (ev.get("ds_cidade") or "").strip()
     localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or ""
@@ -102,7 +110,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         id=f"ativo_{event_id}",
         titulo=titulo,
         data_evento=data_evento,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,

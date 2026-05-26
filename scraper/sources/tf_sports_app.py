@@ -123,7 +123,24 @@ def _is_running_event(attrs: dict, ev: dict) -> bool:
 # Distance extraction
 # ---------------------------------------------------------------------------
 
-def _distances_from_modalities(modalities_raw) -> list[Distancia]:
+def _time_from_val(val) -> str | None:
+    if not isinstance(val, str) or not val:
+        return None
+    m = re.search(r"[T ](\d{2}):(\d{2})", val)
+    if m:
+        h, mi = int(m.group(1)), int(m.group(2))
+        if 0 <= h <= 23 and 0 <= mi <= 59:
+            return f"{h:02d}:{mi:02d}"
+    m = re.search(r"\b(\d{1,2})[h:](\d{2})\b", val, re.IGNORECASE)
+    if m:
+        h, mi = int(m.group(1)), int(m.group(2))
+        if 0 <= h <= 23 and 0 <= mi <= 59:
+            return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _distances_from_modalities(modalities_raw) -> tuple[list[Distancia], str | None]:
+    """Returns (distancias, earliest_horario)."""
     items: list[dict] = []
     if isinstance(modalities_raw, dict):
         items = modalities_raw.get("modalitiesItems") or []
@@ -132,6 +149,7 @@ def _distances_from_modalities(modalities_raw) -> list[Distancia]:
 
     seen: set[float] = set()
     result: list[Distancia] = []
+    horarios: list[str] = []
     for item in items:
         val = item.get("value") or item.get("km") or item.get("distance") or ""
         if not val:
@@ -143,20 +161,26 @@ def _distances_from_modalities(modalities_raw) -> list[Distancia]:
             km = float(km_str)
             if 0.5 <= km <= 250 and km not in seen:
                 seen.add(km)
-                result.append(Distancia(km=km, data=None, horario=None))
+                time_raw = (item.get("startTime") or item.get("start_time")
+                            or item.get("horario") or item.get("hora"))
+                h = _time_from_val(time_raw)
+                if h:
+                    horarios.append(h)
+                result.append(Distancia(km=km, data=None, horario=h))
         except ValueError:
             pass
 
-    return sorted(result, key=lambda d: float(d.km) if isinstance(d.km, (int, float)) else 999)
+    dists = sorted(result, key=lambda d: float(d.km) if isinstance(d.km, (int, float)) else 999)
+    return dists, (min(horarios) if horarios else None)
 
 
-def _distances_from_attrs(attrs: dict, titulo: str) -> list[Distancia]:
-    """Extract distances from eventData.modalities, then title keywords."""
+def _distances_from_attrs(attrs: dict, titulo: str) -> tuple[list[Distancia], str | None]:
+    """Extract distances and start time from eventData.modalities, then title keywords."""
     ev = attrs.get("eventData") or {}
     modalities = ev.get("modalities") or ev.get("modalitiesItems") or []
-    d = _distances_from_modalities(modalities)
-    if d:
-        return d
+    dists, horario = _distances_from_modalities(modalities)
+    if dists:
+        return dists, horario
     result: list[Distancia] = []
     for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", titulo):
         try:
@@ -165,7 +189,7 @@ def _distances_from_attrs(attrs: dict, titulo: str) -> list[Distancia]:
                 result.append(Distancia(km=km, data=None, horario=None))
         except ValueError:
             pass
-    return result if result else list(_TF_DEFAULT_DISTANCES)
+    return (result if result else list(_TF_DEFAULT_DISTANCES)), None
 
 
 # ---------------------------------------------------------------------------
@@ -317,7 +341,7 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
         state = geo_state or ""
     localizacao = ", ".join(p for p in [city, state] if p)
 
-    distancias = _distances_from_attrs(attrs, titulo)
+    distancias, horario = _distances_from_attrs(attrs, titulo)
 
     imagem_url = None
     cover = ev.get("coverImage") or {}
@@ -343,7 +367,7 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
         id=f"tfsapp_{ev_id}",
         titulo=titulo,
         data_evento=date_str,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=city,
         estado=state if state != "??" else "",

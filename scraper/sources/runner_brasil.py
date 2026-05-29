@@ -1,6 +1,7 @@
 """Scraper for runnerbrasil.com.br"""
 from __future__ import annotations
 import re
+from datetime import date
 from bs4 import BeautifulSoup
 
 from ..http_client import get
@@ -100,12 +101,23 @@ def _parse_event(el) -> Corrida | None:
 
 
 def _extract_date(text: str) -> str | None:
-    m = re.search(r"\d{1,2}/\d{1,2}/\d{4}", text)
+    # DD/MM/YYYY (full year)
+    m = re.search(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b", text)
     if m:
         return normalize_date(m.group(0))
     m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
     if m:
         return normalize_date(m.group(0))
+    # DD/MM without year (e.g. "31/05 - Guarujá" in the title)
+    m = re.search(r"\b(\d{1,2})/(\d{1,2})(?!/\d)", text)
+    if m:
+        d, mo = int(m.group(1)), int(m.group(2))
+        if 1 <= d <= 31 and 1 <= mo <= 12:
+            yr = date.today().year
+            candidate = f"{yr}-{mo:02d}-{d:02d}"
+            if candidate < today_iso():
+                candidate = f"{yr + 1}-{mo:02d}-{d:02d}"
+            return candidate
     return None
 
 

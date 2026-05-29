@@ -88,10 +88,23 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     address = place.get("address") or {}
     street = address.get("streetAddress") or ""
 
-    geo_query = ", ".join(p for p in [place_name, street] if p) or "Brasília, DF"
-    _, estado = _geo.resolve(geo_query, "", "BR")
-    estado = estado or "DF"
-    city = place_name.split(",")[0].strip() if place_name else "Brasília"
+    address_locality = address.get("addressLocality") or ""
+    address_region = address.get("addressRegion") or ""
+
+    # Use addressLocality as city; fall back to "Brasília" (this calendar is Brasília-focused)
+    city = address_locality or "Brasília"
+
+    # Resolve estado: prefer addressRegion if it's a valid UF code, then geocode
+    if address_region:
+        estado = _geo.validate_estado("BR", address_region.strip())
+        if not estado:
+            _, estado = _geo.resolve(city, "", "BR")
+        estado = estado or "DF"
+    else:
+        geo_query = ", ".join(p for p in [city, place_name, street] if p) or "Brasília, DF"
+        _, estado = _geo.resolve(geo_query, "", "BR")
+        estado = estado or "DF"
+
     localizacao = f"{city}, {estado}"
 
     desc = ev.get("description") or ""

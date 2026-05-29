@@ -1,10 +1,3 @@
-[Correr Brasília] 65 corridas encontradas
-✅  correr_brasilia: 65 evento(s)
-    {"titulo": "Corre Que É São João", "data": "2026-05-30", "estado": "DF", "km": "5.0, 10.0"}
-    {"titulo": "Corrida Do Vinho Expovits Brasil 2026", "data": "2026-05-30", "estado": "DF", "km": "6.0"}
-    {"titulo": "Circuito Desbrava Brasília 2026", "data": "2026-05-31", "estado": "DF", "km": "5.0, 10.0"}
-    {"titulo": "Corrida Nu Vai Bem - Etapa Brasília", "data": "2026-05-31", "estado": "DF", "km": "5.0, 10.0, 15.0"}
-    {"titulo": "Encontro Delas Caixa - Brasília", "data": "2026-05-31", "estado": "DF", "km": "5.0, 10.0"}
-    ... e mais 60
-❌  correr_brasilia: 26/65 eventos sem distâncias
-FAILURE_NOTE:26/65 eventos sem distâncias
+[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: [Errno 101] Network is unreachable
+⚠️   correr_brasilia: 0 eventos retornados
+FAILURE_NOTE:0 eventos

@@ -841,27 +841,48 @@ def test_distancias_have_valid_shape():
     )
 
 
-def test_first_seen_at_not_uniformly_reset():
-    """Detects the pipeline-reset pattern where all events share first_seen_at = today.
+def test_dict_to_corrida_skips_corrupt_distancias():
+    """_dict_to_corrida() must silently drop distancias entries that lack 'km'.
 
-    When load_existing() fails (e.g. corrupt event causes uncaught exception),
-    reconcile() starts from an empty state and stamps every event with today's date.
-    A genuine scrape never produces >90% of events with the same first_seen date,
-    because historical data always spans multiple dates.
-    Skipped when the dataset is too small to be meaningful (< 50 events).
+    Regression guard: FonteInfo objects accidentally leaked into distancias via a
+    merger false-dedup caused load_existing() to raise TypeError.  Previously the
+    exception was caught at file level, wiping all first_seen_at history.
+    Fix: filter distancias by 'km' presence before constructing Distancia objects.
     """
-    corridas = _load_corridas()
-    if len(corridas) < 50:
-        return
-    from datetime import date as _date
-    today = _date.today().isoformat()
-    reset_count = sum(1 for c in corridas if c.get("first_seen_at", "")[:10] == today)
-    pct = reset_count * 100 // len(corridas)
-    assert pct < 90, (
-        f"{reset_count}/{len(corridas)} ({pct}%) events have first_seen_at = {today}. "
-        "This almost certainly means load_existing() failed and all history was reset. "
-        "Check data/last-scraper.log for 'erro ao carregar JSON existente'."
-    )
+    from scraper.main import _dict_to_corrida
+
+    base = {
+        "id": "test_resilience",
+        "titulo": "Test Event",
+        "data_evento": "2026-08-01",
+        "localizacao": "São Paulo, SP",
+        "cidade": "São Paulo",
+        "estado": "SP",
+        "pais": "BR",
+        "fontes": [{"nome": "Test", "link_evento": "https://example.com",
+                    "links_inscricao": ["https://example.com"], "tipo": "organizador"}],
+        "miss_count": 0,
+        "first_seen_at": "2026-01-01T00:00:00",
+        "updated_at": "2026-01-01T00:00:00",
+    }
+
+    # Good distancia: has 'km' → kept
+    corrida = _dict_to_corrida({**base, "distancias": [{"km": 10.0, "data": None, "horario": None}]})
+    assert len(corrida.distancias) == 1 and corrida.distancias[0].km == 10.0
+
+    # Corrupt distancia: FonteInfo fields, no 'km' → silently dropped, no exception
+    corrupt = _dict_to_corrida({**base, "distancias": [
+        {"nome": "X", "link_evento": "https://x.com", "links_inscricao": [], "tipo": "organizador"}
+    ]})
+    assert corrupt.id == "test_resilience"
+    assert len(corrupt.distancias) == 0, "corrupt FonteInfo entry must be silently dropped"
+
+    # Mixed: one good + one corrupt → only good survives
+    mixed = _dict_to_corrida({**base, "distancias": [
+        {"km": 5.0, "data": None, "horario": None},
+        {"nome": "Y", "link_evento": "https://y.com", "links_inscricao": [], "tipo": "organizador"},
+    ]})
+    assert len(mixed.distancias) == 1 and mixed.distancias[0].km == 5.0
 
 
 def test_no_inscription_link_shared_across_many_events():

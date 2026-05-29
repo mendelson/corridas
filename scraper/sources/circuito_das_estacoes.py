@@ -8,7 +8,7 @@ import re
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_date, slugify, now_iso
+from ..utils import normalize_date, slugify, now_iso, today_iso
 from .. import geo as _geo
 
 _API = "https://hotsites.nortemkt.com/api/events/circuito-das-estacoes"
@@ -93,7 +93,7 @@ def _build_corrida(
         return None
 
     data_evento = normalize_date(date_raw)
-    if not data_evento:
+    if not data_evento or data_evento < today_iso():
         return None
 
     # Extract time from ISO datetime if present: "2026-05-10T07:00:00"

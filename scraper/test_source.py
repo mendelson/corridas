@@ -82,6 +82,7 @@ def _validate(source: str, results: list) -> list[str]:
     missing_date = 0
     stale_date = 0
     missing_distancias = 0
+    bad_dist_shape = 0
     missing_link = 0
     missing_horario = 0
     missing_tipo = 0
@@ -104,6 +105,12 @@ def _validate(source: str, results: list) -> list[str]:
             missing_date += 1
         elif r.data_evento < stale_cutoff:
             stale_date += 1
+
+        # Hard: distancias com shape errado (FonteInfo vazou para o campo errado)
+        for d in (r.distancias or []):
+            if not hasattr(d, "km") or hasattr(d, "nome"):
+                bad_dist_shape += 1
+                break
 
         # Soft: sem distâncias
         if not r.distancias:
@@ -144,6 +151,11 @@ def _validate(source: str, results: list) -> list[str]:
         failures.append(
             f"{len(dup_ids)} IDs duplicados no batch: "
             + ", ".join(f"'{k}'×{v}" for k, v in examples)
+        )
+    if bad_dist_shape:
+        failures.append(
+            f"{bad_dist_shape}/{n} eventos com distancia de shape inválido "
+            "(FonteInfo vazou para distancias?)"
         )
     if missing_link:
         failures.append(f"{missing_link}/{n} eventos sem nenhum link válido em fontes")

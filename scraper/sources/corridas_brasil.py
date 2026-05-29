@@ -63,6 +63,8 @@ def _parse_event(el) -> Corrida | None:
         return None
 
     data = _extract_date(text)
+    if not data:
+        return None
     localizacao = _extract_localizacao(el, text)
     cidade = localizacao.split(",")[0].strip()
     _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")

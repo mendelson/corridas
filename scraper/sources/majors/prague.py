@@ -1,14 +1,14 @@
 """Volkswagen Prague Marathon scraper (runczech.com)
 
-Edição 2026: 10 de maio (já realizada). Retorna 0 eventos até que a data
-2027 seja anunciada oficialmente no site — o scraper vai encontrá-la
-automaticamente via extract_all_future_dates quando disponível.
+Edição 2026: 10 de maio (já realizada). KNOWN_DATE usa data provisória de 2027
+até que o site anuncie oficialmente — extract_all_future_dates sobrescreve
+automaticamente quando a data real aparecer na página.
 """
 from ._base import scrape_major
 
 SOURCE_NAME = "Prague Marathon"
 URL         = "https://www.runczech.com/en/races/volkswagen-prague-marathon"
-KNOWN_DATE  = "2026-05-10"  # Edição 2026 encerrada; sem data futura confirmada
+KNOWN_DATE  = "2027-05-09"  # Provisório: primeira semana de maio 2027 (padrão histórico)
 HORARIO     = "09:00"
 LOCALIZACAO = "Praga, República Tcheca"
 

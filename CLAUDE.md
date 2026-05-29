@@ -459,8 +459,8 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 5. **`distancias`** — non-empty list of `Distancia` objects.
 6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
 7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
-
-`horario` is not required (many events don't announce start time in advance).
+8. **`FonteInfo.tipo`** — every `FonteInfo` must have a valid `tipo` value (`"inscricao"`, `"organizador"`, or `"calendario"`). Missing or invalid `tipo` is a hard test failure.
+9. **`horario`** — non-empty start time string (e.g. `"08:00"`). Scrapers must extract it from API fields, page text, or structured data. Events without a determinable start time must be excluded from output.
 
 ### Location fix policy
 

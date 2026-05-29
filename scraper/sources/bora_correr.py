@@ -170,6 +170,7 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
             nome=_nome_for_link(link),
             link_evento=link,
             links_inscricao=[link],
+            tipo="calendario",
         )],
         miss_count=0,
         first_seen_at=now,

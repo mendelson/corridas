@@ -48,9 +48,9 @@
     "last_success": "2026-05-25T13:24:44Z"
   },
   "circuito_das_estacoes": {
-    "tested_at": "2026-05-29T15:03:13Z",
+    "tested_at": "2026-05-29T18:57:48Z",
     "status": "fail",
-    "failure_note": "24/104 eventos com data > 30 dias no passado",
+    "failure_note": "79/79 eventos sem horário",
     "last_success": "2026-05-25T13:23:04Z"
   },
   "correr_brasilia": {
@@ -60,9 +60,9 @@
     "last_success": "2026-05-26T01:32:21Z"
   },
   "corridas_brasil": {
-    "tested_at": "2026-05-29T15:02:41Z",
+    "tested_at": "2026-05-29T18:58:05Z",
     "status": "fail",
-    "failure_note": "3139/3139 eventos sem data_evento",
+    "failure_note": "14/3139 eventos sem data_evento",
     "last_success": "2026-05-25T13:23:57Z"
   },
   "halfmarathons": {
@@ -252,9 +252,9 @@
     "last_success": "2026-05-29T15:03:35Z"
   },
   "runner_brasil": {
-    "tested_at": "2026-05-29T15:03:18Z",
+    "tested_at": "2026-05-29T18:57:46Z",
     "status": "fail",
-    "failure_note": "18/18 eventos sem data_evento",
+    "failure_note": "3/18 eventos sem data_evento",
     "last_success": "2026-05-25T13:23:05Z"
   },
   "runsignup": {

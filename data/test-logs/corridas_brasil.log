@@ -2,11 +2,11 @@
 ✅  corridas_brasil: 3139 evento(s)
     {"titulo": "Provas -", "data": "", "estado": ""}
     {"titulo": "Data Cidade Prova Distância", "data": "", "estado": ""}
-    {"titulo": "30/05/26 Almeirim 12º Aniversário Da 27º Cipm 5Km", "data": "", "estado": "", "km": "5.0"}
-    {"titulo": "30/05/26 Anísio De Abreu Corre Com Elas - 2ª Edição", "data": "", "estado": ""}
-    {"titulo": "30/05/26 Antonina Ultra Guaraqueçaba 126K 126/80/52/42Km", "data": "", "estado": "DF", "km": "126.0, 42.0"}
+    {"titulo": "30/05/26 Almeirim 12º Aniversário Da 27º Cipm 5Km", "data": "2026-05-30", "estado": "", "km": "5.0"}
+    {"titulo": "30/05/26 Anísio De Abreu Corre Com Elas - 2ª Edição", "data": "2026-05-30", "estado": ""}
+    {"titulo": "30/05/26 Antonina Ultra Guaraqueçaba 126K 126/80/52/42Km", "data": "2026-05-30", "estado": "DF", "km": "126.0, 42.0"}
     ... e mais 3134
-❌  corridas_brasil: 3139/3139 eventos sem data_evento
+❌  corridas_brasil: 14/3139 eventos sem data_evento
 ❌  corridas_brasil: 139/3139 eventos sem distâncias
 ❌  corridas_brasil: 3138/3139 eventos sem horário
-FAILURE_NOTE:3139/3139 eventos sem data_evento
+FAILURE_NOTE:14/3139 eventos sem data_evento

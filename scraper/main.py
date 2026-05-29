@@ -21,6 +21,7 @@ from . import geo as _geo
 # ---------------------------------------------------------------------------
 
 from .sources import (
+    atletis,
     central_da_corrida,
     ticket_sports,
     maratona_rio,
@@ -80,6 +81,7 @@ from .sources.majors import (
 
 SOURCES = [
     # API-based / well-structured (nationwide)
+    atletis,
     central_da_corrida,
     ticket_sports,
     tf_sports,

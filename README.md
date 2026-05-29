@@ -23,6 +23,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-29 01:53 | ❌ 8/68 eventos sem distâncias | 2026-05-25 13:24 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-29 01:58 | ❌ 1/256 eventos sem data_evento | 2026-05-25 13:29 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-29 01:54 | ❌ 3/13 eventos sem distâncias | 2026-05-25 13:23 |
+| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | — | — | — |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-29 01:53 | ❌ 1/14 eventos sem distâncias | 2026-05-25 13:23 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-29 01:53 | ❌ 2/8 eventos sem distâncias | 2026-05-25 13:23 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-29 01:53 | ❌ 6/9 eventos sem distâncias | 2026-05-25 13:23 |

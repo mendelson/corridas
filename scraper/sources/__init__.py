@@ -1,4 +1,5 @@
 from . import (
+    atletis,
     correr_brasilia,
     bora_correr,
     brasil_que_corre,

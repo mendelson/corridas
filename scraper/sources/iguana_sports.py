@@ -87,6 +87,7 @@ def scrape() -> list[Corrida]:
                 nome=SOURCE_NAME,
                 link_evento=f"{CALENDAR_URL}/{card['slug']}",
                 links_inscricao=links_insc,
+                tipo="calendario",
             )
 
             corridas.append(Corrida(

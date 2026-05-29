@@ -67,6 +67,19 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 3. Add the module name (e.g. `runsignup` or `majors/london`) to the dropdown options in `.github/workflows/monitor-source-health.yml`. Sort alphabetically within the existing groupings.
 4. Reference patterns: `ticket_sports.py` for direct JSON APIs, `tf_sports.py` for Strapi APIs with Bearer tokens scraped from a Next.js bundle, `runsignup.py` for paginated REST APIs, `majors/_base.py` for the shared single-event scaffold.
 5. Strict scope: title-keyword filtering (running terms in, non-running out) is mandatory for general-purpose platforms (`sympla.py`, `runsignup.py`) — they list thousands of unrelated events. Always apply both an inclusion and an exclusion regex, mirroring `sympla.py` `_RUNNING_KW` / `_NON_RUNNING_KW`.
+6. **Every `FonteInfo` must declare `tipo`** — one of the three values below. This is enforced by `test_source.py` (hard failure if missing or invalid). The frontend uses `tipo` to order source buttons (inscription/organizer first, calendar last).
+
+### Source `tipo` categorization
+
+Every source module must set `tipo` on its `FonteInfo`. The three categories and current assignments:
+
+| `tipo` | Meaning | Current sources |
+|---|---|---|
+| `"inscricao"` | Platform where the user actually registers | `atletis`, `ativo`, `asdeporte`, `minhas_inscricoes`, `portal_das_corridas`, `raceroster`, `runsignup`, `ticket_sports`, `yescom` |
+| `"organizador"` | Official race organizer — owns and runs the event | `circuito_das_estacoes`, `maratona_porto_alegre`, `maratona_rio`, `mks_esportes`, `sao_silvestre`, `sesc_df`, `sp_city_marathon`, `tf_sports`, `tf_sports_app`, `volta_do_lago`, all `majors/` |
+| `"calendario"` | Aggregator/calendar that lists events but doesn't process registration | `bora_correr`, `brasil_corrida`, `brasil_que_corre`, `carreras_mexico`, `central_da_corrida`, `correr_brasilia`, `corridas_brasil`, `halfmarathons`, `iguana_sports`, `largada_esportiva`, `runner_brasil`, `world_athletics` |
+
+When in doubt: if you can click a "register" button on that source's page and pay money, it's `"inscricao"`. If the site is the race's official page, it's `"organizador"`. Otherwise, `"calendario"`.
 
 ### Source naming conventions
 
@@ -459,6 +472,7 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 5. **`distancias`** — non-empty list of `Distancia` objects.
 6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
 7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
+8. **`FonteInfo.tipo`** — every `FonteInfo` must have a valid `tipo` value (`"inscricao"`, `"organizador"`, or `"calendario"`). Missing or invalid `tipo` is a hard test failure.
 
 `horario` is not required (many events don't announce start time in advance).
 

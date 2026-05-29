@@ -151,6 +151,7 @@ def _build_corrida(
             nome=SOURCE_NAME,
             link_evento=link_evento,
             links_inscricao=[insc_url],
+            tipo="organizador",
         )],
         miss_count=0,
         first_seen_at=now,

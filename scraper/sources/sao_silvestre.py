@@ -117,6 +117,7 @@ def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: s
         nome=SOURCE_NAME,
         link_evento=SITE_URL,
         links_inscricao=links_inscricao,
+        tipo="organizador",
     )
 
     return Corrida(

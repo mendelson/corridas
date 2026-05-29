@@ -1,5 +1,11 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
+from typing import Literal
+
+# "inscricao"  — platform where the user actually registers (Ticket Sports, RunSignup, …)
+# "organizador" — official race organizer site (Maratona Rio, TF Sports, majors, …)
+# "calendario"  — aggregator/calendar that lists events but doesn't process registration
+FonteTipo = Literal["inscricao", "organizador", "calendario"]
 
 
 @dataclass
@@ -7,6 +13,7 @@ class FonteInfo:
     nome: str
     link_evento: str
     links_inscricao: list[str]
+    tipo: FonteTipo
 
 
 @dataclass

@@ -662,6 +662,7 @@ def _events_to_corridas(
                 nome=SOURCE_NAME,
                 link_evento=link_evento,
                 links_inscricao=[link_evento],
+                tipo="organizador",
             )
             corridas.append(Corrida(
                 id=f"{id_prefix}{event.get('id') or slug or slugify(titulo)}",

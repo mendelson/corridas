@@ -389,6 +389,7 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
             nome=SOURCE_NAME,
             link_evento=link_evento,
             links_inscricao=[reg_url or link_evento],
+            tipo="organizador",
         )],
         miss_count=0,
         first_seen_at=now,

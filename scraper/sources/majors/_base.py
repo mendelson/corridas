@@ -100,6 +100,7 @@ def scrape_major(
         nome=source_name,
         link_evento=url,
         links_inscricao=[url],
+        tipo="organizador",
     )
 
     city_only = cidade.split(",")[0].strip()

@@ -83,7 +83,7 @@ def _parse_event(el) -> Corrida | None:
     now = now_iso()
     today = today_iso()
 
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link])
+    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link], tipo="calendario")
     return Corrida(
         id=f"{slugify(titulo)}_{estado.lower()}_{data or 'sd'}",
         titulo=titulo,

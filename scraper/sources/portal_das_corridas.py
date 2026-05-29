@@ -152,6 +152,7 @@ def _parse_event(html: str, url: str, today: str, now: str) -> Corrida | None:
             nome=SOURCE_NAME,
             link_evento=url,
             links_inscricao=[url],
+            tipo="inscricao",
         )],
         miss_count=0,
         first_seen_at=now,

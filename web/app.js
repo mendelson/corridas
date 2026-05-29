@@ -1379,7 +1379,11 @@ function buildExpanded(card, c) {
     h.textContent = T.sourcesHeader;
     expFontes.appendChild(h);
 
-    for (const fonte of [...c.fontes].sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))) {
+    const _TIPO_ORDER = { inscricao: 0, organizador: 1, calendario: 2 };
+    for (const fonte of [...c.fontes].sort((a, b) => {
+      const ta = _TIPO_ORDER[a.tipo] ?? 2, tb = _TIPO_ORDER[b.tipo] ?? 2;
+      return ta !== tb ? ta - tb : (a.nome || '').localeCompare(b.nome || '');
+    })) {
       const div = document.createElement('div');
       div.className = 'fonte-item';
       const link = (fonte.links_inscricao && fonte.links_inscricao.length > 0)

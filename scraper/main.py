@@ -165,6 +165,56 @@ STATUS_PATH     = Path(__file__).parent.parent / "data" / "source-status.json"
 # JSON serialization helpers
 # ---------------------------------------------------------------------------
 
+# Backfill map for legacy corridas.json records that predate the tipo field.
+# Only non-calendario entries are listed; everything else defaults to "calendario".
+_LEGACY_TIPO: dict[str, str] = {
+    # inscricao
+    "Asdeporte":                        "inscricao",
+    "Ativo":                            "inscricao",
+    "Atletis":                          "inscricao",
+    "Minhas Inscrições":                "inscricao",
+    "Portal das Corridas":              "inscricao",
+    "Race Roster":                      "inscricao",
+    "RunSignup":                        "inscricao",
+    "Ticket Sports":                    "inscricao",
+    "Yescom":                           "inscricao",
+    # organizador
+    "Circuito das Estações":            "organizador",
+    "Maratona de Porto Alegre":         "organizador",
+    "Maratona do Rio":                  "organizador",
+    "MKS Esportes":                     "organizador",
+    "São Silvestre":                    "organizador",
+    "SESC DF":                          "organizador",
+    "SP City Marathon":                 "organizador",
+    "TF Sports":                        "organizador",
+    "TF Sports App":                    "organizador",
+    "Volta do Lago":                    "organizador",
+    # majors
+    "Amsterdam Marathon":               "organizador",
+    "Athens Classic Marathon":          "organizador",
+    "BMW Berlin Marathon":              "organizador",
+    "Bank of America Chicago Marathon": "organizador",
+    "Boston Marathon":                  "organizador",
+    "Brighton Marathon":                "organizador",
+    "Cardiff Half Marathon":            "organizador",
+    "Copenhagen Marathon":              "organizador",
+    "Dublin City Marathon":             "organizador",
+    "Edinburgh Marathon Festival":      "organizador",
+    "Great North Run":                  "organizador",
+    "Manchester Half Marathon":         "organizador",
+    "Manchester Marathon":              "organizador",
+    "Paris Marathon":                   "organizador",
+    "Prague Marathon":                  "organizador",
+    "Stockholm Marathon":               "organizador",
+    "TCS London Marathon":              "organizador",
+    "TCS New York City Marathon":       "organizador",
+    "TCS Sydney Marathon":              "organizador",
+    "Tokyo Marathon":                   "organizador",
+    "Valencia Marathon":                "organizador",
+    "Venice Marathon":                  "organizador",
+}
+
+
 def _corrida_to_dict(c: Corrida) -> dict:
     d = asdict(c)
     return d
@@ -174,11 +224,13 @@ def _dict_to_corrida(d: dict) -> Corrida:
     distancias = [Distancia(**dist) for dist in d.get("distancias", [])]
     fontes = []
     for f in d.get("fontes", []):
+        nome = f.get("nome", "")
+        tipo = f.get("tipo") or _LEGACY_TIPO.get(nome, "calendario")
         fontes.append(FonteInfo(
-            nome=f["nome"],
+            nome=nome,
             link_evento=f["link_evento"],
             links_inscricao=f.get("links_inscricao", []),
-            tipo=f.get("tipo", "calendario"),
+            tipo=tipo,
         ))
     pi = d.get("periodo_inscricao")
     periodo = PeriodoInscricao(**pi) if pi else None

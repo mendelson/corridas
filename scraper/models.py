@@ -13,7 +13,7 @@ class FonteInfo:
     nome: str
     link_evento: str
     links_inscricao: list[str]
-    tipo: FonteTipo = "calendario"
+    tipo: FonteTipo
 
 
 @dataclass

@@ -81,6 +81,8 @@ Every source module must set `tipo` on its `FonteInfo`. The three categories and
 
 When in doubt: if you can click a "register" button on that source's page and pay money, it's `"inscricao"`. If the site is the race's official page, it's `"organizador"`. Otherwise, `"calendario"`.
 
+**Calendar scrapers that link to external platforms** (`bora_correr`, `brasil_que_corre`) use `scraper/sources/_platform_lookup.py` to infer `nome` and `tipo` from the destination URL — including following HTTP redirects for unrecognized domains. Add new platforms to `_PLATFORMS` in that file; do not duplicate the table in individual scrapers. Redirect resolution is skipped in `SCRAPER_TEST` mode for speed.
+
 ### Source naming conventions
 
 - `id` field on `Corrida`: stable identifier the scraper produces. Used by `reconcile()` to match across runs. Common patterns: `ts_<event_id>` for Ticket Sports, `runsignup_<race_id>_<year>`, `<slug>_<state>_<event_date>` for scraped calendar sources. Never use the scrape/run date in an ID — it changes every run, breaking exact-ID reconciliation and resetting `first_seen_at`.

@@ -24,35 +24,15 @@ never matched this DOM and was incorrectly dropped as "broken".
 """
 from __future__ import annotations
 import re
-from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from ._platform_lookup import nome_tipo_for_url
 
 URL = "https://brasilquecorre.com/distritofederal"
 SOURCE_NAME = "Brasil que Corre"
-
-_DOMAIN_TO_SOURCE: list[tuple[str, str]] = [
-    ("ticketsports.com.br",        "Ticket Sports"),
-    ("ticketagora.com.br",         "Ticket Sports"),
-    ("page.ticketsports.com.br",   "Ticket Sports"),
-    ("sympla.com.br",              "Sympla"),
-    ("tfsports.com.br",            "TF Sports"),
-    ("centraldacorrida.com.br",    "Central da Corrida"),
-    ("minhasinscricoes.com.br",    "Minhas Inscrições"),
-    ("brasilcorrida.com.br",       "Brasil Corrida"),
-    ("circuitodasestacoes.com.br", "Circuito das Estações"),
-    ("brutusrace.com.br",          "Brutus Race"),
-]
-
-def _nome_for_link(url: str) -> str:
-    domain = urlparse(url).netloc.lower().removeprefix("www.")
-    for fragment, nome in _DOMAIN_TO_SOURCE:
-        if fragment in domain:
-            return nome
-    return SOURCE_NAME
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
@@ -154,10 +134,10 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
     # per widget, so the merger's _shared_inscription_link won't collapse all events).
     if link:
         link_evento = link
-        fonte_nome = _nome_for_link(link)
+        fonte_nome, fonte_tipo = nome_tipo_for_url(link, SOURCE_NAME, "calendario")
     else:
         link_evento = f"{URL}#{widget_id}" if widget_id else f"{URL}#{stable_id}"
-        fonte_nome = SOURCE_NAME
+        fonte_nome, fonte_tipo = SOURCE_NAME, "calendario"
 
     return Corrida(
         id=stable_id,
@@ -176,7 +156,7 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
             nome=fonte_nome,
             link_evento=link_evento,
             links_inscricao=[link_evento],
-            tipo="calendario",
+            tipo=fonte_tipo,
         )],
         miss_count=0,
         first_seen_at=now,

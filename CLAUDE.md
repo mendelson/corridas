@@ -457,6 +457,29 @@ Open PRs without an active task driving them are a maintenance debt: they accumu
 
 When you create a new PR, you own driving it to a conclusion within the same session whenever possible. Do not open a PR and walk away from it.
 
+### Audit open PRs at session start
+
+**At the start of every session (or whenever resuming work), list all open PRs with `mcp__github__list_pull_requests` and triage each one before starting new work:**
+
+- Check CI status (`get_check_runs`) for any PR that is non-draft and not yet merged.
+- If all checks pass → merge immediately, do not let it sit.
+- If checks are failing → diagnose and fix before opening new PRs.
+- If the PR is stale (no recent activity, superseded, or the branch has diverged badly) → close it with a comment explaining why.
+
+A PR left unchecked across sessions accumulates merge conflicts, blocks the data pipeline from getting fixes, and wastes CI minutes on every subsequent push. **Never open a new session's first PR without first clearing the backlog.**
+
+### CI polling loop — never leave a ready PR unmerged
+
+**When waiting for CI checks on any PR, poll `mcp__github__pull_request_read` with `method=get_check_runs` continuously (no sleep between calls) until all checks reach a terminal state (`conclusion: success` or `conclusion: failure`):**
+
+1. **All `conclusion: success`** → merge immediately via `mcp__github__merge_pull_request`. Do not wait for user confirmation.
+2. **Any `conclusion: failure`** → diagnose the failure, fix the code, push a new commit, and continue polling from the new head commit.
+3. **`status: in_progress` / `status: queued`** → poll again.
+
+After every PR merges into main, check if the main CI passes by looking at the most recent commit's check runs on main. If tests fail on main, open a new PR to fix them and apply the same loop.
+
+**The loop must continue until `main` has 100% green CI.** Do not stop between PRs — clear the entire queue, then verify main is green.
+
 ## Event data quality requirements
 
 These are hard requirements enforced by `tests/test_site.py::test_all_events_have_required_fields` and `scraper/test_source.py`. All tests use **zero tolerance — no thresholds**. A single failing event fails the test.

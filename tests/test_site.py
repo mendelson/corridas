@@ -820,6 +820,44 @@ def test_no_event_has_too_many_fontes():
     )
 
 
+def test_distancias_have_valid_shape():
+    """Every item in distancias must be a Distancia shape (has 'km', no FonteInfo fields).
+
+    Catches the merger bug where FonteInfo objects (nome/link_evento/links_inscricao)
+    leaked into the distancias list instead of fontes.  A single such entry causes
+    load_existing() to fail on that event, which previously wiped ALL history because
+    the exception was caught at file level rather than per-event level.
+    """
+    corridas = _load_corridas()
+    _FONTE_KEYS = frozenset({"nome", "link_evento", "links_inscricao", "tipo"})
+    bad: list[tuple] = []
+    for c in corridas:
+        for d in c.get("distancias", []):
+            if not isinstance(d, dict) or "km" not in d or (set(d.keys()) & _FONTE_KEYS):
+                bad.append((c.get("id"), c.get("titulo"), d))
+    assert not bad, (
+        f"{len(bad)} distancia(s) have invalid shape (FonteInfo leaked into distancias?). "
+        f"First 5: {bad[:5]}"
+    )
+
+
+def test_distancias_corrupt_entries_absent_from_data():
+    """No event in web/corridas.json should have distancias entries that lack 'km'.
+
+    Regression guard: FonteInfo objects accidentally leaked into distancias via a
+    merger false-dedup caused load_existing() to raise TypeError, wiping all
+    first_seen_at history.  The fix in _dict_to_corrida() filters by 'km' presence.
+    This test confirms the data produced by the fixed pipeline has no such entries.
+    See also test_distancias_have_valid_shape for stricter shape validation.
+    """
+    corridas = _load_corridas()
+    bad = [(c.get("id"), d) for c in corridas for d in c.get("distancias", []) if "km" not in d]
+    assert not bad, (
+        f"{len(bad)} distancia(s) are missing 'km' — FonteInfo may have leaked into "
+        f"distancias. First 3: {bad[:3]}"
+    )
+
+
 def test_no_inscription_link_shared_across_many_events():
     """A single inscription URL should not appear in 3+ distinct records.
 

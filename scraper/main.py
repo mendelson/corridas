@@ -221,7 +221,13 @@ def _corrida_to_dict(c: Corrida) -> dict:
 
 
 def _dict_to_corrida(d: dict) -> Corrida:
-    distancias = [Distancia(**dist) for dist in d.get("distancias", [])]
+    # Only accept dicts with 'km'; FonteInfo objects (nome/link_evento) that
+    # leaked into distancias via a past merger bug are silently skipped.
+    distancias = [
+        Distancia(**dist)
+        for dist in d.get("distancias", [])
+        if "km" in dist
+    ]
     fontes = []
     for f in d.get("fontes", []):
         nome = f.get("nome", "")
@@ -265,10 +271,21 @@ def load_existing() -> dict[str, Corrida]:
     try:
         with DATA_PATH.open(encoding="utf-8") as f:
             raw = json.load(f)
-        return {c["id"]: _dict_to_corrida(c) for c in raw.get("corridas", [])}
     except Exception as e:
         print(f"[main] erro ao carregar JSON existente: {e}")
         return {}
+    result: dict[str, Corrida] = {}
+    errors = 0
+    for c in raw.get("corridas", []):
+        try:
+            corrida = _dict_to_corrida(c)
+            result[corrida.id] = corrida
+        except Exception as e:
+            errors += 1
+            print(f"[main] ignorando evento corrompido '{c.get('id', '?')}': {e}")
+    if errors:
+        print(f"[main] {errors} evento(s) ignorado(s), {len(result)} carregados")
+    return result
 
 
 def _find_all_photos(corridas: list[Corrida]) -> None:

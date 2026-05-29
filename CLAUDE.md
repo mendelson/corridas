@@ -64,7 +64,7 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 
 1. Create `scraper/sources/<name>.py` exporting `scrape() -> list[Corrida]`. Use `from ..models import Corrida, Distancia, FonteInfo` and `from ..http_client import get`. Each `Corrida` must include exactly one `FonteInfo` (the merger handles multi-source consolidation later). Set `first_seen_at` / `updated_at` to `now_iso()`.
 2. Register the module in **both** `scraper/sources/__init__.py` (the import block) and `scraper/main.py` (`SOURCES` list — order is unimportant but keep section comments consistent).
-3. Add the module name (e.g. `runsignup` or `majors/london`) to the dropdown options in `.github/workflows/test-sources.yml`. Sort alphabetically within the existing groupings.
+3. Add the module name (e.g. `runsignup` or `majors/london`) to the dropdown options in `.github/workflows/monitor-source-health.yml`. Sort alphabetically within the existing groupings.
 4. Reference patterns: `ticket_sports.py` for direct JSON APIs, `tf_sports.py` for Strapi APIs with Bearer tokens scraped from a Next.js bundle, `runsignup.py` for paginated REST APIs, `majors/_base.py` for the shared single-event scaffold.
 5. Strict scope: title-keyword filtering (running terms in, non-running out) is mandatory for general-purpose platforms (`sympla.py`, `runsignup.py`) — they list thousands of unrelated events. Always apply both an inclusion and an exclusion regex, mirroring `sympla.py` `_RUNNING_KW` / `_NON_RUNNING_KW`.
 
@@ -85,9 +85,9 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 
 ### CI workflows
 
-- **`scrape.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
-- **`test-sources.yml`** — daily 09:00 UTC + on push to `scraper/sources/`. Builds a job matrix dynamically: when shared infra (`models.py`, `utils.py`, `http_client.py`, `playwright_client.py`) changes, all sources are tested; otherwise only changed source files. Each job uploads a single-result artifact, then a final `update-readme` job aggregates all artifacts and runs `scripts/update_source_status.py` to refresh README tables and `data/source-status.json` (the source's row in README.md uses an embedded HTML comment `<!--module_name-->` for stable matching).
-- **`debug-scraper.yml`** — manual trigger with a `source` input; uploads full log as artifact.
+- **`data-pipeline.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
+- **`monitor-source-health.yml`** — daily 09:00 UTC + on push to `scraper/sources/`. Builds a job matrix dynamically: when shared infra (`models.py`, `utils.py`, `http_client.py`, `playwright_client.py`) changes, all sources are tested; otherwise only changed source files. Each job uploads a single-result artifact, then a final `update-readme` job aggregates all artifacts and runs `scripts/update_source_status.py` to refresh README tables and `data/source-status.json` (the source's row in README.md uses an embedded HTML comment `<!--module_name-->` for stable matching).
+- **`diagnose-source.yml`** — manual trigger with a `source` input; uploads full log as artifact.
 
 ### Frontend (`web/`)
 
@@ -99,15 +99,6 @@ WAF statuses (403/406/429) trigger fallback automatically; transient httpx excep
 - `periodo_inscricao` is stored in the data model but **never displayed** in the frontend. Do not add any UI for it — no section title, no dates, no block of any kind.
 - `links_inscricao` in each `FonteInfo` should always be `[link_evento]` — the source page where the event data was scraped from. **No conditional logic based on `inscricoes_abertas`.** The button always shows and always leads to the source event page.
 - **Every event must have at least one real, working link.** Never emit `links_inscricao=[]` from a scraper; if a more specific registration URL isn't available, fall back to `[link_evento]`. The pipeline (`_ensure_inscricao_links()` in `scraper/main.py`) also enforces this as a final safety net, and the frontend falls back to `link_evento` when `links_inscricao` is missing — but scrapers should still produce non-empty links to begin with.
-
-### O objetivo final é a página oficial do evento
-
-Scrapers e fontes são apenas meios de **descoberta**. O objetivo real é sempre fornecer ao usuário a página oficial do evento — aquela com informações completas, inscrições e regulamento. Isso define como scrapers de agregadores devem se comportar:
-
-- **`link_evento` deve apontar para a plataforma do evento, não para o agregador.** Quando um calendário (Bora Correr, Correr Brasília, Brasil que Corre) linka para Ticket Sports, Sympla, TF Sports etc., é essa URL de destino que deve ir para `link_evento` e `links_inscricao` — não a URL do próprio calendário.
-- **O `nome` da `FonteInfo` deve refletir a plataforma do link, não o agregador.** Se o link aponta para `ticketsports.com.br`, o nome deve ser `"Ticket Sports"`, não `"Bora Correr"`. Isso é feito com um mapeamento domínio → nome (ver `bora_correr.py`:`_nome_for_link()`). Use o nome do agregador como fallback apenas quando o domínio não for reconhecido.
-- **Convergência de múltiplas fontes na mesma URL é o sinal mais forte de que essa é a página oficial.** Quando `bora_correr.py` e `tf_sports_app.py` ambos encontram `tfsports.com.br/run-series/x`, o merger os colapsa via `_shared_inscription_link()` em um único evento. Quanto mais fontes convergem para a mesma URL, maior a confiança de que ali está a informação verdadeira.
-- **Agregadores com páginas por evento no próprio domínio são a exceção.** `brasil_que_corre.py` usa âncoras únicas (`brasilquecorre.com/distritofederal#uuid`) que são válidas como `link_evento` porque o BQC tem uma página de detalhes por evento. `correr_brasilia.py` usa `correrbrasilia.com.br/events/<slug>`. Nesses casos manter a URL do agregador é correto.
 
 ### Frontend distances are unit-aware
 
@@ -123,13 +114,13 @@ Scrapers e fontes são apenas meios de **descoberta**. O objetivo real é sempre
 
 The correct process before removing a source:
 
-1. **Read the CI logs.** Trigger the "Debug Scraper" workflow (`debug-scraper.yml`) with the source name and download the full log artifact. Look for explicit HTTP error codes (403, 429, Cloudflare challenge page, WAF fingerprint in HTML), not just "0 eventos".
+1. **Read the CI logs.** Trigger the "Diagnosticar Fonte" workflow (`diagnose-source.yml`) with the source name and download the full log artifact. Look for explicit HTTP error codes (403, 429, Cloudflare challenge page, WAF fingerprint in HTML), not just "0 eventos".
 2. **Distinguish root causes:**
    - HTTP 403/406 from all fallbacks (direct + Scrapestack + Apify proxy) + Playwright also blocked → likely WAF. Confirm by checking whether the response body is a Cloudflare challenge page (look for `cf-ray`, `cf-mitigated`, or `Just a moment...` in the HTML).
    - Empty HTML / missing CSS selectors / JSON parse error / changed API path → scraper bug or site restructure — fix the scraper.
    - No events in the date range → not a failure; leave the source active.
 3. **Only drop a source** once you have unambiguous confirmation (explicit HTTP blocks across all proxy layers, or Cloudflare challenge HTML confirmed in logs) that the block is at datacenter-IP level and no bypass exists. Document the reason in the README commit message and the source-status.json.
-4. When dropping: remove the `.py` file, remove from `__init__.py`, `main.py` SOURCES list, `.github/workflows/test-sources.yml` dropdown, the README table row, and `data/source-status.json`.
+4. When dropping: remove the `.py` file, remove from `__init__.py`, `main.py` SOURCES list, `.github/workflows/monitor-source-health.yml` dropdown, the README table row, and `data/source-status.json`.
 
 ### Recurring failure pattern: "generic CSS selectors never matched"
 
@@ -420,7 +411,7 @@ reactivation.
 
 ## Autonomy: CI and iteration
 
-Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Test Sources` workflow. To run the full pipeline, push to `scraper/` and let `scrape.yml` run. **Never ask the user to manually run "Probe URL", "Test Sources", or "Debug Scraper"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.
+Claude must run tests and iterate **independently**, without asking the user to trigger GitHub Actions workflows. Push changes to the feature branch and let CI validate them autonomously. To probe a URL, push a `probe-config.json` to the `probe` branch and poll `probe-output/result.md` for results. To test a source, push the scraper change and monitor the `Monitorar Saúde das Fontes` workflow. To run the full pipeline, push to `scraper/` and let `data-pipeline.yml` run. **Never ask the user to manually run "Sondar URL", "Monitorar Saúde das Fontes", or "Diagnosticar Fonte"** — trigger them by pushing the appropriate changes and monitoring the outcome via `mcp__github__*` tools.
 
 ## PR workflow
 
@@ -431,10 +422,10 @@ Every code change must go through a PR before merging into main.
 1. **Create a feature branch** — use a descriptive name.
 2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. CI does not run on draft PRs — tests only trigger when the PR is marked ready.
 3. **Develop freely** — push commits to the branch without CI interference.
-4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI (`test-site.yml` runs on `ready_for_review`).
+4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI (`ci-frontend.yml` runs on `ready_for_review`).
 5. **Poll CI** — use `mcp__github__pull_request_read` to check check runs. **Never merge with pending or failing checks.** Wait until all checks complete with `conclusion: success`. For UI changes, also run the `/verify` skill to confirm rendered behaviour before merging.
 6. **Merge** via `mcp__github__merge_pull_request` — only after all tests pass.
-7. **Scrape triggers automatically** on merge via `scrape.yml` (`pull_request: types: [closed]` + merged guard).
+7. **Scrape triggers automatically** on merge via `data-pipeline.yml` (`pull_request: types: [closed]` + merged guard).
 
 **A PR may only be merged when ALL CI test actions pass.** This is a hard requirement — never bypass it.
 
@@ -467,8 +458,9 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 4. **`pais` + `estado` are displayed in the same language** (the frontend localizes both via `_localizeCountryByIso2` and `_localizeSubdiv`). This means both must be resolvable in all 5 UI locales.
 5. **`distancias`** — non-empty list of `Distancia` objects.
 6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
-7. **`horario`** — non-empty start time string (`HH:MM`). Scrapers must extract the start time from the event page; if it is genuinely unavailable, the event must not be stored.
-8. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
+7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
+
+`horario` is not required (many events don't announce start time in advance).
 
 ### Location fix policy
 
@@ -492,7 +484,7 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 `scraper/test_source.py` validates each source in isolation. In addition to the existing checks:
 - Events with no `distancias` are flagged as info (>30% is a warning, >70% is a failure).
 - Events with no link in `fontes` are a **hard failure**.
-- Missing `horario` is a **hard failure** — zero tolerance, same as all other required fields.
+- Missing `horario` is reported informally (informational only, not a failure).
 
 ### Data correction on next scrape
 

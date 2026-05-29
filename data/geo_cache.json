@@ -2215,6 +2215,10 @@
     "estado": "RO",
     "pais": "BR"
   },
+  "cacoal, ro, brasil||br": {
+    "estado": "RO",
+    "pais": "BR"
+  },
   "cadillac, mi": {
     "estado": "MI",
     "pais": "US"
@@ -4800,16 +4804,16 @@
     "pais": "BR"
   },
   "gitega": {
-    "pais": "BI",
-    "estado": "GI"
+    "estado": "GI",
+    "pais": "BI"
   },
   "gitega||bi": {
-    "pais": "BI",
-    "estado": "GI"
+    "estado": "GI",
+    "pais": "BI"
   },
   "gitega||za": {
-    "pais": "BI",
-    "estado": "GI"
+    "estado": "GI",
+    "pais": "BI"
   },
   "glasgow, mt": {
     "estado": "MT",
@@ -5796,6 +5800,10 @@
     "pais": "US"
   },
   "jaboticabal, sp, brasil jaboticabal": {
+    "estado": "SP",
+    "pais": "BR"
+  },
+  "jaboticabal, sp, brasil||br": {
     "estado": "SP",
     "pais": "BR"
   },
@@ -7136,16 +7144,16 @@
     "pais": "MX"
   },
   "mbabane": {
-    "pais": "SZ",
-    "estado": "HH"
+    "estado": "HH",
+    "pais": "SZ"
   },
   "mbabane||sz": {
-    "pais": "SZ",
-    "estado": "HH"
+    "estado": "HH",
+    "pais": "SZ"
   },
   "mbabane||za": {
-    "pais": "SZ",
-    "estado": "HH"
+    "estado": "HH",
+    "pais": "SZ"
   },
   "mc donald, oh": {
     "estado": "OH",
@@ -7594,6 +7602,10 @@
   "montevallo, al": {
     "estado": "AL",
     "pais": "US"
+  },
+  "montevideo||uy": {
+    "estado": "MO",
+    "pais": "UY"
   },
   "montevideu": {
     "estado": "MO",
@@ -8315,6 +8327,10 @@
     "estado": "",
     "pais": "AT"
   },
+  "null||br": {
+    "estado": "",
+    "pais": "FR"
+  },
   "numinbah valley": {
     "estado": "QLD",
     "pais": "AU"
@@ -8791,6 +8807,10 @@
     "estado": "SP",
     "pais": "BR"
   },
+  "paulinia, sp, brasil||br": {
+    "estado": "SP",
+    "pais": "BR"
+  },
   "paulista": {
     "estado": "PE",
     "pais": "BR"
@@ -9004,6 +9024,10 @@
     "pais": "BR"
   },
   "pirassununga, sp, brasil pirassununga": {
+    "estado": "SP",
+    "pais": "BR"
+  },
+  "pirassununga, sp, brasil||br": {
     "estado": "SP",
     "pais": "BR"
   },
@@ -9303,6 +9327,10 @@
     "estado": "SP",
     "pais": "BR"
   },
+  "praca do bambu||br": {
+    "estado": "GO",
+    "pais": "BR"
+  },
   "praga": {
     "estado": "10",
     "pais": "CZ"
@@ -9334,6 +9362,10 @@
   "pratt, ks": {
     "estado": "KS",
     "pais": "US"
+  },
+  "praça do bambu||br": {
+    "estado": "GO",
+    "pais": "BR"
   },
   "prescott, az": {
     "estado": "AZ",
@@ -10204,16 +10236,16 @@
     "pais": "US"
   },
   "san salvador": {
-    "pais": "SV",
-    "estado": "SS"
+    "estado": "SS",
+    "pais": "SV"
   },
   "san salvador||cr": {
-    "pais": "SV",
-    "estado": "SS"
+    "estado": "SS",
+    "pais": "SV"
   },
   "san salvador||sv": {
-    "pais": "SV",
-    "estado": "SS"
+    "estado": "SS",
+    "pais": "SV"
   },
   "sand lake, mi": {
     "estado": "MI",
@@ -10316,6 +10348,10 @@
     "pais": "BR"
   },
   "sao bento do sapucai, sp, 12490-000, brasil sao bento do sapucai": {
+    "estado": "SP",
+    "pais": "BR"
+  },
+  "sao bento do sapucai, sp, 12490-000, brasil||br": {
     "estado": "SP",
     "pais": "BR"
   },
@@ -10648,8 +10684,12 @@
     "pais": "SL"
   },
   "shopping plaza sul shopping plaza sul||br": {
-    "estado": "",
-    "pais": "SL"
+    "estado": "SP",
+    "pais": "BR"
+  },
+  "shopping plaza sul||br": {
+    "estado": "SP",
+    "pais": "BR"
   },
   "shopping plaza||br": {
     "estado": "",
@@ -12007,6 +12047,14 @@
     "estado": "OH",
     "pais": "US"
   },
+  "vila de sao jorge||br": {
+    "estado": "GO",
+    "pais": "BR"
+  },
+  "vila de são jorge||br": {
+    "estado": "GO",
+    "pais": "BR"
+  },
   "vila velha": {
     "estado": "ES",
     "pais": "BR"
@@ -12393,6 +12441,10 @@
   },
   "west palm beach, fl": {
     "estado": "FL",
+    "pais": "US"
+  },
+  "west potomac park||us": {
+    "estado": "DC",
     "pais": "US"
   },
   "west tisbury, ma": {
@@ -12783,6 +12835,10 @@
     "estado": "SN",
     "pais": "CN"
   },
+  "xiamen||cn": {
+    "estado": "",
+    "pais": "CN"
+  },
   "xian||cn": {
     "estado": "SN",
     "pais": "CN"
@@ -12878,21 +12934,5 @@
   "zhenning": {
     "estado": "GZ",
     "pais": "CN"
-  },
-  "vila de são jorge||br": {
-    "pais": "BR",
-    "estado": "GO"
-  },
-  "vila de sao jorge||br": {
-    "pais": "BR",
-    "estado": "GO"
-  },
-  "praça do bambu||br": {
-    "pais": "BR",
-    "estado": "GO"
-  },
-  "praca do bambu||br": {
-    "pais": "BR",
-    "estado": "GO"
   }
 }

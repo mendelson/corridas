@@ -1,0 +1,19 @@
+[Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
+[Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
+[Largada Esportiva] 1 corridas via Playwright
+✅  largada_esportiva: 1 evento(s)
+    {"titulo": "20ª Volta Do Lago", "data": "2026-07-05", "estado": "DF"}
+❌  largada_esportiva: 1/1 eventos sem distâncias
+❌  largada_esportiva: 1/1 eventos sem horário
+FAILURE_NOTE:1/1 eventos sem distâncias

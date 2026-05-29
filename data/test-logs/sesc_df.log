@@ -1,11 +1,5 @@
-[SESC DF] 7 corridas encontradas
-✅  sesc_df: 7 evento(s)
-    {"titulo": "Caminho De Navegação", "data": "", "estado": "DF"}
-    {"titulo": "Caminho De Navegação", "data": "", "estado": "DF", "km": "5.0, 10.0, 3.0"}
+[SESC DF] 1 corridas encontradas
+✅  sesc_df: 1 evento(s)
     {"titulo": "Circuito Sesc + Corridas - Etapa Gama", "data": "2026-05-24", "estado": "DF", "km": "5.0, 10.0, 3.0"}
-    {"titulo": "Vários Níveis De Experiência", "data": "", "estado": "DF"}
-    {"titulo": "Qualidade De Vida Para Todos", "data": "", "estado": "DF"}
-    ... e mais 2
-⚠️   sesc_df: 6/7 eventos sem data_evento
-❌  sesc_df: 1 IDs duplicados no batch: 'sescdf_caminho-de-navegacao'×2
-FAILURE_NOTE:1 IDs duplicados no batch: 'sescdf_caminho-de-navegacao'×2
+❌  sesc_df: 1/1 eventos sem horário
+FAILURE_NOTE:1/1 eventos sem horário

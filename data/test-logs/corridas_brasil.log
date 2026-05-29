@@ -1,11 +1,12 @@
-[Corridas Brasil] 3260 corridas encontradas
-✅  corridas_brasil: 3260 evento(s)
+[Corridas Brasil] 3072 corridas encontradas
+✅  corridas_brasil: 3072 evento(s)
     {"titulo": "Provas -", "data": "", "estado": ""}
     {"titulo": "Data Cidade Prova Distância", "data": "", "estado": ""}
-    {"titulo": "23/05/26 Antônio Carlos Trac Trail Running 50/21/10/5Km", "data": "", "estado": "", "km": "5.0"}
-    {"titulo": "23/05/26 Araguari 2ª Corrida Do Bombeiro - Circuito Araguari 10/5Km", "data": "", "estado": "", "km": "5.0"}
-    {"titulo": "23/05/26 Araras 12ª Corrida De Rua Aaa 10/5Km", "data": "", "estado": "SP", "km": "5.0"}
-    ... e mais 3255
-⚠️   corridas_brasil: 3260/3260 eventos sem data_evento
-❌  corridas_brasil: 7 IDs duplicados no batch: 'data-cidade-prova-distancia__sd'×12, '31-05-26-joao-pessoa-live-run-xp-joao-pessoa-10-5km__sd'×2, '07-06-26-camacari-corre-abrantes-5km__sd'×2
-FAILURE_NOTE:7 IDs duplicados no batch: 'data-cidade-prova-distancia__sd'×12, '31-05-26-joao-pessoa-live-run-xp-joao-pessoa-10-5km__sd'×2, '07-06-26-camacari-corre-abrantes-5km__sd'×2
+    {"titulo": "29/05/26 Atibaia Pedra Grande Ultra Trail Challenge - 80K 80Km", "data": "", "estado": "", "km": "80.0"}
+    {"titulo": "29/05/26 Brasília Corrida De Rua No Autódromo Internacional Brb", "data": "", "estado": "DF"}
+    {"titulo": "30/05/26 Almeirim 12º Aniversário Da 27º Cipm 5Km", "data": "", "estado": "", "km": "5.0"}
+    ... e mais 3067
+❌  corridas_brasil: 3072/3072 eventos sem data_evento
+❌  corridas_brasil: 132/3072 eventos sem distâncias
+❌  corridas_brasil: 3071/3072 eventos sem horário
+FAILURE_NOTE:3072/3072 eventos sem data_evento

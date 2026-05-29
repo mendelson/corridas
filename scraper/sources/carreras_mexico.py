@@ -444,4 +444,12 @@ def _extract_distances(text: str) -> list[Distancia]:
         if canon not in seen and 3 <= canon <= 200:
             seen.add(canon)
             result.append(Distancia(km=canon, data=None, horario=None))
+    if not result:
+        ltext = text.lower()
+        is_half = bool(re.search(r"\b(media\s+maratón?|media\s+maraton|half\s+marathon|21k)\b", ltext))
+        is_full = bool(re.search(r"\b(maratón?|maraton|marathon)\b", ltext))
+        if is_half:
+            result.append(Distancia(km=21.097, data=None, horario=None))
+        elif is_full:
+            result.append(Distancia(km=42.195, data=None, horario=None))
     return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)

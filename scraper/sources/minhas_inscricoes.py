@@ -48,7 +48,7 @@ def _find_events(soup):
         els = soup.select(sel)
         if els:
             return els
-    return soup.find_all("li")
+    return []
 
 
 def _parse_event(el) -> Corrida | None:

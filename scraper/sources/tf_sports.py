@@ -601,6 +601,7 @@ def _events_to_corridas(
     city_from_title: bool = True,
     require_location: bool = False,
 ) -> list[Corrida]:
+    today = today_iso()
     corridas: list[Corrida] = []
     for event in events:
         try:
@@ -612,6 +613,10 @@ def _events_to_corridas(
             ed = attrs.get("eventData") or {}
 
             data_evento = ed.get("startDate") or ""
+            if data_evento and data_evento[:10] < today:
+                continue
+            if data_evento:
+                data_evento = data_evento[:10]
             location_raw = ed.get("location") or ""
             is_closed = ed.get("isSubscriptionClosed")
 

@@ -112,7 +112,7 @@ def _validate(source: str, results: list) -> list[str]:
                 bad_dist_shape += 1
                 break
 
-        # Soft: sem distâncias
+        # Threshold: sem distâncias (>70% = hard failure, >30% = warning, else info)
         if not r.distancias:
             missing_distancias += 1
 
@@ -131,7 +131,7 @@ def _validate(source: str, results: list) -> list[str]:
                 missing_tipo += 1
                 break
 
-        # Hard: sem horário
+        # Info: sem horário (many events don't announce start time in advance)
         if not r.horario:
             missing_horario += 1
 
@@ -170,10 +170,19 @@ def _validate(source: str, results: list) -> list[str]:
         failures.append(f"{missing_date}/{n} eventos sem data_evento")
     if stale_date:
         failures.append(f"{stale_date}/{n} eventos com data > 30 dias no passado")
-    if missing_distancias:
+
+    # Distâncias: >70% missing = hard failure, >30% = warning, else info
+    dist_frac = missing_distancias / n if n else 0
+    if dist_frac > 0.70:
         failures.append(f"{missing_distancias}/{n} eventos sem distâncias")
+    elif dist_frac > 0.30:
+        warnings.append(f"{missing_distancias}/{n} eventos sem distâncias (>{int(dist_frac*100)}%)")
+    elif missing_distancias:
+        print(f"ℹ️   {source}: {missing_distancias}/{n} eventos sem distâncias")
+
+    # Horário: informational only — many events don't announce start time in advance
     if missing_horario:
-        failures.append(f"{missing_horario}/{n} eventos sem horário")
+        print(f"ℹ️   {source}: {missing_horario}/{n} eventos sem horário")
 
     for w in warnings:
         print(f"⚠️   {source}: {w}")

@@ -583,8 +583,8 @@ def _extract_distances_text(text: str) -> list[Distancia]:
         r"|\d+(?:[.,]\d+)?\s*km?\s*(?:de hidrat|de água|de abastec)",
         re.IGNORECASE,
     )
-    text = _INTERVAL.sub(" ", text)
-    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
+    text_clean = _INTERVAL.sub(" ", text)
+    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text_clean, re.IGNORECASE)
     seen: set[float] = set()
     result: list[Distancia] = []
     for raw in nums:
@@ -601,4 +601,12 @@ def _extract_distances_text(text: str) -> list[Distancia]:
         if km not in seen:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
+    if not result:
+        ltext = text.lower()
+        is_half = bool(re.search(r"\b(meia\s+maratona|half\s+marathon|21k)\b", ltext))
+        is_full = bool(re.search(r"\b(maratona|marathon|42k)\b", ltext))
+        if is_half:
+            result.append(Distancia(km=21.097, data=None, horario=None))
+        elif is_full:
+            result.append(Distancia(km=42.195, data=None, horario=None))
     return result

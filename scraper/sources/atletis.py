@@ -45,7 +45,7 @@ _RUNNING_SPORTS = re.compile(
 )
 
 _DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
-_DIST_RE = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[Kk][Mm]\b")
+_DIST_RE = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[Kk][Mm]?\b")
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
@@ -175,8 +175,14 @@ def _scrape_event(url: str, hint_name: str, today: str, now: str) -> Corrida | N
 
     localizacao = f"{city}, {estado}"
 
-    # Distances from offers
+    # Distances from offers; fallback to title/description if none found
     distancias = _parse_distances(ld.get("offers") or [])
+    if not distancias:
+        fallback_text = " ".join(filter(None, [
+            ld.get("name") or "",
+            ld.get("description") or "",
+        ]))
+        distancias = _parse_distances_from_text(fallback_text)
 
     # Image
     imagem_url = ld.get("image") or None
@@ -250,6 +256,34 @@ def _parse_distances(offers: list) -> list[Distancia]:
             if km not in seen and 1.0 <= km <= 250.0:
                 seen.add(km)
                 result.append(Distancia(km=km, data=None, horario=None))
+    return sorted(result, key=lambda d: float(d.km))
+
+
+def _parse_distances_from_text(text: str) -> list[Distancia]:
+    """Extract distances from free text, e.g. title or description.
+    Matches '5K', '10km', '42K', '21.097km', etc.
+    Falls back to marathon/half-marathon keywords when no numeric found.
+    """
+    seen: set[float] = set()
+    result: list[Distancia] = []
+    for m in _DIST_RE.finditer(text):
+        try:
+            km = float(m.group(1).replace(",", "."))
+        except ValueError:
+            continue
+        km = _snap(km)
+        if km not in seen and 1.0 <= km <= 250.0:
+            seen.add(km)
+            result.append(Distancia(km=km, data=None, horario=None))
+    if not result:
+        ltext = text.lower()
+        if re.search(r"\b(maratona|marathon|42k)\b", ltext):
+            is_half = bool(re.search(r"\b(meia|half|semi|21k)\b", ltext))
+            if not is_half:
+                result.append(Distancia(km=42.195, data=None, horario=None))
+        if re.search(r"\b(meia\s+maratona|half\s+marathon|21k)\b", ltext):
+            if 21.097 not in seen:
+                result.append(Distancia(km=21.097, data=None, horario=None))
     return sorted(result, key=lambda d: float(d.km))
 
 

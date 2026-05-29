@@ -19,7 +19,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-29 15:03 | ❌ 90/938 eventos sem distâncias | 2026-05-25 13:25 |
-| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-29 15:03 | ❌ 24/104 eventos com data > 30 dias no passado | 2026-05-25 13:23 |
+| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-29 18:57 | ❌ 79/79 eventos sem horário | 2026-05-25 13:23 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-29 15:03 | ❌ 8/68 eventos sem distâncias | 2026-05-25 13:24 |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-29 15:05 | ❌ 1/255 eventos sem data_evento | 2026-05-25 13:29 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-29 15:04 | ❌ 3/13 eventos sem distâncias | 2026-05-25 13:23 |
@@ -28,9 +28,9 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-29 15:03 | ❌ 2/8 eventos sem distâncias | 2026-05-25 13:23 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-29 15:04 | ❌ 6/9 eventos sem distâncias | 2026-05-25 13:23 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-29 15:02 | ❌ 2/3 eventos sem horário | 2026-05-25 13:23 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-29 15:02 | ❌ 3139/3139 eventos sem data_evento | 2026-05-25 13:23 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-29 18:58 | ❌ 14/3139 eventos sem data_evento | 2026-05-25 13:23 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-29 15:03 | ❌ 6/6 eventos sem data_evento | 2026-05-25 13:24 |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-29 15:03 | ❌ 18/18 eventos sem data_evento | 2026-05-25 13:23 |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-29 18:57 | ❌ 3/18 eventos sem data_evento | 2026-05-25 13:23 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-29 15:04 | ❌ 1/1 eventos sem distâncias | 2026-05-25 13:24 |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-05-29 15:03 | ❌ 16/68 eventos sem distâncias | 2026-05-25 13:25 |
 

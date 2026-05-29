@@ -1,11 +1,10 @@
-[Circuito das Estações] 104 corridas encontradas
-✅  circuito_das_estacoes: 104 evento(s)
-    {"titulo": "Circuito das Estações - Outono - São Paulo", "data": "2026-03-15", "estado": "SP", "km": "5.0, 10.0, 13.0"}
+[Circuito das Estações] 79 corridas encontradas
+✅  circuito_das_estacoes: 79 evento(s)
     {"titulo": "Circuito das Estações - Inverno - São Paulo", "data": "2026-06-28", "estado": "SP", "km": "5.0, 10.0, 15.0"}
     {"titulo": "Circuito das Estações - Primavera - São Paulo", "data": "2026-09-13", "estado": "SP", "km": "5.0, 10.0, 18.0"}
     {"titulo": "Circuito das Estações - Verão - São Paulo", "data": "2026-12-20", "estado": "SP", "km": "5.0, 10.0"}
-    {"titulo": "Circuito das Estações - Outono - Rio de Janeiro", "data": "2026-03-08", "estado": "RJ", "km": "5.0, 10.0, 13.0"}
-    ... e mais 99
-❌  circuito_das_estacoes: 24/104 eventos com data > 30 dias no passado
-❌  circuito_das_estacoes: 104/104 eventos sem horário
-FAILURE_NOTE:24/104 eventos com data > 30 dias no passado
+    {"titulo": "Circuito das Estações - Inverno - Rio de Janeiro", "data": "2026-05-31", "estado": "RJ", "km": "5.0, 10.0, 15.0"}
+    {"titulo": "Circuito das Estações - Primavera - Rio de Janeiro", "data": "2026-09-20", "estado": "RJ", "km": "5.0, 10.0, 18.0"}
+    ... e mais 74
+❌  circuito_das_estacoes: 79/79 eventos sem horário
+FAILURE_NOTE:79/79 eventos sem horário

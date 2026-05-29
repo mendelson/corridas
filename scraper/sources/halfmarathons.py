@@ -75,8 +75,34 @@ _DIST_MAP: dict[str, float | str] = {
     "4-mile": "4 mi",
     "5-mile": "5 mi",
 }
-_MI_RE = re.compile(r"^(\d+(?:\.\d+)?)-mile$", re.IGNORECASE)
-_KM_RE = re.compile(r"^(\d+(?:\.\d+)?)k$",    re.IGNORECASE)
+_MI_RE   = re.compile(r"^(\d+(?:\.\d+)?)-mile$", re.IGNORECASE)
+_KM_RE   = re.compile(r"^(\d+(?:\.\d+)?)k$",    re.IGNORECASE)
+_TIME_RE = re.compile(
+    r"(\d{1,2}):(\d{2})\s*([AaPp][Mm])?|(\d{1,2})\s*[hH]\s*(\d{2})?",
+)
+
+
+def _normalize_time(raw: str | None) -> str | None:
+    """Normalize starting-time to HH:MM. Handles '7:00 AM', '7:00 PM', '07:30', '7h00'."""
+    if not raw:
+        return None
+    raw = raw.strip()
+    m = _TIME_RE.search(raw)
+    if not m:
+        return None
+    if m.group(1) is not None:
+        h, mi = int(m.group(1)), int(m.group(2))
+        ampm = (m.group(3) or "").upper()
+        if ampm == "PM" and h != 12:
+            h += 12
+        elif ampm == "AM" and h == 12:
+            h = 0
+    else:
+        h = int(m.group(4))
+        mi = int(m.group(5)) if m.group(5) else 0
+    if not (0 <= h <= 23 and 0 <= mi <= 59):
+        return None
+    return f"{h:02d}:{mi:02d}"
 
 
 def scrape() -> list[Corrida]:
@@ -190,7 +216,7 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         id=race_id,
         titulo=titulo,
         data_evento=data_evento,
-        horario=meta.get("starting-time") or None,
+        horario=_normalize_time(meta.get("starting-time")),
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,

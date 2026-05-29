@@ -192,6 +192,14 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if data_evento < today:
         return None
 
+    horario: str | None = None
+    if len(date_raw) > 10:
+        mt = re.search(r"[T ](\d{2}):(\d{2})", date_raw)
+        if mt:
+            h, mi = int(mt.group(1)), int(mt.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                horario = f"{h:02d}:{mi:02d}"
+
     # Prefer explicit city/state fields if the API provides them
     api_city  = (ev.get("city") or ev.get("municipality") or "").strip()
     api_state = (ev.get("state") or ev.get("stateName") or "").strip()
@@ -223,7 +231,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         id=race_id,
         titulo=titulo,
         data_evento=data_evento,
-        horario=None,
+        horario=horario,
         localizacao=ciudad,  # already "City, México"
         cidade=ciudad,
         estado=estado,

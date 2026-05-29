@@ -117,7 +117,7 @@ def _validate(source: str, results: list) -> list[str]:
         if not has_link:
             missing_link += 1
 
-        # Informational: sem horário (muitos eventos não anunciam hora antecipadamente)
+        # Hard: sem horário
         if not r.horario:
             missing_horario += 1
 
@@ -141,19 +141,15 @@ def _validate(source: str, results: list) -> list[str]:
     if missing_link:
         failures.append(f"{missing_link}/{n} eventos sem nenhum link válido em fontes")
 
-    # Soft warnings (printed but don't fail unless thresholds exceeded)
-    if missing_date / n > 0.5:
-        warnings.append(f"{missing_date}/{n} eventos sem data_evento")
-    if stale_date / n > 0.3:
-        warnings.append(f"{stale_date}/{n} eventos com data > 30 dias no passado")
-    if missing_distancias / n > 0.3:
-        warnings.append(f"{missing_distancias}/{n} eventos sem distâncias")
-    elif missing_distancias > 0:
-        print(f"ℹ️   {source}: {missing_distancias}/{n} eventos sem distâncias")
-    if missing_horario / n > 0.5:
-        warnings.append(f"{missing_horario}/{n} eventos sem horário")
-    elif missing_horario > 0:
-        print(f"ℹ️   {source}: {missing_horario}/{n} eventos sem horário")
+    # Hard failures — zero tolerance
+    if missing_date:
+        failures.append(f"{missing_date}/{n} eventos sem data_evento")
+    if stale_date:
+        failures.append(f"{stale_date}/{n} eventos com data > 30 dias no passado")
+    if missing_distancias:
+        failures.append(f"{missing_distancias}/{n} eventos sem distâncias")
+    if missing_horario:
+        failures.append(f"{missing_horario}/{n} eventos sem horário")
 
     for w in warnings:
         print(f"⚠️   {source}: {w}")

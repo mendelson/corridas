@@ -676,7 +676,10 @@ def test_all_events_have_required_fields():
     - estado: non-empty subdivision code listed in that country's JSON file
     - at least one valid link in fontes
 
-    horario is informational only — many events don't announce start time in advance.
+    horario: tracked but not a hard failure here — corridas.json is the committed
+    scrape snapshot and lags behind scraper fixes. The hard check lives in
+    test_source.py (which tests live scraper output). Once corridas.json catches
+    up via a post-merge scrape, this check will be tightened.
     """
     corridas = _load_corridas()
     assert corridas, "corridas.json is empty"
@@ -753,10 +756,6 @@ def test_all_events_have_required_fields():
         return "  → re-scrape: " + ",".join(f"{k}({v})" for k, v in prefixes.most_common(5))
 
     n = len(corridas)
-    if missing_hora:
-        pct = 100 * len(missing_hora) / n
-        print(f"\nℹ️  {len(missing_hora)}/{n} eventos sem horário ({pct:.0f}%)")
-
     assert not missing_data, (
         f"{len(missing_data)}/{n} events missing data_evento. First 5: {missing_data[:5]}"
     )
@@ -781,6 +780,11 @@ def test_all_events_have_required_fields():
     assert not missing_link, (
         f"{len(missing_link)}/{n} events missing all links. First 5: {missing_link[:5]}"
     )
+    if missing_hora:
+        pct = round(100 * len(missing_hora) / n)
+        print(f"⚠  {len(missing_hora)}/{n} ({pct}%) events missing horario — "
+              f"will harden once scrape catches up.\n"
+              f"{_source_hint([(t,) for t in missing_hora])}")
 
 
 # ---------------------------------------------------------------------------

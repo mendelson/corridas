@@ -4,6 +4,7 @@ Single API call returns all 27 cities × 4 seasons (Outono/Inverno/Primavera/Ver
 Each city+season pair becomes one Corrida entry.
 """
 from __future__ import annotations
+import re
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
@@ -95,6 +96,23 @@ def _build_corrida(
     if not data_evento:
         return None
 
+    # Extract time from ISO datetime if present: "2026-05-10T07:00:00"
+    horario: str | None = None
+    if date_raw and len(date_raw) > 10:
+        mt = re.search(r"[T ](\d{2}):(\d{2})", date_raw)
+        if mt:
+            h, mi = int(mt.group(1)), int(mt.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                horario = f"{h:02d}:{mi:02d}"
+    # Also check stage-level time field
+    if not horario:
+        time_raw = stage.get("time") or stage.get("hour") or stage.get("start_time") or ""
+        mt2 = re.search(r"(\d{1,2})[hH:]([0-5]\d)", str(time_raw))
+        if mt2:
+            h, mi = int(mt2.group(1)), int(mt2.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                horario = f"{h:02d}:{mi:02d}"
+
     year = data_evento[:4]
 
     titulo = f"Circuito das Estações - {stage_name} - {city}"
@@ -120,7 +138,7 @@ def _build_corrida(
         id=f"circuito-das-estacoes-{loc_slug}-{stage_slug}",
         titulo=titulo,
         data_evento=data_evento,
-        horario=None,
+        horario=horario,
         localizacao=f"{city}, {estado}" if estado else city,
         cidade=city,
         estado=estado,

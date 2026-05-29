@@ -417,6 +417,8 @@ Claude must run tests and iterate **independently**, without asking the user to 
 
 Every code change must go through a PR before merging into main.
 
+**Each PR must treat exactly one subject.** A PR that adds a new scraper must not also fix another scraper. A PR that fixes location errors must not also add a test. When in doubt: one task, one PR. This makes CI failures easier to diagnose and rollbacks safer.
+
 1. **Create a feature branch** — use a descriptive name.
 2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. CI does not run on draft PRs — tests only trigger when the PR is marked ready.
 3. **Develop freely** — push commits to the branch without CI interference.

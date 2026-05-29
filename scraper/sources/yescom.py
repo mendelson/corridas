@@ -48,6 +48,13 @@ _INTERVAL_RE = re.compile(
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
+# Time patterns: "07h30", "07:30h", "07:30", "7h", "horário: 7h30" — must not be followed by km
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
 # URL path segments → (default city, state)
 _STATE_IN_URL = {
     "/rj/": ("Rio de Janeiro", "RJ"),
@@ -162,6 +169,7 @@ def _parse_event_page(url: str) -> Corrida | None:
     localizacao = f"{city}, {state}" if city and state else city or state or ""
 
     distancias = _extract_distances(soup)
+    horario = _extract_horario(full_text)
 
     insc_link = _find_inscription_link(soup)
     today = today_iso()
@@ -177,7 +185,7 @@ def _parse_event_page(url: str) -> Corrida | None:
         id=f"{slugify(titulo)}_{state.lower()}_{data_evento or 'sd'}",
         titulo=titulo,
         data_evento=data_evento or "",
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=city,
         estado=state,
@@ -217,6 +225,22 @@ def _extract_event_date(heading_texts: list[str], full_text: str) -> str | None:
             return f"{year}-{mo}-{m.group(1).zfill(2)}"
 
     return None
+
+
+def _extract_horario(text: str) -> str | None:
+    """Parse times like '07h30', '07:30h', '07:30', '7h' from event page text."""
+    if not text:
+        return None
+    m = _TIME_RE.search(text)
+    if not m:
+        return None
+    if m.group(1) is not None:
+        h, mi = int(m.group(1)), int(m.group(2))
+    else:
+        h, mi = int(m.group(3)), 0
+    if not (0 <= h <= 23 and 0 <= mi <= 59):
+        return None
+    return f"{h:02d}:{mi:02d}"
 
 
 def _extract_location(heading_texts: list[str], url: str, titulo: str) -> tuple[str, str, str]:

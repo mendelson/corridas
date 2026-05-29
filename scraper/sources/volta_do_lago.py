@@ -86,11 +86,19 @@ def _search_largada_esportiva(today: str) -> list[Corrida]:
         if not _MATCH_RE.search(name):
             continue
 
-        # start field is an ISO datetime string: "2026-07-05T04:00:00.000Z"
+        # start field is an ISO datetime string: "2026-07-05T07:00:00.000Z"
         raw_start = ev.get("start") or ""
         data_evento = raw_start[:10] if len(raw_start) >= 10 else ""
         if not data_evento or data_evento < today:
             continue
+
+        # Extract time from ISO datetime (Largada Esportiva stores local BRT as UTC)
+        horario: str | None = None
+        mt = re.search(r"T(\d{2}):(\d{2})", raw_start)
+        if mt:
+            h, mi = int(mt.group(1)), int(mt.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                horario = f"{h:02d}:{mi:02d}"
 
         distancias = _extract_distances(ev.get("regulation") or "")
         ev_id = ev.get("id")
@@ -101,7 +109,7 @@ def _search_largada_esportiva(today: str) -> list[Corrida]:
             id=f"volta-do-lago_{estado.lower() or 'df'}_{data_evento[:4]}",
             titulo=normalize_titulo(name),
             data_evento=data_evento,
-            horario=None,
+            horario=horario,
             localizacao=localizacao,
             cidade=cidade,
             estado=estado or "DF",

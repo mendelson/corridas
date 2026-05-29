@@ -197,13 +197,21 @@ def _parse_event(ev: dict, today: str, end_date: str) -> "Corrida | None":
     if not _has_running_subevents(ev):
         return None
 
-    date_raw = ev.get("date") or ""
-    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})", str(date_raw))
+    date_raw = str(ev.get("date") or "")
+    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})", date_raw)
     if not m:
         return None
     data_evento = f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
     if data_evento < today or data_evento > end_date:
         return None
+
+    # date field is a full ISO datetime: "2026-09-19T09:30:00.000-04:00"
+    horario: str | None = None
+    mt = re.search(r"T(\d{2}):(\d{2})", date_raw)
+    if mt:
+        h, mi = int(mt.group(1)), int(mt.group(2))
+        if 0 <= h <= 23 and 0 <= mi <= 59:
+            horario = f"{h:02d}:{mi:02d}"
 
     distancias = _parse_distances(ev)
     if not distancias:
@@ -248,7 +256,7 @@ def _parse_event(ev: dict, today: str, end_date: str) -> "Corrida | None":
         id=f"raceroster_{eid}_{year}",
         titulo=titulo,
         data_evento=data_evento,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=localizacao,
         estado=estado,

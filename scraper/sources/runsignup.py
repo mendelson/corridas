@@ -405,6 +405,31 @@ def _normalize_date(s: str) -> str | None:
     return None
 
 
+def _extract_horario(race: dict, events: list[dict]) -> str | None:
+    """Extract HH:MM start time from race_events start_time field."""
+    for ev in events or []:
+        if not isinstance(ev, dict):
+            continue
+        v = ev.get("start_time") or ev.get("time") or ""
+        if not isinstance(v, str):
+            continue
+        # ISO datetime: "2026-06-15T07:00:00" or "2026-06-15 07:00:00"
+        m = re.search(r"[T ](\d{2}):(\d{2})", v)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                return f"{h:02d}:{mi:02d}"
+    # fallback: time in race-level start_time
+    v = race.get("start_time") or ""
+    if isinstance(v, str):
+        m = re.search(r"[T ](\d{2}):(\d{2})", v)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 0 <= h <= 23 and 0 <= mi <= 59:
+                return f"{h:02d}:{mi:02d}"
+    return None
+
+
 def _extract_date(race: dict, events: list[dict]) -> str | None:
     for f in _DATE_FIELDS_RACE:
         v = race.get(f)
@@ -443,6 +468,7 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
     if not data_evento or data_evento < today:
         return None
 
+    horario = _extract_horario(race, events)
     distancias = _parse_distances(events)
     if not distancias:
         return None
@@ -494,7 +520,7 @@ def _parse_race(race: dict, today: str) -> Corrida | None:
         id=f"runsignup_{race_id or slugify(titulo)}_{year}",
         titulo=titulo,
         data_evento=data_evento,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=localizacao,
         estado=estado,

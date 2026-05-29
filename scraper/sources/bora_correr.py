@@ -22,6 +22,27 @@ from ..utils import normalize_titulo, now_iso, today_iso
 URL = "https://coelhodeprograma.com.br/boracorrer/"
 SOURCE_NAME = "Bora Correr"
 
+_DOMAIN_TO_SOURCE: list[tuple[str, str]] = [
+    ("ticketsports.com.br",      "Ticket Sports"),
+    ("ticketagora.com.br",       "Ticket Sports"),
+    ("page.ticketsports.com.br", "Ticket Sports"),
+    ("sympla.com.br",            "Sympla"),
+    ("tfsports.com.br",          "TF Sports"),
+    ("centraldacorrida.com.br",  "Central da Corrida"),
+    ("minhasinscricoes.com.br",  "Minhas Inscrições"),
+    ("brasilcorrida.com.br",     "Brasil Corrida"),
+    ("circuitodasestacoes.com.br", "Circuito das Estações"),
+    ("esportes.agenciasisters.com.br", "Agência Sisters"),
+]
+
+
+def _nome_for_link(url: str) -> str:
+    domain = urlparse(url).netloc.lower().removeprefix("www.")
+    for fragment, nome in _DOMAIN_TO_SOURCE:
+        if fragment in domain:
+            return nome
+    return SOURCE_NAME
+
 # Snap nearby values to the canonical race distance (same pattern as ativo.py).
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
@@ -146,7 +167,7 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
         inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[FonteInfo(
-            nome=SOURCE_NAME,
+            nome=_nome_for_link(link),
             link_evento=link,
             links_inscricao=[link],
         )],

@@ -1948,6 +1948,29 @@
 [TF Sports App] filtrado(tipo): 'Pickleball'
 [TF Sports App] filtrado(tipo): 'Circuito Das Serras | Parque Da Cidade'
 [TF Sports App] 5 corridas encontradas
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Asdeporte] 34 corrida(s) encontrada(s)
@@ -1971,6 +1994,12 @@
 [Carreras México] PROBE item[2] anchor[2]: 'https://carrerasmexico.com/?event=b6d7c6979e45f19cfaf4a4127614f547&api_key=48513987f33edea8'
 [Carreras México] page 0: 31 items, 27 added
 [Carreras México] buscando localização para 27 eventos...
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[proxy] www.portaldascorridas.com.br bloqueado (429), tentando Scrapestack...
+[proxy] Scrapestack retornou 500 para www.portaldascorridas.com.br, tentando Apify...
+[proxy] Apify falhou para www.portaldascorridas.com.br: 403 Forbidden
+[Carreras México] localização: 2A Edicion Carrera Luz De Luna → El Sargento, BCS
 [Carreras México] localização: My Coffee Race 5K → Aragón, CMX
 [Carreras México] localização: 2A Edicion Carrera Luz De Luna → El Sargento, BCS
 [Carreras México] localização: [ Agotado ] Mundial Runner → Cuernavaca, MOR
@@ -1979,6 +2008,7 @@
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Carreras México] localização: 2A Edición Carrera Acción Sin  → Querétaro, QRO
+[Carreras México] localização: Reto Paso Nacional 2026 → Nazas, DGO
 [Carreras México] localização: Tower Running Trail Coacalco → Coacalco, México
 [Carreras México] localização: Reto Paso Nacional 2026 → Nazas, DGO
 [Carreras México] localização: Ultra Trail Cerros De Tlaxcala → San Juan Totolac, TLA
@@ -1986,6 +2016,7 @@
 [Carreras México] localização: Izta 4,000 → Tlalmanalco, México
 [Carreras México] localização: 1A Carrera 5K Atletas Olímpico → Huehuetoca, MEX
 [Carreras México] localização: Morelos Run → Zócalo de Cuernavaca, MOR
+[Carreras México] localização: 1A Carrera 5K Atletas Olímpico → Huehuetoca, MEX
 [Carreras México] localização: Carrera Por Los Dioses Teotihu → Teotihuacán, MEX
 [Carreras México] localização: Lomitos Mundialistas 5K → Aragón, CMX
 [Carreras México] localização: El Ameyal Half Trail Marathon → Amealco, QRO
@@ -2047,6 +2078,8 @@
 [RunSignup] página 9: 250 corridas
 [Race Roster] 595 corridas válidas (6496 ignoradas)
 [RunSignup] página 10: 250 corridas
+[HalfMarathons.net] 1973 corrida(s) encontrada(s)
+[Atletis] 65 corridas encontradas
 [RunSignup] página 11: 250 corridas
 [RunSignup] página 12: 250 corridas
 [HalfMarathons.net] 1973 corrida(s) encontrada(s)
@@ -2163,7 +2196,6 @@
 [TF Sports] filtrado(exp): 'Bike Indoor by Rapha Corrêa | Music Ride' area='Bike Indoor'
 [TF Sports] filtrado(exp): 'Treinão CenterVale Shopping' area='Funcional'
 [TF Sports] filtrado(exp): 'Thermal Body | Alom Studio' area='Pilates'
-[TF Sports] filtrado(exp): 'Yoga & Mindfulness' area='Yoga'
 [TF Sports] filtrado(exp): 'A Arte de Brincar' area='Futebol de Campo'
 [TF Sports] filtrado(exp): 'Ranking Duplas Mampituba' area='Tênis'
 [TF Sports] filtrado(exp): 'Festival Tênis e Futebol Kids - Clube de Campo' area='Tênis'
@@ -2297,6 +2329,8 @@
 [main] 'Circuito Planet Run 2026 - Etapa Brasil' — link válido, miss_count zerado
 [main] 'Corrida Copa 2026' — link válido, miss_count zerado
 [main] 'Festival Vamos Passear - Etapa Salvador' — link válido, miss_count zerado
+[main] 'Maratona Internacional De Olinda 2026' — link válido, miss_count zerado
+[main] 'Hidrauli Run 2026' — link válido, miss_count zerado
 [main] 'Circuito Oscar 2026-2027 - 1ª Etapa - Mogi' — link válido, miss_count zerado
 [main] '2ª Corrida Da Ordem' — link válido, miss_count zerado
 [main] 'Love Run 2026' — link válido, miss_count zerado
@@ -2321,6 +2355,8 @@
 [main] 'Night At The Island' — link válido, miss_count zerado
 [main] 'Cambridge Montessori School Webster O'Brien 5K' — link válido, miss_count zerado
 [main] 'Rainsville Freedom Run 10K & 5K' — link válido, miss_count zerado
+[main] 'Race4Justice' — link válido, miss_count zerado
+[main] 'Shesans Run For Clean Water 5K – Charlotte 2026' — link válido, miss_count zerado
 [main] 'Race Through California 1M, 5K, 10K, 13.1, 26.2 - Now Only $20!' — link válido, miss_count zerado
 [main] 'Races For All Paces' — link válido, miss_count zerado
 [main] '10 Km Chaleur Uni Ckle 2026' — link válido, miss_count zerado
@@ -2344,6 +2380,15 @@
 [main] 'Superheroes Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] '8Th Annual Sodel Cares 5K Run / Walk & Non Competitive Mile Walk' — link válido, miss_count zerado
 [main] 'Centennial Airport Runway 5K 2026' — link válido, miss_count zerado
+[main] 'Boots On The Meridian 5K - Cattlemen'S Ball 2026' — link válido, miss_count zerado
+[main] 'Village Northwest Unlimited Run, Walk & Roll' — link válido, miss_count zerado
+[main] '8Th Annual Sodel Cares 5K Run / Walk & Non Competitive Mile Walk' — link válido, miss_count zerado
+[main] 'Superheroes Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'The Belmont Mile (Presented By Fleet Feet)' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Freedom Fighters 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Steamboat Classic' — link válido, miss_count zerado
+[main] 'Fox Trot 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Queen Of Prussia 10K Presented By Premier Orthopaedics And Hand To Shoulder Center' — link válido, miss_count zerado
 [main] 'Treinão Runners Em Construção By Dinâmica' — link válido, miss_count zerado
 [main] 'R2L 10K Bridge Run' — link válido, miss_count zerado
@@ -2359,6 +2404,14 @@
 [main] 'La Grande Virée Des Sentiers Du Mont-Saint-Bruno Présentée Par Iga - Marchés Lambert' — link válido, miss_count zerado
 [main] 'Honda Waterfront Run Barrie' — link válido, miss_count zerado
 [main] 'Krista Johnson Memorial Run' — link válido, miss_count zerado
+[main] 'Raider Neon Run' — link válido, miss_count zerado
+[main] 'The Mini-Apple Night Of Miles' — link válido, miss_count zerado
+[main] 'La Grande Virée Des Sentiers Du Mont-Saint-Bruno Présentée Par Iga - Marchés Lambert' — link válido, miss_count zerado
+[main] 'Greenway 5K' — link válido, miss_count zerado
+[main] 'Rocky Ridge 5K & 10K' — link válido, miss_count zerado
+[main] '2026 - 402 Squadron Grizzly Ride' — link válido, miss_count zerado
+[main] 'Claude Moore 5K & 10K' — link válido, miss_count zerado
+[main] 'Race For Reconciliation 5K' — link válido, miss_count zerado
 [main] 'Queer Run Philly 5K' — link válido, miss_count zerado
 [main] 'Rap River Run 10K, 5K Run/Walk & Kid'S Fun Run' — link válido, miss_count zerado
 [main] 'Race For Reconciliation 5K' — link válido, miss_count zerado
@@ -2549,7 +2602,7 @@
 [main] 'Ashby Appreciation Days 5K/10K' — link válido, miss_count zerado
 [main] 'Eagle Lake Tator Days 5K And Kids 1 Mile' — link válido, miss_count zerado
 [main] 'Drewby Dash' — link válido, miss_count zerado
-[main] 'Race With A Point Foam Run' — link válido, miss_count zerado
+[main] 'Miraculous Run' — link válido, miss_count zerado
 [main] 'Mound Westonka Rotary - Spirit Of The Lakes 5K' — link válido, miss_count zerado
 [main] 'Drewby Dash' — link válido, miss_count zerado
 [main] 'Bob Lauterbach Memorial Columbus Downtown Runaround' — link válido, miss_count zerado
@@ -2586,6 +2639,12 @@
 [main] 'Totally Awesome Casa Costume 5K' — link válido, miss_count zerado
 [main] '2026 Washington Town & Country Fair Run' — link válido, miss_count zerado
 [main] 'Indian Creek 5K' — link válido, miss_count zerado
+[main] 'Summer Georgetown 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Queens Nyc Half, 10K, 5K' — link válido, miss_count zerado
+[main] '5K Race For Plates (Stockthesummer.Ca)' — link válido, miss_count zerado
+[main] 'Panorama Days 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Race Of Hope Southampton' — link válido, miss_count zerado
+[main] '2026 Stride To Save Lives 5K/10K' — link válido, miss_count zerado
 [main] 'Race The Reserve Whidbey Island' — link válido, miss_count zerado
 [main] 'Race The Runway 5.02K' — link válido, miss_count zerado
 [main] 'Race The Reserve Whidbey Island' — link válido, miss_count zerado
@@ -2622,6 +2681,8 @@
 [main] 'Rolling Of The Bulls 5K' — link válido, miss_count zerado
 [main] '2026 Mt. Sneffels Half Marathon-10K-Kids-Fun Run' — link válido, miss_count zerado
 [main] 'Rachael'S Warrior Run' — link válido, miss_count zerado
+[main] 'Kalero 5K' — link válido, miss_count zerado
+[main] '2026 Abas Auto Stony Mountain Run' — link válido, miss_count zerado
 [main] 'Race For A Blessing' — link válido, miss_count zerado
 [main] 'Race For The Arts 5K' — link válido, miss_count zerado
 [main] 'Raider Run 5K' — link válido, miss_count zerado
@@ -2657,6 +2718,9 @@
 [main] 'Race For Remembrance - 9/11 Tribute Run - Shanksville PA To Washington Dc' — link válido, miss_count zerado
 [main] 'Rahr Brewing Company Oktoberfest 5K Social Run/Walk - Septembeer' — link válido, miss_count zerado
 [main] 'Racer 5K' — link válido, miss_count zerado
+[main] 'The Orchard Dash 5K & 10K' — link válido, miss_count zerado
+[main] '53Rd Winery 5K & 10K' — link válido, miss_count zerado
+[main] 'Dog Days Of Summer 5K & 10K' — link válido, miss_count zerado
 [main] 'Ravine Trail Run 5K / 10K' — link válido, miss_count zerado
 [main] 'Speedy Pd' — link válido, miss_count zerado
 [main] 'Raising The Barr' — link válido, miss_count zerado
@@ -2716,7 +2780,7 @@
 [main] 'The Boiler Dash' — link válido, miss_count zerado
 [main] 'Hap Crim Festival Of Races' — link válido, miss_count zerado
 [main] 'Konza 25K & 10K' — link válido, miss_count zerado
-[main] 'Sundance To Spearfish Marathon' — link válido, miss_count zerado
+[main] 'Heeling House 5K' — link válido, miss_count zerado
 [main] 'Tree House Brewing Company Half Marathon 2026' — link válido, miss_count zerado
 [main] 'Georgina Marathon & Half-Marathon' — link válido, miss_count zerado
 [main] 'Colorado Mountain Half+ Series 2026' — link válido, miss_count zerado
@@ -2763,7 +2827,6 @@
 [main] 'Big Woods Run' — link válido, miss_count zerado
 [main] 'Running Bear At The Rocks' — link válido, miss_count zerado
 [main] 'Run For Pie 5K & Kids 1 Mile Fun Run' — link válido, miss_count zerado
-[main] 'Race For Recovery 2026' — link válido, miss_count zerado
 [main] 'Running Bear At The Rocks' — link válido, miss_count zerado
 [main] '2026 Light Up The Night For Noelle' — link válido, miss_count zerado
 [main] 'Lovettsville 5K & 10K' — link válido, miss_count zerado
@@ -2811,6 +2874,8 @@
 [main] 'Queen City Trail Run' — link válido, miss_count zerado
 [main] 'Race At The Cape' — link válido, miss_count zerado
 [main] 'Race Of The Redeemed- Distinguished' — link válido, miss_count zerado
+[main] '2026 Muskoka Marathon' — link válido, miss_count zerado
+[main] 'Pumpkin Pacer 5K & 10K' — link válido, miss_count zerado
 [main] 'Race For Hope 5K And 1 Mile' — link válido, miss_count zerado
 [main] 'Qc Java Jog' — link válido, miss_count zerado
 [main] 'Legs For Literacy' — link válido, miss_count zerado
@@ -2920,6 +2985,7 @@
 [main] 'Ravenswood Run Presented By Fleet Feet X Altra' — link válido, miss_count zerado
 [main] 'Kick'N The Kilt 5K & 8K' — link válido, miss_count zerado
 [main] 'Rattlesnake Racing 16 Hr Rock, Roll And Rattlesnake Challenge Adventure Race' — link válido, miss_count zerado
+[main] 'Cooper River Bridge Run' — link válido, miss_count zerado
 [main] 'Dyngus Day 5K - 7Th Annual' — link válido, miss_count zerado
 [main] 'Chicken Run' — link válido, miss_count zerado
 [main] 'Ravenswood Run Presented By Fleet Feet X Altra' — link válido, miss_count zerado

@@ -240,7 +240,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         imagem_url=imagem,
         inscricoes_abertas=None,
         periodo_inscricao=None,
-        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=event_link, links_inscricao=[event_link])],
+        fontes=[FonteInfo(nome=SOURCE_NAME, link_evento=event_link, links_inscricao=[event_link], tipo="inscricao")],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,

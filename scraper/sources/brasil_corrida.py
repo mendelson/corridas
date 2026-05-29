@@ -115,6 +115,7 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link_evento,
         links_inscricao=links_inscricao,
+        tipo="calendario",
     )
 
     return Corrida(

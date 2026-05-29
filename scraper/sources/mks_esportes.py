@@ -195,6 +195,7 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=url,
         links_inscricao=[url],
+        tipo="organizador",
     )
 
     return Corrida(

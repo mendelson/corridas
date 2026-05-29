@@ -149,6 +149,7 @@ def scrape() -> list[Corrida]:
         nome=SOURCE_NAME,
         link_evento=SITE_URL,
         links_inscricao=[inscricao_url],
+        tipo="organizador",
     )
     return [Corrida(
         id=f"maratona-do-rio-rj-{year}",

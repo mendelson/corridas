@@ -87,6 +87,7 @@ def _parse_event(el) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link,
         links_inscricao=[link],
+        tipo="organizador",
     )
 
     estado = _geo.resolve("Brasília, DF", "Brasília", "BR")[1] or "DF"

@@ -178,6 +178,7 @@ def _dict_to_corrida(d: dict) -> Corrida:
             nome=f["nome"],
             link_evento=f["link_evento"],
             links_inscricao=f.get("links_inscricao", []),
+            tipo=f.get("tipo", "calendario"),
         ))
     pi = d.get("periodo_inscricao")
     periodo = PeriodoInscricao(**pi) if pi else None

@@ -82,6 +82,7 @@ def scrape() -> list[Corrida]:
         nome=SOURCE_NAME,
         link_evento=URL,
         links_inscricao=[URL],
+        tipo="organizador",
     )
 
     results = []

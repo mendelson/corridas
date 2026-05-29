@@ -176,6 +176,7 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
             nome=fonte_nome,
             link_evento=link_evento,
             links_inscricao=[link_evento],
+            tipo="calendario",
         )],
         miss_count=0,
         first_seen_at=now,

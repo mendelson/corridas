@@ -312,6 +312,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         nome=SOURCE_NAME,
         link_evento=link,
         links_inscricao=[link],
+        tipo="inscricao",
     )
 
     return Corrida(

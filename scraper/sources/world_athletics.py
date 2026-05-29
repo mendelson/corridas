@@ -353,6 +353,7 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
             nome=SOURCE_NAME,
             link_evento=link,
             links_inscricao=[link],
+            tipo="calendario",
         )],
         miss_count=0,
         first_seen_at=now,

@@ -242,6 +242,7 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         nome=SOURCE_NAME,
         link_evento=link,
         links_inscricao=[link],
+        tipo="calendario",
     )
     return Corrida(
         id=f"cm_{event_id}",

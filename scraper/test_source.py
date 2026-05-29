@@ -84,6 +84,7 @@ def _validate(source: str, results: list) -> list[str]:
     missing_distancias = 0
     missing_link = 0
     missing_horario = 0
+    missing_tipo = 0
     seen_ids: dict[str, int] = {}
 
     for r in results:
@@ -117,6 +118,12 @@ def _validate(source: str, results: list) -> list[str]:
         if not has_link:
             missing_link += 1
 
+        # Hard: tipo inválido em qualquer FonteInfo
+        for f in (r.fontes or []):
+            if getattr(f, "tipo", None) not in ("inscricao", "organizador", "calendario"):
+                missing_tipo += 1
+                break
+
         # Hard: sem horário
         if not r.horario:
             missing_horario += 1
@@ -140,6 +147,11 @@ def _validate(source: str, results: list) -> list[str]:
         )
     if missing_link:
         failures.append(f"{missing_link}/{n} eventos sem nenhum link válido em fontes")
+    if missing_tipo:
+        failures.append(
+            f"{missing_tipo}/{n} eventos com FonteInfo sem tipo válido "
+            "(deve ser 'inscricao', 'organizador' ou 'calendario')"
+        )
 
     # Hard failures — zero tolerance
     if missing_date:

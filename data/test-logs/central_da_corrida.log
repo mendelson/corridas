@@ -6,5 +6,6 @@
     {"titulo": "Meia Maratona Estrada Real - 10 Edição", "data": "2026-07-12", "estado": "MG"}
     {"titulo": "Corrida Da Amazônia", "data": "2026-09-06", "estado": "PA", "km": "5.0, 10.0"}
     ... e mais 63
-❌  central_da_corrida: 8/68 eventos sem distâncias
-FAILURE_NOTE:8/68 eventos sem distâncias
+ℹ️   central_da_corrida: 8/68 eventos sem distâncias
+❌  central_da_corrida: 1/68 IDs contêm a data de hoje '2026-05-30' — ID muda a cada run, quebra first_seen_at
+FAILURE_NOTE:1/68 IDs contêm a data de hoje '2026-05-30' — ID muda a cada run, quebra first_seen_at

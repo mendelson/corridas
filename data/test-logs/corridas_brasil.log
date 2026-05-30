@@ -1,12 +1,12 @@
-[Corridas Brasil] 3139 corridas encontradas
-✅  corridas_brasil: 3139 evento(s)
-    {"titulo": "Provas -", "data": "", "estado": ""}
-    {"titulo": "Data Cidade Prova Distância", "data": "", "estado": ""}
+[Corridas Brasil] 3125 corridas encontradas
+✅  corridas_brasil: 3125 evento(s)
     {"titulo": "30/05/26 Almeirim 12º Aniversário Da 27º Cipm 5Km", "data": "2026-05-30", "estado": "", "km": "5.0"}
     {"titulo": "30/05/26 Anísio De Abreu Corre Com Elas - 2ª Edição", "data": "2026-05-30", "estado": ""}
     {"titulo": "30/05/26 Antonina Ultra Guaraqueçaba 126K 126/80/52/42Km", "data": "2026-05-30", "estado": "DF", "km": "126.0, 42.0"}
-    ... e mais 3134
-❌  corridas_brasil: 14/3139 eventos sem data_evento
-❌  corridas_brasil: 139/3139 eventos sem distâncias
-❌  corridas_brasil: 3138/3139 eventos sem horário
-FAILURE_NOTE:14/3139 eventos sem data_evento
+    {"titulo": "30/05/26 Arapiraca Farra Chique Night Run 10/5Km", "data": "2026-05-30", "estado": "", "km": "5.0"}
+    {"titulo": "30/05/26 Araucária Circuito 17º Bpm De Corridas De Rua - Araucária 5Km", "data": "2026-05-30", "estado": "", "km": "5.0"}
+    ... e mais 3120
+ℹ️   corridas_brasil: 125/3125 eventos sem distâncias
+ℹ️   corridas_brasil: 3124/3125 eventos sem horário
+❌  corridas_brasil: 65/3125 IDs contêm a data de hoje '2026-05-30' — ID muda a cada run, quebra first_seen_at
+FAILURE_NOTE:65/3125 IDs contêm a data de hoje '2026-05-30' — ID muda a cada run, quebra first_seen_at

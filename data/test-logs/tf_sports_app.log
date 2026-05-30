@@ -5,15 +5,15 @@
 [TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
 [TF Sports App] Playwright listing: 5 eventos capturados
 [TF Sports App] total após merge: 1912
-[TF Sports App] adicionado: 'Run Series Recife 2026' em 2026-10-18
-[TF Sports App] adicionado: 'Shopping Plaza Sul Run 2026' em 2026-11-22
+[TF Sports App] pulando 'Run Series Recife 2026' (sem horário publicado)
+[TF Sports App] pulando 'Shopping Plaza Sul Run 2026' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga No Marzen-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Online Com O Rafa-Integrado'
-[TF Sports App] adicionado: 'Run Series Recife 2027' em 2027-10-18
-[TF Sports App] adicionado: 'Run Series Recife 2028' em 2028-10-18
-[TF Sports App] adicionado: 'Run Series Recife 2029' em 2029-10-18
-[TF Sports App] filtrado(passado): 'Pará De Minas | Meia Maratona Da Construção Civil' (2025-11-09)
-[TF Sports App] filtrado(passado): 'Corrida Mulher Maravilha' (2025-08-24)
+[TF Sports App] pulando 'Run Series Recife 2027' (sem horário publicado)
+[TF Sports App] pulando 'Run Series Recife 2028' (sem horário publicado)
+[TF Sports App] pulando 'Run Series Recife 2029' (sem horário publicado)
+[TF Sports App] pulando 'Pará De Minas | Meia Maratona Da Construção Civil' (sem horário publicado)
+[TF Sports App] pulando 'Corrida Mulher Maravilha' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Flow - Bianca Guimarães -Integrado'
 [TF Sports App] filtrado(tipo): 'Fullbody - Cátia Kilpp | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga And Music Session Greenvalley -Integrado'
@@ -24,8 +24,8 @@
 [TF Sports App] filtrado(tipo): 'Alongamento Em Casa - Grazia Nunes / Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Track & Field Expirience Festival Kaio Márcio -Integrado'
 [TF Sports App] filtrado(tipo): 'Vivenciar - Pausa Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Prevenção Em Movimento -Integrado' (2025-06-14)
-[TF Sports App] filtrado(passado): 'Treinão Dia Das Mães -Integrado' (2025-05-10)
+[TF Sports App] pulando 'Prevenção Em Movimento -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Treinão Dia Das Mães -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Mat Magic - Pricylla Delazeri I Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Flow - Bibi Guimarães | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Ftv Pelo Mundo - Série C Masculino-Integrado'
@@ -39,7 +39,7 @@
 [TF Sports App] filtrado(tipo): 'Yoga E Aromaterapia Com Lilica Lima -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Fight - Chutes - Thamyres Bogado | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação Para O Despertar Da Kundaline _ Gisele Moreira _ Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Paulinia Ii-Integrado' (2025-08-03)
+[TF Sports App] pulando 'Running | Paulinia Ii-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Vinyasa Yin - Duda Nascimento | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Para Todos - Luciana Borba | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Yin | Duda Nascimento | Continue Em Movimento-Integrado'
@@ -63,13 +63,13 @@
 [TF Sports App] filtrado(tipo): 'Treino Híbrido -Integrado'
 [TF Sports App] filtrado(tipo): 'Circuito Pq Arena 2025 - 2ª Etapa-Integrado'
 [TF Sports App] filtrado(tipo): 'Zumba Class -Integrado'
-[TF Sports App] filtrado(passado): 'Night Running | Rio Claro-Integrado' (2025-07-05)
+[TF Sports App] pulando 'Night Running | Rio Claro-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Treino De Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga-Integrado'
 [TF Sports App] filtrado(tipo): 'Nascer Do Sol Com Cacau (Copacabana)-Integrado'
 [TF Sports App] filtrado(tipo): 'Nascer Do Sol Com Cacau (Barra Da Tijuca)-Integrado'
 [TF Sports App] filtrado(tipo): 'Campeonato Resenha Do Beach-Integrado'
-[TF Sports App] filtrado(passado): 'Running Csul | Lagoa Dos Ingleses' (2025-07-20)
+[TF Sports App] pulando 'Running Csul | Lagoa Dos Ingleses' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Master Class Em Pilates Ppp By Micha-Integrado'
 [TF Sports App] filtrado(tipo): 'Master Class Power Posture Pilates -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Nadia Pelletti | Continue Em Movimento -Integrado'
@@ -87,19 +87,19 @@
 [TF Sports App] filtrado(tipo): 'Glúteos E Cardio - Andressa Rangel | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Capoeira - Dorta Capoeira / Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Capoeira - Dorta Capoeira / Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Festa - Finisher Volta A Ilha - 2025-Integrado' (2025-05-22)
+[TF Sports App] pulando 'Festa - Finisher Volta A Ilha - 2025-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Suave | Graziela | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mudicalidade Fora Da Caixa-Integrado'
 [TF Sports App] filtrado(tipo): 'Tour De Cicle Indoor-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Performance | Indaiatuba 2ª Edição-Integrado' (2025-06-29)
+[TF Sports App] pulando 'Treinão Performance | Indaiatuba 2ª Edição-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Tf Experience Yoga By Grp Construtora-Integrado'
 [TF Sports App] filtrado(tipo): 'Bt & Iguatemi Edition 2º Edição-Integrado'
-[TF Sports App] filtrado(passado): 'Biomecânica Da Corrida (Teórico-Prático) -Integrado' (2025-05-31)
+[TF Sports App] pulando 'Biomecânica Da Corrida (Teórico-Prático) -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Change Spin Fest-Integrado'
 [TF Sports App] filtrado(tipo): 'Dia Das Mães Sorelle!!-Integrado'
 [TF Sports App] filtrado(tipo): 'Mães Ativas-Integrado'
 [TF Sports App] filtrado(tipo): 'Bumbum Na Nuca-Integrado'
-[TF Sports App] filtrado(passado): 'Mobilidade Para Corredores-Integrado' (2025-05-10)
+[TF Sports App] pulando 'Mobilidade Para Corredores-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga - Josi Zarouk | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Samira Abdala Na Arcuri Imóveis -Integrado'
 [TF Sports App] filtrado(tipo): 'Sunset Bike-Integrado'
@@ -111,8 +111,8 @@
 [TF Sports App] filtrado(tipo): '6 Anos Sul Em Trilhas -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Leila Barros | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Lili Prieto | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Treino Corrida - Iniciantes A Avançados -Integrado' (2025-04-19)
-[TF Sports App] filtrado(passado): '2º Nightfall Run-Integrado' (2025-07-12)
+[TF Sports App] pulando 'Treino Corrida - Iniciantes A Avançados -Integrado' (sem horário publicado)
+[TF Sports App] pulando '2º Nightfall Run-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Desafio Off Box-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Lpf | Bianca Tiriba -Integrado'
 [TF Sports App] filtrado(tipo): 'Membros Inferiores - Cátia Brigato | Continue Em Movimento-Integrado'
@@ -138,7 +138,7 @@
 [TF Sports App] filtrado(tipo): 'Full Body - Juann Melo | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Bike Com Musica Ao Vivo Beat Mais -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Candlelights-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Village Em Movimento-Integrado' (2025-04-26)
+[TF Sports App] pulando 'Treino Village Em Movimento-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'T&F Experience 6 Anos - Sul Em Trilhas-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Somático - Bia Baracho/ Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Somático - Bia Baracho/ Continue Em Movimento -Integrado'
@@ -175,15 +175,15 @@
 [TF Sports App] filtrado(tipo): 'Master Class Power Posture Pilates By Micha -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Suave Com Marina-Integrado'
 [TF Sports App] filtrado(tipo): 'Box Blue Dragon Funcional-Integrado'
-[TF Sports App] filtrado(passado): 'Circuito Park Lagos 2ª Etapa-Integrado' (2025-08-03)
+[TF Sports App] pulando 'Circuito Park Lagos 2ª Etapa-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'I Festival De Judô Ninjas Do Sol-Integrado'
-[TF Sports App] filtrado(passado): 'Track And Field Experience Cariri Shopping-Integrado' (2025-08-17)
+[TF Sports App] pulando 'Track And Field Experience Cariri Shopping-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Full Body Nível 2 - Allan Meneghim | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running Vinhedo | Arca Fun - Kids -Integrado' (2025-06-15)
+[TF Sports App] pulando 'Running Vinhedo | Arca Fun - Kids -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Crossfit Vkn -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Beatriz Mello-Integrado'
 [TF Sports App] filtrado(tipo): 'Hiit - Jessica Braga | Continue En Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Porto Tf Experience Running Arca Run 5K-Integrado' (2025-06-15)
+[TF Sports App] pulando 'Porto Tf Experience Running Arca Run 5K-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Despertando Com O Garuda - Ge Gurak | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Samba No Pé Para Iniciante - Giullia Dance | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento - Cintia Siboldi | Continue Em Movimento-Integrado'
@@ -202,7 +202,7 @@
 [TF Sports App] filtrado(tipo): 'Respiração E Reprogramação Emocional Com Ivani Tavares-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade E Flow - Carol Maragno | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Personal Semestral-Integration-Test'
-[TF Sports App] filtrado(passado): 'Treinão Rafinha Running-Integrado' (2025-04-12)
+[TF Sports App] pulando 'Treinão Rafinha Running-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yôga - Força E Meditação - Rafael Ramos | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Spinning At The Park | Indaiatuba-Integrado'
 [TF Sports App] filtrado(tipo): '1 Torneio Rumos Da Liga Master De Pickleball-Integrado'
@@ -222,25 +222,25 @@
 [TF Sports App] filtrado(tipo): 'Alongamento - Cintia Siboldi | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Life Experience By Luiz Fernando-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body Com Halteres | Pietro Campos - Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running Monjolinho | 2 Edição' (2025-06-22)
+[TF Sports App] pulando 'Running Monjolinho | 2 Edição' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'I Copa Handebol - Eccb-Integrado'
 [TF Sports App] filtrado(tipo): 'Ii Copa Pickleball - Duplas-Integrado'
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Inauguração All Mar Beach Sports-Integrado'
 [TF Sports App] filtrado(tipo): 'Ii Copa Pickleball-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Vinyasa - Lari Lazzaris | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running Contagem | 1Rmsports' (2025-05-25)
+[TF Sports App] pulando 'Running Contagem | 1Rmsports' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Test Privado Pt-Integrado'
 [TF Sports App] filtrado(tipo): 'Aulao Tfsports | Teste Trainer-Integrado'
 [TF Sports App] filtrado(tipo): '1ª Copa Kids By Caramelo-Integrado'
-[TF Sports App] filtrado(passado): 'Corrida 1Rm Sports-Integrado' (2025-05-25)
-[TF Sports App] filtrado(passado): 'No Pace De Festa Com Ju Toledo-Integrado' (2025-05-10)
+[TF Sports App] pulando 'Corrida 1Rm Sports-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'No Pace De Festa Com Ju Toledo-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Full Body - Rodrigo Lamarca -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Rodrigo Lamarca -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Daniel Agostinho | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates: O Movimento Cura! - Tais Ferreira | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Flow - Marjorie Filellini | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Lagoa Misteriosa-Integrado'
-[TF Sports App] filtrado(passado): 'Corrida De Orientação-Integrado' (2025-06-07)
+[TF Sports App] pulando 'Corrida De Orientação-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(sem UF): 'Iniciação À Corrida-Integrado' location='📍null'
 [TF Sports App] filtrado(tipo): 'Hatha Vinyasa - Lari Lazzaris | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Vinyasa - Lari Lazzaris | Continue Em Movimento -Integrado'
@@ -253,7 +253,7 @@
 [TF Sports App] filtrado(tipo): 'Yoga Para Preparação Física De Atletas - Wesley Paixão | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Membros Inferiores - Hemily Lamanna | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Membros Inferiores - Hemily Lamanna | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Running Monjolinho | 2 Edição -Integrado' (2025-06-22)
+[TF Sports App] pulando 'Running Monjolinho | 2 Edição -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Beach Tennis | Mães E Filhos-Integrado'
 [TF Sports App] filtrado(tipo): 'Breathe And Flow Yoga -Integrado'
 [TF Sports App] filtrado(tipo): 'Breathe And Flow Yoga -Integrado'
@@ -282,11 +282,11 @@
 [TF Sports App] filtrado(tipo): 'Swasthya Yoga - Larissa Luna | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação E Movimento - Claudia Busto | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação E Movimento - Claudia Busto | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Corrida 1Rmsports-Integrado' (2025-05-25)
+[TF Sports App] pulando 'Corrida 1Rmsports-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga: Autocuidado - Adélia Volpato | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga: Autocuidado - Adélia Volpato | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(sem UF): 'Iniciação À Corrida-Integrado' location='📍null'
-[TF Sports App] filtrado(passado): 'Debriefing Volta À Ilha 2025 Perin 110-Integrado' (2025-04-10)
+[TF Sports App] pulando 'Debriefing Volta À Ilha 2025 Perin 110-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Wellness A Luz De Velas-Integrado'
 [TF Sports App] filtrado(tipo): 'Circuito Iguatemi Campinas | Inscrição Imediata-Integrado'
 [TF Sports App] filtrado(tipo): 'Abdômen E Membros Inferiores - Karine Romão | Continue Em Movimento -Integrado'
@@ -313,7 +313,7 @@
 [TF Sports App] filtrado(tipo): 'Alongamento E Mobilidade Articular - Cláudio Rosa | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Fight -Integrado'
 [TF Sports App] filtrado(tipo): 'Mat Pilates Outdoor-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Araras-Integrado' (2025-06-01)
+[TF Sports App] pulando 'Running | Araras-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'I Festival De Judô Ninjas Do Sol-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento Na Saúde Muscular - Marcela Dabés | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Corpo E Emoção -Integrado'
@@ -382,7 +382,7 @@
 [TF Sports App] filtrado(tipo): 'Yoga In Natura | Parque Barigui -Integrado'
 [TF Sports App] filtrado(tipo): 'Energy Vinyasa Yoga - Tati Landa | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação E Respiração - Bianca Coelho | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Treino Pista Atletismo Centro Olimpico -Integrado' (2025-04-24)
+[TF Sports App] pulando 'Treino Pista Atletismo Centro Olimpico -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Fitdance - Mayara Perin | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Fitdance - Mayara Perin | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga Flow - Juliana Leite | Continue Em Movimento -Integrado'
@@ -419,7 +419,7 @@
 [TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Eric Volpe | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Eric Volpe | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional E Hiit-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão De Corrida Ecológico -Integrado' (2025-05-17)
+[TF Sports App] pulando 'Treinão De Corrida Ecológico -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Eric Volpe | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Ginastica Reeducativa Meditativa -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga-Integrado'
@@ -436,13 +436,13 @@
 [TF Sports App] filtrado(tipo): 'Yoga Nidra Com Ana Lugh| Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade Global - Andrea Sacay | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Barre E Dança-Integrado'
-[TF Sports App] filtrado(passado): 'Desafio Araribóia-Integrado' (2025-07-06)
+[TF Sports App] pulando 'Desafio Araribóia-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Yoga Para Todos - Tati Lu | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Yoga Para Todos - Tati Lu | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Continue Em Movimento- Chair Dance-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação Pancha Kosha - Anna Oliveira | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Fight - Boxe - Thamyres Bogado | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Tf Experience- Corrida Dos Namorados Bauru Shopping -Integrado' (2025-06-22)
+[TF Sports App] pulando 'Tf Experience- Corrida Dos Namorados Bauru Shopping -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Flexibilidade Com Pilates - Monique Custódio | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Swásthya Yôga-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Suave Com Marina-Integrado'
@@ -496,7 +496,7 @@
 [TF Sports App] filtrado(tipo): 'Pós Corrida-Along E Mobilidade- Alessandra Castro | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade E Alongamento - Liza Lambert | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body Workout - Liza Lambert | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Aula De Corrida-Integrado' (2025-04-12)
+[TF Sports App] pulando 'Aula De Corrida-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Arena Park Beach Tennis - 50+/60+-Integrado'
 [TF Sports App] filtrado(tipo): 'Arena Park Beach Tennis - Mistas-Integrado'
 [TF Sports App] filtrado(tipo): 'Arena Park Beach Tennis - Gênero-Integrado'
@@ -507,9 +507,9 @@
 [TF Sports App] filtrado(tipo): 'Sem Barriga Clau Battelli -Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Futevôlei | Dalli Beach Sports-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body- Alessandra Castro / Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Tf Running | Rock -Integrado' (2025-07-05)
+[TF Sports App] pulando 'Tf Running | Rock -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Tf Hangar | Dia Das Mães -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Catanduva-Integrado' (2025-06-22)
+[TF Sports App] pulando 'Running | Catanduva-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Treinão Run Franca - Com Personew-Integrado'
 [TF Sports App] filtrado(tipo): 'Integra | Funcional -Integrado'
 [TF Sports App] filtrado(tipo): 'Integra | Futevolei-Integrado'
@@ -525,21 +525,21 @@
 [TF Sports App] filtrado(tipo): 'Bike Do Poder - Etapa Verão - Heliponto Lassù-Integrado'
 [TF Sports App] filtrado(tipo): 'Torneio De Tênis Feminino-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga - Hellen Lima | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Alunos RR Na Corrida Do Túnel -Integrado' (2025-03-30)
-[TF Sports App] filtrado(passado): 'Simulado Maratona E Meia Maratona Do Rio -Integrado' (2025-04-13)
+[TF Sports App] pulando 'Alunos RR Na Corrida Do Túnel -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Simulado Maratona E Meia Maratona Do Rio -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Lr Gap Training -Integrado'
 [TF Sports App] filtrado(tipo): "Va'A Team Challenge Oc6 210+ | Times-Integrado"
 [TF Sports App] filtrado(tipo): "Va'A Team Challenge Oc6 210+ | Capitão-Integrado"
 [TF Sports App] filtrado(tipo): 'Yoga In Natura | São Lourenço-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Bruno Covas-Integrado' (2025-03-29)
+[TF Sports App] pulando 'Treinão Bruno Covas-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Mobilidade: Perna E Coluna - Arthur Okitsu | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Simulado Maratona E Meia Maratona Do Rio -Integrado' (2025-04-13)
-[TF Sports App] filtrado(passado): 'Rio Design Leblon Runners Club 3ª Edição-Integrado' (2025-05-18)
+[TF Sports App] pulando 'Simulado Maratona E Meia Maratona Do Rio -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Rio Design Leblon Runners Club 3ª Edição-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Nidra - Corpo E Mente - Thais Cirvídhiu - Corpo Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Experience - 3 Anos Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Especial Dia Das Mães Com Rafinha Running-Integrado' (2025-05-10)
+[TF Sports App] pulando 'Especial Dia Das Mães Com Rafinha Running-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Lpf - Patricia Capucho/ Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Tf Circuito Rio Branco - Granja Viana-Integrado' (2025-06-01)
+[TF Sports App] pulando 'Tf Circuito Rio Branco - Granja Viana-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Full Body - Cátia Kilpp | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Marina-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Core - Andressa Monteggia | Continue Em Movimento-Integrado'
@@ -554,7 +554,7 @@
 [TF Sports App] filtrado(tipo): 'Pilates - Flavia Brencys | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Oxy Corrida Fitness -Integrado'
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Yoga Adventure -Integrado'
-[TF Sports App] filtrado(passado): 'Villa Running | Café & Diversão-Integrado' (2025-03-30)
+[TF Sports App] pulando 'Villa Running | Café & Diversão-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'B10 Lpo Games 2ª Edição-Integrado'
 [TF Sports App] filtrado(tipo): 'Interval Mountain + Hiit 60 Min-Integrado'
 [TF Sports App] filtrado(tipo): 'Respira & Transforma Com Samira-Integrado'
@@ -562,36 +562,36 @@
 [TF Sports App] filtrado(tipo): 'Ii Copa Pickleball - Duplas-Integrado'
 [TF Sports App] filtrado(tipo): 'Ii Copa Pickleball - Mistas-Integrado'
 [TF Sports App] filtrado(tipo): 'Ii Copa Pickleball - Simples-Integrado'
-[TF Sports App] filtrado(passado): 'Corrida Da Riviera-Integrado' (2025-04-20)
+[TF Sports App] pulando 'Corrida Da Riviera-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Soul Games-Integrado'
 [TF Sports App] filtrado(tipo): 'Track&Field Experience | Funcional Academia Competiton-Integrado'
-[TF Sports App] filtrado(passado): 'Experience Running Menin | Presidente Prudente -Integrado' (2025-06-01)
-[TF Sports App] filtrado(passado): 'Treinão Em Itacoatiara -Integrado' (2025-03-22)
+[TF Sports App] pulando 'Experience Running Menin | Presidente Prudente -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Treinão Em Itacoatiara -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Funcional Com Gui Santos-Integrado'
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Dupla 20+20Km-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona Dupla 40+40-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona Solo 100Km-Integrado' (2025-08-02)
+[TF Sports App] pulando 'Desafio Das Serras Dupla 20+20Km-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras Ultramaratona Dupla 40+40-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras Ultramaratona Solo 100Km-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): '🏻 \u200d️ Treinão Trail – Estradão De Terra \u200d️ \u200d️-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Na Pedra Bonita-Integrado'
-[TF Sports App] filtrado(passado): 'Tf Running Jaú/ Daniel Rosalin-Integrado' (2025-07-06)
+[TF Sports App] pulando 'Tf Running Jaú/ Daniel Rosalin-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Vinyasa Flow -Integrado'
-[TF Sports App] filtrado(passado): 'Treino Corrida Na Usp-Integrado' (2025-03-22)
+[TF Sports App] pulando 'Treino Corrida Na Usp-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Pilates Global- Raquel Marquesini|Coninue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Runing | Cacoal-Integrado' (2025-04-27)
+[TF Sports App] pulando 'Runing | Cacoal-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Catarina Sports Edition Spinning-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino De Solo Avançado -Integrado'
 [TF Sports App] filtrado(tipo): 'Torneio Futevôlei Track&Field Experience -Integrado'
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Maratona 42 Km Solo-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Solo 20+20-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Inthegra-Integrado' (2025-06-08)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 21Km-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 12Km-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 6Km-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona 40+40-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Aulão De Corrida-Integrado' (2025-03-18)
-[TF Sports App] filtrado(passado): '3H Lote Final | Nit Ultra Run 2025-Integrado' (2025-05-17)
-[TF Sports App] filtrado(passado): '6H Lote Final | Nit Ultra Run 2025-Integrado' (2025-05-18)
-[TF Sports App] filtrado(passado): '12H Lote Final | Nit Ultra Run 2025-Integrado' (2025-05-17)
+[TF Sports App] pulando 'Desafio Das Serras Maratona 42 Km Solo-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras Solo 20+20-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Inthegra-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras 21Km-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras 12Km-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras 6Km-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras Ultramaratona 40+40-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Aulão De Corrida-Integrado' (sem horário publicado)
+[TF Sports App] pulando '3H Lote Final | Nit Ultra Run 2025-Integrado' (sem horário publicado)
+[TF Sports App] pulando '6H Lote Final | Nit Ultra Run 2025-Integrado' (sem horário publicado)
+[TF Sports App] pulando '12H Lote Final | Nit Ultra Run 2025-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Aula Funcional Especial Mães Com Hello Personal -Integrado'
 [TF Sports App] filtrado(tipo): 'Treino Hiit 45 Min-Integrado'
 [TF Sports App] filtrado(tipo): 'Movimento Em Casa-Integrado'
@@ -605,8 +605,8 @@
 [TF Sports App] filtrado(tipo): 'Geraes Open | Professores -Integrado'
 [TF Sports App] filtrado(tipo): 'Geraes Open | Duplas -Integrado'
 [TF Sports App] filtrado(tipo): 'Geraes Open | Simples Masculina-Integrado'
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 20Km+20Km-Integrado' (2025-08-02)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona 100 Km-Integrado' (2025-08-03)
+[TF Sports App] pulando 'Desafio Das Serras 20Km+20Km-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Desafio Das Serras Ultramaratona 100 Km-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Retiro A-Mar 3ª Edição-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Marina-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Marina-Integrado'
@@ -658,9 +658,9 @@
 [TF Sports App] filtrado(tipo): 'A Cura Através Do Movimento | Ana Monteiro-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento Para Resgate De Flexibilidade-Integrado'
 [TF Sports App] filtrado(tipo): 'Hyrox Training Day Raphinha Running E Ct Oceânica-Integrado'
-[TF Sports App] filtrado(passado): 'Experience Running Itabuna -Integrado' (2025-07-20)
+[TF Sports App] pulando 'Experience Running Itabuna -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Para Liberar A Sabedoria Do Corpo-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Pirassununga-Integrado' (2025-05-11)
+[TF Sports App] pulando 'Running | Pirassununga-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Futevôlei Arena Park - Misto-Integrado'
 [TF Sports App] filtrado(tipo): 'Futevolei Arena Park-Integrado'
 [TF Sports App] filtrado(tipo): 'Área Vip | Ita 360 Bt-Integrado'
@@ -670,12 +670,12 @@
 [TF Sports App] filtrado(tipo): 'Beach Training-Integrado'
 [TF Sports App] filtrado(sem UF): 'Treino Corrida On-Line 30Min Em Esteira-Integrado' location='📍null'
 [TF Sports App] filtrado(tipo): 'Full Body - Josenilson Batista Da Silva | Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Especial Dia Das Mulheres -Integrado' (2025-03-08)
+[TF Sports App] pulando 'Treino Especial Dia Das Mulheres -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Dakoa Training Aracaju-Integrado'
 [TF Sports App] filtrado(tipo): 'Mensal-Integrado'
 [TF Sports App] filtrado(tipo): 'Swásthya Yôga - Ketie Soares / Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Vila Gastronômica Running Challenge Rp Capital Xp-Integrado' (2025-05-18)
-[TF Sports App] filtrado(passado): 'Vila Gastronômica - Running Challenge Rp Capital Xp -Integrado' (2025-05-17)
+[TF Sports App] pulando 'Vila Gastronômica Running Challenge Rp Capital Xp-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Vila Gastronômica - Running Challenge Rp Capital Xp -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'A Cura Através Do Movimento | Ana Monteiro-Integrado'
 [TF Sports App] filtrado(tipo): 'Trekking Boca Da Onça-Integrado'
 [TF Sports App] filtrado(tipo): 'Dança Flamenca -Integrado'
@@ -692,7 +692,7 @@
 [TF Sports App] filtrado(tipo): 'Yôga Restaurativo -Integrado'
 [TF Sports App] filtrado(tipo): 'Hiit - Douglas Viana/ Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Workshop Defesa Pessoal Para Mulheres-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Focus De Carnaval-Integrado' (2025-03-01)
+[TF Sports App] pulando 'Treinão Focus De Carnaval-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Continue Em Movimento | Cátia Kilpp Dahmer -Integrado'
 [TF Sports App] filtrado(tipo): 'Conviva Experience- Teamkneip-Integrado'
 [TF Sports App] filtrado(tipo): 'Beliv In Yoga -Integrado'
@@ -704,9 +704,9 @@
 [TF Sports App] filtrado(tipo): 'I Clubfisio Cup | Beach Tennis-Integrado'
 [TF Sports App] filtrado(tipo): 'Inauguração Clubfisio Cantareira-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga-Integrado'
-[TF Sports App] filtrado(passado): 'Trancoso Running | 5Km / 10Km -Integrado' (2025-10-04)
-[TF Sports App] filtrado(passado): 'Trancoso Running I 21Km-Integrado' (2025-10-04)
-[TF Sports App] filtrado(passado): 'Treino De Corrida | Caio Pompeu-Integrado' (2025-04-26)
+[TF Sports App] pulando 'Trancoso Running | 5Km / 10Km -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Trancoso Running I 21Km-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Treino De Corrida | Caio Pompeu-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Fortalecimento Para Corredores - Alessandra Damazio | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mapi & Maria Almeida Convidam - Evento Mês Da Mulher-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
@@ -803,7 +803,7 @@
 [TF Sports App] filtrado(tipo): 'Coluna Saudável - Tais Ferreira | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento E Relaxamento - Roberta Nogueira | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento E Relaxamento - Roberta Nogueira | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão De Corrida De Rua - *Back To Back*-Integrado' (2025-03-15)
+[TF Sports App] pulando 'Treinão De Corrida De Rua - *Back To Back*-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Membos Inferiores E Abs- Bia Dias | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Para O Bem-Estar -Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Slow + Pranayamas - Nadia Pelletti | Continue Em Movimento -Integrado'
@@ -839,7 +839,7 @@
 [TF Sports App] filtrado(tipo): 'Yoga Na Cadeira | Michelle Duarte | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Randal Yamaguchi | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Sri Sri Yoga - Anna Carolina Oliveira | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão - Corrida De Rua - Back To Back-Integrado' (2025-03-16)
+[TF Sports App] pulando 'Treinão - Corrida De Rua - Back To Back-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Emagreça Com Ritmos Latinos-Integrado'
 [TF Sports App] filtrado(tipo): 'U Natural - Thaion Lopes | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade Global - Andrea Sacay- Continue Em Movimento -Integrado'
@@ -890,7 +890,7 @@
 [TF Sports App] filtrado(tipo): 'Cardio + Glúteos -Andressa Rangel | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Na Arena -Integrado'
 [TF Sports App] filtrado(tipo): 'Global Mobilization-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Corrida Na Usp-Integrado' (2025-02-22)
+[TF Sports App] pulando 'Treino Corrida Na Usp-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Na Praça Da Paz-Integrado'
 [TF Sports App] filtrado(tipo): 'Breathe And Flow Yoga -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Como Estilo De Vida - Tatiana Luisa | Continue Em Movimento -Integrado'
@@ -902,7 +902,7 @@
 [TF Sports App] filtrado(tipo): 'Arena Park Volei De Praia - Duplas-Integrado'
 [TF Sports App] filtrado(tipo): 'Arena Park Volei De Praia - Quarteto-Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Experience Circuito Avp Mineiro De Vôlei Kids-Integrado'
-[TF Sports App] filtrado(passado): 'Triple Hill-Integrado' (2025-03-23)
+[TF Sports App] pulando 'Triple Hill-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Trancoso Experience Festival -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates | Tresor -Integrado'
 [TF Sports App] filtrado(tipo): 'Ii Irt De Xadrez Juvenil-Integrado'
@@ -912,7 +912,7 @@
 [TF Sports App] filtrado(tipo): 'Vin (Trecho: Toca Da Baleia Até A Ilha Do Campeche)-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Gustavo Carlim | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Ii Irt Juvenil De Xadrez -Integrado'
-[TF Sports App] filtrado(passado): 'Tf Running Cidade Do Livro-Integrado' (2025-04-13)
+[TF Sports App] pulando 'Tf Running Cidade Do Livro-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Abs & Cardio | Pietro Campos | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Hiit Intensity - Allan Meneghim Soares | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Track&Field Hiit Experience-Integrado'
@@ -921,9 +921,9 @@
 [TF Sports App] filtrado(tipo): 'Dia Internacional Da Mulher-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Marina-Integrado'
 [TF Sports App] filtrado(tipo): 'Mulheres Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Jau-Integrado' (2025-05-18)
+[TF Sports App] pulando 'Running | Jau-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Judô Inclusivo -Integrado'
-[TF Sports App] filtrado(passado): 'Treino De Corrida | Gigi Bittencourt -Integrado' (2025-04-06)
+[TF Sports App] pulando 'Treino De Corrida | Gigi Bittencourt -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Para Relaxar- Mika Choeri| Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Pilates Com Tamires Chacon - 2 Edição -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Marina-Integrado'
@@ -939,21 +939,21 @@
 [TF Sports App] filtrado(tipo): 'Festival De Natação Infantil -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Para A Terceira Idade! -Integrado'
 [TF Sports App] filtrado(tipo): '1 Corrida Diagnóstico -Integrado'
-[TF Sports App] filtrado(passado): '1Corrida Diagnóstico -Integrado' (2025-04-06)
-[TF Sports App] filtrado(passado): '1 Corrida Diagnóstico -Integrado' (2025-04-06)
-[TF Sports App] filtrado(passado): '1 Corrida E Caminha Rustica Diagnóstico -Integrado' (2025-04-06)
+[TF Sports App] pulando '1Corrida Diagnóstico -Integrado' (sem horário publicado)
+[TF Sports App] pulando '1 Corrida Diagnóstico -Integrado' (sem horário publicado)
+[TF Sports App] pulando '1 Corrida E Caminha Rustica Diagnóstico -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Mulher Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): '1 Corrida E Caminhada Da Diagnóstico -Integrado' (2025-04-06)
+[TF Sports App] pulando '1 Corrida E Caminhada Da Diagnóstico -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Treino De Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Experience Be Wonderful -Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Experience Para Consciência Corporal E Fortalecimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates - Marina Silvia Bueno Athia | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): '1ª Corrida E Caminhada Elo21 • 2025-Integrado' (2025-03-09)
+[TF Sports App] pulando '1ª Corrida E Caminhada Elo21 • 2025-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Colaboradores Parque Bondinho -Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento Dinâmico - Henriette Honorato | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Piratininga-Integrado' (2025-02-15)
+[TF Sports App] pulando 'Treinão Piratininga-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Clube Do Livro- O Coração Do Yoga + Hatha Yoga-Integrado'
-[TF Sports App] filtrado(passado): 'Running - Guarujá -Integrado' (2025-05-04)
+[TF Sports App] pulando 'Running - Guarujá -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hiit - Jessica Braga | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Pacote Lpf Tfstudio-Integrado'
 [TF Sports App] filtrado(tipo): 'Casastarfish Yoga-Integrado'
@@ -962,9 +962,9 @@
 [TF Sports App] filtrado(tipo): 'Fartleck Brasil-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobility Flow - Thiago Sathler De Souza | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Bailinho Fitness Praia Do Forte -Integrado'
-[TF Sports App] filtrado(passado): 'Tf Experience- Pátio San Marino Run-Integrado' (2025-04-20)
+[TF Sports App] pulando 'Tf Experience- Pátio San Marino Run-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hatha Flow - Giovana Borba | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Correndo Com Espaço Einstein/Gma-Integrado' (2025-03-08)
+[TF Sports App] pulando 'Correndo Com Espaço Einstein/Gma-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Royal Wellness 2 -Integrado'
 [TF Sports App] filtrado(tipo): 'Dobradinha Casastarfish -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Brunch - Especial Mulheres-Integrado'
@@ -980,11 +980,11 @@
 [TF Sports App] filtrado(tipo): 'Arena Park Volei De Praia-Integrado'
 [TF Sports App] filtrado(tipo): 'Momento Autocuidado Pontual Assesoria & Pontualmed-Integrado'
 [TF Sports App] filtrado(tipo): 'Escadaria Com Dessa Caciatori-Integrado'
-[TF Sports App] filtrado(passado): 'Treino De Corrida Com Joi Personal-Integrado' (2025-03-30)
+[TF Sports App] pulando 'Treino De Corrida Com Joi Personal-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Lr Training 7H -Integrado'
 [TF Sports App] filtrado(tipo): 'Treino De Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Membros Superiores - Selma Marques | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Ubatuba I-Integrado' (2025-06-15)
+[TF Sports App] pulando 'Running | Ubatuba I-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Um Toque Muda O Jogo | Clínica Para Mulheres-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Hormonal - Renata Esteves | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Workshop Lpf Para Mulheres-Integration-Test'
@@ -994,7 +994,7 @@
 [TF Sports App] filtrado(tipo): 'Bt Itajaí Aula 2-Integrado'
 [TF Sports App] filtrado(tipo): 'Supyoga + Pilates Sunrise By Micha -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga In Natura -Integrado'
-[TF Sports App] filtrado(passado): 'Porto Track And Field Experience 3* Corrida De Aniversário Juventus -Integrado' (2025-04-27)
+[TF Sports App] pulando 'Porto Track And Field Experience 3* Corrida De Aniversário Juventus -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Swásthya Yôga-Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Alana Lucati | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Juvenil-Integrado'
@@ -1020,10 +1020,10 @@
 [TF Sports App] filtrado(tipo): 'Energia Feminina | Edição Pátio Batel-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Vinyasa Yoga - Amanda Da Silva Vidal | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Apresentação- Zen House Yoga Online-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Betim' (2025-02-11)
+[TF Sports App] pulando 'Running | Betim' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Capoeira 2 Edição -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Parque Ceret I-Integrado' (2025-07-06)
-[TF Sports App] filtrado(passado): 'Treino Corrida Parque Bruno Covas-Integrado' (2025-02-01)
+[TF Sports App] pulando 'Running | Parque Ceret I-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Treino Corrida Parque Bruno Covas-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yôga 2X Na Semana -Integrado'
 [TF Sports App] filtrado(tipo): 'Swásthya Yôga -Integrado'
 [TF Sports App] filtrado(tipo): 'Greatcycle | Circuit-Integrado'
@@ -1047,7 +1047,7 @@
 [TF Sports App] filtrado(tipo): 'Interval Mix 60 Minutos-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Luciana Rossi | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Membros Inferiores - João Victor Oliveira Ramos | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Desafio Ros-Integrado' (2025-04-13)
+[TF Sports App] pulando 'Desafio Ros-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Carlos Rocha - Funcional Cross | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Higor Azedo | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Solo - Mariane Andreotti | Continue Em Movimento -Integrado'
@@ -1063,10 +1063,10 @@
 [TF Sports App] filtrado(tipo): 'Aniversário 2 Anos - Yoga Center-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento E Mobilidade - Julia Gomes De Medeiros | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Flow - Leca Costa | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Parque Da Independência-Integrado' (2025-04-27)
+[TF Sports App] pulando 'Running | Parque Da Independência-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Swimming | Sao Carlos-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - João Antônio Araújo De Oliveira | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Na Lagoa-Integrado' (2025-02-01)
+[TF Sports App] pulando 'Treinão Na Lagoa-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Marcela Pessoa | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Solo - Adriana Modanese L Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Com Elástico -Integrado'
@@ -1076,12 +1076,12 @@
 [TF Sports App] filtrado(tipo): 'Aula - Roberta Awazu Nunes | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Raquel Rizola |Continue Em Movimento|-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Flow De Carnaval - Lili Prieto | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'T&F Mercedes Sprint-Integrado' (2025-03-09)
+[TF Sports App] pulando 'T&F Mercedes Sprint-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Full Body - Matheus Onofre De Castro/ Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Sunset Run-Integrado' (2025-02-01)
+[TF Sports App] pulando 'Treinão Sunset Run-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yôga E Meditação - Manoela Ramos-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino Superiores - Andressa Mariah | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Na Lagoa-Integrado' (2025-02-01)
+[TF Sports App] pulando 'Treinão Na Lagoa-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hatha Flow - Júlia Brasílico | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento - Luciana Brait | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação E Movimento | Jacqueline Mito - Continue Em Movimento-Integrado'
@@ -1098,7 +1098,7 @@
 [TF Sports App] filtrado(tipo): 'Alongamento - Roberta Nogueira | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Flex De Ombros-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Somático - Beatriz De Araújo Baracho | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Quality Life Run-Integrado' (2025-03-30)
+[TF Sports App] pulando 'Quality Life Run-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Membros Inferiores + Glúteos- Adriana Carvalho| Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Capoeira - Dorta Capoeira / Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Power Leg Day - Pietro Campos Lisboa | Continue Em Movimento -Integrado'
@@ -1204,22 +1204,22 @@
 [TF Sports App] filtrado(tipo): 'Saudação À 2025-Integrado'
 [TF Sports App] filtrado(tipo): 'Tfe Fit Dance | Funcional | Redfit-Integrado'
 [TF Sports App] filtrado(tipo): 'Ásana E Meditação - Rafael Ramos | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Paulinia I-Integrado' (2025-04-20)
-[TF Sports App] filtrado(passado): 'Night Running | Indaiatuba-Integrado' (2025-03-22)
-[TF Sports App] filtrado(passado): 'Treino Focus Estrada Velha De Santos-Integrado' (2025-01-25)
-[TF Sports App] filtrado(passado): 'Como Melhorar O Seu Treinamento?-Integrado' (2025-01-31)
-[TF Sports App] filtrado(passado): 'Saúde Da Mulher Na Corrida-Integrado' (2025-01-30)
-[TF Sports App] filtrado(passado): 'Mitos E Verdades Sobre A Corrida De Rua-Integrado' (2025-01-29)
+[TF Sports App] pulando 'Running | Paulinia I-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Night Running | Indaiatuba-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Treino Focus Estrada Velha De Santos-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Como Melhorar O Seu Treinamento?-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Saúde Da Mulher Na Corrida-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Mitos E Verdades Sobre A Corrida De Rua-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Para Corredores -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga E Nutrição -Integrado'
 [TF Sports App] filtrado(tipo): 'Casastarfish -Integrado'
 [TF Sports App] filtrado(tipo): 'Casastarfish -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Casastarfish -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Atibaia-Integrado' (2025-05-25)
-[TF Sports App] filtrado(passado): 'Circuito E-1 -Integrado' (2025-01-25)
+[TF Sports App] pulando 'Running | Atibaia-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Circuito E-1 -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Swasthya Yoga - Larissa Luna | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Emagreça Com Ritmos Latinos-Integrado'
-[TF Sports App] filtrado(passado): 'Acelleradas Night Run-Integrado' (2025-03-08)
+[TF Sports App] pulando 'Acelleradas Night Run-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga In Natura -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body Nível 1 - Allan Meneghim Soares | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Randal Yamaguchi | Continue Em Movimento -Integrado'
@@ -1227,7 +1227,7 @@
 [TF Sports App] filtrado(tipo): 'Supyoga By Micha Soares-Integrado'
 [TF Sports App] filtrado(tipo): 'Corpo E Mente -Integrado'
 [TF Sports App] filtrado(tipo): 'Gap - Marcelle Hermínio | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Track E Field Experience Running Araçatuba -Integrado' (2025-04-06)
+[TF Sports App] pulando 'Track E Field Experience Running Araçatuba -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Passos De Afeto Dança Para Mamães E Bebês -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Global - Andrea Sacay | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Porto| Respiração Consciente (Domingo)-Integrado'
@@ -1246,12 +1246,12 @@
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Raquel Mouta | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): '1 Encontro Online De 2025-Integrado'
 [TF Sports App] filtrado(tipo): 'Semestre-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Funcional & Corrida Pq Villa Lobos-Integrado' (2025-01-18)
-[TF Sports App] filtrado(passado): 'Running Cabo Frio Park Lagos -Integrado' (2025-03-23)
+[TF Sports App] pulando 'Treino Funcional & Corrida Pq Villa Lobos-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Running Cabo Frio Park Lagos -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga Para Bruxismo Com Fernanda Rossi -Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Experience - Bloquinho Da Gabi-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha - Vinyasa-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Franca I-Integrado' (2025-06-01)
+[TF Sports App] pulando 'Running | Franca I-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Gap-Integrado'
 [TF Sports App] filtrado(tipo): 'Yogabrux Com Fernanda Rossi -Integrado'
 [TF Sports App] filtrado(tipo): 'Yogabrux Com Fernanda Rossi -Integrado'
@@ -1261,17 +1261,17 @@
 [TF Sports App] filtrado(tipo): 'Yogabrux Com Fernanda Rossi -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Brunch Com Thiago Pugliesi-Integrado'
 [TF Sports App] filtrado(tipo): 'Semestre -Integrado'
-[TF Sports App] filtrado(passado): 'Super 3000 -Integrado' (2025-01-18)
-[TF Sports App] filtrado(passado): 'Trancoso Running -Integrado' (2025-10-04)
-[TF Sports App] filtrado(passado): 'Trancoso Running 2025 | 5Km E 10Km-Integrado' (2025-10-04)
+[TF Sports App] pulando 'Super 3000 -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Trancoso Running -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Trancoso Running 2025 | 5Km E 10Km-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Funcional Do Mau-Integrado'
-[TF Sports App] filtrado(passado): 'Assessorias I Interno-Integrado' (2025-12-29)
+[TF Sports App] pulando 'Assessorias I Interno-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Tfe Yoga Vila Flora-Integrado'
 [TF Sports App] filtrado(tipo): 'Treinamento Funcional -Integrado'
 [TF Sports App] filtrado(tipo): 'Track Field Experience Pedalando Nas Alturas -Integrado'
 [TF Sports App] filtrado(tipo): 'Caiaque-Integrado'
 [TF Sports App] filtrado(tipo): 'Energy Verão-Integrado'
-[TF Sports App] filtrado(passado): 'Trein Na Usp-Integrado' (2025-01-11)
+[TF Sports App] pulando 'Trein Na Usp-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Porto | Alongamento E Mobilidade-Integrado'
 [TF Sports App] filtrado(tipo): 'Sarathona De Treino -Integrado'
 [TF Sports App] filtrado(tipo): 'Stiletto -Integrado'
@@ -1279,7 +1279,7 @@
 [TF Sports App] filtrado(tipo): 'K-Pop-Integrado'
 [TF Sports App] filtrado(tipo): 'Hip-Hop -Integrado'
 [TF Sports App] filtrado(tipo): 'Jazz-Funk-Integrado'
-[TF Sports App] filtrado(passado): 'Running | Jacareí -Integrado' (2025-04-06)
+[TF Sports App] pulando 'Running | Jacareí -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Andrezza-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Na Odara Lifestyle Com Samira Abdala-Integrado'
 [TF Sports App] filtrado(tipo): 'Yogabrux Com A Fernanda -Integrado'
@@ -1288,7 +1288,7 @@
 [TF Sports App] filtrado(tipo): 'Life Experience By Luiz Fernando-Integrado'
 [TF Sports App] filtrado(tipo): 'Treinamento Funcional Track-Integrado'
 [TF Sports App] filtrado(tipo): 'Verão Unimed | Colaboradores-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Espaço Einstein -Integrado' (2025-01-18)
+[TF Sports App] pulando 'Treinão Espaço Einstein -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida -Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
@@ -1304,8 +1304,8 @@
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
-[TF Sports App] filtrado(passado): 'Lançamentos Inthegra - Camisetas E Viseira-Integrado' (2025-01-11)
-[TF Sports App] filtrado(passado): 'Pelotão Espaço Einstein -Integrado' (2025-01-18)
+[TF Sports App] pulando 'Lançamentos Inthegra - Camisetas E Viseira-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Pelotão Espaço Einstein -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Chair Dance-Integrado'
 [TF Sports App] filtrado(tipo): 'Desafio Pré Carnaval -Integrado'
 [TF Sports App] filtrado(tipo): 'Hitt - Jessica Braga | Continue Em Movimento -Integrado'
@@ -1316,7 +1316,7 @@
 [TF Sports App] filtrado(tipo): 'Hapkido Para Crianças -Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Infantil-Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Kids-Integrado'
-[TF Sports App] filtrado(passado): 'Rafinha’S Bday-Integrado' (2025-01-11)
+[TF Sports App] pulando 'Rafinha’S Bday-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Care Club-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Casastarfish -Integrado'
 [TF Sports App] filtrado(tipo): 'Vika E Boxk Na Praia-Integrado'
@@ -1435,7 +1435,7 @@
 [TF Sports App] filtrado(tipo): 'Membros Inferiores E Abdominais - Bia Dias - Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): '2º Intermaná De Futevolei -Integrado'
 [TF Sports App] filtrado(tipo): 'Mat Pilates - Caio Barbuena | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(passado): 'Running | Jaboticabal-Integrado' (2025-03-16)
+[TF Sports App] pulando 'Running | Jaboticabal-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hatha Flow - Júlia Brasílico | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Pranayamas Garuda - Ge Gurak | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mat Pilates Para Todos- Joyce Gusmão - Continue Em Movimento -Integrado'
@@ -1473,10 +1473,10 @@
 [TF Sports App] filtrado(tipo): 'Pilates - Vanessa Cruz Gazini | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Lunar - Tassia Pispico | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Alongamento - Leila Barros | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Experience Running Gofit 9 Anos -Integrado' (2025-02-09)
+[TF Sports App] pulando 'Experience Running Gofit 9 Anos -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Funcional - Cátia Kilpp Dahmer | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Respiração E Meditacao - Manoela Ramos | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Aula De Corrida -Integrado' (2024-12-18)
+[TF Sports App] pulando 'Aula De Corrida -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Full Body Em Casa - Bruno Caldeira - Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Ninyasa Yoga - Raquel Mouta | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Workshop Lpf Para Mulheres-Integrado'
@@ -1502,7 +1502,7 @@
 [TF Sports App] filtrado(tipo): 'Spa Soul Wellness-Integrado'
 [TF Sports App] filtrado(tipo): 'Exercícios Baseados No Boxe No Dique Do Tororó-Integrado'
 [TF Sports App] filtrado(tipo): 'Exercícios Baseados No Boxe No Dique Do Tororó-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Na Usp-Integrado' (2024-12-14)
+[TF Sports App] pulando 'Treino Na Usp-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Spa Soul Spinning-Integrado'
 [TF Sports App] filtrado(sem UF): 'Como Melhorar Sua Corrida: Educativos E Biomecânica -Integrado' location='📍null'
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Yoga Brunch-Integrado'
@@ -1512,7 +1512,7 @@
 [TF Sports App] filtrado(tipo): 'Pilates Body & Mind-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino Funcional Online | Maria Almeida | Desafio 20 Dias Autocuidado -Integrado'
 [TF Sports App] filtrado(tipo): 'Track & Field Experience Yoga -Integrado'
-[TF Sports App] filtrado(passado): 'Running Jau/Canarun-Integrado' (2025-02-23)
+[TF Sports App] pulando 'Running Jau/Canarun-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(sem UF): 'Desafio Da Virada-Integrado' location='📍null'
 [TF Sports App] filtrado(tipo): 'Yôga Sunset Com Marielly Camargo-Integrado'
 [TF Sports App] filtrado(tipo): 'Chair Dance-Integrado'
@@ -1520,9 +1520,9 @@
 [TF Sports App] filtrado(tipo): 'Hatha - Vinyasa Yoga-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga 108 Suryas -Integrado'
 [TF Sports App] filtrado(tipo): 'Autoestima Feminina: O Que Te Sabota E O Que Edifica-Integrado'
-[TF Sports App] filtrado(passado): 'Circuito A-1 -Integrado' (2024-12-21)
+[TF Sports App] pulando 'Circuito A-1 -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Treino Funcional Online | Maria Almeida | Desafio 20 Dias Autocuidado -Integrado'
-[TF Sports App] filtrado(passado): 'Corrida Track&Field Petrolina -Integrado' (2025-03-15)
+[TF Sports App] pulando 'Corrida Track&Field Petrolina -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Exercícios Baseados No Boxe-Integrado'
 [TF Sports App] filtrado(tipo): 'De Boa Com A Comida-Integrado'
 [TF Sports App] filtrado(tipo): 'Hiit - Marlon Serra | Continue Em Movimento -Integrado'
@@ -1534,7 +1534,7 @@
 [TF Sports App] filtrado(tipo): 'Proposito E Intenção-Integrado'
 [TF Sports App] filtrado(tipo): 'Vinyasa Flow Yoga-Integrado'
 [TF Sports App] filtrado(tipo): 'Experience Lpf Elasoma | Maria Almeida -Integrado'
-[TF Sports App] filtrado(passado): 'Desafio Inthegra-Integrado' (2025-02-15)
+[TF Sports App] pulando 'Desafio Inthegra-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Retiro Alma Solar ( Eu Soul Verão) - Teresópolis -Integrado'
 [TF Sports App] filtrado(tipo): 'Saúde Pelvica-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade E Força - Luciane Quintão | Continue Em Movimento -Integrado'
@@ -1542,7 +1542,7 @@
 [TF Sports App] filtrado(tipo): 'Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga E Meditação - Fernando Carone | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino De Ciclismo -Integrado'
-[TF Sports App] filtrado(passado): 'Treino De Corrida -Integrado' (2024-12-04)
+[TF Sports App] pulando 'Treino De Corrida -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Pilates Abdominal: Fortaleça O Centro Do Seu Corpo!-Integrado'
 [TF Sports App] filtrado(tipo): 'Talk Trainers - Dezembro-Integrado'
 [TF Sports App] filtrado(tipo): 'Força E Mobilidade - Luciane Quintão | Continue Em Movimento -Integrado'
@@ -1568,7 +1568,7 @@
 [TF Sports App] filtrado(tipo): 'Pilates -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Em Casa - Eliane Martins E Beto Julião | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'O Impacto Da Atividade Física Na Saúde Da Mulher - Liza Lambert E Anelise Bueno | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Race 30 Anos -Integrado' (2024-12-07)
+[TF Sports App] pulando 'Race 30 Anos -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Musculação Em Casa - Allan Meneghim Soares | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Funcional Online Gratuito | Desafio 20 Dias Autocuidado |-Integrado'
@@ -1576,7 +1576,7 @@
 [TF Sports App] filtrado(tipo): 'Treino Funcional Online | Maria Almeida | Desafio 20 Dias Autocuidado-Integrado'
 [TF Sports App] filtrado(tipo): 'Flamenca-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação E Movimento - Claudia Busto | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): '2º Treinão Indaiá -Integrado' (2024-12-07)
+[TF Sports App] pulando '2º Treinão Indaiá -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Mat Garuda-Integrado'
 [TF Sports App] filtrado(tipo): 'Core - Patricia Capucho/ Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Flexibilidade E Resistência - Andreza Gomide - Continue Em Movimento-Integrado'
@@ -1635,7 +1635,7 @@
 [TF Sports App] filtrado(tipo): 'Full Body- Matheus Onofre De Castro/ Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Meditação - Manoela Ramos | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Membros Inferiores - Karolline Fausto | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Focus - Bruno Covas -Integrado' (2024-11-30)
+[TF Sports App] pulando 'Treino Focus - Bruno Covas -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hiit - Douglas Viana | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mat Pilates Clássico - Lili Oliveira | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Autorregulação Emocional Através Do Corpo - Rafa Andrade Continue Em Movimento-Integrado'
@@ -1668,8 +1668,8 @@
 [TF Sports App] filtrado(tipo): 'Full Body - Bruno Rodrigues Mesquita | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha - Vinyasa Yoga-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha - Vinyasa Yoga-Integrado'
-[TF Sports App] filtrado(passado): 'Running Challenge Vinícola Terras Altas-Integrado' (2025-05-18)
-[TF Sports App] filtrado(passado): 'Running Challenge Vinícola Terras Altas-Integrado' (2025-05-17)
+[TF Sports App] pulando 'Running Challenge Vinícola Terras Altas-Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Running Challenge Vinícola Terras Altas-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): '🏻\u200d️ Equilibrium-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Confraternização Equipe Mfbt-Integrado'
@@ -1688,7 +1688,7 @@
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Personal Hatha Yoga Com Gi Correa-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Estrada Velha De Santos-Integrado' (2024-11-23)
+[TF Sports App] pulando 'Treino Estrada Velha De Santos-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Conexão Corpo Mente -Integrado'
 [TF Sports App] filtrado(tipo): 'Primeiros Socorros-Integrado'
 [TF Sports App] filtrado(tipo): 'Chair Dance + Dança Do Ventre-Integrado'
@@ -1713,8 +1713,8 @@
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Com Giórgia Venzon 🏽\u200d️-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Personal | Andreia 🏽\u200d️-Integrado'
 [TF Sports App] filtrado(tipo): 'Lnk Concept-Integrado'
-[TF Sports App] filtrado(passado): 'Trancoso Running 2025 | 21Km -Integrado' (2025-10-04)
-[TF Sports App] filtrado(passado): 'Trancoso Running 2025 | 5Km E 10Km-Integrado' (2025-10-04)
+[TF Sports App] pulando 'Trancoso Running 2025 | 21Km -Integrado' (sem horário publicado)
+[TF Sports App] pulando 'Trancoso Running 2025 | 5Km E 10Km-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hapkido Adulto -Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Juvenil-Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Para Crianças -Integrado'
@@ -1731,11 +1731,11 @@
 [TF Sports App] filtrado(tipo): 'Dance + Fest 2024-Integrado'
 [TF Sports App] filtrado(tipo): 'Reset Experience Miguel Pereira Rj-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga E Música Nas Estrelas -Integrado'
-[TF Sports App] filtrado(passado): 'Trancoso Running 2025-Integrado' (2025-10-04)
+[TF Sports App] pulando 'Trancoso Running 2025-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Personal Com A Selma Marques-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Brunch-Integrado'
 [TF Sports App] filtrado(tipo): 'B10 Games -Integrado'
-[TF Sports App] filtrado(passado): 'Longão Rv + Tf-Integrado' (2024-10-05)
+[TF Sports App] pulando 'Longão Rv + Tf-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Hapkido Adulto-Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Juvenil-Integrado'
 [TF Sports App] filtrado(tipo): 'Hapkido Crianças -Integrado'
@@ -1750,7 +1750,7 @@
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Com Gigi Venzon 🏽\u200d️-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Com Gigi Venzon 🏽\u200d️-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Personal | Ká 🏽\u200d️-Integrado'
-[TF Sports App] filtrado(passado): 'Treinão Apollo Ae + Care Club-Integrado' (2024-10-12)
+[TF Sports App] pulando 'Treinão Apollo Ae + Care Club-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Aula Funcional Online | Maria Almeida -Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Funcional Online | Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Ritmos Latinos & Lpf-Integrado'
@@ -1783,7 +1783,7 @@
 [TF Sports App] filtrado(tipo): 'Judo Particular -Integrado'
 [TF Sports App] filtrado(tipo): 'Retiro Equilíbrio-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino Para Mulheres / Gestantes -Integrado'
-[TF Sports App] filtrado(passado): 'Treinão De Corrida V8 & Tf-Integrado' (2024-10-12)
+[TF Sports App] pulando 'Treinão De Corrida V8 & Tf-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Stiletto - Sábados ( Prof. Tafiny )-Integrado'
 [TF Sports App] filtrado(tipo): 'Flexibilidade - Sábados (Prof. Lorenzo)-Integrado'
 [TF Sports App] filtrado(tipo): 'K-Pop - Sábados ( Prof. Sophia ) -Integrado'
@@ -1817,7 +1817,7 @@
 [TF Sports App] filtrado(tipo): 'Curso De Formação Em Yoga E Yogaterapia-Integrado'
 [TF Sports App] filtrado(tipo): 'Judô Kids 3-5 Anos -Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Jiu Jitsu-Integrado'
-[TF Sports App] filtrado(passado): '1ª Corrida Do Médico' (2024-10-19)
+[TF Sports App] pulando '1ª Corrida Do Médico' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Landarosa Experience Búzios'
 [TF Sports App] filtrado(tipo): 'Desafio Das Serras - Serra Da Bocaina'
 [TF Sports App] filtrado(tipo): 'Desafio Das Serras Taiaçupeba'
@@ -1848,7 +1848,7 @@
 [TF Sports App] filtrado(tipo): 'Treinão Com Stephany (Teste)-Integrado'
 [TF Sports App] filtrado(tipo): 'Localizada 50+-Integrado'
 [TF Sports App] filtrado(tipo): 'Seminário De Reiki Usui Nível I -Integrado'
-[TF Sports App] filtrado(passado): 'Circuito Maximize 2024-Integrado' (2024-08-03)
+[TF Sports App] pulando 'Circuito Maximize 2024-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Bumbum Na Nuca-Integrado'
 [TF Sports App] filtrado(tipo): 'Abs Revolution-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino Empina Glúteo -Integrado'
@@ -1890,12 +1890,12 @@
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Bike Sunday Academia Epicfitness-Integrado'
 [TF Sports App] filtrado(tipo): 'Réalité Yoga In Paris-Integrado'
-[TF Sports App] filtrado(passado): 'Treino Aberto Sm Assessoria Esportiva-Integrado' (2024-07-20)
+[TF Sports App] pulando 'Treino Aberto Sm Assessoria Esportiva-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Yoga + Pilates + Taichi (Garuda) - Ge Gurak | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Dança Para 3ª Idade -Integrado'
 [TF Sports App] filtrado(tipo): 'Chair Dance - Suellen Mello/Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Emagreça Dançando -Integrado'
-[TF Sports App] filtrado(passado): 'Corrida Abre - Allas 3ª Edição -Integrado' (2024-08-03)
+[TF Sports App] pulando 'Corrida Abre - Allas 3ª Edição -Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Atendimento Personalizado -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional No Ibira-Integrado'
 [TF Sports App] filtrado(tipo): 'Dançando Em Casa -Integrado'
@@ -1912,17 +1912,11 @@
 [TF Sports App] filtrado(tipo): 'Boxe -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Personal Cíntia -Integrado'
 [TF Sports App] filtrado(sem UF): 'Trail Run Pedra Azul' location='Estrada de Aracê | Aracê, Domingos Martins | Brasil'
-[TF Sports App] filtrado(passado): '15K Da Virada Maceió' (2024-12-31)
-[TF Sports App] filtrado(passado): 'Mind Run' (2024-09-29)
+[TF Sports App] pulando '15K Da Virada Maceió' (sem horário publicado)
+[TF Sports App] pulando 'Mind Run' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Tournoi Et La Plage Tf'
 [TF Sports App] filtrado(tipo): 'Pickleball'
 [TF Sports App] filtrado(tipo): 'Circuito Das Serras | Parque Da Cidade'
-[TF Sports App] 5 corridas encontradas
-✅  tf_sports_app: 5 evento(s)
-    {"titulo": "Run Series Recife 2026", "data": "2026-10-18", "estado": "PE", "km": "5.0, 10.0"}
-    {"titulo": "Shopping Plaza Sul Run 2026", "data": "2026-11-22", "estado": "SP", "km": "5.0, 10.0"}
-    {"titulo": "Run Series Recife 2027", "data": "2027-10-18", "estado": "PE", "km": "5.0, 10.0"}
-    {"titulo": "Run Series Recife 2028", "data": "2028-10-18", "estado": "PE", "km": "5.0, 10.0"}
-    {"titulo": "Run Series Recife 2029", "data": "2029-10-18", "estado": "PE", "km": "5.0, 10.0"}
-❌  tf_sports_app: 5/5 eventos sem horário
-FAILURE_NOTE:5/5 eventos sem horário
+[TF Sports App] 0 corridas encontradas
+⚠️   tf_sports_app: 0 eventos retornados
+FAILURE_NOTE:0 eventos

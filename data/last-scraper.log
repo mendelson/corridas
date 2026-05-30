@@ -4,13 +4,12 @@
 [Central da Corrida] 68 corridas encontradas
 [TF Sports App] events(data,pt-BR): 7 brutos
 [TF Sports App] events(sem-data,pt-BR): 0 brutos
+[TF Sports] run-series: 45 eventos brutos
 [Iguana Sports] 8 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [TF Sports] run-series: 45 eventos brutos
 [Minhas Inscrições] 20 cards no calendário
 [Yescom] 13 corridas encontradas
-[Ativo] 9 corridas encontradas
-[Runner Brasil] 17 eventos no calendário
 [Brasil Corrida] 14 corridas encontradas
 [TF Sports App] events(recentes,pt-BR): 1912 brutos
 [TF Sports App] total Strapi locale=pt-BR: 1912 únicos
@@ -1933,6 +1932,7 @@
 [TF Sports App] filtrado(tipo): 'Pickleball'
 [TF Sports App] filtrado(tipo): 'Circuito Das Serras | Parque Da Cidade'
 [TF Sports App] 5 corridas encontradas
+[Corridas Brasil] 3104 corridas encontradas
 [Runner Brasil] 17 corridas encontradas
 [Bora Correr] 43 corridas encontradas
 [Brasil que Corre] 46 corridas encontradas
@@ -2014,24 +2014,24 @@
 [TF Sports] filtrado(exp): 'Ranking Duplas Mampituba' area='Tênis'
 [TF Sports] filtrado(exp): 'Festival Tênis e Futebol Kids - Clube de Campo' area='Tênis'
 [TF Sports] filtrado(exp): 'II Circuito de Tênis Etapa Clube de Campo' area='Tênis'
+[TF Sports] filtrado(exp): 'Big Play Campestre I' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Circuito Paraibano de Pickleball | 2ª Etapa' area='Pickleball'
 [TF Sports] filtrado(exp): 'Neon Beach Tennis' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Big Play Campestre I' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
+[TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
 [TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
 [TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
 [TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
 [TF Sports] filtrado(exp): 'Mulheres em Movimento | 2ªedição' area='Futevôlei '
 [TF Sports] filtrado(exp): 'Dia das Mães | Pilates de solo' area='Pilates'
-[TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
-[TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
 [TF Sports] filtrado(exp): 'Porto Bike Tour' area='Bike'
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports] pulando 'Linq Monstar Run' (sem localização determinável)
 [TF Sports] pulando 'Barimov' (sem localização determinável)
-[TF Sports] pulando 'Villa Forma' (sem localização determinável)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[TF Sports] pulando 'Villa Forma' (sem localização determinável)
 [Prague Marathon] nenhuma edição futura identificada
 [proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
@@ -2044,15 +2044,15 @@
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Portal das Corridas] 68 corridas encontradas
-[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
-[Ticket Sports] 932 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Ticket Sports] 934 corridas encontradas
+[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
@@ -2165,6 +2165,11 @@
 [TF Sports] filtrado(exp-rec): 'The Best Indoor Bike' area='Bike'
 [TF Sports] filtrado(exp-rec): 'Circuito AVP - 3° Edição' area='Beach Voley'
 [TF Sports] filtrado(exp-rec): 'Slow Morning' area='Yoga'
+[RunSignup] página 4: 250 corridas
+[World Athletics] calendarEvents.results: 270 itens
+[World Athletics] 270 competições brutas
+[World Athletics] 121 corridas válidas (149 ignoradas)
+[Race Roster] '10k': 174 upcoming de 2000
 [RunSignup] página 5: 250 corridas
 [Atletis] 18 corridas encontradas
 [Race Roster] 'half marathon': 304 upcoming de 2000
@@ -2194,11 +2199,11 @@
 [Correr Brasília] 65 corridas encontradas
 [RunSignup] página 17: 250 corridas
 [RunSignup] página 18: 250 corridas
+[Correr Brasília] 65 corridas encontradas
 [RunSignup] página 19: 250 corridas
 [RunSignup] página 20: 250 corridas
 [RunSignup] página 21: 250 corridas
 [RunSignup] página 22: 250 corridas
-[HalfMarathons.net] 1984 corrida(s) encontrada(s)
 [RunSignup] página 23: 250 corridas
 [RunSignup] página 24: 250 corridas
 [RunSignup] página 25: 250 corridas
@@ -2242,6 +2247,7 @@
 [main] 'Warrior Rush 5K, 10K, And Half' — link válido, miss_count zerado
 [main] 'Lighthouse 5K' — link válido, miss_count zerado
 [main] 'Puppies & Beer 5K - Venice Beach With Or Without Dog' — link válido, miss_count zerado
+[main] 'Tricolor Run Noturna 2026 - 1ª Etapa' — link válido, miss_count zerado
 [main] '3ª Night Run Itarana' — link válido, miss_count zerado
 [main] 'Marathon For Mental Health And Addiction' — link válido, miss_count zerado
 [main] 'Good Neighbor Days' — link válido, miss_count zerado
@@ -2687,6 +2693,9 @@
 [main] 'Pumpkin Roll 5K' — link válido, miss_count zerado
 [main] 'The Bones Run 5K' — link válido, miss_count zerado
 [main] 'Quail Trail 5K' — link válido, miss_count zerado
+[main] 'North Shore Distance Classic - Corridor Running' — link válido, miss_count zerado
+[main] 'Pumpkin Roll 5K' — link válido, miss_count zerado
+[main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
 [main] 'Puppy Creek Fire Department “Run For A Cure” 5K' — link válido, miss_count zerado
 [main] 'Pumpkin Pacer 5K @ White Barn Farm' — link válido, miss_count zerado
 [main] 'Purple Dress Run' — link válido, miss_count zerado

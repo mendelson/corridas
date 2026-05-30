@@ -780,11 +780,10 @@ def test_all_events_have_required_fields():
     assert not missing_link, (
         f"{len(missing_link)}/{n} events missing all links. First 5: {missing_link[:5]}"
     )
-    if missing_hora:
-        pct = round(100 * len(missing_hora) / n)
-        print(f"⚠  {len(missing_hora)}/{n} ({pct}%) events missing horario — "
-              f"will harden once scrape catches up.\n"
-              f"{_source_hint([(t,) for t in missing_hora])}")
+    assert not missing_hora, (
+        f"{len(missing_hora)}/{n} events missing horario. "
+        f"{_source_hint([(t,) for t in missing_hora])}"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -45,6 +45,9 @@ def run(source: str) -> int:
 
     n = len(results)
     if n == 0:
+        if source.startswith("majors/"):
+            print(f"ℹ️   {source}: 0 eventos (sem edição futura anunciada — comportamento esperado entre edições)")
+            return 0
         print(f"⚠️   {source}: 0 eventos retornados")
         print("FAILURE_NOTE:0 eventos")
         return 1

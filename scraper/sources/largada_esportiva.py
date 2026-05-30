@@ -256,6 +256,10 @@ def _parse_card(el, today: str, page_url: str) -> Corrida | None:
     if link.startswith("/"):
         link = BASE + link
 
+    distancias = _extract_distances_text(text)
+    if not distancias:
+        return None
+
     slug = link.rstrip("/").split("/")[-1] if link != page_url else ""
     ev_id = f"le_{slug}" if slug else f"le_{slugify(titulo)}_{estado.lower()}"
 
@@ -269,7 +273,7 @@ def _parse_card(el, today: str, page_url: str) -> Corrida | None:
         cidade=cidade,
         estado=estado,
         pais=pais_card,
-        distancias=_extract_distances_text(text),
+        distancias=distancias,
         imagem_url=imagem_url,
         inscricoes_abertas=None,
         periodo_inscricao=None,
@@ -477,6 +481,8 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
             ev.get("regulamento") or "", titulo_raw,
         ])
         distancias = _extract_distances_text(desc)
+    if not distancias:
+        return None
 
     ev_id = f"le_{slug}" if slug and re.match(r"^[\w\-]+$", slug) else \
             f"le_{slugify(titulo)}_{estado.lower()}"

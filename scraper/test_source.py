@@ -138,7 +138,7 @@ def _validate(source: str, results: list) -> list[str]:
                 missing_tipo += 1
                 break
 
-        # Info: sem horário (many events don't announce start time in advance)
+        # Hard: sem horário publicado
         if not r.horario:
             missing_horario += 1
 
@@ -187,9 +187,9 @@ def _validate(source: str, results: list) -> list[str]:
     elif missing_distancias:
         print(f"ℹ️   {source}: {missing_distancias}/{n} eventos sem distâncias")
 
-    # Horário: informational only — many events don't announce start time in advance
+    # Horário: hard failure — every event must have a published start time
     if missing_horario:
-        print(f"ℹ️   {source}: {missing_horario}/{n} eventos sem horário")
+        failures.append(f"{missing_horario}/{n} eventos sem horário publicado")
 
     for w in warnings:
         print(f"⚠️   {source}: {w}")

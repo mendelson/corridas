@@ -974,6 +974,24 @@ def _drop_linkless_events(corridas: list[Corrida]) -> list[Corrida]:
     return ok
 
 
+def _drop_events_without_horario(corridas: list[Corrida]) -> list[Corrida]:
+    """Drop events that have no published start time.
+
+    Horário is a hard requirement: users rely on it to plan participation.
+    Events without it are either incomplete data or events whose organisers
+    haven't published a start time yet — in both cases they should not reach
+    the frontend until the information is available.
+    """
+    ok, dropped = [], []
+    for c in corridas:
+        (ok if c.horario else dropped).append(c)
+    if dropped:
+        print(f"[main] {len(dropped)} evento(s) sem horário publicado removido(s):")
+        for c in dropped[:20]:
+            print(f"  • {c.id} ({c.titulo!r}) [{c.data_evento}]")
+    return ok
+
+
 def _drop_nonunique_link_events(corridas: list[Corrida]) -> list[Corrida]:
     """Drop events that share a single (source, link) across 3+ distinct records.
 
@@ -1105,6 +1123,7 @@ def main() -> None:
     final = _drop_nonunique_link_events(final)
     _ensure_inscricao_links(final)
     final = _drop_linkless_events(final)
+    final = _drop_events_without_horario(final)
     final = _dedupe_by_id(final)
     # _find_all_photos(final)
     _enrich_images(final)

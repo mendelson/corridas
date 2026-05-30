@@ -6,11 +6,11 @@ cards themselves carry only "DD/MM - City", so we follow each link and parse
 the detail page, which exposes structured spans:
 
     Main_label_Nome       → event title
-    Main_label_Dt_Evento  → "Data: DD/MM/YYYY"
+    Main_label_Dt_Evento  → "Data: DD/MM/YYYY" (may include time as "07h00")
     Main_label_Percurso   → "Percurso: 5 / 10 / 21 km"
     Main_label_Local      → "Local: City - UF"
 
-The detail page is the source of truth for title, date, distances and location.
+Events without a published start time are skipped.
 """
 from __future__ import annotations
 import re
@@ -85,6 +85,11 @@ def _scrape_detail(url: str) -> Corrida | None:
     if not data:
         return None
 
+    # Try to find start time in the date field or anywhere on the page
+    horario = _extract_horario(data_raw) or _extract_horario(soup.get_text(" ", strip=True))
+    if horario is None:
+        return None  # no published start time — skip
+
     local_raw = _label_text(soup, "Main_label_Local")
     localizacao, cidade, estado = _parse_local(local_raw, titulo)
 
@@ -105,7 +110,7 @@ def _scrape_detail(url: str) -> Corrida | None:
         id=ev_id,
         titulo=titulo,
         data_evento=data,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
@@ -128,6 +133,28 @@ def _label_text(soup, span_id: str) -> str:
     text = el.get_text(" ", strip=True)
     # Strip the "Label: " prefix
     return re.sub(r"^[^:]{1,15}:\s*", "", text).strip()
+
+
+_HORARIO_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
+
+def _extract_horario(text: str) -> str | None:
+    if not text:
+        return None
+    m = _HORARIO_RE.search(text)
+    if not m:
+        return None
+    if m.group(1) is not None:
+        h, mi = int(m.group(1)), int(m.group(2))
+    else:
+        h, mi = int(m.group(3)), 0
+    if 4 <= h <= 23:
+        return f"{h:02d}:{mi:02d}"
+    return None
 
 
 def _extract_date(text: str) -> str | None:

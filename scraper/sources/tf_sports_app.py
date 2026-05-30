@@ -333,7 +333,19 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
     slug = attrs.get("slug") or ""
     ev_id = event.get("id") or slug or slugify(titulo)
 
-    date_str = ev.get("startDate") or attrs.get("startDate") or ""
+    start_raw = ev.get("startDate") or attrs.get("startDate") or ""
+    date_str = start_raw[:10] if start_raw else ""
+
+    # Try to extract time from startDate ISO string, e.g. "2026-07-15T07:00:00.000Z".
+    # Reject midnight (00:00) — used as placeholder when no actual start time is set.
+    horario_from_date: str | None = None
+    if len(start_raw) > 10:
+        mt = re.search(r"T(\d{2}):(\d{2})", start_raw)
+        if mt:
+            h, mi = int(mt.group(1)), int(mt.group(2))
+            if 4 <= h <= 23:
+                horario_from_date = f"{h:02d}:{mi:02d}"
+
     location_raw = ev.get("location") or attrs.get("location") or ""
     city, state = _parse_location(location_raw, titulo)
     if not state or state == "??":
@@ -348,6 +360,10 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
     localizacao = ", ".join(p for p in [city, state] if p)
 
     distancias, horario = _distances_from_attrs(attrs, titulo)
+    horario = horario or horario_from_date
+    if horario is None:
+        print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
+        return None
 
     imagem_url = None
     cover = ev.get("coverImage") or {}
@@ -376,7 +392,7 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
         id=f"tfsapp_{ev_id}",
         titulo=titulo,
         data_evento=date_str,
-        horario=horario,
+        horario=horario,  # always non-None: skip guard above ensures this
         localizacao=localizacao,
         cidade=city,
         estado=state if state != "??" else "",

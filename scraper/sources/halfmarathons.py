@@ -211,12 +211,16 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     post_id = post.get("id") or slugify(titulo)
     race_id = f"halfmarathons_{post_id}_{data_evento[:4]}"
 
+    horario = _normalize_time(meta.get("starting-time"))
+    if horario is None:
+        return None  # starting-time not yet published — skip until it is
+
     now = now_iso()
     return Corrida(
         id=race_id,
         titulo=titulo,
         data_evento=data_evento,
-        horario=_normalize_time(meta.get("starting-time")),
+        horario=horario,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,

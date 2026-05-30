@@ -80,6 +80,10 @@ def _parse_event(el) -> Corrida | None:
     if link.startswith("/"):
         link = BASE + link
 
+    horario = normalize_time(text)
+    if horario is None:
+        return None  # start time not yet published — skip until it is
+
     now = now_iso()
     today = today_iso()
 
@@ -95,7 +99,7 @@ def _parse_event(el) -> Corrida | None:
         id=f"sescdf_{slugify(titulo)}",
         titulo=titulo,
         data_evento=data or "",
-        horario=normalize_time(text),
+        horario=horario,
         localizacao="Brasília, DF",
         cidade="Brasília",
         estado=estado,

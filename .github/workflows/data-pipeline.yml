@@ -11,6 +11,16 @@ on:
 permissions:
   contents: write
 
+# Only one data-pipeline run at a time, and it is always the most recent one.
+# The group is a FIXED string (not github.ref): pull_request "closed" events
+# carry a per-PR ref (refs/pull/<N>/merge), so a ref-based group would NOT
+# coalesce two different merges. With a fixed group, a new merge (or schedule
+# /dispatch) cancels the in-progress run and starts fresh, so main always ends
+# up with the data and tests from the latest code.
+concurrency:
+  group: data-pipeline
+  cancel-in-progress: true
+
 jobs:
   scrape:
     if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
@@ -27,6 +37,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install -r requirements-test.txt
           playwright install chromium --with-deps
 
       - name: Run scraper
@@ -46,6 +57,13 @@ jobs:
 
       - name: Copy JSON to web folder
         run: cp data/corridas.json web/corridas.json
+
+      # Quality gate: the freshly scraped data must pass the full test suite
+      # before it can land on main. If it fails, the commit step below never
+      # runs, so main keeps the last known-good corridas.json and the failure
+      # is surfaced loudly instead of silently shipping bad data.
+      - name: Validate scraped data
+        run: python -m pytest tests/ -q
 
       - name: Commit updated data
         run: |

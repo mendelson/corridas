@@ -10,6 +10,7 @@
 [Iguana Sports] 8 corridas encontradas
 [TF Sports App] events(sem-data,pt-BR): 0 brutos
 [TF Sports] run-series: 45 eventos brutos
+[MKS Esportes] 3 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [MKS Esportes] 3 corridas encontradas
@@ -23,6 +24,8 @@
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports App] events(recentes,pt-BR): 1912 brutos
 [TF Sports App] total Strapi locale=pt-BR: 1912 únicos
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
@@ -2044,6 +2047,7 @@
 [TF Sports] pulando 'Barimov' (sem localização determinável)
 [proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
 [Stockholm Marathon] erro ao buscar página: todos os métodos falharam para https://www.stockholmmarathon.se/eng/
+[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [TF Sports] pulando 'Linq Monstar Run' (sem localização determinável)
 [TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
@@ -2181,6 +2185,8 @@
 [TF Sports] filtrado(exp-rec): 'Circuito AVP - 3° Edição' area='Beach Voley'
 [TF Sports] filtrado(exp-rec): 'Slow Morning' area='Yoga'
 [RunSignup] página 10: 250 corridas
+[TF Sports] 204 corridas encontradas
+[TF Sports] 74 duplicata(s) removida(s)
 [RunSignup] página 11: 250 corridas
 [TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
 [RunSignup] página 12: 250 corridas
@@ -2198,10 +2204,11 @@
 [RunSignup] página 18: 250 corridas
 [RunSignup] página 19: 250 corridas
 [RunSignup] página 20: 250 corridas
-[HalfMarathons.net] 1984 corrida(s) encontrada(s)
 [RunSignup] página 21: 250 corridas
 [RunSignup] página 22: 250 corridas
 [RunSignup] página 23: 250 corridas
+[Correr Brasília] 65 corridas encontradas
+[HalfMarathons.net] 1984 corrida(s) encontrada(s)
 [RunSignup] página 24: 250 corridas
 [RunSignup] página 25: 250 corridas
 [RunSignup] página 26: 250 corridas
@@ -2340,6 +2347,7 @@
 [main] 'Pépère Gerry Run' — link válido, miss_count zerado
 [main] 'Rock The Ride Napa, Ca' — link válido, miss_count zerado
 [main] '2026 Elkhart City Festival 5K And Kids Run' — link válido, miss_count zerado
+[main] 'Festies 5K' — link válido, miss_count zerado
 [main] 'Harvey Mills Longest Day 10K' — link válido, miss_count zerado
 [main] 'The Earl 'Helge' Byleen Road Race' — link válido, miss_count zerado
 [main] 'Festies 5K' — link válido, miss_count zerado
@@ -2426,12 +2434,15 @@
 [main] 'Seward Freedom Run - 2026' — link válido, miss_count zerado
 [main] 'Peoria Jaycees' Firecracker 5000' — link válido, miss_count zerado
 [main] 'Prior Lake Firecracker 5K' — link válido, miss_count zerado
+[main] 'Fifth Season Races - 2026 41St Year' — link válido, miss_count zerado
+[main] 'Peoria Jaycees' Firecracker 5000' — link válido, miss_count zerado
 [main] 'Freedom Run' — link válido, miss_count zerado
 [main] 'Freedom 5K & Half' — link válido, miss_count zerado
 [main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
 [main] 'Run For Chocolate 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Heritage Days Fun Run Sponsored By The Mount Vernon Alumni Association' — link válido, miss_count zerado
-[main] 'Richmond Fireworks 5K & 10K' — link válido, miss_count zerado
+[main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
+[main] 'Run For Chocolate 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Ames Midnight Madness Road Race' — link válido, miss_count zerado
 [main] 'Low Moor Days 2026 5K Rock-N-Run' — link válido, miss_count zerado
 [main] 'Symphony847 5K' — link válido, miss_count zerado
@@ -2535,6 +2546,9 @@
 [main] 'New Windsor Rodeo Run' — link válido, miss_count zerado
 [main] 'Ridge Reaper 5K & 10K' — link válido, miss_count zerado
 [main] '2Nd Annual Father Arul Memorial 5K Run/Walk & 1 Mile Fun Run' — link válido, miss_count zerado
+[main] 'Freedom Run Presented By Unitypoint Health' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Cobble Hill 2026' — link válido, miss_count zerado
+[main] '2026 Demi-Marathon Mont-Tremblant' — link válido, miss_count zerado
 [main] '2026 Lance Pfrimmer Memorial Run' — link válido, miss_count zerado
 [main] 'Born To Run 5K' — link válido, miss_count zerado
 [main] 'Rolling Of The Bulls 5K' — link válido, miss_count zerado
@@ -2564,13 +2578,15 @@
 [main] '2026 Angel Island Half Marathon & 10K' — link válido, miss_count zerado
 [main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Color Dash For Hope 2026' — link válido, miss_count zerado
+[main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] '2026 Angel Island Half Marathon & 10K' — link válido, miss_count zerado
 [main] 'Speedy Pd' — link válido, miss_count zerado
 [main] 'The Inferno 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Hap Crim Festival Of Races' — link válido, miss_count zerado
 [main] 'Sloth Run 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Yiasou Greek Festival 5K Presented By Novant Health' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Putnam County Running Series' — link válido, miss_count zerado
 [main] 'Quassapaug Sailing Center Open Water Swim' — link válido, miss_count zerado
 [main] 'Community Matters 5K' — link válido, miss_count zerado
@@ -2745,7 +2761,7 @@
 [main] 'Quail Trail 5K' — link válido, miss_count zerado
 [main] 'Puppy Creek Fire Department “Run For A Cure” 5K' — link válido, miss_count zerado
 [main] 'Pumpkinpalooza Trail Run' — link válido, miss_count zerado
-[main] 'Pumpkin Pacer 5K @ White Barn Farm' — link válido, miss_count zerado
+[main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
 [main] 'Purple Dress Run' — link válido, miss_count zerado
 [main] 'Race For Peace' — link válido, miss_count zerado
 [main] 'North Shore Distance Classic - Corridor Running' — link válido, miss_count zerado
@@ -2871,6 +2887,7 @@
 [main] 'Belle Haven 5K & 10K' — link válido, miss_count zerado
 [main] 'Victory 2027' — link válido, miss_count zerado
 [main] 'All Abilities Marathon' — link válido, miss_count zerado
+[main] 'Victory 2027' — link válido, miss_count zerado
 [main] 'Little Rock Marathon Weekend' — link válido, miss_count zerado
 [main] 'Tombstone 30K/50K/50 Mile' — link válido, miss_count zerado
 [main] 'St. Patrick’S Day 5K Santa Rosa' — link válido, miss_count zerado

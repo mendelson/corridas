@@ -21,7 +21,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-30 03:27 | ✅ | 2026-05-30 03:27 |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-30 14:22 | ✅ | 2026-05-30 14:22 |
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-30 03:29 | ✅ | 2026-05-30 03:29 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-30 20:40 | ❌ 0 eventos | 2026-05-30 03:29 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
 | Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-30 03:27 | ✅ | 2026-05-30 03:27 |

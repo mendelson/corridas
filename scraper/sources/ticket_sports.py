@@ -111,6 +111,11 @@ def scrape() -> list[Corrida]:
     # Always fetch detail for every event — detail description is authoritative
     _enrich_all_distances(corridas)
 
+    no_horario = [c for c in corridas if c.horario is None]
+    for c in no_horario:
+        print(f"[{SOURCE_NAME}] pulando '{c.titulo}' (sem horário publicado)")
+    corridas = [c for c in corridas if c.horario is not None]
+
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 

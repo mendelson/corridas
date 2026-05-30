@@ -39,7 +39,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-30 03:29 | ✅ | 2026-05-30 03:29 |
-| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
+| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-05-30 14:04 | ❌ 0 eventos | 2026-05-30 03:28 |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-05-30 03:27 | ✅ | 2026-05-30 03:27 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
 

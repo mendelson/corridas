@@ -17,6 +17,12 @@ on:
 permissions:
   contents: read
 
+# Keep only the newest run per PR ref: pushing a new commit cancels the
+# superseded selective-scrape run instead of letting both finish.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
     if: "!github.event.pull_request.draft"

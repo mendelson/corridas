@@ -612,14 +612,26 @@ def _events_to_corridas(
             slug = attrs.get("slug", "")
             ed = attrs.get("eventData") or {}
 
-            data_evento = ed.get("startDate") or ""
+            start_raw = ed.get("startDate") or ""
             # Skip events with no date or a past date — both fail the data-quality
             # test (data_evento is a required, zero-tolerance field). The NO_DATE
             # endpoints intentionally fetch dateless drafts, but those can't be
             # stored until a date is announced.
-            if not data_evento or data_evento[:10] < today:
+            if not start_raw or start_raw[:10] < today:
                 continue
-            data_evento = data_evento[:10]
+            data_evento = start_raw[:10]
+
+            # Try to extract time from the startDate ISO datetime string, e.g.
+            # "2026-07-15T07:00:00.000Z". Reject midnight (00:00) — it's used
+            # as a placeholder when no actual start time has been set.
+            horario_from_date: str | None = None
+            if len(start_raw) > 10:
+                mt = re.search(r"T(\d{2}):(\d{2})", start_raw)
+                if mt:
+                    h, mi = int(mt.group(1)), int(mt.group(2))
+                    if 4 <= h <= 23:
+                        horario_from_date = f"{h:02d}:{mi:02d}"
+
             location_raw = ed.get("location") or ""
             is_closed = ed.get("isSubscriptionClosed")
 
@@ -661,7 +673,10 @@ def _events_to_corridas(
             imagem_url = _extract_image(attrs)
 
             horarios_dist = [d.horario for d in distancias if d.horario]
-            horario_evento = min(horarios_dist) if horarios_dist else None
+            horario_evento = min(horarios_dist) if horarios_dist else horario_from_date
+            if horario_evento is None:
+                print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
+                continue
 
             link_evento = f"{link_prefix}/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)

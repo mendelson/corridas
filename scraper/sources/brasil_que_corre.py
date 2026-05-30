@@ -142,46 +142,8 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
     if not titulo or len(titulo) < 3:
         return None
 
-    distancias = _extract_distances(text)
-
-    widget_id = widget.get("id") or ""
-    if widget_id:
-        stable_id = f"bqc_{widget_id}"
-    else:
-        stable_id = f"bqc_{slugify(titulo[:40])}_{data_evento}"
-
-    # link_evento: prefer the external platform URL; fall back to BQC anchor (unique
-    # per widget, so the merger's _shared_inscription_link won't collapse all events).
-    if link:
-        link_evento = link
-        fonte_nome = _nome_for_link(link)
-    else:
-        link_evento = f"{URL}#{widget_id}" if widget_id else f"{URL}#{stable_id}"
-        fonte_nome = SOURCE_NAME
-
-    return Corrida(
-        id=stable_id,
-        titulo=titulo,
-        data_evento=data_evento,
-        horario=None,
-        localizacao="Brasília, DF",
-        cidade="Brasília",
-        estado="DF",
-        pais="BR",
-        distancias=distancias,
-        imagem_url=None,
-        inscricoes_abertas=None,
-        periodo_inscricao=None,
-        fontes=[FonteInfo(
-            nome=fonte_nome,
-            link_evento=link_evento,
-            links_inscricao=[link_evento],
-            tipo="calendario",
-        )],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )
+    # Start times are not published on this page — skip until another source provides one.
+    return None
 
 
 def _extract_distances(text: str) -> list[Distancia]:

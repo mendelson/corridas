@@ -335,27 +335,7 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
     if link and not link.startswith("http"):
         link = BASE + ("" if link.startswith("/") else "/") + link
 
-    now = now_iso()
-    return Corrida(
-        id=f"worldathletics_{comp_id}_{year}",
-        titulo=titulo,
-        data_evento=data_evento,
-        horario=None,
-        localizacao=localizacao,
-        cidade=localizacao,
-        estado=estado,
-        pais=pais,
-        distancias=distancias,
-        imagem_url=None,
-        inscricoes_abertas=None,
-        periodo_inscricao=None,
-        fontes=[FonteInfo(
-            nome=SOURCE_NAME,
-            link_evento=link,
-            links_inscricao=[link],
-            tipo="calendario",
-        )],
-        miss_count=0,
-        first_seen_at=now,
-        updated_at=now,
-    )
+    # WA calendar API provides date-only startDate (e.g. "2026-01-06"); individual
+    # event pages return 404 with competition=null. No start time is accessible
+    # from any public WA endpoint — skip events without a published start time.
+    return None

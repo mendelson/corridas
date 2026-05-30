@@ -472,19 +472,35 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
     if not link:
         link = page_url
 
-    dist_raw = ev.get("distancias") or ev.get("distances") or \
-               ev.get("percursos") or ev.get("modalidades") or []
+    dist_raw = (
+        ev.get("distancias") or ev.get("distances") or
+        ev.get("percursos") or ev.get("modalidades") or
+        ev.get("categorias") or ev.get("provas") or
+        ev.get("percurso") or ev.get("itens") or []
+    )
     distancias = _parse_distances_value(dist_raw)
     if not distancias:
-        desc = " ".join(str(v) for v in [
-            ev.get("descricao") or "", ev.get("description") or "",
-            ev.get("regulamento") or "", titulo_raw,
-        ])
-        distancias = _extract_distances_text(desc)
+        # Collect all text-like values from the event dict for pattern matching
+        text_parts: list[str] = [
+            str(ev.get("descricao") or ""),
+            str(ev.get("description") or ""),
+            str(ev.get("regulamento") or ""),
+            str(titulo_raw),
+        ]
+        for v in ev.values():
+            if isinstance(v, str) and len(v) >= 2:
+                text_parts.append(v)
+            elif isinstance(v, list):
+                for item in v:
+                    if isinstance(item, str):
+                        text_parts.append(item)
+                    elif isinstance(item, dict):
+                        text_parts.extend(
+                            str(vv) for vv in item.values()
+                            if isinstance(vv, (str, int, float))
+                        )
+        distancias = _extract_distances_text(" ".join(text_parts))
     if not distancias:
-        # Debug: log raw keys and values to diagnose distance fields
-        debug_keys = {k: ev[k] for k in list(ev.keys())[:30] if ev.get(k) not in (None, "", [], {})}
-        print(f"[{SOURCE_NAME}] sem distância: titulo={titulo_raw!r} keys={debug_keys}")
         return None
 
     ev_id = f"le_{slug}" if slug and re.match(r"^[\w\-]+$", slug) else \
@@ -574,14 +590,44 @@ def _extract_date_text(text: str) -> str | None:
     return None
 
 
+_KM_SUBKEYS = ("km", "distancia", "distance", "quilometros", "kilometers", "percurso_km")
+
+
 def _parse_distances_value(val: object) -> list[Distancia]:
     if isinstance(val, list):
         result: list[Distancia] = []
+        seen_km: set[float] = set()
         for item in val:
             if isinstance(item, (int, float)) and 1 <= item <= 250:
-                result.append(Distancia(km=float(item), data=None, horario=None))
-            elif isinstance(item, (str, dict)):
-                result.extend(_extract_distances_text(str(item)))
+                km = float(item)
+                if km not in seen_km:
+                    seen_km.add(km)
+                    result.append(Distancia(km=km, data=None, horario=None))
+            elif isinstance(item, dict):
+                # Check common sub-keys that store the distance numerically
+                for k in _KM_SUBKEYS:
+                    raw_km = item.get(k)
+                    if raw_km is not None:
+                        try:
+                            km = float(raw_km)
+                            if 1 <= km <= 250 and km not in seen_km:
+                                seen_km.add(km)
+                                result.append(Distancia(km=km, data=None, horario=None))
+                        except (ValueError, TypeError):
+                            pass
+                        break
+                else:
+                    # Fall back to text extraction from all string/numeric values
+                    text = " ".join(str(v) for v in item.values() if isinstance(v, (str, int, float)))
+                    for d in _extract_distances_text(text):
+                        if d.km not in seen_km:
+                            seen_km.add(d.km)
+                            result.append(d)
+            elif isinstance(item, str):
+                for d in _extract_distances_text(item):
+                    if d.km not in seen_km:
+                        seen_km.add(d.km)
+                        result.append(d)
         return result
     return _extract_distances_text(str(val)) if val else []
 

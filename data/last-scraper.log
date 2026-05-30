@@ -1,38 +1,39 @@
 [main] iniciando scraping...
-[main] 13967 corridas no estado anterior
-[main] priorizando 3 fonte(s) com falha anterior: central_da_corrida, corridas_brasil, largada_esportiva
+[main] 13954 corridas no estado anterior
+[main] priorizando 1 fonte(s) com falha anterior: largada_esportiva
 [Atletis] 74 candidatos de 92 eventos
-[Central da Corrida] 68 corridas encontradas
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
+[Central da Corrida] 68 corridas encontradas
 [TF Sports App] events(data,pt-BR): 7 brutos
-[TF Sports App] events(sem-data,pt-BR): 0 brutos
 [Iguana Sports] 8 corridas encontradas
+[TF Sports App] events(sem-data,pt-BR): 0 brutos
 [TF Sports] run-series: 45 eventos brutos
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Yescom] 13 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
+[Yescom] 13 corridas encontradas
 [Ativo] 9 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Runner Brasil] 17 eventos no calendário
 [Minhas Inscrições] 20 cards no calendário
+[Runner Brasil] 17 eventos no calendário
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports App] events(recentes,pt-BR): 1912 brutos
 [TF Sports App] total Strapi locale=pt-BR: 1912 únicos
 [TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
-[TF Sports] run-series(sem data): 0 eventos brutos
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[TF Sports] run-series(sem data): 0 eventos brutos
 [TF Sports] run-series(recentes): 100 eventos brutos
-[Corridas Brasil] 3125 corridas encontradas
 [TF Sports App] Playwright listing: 5 eventos capturados
 [TF Sports App] total após merge: 1912
 [TF Sports App] adicionado: 'Run Series Recife 2026' em 2026-10-18
 [TF Sports App] adicionado: 'Shopping Plaza Sul Run 2026' em 2026-11-22
-[TF Sports App] filtrado(tipo): 'Yoga Online Com O Rafa-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga No Marzen-Integrado'
+[TF Sports App] filtrado(tipo): 'Yoga Online Com O Rafa-Integrado'
 [TF Sports App] adicionado: 'Run Series Recife 2027' em 2027-10-18
 [TF Sports App] adicionado: 'Run Series Recife 2028' em 2028-10-18
 [TF Sports App] adicionado: 'Run Series Recife 2029' em 2029-10-18
@@ -437,6 +438,7 @@
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Beatriz Mello-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Core | Michelle Sposito | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Core | Michelle Sposito | Continue Em Movimento-Integrado'
+[Corridas Brasil] 3125 corridas encontradas
 [TF Sports App] filtrado(sem UF): 'Corrida E Caminhada Cross-Integrado' location='📍Unnamed Road - Itapetininga, SP, Brasil'
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Sarah Araújo | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Majida Majed | Continue Em Movimento-Integrado'
@@ -1943,34 +1945,22 @@
 [TF Sports App] filtrado(tipo): 'Circuito Das Serras | Parque Da Cidade'
 [TF Sports App] 5 corridas encontradas
 [Portal das Corridas] 120 páginas para inspecionar
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Brasil Corrida] 14 corridas encontradas
-[Runner Brasil] 17 corridas encontradas
-[TF Sports] events(data): 7 eventos brutos
-[Bora Correr] 46 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
-[TF Sports] events(sem data): 0 eventos brutos
-[TF Sports] events(recentes): 100 eventos brutos
-[Brasil que Corre] 46 corridas encontradas
+[Largada Esportiva] sem distância: titulo='20ª Volta do Lago' keys={'name': '20ª Volta do Lago', 'description': ' ', 'regulation': '<h1>\n    20ª VOLTA DO LAGO – 2026\n</h1>\n<h1>\n    REGULAMENTO EXTRA OFICIAL\n</h1>\n<h2>\n    1 – A VOLTA DO LAGO\n</h2>\n<p>\n    <b>1.1</b> – A <b>20ª Volta do Lago CAIXA</b> será realizada no dia <b>05 de julho de 2026</b>, com qualquer condição climática, com <b>largada na Orla da Ponte JK – SCES Trecho 2 – Beira Lago</b>, e chegada no mesmo local.\n</p>\n<p>\n    A organização poderá suspender ou adiar o evento por motivos de:\n</p>\n<ul>\n    <li>segurança pública</li>\n    <li>condições climáticas extremas</li>\n    <li>força maior</li>\n</ul>\n<p>\n    <b>1.2</b> – O evento será realizado nas seguintes distâncias:\n</p>\n<ul>\n    <li><b>100 km</b> – revezamento e individual</li>\n    <li><b>70 km</b> – individual</li>\n    <li><b>50 km</b> – individual</li>\n</ul>\n<p>\n    O percurso ocorrerá nas vias que circundam o <b>Lago Paranoá</b>, em circuito <b>aberto e compartilhado com veículos</b>.\n</p>\n<p>\n    <b>1.3</b> – Idade mínima para participação:\n</p>\n<table>\n    <thead>\n        <tr>\n            <td>\n                <p>\n                    <b>Categoria</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Idade mínima</b>\n                </p>\n            </td>\n        </tr>\n    </thead>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    Octeto\n                </p>\n            </td>\n            <td>\n                <p>\n                    - 16 anos\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    Quarteto / Sexteto\n                </p>\n            </td>\n            <td>\n                <p>\n                    - 18 anos\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    Ultramaratonas\n                </p>\n            </td>\n            <td>\n                <p>\n                    - 25 anos\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    <b>1.4</b> – Cada equipe deverá indicar um <b>capitão</b>, que será o responsável pela equipe perante a organização.\n</p>\n<p>\n    <b>1.5</b> – O atleta autoriza o uso de sua imagem para divulgação do evento.\n</p>\n<p>\n    <b>1.6</b> – A inscrição implica <b>aceitação total deste regulamento</b>.\n</p>\n<p>\n    <b>1.7</b> – Todos os participantes estarão cobertos por <b>seguro de vida durante o evento</b>.\n</p>\n<h2>\n    2 – CATEGORIAS\n</h2>\n<h3>\n    <b>Ultramaratonas Individuais</b> (masculino e feminino)\n</h3>\n<ul>\n    <li>Ultramaratona Individual <b>100 km – Local de largada: Orla da Ponte JK – SCES Trecho 2 – Beira Lago</b></li>\n    <li>Ultramaratona Individual <b>70 km – Local de largada: </b><b>Via de acesso a Ponte JK (SCES Trecho 3), na altura da via de acesso ao Clube do Médico de Brasília</b></li>\n    <li>Ultramaratona Individual <b>50 km – Local de largada: </b><b>No estacionamento da SHIN EQL 2/4 CONJUNTO 12 (antiga PRIM4 ACADEMIA), sugerimos acessar o Google Maps para visualizar melhor a localização</b></li>\n</ul>\n<h3>\n    <b>Revezamentos</b>\n</h3>\n<p>\n    <b>Quarteto</b>\n</p>\n<ul>\n    <li>Quarteto Masculino</li>\n    <li>Quarteto Feminino</li>\n    <li>Quarteto Misto (2 homens + 2 mulheres)</li>\n</ul>\n<p>\n    <b>Sexteto</b>\n</p>\n<ul>\n    <li>Sexteto Misto<br>(mínimo de <b>1 atleta do sexo oposto</b>)</li>\n</ul>\n<p>\n    <b>Octeto</b>\n</p>\n<ul>\n    <li>Octeto Masculino</li>\n    <li>Octeto Feminino</li>\n    <li>Octeto Misto<br>(mínimo de <b>2 atletas do sexo oposto</b>)</li>\n</ul>\n<p>\n    <b>Categoria Policiais / Militares</b>\n</p>\n<p>\n    Equipes compostas por <b>servidores do órgão representado (mínimo de 50% da equipe, com comprovação documental), </b>dependentes e convidados. Deverão fazer a inscrição, obrigatoriamente, com o nome da unidade que representam:\n</p>\n<p>\n    ·Unidades da Polícias Militares\n</p>\n<p>\n    ·Unidades da Polícia Civil\n</p>\n<p>\n    ·Unidades da Polícia Federal\n</p>\n<p>\n    ·Polícia Legislativa (Câmara Federal, Senado, Câmara Distrital, etc.)\n</p>\n<p>\n    ·Polícia Penal\n</p>\n<p>\n    ·Polícia Judicial\n</p>\n<p>\n    ·Unidades do Corpo de Bombeiros\n</p>\n<p>\n    ·Unidades do Exército Brasileiro\n</p>\n<p>\n    ·Unidades da Marinha do Brasil\n</p>\n<p>\n    ·Unidades da Força Aérea Brasileira\n</p>\n<p>\n    As equipes deverão obrigatoriamente:\n</p>\n<p>\n    ·utilizar o <b>nome oficial da unidade</b>\n</p>\n<p>\n    ·possuir <b>mínimo de 1 atleta do sexo oposto na equipe</b>\n</p>\n<p>\n    <b></b>\n</p>\n<h4>\n    Tempo limite para equipes de revezamento:\n</h4>\n<p>\n    Distância 100 km - Tempo limite 10 horas\n</p>\n<h2>\n    3 – ULTRAMARATONAS INDIVIDUAIS\n</h2>\n<p>\n    <b>3.1</b> – Idade mínima: <b>25 anos completados em 2026</b>.\n</p>\n<p>\n    <b>3.2</b> – A organização poderá solicitar <b>currículo esportivo</b>.\n</p>\n<p>\n    <b>3.3</b> – Será obrigatório <b>atestado médico emitido até 90 dias antes da prova</b>.\n</p>\n<p>\n    <b>3.4</b> – O atleta deverá possuir <b>apoio logístico próprio</b>.\n</p>\n<h4>\n    Tempo limite para Ultramaratonistas Individuais\n</h4>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Distância</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Tempo limite</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    100 km Ultramaratona Individual\n                </p>\n            </td>\n            <td>\n                <p>\n                    11 horas\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    70 km Ultramaratona Individual\n                </p>\n            </td>\n            <td>\n                <p>\n                    8 horas\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    50 km Ultramaratona Individual\n                </p>\n            </td>\n            <td>\n                <p>\n                    6 horas\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<h4>\n    Vagas\n</h4>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Distância</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Vagas</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    100 km\n                </p>\n            </td>\n            <td>\n                <p>\n                    40\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    70 km\n                </p>\n            </td>\n            <td>\n                <p>\n                    60\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    50 km\n                </p>\n            </td>\n            <td>\n                <p>\n                    150\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<h2>\n    4 – REGRA OFICIAL DE TRACK LOG\n</h2>\n<p>\n    Com o objetivo de garantir a integridade técnica do percurso e a correta aferição dos resultados, a organização poderá tornar <b>obrigatória</b> a utilização de dispositivos de georreferenciamento (GPS) para registro do percurso por parte dos atletas.\n</p>\n<p>\n    A regulamentação específica sobre a utilização do TRACK LOG, incluindo critérios de obrigatoriedade, equipamentos aceitos, formato dos arquivos e prazos para envio, encontra-se em fase final de análise e será publicada oportunamente pela organização.\n</p>\n<p>\n    Os participantes ficam desde já cientes de que deverão atender integralmente às diretrizes que vierem a ser estabelecidas, sob pena de aplicação de medidas previstas no regulamento, incluindo penalizações ou desclassificação.\n</p>\n<p>\n    As informações complementares serão divulgadas em tempo hábil por meio dos canais oficiais do evento.\n</p>\n<h2>\n    5 – INSCRIÇÕES\n</h2>\n<p>\n    <b>5.1 Plataforma</b>\n</p>\n<p>\n    As inscrições serão realizadas exclusivamente pelo site:\n</p>\n<p>\n    <a href="http://www.voltadolago.com.br/"><b>www.voltadolago.com.br</b></a>\n</p>\n<p>\n    Plataforma:\n</p>\n<p>\n    <a href="http://www.largadaesportiva.com.br/"><b>www.largadaesportiva.com.br</b></a>\n</p>\n<p>\n    No caso das equipes de revezamento, recomenda-se que a inscrição seja realizada por equipes que possuam <b>rendimento técnico estimado capaz de completar os 100 km da prova em até 10 (dez) horas</b>, o que corresponde a um <b>ritmo médio aproximado de 6 (seis) minutos por quilômetro</b>.\n</p>\n<p>\n    Essa estimativa tem como objetivo contribuir para o bom andamento da prova, respeitando os horários de abertura e fechamento dos <b>PI’s – Pontos de Integração</b> e garantindo maior segurança operacional do evento.\n</p>\n<p>\n    Para auxiliar no planejamento da participação, as equipes poderão utilizar o <b>simulador de ritmo disponibilizado no site oficial do evento</b>, ferramenta que permitirá estimar o tempo total de prova e estabelecer a estratégia de revezamento, bem como identificar o ritmo médio da equipe.\n</p>\n<p>\n    <b>5.2 TABELA DE VALORES E RESUMO DAS INSCRIÇÕES</b>\n</p>\n<p>\n    Todos os valores <b>já incluem a taxa de administração da plataforma</b>.\n</p>\n<p>\n    <b>EQUIPES DE REVEZAMENTO</b>\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Lote</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Período</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Kit Completo</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Kit Econômico</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    1º Lote\n                </p>\n            </td>\n            <td>\n                <p>\n                    25/03/2026 – 20/04/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 220\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 180\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    2º Lote\n                </p>\n            </td>\n            <td>\n                <p>\n                    21/04/2026 – 31/05/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 250\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 210\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    3º Lote\n                </p>\n            </td>\n            <td>\n                <p>\n                    01/06/2026 – 29/06/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 280\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 240\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    <b><br></b>\n</p>\n<p>\n    <b>ULTRAMARATONAS</b>\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Lote</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Período</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Kit Completo</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Kit Econômico</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    1º Lote\n                </p>\n            </td>\n            <td>\n                <p>\n                    25/03/2026 – 20/04/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 280\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 240\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    2º Lote\n                </p>\n            </td>\n            <td>\n                <p>\n                    21/04/2026 – 31/05/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 300\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 260\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    3º Lote\n                </p>\n            </td>\n            <td>\n                <p>\n                    01/06/2026 – 29/06/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 360\n                </p>\n            </td>\n            <td>\n                <p>\n                    R$ 320\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    <b>Kits</b>\n</p>\n<p>\n    <b>Kit Completo</b>\n</p>\n<p>\n    Inclui:\n</p>\n<ul>\n    <li>Camiseta oficial</li>\n    <li>Número de peito</li>\n    <li>Ecobag / sacola</li>\n    <li>Chip de cronometragem</li>\n    <li>Meia</li>\n    <li>Cinto para número/hidratação</li>\n    <li>Medalha pós-prova</li>\n    <li>Lanche pós-prova</li>\n</ul>\n<p>\n    <b>Kit Econômico</b>\n</p>\n<p>\n    Inclui:\n</p>\n<ul>\n    <li>Número de peito</li>\n    <li>Chip de cronometragem</li>\n    <li>Medalha pós-prova</li>\n    <li>Lanche pós-prova</li>\n</ul>\n<p>\n    <b>5.3 Descontos</b>\n</p>\n<p>\n    Atletas <b>60+ e PCD</b> possuem direito a <b>50% de desconto</b> na inscrição individual conforme legislação.\n</p>\n<p>\n    A organização poderá exigir comprovação documental.\n</p>\n<p>\n    <b>5.4 Política de desconto para grupos:</b>\n</p>\n<p>\n    A organização oferecerá condições especiais para inscrições em grupo, conforme a quantidade de equipes inscritas:\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Quantidade de equipes</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Desconto</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    03 a 05 equipes\n                </p>\n            </td>\n            <td>\n                <p>\n                    10%\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    06 a 10 equipes\n                </p>\n            </td>\n            <td>\n                <p>\n                    15%\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    11 equipes ou mais\n                </p>\n            </td>\n            <td>\n                <p>\n                    20%\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    Para a efetivação das inscrições com desconto para grupos, os interessados deverão entrar em contato previamente com a organização por meio do e-mail:\n</p>\n<p>\n    <b>ajr@ajresportes.com.br</b>\n</p>\n<p>\n    A concessão do desconto estará condicionada à análise e validação por parte da organização, bem como ao cumprimento dos procedimentos e prazos estabelecidos.\n</p>\n<p>\n    <b>5.5 Condições de inscrição</b>\n</p>\n<ul>\n    <li>Inscrição realizada <b>em duas etapas – inscrição da equipe, escolher a forma de pagamento, depois fazer a inclusão dos participantes.</b></li>\n    <li>Inclusão de todos os dados dos atletas,</li>\n    <li>Substituições permitidas até data limite da organização, a ser divulgada tempestivamente</li>\n    <li>Parcelamento em <b>até 3x no cartão</b></li>\n</ul>\n<p>\n    ·O capitão da equipe poderá realizar substituições de atletas e alterações na distribuição dos trechos de corrida até a data limite de <b>29 de junho de 2026</b>, conforme as regras estabelecidas pela organização.<br>Após essa data, não serão permitidas alterações na composição da equipe ou na definição dos trechos.Excepcionalmente, poderão ser autorizadas substituições por <b>motivo médico devidamente comprovado</b>, mediante análise e aprovação da organização.\n</p>\n<p>\n    ·A ordem dos nomes informados na ficha de inscrição não determina, obrigatoriamente, a sequência dos trechos a serem percorridos (ex.: integrante 1 ≠ trecho 1).Caso necessário, a organização poderá solicitar, a qualquer momento, a confirmação da definição dos atletas por trecho, para fins de controle operacional da prova.\n</p>\n<ul>\n    <li>O Congresso técnico poderá ser realizado presencialmente ou virtual, a ser divulgado tempestivamente pela organização</li>\n</ul>\n<p>\n    <b>5.6 – Política de Cancelamento e Reembolso</b>\n</p>\n<p>\n    <b>Em conformidade com o Código de Defesa do Consumidor (Lei nº 8.078/1990) e a legislação vigente, ficam estabelecidas as seguintes condições para cancelamento de inscrição e eventual reembolso:</b>\n</p>\n<p>\n    <b>Direito de arrependimento</b>\n</p>\n<p>\n    <b>O participante poderá solicitar o cancelamento da inscrição, com reembolso dos valores pagos, no prazo de até 07 (sete) dias corridos a contar da data da confirmação do pagamento, desde que a solicitação seja realizada antes da realização do evento.</b>\n</p>\n<p>\n    <b>Do valor a ser reembolsado, será descontada a taxa de administração da plataforma de inscrição, por se tratar de serviço já prestado por terceiros.</b>\n</p>\n<p>\n    <b>Cancelamento após o prazo legal</b>\n</p>\n<p>\n    <b>Após decorrido o prazo de 07 (sete) dias corridos, não haverá devolução dos valores pagos a título de inscrição, salvo nas hipóteses expressamente previstas neste regulamento.</b>\n</p>\n<p>\n    <b>Transferência de inscrição</b>\n</p>\n<p>\n    <b>Não será permitida a transferência da inscrição para terceiros, exceto nos casos previstos neste regulamento, especialmente nas hipóteses de substituição de atletas dentro dos prazos estabelecidos pela organização.</b>\n</p>\n<p>\n    <b>Cancelamento ou alteração do evento</b>\n</p>\n<p>\n    <b>Em caso de cancelamento do evento por motivos de força maior, caso fortuito ou por determinação de órgãos públicos, a organização poderá:</b>\n</p>\n<ul>\n    <li><b>remarcar o evento para nova data; </b></li>\n    <li><b>oferecer crédito para utilização em futuras edições; </b></li>\n    <li><b>adotar outras medidas cabíveis, conforme viabilidade      operacional; </b></li>\n</ul>\n<p>\n    <b>não sendo devida a restituição integral dos valores, considerando os custos já incorridos na organização do evento.</b>\n</p>\n<p>\n    <b>Desistência do participante</b>\n</p>\n<p>\n    <b>A desistência voluntária do participante não dará direito a reembolso, crédito ou transferência, exceto nos casos expressamente previstos neste regulamento.</b>\n</p>\n<p>\n    <b>Disposições gerais</b>\n</p>\n<p>\n    <b>Toda solicitação de cancelamento deverá ser formalizada por meio do e-mail:</b>\n</p>\n<p>\n    <b>📧 ajr@ajresportes.com.br</b>\n</p>\n<p>\n    <b>A organização poderá solicitar documentos comprobatórios para análise dos pedidos.</b>\n</p>\n<h2>\n    6 – ENTREGA DO KIT\n</h2>\n<p>\n    Datas previstas:\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Data</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Horário</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    02/07/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    10h – 22h\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    03/07/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    10h – 22h\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    04/07/2026\n                </p>\n            </td>\n            <td>\n                <p>\n                    09h – 14h\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    Local:<b>A confirmar</b>\n</p>\n<p>\n    Não haverá entrega de kits no dia da prova. Essas datas poderão sofrer alteração\n</p>\n<h2>\n    7 – LARGADAS\n</h2>\n<p>\n    <b>Revezamentos</b>\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Largada</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Ritmo</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    04h00\n                </p>\n            </td>\n            <td>\n                <p>\n                    5:11 – 6:00 min/km\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    05h15\n                </p>\n            </td>\n            <td>\n                <p>\n                    3:30 – 5:10 min/km\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    <b>Ultramaratonas</b>\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>Distância</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>Largada</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    100 km\n                </p>\n            </td>\n            <td>\n                <p>\n                    04h15\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    70 km\n                </p>\n            </td>\n            <td>\n                <p>\n                    06h30\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    50 km\n                </p>\n            </td>\n            <td>\n                <p>\n                    08h30\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<h2>\n    8 – PERCURSO\n</h2>\n<p>\n    8.1 - O percurso ocorre nas avenidas ao redor do <b>Lago Paranoá</b>, com <b>trânsito aberto e compartilhado</b>.\n</p>\n<p>\n    8.2 - Os atletas deverão correr <b>no sentido normal da via</b>.\n</p>\n<p>\n    <b>8.3</b> – É obrigação de todos os participantes <b>conhecer previamente o percurso da prova</b>, bem como os pontos de troca, postos de controle e demais orientações disponibilizadas pela organização.\n</p>\n<p>\n    <b>8.4 – PI’s – POSTOS DE INTEGRAÇÃO</b>\n</p>\n<p>\n    Os <b>PI’s – Postos de Integração</b> são os locais oficiais para realização das trocas entre os atletas das equipes de revezamento.\n</p>\n<p>\n    Cada PI possui <b>horário de abertura e fechamento</b>, conforme tabela abaixo:\n</p>\n<table>\n    <tbody>\n        <tr>\n            <td>\n                <p>\n                    <b>PI</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>LOCAL</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>ABERTURA</b>\n                </p>\n            </td>\n            <td>\n                <p>\n                    <b>FECHAMENTO</b>\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    1\n                </p>\n            </td>\n            <td>\n                <p>\n                    Praça América Central – EPDB Igreja Presbiteriana – SHIS QI 14/16 Conj. 9\n                </p>\n            </td>\n            <td>\n                <p>\n                    04h30\n                </p>\n            </td>\n            <td>\n                <p>\n                    06h18\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    2\n                </p>\n            </td>\n            <td>\n                <p>\n                    Paróquia N. Sra. Perpétuo Socorro – EQL 6/8 (Centro Comercial Gilberto Salomão)\n                </p>\n            </td>\n            <td>\n                <p>\n                    05h30\n                </p>\n            </td>\n            <td>\n                <p>\n                    07h12\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    3\n                </p>\n            </td>\n            <td>\n                <p>\n                    SAFS – Via de ligação L2 Sul a L4 Sul – Estacionamento entre STJ e TCU\n                </p>\n            </td>\n            <td>\n                <p>\n                    06h05\n                </p>\n            </td>\n            <td>\n                <p>\n                    07h49\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    4\n                </p>\n            </td>\n            <td>\n                <p>\n                    Concha Acústica – beira do lago\n                </p>\n            </td>\n            <td>\n                <p>\n                    06h48\n                </p>\n            </td>\n            <td>\n                <p>\n                    08h32\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    5\n                </p>\n            </td>\n            <td>\n                <p>\n                    Centro Olímpico UnB – Estacionamento\n                </p>\n            </td>\n            <td>\n                <p>\n                    07h19\n                </p>\n            </td>\n            <td>\n                <p>\n                    09h03\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    6\n                </p>\n            </td>\n            <td>\n                <p>\n                    Parque Vivencial do Lago Norte – SHIN QL 2 Conjunto 1\n                </p>\n            </td>\n            <td>\n                <p>\n                    07h45\n                </p>\n            </td>\n            <td>\n                <p>\n                    09h35\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    7\n                </p>\n            </td>\n            <td>\n                <p>\n                    EPPN QI 13 – gramado entre Igreja Batista Lago Norte e Creche Perdiz\n                </p>\n            </td>\n            <td>\n                <p>\n                    07h15\n                </p>\n            </td>\n            <td>\n                <p>\n                    10h48\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    8\n                </p>\n            </td>\n            <td>\n                <p>\n                    SHIN CA 3 – quase em frente ao Varjão (EPPR DF 005)\n                </p>\n            </td>\n            <td>\n                <p>\n                    08h00\n                </p>\n            </td>\n            <td>\n                <p>\n                    11h19\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    9\n                </p>\n            </td>\n            <td>\n                <p>\n                    SML MI 7 Conjunto 2/3 – Setor de Mansões do Lago Norte\n                </p>\n            </td>\n            <td>\n                <p>\n                    08h50\n                </p>\n            </td>\n            <td>\n                <p>\n                    12h07\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    10\n                </p>\n            </td>\n            <td>\n                <p>\n                    Parque do Paranoá\n                </p>\n            </td>\n            <td>\n                <p>\n                    09h20\n                </p>\n            </td>\n            <td>\n                <p>\n                    12h50\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    11\n                </p>\n            </td>\n            <td>\n                <p>\n                    EPDB SHIN QI 28 Conjunto 2/3 – Lago Norte\n                </p>\n            </td>\n            <td>\n                <p>\n                    09h50\n                </p>\n            </td>\n            <td>\n                <p>\n                    13h14\n                </p>\n            </td>\n        </tr>\n        <tr>\n            <td>\n                <p>\n                    12\n                </p>\n            </td>\n            <td>\n                <p>\n                    Chegada – Orla da Ponte JK\n                </p>\n            </td>\n            <td>\n                <p>\n                    10h15\n                </p>\n            </td>\n            <td>\n                <p>\n                    14h30\n                </p>\n            </td>\n        </tr>\n    </tbody>\n</table>\n<p>\n    <b>8.5 – Controle de tempo dos PI’s</b>\n</p>\n<p>\n    Caso seja identificado atleta ainda em deslocamento no trecho cujo PI já esteja fechado, a equipe será <b>automaticamente desclassificada da prova</b>.\n</p>\n<p>\n    <b>Atletas das categorias Ultramaratona Individual (100 km, 70 km e 50 km) poderão permanecer no percurso e continuar a prova mesmo que o PI – Posto de Integração – já tenha atingido seu horário oficial de fechamento.</b>\n</p>\n<p>\n    <br>Entretanto, para fins de <b>classificação oficial</b>, o atleta deverá obrigatoriamente completar a prova <b>dentro do tempo limite estabelecido para a respectiva distância</b>.<br>\n</p>\n<p>\n    Caso o atleta conclua o percurso após o tempo limite, poderá ser considerado apenas <b>finisher não classificado</b>, a critério da organização.\n</p>\n<p>\n    <b>8.6 – Número de identificação</b>\n</p>\n<p>\n    O atleta deverá utilizar <b>OBRIGATORIAMENTE o número de identificação fornecido pela organização</b>, fixado em local visível.\n</p>\n<p>\n    O <b>número 1 da equipe será destinado ao capitão</b>.\n</p>\n<p>\n    <b>8.7 – Regras de revezamento</b>\n</p>\n<p>\n    Cada atleta da equipe deverá correr <b>pelo menos 1 trecho da prova</b>.\n</p>\n<p>\n    As trocas entre atletas deverão ocorrer <b>exclusivamente nos PI’s – Postos de Integração</b>.\n</p>\n<p>\n    Não será permitido que o mesmo atleta realize <b>dois trechos consecutivos</b>, exceto nas categorias:\n</p>\n<ul>\n    <li>Ultramaratona Individual 100 km</li>\n    <li>Ultramaratona Individual 70 km</li>\n    <li>Ultramaratona Individual 50 km</li>\n</ul>\n<p>\n    <b>8.8 – Substituição em caso de desistência</b>\n</p>\n<p>\n    Caso um atleta <b>desista ou se machuque durante o trecho</b>, a equipe poderá reiniciar o trecho com outro atleta da equipe, desde que:\n</p>\n<ul>\n    <li>o atleta substituto <b>não tenha realizado o trecho imediatamente anterior</b>.</li>\n</ul>\n<p>\n    <b>8.9 – Pacing</b>\n</p>\n<p>\n    Será permitido <b>pacing por corredor ou ciclista</b>, desde que:\n</p>\n<ul>\n    <li>não haja contato físico com o atleta em prova</li>\n    <li>não seja utilizado <b>qualquer veículo motorizado</b></li>\n</ul>\n<p>\n    <b>8.10 – Veículo de apoio</b>\n</p>\n<p>\n    As equipes poderão contar com <b>veículo de apoio</b>, devendo este obedecer às normas de trânsito vigentes.\n</p>\n<p>\n    Não será permitido:\n</p>\n<ul>\n    <li>estacionar em locais proibidos</li>\n    <li>parar em acostamentos que prejudiquem o fluxo da prova</li>\n    <li>interferir na passagem dos atletas</li>\n</ul>\n<p>\n    <b>8.11 – Responsabilidade do veículo de apoio</b>\n</p>\n<p>\n    A organização <b>não se responsabiliza por ocorrências envolvendo veículos das equipes</b>, incluindo:\n</p>\n<ul>\n    <li>problemas mecânicos</li>\n    <li>infrações de trânsito</li>\n    <li>multas ou penalidades legais</li>\n</ul>\n<p>\n    Tais ocorrências são de responsabilidade exclusiva das equipes.\n</p>\n<p>\n    <b>8.12 – Hidratação e alimentação</b>\n</p>\n<p>\n    A hidratação e alimentação durante o percurso serão <b>de responsabilidade do apoio de cada equipe</b>.\n</p>\n<p>\n    A organização poderá disponibilizar, a seu critério, <b>pontos adicionais de hidratação ao longo do percurso</b>.\n</p>\n<h2>\n    9 – FISCALIZAÇÃO\n</h2>\n<p>\n    A prova será fiscalizada por:\n</p>\n<ul>\n    <li>staffs</li>\n    <li>árbitros</li>\n    <li>motos de apoio</li>\n</ul>\n<p>\n    <b>Falta leve</b>\n</p>\n<p>\n    Penalização: <b>15 minutos</b>\n</p>\n<p>\n    Exemplos:\n</p>\n<ul>\n    <li>pacing motorizado</li>\n    <li>estacionamento irregular</li>\n    <li>lixo no percurso</li>\n    <li>atleta extra no PI</li>\n</ul>\n<p>\n    <b>Falta grave</b>\n</p>\n<p>\n    Penalização: <b>desclassificação</b>\n</p>\n<p>\n    Exemplos:\n</p>\n<ul>\n    <li>atleta sem número</li>\n    <li>carona</li>\n    <li>não passar nos PI\'s</li>\n    <li>desrespeito à arbitragem</li>\n</ul>\n<h2>\n    10 – CLASSIFICAÇÃO\n</h2>\n<p>\n    Vence a equipe que completar o percurso <b>no menor tempo total</b>.\n</p>\n<p>\n    Premiação:\n</p>\n<ul>\n    <li><b>Top 3 geral</b></li>\n    <li><b>Top 3 por categoria</b></li>\n    <li><b>Será divulgado tempestivamente pela organização, orientações sobre método e equipamentos utilizados</b></li>\n    <li>Os resultados serão divulgados pelas mídias sociais (insta/face), além do site do evento</li>\n</ul>\n<h2>\n    11 – RECURSOS\n</h2>\n<p>\n    Reclamações deverão ser feitas <b>até 30 minutos após divulgação do resultado oficial</b>. Encaminhar para o email da organização: <a href="mailto:ajr@ajresportes.com.br">ajr@ajresportes.com.br</a>\n</p>\n<p>\n    As decisões da organização são <b>soberanas</b>.\n</p>\n<h2>\n    12 – PREMIAÇÃO\n</h2>\n<p>\n    Todos os atletas que concluírem a prova receberão <b>medalha finisher</b>.\n</p>\n<p>\n    Ultramaratonistas receberão <b>medalha especial de participação</b>.\n</p>\n<h2>\n    13 – PROTEÇÃO DE DADOS\n</h2>\n<p>\n    Os dados pessoais serão tratados conforme a <b>Lei Geral de Proteção de Dados – LGPD (Lei nº 13.709/2018)</b>.\n</p>\n<p>\n    Contato:\n</p>\n<p>\n    <a href="mailto:ajr@ajresportes.com.br"><b>ajr@ajresportes.com.br</b></a>\n</p>\n<h2>\n    TERMO DE RESPONSABILIDADE\n</h2>\n<p>\n    O atleta declara que:\n</p>\n<ul>\n    <li>possui condições físicas adequadas</li>\n    <li>assume os riscos da prova</li>\n    <li>aceita integralmente este regulamento</li>\n    <li>autoriza uso de imagem</li>\n    <li>isenta a organização de responsabilidades pessoais</li>\n</ul>\n<p>\n    A organização poderá realizar ajustes neste regulamento a qualquer momento, visando melhorias operacionais e de segurança.\n</p>', 'address': 'Largada na Orla da Ponte JK – SCES Trecho 2 – Beira Lago, e chegada no mesmo local', 'start': '2026-07-05T04:00:00.000Z', 'id': 13, 'paymentOptions': [{'maxInstallments': 3, 'paymentType': 'pix', 'providerId': 'asaas', 'id': 32, 'paymentProviderOptionId': 8, 'eventId': 13, 'note': None, 'paymentProviderOption': {'type': 'pix', 'maxInstallments': None, 'minValueForInstallments': None, 'id': 8, 'paymentProviderId': 3, 'note': None}}, {'maxInstallments': 3, 'paymentType': 'boleto', 'providerId': 'asaas', 'id': 33, 'paymentProviderOptionId': 9, 'eventId': 13, 'note': None, 'paymentProviderOption': {'type': 'boleto', 'maxInstallments': None, 'minValueForInstallments': None, 'id': 9, 'paymentProviderId': 3, 'note': None}}, {'maxInstallments': 3, 'paymentType': 'credit', 'providerId': 'asaas', 'id': 34, 'paymentProviderOptionId': 10, 'eventId': 13, 'note': None, 'paymentProviderOption': {'type': 'credit', 'maxInstallments': 12, 'minValueForInstallments': 100, 'id': 10, 'paymentProviderId': 3, 'note': None}}], 'competitions': [{'name': 'Ultramaratona de Revezamento 100km', 'description': None, 'start': '2026-03-22T03:00:00.000Z', 'end': '2026-06-29T03:00:00.000Z', 'enabled': True, 'id': 42, 'eventId': 13, 'categories': [{'name': 'Quarteto Feminino', 'description': None, 'enabled': True, 'id': 148, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '72a6dd9f043b26f2660979c2dfc89049'}, {'name': 'Quarteto Masculino', 'description': None, 'enabled': True, 'id': 149, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '9af52440a3009ea0da4cce88aaaa1deb'}, {'name': 'Quarteto Misto', 'description': None, 'enabled': True, 'id': 150, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '2059436f12cb650f9fa11ee05f62c96a'}, {'name': 'Sexteto Misto', 'description': None, 'enabled': True, 'id': 151, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '473df01df34742175b34f5aef0ddef78'}, {'name': 'Octeto Feminino', 'description': None, 'enabled': True, 'id': 152, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': 'f12ee26fd377d1cce4ca58b3235e0cf4'}, {'name': 'Octeto Masculino', 'description': None, 'enabled': True, 'id': 153, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '91c1556ffed27707b1c40987c49ee9e9'}, {'name': 'Octeto Misto', 'description': None, 'enabled': True, 'id': 154, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': 'e4da62d32ff3e57f7e4b9893f3128f24'}, {'name': 'Octeto Policial/Militar', 'description': None, 'enabled': True, 'id': 155, 'competitionId': 42, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '9affb96dfa57d0046e03303ef853adbe'}], '_eventProductIdToDelete': '13_42'}, {'name': 'Ultramaratona Individual 100Km', 'description': None, 'start': '2026-03-22T03:00:00.000Z', 'end': '2026-06-29T03:00:00.000Z', 'enabled': True, 'id': 43, 'eventId': 13, 'categories': [{'name': 'Feminino', 'description': None, 'enabled': True, 'id': 156, 'competitionId': 43, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '7519e67e0503f60faa8ebe6100778d0f'}, {'name': 'Masculino', 'description': None, 'enabled': True, 'id': 157, 'competitionId': 43, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '66251a50b444304f8c7538d189819290'}], '_eventProductIdToDelete': '13_43'}, {'name': 'Ultramaratona Individual 70Km', 'description': None, 'start': '2026-03-22T03:00:00.000Z', 'end': '2026-06-29T03:00:00.000Z', 'enabled': True, 'id': 44, 'eventId': 13, 'categories': [{'name': 'Feminino', 'description': None, 'enabled': True, 'id': 158, 'competitionId': 44, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '4d3a655e1b4891d7bf3609912bf294bb'}, {'name': 'Masculino', 'description': None, 'enabled': True, 'id': 159, 'competitionId': 44, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': 'e44c033091bc45c07255a28c28d4805b'}], '_eventProductIdToDelete': '13_44'}, {'name': 'Ultramaratona Individual 50Km', 'description': None, 'start': '2026-03-22T03:00:00.000Z', 'end': '2026-06-29T03:00:00.000Z', 'enabled': True, 'id': 45, 'eventId': 13, 'categories': [{'name': 'Feminino', 'description': None, 'enabled': True, 'id': 160, 'competitionId': 45, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': '829c7346be1931edeecd8185276fdd4c'}, {'name': 'Masculino', 'description': None, 'enabled': True, 'id': 161, 'competitionId': 45, 'parentcategoryid': None, 'eventId': 13, 'subcategories': [], 'productid': 'f050cc210f42f68c02ab9710082210b9'}], '_eventProductIdToDelete': '13_45'}], '_eventProductIdToDelete': 13, 'purshaseDate': '2026-05-30T01:30:12.260Z', 'finish': False}
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] 0 corridas encontradas
+[Brasil Corrida] 14 corridas encontradas
+[Runner Brasil] 17 corridas encontradas
+[Brasil que Corre] 46 corridas encontradas
+[Bora Correr] 46 corridas encontradas
 [SESC DF] 1 corridas encontradas
+[Circuito das Estações] 79 corridas encontradas
+[TF Sports] events(data): 7 eventos brutos
+[TF Sports] events(sem data): 0 eventos brutos
+[TF Sports] events(recentes): 100 eventos brutos
+[Prague Marathon] nenhuma edição futura identificada
+[proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
 [TF Sports] experiences: 165 eventos brutos
-[TF Sports] filtrado(exp): 'Vila Verde Open By Ponto do Beach' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Judô Inclusivo' area='Judo'
-[TF Sports] filtrado(exp): 'Funcional e Yoga | Shopping Vila Olímpia' area='Yoga'
-[TF Sports] filtrado(exp): 'Manhã Wellness: Flow e Bem-Estar com Lilica Lima' area='Yoga'
-[TF Sports] filtrado(exp): 'Game Funcional | UpStudio' area='Funcional'
-[TF Sports] filtrado(exp): 'Evodia' area='Funcional'
-[TF Sports] filtrado(exp): 'Queens on Court' area='Tênis'
-[TF Sports] filtrado(exp): 'Born to Ski' area='Funcional'
-[TF Sports] filtrado(exp): '1º Viva o Momento | Santa Teresinha' area='Funcional'
-[TF Sports] filtrado(exp): 'Treino Round Studio | 2° Edição' area='Yoga'
-[TF Sports] filtrado(exp): 'Juntos em Quadra – Especial Dia das Mães' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Método Core HD com Michela Soares' area='Pilates'
-[TF Sports] filtrado(exp): 'Habitar-se | Mães e Filhos' area='Yoga'
-[TF Sports] filtrado(exp): 'Torneio Asttéri Brisas do Lago de Beach Tennis' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Training - Functional, Force, Flow' area='Alongamento'
 [TF Sports] filtrado(exp): 'Rio BT Tour | Etapa Niterói | 2° Edição' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Slow Morning' area='Yoga'
@@ -1987,82 +1977,97 @@
 [TF Sports] filtrado(exp): 'The Best Indoor Bike' area='Bike'
 [TF Sports] filtrado(exp): 'Yoga Sunrise' area='Yoga'
 [TF Sports] filtrado(exp): 'Nutrição Aplicada a Prevenção de Lesões' area='Pilates'
+[TF Sports] filtrado(exp): 'Vila Verde Open By Ponto do Beach' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Judô Inclusivo' area='Judo'
+[TF Sports] filtrado(exp): 'Funcional e Yoga | Shopping Vila Olímpia' area='Yoga'
+[TF Sports] filtrado(exp): 'Manhã Wellness: Flow e Bem-Estar com Lilica Lima' area='Yoga'
+[TF Sports] filtrado(exp): 'Game Funcional | UpStudio' area='Funcional'
+[TF Sports] filtrado(exp): 'Evodia' area='Funcional'
+[TF Sports] filtrado(exp): 'Queens on Court' area='Tênis'
+[TF Sports] filtrado(exp): 'Born to Ski' area='Funcional'
+[TF Sports] filtrado(exp): '1º Viva o Momento | Santa Teresinha' area='Funcional'
+[TF Sports] filtrado(exp): 'Treino Round Studio | 2° Edição' area='Yoga'
+[TF Sports] filtrado(exp): 'Juntos em Quadra – Especial Dia das Mães' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Método Core HD com Michela Soares' area='Pilates'
+[TF Sports] filtrado(exp): 'Habitar-se | Mães e Filhos' area='Yoga'
+[TF Sports] filtrado(exp): 'Torneio Asttéri Brisas do Lago de Beach Tennis' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Fábrica Day | O Início da Transformação Começa Aqui' area='Funcional'
+[TF Sports] filtrado(exp): 'Despertar | Bauru' area='Pilates'
 [TF Sports] filtrado(exp): 'Clínica de Altinha | Shopping Vila Olímpia' area='Funcional'
 [TF Sports] filtrado(exp): 'Flor e Ser Yoga' area='Yoga'
 [TF Sports] filtrado(exp): 'Funcional no Palacete | 2° Edição' area='Funcional'
 [TF Sports] filtrado(exp): 'Movimente-se Com Ana Monteiro e Rubens' area='Yoga'
-[TF Sports] filtrado(exp): 'Fábrica Day | O Início da Transformação Começa Aqui' area='Funcional'
-[TF Sports] filtrado(exp): 'Despertar | Bauru' area='Pilates'
+[TF Sports] filtrado(exp): 'Yoga e Música' area='Yoga'
 [TF Sports] filtrado(exp): 'Terra de Mulheres' area='Yoga'
 [TF Sports] filtrado(exp): 'Festival de Bem-Estar | Soma Galeria | 2° Edição' area='Funcional'
 [TF Sports] filtrado(exp): 'Beach Tennis para Eles' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Yoga e Música' area='Yoga'
-[TF Sports] filtrado(exp): '1ª Edição da Copa do Mundo de Beach Tennis | Juiz de Fora' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Yoga ao Amanhecer | 3° Edição' area='Yoga'
-[TF Sports] filtrado(exp): 'Festival de Yoga | Criciúma' area='Yoga'
-[TF Sports] filtrado(exp): 'Amor em Movimento' area='Funcional'
-[TF Sports] filtrado(exp): 'Kangoo e Zumba | Lucas Naide' area='Zumba'
+[TF Sports] filtrado(exp): '1ª Edição da Copa do Mundo de Beach Tennis | Juiz de Fora' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Wellness Day | Balwe Club' area='Pilates'
 [TF Sports] filtrado(exp): 'Reset & Move - 2ª Edição' area='Dança'
 [TF Sports] filtrado(exp): '3º Open de Tênis Colinas Kids' area='Tênis'
 [TF Sports] filtrado(exp): 'Yoga Essência Natural' area='Yoga'
+[TF Sports] filtrado(exp): 'Festival de Yoga | Criciúma' area='Yoga'
+[TF Sports] filtrado(exp): 'Amor em Movimento' area='Funcional'
+[TF Sports] filtrado(exp): 'Kangoo e Zumba | Lucas Naide' area='Zumba'
+[TF Sports] filtrado(exp): 'Mamãe em Forma - 2ª Edição' area='Funcional'
 [TF Sports] filtrado(exp): 'RECONECTAR | 2ª Edição' area='Yoga'
 [TF Sports] filtrado(exp): 'VKN Crossfit' area='Crossfit'
-[TF Sports] filtrado(exp): 'Mamãe em Forma - 2ª Edição' area='Funcional'
 [TF Sports] filtrado(exp): 'Fit Team - São João SAJ' area='Funcional'
-[TF Sports] filtrado(exp): 'I SOMA ACE – TORNEIO DE SOMA DE IDADES' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Body Care e MAC' area='Meditação'
-[TF Sports] filtrado(exp): 'Bike Indoor | Ruca 10.000' area='Bike'
-[TF Sports] filtrado(exp): 'Elite Jump & Dance' area='Funcional'
+[TF Sports] filtrado(exp): 'I SOMA ACE – TORNEIO DE SOMA DE IDADES' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Circuito Beach Tennis | NR Arena' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Viver BH' area='Yoga'
 [TF Sports] filtrado(exp): 'Sunset Bike | Gule + Insanos' area='Bike Indoor'
-[TF Sports] filtrado(exp): 'Bike Indoor by Rapha Corrêa | Music Ride' area='Bike Indoor'
+[TF Sports] filtrado(exp): 'Bike Indoor | Ruca 10.000' area='Bike'
+[TF Sports] filtrado(exp): 'Elite Jump & Dance' area='Funcional'
 [TF Sports] filtrado(exp): 'Treinão CenterVale Shopping' area='Funcional'
-[TF Sports] filtrado(exp): 'Yoga & Mindfulness' area='Yoga'
+[TF Sports] filtrado(exp): 'Bike Indoor by Rapha Corrêa | Music Ride' area='Bike Indoor'
+[TF Sports] filtrado(exp): 'Thermal Body | Alom Studio' area='Pilates'
 [TF Sports] filtrado(exp): 'Yoga & Mindfulness' area='Yoga'
 [TF Sports] filtrado(exp): 'A Arte de Brincar' area='Futebol de Campo'
 [TF Sports] filtrado(exp): 'Ranking Duplas Mampituba' area='Tênis'
 [TF Sports] filtrado(exp): 'Festival Tênis e Futebol Kids - Clube de Campo' area='Tênis'
 [TF Sports] filtrado(exp): 'II Circuito de Tênis Etapa Clube de Campo' area='Tênis'
+[TF Sports] filtrado(exp): 'Circuito Paraibano de Pickleball | 2ª Etapa' area='Pickleball'
 [TF Sports] filtrado(exp): 'Neon Beach Tennis' area='Beach Tennis'
 [TF Sports] filtrado(exp): 'Big Play Campestre I' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Circuito Paraibano de Pickleball | 2ª Etapa' area='Pickleball'
+[TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
+[TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
+[TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
 [TF Sports] filtrado(exp): 'Mulheres em Movimento | 2ªedição' area='Futevôlei '
 [TF Sports] filtrado(exp): 'Dia das Mães | Pilates de solo' area='Pilates'
 [TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
 [TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
-[TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
-[TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
-[TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
 [TF Sports] filtrado(exp): 'Porto Bike Tour' area='Bike'
-[Circuito das Estações] 79 corridas encontradas
-[TF Sports] pulando 'Linq Monstar Run' (sem localização determinável)
-[TF Sports] pulando 'Barimov' (sem localização determinável)
-[Prague Marathon] nenhuma edição futura identificada
-[proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.stockholmmarathon.se, tentando Apify...
-[TF Sports] pulando 'Villa Forma' (sem localização determinável)
+[TF Sports] pulando 'Barimov' (sem localização determinável)
 [proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
 [Stockholm Marathon] erro ao buscar página: todos os métodos falharam para https://www.stockholmmarathon.se/eng/
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[TF Sports] pulando 'Linq Monstar Run' (sem localização determinável)
 [TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[Ticket Sports] 937 corridas encontradas
-[Portal das Corridas] 68 corridas encontradas
 [TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Ticket Sports] 939 corridas encontradas
+[TF Sports] pulando 'Villa Forma' (sem localização determinável)
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
-[Race Roster] 'running': 221 upcoming de 2000
-[Race Roster] 'marathon': 183 upcoming de 2000
 [RunSignup] página 2: 250 corridas
-[Race Roster] '5k': 139 upcoming de 2000
+[Race Roster] 'running': 264 upcoming de 2000
 [RunSignup] página 3: 250 corridas
+[Portal das Corridas] 67 corridas encontradas
+[Race Roster] 'marathon': 259 upcoming de 2000
+[RunSignup] página 4: 250 corridas
+[Race Roster] '5k': 172 upcoming de 2000
+[RunSignup] página 5: 250 corridas
 [Asdeporte] 34 corrida(s) encontrada(s)
+[RunSignup] página 6: 250 corridas
+[Race Roster] '10k': 227 upcoming de 2000
 [Carreras México] PROBE page0 raw repr[:400]: '$("#tiempometa_event_list_div").html(\'<div id=\\"tm_js_container\\">\\n\t<div class=\\"row tm_event_list_item\\">\\n\t\t<div class=\\"col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1\\">\\n\t\t\t<a class=\\"tiempometa tiempometa_event_link\\" href=\\"https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8\\" style=\\"text-decoration: none\\">\\n\t\t\t<img src=\\'
 [Carreras México] PROBE page0 html repr[:400]: '<div id="tm_js_container">\n\t<div class="row tm_event_list_item">\n\t\t<div class="col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1">\n\t\t\t<a class="tiempometa tiempometa_event_link" href="https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8" style="text-decoration: none">\n\t\t\t<img src="https://tiempometa.s3.amazonaws.com/events/avatars/000'
 [Carreras México] PROBE page 0: 32 items; today=2026-05-30
@@ -2083,33 +2088,27 @@
 [Carreras México] PROBE item[2] anchor[2]: 'https://carrerasmexico.com/?event=b6d7c6979e45f19cfaf4a4127614f547&api_key=48513987f33edea8'
 [Carreras México] page 0: 32 items, 7 added
 [Carreras México] buscando localização para 7 eventos...
-[Carreras México] localização: Lomitos Mundialistas 5K → Aragón, CMX
 [Carreras México] localização: My Coffee Race 5K → Aragón, CMX
+[Carreras México] localização: Lomitos Mundialistas 5K → Aragón, CMX
 [Carreras México] localização: 1A Carrera 5K Atletas Olímpico → Huehuetoca, MEX
-[Carreras México] localização: El Ameyal Half Trail Marathon → Amealco, QRO
-[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
 [Carreras México] localização: Dinomilco 5K → Parque Ecológico Xochimilco, CMX
-[Race Roster] '10k': 174 upcoming de 2000
+[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
+[Carreras México] localização: El Ameyal Half Trail Marathon → Amealco, QRO
 [Carreras México] localização: Night Run & Rock La Paz, Half  → La Paz, BCS
 [Carreras México] 7 corridas encontradas
-[RunSignup] página 4: 250 corridas
+[RunSignup] página 7: 250 corridas
 [Atletis] 18 corridas encontradas
-[Race Roster] 'half marathon': 212 upcoming de 2000
+[Race Roster] 'half marathon': 272 upcoming de 2000
 [World Athletics] calendarEvents.results: 270 itens
 [World Athletics] 270 competições brutas
 [World Athletics] 121 corridas válidas (149 ignoradas)
-[RunSignup] página 5: 250 corridas
-[Race Roster] 'trail run': 194 upcoming de 2000
-[Race Roster] 7711 eventos únicos após dedup
-[Race Roster] 577 corridas válidas (7134 ignoradas)
-[RunSignup] página 6: 250 corridas
-[Race Roster] 'half marathon': 238 upcoming de 2000
-[RunSignup] página 7: 250 corridas
-[Race Roster] 'trail run': 195 upcoming de 2000
-[Race Roster] 6937 eventos únicos após dedup
-[Race Roster] 551 corridas válidas (6386 ignoradas)
+[RunSignup] página 8: 250 corridas
+[Minhas Inscrições] 12 corridas encontradas
+[Race Roster] 'trail run': 196 upcoming de 2000
+[Race Roster] 7101 eventos únicos após dedup
+[Race Roster] 600 corridas válidas (6501 ignoradas)
 [TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
-[RunSignup] página 7: 250 corridas
+[RunSignup] página 9: 250 corridas
 [TF Sports] experiences(sem data): 1 eventos brutos
 [TF Sports] experiences(recentes): 100 eventos brutos
 [TF Sports] filtrado(exp-rec): 'Reset & Move - 2ª Edição' area='Dança'
@@ -2181,34 +2180,30 @@
 [TF Sports] filtrado(exp-rec): 'The Best Indoor Bike' area='Bike'
 [TF Sports] filtrado(exp-rec): 'Circuito AVP - 3° Edição' area='Beach Voley'
 [TF Sports] filtrado(exp-rec): 'Slow Morning' area='Yoga'
-[RunSignup] página 8: 250 corridas
-[RunSignup] página 9: 250 corridas
-[TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
 [RunSignup] página 10: 250 corridas
 [RunSignup] página 11: 250 corridas
+[TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
 [RunSignup] página 12: 250 corridas
-[Minhas Inscrições] 12 corridas encontradas
-[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [RunSignup] página 13: 250 corridas
-[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [RunSignup] página 14: 250 corridas
+[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [RunSignup] página 15: 250 corridas
-[TF Sports] pulando 'Barimov' (sem localização determinável)
+[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [RunSignup] página 16: 250 corridas
-[TF Sports] 204 corridas encontradas
-[TF Sports] 75 duplicata(s) removida(s)
+[TF Sports] pulando 'Barimov' (sem localização determinável)
 [RunSignup] página 17: 250 corridas
+[TF Sports] 204 corridas encontradas
+[TF Sports] 74 duplicata(s) removida(s)
+[Correr Brasília] 65 corridas encontradas
 [RunSignup] página 18: 250 corridas
 [RunSignup] página 19: 250 corridas
 [RunSignup] página 20: 250 corridas
 [HalfMarathons.net] 1984 corrida(s) encontrada(s)
 [RunSignup] página 21: 250 corridas
 [RunSignup] página 22: 250 corridas
-[Correr Brasília] 65 corridas encontradas
 [RunSignup] página 23: 250 corridas
 [RunSignup] página 24: 250 corridas
 [RunSignup] página 25: 250 corridas
-[HalfMarathons.net] 1984 corrida(s) encontrada(s)
 [RunSignup] página 26: 250 corridas
 [RunSignup] página 27: 250 corridas
 [RunSignup] página 28: 250 corridas
@@ -2236,689 +2231,701 @@
 [RunSignup] página 50: 250 corridas
 [RunSignup] 12500 corridas brutas no total
 [RunSignup] 10920 corridas válidas (1580 ignoradas)
-[main] 18334 registros coletados (antes do merge)
-[main] 14819 registros após validação
+[main] 18359 registros coletados (antes do merge)
+[main] 14844 registros após validação
 [merger] 16 URL(s) detected as overused inscription links (treating as generic): ['https://centraldacorrida.com.br/evento/2supersunset', 'https://centraldacorrida.com.br/evento/35corridadofogodf', 'https://centraldacorrida.com.br/evento/9corridadeolhonasaude', 'https://centraldacorrida.com.br/evento/blacknightrun', 'https://centraldacorrida.com.br/evento/circuito-corre-que-da-bom-pelo-mundo-etapa2brasil']
-[main] 13361 corridas após merge
-[main] verificando links de 595 evento(s) não encontrado(s) no scrape...
-[main] 'Old Dominion 5K & 10K' — link válido, miss_count zerado
-[main] 'Say My Name 5K & 1M Walk' — link válido, miss_count zerado
-[main] 'Diontrey Claiborne Stop The Violence Walk & Run' — link válido, miss_count zerado
-[main] 'Neabsco 5K & 10K' — link válido, miss_count zerado
-[main] 'Glazin' The Trail' — link válido, miss_count zerado
-[main] 'Pelee Island Winery Half Marathon 2026' — link válido, miss_count zerado
-[main] 'Hues For Humanity Calgary 2026' — link válido, miss_count zerado
-[main] 'Shoppers Drug Mart Run For Women - Victoria 2026' — link válido, miss_count zerado
-[main] 'Lighthouse 5K' — link válido, miss_count zerado
-[main] 'Shoppers Drug Mart Run For Women - Victoria 2026' — link válido, miss_count zerado
-[main] 'Puppies & Beer 5K - Venice Beach With Or Without Dog' — link válido, miss_count zerado
-[main] 'Run 21K - Meia Da Estrada Velha 2026 - Sunset' — link válido, miss_count zerado
-[main] '3ª Night Run Itarana' — link válido, miss_count zerado
-[main] 'Run 21K - Meia Da Estrada Velha 2026 - Sunset' — link válido, miss_count zerado
-[main] 'Say My Name 5K & 1M Walk' — link válido, miss_count zerado
-[main] 'Neabsco 5K & 10K' — link válido, miss_count zerado
-[main] 'Springbank Relays' — link válido, miss_count zerado
-[main] 'Gaelic Alley Pub 5K' — link válido, miss_count zerado
-[main] 'Run 21K - Meia Da Estrada Velha 2026 - Sunset' — link válido, miss_count zerado
+[main] 13341 corridas após merge
+[main] verificando links de 653 evento(s) não encontrado(s) no scrape...
 [main] 'Warrior Rush 5K, 10K, And Half' — link válido, miss_count zerado
-[main] 'Good Neighbor Days' — link válido, miss_count zerado
+[main] 'Hues For Humanity Calgary 2026' — link válido, miss_count zerado
+[main] 'Pelee Island Winery Half Marathon 2026' — link válido, miss_count zerado
+[main] 'Diontrey Claiborne Stop The Violence Walk & Run' — link válido, miss_count zerado
+[main] 'Old Dominion 5K & 10K' — link válido, miss_count zerado
+[main] 'Shoppers Drug Mart Run For Women - Victoria 2026' — link válido, miss_count zerado
+[main] 'Run 21K - Meia Da Estrada Velha 2026 - Sunset' — link válido, miss_count zerado
+[main] 'Glazin' The Trail' — link válido, miss_count zerado
+[main] '3ª Night Run Itarana' — link válido, miss_count zerado
+[main] 'Say My Name 5K & 1M Walk' — link válido, miss_count zerado
+[main] 'Gaelic Alley Pub 5K' — link válido, miss_count zerado
+[main] 'Neabsco 5K & 10K' — link válido, miss_count zerado
 [main] 'Run! Ballantyne 8K/5K Race & Fun Run Presented By Northwood Office' — link válido, miss_count zerado
-[main] 'Crooked Run Valley 5K & 10K' — link válido, miss_count zerado
+[main] 'Puppies & Beer 5K - Venice Beach With Or Without Dog' — link válido, miss_count zerado
+[main] 'Lighthouse 5K' — link válido, miss_count zerado
+[main] 'Good Neighbor Days' — link válido, miss_count zerado
 [main] 'Noda 5K' — link válido, miss_count zerado
-[main] 'Crooked Run Valley 5K & 10K' — link válido, miss_count zerado
-[main] 'Capitol City Chase 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Circuito Oscar 2026-2027 - 1ª Etapa - Mogi' — link válido, miss_count zerado
 [main] 'Mikey'S Run 2026' — link válido, miss_count zerado
 [main] 'Spokane Angels 5K Fun Run' — link válido, miss_count zerado
 [main] 'Bumrun Vancouver 2026' — link válido, miss_count zerado
-[main] '9ª Corrida De São José' — link válido, miss_count zerado
+[main] '2026 Oregon Wine Country Half Marathon' — link válido, miss_count zerado
 [main] 'The 2026 Evergreen Half' — link válido, miss_count zerado
-[main] 'Circuito Oscar 2026-2027 - 1ª Etapa - Mogi' — link válido, miss_count zerado
+[main] 'Trac Community Run/Walk' — link válido, miss_count zerado
+[main] '3ª Corrida E Caminhada Serramar' — link válido, miss_count zerado
+[main] '9ª Corrida De São José' — link válido, miss_count zerado
+[main] 'Muay Thai Run Arena 5K' — link válido, miss_count zerado
 [main] 'Blackbird Golden Run' — link válido, miss_count zerado
 [main] 'Crooked Run Valley 5K & 10K' — link válido, miss_count zerado
-[main] '9ª Corrida De São José' — link válido, miss_count zerado
-[main] '3ª Corrida E Caminhada Serramar' — link válido, miss_count zerado
 [main] 'Capitol City Chase 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Muay Thai Run Arena 5K' — link válido, miss_count zerado
-[main] 'Noda 5K' — link válido, miss_count zerado
-[main] 'Puppet Runner'S Summer Virtual Races 2026' — link válido, miss_count zerado
-[main] 'Randee Mile Kickoff' — link válido, miss_count zerado
-[main] 'Desafio Do Cimentão 2026' — link válido, miss_count zerado
 [main] 'Pemberton Home Stretch 5K' — link válido, miss_count zerado
-[main] 'Global Running Day 5K & 10K' — link válido, miss_count zerado
+[main] 'Puppet Runner'S Summer Virtual Races 2026' — link válido, miss_count zerado
 [main] 'Alcal Scoop Scoot 2026' — link válido, miss_count zerado
-[main] 'Fairmont Sunset Mile' — link válido, miss_count zerado
-[main] 'Tracy Pal Donut Dash 2026' — link válido, miss_count zerado
 [main] 'Night At The Island' — link válido, miss_count zerado
-[main] '10Th Annual R.E.D. 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Honor The Brave 5K & 10K' — link válido, miss_count zerado
-[main] 'The Parklands & Wlky 5K Run/Walk 2026' — link válido, miss_count zerado
+[main] 'Global Running Day 5K & 10K' — link válido, miss_count zerado
+[main] 'Fairmont Sunset Mile' — link válido, miss_count zerado
+[main] 'Frankfort Police Department "All Abilities" 5K Walk, Run & Wheel For Special Olympics' — link válido, miss_count zerado
+[main] 'Suicide Prevention Services: Run For Life! 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Niles Township Food Pantry Fun Run 2026' — link válido, miss_count zerado
+[main] 'Saw Wee Kee - Summer Trail Run' — link válido, miss_count zerado
+[main] 'Desafio Do Cimentão 2026' — link válido, miss_count zerado
+[main] 'Bull Valley Monster Hill Challenge' — link válido, miss_count zerado
+[main] 'Whistler Half Marathon' — link válido, miss_count zerado
+[main] 'Tracy Pal Donut Dash 2026' — link válido, miss_count zerado
+[main] 'Ohio 529 Collegeadvantage Redlegs Run' — link válido, miss_count zerado
 [main] 'Army Birthday 6.14K' — link válido, miss_count zerado
-[main] '8Th Annual Sodel Cares 5K Run / Walk & Non Competitive Mile Walk' — link válido, miss_count zerado
 [main] 'Village Northwest Unlimited Run, Walk & Roll' — link válido, miss_count zerado
+[main] '10Th Annual R.E.D. 5K Run/Walk' — link válido, miss_count zerado
+[main] '8Th Annual Sodel Cares 5K Run / Walk & Non Competitive Mile Walk' — link válido, miss_count zerado
 [main] 'Superheroes Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'The Belmont Mile (Presented By Fleet Feet)' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Corrida Das Conchas Piúma' — link válido, miss_count zerado
 [main] 'Goat Island Games 5 Mile And 5K' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Shesans Run For Clean Water 5K – Charlotte 2026' — link válido, miss_count zerado
+[main] 'Hickory Knolls Trail Run' — link válido, miss_count zerado
 [main] 'Steamboat Classic' — link válido, miss_count zerado
-[main] 'Kaiser Permanente Women'S Fitness Festival 2026' — link válido, miss_count zerado
-[main] 'Sarcoma Shuffle 5K & 10K' — link válido, miss_count zerado
-[main] 'Ashley Rizzuto Memorial Metavivor #Lightupmbc Color Walk' — link válido, miss_count zerado
+[main] 'Forest City Road Races 2026' — link válido, miss_count zerado
+[main] 'Conquer The Lake Running Event' — link válido, miss_count zerado
 [main] 'Vii Meia Maratona Timbó' — link válido, miss_count zerado
-[main] 'Krista Johnson Memorial Run' — link válido, miss_count zerado
-[main] 'Fox Trot 5K & 1 Mile' — link válido, miss_count zerado
-[main] 'La Grande Virée Des Sentiers Du Mont-Saint-Bruno Présentée Par Iga - Marchés Lambert' — link válido, miss_count zerado
+[main] 'Ashley Rizzuto Memorial Metavivor #Lightupmbc Color Walk' — link válido, miss_count zerado
 [main] 'Put-In-Bay Pride 5K' — link válido, miss_count zerado
+[main] 'Kaiser Permanente Women'S Fitness Festival 2026' — link válido, miss_count zerado
+[main] 'Fox Trot 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Honda Waterfront Run Barrie' — link válido, miss_count zerado
-[main] 'Tuesday Night 5K #4' — link válido, miss_count zerado
-[main] 'Freedom Fighters 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Sacfit 2026 Summer/Fall Marathon Training Program' — link válido, miss_count zerado
-[main] 'Sacfit 2026 Summer/Fall Half Marathon Training Program' — link válido, miss_count zerado
 [main] 'The Mini-Apple Night Of Miles' — link válido, miss_count zerado
-[main] 'International Hallers' Run' — link válido, miss_count zerado
+[main] 'Gigifit Acceptance Challenge' — link válido, miss_count zerado
 [main] '2026 - 402 Squadron Grizzly Ride' — link válido, miss_count zerado
-[main] 'Rocky Ridge 5K & 10K' — link válido, miss_count zerado
+[main] 'Freedom Fighters 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Tideline Classic' — link válido, miss_count zerado
+[main] 'Heart Beats 17Th Annual Fun Run And Walk: A Community Event' — link válido, miss_count zerado
+[main] 'Footsteps For Families' — link válido, miss_count zerado
+[main] 'Fear Mke 5K And 10K' — link válido, miss_count zerado
+[main] '30Th Annual Race With Your Heart' — link válido, miss_count zerado
+[main] 'Cwc Stars & Stripes 5K Run' — link válido, miss_count zerado
 [main] 'Claude Moore 5K & 10K' — link válido, miss_count zerado
-[main] 'The Alex Manfull Fund 5K' — link válido, miss_count zerado
 [main] 'The American Legion First State 5K / 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Puro 9:56 Racing 5K & 1Mile Run/Walk' — link válido, miss_count zerado
-[main] 'Cwc Stars & Stripes 5K Run' — link válido, miss_count zerado
-[main] 'Bear Tracks 5K And 1 Mile Bear Attack' — link válido, miss_count zerado
 [main] 'Queen City Crown' — link válido, miss_count zerado
+[main] 'Bear Tracks 5K And 1 Mile Bear Attack' — link válido, miss_count zerado
 [main] 'Tremont Turkey Festival 5K' — link válido, miss_count zerado
 [main] 'John Deere Davenport 5K' — link válido, miss_count zerado
-[main] 'Angie Barry Memorial 5K/10K' — link válido, miss_count zerado
 [main] 'Circuito Voa Run 2026 - Etapa Novo Hamburgo' — link válido, miss_count zerado
-[main] 'Q Fitness And Wellness 5K' — link válido, miss_count zerado
-[main] '2026 Rock Tahoe Sponsorship & Vendors' — link válido, miss_count zerado
-[main] '44Th Annual Lake Wyola Road Race' — link válido, miss_count zerado
+[main] 'Angie Barry Memorial 5K/10K' — link válido, miss_count zerado
+[main] 'Juneteenth Wellness 5K' — link válido, miss_count zerado
 [main] '2ª Corrida Do 38º Bpm - Mafra' — link válido, miss_count zerado
 [main] 'Judy'S Pancakes 5K & Fun Run Family Day' — link válido, miss_count zerado
+[main] 'Q Fitness And Wellness 5K' — link válido, miss_count zerado
+[main] 'Qx Run With Pride 2026' — link válido, miss_count zerado
 [main] 'Appomattox River Greenway 5K & 10K' — link válido, miss_count zerado
-[main] 'The Forever 29 Run' — link válido, miss_count zerado
-[main] '24Th Dewey Beach Patrol 5K' — link válido, miss_count zerado
 [main] 'Eod Warrior 5K & Half' — link válido, miss_count zerado
-[main] 'Juneteenth Menare Foundation 6K & 12K' — link válido, miss_count zerado
-[main] 'Sista Strut 2026' — link válido, miss_count zerado
-[main] 'The Third Annual Zeta Rho Lambda Juneteenth 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Black Wellness 5K Run/Walk' — link válido, miss_count zerado
+[main] 'The Longest Day Run' — link válido, miss_count zerado
 [main] 'Xact Kawartha Sun Run 2026' — link válido, miss_count zerado
-[main] 'The Fab 5K' — link válido, miss_count zerado
+[main] '24Th Dewey Beach Patrol 5K' — link válido, miss_count zerado
+[main] 'Greater Sacramento Urban League'S 4Th Annual Juneteenth Run/Walk' — link válido, miss_count zerado
+[main] '34Th Annual Hopkinton Against The Tide' — link válido, miss_count zerado
+[main] 'The Sweaty Pig' — link válido, miss_count zerado
+[main] 'Gritty Chix Mud Run 2026' — link válido, miss_count zerado
 [main] 'Father’S Day 5K, 10K, & 1M' — link válido, miss_count zerado
-[main] 'Rock The Ride Napa, Ca' — link válido, miss_count zerado
 [main] 'Losing To Live 5K' — link válido, miss_count zerado
-[main] 'Pépère Gerry Run' — link válido, miss_count zerado
 [main] 'Stuart Good Egg Days - A Father'S Day Race' — link válido, miss_count zerado
-[main] 'Puso 5K & 10K' — link válido, miss_count zerado
-[main] 'Be The Good 5K & 10K' — link válido, miss_count zerado
-[main] 'Festies 5K' — link válido, miss_count zerado
+[main] 'Pépère Gerry Run' — link válido, miss_count zerado
+[main] 'Rock The Ride Napa, Ca' — link válido, miss_count zerado
 [main] '2026 Elkhart City Festival 5K And Kids Run' — link válido, miss_count zerado
 [main] 'Harvey Mills Longest Day 10K' — link válido, miss_count zerado
 [main] 'The Earl 'Helge' Byleen Road Race' — link válido, miss_count zerado
+[main] 'Festies 5K' — link válido, miss_count zerado
+[main] 'Puso 5K & 10K' — link válido, miss_count zerado
+[main] 'Be The Good 5K & 10K' — link válido, miss_count zerado
 [main] 'Frozen Fun Run' — link válido, miss_count zerado
 [main] 'Hope K' — link válido, miss_count zerado
+[main] 'Hustle For The Heroes 5K' — link válido, miss_count zerado
+[main] 'Race Against Hate 2026' — link válido, miss_count zerado
 [main] 'Niagara Ultra 2026' — link válido, miss_count zerado
 [main] '5H Annual Juneteenth Freedom Run: United We Stand' — link válido, miss_count zerado
+[main] 'Prairiefest 5K & One Mile Prairie Dog Jog' — link válido, miss_count zerado
 [main] 'Run Juneteenth Day 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Father’S Day Dream 5K & 10K' — link válido, miss_count zerado
+[main] '2026 Mchenry County Patriot Run' — link válido, miss_count zerado
+[main] 'Hustle For Mental Health' — link válido, miss_count zerado
 [main] 'Pura Vida 5K Fun Run/Walk' — link válido, miss_count zerado
-[main] 'Stouffville Main Street 5K' — link válido, miss_count zerado
+[main] '2026 Solstice 5K - Calgary' — link válido, miss_count zerado
 [main] 'Semper Fi Father’S Day 5K, 10K, & 1M' — link válido, miss_count zerado
-[main] '2026 - Champions In Training Program' — link válido, miss_count zerado
-[main] 'Skate Of The Union' — link válido, miss_count zerado
 [main] 'Race Devils Tower' — link válido, miss_count zerado
-[main] 'Rise Above 5K' — link válido, miss_count zerado
+[main] '39Th Annual Run/Walk/Bike' — link válido, miss_count zerado
+[main] 'Community Strong Race Weekend' — link válido, miss_count zerado
+[main] 'Skate Of The Union' — link válido, miss_count zerado
+[main] '2026 Fleet Feet Training Programs' — link válido, miss_count zerado
+[main] 'Miles For Maddog' — link válido, miss_count zerado
 [main] 'Manitoba Marathon 2026' — link válido, miss_count zerado
-[main] '2026 Pride & Remembrance Run' — link válido, miss_count zerado
-[main] 'San Francisco Pride Run 2026' — link válido, miss_count zerado
-[main] '17Th Chesapeake City Canal Race 5K' — link válido, miss_count zerado
-[main] '55Th Annual Worthington Hills Firecracker Trot 5K' — link válido, miss_count zerado
-[main] '703 Warriors 5K & 10K' — link válido, miss_count zerado
-[main] 'Stewart Memorial Hospital And Clinics 2-Mile Fun Run/Walk' — link válido, miss_count zerado
-[main] 'The Longest Day Purple Powder 5K Run/Walk' — link válido, miss_count zerado
-[main] 'The Beat Goes On, Hosted By Firth Rural Fire And Rescue' — link válido, miss_count zerado
-[main] 'Summer Forest 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Tri County Educational Foundation Firecracker 5K - 14Th Annual' — link válido, miss_count zerado
+[main] 'Swedish Days Lopp' — link válido, miss_count zerado
+[main] 'Whiskey Run London' — link válido, miss_count zerado
+[main] 'Furry Friends 5K And 1 Mile Fun Run/Walk' — link válido, miss_count zerado
+[main] 'Neighborhood Food Pantries (Nfp) Shopping Cart Shuffle' — link válido, miss_count zerado
+[main] '2026 Seattle Marathon Summer Volunteers' — link válido, miss_count zerado
 [main] 'Pride 5K: Walk, Run, & Roll Presented By The Project Of The Quad Cities' — link válido, miss_count zerado
+[main] '2026 Tomato Festival 5K Run/Walk' — link válido, miss_count zerado
+[main] 'San Francisco Pride Run 2026' — link válido, miss_count zerado
+[main] 'The Longest Day Purple Powder 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Stewart Memorial Hospital And Clinics 2-Mile Fun Run/Walk' — link válido, miss_count zerado
+[main] 'The Beat Goes On, Hosted By Firth Rural Fire And Rescue' — link válido, miss_count zerado
+[main] '703 Warriors 5K & 10K' — link válido, miss_count zerado
+[main] 'Tri County Educational Foundation Firecracker 5K - 14Th Annual' — link válido, miss_count zerado
+[main] '17Th Chesapeake City Canal Race 5K' — link válido, miss_count zerado
+[main] 'Summer Forest 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Bessemer Hometown Run' — link válido, miss_count zerado
 [main] 'Red White And Blessed 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Eagan 5K And Kids Run' — link válido, miss_count zerado
-[main] 'Bessemer Hometown Run' — link válido, miss_count zerado
-[main] 'Heatwave Hustle 5K & 10K' — link válido, miss_count zerado
-[main] 'Pal Challenge 5K & 10K' — link válido, miss_count zerado
-[main] 'Nasfaa 2026 National Conference Charity Events' — link válido, miss_count zerado
-[main] 'Pleasant Hill Firecracker 5K' — link válido, miss_count zerado
-[main] 'Race Across California - 2026' — link válido, miss_count zerado
+[main] 'The Land We Love Run' — link válido, miss_count zerado
 [main] 'Summer Session 10K & 5K' — link válido, miss_count zerado
-[main] '21St Annual Footloose Freedom Mile' — link válido, miss_count zerado
-[main] '40Th Firecracker 5K Run Walk' — link válido, miss_count zerado
-[main] 'Liberty Station Relay And 5K' — link válido, miss_count zerado
+[main] '2026 Beneva Vancouver Half Marathon' — link válido, miss_count zerado
+[main] 'Pal Challenge 5K & 10K' — link válido, miss_count zerado
+[main] 'Heatwave Hustle 5K & 10K' — link válido, miss_count zerado
+[main] 'Yankee Doodle Dash' — link válido, miss_count zerado
+[main] 'Nasfaa 2026 National Conference Charity Events' — link válido, miss_count zerado
+[main] 'Firecracker Run/Walk' — link válido, miss_count zerado
+[main] 'Race Across California - 2026' — link válido, miss_count zerado
+[main] 'Freedom Four' — link válido, miss_count zerado
+[main] 'Deerfield Rotary Club Race' — link válido, miss_count zerado
+[main] '2026 Lincolnshire Rotary Red, White & Boom 5K Run/Walk' — link válido, miss_count zerado
+[main] '4Th Of July Barrington' — link válido, miss_count zerado
+[main] 'O'Fallon Firecracker Run' — link válido, miss_count zerado
+[main] 'The Alpenglow 100' — link válido, miss_count zerado
+[main] 'Firecracker Run Presented By Mercy One Genesis' — link válido, miss_count zerado
+[main] 'Pleasant Hill Firecracker 5K' — link válido, miss_count zerado
+[main] 'Run 4 Hunger' — link válido, miss_count zerado
 [main] 'Run For Chocolate 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Run For Chocolate 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
+[main] '21St Annual Footloose Freedom Mile' — link válido, miss_count zerado
 [main] 'Red, White & Run 5K' — link válido, miss_count zerado
 [main] 'Maryland Fireworks 5K & 10K' — link válido, miss_count zerado
-[main] 'Morgantown Running 4 On The 4Th' — link válido, miss_count zerado
 [main] 'The Ford City 5K And Kids 1/2 Mile' — link válido, miss_count zerado
+[main] 'Morgantown Running 4 On The 4Th' — link válido, miss_count zerado
 [main] '2026 Firecracker Fast 5K' — link válido, miss_count zerado
 [main] '2026 Run, White, & Blue 5K' — link válido, miss_count zerado
-[main] 'Fireworks 5K & 10K' — link válido, miss_count zerado
 [main] 'Deltaville 5K & Fun Run' — link válido, miss_count zerado
+[main] 'Fireworks 5K & 10K' — link válido, miss_count zerado
 [main] 'Spirit Of America 5K' — link válido, miss_count zerado
 [main] '4Th Of July Annual Freedom Fun Run - Dexter' — link válido, miss_count zerado
 [main] 'Sigourney Fourth Of July 5K / 1 Mile' — link válido, miss_count zerado
-[main] '20Th Dewey Beach Liquors 5K' — link válido, miss_count zerado
 [main] 'Bern Independence Day 5K' — link válido, miss_count zerado
 [main] 'Ralston Independence Day Fun Run/Walk 3 Mile 2026' — link válido, miss_count zerado
-[main] 'Red, White & Run 4 Miler.' — link válido, miss_count zerado
-[main] 'Urbandale Independence Day Races' — link válido, miss_count zerado
 [main] 'Pulpit To Pulpit' — link válido, miss_count zerado
-[main] 'Thayer County Health Services Annual Freedom Fun Run' — link válido, miss_count zerado
+[main] 'Urbandale Independence Day Races' — link válido, miss_count zerado
 [main] 'Putnam County Classic' — link válido, miss_count zerado
+[main] 'Red, White & Run 4 Miler.' — link válido, miss_count zerado
+[main] 'Thayer County Health Services Annual Freedom Fun Run' — link válido, miss_count zerado
+[main] '20Th Dewey Beach Liquors 5K' — link válido, miss_count zerado
 [main] 'Fifth Season Races - 2026 41St Year' — link válido, miss_count zerado
 [main] 'Seward Freedom Run - 2026' — link válido, miss_count zerado
 [main] 'Peoria Jaycees' Firecracker 5000' — link válido, miss_count zerado
-[main] 'Trail | Fazenda Monjolinho' — link válido, miss_count zerado
 [main] 'Prior Lake Firecracker 5K' — link válido, miss_count zerado
 [main] 'Freedom Run' — link válido, miss_count zerado
-[main] 'Run For Chocolate 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Freedom 5K & Half' — link válido, miss_count zerado
+[main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
+[main] 'Run For Chocolate 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Heritage Days Fun Run Sponsored By The Mount Vernon Alumni Association' — link válido, miss_count zerado
 [main] 'Richmond Fireworks 5K & 10K' — link válido, miss_count zerado
 [main] 'Ames Midnight Madness Road Race' — link válido, miss_count zerado
 [main] 'Low Moor Days 2026 5K Rock-N-Run' — link válido, miss_count zerado
-[main] 'Bases Loaded 5K, Home Run For Hodge' — link válido, miss_count zerado
-[main] 'Bloom Energy & Tarana Wireless Stars And Strides 5K-10K Run/Walk & Kids Fun Run' — link válido, miss_count zerado
-[main] 'Giant Days 5K' — link válido, miss_count zerado
-[main] 'Felix Grundy 5K' — link válido, miss_count zerado
+[main] 'Symphony847 5K' — link válido, miss_count zerado
 [main] 'Heatwave Half Marathon - Lansing' — link válido, miss_count zerado
+[main] 'Grayslake Chamber Of Commerce' — link válido, miss_count zerado
+[main] 'Bristol Progress Days 5K And 1.5 Mile Run/Walk' — link válido, miss_count zerado
+[main] 'Giant Days 5K' — link válido, miss_count zerado
+[main] 'Run For The Blue Dallas 2026' — link válido, miss_count zerado
+[main] 'Plateau Pacers 5Th Anniversary Community 5K Walk/ Run' — link válido, miss_count zerado
+[main] 'Bloom Energy & Tarana Wireless Stars And Strides 5K-10K Run/Walk & Kids Fun Run' — link válido, miss_count zerado
+[main] 'Devil'S Ladder Ultra 2026' — link válido, miss_count zerado
 [main] 'Wayne Chicken Run 5K And 1 Mile' — link válido, miss_count zerado
 [main] 'Felix Grundy 5K' — link válido, miss_count zerado
+[main] '3Rd Rusty Rudder 5K' — link válido, miss_count zerado
+[main] 'Run For Life 5K' — link válido, miss_count zerado
 [main] 'Moonlight Chase' — link válido, miss_count zerado
-[main] 'Madelia Health Foundation 5K/1M Run/Walk' — link válido, miss_count zerado
-[main] '5 Desafio Crossrun' — link válido, miss_count zerado
 [main] '33Rd Annual Run For The Health Of It' — link válido, miss_count zerado
 [main] 'Pattersons Pellet—53Rd Summer Series Week Two' — link válido, miss_count zerado
-[main] 'Cmv Canada Half Marathon' — link válido, miss_count zerado
-[main] 'Run For Life 5K' — link válido, miss_count zerado
-[main] 'Great Country Farms 5K & 10K' — link válido, miss_count zerado
 [main] 'Lincoln Running Co Mile - 2026' — link válido, miss_count zerado
+[main] 'Xix Bbva Mexico City Half Marathon 2026' — link válido, miss_count zerado
 [main] 'Eyota Days 5K Road Race' — link válido, miss_count zerado
 [main] 'Tuesday Night 5K #5' — link válido, miss_count zerado
-[main] 'America'S Mile Presented By Visitpittsburgh' — link válido, miss_count zerado
 [main] 'Eyota Days Color Run' — link válido, miss_count zerado
 [main] 'America'S Mile Presented By Visitpittsburgh' — link válido, miss_count zerado
-[main] 'Eyota Days 5K Road Race' — link válido, miss_count zerado
-[main] 'Clive Running Festival - 2026' — link válido, miss_count zerado
-[main] 'Explore The Shore 5K & 10K' — link válido, miss_count zerado
-[main] 'Port City Pursuit 5K & 10K' — link válido, miss_count zerado
-[main] '5K Run/Walk For Lynne' — link válido, miss_count zerado
+[main] 'Highwood 5K' — link válido, miss_count zerado
+[main] 'Donut Dash' — link válido, miss_count zerado
 [main] 'Clive Running Festival - 2026' — link válido, miss_count zerado
 [main] 'St Charles Old Settlers Gateway 5K/1K Fun Run' — link válido, miss_count zerado
+[main] 'Port City Pursuit 5K & 10K' — link válido, miss_count zerado
+[main] 'Colby Cheese Days: Run For Jamison' — link válido, miss_count zerado
 [main] 'Eagle Lake Tator Days 5K And Kids 1 Mile' — link válido, miss_count zerado
 [main] 'Explore The Shore 5K & 10K' — link válido, miss_count zerado
 [main] 'Bob Lauterbach Memorial Columbus Downtown Runaround' — link válido, miss_count zerado
+[main] 'Drewby Dash' — link válido, miss_count zerado
 [main] 'Mound Westonka Rotary - Spirit Of The Lakes 5K' — link válido, miss_count zerado
 [main] 'Ashby Appreciation Days 5K/10K' — link válido, miss_count zerado
-[main] 'Donut Dash' — link válido, miss_count zerado
-[main] 'Tour De Save 2026' — link válido, miss_count zerado
 [main] 'Summer Nights 5K + 1 Miler' — link válido, miss_count zerado
 [main] 'Tour De Save 2026' — link válido, miss_count zerado
-[main] 'Highwood 5K' — link válido, miss_count zerado
-[main] 'Colby Cheese Days: Run For Jamison' — link válido, miss_count zerado
-[main] 'Stonewall Quarry Run' — link válido, miss_count zerado
 [main] 'Quadzilla 15K Trail Race' — link válido, miss_count zerado
-[main] 'Ashby Appreciation Days 5K/10K' — link válido, miss_count zerado
-[main] 'Mound Westonka Rotary - Spirit Of The Lakes 5K' — link válido, miss_count zerado
-[main] 'Summer Nights 5K + 1 Miler' — link válido, miss_count zerado
 [main] 'Blueberry Run—53Rd Summer Series Week Three' — link válido, miss_count zerado
-[main] 'The 2026 Herring Run 10/20K Trail Race' — link válido, miss_count zerado
-[main] 'Semper Fi 5K, 10K, & 1M' — link válido, miss_count zerado
-[main] 'Quaker Dash Ice Cream 5K' — link válido, miss_count zerado
-[main] 'Tour De Save 2026' — link válido, miss_count zerado
-[main] 'Summer Dash 5K & 10K' — link válido, miss_count zerado
+[main] 'Stonewall Quarry Run' — link válido, miss_count zerado
+[main] 'Crystal Lake Aquathon - 2026' — link válido, miss_count zerado
+[main] 'The Coldwater Classic' — link válido, miss_count zerado
 [main] 'Michael'S Run For Life Festival' — link válido, miss_count zerado
-[main] 'South Bay 24' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 Sacramento' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
-[main] 'Christmas In July 5K & Half' — link válido, miss_count zerado
-[main] 'Detweiller At Dark' — link válido, miss_count zerado
-[main] 'Locust Shade 5K & 10K' — link válido, miss_count zerado
-[main] 'Iop Beach Run 2026' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Patrick Freeberg Memorial Scholarship 5K' — link válido, miss_count zerado
+[main] 'Quaker Dash Ice Cream 5K' — link válido, miss_count zerado
+[main] 'Semper Fi 5K, 10K, & 1M' — link válido, miss_count zerado
+[main] 'Summer Dash 5K & 10K' — link válido, miss_count zerado
+[main] 'Winded' — link válido, miss_count zerado
 [main] 'Queen City 5K' — link válido, miss_count zerado
-[main] '868 Estate Vineyards 5K & 10K' — link válido, miss_count zerado
+[main] 'Patrick Freeberg Memorial Scholarship 5K' — link válido, miss_count zerado
+[main] 'Run For Coffee Lovers 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Run For Donuts 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
+[main] 'Detweiller At Dark' — link válido, miss_count zerado
 [main] 'Walker Pickle Days 5K And 1-Mile Fun Run' — link válido, miss_count zerado
+[main] '868 Estate Vineyards 5K & 10K' — link válido, miss_count zerado
 [main] 'Lace Up For Hope With The Landingmn' — link válido, miss_count zerado
 [main] 'Resurrection Run' — link válido, miss_count zerado
-[main] 'Rochester Women’S 4-Mile Race' — link válido, miss_count zerado
-[main] 'Run For Donuts 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
-[main] '24Th Penn State College Day 5K' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Haven Half Marathon, 30K & 10K' — link válido, miss_count zerado
-[main] 'Whitney’S Walk For Suicide Prevention & Awareness' — link válido, miss_count zerado
+[main] 'Run For Coffee Lovers 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Lou’S Run—53Rd Summer Series Week Four' — link válido, miss_count zerado
-[main] '2026 Lindsay Milk Run' — link válido, miss_count zerado
-[main] 'Summer Moco 5K & 10K' — link válido, miss_count zerado
-[main] 'Summer Georgetown 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Susan B Anthony Women’S 5K' — link válido, miss_count zerado
+[main] 'Whitney’S Walk For Suicide Prevention & Awareness' — link válido, miss_count zerado
+[main] '24Th Penn State College Day 5K' — link válido, miss_count zerado
+[main] 'Ncsl Fun Run 5K' — link válido, miss_count zerado
 [main] 'Miles At The Meadow #2' — link válido, miss_count zerado
-[main] 'RR Test Mmt' — link válido, miss_count zerado
-[main] 'Summer Burke Lake 5K & 10K' — link válido, miss_count zerado
-[main] '5K Race For Plates (Stockthesummer.Ca)' — link válido, miss_count zerado
+[main] 'A Sundae In July 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Lean Horse Ultra Marathon' — link válido, miss_count zerado
+[main] '2026 Washington Town & Country Fair Run' — link válido, miss_count zerado
+[main] 'Peak To Peak All Comers Meet' — link válido, miss_count zerado
+[main] 'Susan B Anthony Women’S 5K' — link válido, miss_count zerado
 [main] 'Panorama Days 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Awards/Fun Run—53Rd Summer Series Finale' — link válido, miss_count zerado
 [main] 'Indian Creek 5K' — link válido, miss_count zerado
+[main] 'Summer Burke Lake 5K & 10K' — link válido, miss_count zerado
 [main] 'Baltimore Crab Crawl 5K & 10K' — link válido, miss_count zerado
-[main] '2026 Stride To Save Lives 5K/10K' — link válido, miss_count zerado
+[main] 'Awards/Fun Run—53Rd Summer Series Finale' — link válido, miss_count zerado
 [main] 'Totally Awesome Casa Costume 5K' — link válido, miss_count zerado
-[main] 'Quality Of Life Run 2026' — link válido, miss_count zerado
+[main] '2026 Stride To Save Lives 5K/10K' — link válido, miss_count zerado
 [main] 'Sunset Scurry 5K & 10K' — link válido, miss_count zerado
-[main] 'Random Row Brewing 5K & 10K' — link válido, miss_count zerado
-[main] 'Third Winchester Battlefield 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Operation First Response 5K & 10K' — link válido, miss_count zerado
-[main] 'Chad’S Day For Change Urban Trail Race' — link válido, miss_count zerado
-[main] '4Th Community Matters Foundation 5K' — link válido, miss_count zerado
-[main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
-[main] 'Feed Charlotte 5K' — link válido, miss_count zerado
-[main] 'Twilight Trail 5K' — link válido, miss_count zerado
-[main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
-[main] 'Case Creek Obstacles Mud Run For Everyone' — link válido, miss_count zerado
+[main] 'Quality Of Life Run 2026' — link válido, miss_count zerado
+[main] 'Canaqua Sports Mid-Summer Classic - Welland' — link válido, miss_count zerado
+[main] '2026 Akron Marathon Race Series Presented By Summa Health' — link válido, miss_count zerado
+[main] '12Th Annual - Race To Stop Hunger 5K' — link válido, miss_count zerado
 [main] 'Nolan'S Smile Run' — link válido, miss_count zerado
-[main] 'Case Creek Obstacles Kids Ninja Adventure Run' — link válido, miss_count zerado
+[main] 'Twilight Trail 5K' — link válido, miss_count zerado
+[main] 'Feed Charlotte 5K' — link válido, miss_count zerado
+[main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
+[main] 'Operation First Response 5K & 10K' — link válido, miss_count zerado
 [main] 'Case Creek Obstacles Mud Run For Everyone' — link válido, miss_count zerado
+[main] 'Corrida Do Bombeiro Etapa Varginha' — link válido, miss_count zerado
+[main] '4Th Community Matters Foundation 5K' — link válido, miss_count zerado
+[main] 'Case Creek Obstacles Kids Ninja Adventure Run' — link válido, miss_count zerado
 [main] 'Summer Sprint 5K & 10K' — link válido, miss_count zerado
-[main] 'Q-Town Evening Road Races' — link válido, miss_count zerado
 [main] 'Pfc. Joseph "Dimps" Marquez Memorial 5K' — link válido, miss_count zerado
-[main] 'Tuesday Night 5K #6' — link válido, miss_count zerado
-[main] '2026 Demi-Marathon Mont-Tremblant' — link válido, miss_count zerado
+[main] 'Q-Town Evening Road Races' — link válido, miss_count zerado
 [main] 'Sand & Surf 5K & 10K' — link válido, miss_count zerado
+[main] 'Race Judicata 2026' — link válido, miss_count zerado
 [main] 'Freedom Run Presented By Unitypoint Health' — link válido, miss_count zerado
+[main] 'Tuesday Night 5K #6' — link válido, miss_count zerado
+[main] 'Dirty Feet Heartbreak 100Km, 50Km And Relay' — link válido, miss_count zerado
 [main] 'Smsc 2026 Wacipi 5K And Youth Run' — link válido, miss_count zerado
-[main] 'Sunburn Striders 5K & 10K' — link válido, miss_count zerado
 [main] 'Prior Lake Dental Dash' — link válido, miss_count zerado
-[main] 'Ridge Reaper 5K & 10K' — link válido, miss_count zerado
-[main] 'Vancouver Island Trail Running Series - Cobble Hill 2026' — link válido, miss_count zerado
 [main] 'New Windsor Rodeo Run' — link válido, miss_count zerado
-[main] 'Born To Run 5K' — link válido, miss_count zerado
+[main] 'Ridge Reaper 5K & 10K' — link válido, miss_count zerado
 [main] '2Nd Annual Father Arul Memorial 5K Run/Walk & 1 Mile Fun Run' — link válido, miss_count zerado
 [main] '2026 Lance Pfrimmer Memorial Run' — link válido, miss_count zerado
-[main] 'Brimfield Old Settlers Days 5K' — link válido, miss_count zerado
-[main] 'Cannon Ballers Shooting Star 5K' — link válido, miss_count zerado
+[main] 'Born To Run 5K' — link válido, miss_count zerado
 [main] 'Rolling Of The Bulls 5K' — link válido, miss_count zerado
+[main] 'Cannon Ballers Shooting Star 5K' — link válido, miss_count zerado
+[main] 'Along The Vines 5K/10K' — link válido, miss_count zerado
 [main] 'Summer District 5K & Half' — link válido, miss_count zerado
-[main] 'The Wooly Bully Races' — link válido, miss_count zerado
-[main] '24Th Annual Beat The Heat 5K' — link válido, miss_count zerado
-[main] 'Dundee Dash 5K' — link válido, miss_count zerado
 [main] 'Green Dogs Unleashed 5K & 10K' — link válido, miss_count zerado
+[main] 'St. Paul Strassenlauf' — link válido, miss_count zerado
+[main] 'St. Monica Summerfest 5K Run/Walk And Mini Mustang Dash' — link válido, miss_count zerado
+[main] 'Dundee Dash 5K' — link válido, miss_count zerado
+[main] 'Run The Rails' — link válido, miss_count zerado
 [main] 'Kalero 5K' — link válido, miss_count zerado
 [main] 'Summer Sizzle 5K & 10K' — link válido, miss_count zerado
-[main] 'Pajamas All Day 5K & Fun Run' — link válido, miss_count zerado
+[main] 'Black Spur Ultra' — link válido, miss_count zerado
 [main] 'Glowstick 5K, 10K, & 1M' — link válido, miss_count zerado
 [main] 'Rileystrong 5K Run And Youth Fun Run' — link válido, miss_count zerado
-[main] 'Lakeside Loop 5K & 10K' — link válido, miss_count zerado
-[main] '23Rd Outlet Liquors 5K At The Rusty Rudder' — link válido, miss_count zerado
 [main] '2026 Abas Auto Stony Mountain Run' — link válido, miss_count zerado
-[main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Quarry Summer Challenge 5K, 10K, 15K' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Speedy Pd' — link válido, miss_count zerado
+[main] '23Rd Outlet Liquors 5K At The Rusty Rudder' — link válido, miss_count zerado
+[main] 'Hawthorn Hustle' — link válido, miss_count zerado
 [main] 'Chupacabra Endurance 10-Hour Run' — link válido, miss_count zerado
-[main] 'Speedy Pd' — link válido, miss_count zerado
+[main] 'Leopold’S Preserve 5K & 10K' — link válido, miss_count zerado
+[main] 'Quarry Summer Challenge 5K, 10K, 15K' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 San Antonio' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Caffeine Run Toronto' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Seattle' — link válido, miss_count zerado
+[main] '2026 Angel Island Half Marathon & 10K' — link válido, miss_count zerado
+[main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Color Dash For Hope 2026' — link válido, miss_count zerado
 [main] 'Speedy Pd' — link válido, miss_count zerado
+[main] 'The Inferno 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Hap Crim Festival Of Races' — link válido, miss_count zerado
 [main] 'Sloth Run 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Yiasou Greek Festival 5K Presented By Novant Health' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Putnam County Running Series' — link válido, miss_count zerado
-[main] 'Community Matters 5K' — link válido, miss_count zerado
-[main] 'Sweet Run 5K & 10K' — link válido, miss_count zerado
 [main] 'Quassapaug Sailing Center Open Water Swim' — link válido, miss_count zerado
-[main] 'Run For Ottawa 2026' — link válido, miss_count zerado
+[main] 'Community Matters 5K' — link válido, miss_count zerado
 [main] 'The Orchard Dash 5K & 10K' — link válido, miss_count zerado
+[main] 'The Stoked Ultra️' — link válido, miss_count zerado
 [main] 'Dog Days Of Summer 5K & 10K' — link válido, miss_count zerado
 [main] '53Rd Winery 5K & 10K' — link válido, miss_count zerado
-[main] 'Donahue Kids Race' — link válido, miss_count zerado
-[main] '2026 Barefoot Half Marathon (13.1 Miles)' — link válido, miss_count zerado
-[main] 'Poco Trail Relay (25.3Km)' — link válido, miss_count zerado
+[main] 'Kylie Rose'S Run 2026' — link válido, miss_count zerado
+[main] 'Newbo Run' — link válido, miss_count zerado
 [main] 'Carderock Charge 5K, 10K, & Half' — link válido, miss_count zerado
 [main] 'Whiskey Run Atlanta' — link válido, miss_count zerado
 [main] 'Mount Vernon Park 5K & 10K' — link válido, miss_count zerado
+[main] '2026 Barefoot Half Marathon (13.1 Miles)' — link válido, miss_count zerado
 [main] 'Labor Day Burke Lake 5K & 10K' — link válido, miss_count zerado
-[main] 'Labor Day 5K & 10K' — link válido, miss_count zerado
 [main] 'Around The Crown 10K' — link válido, miss_count zerado
+[main] '2026 Cincinnati Aruna Run' — link válido, miss_count zerado
+[main] 'Labor Day 5K & 10K' — link válido, miss_count zerado
 [main] '14Th Summer’S End 5K' — link válido, miss_count zerado
 [main] 'Tuesday Night 5K #7' — link válido, miss_count zerado
 [main] 'Victory Races' — link válido, miss_count zerado
 [main] 'Patriots Day At Bunnyman Brewing 5K & 10K' — link válido, miss_count zerado
+[main] 'Chicago Gospel Run 2026' — link válido, miss_count zerado
+[main] 'Turbot Trot' — link válido, miss_count zerado
+[main] 'Volunteer Registration - Gospel Run 2026' — link válido, miss_count zerado
+[main] 'Patriot Day Run' — link válido, miss_count zerado
+[main] 'Pirate'S Booty' — link válido, miss_count zerado
+[main] 'Candle Lake Fun Run 2026' — link válido, miss_count zerado
+[main] 'High River Half 2026' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
 [main] '16Th Annual Donor Network West Foundation Run/Walk' — link válido, miss_count zerado
-[main] 'Jace'S Journey 5K & Fun Run' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Tampa' — link válido, miss_count zerado
-[main] 'South End Shuffle 5K & 1 Mile' — link válido, miss_count zerado
-[main] 'She.Is.Beautiful 5K & 10K Santa Barbara 2026' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] '9-11 Memorial 5K & Half' — link válido, miss_count zerado
-[main] 'Course De La Cité-Limoilou 2026' — link válido, miss_count zerado
-[main] 'The Kroc Center Bubble Fun 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Nedned Trail Fest' — link válido, miss_count zerado
-[main] 'Dashing To Summer’S End 5K & 10K' — link válido, miss_count zerado
-[main] 'Marigold Mile' — link válido, miss_count zerado
 [main] '14Th Annual 5K Walk/Run' — link válido, miss_count zerado
+[main] 'The Kroc Center Bubble Fun 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Marigold Mile' — link válido, miss_count zerado
+[main] 'Dashing To Summer’S End 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
 [main] 'Pups & Pastries' — link válido, miss_count zerado
 [main] 'Chick-Uamegon' — link válido, miss_count zerado
+[main] 'Santa Maria Del Popolo 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Running With The Big Dogs 5K Run And 2 Mile Dog Stroll' — link válido, miss_count zerado
+[main] 'The Boiler Dash' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
+[main] 'Run For Tomorrow 5K' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
+[main] '2026 Forever Young Run' — link válido, miss_count zerado
+[main] 'Dubuque Benefit Classic - 48Th Annual' — link válido, miss_count zerado
 [main] 'Putnam County Suicide Awareness & Prevention' — link válido, miss_count zerado
 [main] 'Tree House Brewing Company Half Marathon 2026' — link válido, miss_count zerado
-[main] 'Heeling House 5K' — link válido, miss_count zerado
-[main] 'Buffalo Stampede 10-Mile And 4-Mile Run/Walk' — link válido, miss_count zerado
 [main] 'Pumpkinman Half Marathon And Running Festival!' — link válido, miss_count zerado
-[main] 'Run For Barrie 2026' — link válido, miss_count zerado
-[main] 'Alcatraz Open Swim 2026' — link válido, miss_count zerado
+[main] 'Friends And Zoey'S Zoo Fun Run' — link válido, miss_count zerado
+[main] 'Buffalo Stampede 10-Mile And 4-Mile Run/Walk' — link válido, miss_count zerado
+[main] 'Heeling House 5K' — link válido, miss_count zerado
 [main] 'Sundance To Spearfish Marathon' — link válido, miss_count zerado
+[main] 'Alcatraz Open Swim 2026' — link válido, miss_count zerado
 [main] 'Georgina Marathon & Half-Marathon' — link válido, miss_count zerado
+[main] 'Oktoberfest 5K & 10K' — link válido, miss_count zerado
 [main] 'Konza 25K & 10K' — link válido, miss_count zerado
-[main] 'Ascent At Mountain Air 5K' — link válido, miss_count zerado
+[main] 'Brita Night Run 2026 - Calgary' — link válido, miss_count zerado
 [main] 'The Steven Locascio Memorial Fund Heart To Heart 5K' — link válido, miss_count zerado
 [main] 'Inaugural Sussex County Habitat For Humanity 5K Run / 1 Mile Walk / Kids Dash' — link válido, miss_count zerado
-[main] 'Oktoberfest 5K & 10K' — link válido, miss_count zerado
-[main] 'Run With The Cops 5K' — link válido, miss_count zerado
+[main] '2026 - 2Nd Annual Hbcu Run & Brunch' — link válido, miss_count zerado
+[main] 'Monster Of Mazinaw Trail Race 2026' — link válido, miss_count zerado
 [main] 'Put-In-Bay 5K' — link válido, miss_count zerado
-[main] '16Th Docf Teal Ribbon 5K Run-Walk To Fight Ovarian Cancer' — link válido, miss_count zerado
 [main] 'King Turkey Day 5K/10K' — link válido, miss_count zerado
+[main] '16Th Docf Teal Ribbon 5K Run-Walk To Fight Ovarian Cancer' — link válido, miss_count zerado
 [main] 'Civic League Day Nursery Race, Roll And Stroll' — link válido, miss_count zerado
 [main] 'Third Annual Fallfest 5K' — link válido, miss_count zerado
+[main] 'Run With The Cops 5K' — link válido, miss_count zerado
 [main] 'The Bismarck Marathon' — link válido, miss_count zerado
+[main] 'Santa Fe International Half Marathon & 5K' — link válido, miss_count zerado
 [main] 'Pulse Walk: Penny Per Step Challenge' — link válido, miss_count zerado
-[main] 'Stronger Together 2026! 1K/5K Walk/Run And Family Event! Sunday, September 20Th' — link válido, miss_count zerado
-[main] 'Fall Burke Lake 5K & 10K' — link válido, miss_count zerado
 [main] 'Thumbs Up Run/Walk/Bike Event - 13Th Annual' — link válido, miss_count zerado
+[main] 'D67 Dash 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Habitat For Humanity Chatham-Kent River Run' — link válido, miss_count zerado
+[main] 'Stronger Together 2026! 1K/5K Walk/Run And Family Event! Sunday, September 20Th' — link válido, miss_count zerado
 [main] 'Ely Fall Fest 5K And 1 Mile Run' — link válido, miss_count zerado
+[main] 'Caminhada E Corrida Pela Vida' — link válido, miss_count zerado
 [main] 'Riding Mountain Half Marathon, 10K, & 5K' — link válido, miss_count zerado
-[main] 'Autumn Georgetown 5K & Half' — link válido, miss_count zerado
-[main] 'San Francisco Aloha Run' — link válido, miss_count zerado
-[main] 'Bump N' Run 5K And Mro Fest' — link válido, miss_count zerado
+[main] 'Fall Burke Lake 5K & 10K' — link válido, miss_count zerado
 [main] 'Brita Night Run 2026 - Toronto' — link válido, miss_count zerado
-[main] '13Th Annual Represent Yourself 5K Run/Walk' — link válido, miss_count zerado
-[main] '2026 Act Trail Fest' — link válido, miss_count zerado
+[main] 'Autumn Georgetown 5K & Half' — link válido, miss_count zerado
+[main] 'Chick-Fil-A 5K' — link válido, miss_count zerado
+[main] 'Bump N' Run 5K And Mro Fest' — link válido, miss_count zerado
+[main] 'Big Woods Run' — link válido, miss_count zerado
+[main] 'San Francisco Aloha Run' — link válido, miss_count zerado
+[main] 'Moraine Hills Run For The Hills' — link válido, miss_count zerado
+[main] 'Oktoberfest Run 5K/10K/13.1 Los Angeles' — link válido, miss_count zerado
+[main] 'St. Joseph Marathon' — link válido, miss_count zerado
+[main] '2026 Light Up The Night For Noelle' — link válido, miss_count zerado
 [main] 'Cedar Mountain Rally 5K & 10K' — link válido, miss_count zerado
-[main] 'The 9Th Annual Belmont Water Dog Run' — link válido, miss_count zerado
+[main] 'The Howling Ghost Trail Race' — link válido, miss_count zerado
 [main] 'Running Bear At The Rocks' — link válido, miss_count zerado
-[main] 'Hers 27Th Annual Breast Cancer Walk/Run Fundraiser And Community Expo' — link válido, miss_count zerado
-[main] 'Perseverance Trail Run 2026' — link válido, miss_count zerado
-[main] 'Que Classic' — link válido, miss_count zerado
-[main] 'Food & Friends 5K & 10K' — link válido, miss_count zerado
-[main] 'Pumpkin Run/Walk' — link válido, miss_count zerado
-[main] 'Wilmington High School Alumni, Inc, 2Nd Annual 5K Run/Walk' — link válido, miss_count zerado
+[main] 'The 9Th Annual Belmont Water Dog Run' — link válido, miss_count zerado
 [main] 'Run For Pie 5K & Kids 1 Mile Fun Run' — link válido, miss_count zerado
+[main] 'Hers 27Th Annual Breast Cancer Walk/Run Fundraiser And Community Expo' — link válido, miss_count zerado
+[main] 'Que Classic' — link válido, miss_count zerado
+[main] 'Wilmington High School Alumni, Inc, 2Nd Annual 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Pumpkin Run/Walk' — link válido, miss_count zerado
+[main] 'Food & Friends 5K & 10K' — link válido, miss_count zerado
 [main] 'Flint'S Fabulous 5K - 2026' — link válido, miss_count zerado
+[main] 'Navy Mid-South Half Marathon' — link válido, miss_count zerado
 [main] 'Warrior Way 5K' — link válido, miss_count zerado
-[main] 'Team Rwb 5K & Half' — link válido, miss_count zerado
-[main] 'Urban Cow Weekend 2026' — link válido, miss_count zerado
+[main] 'Springbank Road Races London' — link válido, miss_count zerado
+[main] 'Argus Apple Marathon' — link válido, miss_count zerado
+[main] 'Wurst Race Ever 5K/10K' — link válido, miss_count zerado
+[main] 'The Auburn Half Marathon, 12K & 5K' — link válido, miss_count zerado
+[main] 'Omaha Marathon 2026' — link válido, miss_count zerado
 [main] 'Serving Our Seniors 5K Fun Run & 1 Mile Run/Walk - 2026' — link válido, miss_count zerado
+[main] 'Railway City Road Races 2026 Live Run' — link válido, miss_count zerado
 [main] 'Lovettsville 5K & 10K' — link válido, miss_count zerado
 [main] 'Puyallup Valley Half Marathon And 10K' — link válido, miss_count zerado
-[main] '2026 5 Peaks Trail Running Series: Devon' — link válido, miss_count zerado
-[main] 'Navy Mid-South Half Marathon' — link válido, miss_count zerado
 [main] 'Team Breast Friends 5K Rack Run / Family Fun Run' — link válido, miss_count zerado
+[main] 'Tryon Farm 4 Miler/8 Miler/25K/50K And 2 Mile Fun Run/Walk' — link válido, miss_count zerado
 [main] 'Sussex Superhero 5K' — link válido, miss_count zerado
-[main] 'Fall Harvest 5K' — link válido, miss_count zerado
-[main] 'Phm Run For The Residents' — link válido, miss_count zerado
-[main] 'Fall Foliage 5K & 10K' — link válido, miss_count zerado
+[main] 'Panting Four Paws' — link válido, miss_count zerado
+[main] 'Montgomery River Run 2026' — link válido, miss_count zerado
+[main] 'Butterfly Run Kamloops 2026' — link válido, miss_count zerado
+[main] 'Tbk Bank Quad Cities Marathon' — link válido, miss_count zerado
+[main] 'Whistler 50 Relay And Ultra' — link válido, miss_count zerado
 [main] 'Lost Dog 5K & 10K' — link válido, miss_count zerado
 [main] '23Rd Annual Perogy Run' — link válido, miss_count zerado
-[main] 'Miles For Migraine - Dc/Va/Md 2026' — link válido, miss_count zerado
 [main] '43Rd Annual Creighton University School Of Medicine Walk For Wishes' — link válido, miss_count zerado
+[main] 'Some Run' — link válido, miss_count zerado
 [main] 'Vanish Brewing 5K – The House That Beer Built' — link válido, miss_count zerado
 [main] 'Corpuscle Shuffle 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Miles For Migraine - Dc/Va/Md 2026' — link válido, miss_count zerado
 [main] 'Brains Together Annual Event' — link válido, miss_count zerado
-[main] 'Richard Sheltra Memorial 10K, 5K & Fun Run' — link válido, miss_count zerado
 [main] 'The 2026 Cowtown C.A.L.F. Race' — link válido, miss_count zerado
-[main] 'Mactaquac Trail Race' — link válido, miss_count zerado
-[main] 'Blackstrap Trail Race' — link válido, miss_count zerado
+[main] 'Regina Burn Fund Run 2026' — link válido, miss_count zerado
+[main] 'Richard Sheltra Memorial 10K, 5K & Fun Run' — link válido, miss_count zerado
+[main] 'Monster Mash' — link válido, miss_count zerado
 [main] 'Pohick Bay 5K & 10K' — link válido, miss_count zerado
-[main] 'Ajax Waterfront Race' — link válido, miss_count zerado
-[main] 'The County Marathon 2026' — link válido, miss_count zerado
+[main] 'Lighthouse To Lighthouse Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Run For The Frontline' — link válido, miss_count zerado
 [main] 'Dc Fall Classic 5K & Half' — link válido, miss_count zerado
-[main] 'Run Crazy Horse' — link válido, miss_count zerado
-[main] 'Pumpkin Spice 5K' — link válido, miss_count zerado
-[main] 'Valley Vertikiller Trail Race 2026' — link válido, miss_count zerado
 [main] 'Duck Dash 5K' — link válido, miss_count zerado
-[main] '2026 Muskoka Marathon' — link válido, miss_count zerado
-[main] 'The Rogue Marathon' — link válido, miss_count zerado
+[main] 'Pumpkin Spice 5K' — link válido, miss_count zerado
+[main] 'Run Crazy Horse' — link válido, miss_count zerado
 [main] 'Qc Java Jog' — link válido, miss_count zerado
+[main] 'The Rogue Marathon' — link válido, miss_count zerado
 [main] 'Pumpkin Run 10K, 5K & 1Mile' — link válido, miss_count zerado
-[main] 'Superhero For Hope 8Th Annual Run/Walk 5K' — link válido, miss_count zerado
+[main] 'Wandering Moose 12K, 25K, 35K' — link válido, miss_count zerado
 [main] 'Pursuit Of Honor, Courage And Commitment 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Pumpkin Pacer 5K & 10K' — link válido, miss_count zerado
+[main] 'Superhero For Hope 8Th Annual Run/Walk 5K' — link válido, miss_count zerado
 [main] 'Puyallup Valley Fall Hops Harvest 5K' — link válido, miss_count zerado
 [main] 'Pumpkin Spice Run' — link válido, miss_count zerado
-[main] 'Dc Safe 5K & Half' — link válido, miss_count zerado
-[main] 'The 2026 Run For Education' — link válido, miss_count zerado
-[main] 'Lighthouse Lookout 5K & 10K' — link válido, miss_count zerado
-[main] 'Défi Des Couleurs Simard' — link válido, miss_count zerado
-[main] 'Bowers Heritage Day 5K' — link válido, miss_count zerado
 [main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
-[main] 'Tuesday Night 5K #8' — link válido, miss_count zerado
-[main] 'Pumpkin Patch Dash 5K' — link válido, miss_count zerado
+[main] 'Run For Resilience 2026' — link válido, miss_count zerado
+[main] 'Bowers Heritage Day 5K' — link válido, miss_count zerado
+[main] 'The 2026 Run For Education' — link válido, miss_count zerado
 [main] 'Novant Health Lake Norman 15K & 5K' — link válido, miss_count zerado
-[main] 'The Westover 5K & 10K' — link válido, miss_count zerado
-[main] '2Nd Annual Creepy Crawl 5K' — link válido, miss_count zerado
+[main] 'Tuesday Night 5K #8' — link válido, miss_count zerado
+[main] 'Centre Club 5K 2026' — link válido, miss_count zerado
+[main] 'Pumpkin Patch Dash 5K' — link válido, miss_count zerado
+[main] 'Saw Wee Kee - Fall Trail Run' — link válido, miss_count zerado
+[main] 'Big Texas Run' — link válido, miss_count zerado
 [main] 'Claudia'S 5K' — link válido, miss_count zerado
-[main] 'Cloverdale Vineyard Races: 10K And 5K' — link válido, miss_count zerado
+[main] '2Nd Annual Creepy Crawl 5K' — link válido, miss_count zerado
+[main] 'The Westover 5K & 10K' — link válido, miss_count zerado
+[main] 'Edge2Edge 2026' — link válido, miss_count zerado
+[main] 'Run With The Nuns 2026' — link válido, miss_count zerado
+[main] 'Red Sneakers Peoria 5K & Teal Pumpkin Festival' — link válido, miss_count zerado
+[main] '2026 Women'S Training Program' — link válido, miss_count zerado
 [main] 'Pumpkin Roll 5K' — link válido, miss_count zerado
-[main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
-[main] 'Purdue Boilermaker Half-Marathon & 5K' — link válido, miss_count zerado
-[main] 'Fall Run For The Wounded 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Vancouver Island Trail Running Series - Qualicum Bay 2026' — link válido, miss_count zerado
-[main] 'Fort Hunt Park 5K & 10K' — link válido, miss_count zerado
-[main] 'Quail Trail 5K' — link válido, miss_count zerado
+[main] 'Mankato Marathon' — link válido, miss_count zerado
 [main] '14Th Annual Wfps Run' — link válido, miss_count zerado
-[main] '2026 Napa Fall Wine Country Marathon, Half Marathon, 10K, & 5K' — link válido, miss_count zerado
+[main] 'Purdue Boilermaker Half-Marathon & 5K' — link válido, miss_count zerado
+[main] 'Cloverdale Vineyard Races: 10K And 5K' — link válido, miss_count zerado
+[main] 'Trick Or Trail 5K & 1 Mile' — link válido, miss_count zerado
+[main] '2026 Calgary First Responders Half Marathon' — link válido, miss_count zerado
+[main] '2026 Saskatoon First Responders Half Marathon' — link válido, miss_count zerado
+[main] 'Quail Trail 5K' — link válido, miss_count zerado
 [main] 'Puppy Creek Fire Department “Run For A Cure” 5K' — link válido, miss_count zerado
 [main] 'Pumpkinpalooza Trail Run' — link válido, miss_count zerado
 [main] 'Pumpkin Pacer 5K @ White Barn Farm' — link válido, miss_count zerado
 [main] 'Purple Dress Run' — link válido, miss_count zerado
-[main] 'North Shore Distance Classic - Corridor Running' — link válido, miss_count zerado
 [main] 'Race For Peace' — link válido, miss_count zerado
-[main] '2026 Dia De Los Miles' — link válido, miss_count zerado
+[main] 'North Shore Distance Classic - Corridor Running' — link válido, miss_count zerado
 [main] 'Pumpkin Run' — link válido, miss_count zerado
+[main] 'Tricky Treater' — link válido, miss_count zerado
+[main] 'Sycamore Pumpkin 10K Run & 1 Mile Fun Run' — link válido, miss_count zerado
+[main] 'Halloween Haunting' — link válido, miss_count zerado
+[main] '2026 Dia De Los Miles' — link válido, miss_count zerado
 [main] 'Halloween Horror 5K & 10K' — link válido, miss_count zerado
-[main] 'Trail Du Grand-Duc 2026' — link válido, miss_count zerado
-[main] '2026 Binational Race' — link válido, miss_count zerado
-[main] 'Crown Point Relay Runs' — link válido, miss_count zerado
-[main] 'Ghostly Grapes 5K & 10K At Two Twisted Posts' — link válido, miss_count zerado
-[main] 'Pumpkin Glow Run' — link válido, miss_count zerado
-[main] 'Demi-Marathon Sun Life Au Parc Jean-Drapeau' — link válido, miss_count zerado
 [main] '7 Bridges Marathon' — link válido, miss_count zerado
+[main] 'Ghostly Grapes 5K & 10K At Two Twisted Posts' — link válido, miss_count zerado
+[main] 'Xv Aguascalientes 2026 Marathon' — link válido, miss_count zerado
+[main] 'Pumpkin Glow Run' — link válido, miss_count zerado
 [main] 'Quarry Shack 5 Miler 6Th Annual 10/31/26' — link válido, miss_count zerado
 [main] 'Niagara Falls 10K, Half & Marathon 2026' — link válido, miss_count zerado
-[main] 'Pumpkins In The Park 5K & Kids 1/2 Mile' — link válido, miss_count zerado
-[main] 'Loop The Vedder Trail Half Marathon & 10K' — link válido, miss_count zerado
-[main] 'Kennesaw Grand Prix Race Series: Nightmare On Main 5K' — link válido, miss_count zerado
 [main] 'Beer & Bagel Nebraska | 4-Ish Mile And/Or 10-Ish Mile Off Road Run' — link válido, miss_count zerado
+[main] 'Pumpkins In The Park 5K & Kids 1/2 Mile' — link válido, miss_count zerado
 [main] 'Pumpkin Run' — link válido, miss_count zerado
-[main] 'Motion For Justice 5K' — link válido, miss_count zerado
 [main] 'Qrf 5K - Miles For Mental Health' — link válido, miss_count zerado
-[main] 'Puzzle Palooza Jigsaw Tournament' — link válido, miss_count zerado
-[main] 'Veteran’S Day Defenders Dash 5K & 10K' — link válido, miss_count zerado
+[main] 'Motion For Justice 5K' — link válido, miss_count zerado
+[main] 'Angels Vs Devils 5K' — link válido, miss_count zerado
+[main] 'Coyote Crawl 5K And Head For The Hills 10K' — link válido, miss_count zerado
+[main] 'Fall City Views 5K & 10K' — link válido, miss_count zerado
 [main] 'Old Armor 5K' — link válido, miss_count zerado
 [main] 'Puzzle Palooza Jigsaw Tournament' — link válido, miss_count zerado
-[main] 'Rio Del Lago 100 Mile + 50K Endurance Runs' — link válido, miss_count zerado
-[main] 'Angels Vs Devils 5K' — link válido, miss_count zerado
-[main] '2026 Theresa Tracy Trot' — link válido, miss_count zerado
+[main] 'Veteran’S Day Defenders Dash 5K & 10K' — link válido, miss_count zerado
+[main] 'Pen Park Trails Fest' — link válido, miss_count zerado
 [main] 'Walking Beside Kaden 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Whiskey Run Knoxville' — link válido, miss_count zerado
-[main] 'Harvest Hustle 5K & 10K' — link válido, miss_count zerado
-[main] 'Veteran’S Lorton 5K, 10K, & 1M' — link válido, miss_count zerado
-[main] 'Freedom Is Never Free 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Gobbler Hobbler 10K & Mashed Potato Mile' — link válido, miss_count zerado
+[main] 'Ooh Lala Chocolate Run * Walk' — link válido, miss_count zerado
+[main] 'Big Timber Xc Challenge' — link válido, miss_count zerado
 [main] 'Squatch Till You Drop' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
+[main] 'Bourbonnais Turkey Trot' — link válido, miss_count zerado
+[main] 'Freedom Is Never Free 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Harvest Hustle 5K & 10K' — link válido, miss_count zerado
 [main] 'Pumpkin Run And (Free Kid Mile Run)' — link válido, miss_count zerado
-[main] 'Service And Sacrifice 5K & Half' — link válido, miss_count zerado
 [main] 'First Steps, Big Dreams 5K' — link válido, miss_count zerado
 [main] 'Budds Creek Turkey Trot 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 San Antonio' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Philadelphia' — link válido, miss_count zerado
 [main] 'Thanksgiving Stuffing Stomp 5K & 10K' — link válido, miss_count zerado
+[main] '2026 Alamo Beer Challenge Race 4 Of 4 Battle Of Leon Creek 20 Mile, 10 Mile And 5K' — link válido, miss_count zerado
 [main] 'Miriam’S Kitchen 5K & 10K' — link válido, miss_count zerado
-[main] 'Indian Head Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Indian Head Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
-[main] 'Autumn River Views 5K & 10K' — link válido, miss_count zerado
-[main] 'Dominion Valley Turkey Trot 5K' — link válido, miss_count zerado
-[main] 'Barrel Oak Turkey Trot 3K & 6K' — link válido, miss_count zerado
 [main] 'Pumpkin Pie 5K/10K' — link válido, miss_count zerado
 [main] 'Bear Country 10K & 5K' — link válido, miss_count zerado
-[main] 'Bunnyman Turkey Trot 5K & 10K' — link válido, miss_count zerado
-[main] 'Port City Turkey Trot 5K & 10K' — link válido, miss_count zerado
+[main] 'True Options Turkey Trot' — link válido, miss_count zerado
+[main] 'Fat Ass Trail Run' — link válido, miss_count zerado
+[main] 'Dominion Valley Turkey Trot 5K' — link válido, miss_count zerado
+[main] 'Barrel Oak Turkey Trot 3K & 6K' — link válido, miss_count zerado
 [main] 'Peer Power Big River Crossing Race' — link válido, miss_count zerado
+[main] '2026 Kirkland Turkey Trot' — link válido, miss_count zerado
 [main] '3Rd Annual New Garden Gobbler' — link válido, miss_count zerado
-[main] 'Dc Turkey Trot 5K & Half' — link válido, miss_count zerado
+[main] 'Port City Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'Maryland Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'National Harbor Turkey Trot 5K' — link válido, miss_count zerado
+[main] 'Bunnyman Turkey Trot 5K & 10K' — link válido, miss_count zerado
+[main] 'Dc Turkey Trot 5K & Half' — link válido, miss_count zerado
 [main] 'The District’S Turkey Trot 5K & 10K' — link válido, miss_count zerado
+[main] 'Naperville Noon Lions Turkey Trot 5K 2026' — link válido, miss_count zerado
 [main] 'Winery At Bull Run Turkey Trot 5K & 10K' — link válido, miss_count zerado
 [main] 'The Animal Run 5K Tofurkey Trot' — link válido, miss_count zerado
+[main] 'Mile High United Way Turkey Trot 2026' — link válido, miss_count zerado
 [main] 'Georgetown Turkey Trot 5K' — link válido, miss_count zerado
-[main] 'Burke Lake Turkey Trot 5K & 10K' — link válido, miss_count zerado
+[main] 'Nitro Turkey 2026' — link válido, miss_count zerado
 [main] 'Bank Of Marin Turkey Trot' — link válido, miss_count zerado
-[main] 'Drumstick Turkey Trot 5K & 8 Miler' — link válido, miss_count zerado
-[main] 'The Capital Turkey Trot 5K & 10K' — link válido, miss_count zerado
-[main] 'Greensboro Gobbler 5K' — link válido, miss_count zerado
-[main] 'Mhk Turkey Trot' — link válido, miss_count zerado
-[main] '2026 Festival Foods Turkey Trot Hudson' — link válido, miss_count zerado
-[main] '23Rd Annual Runlawrence Thanksgiving Day 5K' — link válido, miss_count zerado
 [main] '2026 Philadelphia Marathon Weekend' — link válido, miss_count zerado
+[main] 'Drumstick Turkey Trot 5K & 8 Miler' — link válido, miss_count zerado
+[main] 'Greensboro Gobbler 5K' — link válido, miss_count zerado
+[main] 'The Capital Turkey Trot 5K & 10K' — link válido, miss_count zerado
+[main] '2026 Festival Foods Turkey Trot Hudson' — link válido, miss_count zerado
+[main] 'Mhk Turkey Trot' — link válido, miss_count zerado
+[main] '23Rd Annual Runlawrence Thanksgiving Day 5K' — link válido, miss_count zerado
 [main] 'Rylie’S Smile Turkey Escape 5K & 1M' — link válido, miss_count zerado
-[main] 'The Chocolate Turkey 3 Mile' — link válido, miss_count zerado
 [main] '28Th Milford Cross Country Booster Reindeer Stampede 5K' — link válido, miss_count zerado
-[main] 'Lake Anna Turkey Trot 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Henway Hard Cider Turkey Trot 5K & 10K' — link válido, miss_count zerado
-[main] 'Fredvegas Turkey Trot 5K, 10K, & 1M' — link válido, miss_count zerado
-[main] 'Ugly Sweater Dash 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'Black Friday 5K & 10K' — link válido, miss_count zerado
-[main] 'Black Mtn Turkey Burner' — link válido, miss_count zerado
+[main] 'The Chocolate Turkey 3 Mile' — link válido, miss_count zerado
 [main] 'Eod Fairfax Turkey Trot 5K & 10K' — link válido, miss_count zerado
-[main] 'Rock Creek Reindeer Rumble 5K & 10K' — link válido, miss_count zerado
-[main] 'Riverbend 5K & 10K' — link válido, miss_count zerado
 [main] 'Cranberry Crawl 5K, 5 Miler & 10 Miler' — link válido, miss_count zerado
-[main] 'Holiday Run - 2026' — link válido, miss_count zerado
-[main] '2026 California International Marathon' — link válido, miss_count zerado
+[main] 'Henway Hard Cider Turkey Trot 5K & 10K' — link válido, miss_count zerado
+[main] 'Rock Creek Reindeer Rumble 5K & 10K' — link válido, miss_count zerado
 [main] 'Hbi 5K & 10K' — link válido, miss_count zerado
+[main] 'Fredvegas Turkey Trot 5K, 10K, & 1M' — link válido, miss_count zerado
+[main] 'Insane Candy Cane 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Pulp Fiction: Royale With Speed 5K, 10K & 13.1' — link válido, miss_count zerado
+[main] 'Riverbend 5K & 10K' — link válido, miss_count zerado
 [main] 'Eod Warrior Holiday Dash 5K, Half, & Marathon' — link válido, miss_count zerado
+[main] 'Holiday Run - 2026' — link válido, miss_count zerado
+[main] 'Run Santa Run Nashville' — link válido, miss_count zerado
 [main] 'Night Owl 5K' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Army V Navy 5K' — link válido, miss_count zerado
-[main] 'Pocahontas 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'The Faoa Army Navy Game 5K & 10K' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Run Run Rudolph' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
-[main] 'Ameris Bank Jacksonville Marathon' — link válido, miss_count zerado
-[main] 'Run Santa Run Tampa' — link válido, miss_count zerado
-[main] 'Niagara-On-The-Lake Og Santa Run' — link válido, miss_count zerado
-[main] 'Reindeer Romp 5K & 10K' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Denver/Aurora' — link válido, miss_count zerado
-[main] 'Run Santa Run Chattanooga' — link válido, miss_count zerado
+[main] 'Army V Navy 5K' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 New Jersey' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Krampus Krawl At Maryland International Raceway 5K & 10K' — link válido, miss_count zerado
+[main] 'Run Santa Run Chattanooga' — link válido, miss_count zerado
+[main] 'Ameris Bank Jacksonville Marathon' — link válido, miss_count zerado
 [main] 'Rudolph’S Race 5K & Half' — link válido, miss_count zerado
-[main] 'Candy Cane 5K & 10K' — link válido, miss_count zerado
-[main] 'Santa’S Sleigh 5K & Half' — link válido, miss_count zerado
-[main] 'Winter Wonderland 5K & 10K' — link válido, miss_count zerado
 [main] 'Run Santa Run Knoxville' — link válido, miss_count zerado
 [main] 'Burke Lake Christmas Eve 5K & 10K' — link válido, miss_count zerado
-[main] 'Christmas Eve 5K & 10K' — link válido, miss_count zerado
-[main] 'Boxing Day 5K & 10K' — link válido, miss_count zerado
 [main] 'Run Santa Run Series' — link válido, miss_count zerado
 [main] 'Whiskey Run Series' — link válido, miss_count zerado
-[main] 'Bishop'S Events Race Packages' — link válido, miss_count zerado
 [main] 'Terrapin Trot 5K & 10K' — link válido, miss_count zerado
-[main] 'Whiskey Run Chattanooga' — link válido, miss_count zerado
-[main] 'Summit Point 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Bishop'S Events Race Packages' — link válido, miss_count zerado
+[main] 'Boxing Day 5K & 10K' — link válido, miss_count zerado
 [main] 'Running Out Of Time 5K & 12K' — link válido, miss_count zerado
 [main] 'Dc New Year’S 5K & 10K' — link válido, miss_count zerado
+[main] 'Whiskey Run Chattanooga' — link válido, miss_count zerado
 [main] 'Winter Hains Point 5K & 10K' — link válido, miss_count zerado
-[main] 'Run At The Boathouse 5K & 10K' — link válido, miss_count zerado
 [main] 'Winter Georgetown 5K & Half' — link válido, miss_count zerado
+[main] 'Summit Point 5K, 10K, & Half' — link válido, miss_count zerado
 [main] 'Winter City Views 5K & 10K' — link válido, miss_count zerado
-[main] 'Dash Around The Point 5K & 10K' — link válido, miss_count zerado
+[main] 'Winter Carderock 5K, 10K, & Half' — link válido, miss_count zerado
+[main] 'Run At The Boathouse 5K & 10K' — link válido, miss_count zerado
+[main] 'Heart Of The Ozarks Half Marathon' — link válido, miss_count zerado
+[main] '2027 San Marcos Half Marathon 10K And 5K' — link válido, miss_count zerado
 [main] 'Valentine’S Day 5K & Half' — link válido, miss_count zerado
+[main] 'Dash Around The Point 5K & 10K' — link válido, miss_count zerado
+[main] 'Little Rockers Kids Marathon' — link válido, miss_count zerado
+[main] '2027 Chilly Half Marathon' — link válido, miss_count zerado
 [main] 'Belle Haven 5K & 10K' — link válido, miss_count zerado
 [main] 'Victory 2027' — link válido, miss_count zerado
-[main] 'Winter Carderock 5K, 10K, & Half' — link válido, miss_count zerado
-[main] 'District Dash 5K & Half' — link válido, miss_count zerado
-[main] 'Little Rockers Kids Marathon' — link válido, miss_count zerado
 [main] 'All Abilities Marathon' — link válido, miss_count zerado
 [main] 'Little Rock Marathon Weekend' — link válido, miss_count zerado
+[main] 'Tombstone 30K/50K/50 Mile' — link válido, miss_count zerado
 [main] 'St. Patrick’S Day 5K Santa Rosa' — link válido, miss_count zerado
 [main] 'Dyngus Day 5K - 7Th Annual' — link válido, miss_count zerado
-[main] '2027 Govx San Diego Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Santa Cruz Westside Half Marathon 10K/5K' — link válido, miss_count zerado
-[main] 'Mt. Diablo Half Marathon' — link válido, miss_count zerado
-[main] '2027 Shamrock'N Weekend' — link válido, miss_count zerado
-[main] 'Quarryman Challenge' — link válido, miss_count zerado
+[main] 'Chicken Run' — link válido, miss_count zerado
+[main] 'Kick'N The Kilt 5K & 8K' — link válido, miss_count zerado
 [main] 'Cooper River Bridge Run' — link válido, miss_count zerado
-[main] 'American River Parkway Half Marathon 2027' — link válido, miss_count zerado
+[main] 'Get Shit Done Run 2027' — link válido, miss_count zerado
+[main] 'Quarryman Challenge' — link válido, miss_count zerado
 [main] 'Nun Run For Cancer' — link válido, miss_count zerado
+[main] '2027 Mother'S Day 5K Run/Walk' — link válido, miss_count zerado
 [main] 'R&B Running Series' — link válido, miss_count zerado
-[main] '2027 Publix Gasparilla Distance Classic' — link válido, miss_count zerado
+[main] '2027 500 Festival Running Events' — link válido, miss_count zerado
 [main] 'Gettysburg Festival Of Races' — link válido, miss_count zerado
-[main] 13977 corridas após reconciliação
-[merger] 2 URL(s) detected as overused inscription links (treating as generic): ['ticketsports.com.br/e/86042', 'ticketsports.com.br/e/86573']
-[main] 13975 corridas após dedup final
-[main] 9 estado(s) resolvido(s) pelo geo cache
+[main] '2027 Run For Water 5K // 10K' — link válido, miss_count zerado
+[main] '2027 University Hospitals Cleveland Marathon' — link válido, miss_count zerado
+[main] 14015 corridas após reconciliação
+[merger] 8 URL(s) detected as overused inscription links (treating as generic): ['https://runsignup.com/race/ca/losangeles/2026oktoberfestrun5k10klosangeles', 'https://runsignup.com/race/ca/sacramento/oktoberfestrun5k10ksacramento', 'https://runsignup.com/race/ca/sandiego/oktoberfestrun5k10ksandiego', 'https://runsignup.com/race/ca/sanfrancisco/oktoberfestrun5k10ksanfrancisco', 'https://www.halfmarathons.net/races/oktoberfest-run-5k-10k-and-13-1-san-diego']
+[main] 14007 corridas após dedup final
+[main] 11 estado(s) resolvido(s) pelo geo cache
 [main] AVISO: 4 evento(s) removido(s) por localização inválida:
   • 05-06-26-catas-altas-catas-altas-vertical-festival-kv-baiananinho-3-2km__2026-06-05 (pais=BR, estado vazio)
   • 07-06-26-ponta-grossa-corremos-juntos-acipg-10-5km__2026-06-07 (pais=BR, estado vazio)
   • 28-06-26-campos-gerais-3a-corrida-de-rua-da-educacao-fisica-facica-5km__2026-06-28 (pais=BR, estado vazio)
   • worldathletics_7243790_2026 (pais=CN, estado vazio)
 [main] 1 fonte(s) com links_inscricao preenchido a partir de link_evento
-[main] buscando imagens para 483 evento(s) sem foto...
+[main] buscando imagens para 478 evento(s) sem foto...
 [proxy] esportes.agenciasisters.com.br bloqueado (403), tentando Scrapestack...
 [proxy] esportes.agenciasisters.com.br bloqueado (403), tentando Scrapestack...
-[proxy] www.liverun.com.br bloqueado (403), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para esportes.agenciasisters.com.br, tentando Apify...
 [proxy] Scrapestack retornou 429 para esportes.agenciasisters.com.br, tentando Apify...
 [proxy] Apify falhou para esportes.agenciasisters.com.br: 403 Forbidden
-[proxy] Scrapestack retornou 500 para www.liverun.com.br, tentando Apify...
-[proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
+[proxy] Apify falhou para esportes.agenciasisters.com.br: 403 Forbidden
 [proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.stockholmmarathon.se, tentando Apify...
 [proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[proxy] Scrapestack falhou para esportes.agenciasisters.com.br: timed out
-[proxy] Apify falhou para esportes.agenciasisters.com.br: 403 Forbidden
-[main] 11/483 imagens encontradas
-[main] removendo imagem inválida de '42Nd Annual Healthy Human Race': https://cdn.raceroster.comnull
-[main] removendo imagem inválida de 'Mermaid Half Marathon, 10K & 5K San Diego': https://cdn.raceroster.com/event-logo/7zas9c5mjud3tdus._orig
-[main] removendo imagem inválida de 'Clo Cow Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/5uf3sscncga436x4._orig
-[main] removendo imagem inválida de 'Del Dios Trail Race 50K, Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/q2tvc9gja976ny53._orig
-[main] removendo imagem inválida de 'Brazen New Years Day Runs Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/vvjdf49hpuqpp75c._orig
-[main] removendo imagem inválida de 'Carlsbad Marathon, Half Marathon & 5K': https://cdn.raceroster.com/event-logo/h4zhxcgppx6fxup9._orig
-[main] removendo imagem inválida de 'The Auburn Half Marathon, 12K & 5K': https://cdn.raceroster.com/event-logo/5hqsa62k9pe9urvt._orig
-[main] removendo imagem inválida de 'Harvest Hills 5K, 10K And Half': https://cdn.raceroster.com/event-logo/7469ab247vupetr5._orig
-[main] removendo imagem inválida de 'Shenandoah River Half, 10K & 5K': https://cdn.raceroster.com/event-logo/7469ab247vupetr5._orig
-[main] removendo imagem inválida de 'Quarry Turkey Half Marathon, 10K & 5K': https://cdn.raceroster.com/event_logo/2016-04-08_15-22-38_lo
-[main] removendo imagem inválida de 'Geyser Growl Half Marathon': https://cdn.raceroster.com/event-logo/vrcdzwjes5ra9eg7._orig
-[main] removendo imagem inválida de 'Painted Hills Half, 10K & 5K': https://cdn.raceroster.com/event-logo/25np9w6a2yw9622a._orig
-[main] removendo imagem inválida de 'Run For Green Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/ng4eeh2wb4dehgxa._orig
-[main] removendo imagem inválida de 'Semper Fi 5K & Half': https://cdn.raceroster.com/event-logo/7469ab247vupetr5._orig
-[main] removendo imagem inválida de 'Estes Park Marathon & Half Marathon': https://cdn.raceroster.com/event-logo/ve2r2mdhrma6fzev._orig
-[main] removendo imagem inválida de 'Berkeley Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/35waay3jtxqmamen._orig
-[main] removendo imagem inválida de 'Oktoberfest Half Marathon & 5K': https://cdn.raceroster.com/event-logo/b4x9ufkrfb4tmrxq._orig
-[main] removendo imagem inválida de 'Run For Donuts Race 5K, 10K & 13.1 Las Vegas': https://cdn.raceroster.com/event-logo/7v2ht5ybgvpq9ejz._orig
-[main] removendo imagem inválida de 'Pacific Beach Half Marathon & 5K': https://cdn.raceroster.com/event-logo/avpa4zjyvzjgmrbb._orig
-[main] removendo imagem inválida de 'America’S Finest City Half Marathon & 5K': https://cdn.raceroster.com/event-logo/pj3c4tr2qqt7zefu._orig
-[main] 20 imagem(ns) inválida(s) removida(s)
-[main] 13971 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 6/478 imagens encontradas
+[main] removendo imagem inválida de 'Bank of America Chicago Marathon': https://cdn.raceroster.com/event-logo/thhjpmtxm72q6gda._orig
+[main] removendo imagem inválida de 'The Whiskey Run Nashville Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/ntsna32vhjd2ap3c._orig
+[main] removendo imagem inválida de 'Gear Western Country Half Marathon & 5K': https://cdn.raceroster.com/event-logo/453dhzb3pfnwueqw._orig
+[main] removendo imagem inválida de 'Bigfoot Half Trail Run': https://cdn.raceroster.com/event-logo/zh7d5pk4ybxfyvb9._orig
+[main] removendo imagem inválida de 'Siesta Half Marathon, 10K & 5K': https://cdn.raceroster.com/event-logo/5jbxmhy6egddgdk7._orig
+[main] removendo imagem inválida de 'Screaming Pumpkin': https://cdn.raceroster.com/event-logo/hpcy6ua3f3cgyzkm._orig
+[main] removendo imagem inválida de 'Run For Coffee Lovers 5K/10K/13.1 Austin/Roundrock': https://cdn.raceroster.com/event-logo/su44sz5jthur3zhe._orig
+[main] removendo imagem inválida de 'The Woodlands Marathon, Half Marathon & 10K': https://cdn.raceroster.com/event-logo/wnenw9jsnawb9cjr._orig
+[main] removendo imagem inválida de 'University Of Okoboji Homecoming Races': https://cdn.raceroster.com/event-logo/ny3hhmsweq5duh35._orig
+[main] removendo imagem inválida de 'Parlor City Trot Half Marathon & 10K': https://cdn.raceroster.com/event-logo/tc5bzxfw7vjqtcpj._orig
+[main] removendo imagem inválida de 'City Of Lakes Half Marathon': https://cdn.raceroster.com/event-logo/sy59wkqfft4jmh9y._orig
+[main] removendo imagem inválida de 'Seattle Marathon & Half Marathon': https://cdn.raceroster.com/event-logo/rnzjgtd6usbkjjuz._orig
+[main] removendo imagem inválida de 'Nashville Half Marathon & 5K': https://cdn.raceroster.com/event-logo/4xtnnapcvsf6tueb._orig
+[main] removendo imagem inválida de 'Whistlestop Marathon & Half Marathon': https://cdn.raceroster.com/event-logo/7emem3kaqft9e3xc._orig
+[main] removendo imagem inválida de 'Leavenworth Marathon & Half Marathon': https://cdn.raceroster.com/event-logo/bq6ywzsqkn7sxyqj._orig
+[main] removendo imagem inválida de 'Queen Bee Half Marathon': https://cdn.raceroster.com/event-logo/7efebtgkdjvmhqx2._orig
+[main] 16 imagem(ns) inválida(s) removida(s)
+[main] 14003 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

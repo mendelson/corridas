@@ -482,6 +482,9 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
         ])
         distancias = _extract_distances_text(desc)
     if not distancias:
+        # Debug: log raw keys and values to diagnose distance fields
+        debug_keys = {k: ev[k] for k in list(ev.keys())[:30] if ev.get(k) not in (None, "", [], {})}
+        print(f"[{SOURCE_NAME}] sem distância: titulo={titulo_raw!r} keys={debug_keys}")
         return None
 
     ev_id = f"le_{slug}" if slug and re.match(r"^[\w\-]+$", slug) else \

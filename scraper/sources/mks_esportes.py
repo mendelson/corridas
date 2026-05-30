@@ -174,6 +174,8 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
         return None
 
     horario = _extract_time(text)
+    if horario is None:
+        return None  # start time not yet published — skip until it is
     distancias = _extract_distances(titulo.lower(), text)
 
     slug = url.rstrip("/").split("/")[-1].lower()

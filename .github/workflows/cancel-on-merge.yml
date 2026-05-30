@@ -1,0 +1,37 @@
+name: Cancelar Actions ao Mergear PR
+
+# Quando uma PR é mergeada, qualquer Action ainda em execução (ou na fila) no
+# branch de origem da PR torna-se obsoleta — o código já está no main. Este
+# workflow cancela essas execuções automaticamente para não desperdiçar minutos
+# de CI nem manter jobs rodando à toa.
+
+on:
+  pull_request:
+    types: [closed]
+
+permissions:
+  actions: write
+
+jobs:
+  cancel:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancelar execuções em andamento do branch da PR mergeada
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # Cancela runs em andamento (in_progress) e enfileiradas (queued) cujo
+          # head_branch é o branch de origem da PR recém-mergeada.
+          for status in in_progress queued; do
+            gh api --paginate \
+              "repos/${REPO}/actions/runs?branch=${HEAD_REF}&status=${status}" \
+              --jq '.workflow_runs[].id' | while read -r run_id; do
+                [ -n "${run_id}" ] || continue
+                echo "Cancelando run ${run_id} (status=${status}) do branch ${HEAD_REF}"
+                gh api -X POST "repos/${REPO}/actions/runs/${run_id}/cancel" || true
+              done
+          done

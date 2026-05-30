@@ -27,6 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+          pip install -r requirements-test.txt
           playwright install chromium --with-deps
 
       - name: Run scraper
@@ -46,6 +47,13 @@ jobs:
 
       - name: Copy JSON to web folder
         run: cp data/corridas.json web/corridas.json
+
+      # Quality gate: the freshly scraped data must pass the full test suite
+      # before it can land on main. If it fails, the commit step below never
+      # runs, so main keeps the last known-good corridas.json and the failure
+      # is surfaced loudly instead of silently shipping bad data.
+      - name: Validate scraped data
+        run: python -m pytest tests/ -q
 
       - name: Commit updated data
         run: |

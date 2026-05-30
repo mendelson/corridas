@@ -78,7 +78,6 @@ def _validate(source: str, results: list) -> list[str]:
     stale_cutoff = (date.today() - timedelta(days=30)).isoformat()
 
     failures: list[str] = []
-    warnings: list[str] = []
 
     bad_titulo = 0
     today_in_id = 0
@@ -107,7 +106,6 @@ def _validate(source: str, results: list) -> list[str]:
         # Duplicate IDs within the batch
         seen_ids[r.id] = seen_ids.get(r.id, 0) + 1
 
-        # Soft: data ausente ou muito no passado
         if not r.data_evento:
             missing_date += 1
         elif r.data_evento < stale_cutoff:
@@ -119,7 +117,6 @@ def _validate(source: str, results: list) -> list[str]:
                 bad_dist_shape += 1
                 break
 
-        # Threshold: sem distâncias (>70% = hard failure, >30% = warning, else info)
         if not r.distancias:
             missing_distancias += 1
 
@@ -144,7 +141,6 @@ def _validate(source: str, results: list) -> list[str]:
 
     n = len(results)
 
-    # Hard failures
     if bad_titulo:
         failures.append(f"{bad_titulo}/{n} eventos com título inválido (vazio ou < 3 chars)")
     if today_in_id:
@@ -172,27 +168,14 @@ def _validate(source: str, results: list) -> list[str]:
             "(deve ser 'inscricao', 'organizador' ou 'calendario')"
         )
 
-    # Hard failures — zero tolerance
     if missing_date:
         failures.append(f"{missing_date}/{n} eventos sem data_evento")
     if stale_date:
         failures.append(f"{stale_date}/{n} eventos com data > 30 dias no passado")
-
-    # Distâncias: >70% missing = hard failure, >30% = warning, else info
-    dist_frac = missing_distancias / n if n else 0
-    if dist_frac > 0.70:
+    if missing_distancias:
         failures.append(f"{missing_distancias}/{n} eventos sem distâncias")
-    elif dist_frac > 0.30:
-        warnings.append(f"{missing_distancias}/{n} eventos sem distâncias (>{int(dist_frac*100)}%)")
-    elif missing_distancias:
-        print(f"ℹ️   {source}: {missing_distancias}/{n} eventos sem distâncias")
-
-    # Horário: hard failure — every event must have a published start time
     if missing_horario:
         failures.append(f"{missing_horario}/{n} eventos sem horário publicado")
-
-    for w in warnings:
-        print(f"⚠️   {source}: {w}")
 
     return failures
 

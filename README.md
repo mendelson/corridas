@@ -18,55 +18,55 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-30 00:43 | ❌ 1/68 IDs contêm a data de hoje '2026-05-30' — ID muda a cada run, quebra first_seen_at | 2026-05-29 23:54 |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-30 00:43 | ❌ 65/3125 IDs contêm a data de hoje '2026-05-30' — ID muda a cada run, quebra first_seen_at | 2026-05-29 23:55 |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-30 00:44 | ❌ 0 eventos | 2026-05-25 13:24 |
-| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-30 01:10 | ✅ | 2026-05-30 01:10 |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-30 01:08 | ❌ 0 eventos | 2026-05-25 13:24 |
+| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-30 01:10 | ✅ | 2026-05-30 01:10 |
+| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
 
 ### Fontes brasileiras — eventos específicos
 
 | Fonte | Em uso | URL de busca | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- |
-| Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
+| Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| São Silvestre<!--sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
 
 ### Fontes mexicanas
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
 
 ### Fontes internacionais — plataformas agregadoras
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-30 00:46 | ✅ | 2026-05-30 00:46 |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-05-30 00:46 | ✅ | 2026-05-30 00:46 |
-| World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
+| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-05-30 01:10 | ✅ | 2026-05-30 01:10 |
+| World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
 
 ---
 
@@ -80,28 +80,28 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 
 | Evento | ⭐ WMM | Em uso | URL oficial | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tokyo Marathon<!--majors/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Boston Marathon<!--majors/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| TCS London Marathon<!--majors/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| BMW Berlin Marathon<!--majors/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Bank of America Chicago Marathon<!--majors/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| TCS New York City Marathon<!--majors/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| TCS Sydney Marathon<!--majors/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Schneider Electric Paris Marathon<!--majors/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Brighton Marathon<!--majors/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| Volkswagen Prague Marathon<!--majors/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| Copenhagen Marathon<!--majors/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Edinburgh Marathon Festival<!--majors/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Stockholm Marathon<!--majors/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Manchester Marathon<!--majors/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Great North Run<!--majors/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Cardiff Half Marathon<!--majors/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| Manchester Half Marathon<!--majors/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-05-30 00:45 | ✅ | 2026-05-30 00:45 |
-| TCS Amsterdam Marathon<!--majors/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Venice Marathon<!--majors/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Dublin City Marathon<!--majors/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-05-30 00:44 | ✅ | 2026-05-30 00:44 |
-| Athens Classic Marathon<!--majors/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
-| Valencia Trinidad Alfonso Marathon<!--majors/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-05-30 00:43 | ✅ | 2026-05-30 00:43 |
+| Tokyo Marathon<!--majors/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Boston Marathon<!--majors/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| TCS London Marathon<!--majors/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| BMW Berlin Marathon<!--majors/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Bank of America Chicago Marathon<!--majors/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| TCS New York City Marathon<!--majors/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| TCS Sydney Marathon<!--majors/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Schneider Electric Paris Marathon<!--majors/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Brighton Marathon<!--majors/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Volkswagen Prague Marathon<!--majors/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Copenhagen Marathon<!--majors/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Edinburgh Marathon Festival<!--majors/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Stockholm Marathon<!--majors/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Manchester Marathon<!--majors/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Great North Run<!--majors/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Cardiff Half Marathon<!--majors/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Manchester Half Marathon<!--majors/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| TCS Amsterdam Marathon<!--majors/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Venice Marathon<!--majors/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
+| Dublin City Marathon<!--majors/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
+| Athens Classic Marathon<!--majors/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-05-30 01:09 | ✅ | 2026-05-30 01:09 |
+| Valencia Trinidad Alfonso Marathon<!--majors/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
 
 ---
 

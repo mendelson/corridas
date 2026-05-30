@@ -8,6 +8,12 @@ name: Monitorar Saúde das Fontes
 permissions:
   contents: write
 
+# Keep only the newest health run per ref — a new push to main cancels an
+# in-progress run so the README status always reflects the latest sources.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   schedule:
     - cron: '0 9 * * *'  # Runs daily at 09:00 UTC

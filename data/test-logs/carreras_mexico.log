@@ -1,6 +1,6 @@
 [Carreras México] PROBE page0 raw repr[:400]: '$("#tiempometa_event_list_div").html(\'<div id=\\"tm_js_container\\">\\n\t<div class=\\"row tm_event_list_item\\">\\n\t\t<div class=\\"col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1\\">\\n\t\t\t<a class=\\"tiempometa tiempometa_event_link\\" href=\\"https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8\\" style=\\"text-decoration: none\\">\\n\t\t\t<img src=\\'
 [Carreras México] PROBE page0 html repr[:400]: '<div id="tm_js_container">\n\t<div class="row tm_event_list_item">\n\t\t<div class="col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1">\n\t\t\t<a class="tiempometa tiempometa_event_link" href="https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8" style="text-decoration: none">\n\t\t\t<img src="https://tiempometa.s3.amazonaws.com/events/avatars/000'
-[Carreras México] PROBE page 0: 32 items; today=2026-05-29
+[Carreras México] PROBE page 0: 32 items; today=2026-05-30
 [Carreras México] PROBE item[0]: titulo='2a Edicion Carrera Luz de Luna' date='2026-05-30' img='https://tiempometa.s3.amazonaws.com/events/avatars/000/008/933/thumb/icono-luna.jpeg?1775674685'
 [Carreras México] PROBE item[0] classes: ['clearfix', 'col-md-2', 'col-md-8', 'col-xs-3', 'col-xs-4', 'col-xs-5', 'img-responsive', 'tiempometa', 'tiempometa_event', 'tiempometa_event_date', 'tiempometa_event_image', 'tiempometa_event_link', 'tiempometa_event_title', 'tiempometa_events_col1', 'tiempometa_events_col2', 'tiempometa_events_col3', 'tm_date_day', 'tm_date_link', 'tm_date_month', 'tm_date_weekday', 'tm_event_list_subtitle', 'tm_event_list_title', 'visible-lg-block', 'visible-md-block', 'visible-sm-block', 'visible-xs-block']
 [Carreras México] PROBE item[0] anchor[0]: 'https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8'
@@ -16,15 +16,14 @@
 [Carreras México] PROBE item[2] anchor[0]: 'https://carrerasmexico.com/?event=b6d7c6979e45f19cfaf4a4127614f547&api_key=48513987f33edea8'
 [Carreras México] PROBE item[2] anchor[1]: 'https://carrerasmexico.com/?event=b6d7c6979e45f19cfaf4a4127614f547&api_key=48513987f33edea8'
 [Carreras México] PROBE item[2] anchor[2]: 'https://carrerasmexico.com/?event=b6d7c6979e45f19cfaf4a4127614f547&api_key=48513987f33edea8'
-[Carreras México] page 0: 32 items, 28 added
-[Carreras México] 28 corridas encontradas
-✅  carreras_mexico: 28 evento(s)
-    {"titulo": "2A Edicion Carrera Luz De Luna", "data": "2026-05-30", "estado": ""}
+[Carreras México] page 0: 32 items, 7 added
+[Carreras México] 7 corridas encontradas
+✅  carreras_mexico: 7 evento(s)
     {"titulo": "My Coffee Race 5K", "data": "2026-05-31", "estado": "", "km": "5.0"}
-    {"titulo": "4A. Edición Carrera Tower Running Oriental Puebla", "data": "2026-05-31", "estado": ""}
-    {"titulo": "11Va. La Sportiva Triple Corona", "data": "2026-06-07", "estado": ""}
-    {"titulo": "22Va. Sky Race La Malinche", "data": "2026-06-07", "estado": ""}
-    ... e mais 23
-ℹ️   carreras_mexico: 28/28 eventos sem horário
-❌  carreras_mexico: 21/28 eventos sem distâncias
-FAILURE_NOTE:21/28 eventos sem distâncias
+    {"titulo": "1A Carrera 5K Atletas Olímpicos", "data": "2026-06-28", "estado": "", "km": "5.0"}
+    {"titulo": "Lomitos Mundialistas 5K", "data": "2026-07-12", "estado": "", "km": "5.0"}
+    {"titulo": "El Ameyal Half Trail Marathon", "data": "2026-07-12", "estado": "", "km": "42.195"}
+    {"titulo": "Dinomilco 5K", "data": "2026-07-19", "estado": "", "km": "5.0"}
+    ... e mais 2
+❌  carreras_mexico: 7/7 eventos sem horário publicado
+FAILURE_NOTE:7/7 eventos sem horário publicado

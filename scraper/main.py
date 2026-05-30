@@ -974,6 +974,69 @@ def _drop_linkless_events(corridas: list[Corrida]) -> list[Corrida]:
     return ok
 
 
+def _drop_nonunique_link_events(corridas: list[Corrida]) -> list[Corrida]:
+    """Drop events that share a single (source, link) across 3+ distinct records.
+
+    Runs after _strip_overmerged_fontes, so any group still sharing a link here
+    consists of sole-source events — i.e. a scraper emitted the same non-unique
+    URL for genuinely different events (the halfmarathons-style bug the test
+    test_no_inscription_link_shared_across_many_events guards against). Stripping
+    is impossible without orphaning them, so keep the single most complete record
+    and drop the rest: three events all pointing at one wrong page is worse than
+    one. The next scrape restores them once the source link is unique again.
+    """
+    from collections import defaultdict
+
+    groups: dict[tuple[str, str], list[Corrida]] = defaultdict(list)
+    for c in corridas:
+        for f in c.fontes:
+            for l in (f.links_inscricao or []):
+                if l:
+                    groups[(f.nome, l.rstrip("/").lower())].append(c)
+
+    drop_ids: set[int] = set()
+    for (nome, link), recs in groups.items():
+        distinct = {id(c): c for c in recs}
+        if len(distinct) < 3:
+            continue
+        # Keep the most complete; drop the others.
+        keep = max(distinct.values(), key=lambda c: (len(c.fontes), len(c.distancias), bool(c.imagem_url)))
+        for c in distinct.values():
+            if c is not keep:
+                drop_ids.add(id(c))
+        print(f"[main] AVISO: link não-único '{nome}' em {len(distinct)} eventos; "
+              f"mantido {keep.id}, removidos {len(distinct) - 1}")
+
+    return [c for c in corridas if id(c) not in drop_ids]
+
+
+def _dedupe_by_id(corridas: list[Corrida]) -> list[Corrida]:
+    """Collapse records that share an id, keeping the most complete copy.
+
+    Final safety net before save: reconcile/merge — or a line-based git merge of
+    two pipeline runs' JSON — can leave more than one record with the same id.
+    The id is the reconcile key and must be unique, so keep a single copy per id,
+    preferring the one with more fontes, then more distancias, then an image.
+    Mirrors the uniqueness load_existing() enforces on read.
+    """
+    def _completeness(c: Corrida) -> tuple:
+        return (len(c.fontes), len(c.distancias), bool(c.imagem_url), bool(c.horario))
+
+    best: dict[str, Corrida] = {}
+    order: list[str] = []
+    for c in corridas:
+        prev = best.get(c.id)
+        if prev is None:
+            best[c.id] = c
+            order.append(c.id)
+        elif _completeness(c) > _completeness(prev):
+            best[c.id] = c
+    removed = len(corridas) - len(best)
+    if removed:
+        print(f"[main] {removed} registro(s) duplicado(s) por id colapsado(s)")
+    return [best[i] for i in order]
+
+
 def _sanitize_images(corridas: list[Corrida]) -> None:
     """Validate imagem_url for all events.
 
@@ -1039,8 +1102,10 @@ def main() -> None:
     _resolve_missing_locations(final)
     final = _drop_invalid_location_events(final)
     _strip_overmerged_fontes(final)
+    final = _drop_nonunique_link_events(final)
     _ensure_inscricao_links(final)
     final = _drop_linkless_events(final)
+    final = _dedupe_by_id(final)
     # _find_all_photos(final)
     _enrich_images(final)
     _sanitize_images(final)

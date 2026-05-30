@@ -62,6 +62,8 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     localizacao = f"{cidade}, {estado}" if cidade else estado
 
     data_evento, horario = _parse_datetime(event.get("Data_evento") or "")
+    if not data_evento or horario is None:
+        return None  # Data_evento null or unparseable — start time not published
 
     imagem_url = _parse_image(event.get("imagem"))
 

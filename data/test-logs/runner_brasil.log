@@ -1,12 +1,11 @@
-[Runner Brasil] 18 corridas encontradas
-✅  runner_brasil: 18 evento(s)
+[Runner Brasil] 16 corridas encontradas
+✅  runner_brasil: 16 evento(s)
     {"titulo": "31/05 - Guarujá", "data": "2026-05-31", "estado": ""}
     {"titulo": "14/06 - Botucatu", "data": "2026-06-14", "estado": "SP"}
     {"titulo": "14/06 - Bertioga", "data": "2026-06-14", "estado": ""}
     {"titulo": "14/06 - São Carlos", "data": "2026-06-14", "estado": "SP"}
     {"titulo": "20/06 - Guarujá", "data": "2026-06-20", "estado": ""}
-    ... e mais 13
-❌  runner_brasil: 3/18 eventos sem data_evento
-❌  runner_brasil: 18/18 eventos sem distâncias
-❌  runner_brasil: 18/18 eventos sem horário
-FAILURE_NOTE:3/18 eventos sem data_evento
+    ... e mais 11
+ℹ️   runner_brasil: 16/16 eventos sem horário
+❌  runner_brasil: 16/16 eventos sem distâncias
+FAILURE_NOTE:16/16 eventos sem distâncias

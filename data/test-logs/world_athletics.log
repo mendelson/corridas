@@ -1,12 +1,5 @@
 [World Athletics] calendarEvents.results: 270 itens
 [World Athletics] 270 competições brutas
-[World Athletics] 121 corridas válidas (149 ignoradas)
-✅  world_athletics: 121 evento(s)
-    {"titulo": "Adidas Stockholm Marathon", "data": "2026-05-30", "estado": "AB", "km": "42.195"}
-    {"titulo": "Mattoni Half Marathon České Budějovice", "data": "2026-05-30", "estado": "31", "km": "21.097"}
-    {"titulo": "Okpekpe 10Km Road Race", "data": "2026-05-30", "estado": "ED", "km": "10.0"}
-    {"titulo": "10K SP Challenge", "data": "2026-05-31", "estado": "SP", "km": "10.0"}
-    {"titulo": "Jilin City Marathon", "data": "2026-05-31", "estado": "JL", "km": "42.195"}
-    ... e mais 116
-❌  world_athletics: 121/121 eventos sem horário
-FAILURE_NOTE:121/121 eventos sem horário
+[World Athletics] 0 corridas válidas (270 ignoradas)
+⚠️   world_athletics: 0 eventos retornados
+FAILURE_NOTE:0 eventos

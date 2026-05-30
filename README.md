@@ -28,7 +28,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-30 03:27 | ✅ | 2026-05-30 03:27 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-30 03:27 | ✅ | 2026-05-30 03:27 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-30 03:29 | ✅ | 2026-05-30 03:29 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-30 20:38 | ❌ 1/1 eventos sem distâncias | 2026-05-30 03:29 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-30 03:28 | ✅ | 2026-05-30 03:28 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-30 14:22 | ❌ 0 eventos | 2026-05-30 03:28 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-30 03:27 | ✅ | 2026-05-30 03:27 |

@@ -31,7 +31,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-05-30 01:07 | ✅ | 2026-05-30 01:07 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-05-30 01:10 | ✅ | 2026-05-30 01:10 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
-| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-30 01:08 | ❌ 0 eventos | 2026-05-25 13:24 |
+| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-05-30 01:30 | ❌ 0 eventos | 2026-05-25 13:24 |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-05-30 01:08 | ✅ | 2026-05-30 01:08 |
 
 ### Fontes brasileiras — específicas Brasília-DF

@@ -2131,6 +2131,7 @@
 [TF Sports] pulando 'Barimov' (sem localização determinável)
 [TF Sports] pulando 'Treinão De Corrida | Run Orla Ponta Negra | 2 Edição' (sem horário publicado)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[TF Sports] pulando 'Barimov' (sem localização determinável)
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports] pulando 'Linq Monstar Run' (sem localização determinável)
 [TF Sports] pulando 'Limeira' (sem horário publicado)
@@ -2396,6 +2397,7 @@
 [RunSignup] página 15: 250 corridas
 [Correr Brasília] 65 corridas encontradas
 [RunSignup] página 16: 250 corridas
+[TF Sports] pulando 'Barimov' (sem localização determinável)
 [RunSignup] página 17: 250 corridas
 [TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [RunSignup] página 18: 250 corridas
@@ -2409,6 +2411,7 @@
 [RunSignup] página 22: 250 corridas
 [RunSignup] página 23: 250 corridas
 [RunSignup] página 24: 250 corridas
+[Correr Brasília] 65 corridas encontradas
 [RunSignup] página 25: 250 corridas
 [RunSignup] página 26: 250 corridas
 [HalfMarathons.net] page 8 erro: The read operation timed out
@@ -2497,6 +2500,9 @@
 [main] '9ª Corrida De São José' — link válido, miss_count zerado
 [main] 'Vascorrida 2026 - Maceió' — link válido, miss_count zerado
 [main] 'Circuito Oscar 2026-2027 - 1ª Etapa - Mogi' — link válido, miss_count zerado
+[main] '9ª Corrida De São José' — link válido, miss_count zerado
+[main] 'Pemberton Home Stretch 5K' — link válido, miss_count zerado
+[main] '3ª Corrida E Caminhada Serramar' — link válido, miss_count zerado
 [main] 'Corrida Do Farmacêutico - 2026' — link válido, miss_count zerado
 [main] 'Hldv Em Movimento' — link válido, miss_count zerado
 [main] 'Blackbird Golden Run' — link válido, miss_count zerado
@@ -2857,6 +2863,8 @@
 [main] 'Case Creek Obstacles Mud Run For Everyone' — link válido, miss_count zerado
 [proxy] Apify falhou para www.liverun.com.br: 403 Forbidden
 [main] 'Quality Of Life Run 2026' — link válido, miss_count zerado
+[main] 'Random Row Brewing 5K & 10K' — link válido, miss_count zerado
+[main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
 [main] 'Prospector'S 50K | 30K' — link válido, miss_count zerado
 [main] '2026 Akron Marathon Race Series Presented By Summa Health' — link válido, miss_count zerado
 [main] 'Feed Charlotte 5K' — link válido, miss_count zerado
@@ -3477,8 +3485,6 @@
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
 [proxy] esportes.agenciasisters.com.br bloqueado (403), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para esportes.agenciasisters.com.br, tentando Apify...
-[proxy] Apify falhou para esportes.agenciasisters.com.br: 403 Forbidden
 [proxy] esportes.agenciasisters.com.br bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para esportes.agenciasisters.com.br, tentando Apify...
 [proxy] Apify falhou para esportes.agenciasisters.com.br: 403 Forbidden

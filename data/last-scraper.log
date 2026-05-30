@@ -10,6 +10,9 @@
 [Iguana Sports] 8 corridas encontradas
 [MKS Esportes] 3 corridas encontradas
 [TF Sports] run-series: 45 eventos brutos
+[Iguana Sports] 8 corridas encontradas
+[TF Sports App] events(sem-data,pt-BR): 0 brutos
+[MKS Esportes] 3 corridas encontradas
 [Minhas Inscrições] 20 cards no calendário
 [Yescom] 13 corridas encontradas
 [Brasil Corrida] 14 corridas encontradas
@@ -2044,10 +2047,13 @@
 [proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Prague Marathon] nenhuma edição futura identificada
+[proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
+[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [proxy] Scrapestack retornou 429 para www.stockholmmarathon.se, tentando Apify...
 [proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
 [Stockholm Marathon] erro ao buscar página: todos os métodos falharam para https://www.stockholmmarathon.se/eng/
-[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
+[Portal das Corridas] 68 corridas encontradas
 [TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
@@ -2056,6 +2062,7 @@
 [Ticket Sports] 934 corridas encontradas
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
 [Largada Esportiva] 1 corridas via Playwright
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
@@ -2223,27 +2230,38 @@
 [Race Roster] 'trail run': 197 upcoming de 2000
 [Race Roster] 7491 eventos únicos após dedup
 [Race Roster] 743 corridas válidas (6748 ignoradas)
+[RunSignup] página 6: 250 corridas
 [RunSignup] página 7: 250 corridas
-[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
-[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
+[TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
+[Carreras México] convocatoria a4665c71: erro timed out
+[Carreras México] enrich erro: not enough values to unpack (expected 3, got 2)
 [RunSignup] página 8: 250 corridas
-[TF Sports] pulando 'Barimov' (sem localização determinável)
+[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
+[Carreras México] localização: Night Run & Rock La Paz, Half  → La Paz, BCS
 [RunSignup] página 9: 250 corridas
-[TF Sports] 204 corridas encontradas
-[TF Sports] 75 duplicata(s) removida(s)
+[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [RunSignup] página 10: 250 corridas
+[Carreras México] convocatoria dc03764d: erro timed out
+[Carreras México] convocatoria baba1a09: erro timed out
+[Carreras México] enrich erro: not enough values to unpack (expected 3, got 2)
+[Carreras México] enrich erro: not enough values to unpack (expected 3, got 2)
+[Carreras México] 7 corridas encontradas
+[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [RunSignup] página 11: 250 corridas
 [RunSignup] página 12: 250 corridas
+[TF Sports] pulando 'Barimov' (sem localização determinável)
 [RunSignup] página 13: 250 corridas
+[TF Sports] 204 corridas encontradas
+[TF Sports] 75 duplicata(s) removida(s)
 [RunSignup] página 14: 250 corridas
 [RunSignup] página 15: 250 corridas
 [RunSignup] página 16: 250 corridas
-[Correr Brasília] 65 corridas encontradas
 [RunSignup] página 17: 250 corridas
 [RunSignup] página 18: 250 corridas
 [Correr Brasília] 65 corridas encontradas
 [RunSignup] página 19: 250 corridas
 [RunSignup] página 20: 250 corridas
+[Correr Brasília] 65 corridas encontradas
 [RunSignup] página 21: 250 corridas
 [TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
 [RunSignup] página 22: 250 corridas
@@ -2386,6 +2404,7 @@
 [main] 'Fear Mke 5K And 10K' — link válido, miss_count zerado
 [main] 'Gigifit Acceptance Challenge' — link válido, miss_count zerado
 [main] '30Th Annual Race With Your Heart' — link válido, miss_count zerado
+[main] 'International Hallers' Run' — link válido, miss_count zerado
 [main] 'Footsteps For Families' — link válido, miss_count zerado
 [main] 'The American Legion First State 5K / 1 Mile Walk' — link válido, miss_count zerado
 [main] 'Circuito Voa Run 2026 - Etapa Novo Hamburgo' — link válido, miss_count zerado
@@ -2563,6 +2582,7 @@
 [main] 'Summer Nights 5K + 1 Miler' — link válido, miss_count zerado
 [main] 'Donut Dash' — link válido, miss_count zerado
 [main] 'St Charles Old Settlers Gateway 5K/1K Fun Run' — link válido, miss_count zerado
+[main] 'Eyota Days Color Run' — link válido, miss_count zerado
 [main] 'Bob Lauterbach Memorial Columbus Downtown Runaround' — link válido, miss_count zerado
 [main] 'Mound Westonka Rotary - Spirit Of The Lakes 5K' — link válido, miss_count zerado
 [main] 'Ashby Appreciation Days 5K/10K' — link válido, miss_count zerado
@@ -2621,7 +2641,11 @@
 [main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
 [main] 'Circuito das Estações - Inverno - Curitiba' — link válido, miss_count zerado
 [main] 'Case Creek Obstacles Mud Run For Everyone' — link válido, miss_count zerado
+[main] '2026 Rvn3 Bubba Run' — link válido, miss_count zerado
 [main] 'Nolan'S Smile Run' — link válido, miss_count zerado
+[main] '12Th Annual - Race To Stop Hunger 5K' — link válido, miss_count zerado
+[main] 'Circuito das Estações - Primavera - São José dos Campos' — link válido, miss_count zerado
+[main] 'Circuito das Estações - Inverno - Curitiba' — link válido, miss_count zerado
 [main] '4Th Community Matters Foundation 5K' — link válido, miss_count zerado
 [main] 'Circuito das Estações - Primavera - São José dos Campos' — link válido, miss_count zerado
 [main] 'Circuito das Estações - Inverno - Natal' — link válido, miss_count zerado
@@ -2716,6 +2740,7 @@
 [main] 'Run For Mental Health 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'High River Half 2026' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Kansas City' — link válido, miss_count zerado
+[main] 'The Kroc Center Bubble Fun 5K Run/Walk' — link válido, miss_count zerado
 [main] '14Th Annual 5K Walk/Run' — link válido, miss_count zerado
 [main] 'Marigold Mile' — link válido, miss_count zerado
 [main] 'Pirate'S Booty' — link válido, miss_count zerado
@@ -2768,6 +2793,9 @@
 [main] 'Circuito das Estações - Primavera - São Luis' — link válido, miss_count zerado
 [main] 'Thumbs Up Run/Walk/Bike Event - 13Th Annual' — link válido, miss_count zerado
 [main] '2026 - 2Nd Annual Hbcu Run & Brunch' — link válido, miss_count zerado
+[main] 'Circuito das Estações - Primavera - Anápolis' — link válido, miss_count zerado
+[main] 'Run With The Cops 5K' — link válido, miss_count zerado
+[main] 'Thumbs Up Run/Walk/Bike Event - 13Th Annual' — link válido, miss_count zerado
 [main] 'Puffin' 5K' — link válido, miss_count zerado
 [main] 'Fall Burke Lake 5K & 10K' — link válido, miss_count zerado
 [main] 'Riding Mountain Half Marathon, 10K, & 5K' — link válido, miss_count zerado
@@ -2804,6 +2832,7 @@
 [main] 'Circuito das Estações - Primavera - Aracaju' — link válido, miss_count zerado
 [main] 'Wilmington High School Alumni, Inc, 2Nd Annual 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Hers 27Th Annual Breast Cancer Walk/Run Fundraiser And Community Expo' — link válido, miss_count zerado
+[main] 'Perseverance Trail Run 2026' — link válido, miss_count zerado
 [main] 'Puyallup Valley Half Marathon And 10K' — link válido, miss_count zerado
 [main] 'Serving Our Seniors 5K Fun Run & 1 Mile Run/Walk - 2026' — link válido, miss_count zerado
 [main] 'Lovettsville 5K & 10K' — link válido, miss_count zerado
@@ -2851,6 +2880,9 @@
 [main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
 [main] 'Puyallup Valley Fall Hops Harvest 5K' — link válido, miss_count zerado
 [main] 'Superhero For Hope 8Th Annual Run/Walk 5K' — link válido, miss_count zerado
+[main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
+[main] 'Puyallup Valley Fall Hops Harvest 5K' — link válido, miss_count zerado
+[main] 'Fast & Furriest 5K' — link válido, miss_count zerado
 [main] 'The Rogue Marathon' — link válido, miss_count zerado
 [main] 'Pumpkin Spice Run' — link válido, miss_count zerado
 [main] 'The 2026 Run For Education' — link válido, miss_count zerado
@@ -2882,6 +2914,8 @@
 [main] 'Pumpkin Roll 5K' — link válido, miss_count zerado
 [main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
 [main] 'Puppy Creek Fire Department “Run For A Cure” 5K' — link válido, miss_count zerado
+[main] '14Th Annual Wfps Run' — link válido, miss_count zerado
+[main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
 [main] 'Pumpkin Pacer 5K @ White Barn Farm' — link válido, miss_count zerado
 [main] 'Trick Or Trail 5K & 1 Mile' — link válido, miss_count zerado
 [main] 'Red Sneakers Peoria 5K & Teal Pumpkin Festival' — link válido, miss_count zerado

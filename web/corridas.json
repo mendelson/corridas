@@ -1219,19 +1219,11 @@
             "https://raceroster.com/events/2026/108455/nitro-trail-2026"
           ],
           "tipo": "inscricao"
-        },
-        {
-          "nome": "HalfMarathons.net",
-          "link_evento": "https://www.halfmarathons.net/races/nitro-trail-half-marathon-10k-5k/",
-          "links_inscricao": [
-            "https://www.halfmarathons.net/races/nitro-trail-half-marathon-10k-5k/"
-          ],
-          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:42:03+00:00",
-      "updated_at": "2026-05-29T20:42:01+00:00",
+      "updated_at": "2026-05-30T20:49:24+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -14161,36 +14153,77 @@
       "id": "brasilcorrida_4385",
       "titulo": "5K Pela Paz No Trânsito - Campina Grande - PB",
       "data_evento": "2026-05-31",
-      "horario": "06:00",
-      "localizacao": "Campina Grande, PB",
-      "cidade": "Campina Grande",
-      "estado": "PB",
+      "horario": "08:00",
+      "localizacao": "Pouso Alegre, MG",
+      "cidade": "Pouso Alegre",
+      "estado": "MG",
       "distancias": [
         {
-          "km": 5.0,
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 13.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 23.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://midia.recebedigital.com.br/brasilcorrida/eventos/rszd-b213813b187a48c18f14a648a020e333e2595bb6.jpeg",
+      "imagem_url": "https://static.wixstatic.com/media/72b0e3_6589d91f6e434aa3bf56608546faf464~mv2.jpeg/v1/fill/w_1600,h_900,al_c,q_85/72b0e3_6589d91f6e434aa3bf56608546faf464~mv2.jpeg",
       "inscricoes_abertas": null,
-      "periodo_inscricao": {
-        "abertura": "2026-05-18",
-        "encerramento": "2026-05-19"
-      },
+      "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Brasil Corrida",
-          "link_evento": "https://brasilcorrida.com.br/#/evento/5k-pela-paz-no-transito---campina-grande---pb",
+          "nome": "Portal das Corridas",
+          "link_evento": "https://www.portaldascorridas.com.br/event-details/trail-run-mountain-serra-de-boa-esperanca-1",
           "links_inscricao": [
-            "https://brasilcorrida.com.br/#/evento/5k-pela-paz-no-transito---campina-grande---pb"
+            "https://www.portaldascorridas.com.br/event-details/trail-run-mountain-serra-de-boa-esperanca-1"
           ],
-          "tipo": "calendario"
+          "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-30T01:30:13+00:00",
-      "updated_at": "2026-05-30T01:30:13+00:00",
+      "first_seen_at": "2026-05-29T03:41:01+00:00",
+      "updated_at": "2026-05-29T03:41:01+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "portaldc_50ea4768-edfc-4847-91cf-2c49be8bdbd3",
+      "titulo": "3ª Meia Maratona Três Pontas / Quilombo",
+      "data_evento": "2026-05-31",
+      "horario": "07:30",
+      "localizacao": "Pouso Alegre, MG",
+      "cidade": "Pouso Alegre",
+      "estado": "MG",
+      "distancias": [
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://static.wixstatic.com/media/72b0e3_3c240fcc76f248da9de738438a318347~mv2.jpeg/v1/fill/w_1080,h_1350,al_c,q_85/72b0e3_3c240fcc76f248da9de738438a318347~mv2.jpeg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Portal das Corridas",
+          "link_evento": "https://www.portaldascorridas.com.br/event-details/3-meia-maratona-tres-pontas-quilombo",
+          "links_inscricao": [
+            "https://www.portaldascorridas.com.br/event-details/3-meia-maratona-tres-pontas-quilombo"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:01+00:00",
+      "updated_at": "2026-05-29T03:41:01+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -20412,34 +20445,102 @@
       "fotos": []
     },
     {
-      "id": "raceroster_83211_2026",
-      "titulo": "2026 Oregon Wine Country Half Marathon",
+      "id": "ts_86916",
+      "titulo": "Blackbird Golden Run",
       "data_evento": "2026-05-31",
-      "horario": "07:00",
-      "localizacao": "Dayton, OR",
-      "cidade": "Dayton, OR",
-      "estado": "OR",
+      "horario": "09:30",
+      "localizacao": "Braço do Norte, SC",
+      "cidade": "Braço do Norte",
+      "estado": "SC",
       "distancias": [
         {
-          "km": 21.0,
+          "km": 4.0,
           "data": null,
           "horario": null
         },
+        {
+          "km": 8.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/FES0SKRZ82WUZ3E533QEL1KB1R912AEZA4WKKTHNAPF9C068DI.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/BLACKBIRD+GOLDEN+RUN-86916",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/BLACKBIRD+GOLDEN+RUN-86916"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:40:51+00:00",
+      "updated_at": "2026-05-30T20:49:35+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "ts_86481",
+      "titulo": "Corrida Do Cruzeiro - Governador Valadares",
+      "data_evento": "2026-05-31",
+      "horario": "07:30",
+      "localizacao": "Governador Valadares, MG",
+      "cidade": "Governador Valadares",
+      "estado": "MG",
+      "distancias": [
+        {
+          "km": 6.1,
+          "data": null,
+          "horario": "07:30"
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/I9FPEKUMZ5SIAVFZUT6ZC72JH9EFUA5H4NGPBH3OIMGV3SURC4.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CORRIDA+DO+CRUZEIRO+-+GOVERNADOR+VALADARES-86481",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CORRIDA+DO+CRUZEIRO+-+GOVERNADOR+VALADARES-86481"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:40:51+00:00",
+      "updated_at": "2026-05-30T20:49:35+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "ts_85571",
+      "titulo": "Muay Thai Run Arena 5K",
+      "data_evento": "2026-05-31",
+      "horario": "07:00",
+      "localizacao": "São Paulo, SP",
+      "cidade": "São Paulo",
+      "estado": "SP",
+      "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/366bp6s4yqhy3mab._original.png",
-      "inscricoes_abertas": null,
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/M4NX91S4XFKT3246T6QBD3EC01RLD9ROKVE6ETRUV2U0EXCG07.png",
+      "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/83211/2026-oregon-wine-country-half-marathon",
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/MUAY+THAI+RUN+ARENA+5K-85571",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/83211/2026-oregon-wine-country-half-marathon"
+            "https://www.ticketsports.com.br/e/MUAY+THAI+RUN+ARENA+5K-85571"
           ],
           "tipo": "inscricao"
         }
@@ -46045,6 +46146,45 @@
       "fotos": []
     },
     {
+      "id": "raceroster_116070_2026",
+      "titulo": "Sarcoma Shuffle 5K & 10K",
+      "data_evento": "2026-06-07",
+      "horario": "07:30",
+      "localizacao": "Silver Spring, MD",
+      "cidade": "Silver Spring, MD",
+      "estado": "MD",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/3bxv6cjthq2fk6nh._original.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/116070/sarcoma-shuffle-5k-and-10k",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/116070/sarcoma-shuffle-5k-and-10k"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T03:42:31+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
       "id": "raceroster_116722_2026",
       "titulo": "Lunenburg 5Km Road Race And Muffin Run 2026",
       "data_evento": "2026-06-07",
@@ -52659,11 +52799,16 @@
       "id": "raceroster_113381_2026",
       "titulo": "Kaiser Permanente Women'S Fitness Festival 2026",
       "data_evento": "2026-06-07",
-      "horario": "07:30",
-      "localizacao": "Sacramento, CA",
-      "cidade": "Sacramento, CA",
-      "estado": "CA",
+      "horario": null,
+      "localizacao": "Taboão da Serra, SP",
+      "cidade": "Taboão da Serra",
+      "estado": "SP",
       "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
         {
           "km": 5.0,
           "data": null,
@@ -52675,15 +52820,15 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/r94v4nvakca5sks2._cropped.jpeg",
+      "imagem_url": "https://minhasinscricoes.com.br/Gerenciador/Content/Images/Eventos/Capas/37149D89-210E-4A79-B99B-910B8A064680.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/113381/kaiser-permanente-womens-fitness-festival-2026",
+          "nome": "Minhas Inscrições",
+          "link_evento": "https://minhasinscricoes.com.br/Evento/ADRENARUN-ETAPACOPA2026",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/113381/kaiser-permanente-womens-fitness-festival-2026"
+            "https://minhasinscricoes.com.br/Evento/ADRENARUN-ETAPACOPA2026"
           ],
           "tipo": "inscricao"
         }
@@ -56659,33 +56804,72 @@
       "titulo": "Tideline Classic",
       "data_evento": "2026-06-13",
       "horario": "08:00",
-      "localizacao": "Campbell River, BC",
-      "cidade": "Campbell River, BC",
-      "estado": "BC",
+      "localizacao": "Arlington, VA",
+      "cidade": "Arlington, VA",
+      "estado": "VA",
       "distancias": [
-        {
-          "km": 2.0,
-          "data": null,
-          "horario": null
-        },
         {
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/ts3m43xenzb3n9az._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/knhnw4ftgvncen4d._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118727/tideline-classic",
+          "link_evento": "https://raceroster.com/events/2026/116084/the-alex-manfull-fund-5k",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/116084/the-alex-manfull-fund-5k"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-30T01:31:09+00:00",
+      "updated_at": "2026-05-30T20:22:52+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_114241_2026",
+      "titulo": "Look Out Trail Race",
+      "data_evento": "2026-06-13",
+      "horario": "08:30",
+      "localizacao": "North Bay, ON",
+      "cidade": "North Bay, ON",
+      "estado": "ON",
+      "distancias": [
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 14.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/adunw95apb37mtb4._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/114241/look-out-trail-race",
           "links_inscricao": [
             "https://raceroster.com/events/2026/118727/tideline-classic"
           ],
@@ -70446,6 +70630,40 @@
       "fotos": []
     },
     {
+      "id": "bqc_1fd4b195-931f-48b5-88e3-2959958b4cb0",
+      "titulo": "Brutus Race",
+      "data_evento": "2026-06-14",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Brutus Race",
+          "link_evento": "https://brutusrace.com.br/etapa-gladiadores-2026-brasilia/",
+          "links_inscricao": [
+            "https://brutusrace.com.br/etapa-gladiadores-2026-brasilia/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:04+00:00",
+      "updated_at": "2026-05-29T03:41:04+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
       "id": "ts_85225",
       "titulo": "Meia Maratona Quiriri 2026",
       "data_evento": "2026-06-14",
@@ -72822,36 +73040,41 @@
       "fotos": []
     },
     {
-      "id": "correrbsb_event_44529_0",
-      "titulo": "2ª Corrida São José",
+      "id": "tfexp_2162",
+      "titulo": "Sumaré",
       "data_evento": "2026-06-14",
-      "horario": "08:00",
-      "localizacao": "Brasília, DF",
-      "cidade": "Brasília",
-      "estado": "DF",
+      "horario": null,
+      "localizacao": "Sumaré, SP",
+      "cidade": "Sumaré",
+      "estado": "SP",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
         }
       ],
-      "imagem_url": "https://correrbrasilia.com.br/wp-content/uploads/2026/04/2a-Corrida-Sao-Jose.jpg",
+      "imagem_url": "https://d1au5iau2exwyo.cloudfront.net/small_20_21063e738a.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Correr Brasília",
-          "link_evento": "https://correrbrasilia.com.br/events/2a-corrida-sao-jose/",
+          "nome": "TF Sports",
+          "link_evento": "https://www.tfsports.com.br/tf-experience/experience-178",
           "links_inscricao": [
-            "https://correrbrasilia.com.br/events/2a-corrida-sao-jose/"
+            "https://www.tfsports.com.br/tf-experience/experience-178"
           ],
-          "tipo": "calendario"
+          "tipo": "organizador"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:02+00:00",
-      "updated_at": "2026-05-29T03:41:02+00:00",
+      "first_seen_at": "2026-05-29T03:40:54+00:00",
+      "updated_at": "2026-05-29T03:40:54+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -76673,11 +76896,6 @@
       "distancias": [
         {
           "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
           "data": null,
           "horario": null
         }
@@ -80653,9 +80871,9 @@
       "titulo": "2026 Elkhart City Festival 5K And Kids Run",
       "data_evento": "2026-06-20",
       "horario": "08:00",
-      "localizacao": "Elkhart, IA",
-      "cidade": "Elkhart, IA",
-      "estado": "IA",
+      "localizacao": "Yountville, CA",
+      "cidade": "Yountville, CA",
+      "estado": "CA",
       "distancias": [
         {
           "km": 5.0,
@@ -80936,9 +81154,9 @@
       "titulo": "Pépère Gerry Run",
       "data_evento": "2026-06-20",
       "horario": "09:00",
-      "localizacao": "La Broquerie, MB",
-      "cidade": "La Broquerie, MB",
-      "estado": "MB",
+      "localizacao": "Hamilton, ON",
+      "cidade": "Hamilton, ON",
+      "estado": "ON",
       "distancias": [
         {
           "km": 5.0,
@@ -80946,32 +81164,27 @@
           "horario": null
         },
         {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
+          "km": 1.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/akt5usae9y6a4a3f._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/3fp53jwfvvzrpmga._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118281/pepere-gerry-run",
+          "link_evento": "https://raceroster.com/events/2026/112747/the-fab-5k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/118281/pepere-gerry-run"
+            "https://raceroster.com/events/2026/112747/the-fab-5k"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-30T08:30:32+00:00",
-      "updated_at": "2026-05-30T14:36:25+00:00",
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T20:22:54+00:00",
       "pais": "CA",
       "fotos": []
     },
@@ -81250,6 +81463,84 @@
       "first_seen_at": "2026-05-29T03:42:06+00:00",
       "updated_at": "2026-05-30T20:22:54+00:00",
       "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_119384_2026",
+      "titulo": "Hardisty Trail Run 2026",
+      "data_evento": "2026-06-20",
+      "horario": "09:00",
+      "localizacao": "Hardisty, AB",
+      "cidade": "Hardisty, AB",
+      "estado": "AB",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/xehx5qafvnqe6ym6._original.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/119384/hardisty-trail-run-2026",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/119384/hardisty-trail-run-2026"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:22:54+00:00",
+      "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_118511_2026",
+      "titulo": "Crossroads Trail Mix",
+      "data_evento": "2026-06-20",
+      "horario": "07:30",
+      "localizacao": "DeWitt, IA",
+      "cidade": "Dewitt, IA",
+      "estado": "IA",
+      "distancias": [
+        {
+          "km": "2 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/g9rd9ycd7yw62z9q._original.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/118511/crossroads-trail-mix",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/118511/crossroads-trail-mix"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:49:29+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -100103,6 +100394,21 @@
       "estado": "TO",
       "distancias": [
         {
+          "km": 42.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
           "km": 5.0,
           "data": null,
           "horario": null
@@ -100615,6 +100921,50 @@
       "first_seen_at": "2026-05-29T14:03:52+00:00",
       "updated_at": "2026-05-30T20:51:03+00:00",
       "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_114199_2026",
+      "titulo": "39Th Annual Run/Walk/Bike",
+      "data_evento": "2026-06-21",
+      "horario": "08:00",
+      "localizacao": "Sarnia, ON",
+      "cidade": "Sarnia, ON",
+      "estado": "ON",
+      "distancias": [
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/k3zvtfpemdqzqnvg._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/114199/39th-annual-runwalkbike",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/114199/39th-annual-runwalkbike"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:49:47+00:00",
+      "pais": "CA",
       "fotos": []
     },
     {
@@ -103758,9 +104108,9 @@
       "titulo": "2026 Rosebud Valley Trail Run",
       "data_evento": "2026-06-27",
       "horario": "09:00",
-      "localizacao": "Rosebud, AB",
-      "cidade": "Rosebud, AB",
-      "estado": "AB",
+      "localizacao": "Toronto, ON",
+      "cidade": "Toronto, ON",
+      "estado": "ON",
       "distancias": [
         {
           "km": 5.0,
@@ -103768,32 +104118,32 @@
           "horario": null
         },
         {
-          "km": 10.0,
+          "km": 1.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 21.0,
+          "km": 3.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/gcah5wg4ejxn4yyr._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/cfbpcth3cv2uzjaf._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118750/2026-rosebud-valley-trail-run",
+          "link_evento": "https://raceroster.com/events/2026/112490/2026-pride-and-remembrance-run",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/118750/2026-rosebud-valley-trail-run"
+            "https://raceroster.com/events/2026/112490/2026-pride-and-remembrance-run"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:01+00:00",
-      "updated_at": "2026-05-29T03:42:01+00:00",
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T20:22:56+00:00",
       "pais": "CA",
       "fotos": []
     },
@@ -103845,34 +104195,24 @@
       "id": "raceroster_117346_2026",
       "titulo": "Crown Z Trail Run",
       "data_evento": "2026-06-27",
-      "horario": "09:00",
-      "localizacao": "Scappoose, OR",
-      "cidade": "Scappoose, OR",
-      "estado": "OR",
+      "horario": "08:30",
+      "localizacao": "Columbus, OH",
+      "cidade": "Columbus, OH",
+      "estado": "OH",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/yxn4xh2fp3vn9bhh._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/czf5zte7dh5zdbw2._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/117346/crown-z-trail-run",
+          "link_evento": "https://raceroster.com/events/2026/115246/55th-annual-worthington-hills-firecracker-trot-5k",
           "links_inscricao": [
             "https://raceroster.com/events/2026/117346/crown-z-trail-run"
           ],
@@ -115513,10 +115853,10 @@
       "id": "raceroster_114403_2026",
       "titulo": "San Francisco Pride Run 2026",
       "data_evento": "2026-06-27",
-      "horario": "09:00",
-      "localizacao": "San Francisco, CA",
-      "cidade": "San Francisco, CA",
-      "estado": "CA",
+      "horario": "07:00",
+      "localizacao": "Trenton, EUA",
+      "cidade": "Trenton, EUA",
+      "estado": "MI",
       "distancias": [
         {
           "km": 5.0,
@@ -115524,22 +115864,22 @@
           "horario": null
         },
         {
-          "km": 10.0,
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/eydcwdyugafmtjvp._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2025/09/Trenton-Summerfest-featurd.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/114403/san-francisco-pride-run-2026",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/trenton-summerfest-half-marathon-8k-5k/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/114403/san-francisco-pride-run-2026"
+            "https://www.halfmarathons.net/races/trenton-summerfest-half-marathon-8k-5k/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -115969,6 +116309,50 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:41:01+00:00",
       "updated_at": "2026-05-30T00:08:07+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "bqc_2631c101-96db-4de7-a0ed-9cb5325f1546",
+      "titulo": "Circuito Das Estações Inverno",
+      "data_evento": "2026-06-28",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Circuito das Estações",
+          "link_evento": "https://www.circuitodasestacoes.com.br/brasilia/inverno",
+          "links_inscricao": [
+            "https://www.circuitodasestacoes.com.br/brasilia/inverno"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:08+00:00",
+      "updated_at": "2026-05-30T20:49:23+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -121292,6 +121676,45 @@
       "fotos": []
     },
     {
+      "id": "raceroster_110324_2026",
+      "titulo": "2026 Beneva Vancouver Half Marathon",
+      "data_evento": "2026-06-28",
+      "horario": "07:30",
+      "localizacao": "Vancouver, BC",
+      "cidade": "Vancouver, BC",
+      "estado": "BC",
+      "distancias": [
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/gtrkm3grk3ds5wjw._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/110324/2026-beneva-vancouver-half-marathon",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/110324/2026-beneva-vancouver-half-marathon"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:01+00:00",
+      "updated_at": "2026-05-30T20:49:50+00:00",
+      "pais": "CA",
+      "fotos": []
+    },
+    {
       "id": "circuito-das-estacoes-sao-paulo-inverno",
       "titulo": "Circuito das Estações - Inverno - São Paulo",
       "data_evento": "2026-06-28",
@@ -123967,6 +124390,40 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:41:01+00:00",
       "updated_at": "2026-05-29T03:41:01+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "bqc_c315daff-b1e5-4057-9cdd-55075b3e6ee6",
+      "titulo": "Beatrun Firstedition",
+      "data_evento": "2026-07-04",
+      "horario": null,
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://images.sympla.com.br/69e6d4a911de6-lg.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Sympla",
+          "link_evento": "https://www.sympla.com.br/evento/beatrun-firstedition/3393981",
+          "links_inscricao": [
+            "https://www.sympla.com.br/evento/beatrun-firstedition/3393981"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:03+00:00",
+      "updated_at": "2026-05-30T20:49:23+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -142682,50 +143139,6 @@
       "fotos": []
     },
     {
-      "id": "runsignup_201270_2026",
-      "titulo": "Palmdale'S Stars, Stripes & Sneakers 5K",
-      "data_evento": "2026-07-04",
-      "horario": "08:30",
-      "localizacao": "Palmdale, CA, EUA",
-      "cidade": "Palmdale, CA, EUA",
-      "estado": "CA",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": "500 mi",
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 1.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-274806-1773935749.1248-0.bPVbYf.jpg",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CA/Palmdale/PalmdaleIndependenceDay5k",
-          "links_inscricao": [
-            "https://runsignup.com/Race/CA/Palmdale/PalmdaleIndependenceDay5k"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:44:32+00:00",
-      "updated_at": "2026-05-30T01:19:15+00:00",
-      "pais": "US",
-      "fotos": []
-    },
-    {
       "id": "runsignup_57275_2026",
       "titulo": "Palmer Lake July 4Th Fun Run",
       "data_evento": "2026-07-04",
@@ -144691,39 +145104,29 @@
       "fotos": []
     },
     {
-      "id": "raceroster_117155_2026",
-      "titulo": "Liberty Station Relay And 5K",
+      "id": "raceroster_118225_2026",
+      "titulo": "Deltaville 5K & Fun Run",
       "data_evento": "2026-07-04",
-      "horario": "08:00",
-      "localizacao": "San Diego, CA",
-      "cidade": "San Diego, CA",
-      "estado": "CA",
+      "horario": "07:15",
+      "localizacao": "Deltaville, VA",
+      "cidade": "Deltaville, VA",
+      "estado": "VA",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 42.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/f4kj6hwm6s24sktv._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/zxp2gtrn4d4skz6c._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/117155/liberty-station-relay-and-5k",
+          "link_evento": "https://raceroster.com/events/2026/118225/deltaville-5k-and-fun-run",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/117155/liberty-station-relay-and-5k"
+            "https://raceroster.com/events/2026/118225/deltaville-5k-and-fun-run"
           ],
           "tipo": "inscricao"
         }
@@ -144774,13 +145177,13 @@
       "fotos": []
     },
     {
-      "id": "raceroster_116810_2026",
-      "titulo": "Spirit Of America 5K",
+      "id": "raceroster_116522_2026",
+      "titulo": "Maryland Fireworks 5K & 10K",
       "data_evento": "2026-07-04",
-      "horario": "08:30",
-      "localizacao": "Phillips, WI",
-      "cidade": "Phillips, WI",
-      "estado": "WI",
+      "horario": "07:45",
+      "localizacao": "Silver Spring, MD",
+      "cidade": "Silver Spring, MD",
+      "estado": "MD",
       "distancias": [
         {
           "km": 5.0,
@@ -148795,36 +149198,47 @@
       "fotos": []
     },
     {
-      "id": "raceroster_129608_2026",
-      "titulo": "Maple Leaf Races \"In Training\" Classes",
-      "data_evento": "2026-07-06",
-      "horario": "18:00",
-      "localizacao": "La Crosse, WI",
-      "cidade": "La Crosse, WI",
-      "estado": "WI",
+      "id": "halfmarathons_152678_2026",
+      "titulo": "The All-American Boom! (Tyler, Tx)",
+      "data_evento": "2026-07-05",
+      "horario": "07:00",
+      "localizacao": "Tyler, EUA",
+      "cidade": "Tyler, EUA",
+      "estado": "TX",
       "distancias": [
         {
-          "km": 21.0,
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/taf6hyankd4r72b3._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/09/half-marathon-guide-hero-image-landscape.webp",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/129608/maple-leaf-races-in-training-classes",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/the-all-american-boom-tyler-tx/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/129608/maple-leaf-races-in-training-classes"
+            "https://www.halfmarathons.net/races/the-all-american-boom-tyler-tx/",
+            "https://www.halfmarathons.net/races/the-all-american-boom/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:01+00:00",
-      "updated_at": "2026-05-30T14:36:34+00:00",
+      "first_seen_at": "2026-05-29T03:41:43+00:00",
+      "updated_at": "2026-05-30T20:49:55+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -161245,6 +161659,59 @@
       "fotos": []
     },
     {
+      "id": "ts_86292",
+      "titulo": "Cats Run DF 2026",
+      "data_evento": "2026-07-12",
+      "horario": "07:00",
+      "localizacao": "Brasília, DF",
+      "cidade": "Brasília",
+      "estado": "DF",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/K0NWC1CC1WJHLKWQZTNN7F9T2JM5ASKX6PE87F94O0MD6MICLN.png",
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/CATS+RUN+DF+2026-86292",
+          "links_inscricao": [
+            "https://www.ticketsports.com.br/e/CATS+RUN+DF+2026-86292",
+            "https://www.ticketsports.com.br/e/cats-run-df-2026-86292"
+          ],
+          "tipo": "inscricao"
+        },
+        {
+          "nome": "Correr Brasília",
+          "link_evento": "https://correrbrasilia.com.br/events/cats-run-df-2026/",
+          "links_inscricao": [
+            "https://correrbrasilia.com.br/events/cats-run-df-2026/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:40:51+00:00",
+      "updated_at": "2026-05-29T03:40:51+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
       "id": "ts_85784",
       "titulo": "6ª Marília Half Marathon - Meia Maratona",
       "data_evento": "2026-07-12",
@@ -162624,21 +163091,26 @@
       "fotos": []
     },
     {
-      "id": "raceroster_117896_2026",
-      "titulo": "Lincoln Running Co Mile - 2026",
+      "id": "raceroster_116288_2026",
+      "titulo": "Great Country Farms 5K & 10K",
       "data_evento": "2026-07-12",
-      "horario": "08:00",
-      "localizacao": "Lincoln, NE",
-      "cidade": "Lincoln, NE",
-      "estado": "NE",
+      "horario": "08:30",
+      "localizacao": "Bluemont, VA",
+      "cidade": "Bluemont, VA",
+      "estado": "VA",
       "distancias": [
         {
-          "km": "1 mi",
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/7x29m6524325twt6._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
@@ -169560,34 +170032,29 @@
       "id": "raceroster_119000_2026",
       "titulo": "17Th Annual Pufferbelly Run/Walk/Stroll - Presented By Fort Wayne Trails",
       "data_evento": "2026-07-18",
-      "horario": "08:00",
-      "localizacao": "Fort Wayne, IN",
-      "cidade": "Fort Wayne, IN",
-      "estado": "IN",
+      "horario": "07:00",
+      "localizacao": "Vancouver, BC",
+      "cidade": "Vancouver, BC",
+      "estado": "BC",
       "distancias": [
         {
-          "km": "1 mi",
+          "km": 3.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
+          "km": 1.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/mq9rysyna3eqpqnu._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/9nht64sxdv2hxgxn._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/119000/17th-annual-pufferbelly-runwalkstroll-presented-by-fort-wayne-trails",
+          "link_evento": "https://raceroster.com/events/2026/111204/2026-5-peaks-trail-running-series-cypress-mountain",
           "links_inscricao": [
             "https://raceroster.com/events/2026/119000/17th-annual-pufferbelly-runwalkstroll-presented-by-fort-wayne-trails"
           ],
@@ -177091,6 +177558,11 @@
           "km": 21.097,
           "data": null,
           "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
         }
       ],
       "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/Canal-Run-Half-Marathon-10M-5M-2M-featured.jpg",
@@ -178288,84 +178760,6 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:41:08+00:00",
       "updated_at": "2026-05-30T14:36:07+00:00",
-      "pais": "BR",
-      "fotos": []
-    },
-    {
-      "id": "portaldc_a4b4403f-eaa5-4957-a4a0-da2e58c02860",
-      "titulo": "Corrida 158 Anos Camanducaia",
-      "data_evento": "2026-07-19",
-      "horario": "08:00",
-      "localizacao": "Camanducaia, MG",
-      "cidade": "Camanducaia",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://static.wixstatic.com/media/72b0e3_01eadff63ae6499d92a376a012af6ef3~mv2.jpeg/v1/fill/w_1080,h_1350,al_c,q_85/72b0e3_01eadff63ae6499d92a376a012af6ef3~mv2.jpeg",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Portal das Corridas",
-          "link_evento": "https://www.portaldascorridas.com.br/event-details/corrida-158-anos-camanducaia",
-          "links_inscricao": [
-            "https://www.portaldascorridas.com.br/event-details/corrida-158-anos-camanducaia"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:01+00:00",
-      "updated_at": "2026-05-29T03:41:01+00:00",
-      "pais": "BR",
-      "fotos": []
-    },
-    {
-      "id": "portaldc_2556f50d-122f-45f2-acd7-3fff9c7c918f",
-      "titulo": "5ª Corrida Xvi De Julho",
-      "data_evento": "2026-07-19",
-      "horario": "08:00",
-      "localizacao": "Pouso Alegre, MG",
-      "cidade": "Pouso Alegre",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://static.wixstatic.com/media/72b0e3_38fa5355e5964f259d8fee67d5ddb2c5~mv2.jpeg/v1/fill/w_1080,h_1080,al_c,q_85/72b0e3_38fa5355e5964f259d8fee67d5ddb2c5~mv2.jpeg",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Portal das Corridas",
-          "link_evento": "https://www.portaldascorridas.com.br/event-details/5-corrida-xvi-de-julho",
-          "links_inscricao": [
-            "https://www.portaldascorridas.com.br/event-details/5-corrida-xvi-de-julho"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:01+00:00",
-      "updated_at": "2026-05-30T14:38:31+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -184928,28 +185322,43 @@
       "id": "runsignup_164790_2026",
       "titulo": "Quaker Dash Ice Cream 5K",
       "data_evento": "2026-07-24",
-      "horario": "18:30",
-      "localizacao": "Orchard Park, NY, EUA",
-      "cidade": "Orchard Park, NY, EUA",
-      "estado": "NY",
+      "horario": "06:00",
+      "localizacao": "Salt Lake City, EUA",
+      "cidade": "Salt Lake City, EUA",
+      "estado": "UT",
       "distancias": [
         {
-          "km": "3.1 mi",
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 42.195,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-230012-1776711907.828-0.bP5NJJ.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2025/02/Deseret-News-Marathon-Half-Marathon-featured.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/NY/OrchardPark/QuakerDashIceCream5k",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/deseret-news-marathon-half-marathon-10k-5k/",
           "links_inscricao": [
-            "https://runsignup.com/Race/NY/OrchardPark/QuakerDashIceCream5k"
+            "https://www.halfmarathons.net/races/deseret-news-marathon-half-marathon-10k-5k/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -185032,29 +185441,29 @@
       "fotos": []
     },
     {
-      "id": "raceroster_114318_2026",
-      "titulo": "South Bay 24",
+      "id": "runsignup_164790_2026",
+      "titulo": "Quaker Dash Ice Cream 5K",
       "data_evento": "2026-07-24",
-      "horario": "19:00",
-      "localizacao": "San Diego, CA",
-      "cidade": "San Diego, CA",
-      "estado": "CA",
+      "horario": "18:30",
+      "localizacao": "Orchard Park, NY, EUA",
+      "cidade": "Orchard Park, NY, EUA",
+      "estado": "NY",
       "distancias": [
         {
-          "km": 21.0,
+          "km": "3.1 mi",
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/vs6jcf6bk5c4rmxf._original.png",
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-230012-1776711907.828-0.bP5NJJ.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/114318/south-bay-24",
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/NY/OrchardPark/QuakerDashIceCream5k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/114318/south-bay-24"
+            "https://runsignup.com/Race/NY/OrchardPark/QuakerDashIceCream5k"
           ],
           "tipo": "inscricao"
         }
@@ -186232,10 +186641,49 @@
       "id": "raceroster_117919_2026",
       "titulo": "Nwr Cougar Chase 5K And Fun Run 2026",
       "data_evento": "2026-07-25",
-      "horario": "08:00",
-      "localizacao": "Flowood, MS",
-      "cidade": "Flowood, MS",
-      "estado": "MS",
+      "horario": "06:30",
+      "localizacao": "Washington, DC",
+      "cidade": "Washington, DC",
+      "estado": "DC",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/116341/christmas-in-july-5k-and-half",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/116341/christmas-in-july-5k-and-half"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T20:23:01+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_110937_2026",
+      "titulo": "Run For Coffee Lovers 5K/10K/13.1 New Jersey",
+      "data_evento": "2026-07-25",
+      "horario": "07:30",
+      "localizacao": "Camden, NJ",
+      "cidade": "Camden, NJ",
+      "estado": "NJ",
       "distancias": [
         {
           "km": 5.0,
@@ -186246,25 +186694,167 @@
           "km": "1 mi",
           "data": null,
           "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/gqkqvun9qeggyrht._original.jpg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/su44sz5jthur3zhe._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/117919/nwr-cougar-chase-5k-and-fun-run-2026",
+          "link_evento": "https://raceroster.com/events/2026/110937/run-for-coffee-lovers-5k10k131-new-jersey",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/117919/nwr-cougar-chase-5k-and-fun-run-2026"
+            "https://raceroster.com/events/2026/110937/run-for-coffee-lovers-5k10k131-new-jersey"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:01+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_118774_2026",
+      "titulo": "Iop Beach Run 2026",
+      "data_evento": "2026-07-25",
+      "horario": "08:00",
+      "localizacao": "Isle of Palms, SC",
+      "cidade": "Isle Of Palms, SC",
+      "estado": "SC",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/sya9scs3cxxxze9v._cropped.jpeg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/118774/iop-beach-run-2026",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/118774/iop-beach-run-2026"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:49:28+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_114820_2026",
+      "titulo": "Run For Coffee Lovers 5K/10K/13.1 Memphis",
+      "data_evento": "2026-07-25",
+      "horario": "07:30",
+      "localizacao": "Memphis, TN",
+      "cidade": "Memphis, TN",
+      "estado": "TN",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/trssfvqxyg79twa2._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/114820/run-for-coffee-lovers-5k10k131-memphis",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/114820/run-for-coffee-lovers-5k10k131-memphis"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:49:28+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_111199_2026",
+      "titulo": "2026 5 Peaks Trail Running Series: Bowmont Park",
+      "data_evento": "2026-07-25",
+      "horario": "08:00",
+      "localizacao": "Calgary, AB",
+      "cidade": "Calgary, AB",
+      "estado": "AB",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 1.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/gfb52k425ft322fx._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/111199/2026-5-peaks-trail-running-series-bowmont-park",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/111199/2026-5-peaks-trail-running-series-bowmont-park"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-30T00:44:36+00:00",
-      "pais": "US",
+      "updated_at": "2026-05-29T03:42:06+00:00",
+      "pais": "CA",
       "fotos": []
     },
     {
@@ -197527,38 +198117,121 @@
       "titulo": "2026 5 Peaks Trail Running Series: Goldbar",
       "data_evento": "2026-07-26",
       "horario": "07:30",
-      "localizacao": "Edmonton, AB",
-      "cidade": "Edmonton, AB",
-      "estado": "AB",
+      "localizacao": "Silver Spring, MD",
+      "cidade": "Silver Spring, MD",
+      "estado": "MD",
       "distancias": [
         {
-          "km": 3.0,
+          "km": 5.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 1.0,
+          "km": 10.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/ugxhp93grr7besmr._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/111194/2026-5-peaks-trail-running-series-goldbar",
+          "link_evento": "https://raceroster.com/events/2026/116343/summer-moco-5k-and-10k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/111194/2026-5-peaks-trail-running-series-goldbar"
+            "https://raceroster.com/events/2026/116343/summer-moco-5k-and-10k"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-29T03:42:06+00:00",
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:02+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_111749_2026",
+      "titulo": "2026 Lindsay Milk Run",
+      "data_evento": "2026-07-26",
+      "horario": "08:00",
+      "localizacao": "Kawartha Lakes, ON",
+      "cidade": "Kawartha Lakes, ON",
+      "estado": "ON",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/6neqrnypnsheb5td._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/111749/2026-lindsay-milk-run",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/111749/2026-lindsay-milk-run"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:02+00:00",
       "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_116344_2026",
+      "titulo": "Summer Georgetown 5K, 10K, & Half",
+      "data_evento": "2026-07-26",
+      "horario": "06:30",
+      "localizacao": "Washington, DC",
+      "cidade": "Washington, DC",
+      "estado": "DC",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/116344/summer-georgetown-5k-10k-and-half",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/116344/summer-georgetown-5k-10k-and-half"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:02+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -202427,15 +203100,15 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/4xzqdudjysykcmpw._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/mjyv24vppmssp5ek._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/125415/panorama-days-5k-runwalk",
+          "link_evento": "https://raceroster.com/events/2026/113898/susan-b-anthony-womens-5k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/125415/panorama-days-5k-runwalk"
+            "https://raceroster.com/events/2026/113898/susan-b-anthony-womens-5k"
           ],
           "tipo": "inscricao"
         }
@@ -212999,42 +213672,42 @@
       "titulo": "Lake Wehrspann Run",
       "data_evento": "2026-08-02",
       "horario": "07:30",
-      "localizacao": "Chalco, NE",
-      "cidade": "Chalco, NE",
-      "estado": "NE",
+      "localizacao": "Charlottesville, VA",
+      "cidade": "Charlottesville, VA",
+      "estado": "VA",
       "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
         {
           "km": 10.0,
           "data": null,
           "horario": null
         },
         {
-          "km": "2 mi",
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 1.0,
+          "km": "1 mi",
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/aunjsucwbvdkufkx._original.jpg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/119597/lake-wehrspann-run",
+          "link_evento": "https://raceroster.com/events/2026/116347/random-row-brewing-5k-and-10k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/119597/lake-wehrspann-run"
+            "https://raceroster.com/events/2026/116347/random-row-brewing-5k-and-10k"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-30T08:30:32+00:00",
-      "updated_at": "2026-05-30T14:36:40+00:00",
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T03:42:45+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -217916,27 +218589,32 @@
           "horario": null
         },
         {
-          "km": "1 mi",
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/tu2mcnvpzk72e4z4._original.jpg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/116989/run-to-rescue-14th-annual",
+          "link_evento": "https://raceroster.com/events/2026/116357/third-winchester-battlefield-5k-10k-and-half",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/116989/run-to-rescue-14th-annual"
+            "https://raceroster.com/events/2026/116357/third-winchester-battlefield-5k-10k-and-half"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T15:36:14+00:00",
-      "updated_at": "2026-05-30T14:36:41+00:00",
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:03+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -217950,7 +218628,12 @@
       "estado": "VA",
       "distancias": [
         {
-          "km": 5.0,
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
           "data": null,
           "horario": null
         },
@@ -234160,68 +234843,42 @@
       "fotos": []
     },
     {
-      "id": "raceroster_114955_2026",
-      "titulo": "Bagel Run 5K/10K/13.1 Denver/Aurora",
+      "id": "raceroster_111737_2026",
+      "titulo": "Vancouver Island Trail Running Series - Cobble Hill 2026",
       "data_evento": "2026-08-15",
-      "horario": "07:30",
-      "localizacao": "Aurora, CO",
-      "cidade": "Aurora, CO",
-      "estado": "CO",
+      "horario": "10:00",
+      "localizacao": "Cobble Hill, BC",
+      "cidade": "Cobble Hill, BC",
+      "estado": "BC",
       "distancias": [
         {
-          "km": 5.0,
+          "km": 12.0,
           "data": null,
           "horario": null
         },
         {
-          "km": "1 mi",
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": "13.1 mi",
+          "km": 25.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/a63jxxytkssgrtca._original.png",
+      "imagem_url": "https://cdn.raceroster.com/events/2017/10753/logos/vancouver-island-trail-running-series-cobble-hill-logo_1478268666.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/114955/bagel-run-5k10k131-denveraurora",
+          "link_evento": "https://raceroster.com/events/2026/111737/vancouver-island-trail-running-series-cobble-hill-2026",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/114955/bagel-run-5k10k131-denveraurora",
-            "https://raceroster.com/events/2026/114918/run-for-pb-and-j-5k10k131-denveraurora",
-            "https://raceroster.com/events/2026/115098/sloth-run-5k10k131-denveraurora",
-            "https://raceroster.com/events/2026/115156/run-for-breast-cancer-5k10k131-denveraurora"
-          ],
-          "tipo": "inscricao"
-        },
-        {
-          "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CO/Centennial/BagelRun5K10KDENVERAURORA",
-          "links_inscricao": [
-            "https://runsignup.com/Race/CO/Centennial/BagelRun5K10KDENVERAURORA"
+            "https://raceroster.com/events/2026/111737/vancouver-island-trail-running-series-cobble-hill-2026"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:44:27+00:00",
-      "updated_at": "2026-05-30T14:36:11+00:00",
-      "pais": "US",
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:05+00:00",
+      "pais": "CA",
       "fotos": []
     },
     {
@@ -236832,6 +237489,104 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:27+00:00",
       "updated_at": "2026-05-29T20:42:04+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_199409_2026",
+      "titulo": "Bagel Run 5K/10K/13.1 Seattle",
+      "data_evento": "2026-08-15",
+      "horario": "07:30",
+      "localizacao": "Seattle, WA, EUA",
+      "cidade": "Seattle, WA, EUA",
+      "estado": "WA",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "13.1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-271231-1768499871.3349-0.bPAsQF.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/WA/Seattle/BagelRun5K10KSEATTLE",
+          "links_inscricao": [
+            "https://runsignup.com/Race/WA/Seattle/BagelRun5K10KSEATTLE"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:01+00:00",
+      "updated_at": "2026-05-30T20:49:30+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_103444_2026",
+      "titulo": "Bay To Beacon - Half Marathon, 10K, & 5K",
+      "data_evento": "2026-08-15",
+      "horario": "07:30",
+      "localizacao": "Harrisville, MI, EUA",
+      "cidade": "Harrisville, MI, EUA",
+      "estado": "MI",
+      "distancias": [
+        {
+          "km": "13.1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/races/race103444-logo-0.bGxsg5.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/MI/Harrisville/NEMIHalfMarathon",
+          "links_inscricao": [
+            "https://runsignup.com/Race/MI/Harrisville/NEMIHalfMarathon"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:44:27+00:00",
+      "updated_at": "2026-05-30T20:49:30+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -256992,6 +257747,45 @@
       "fotos": []
     },
     {
+      "id": "raceroster_116418_2026",
+      "titulo": "Lakeside Loop 5K & 10K",
+      "data_evento": "2026-08-23",
+      "horario": "07:45",
+      "localizacao": "College Park, MD",
+      "cidade": "College Park, MD",
+      "estado": "MD",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/116418/lakeside-loop-5k-and-10k",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/116418/lakeside-loop-5k-and-10k"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:06+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
       "id": "raceroster_111984_2026",
       "titulo": "Mt Coot-Tha Trail Festival",
       "data_evento": "2026-08-23",
@@ -261045,7 +261839,8 @@
           "nome": "Race Roster",
           "link_evento": "https://raceroster.com/events/2026/116652/mason-district-5k-and-10k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/115157/run-for-breast-cancer-5k10k131-kansas-city"
+            "https://raceroster.com/events/2026/115169/run-for-breast-cancer-5k10k131-sacramento",
+            "https://raceroster.com/events/2026/115174/run-for-breast-cancer-5k10k131-san-diego"
           ],
           "tipo": "inscricao"
         }
@@ -261331,7 +262126,7 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/z3pn2tsddgct3tbr._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/vf2ab54s5szmyx63._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
@@ -267016,34 +267811,34 @@
       "fotos": []
     },
     {
-      "id": "raceroster_116189_2026",
-      "titulo": "2026 Angel Island Half Marathon & 10K",
+      "id": "raceroster_118326_2026",
+      "titulo": "Yiasou Greek Festival 5K Presented By Novant Health",
       "data_evento": "2026-08-29",
-      "horario": "08:00",
-      "localizacao": "Tiburon, CA",
-      "cidade": "Tiburon, CA",
-      "estado": "CA",
+      "horario": "07:30",
+      "localizacao": "Charlotte, NC",
+      "cidade": "Charlotte, NC",
+      "estado": "NC",
       "distancias": [
         {
-          "km": 21.0,
+          "km": 5.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 10.0,
+          "km": "1 mi",
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/9b9bcn5u36swetsm._cropped.jpeg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/pssqxsrcteyrvavn._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/116189/2026-angel-island-half-marathon-and-10k",
+          "link_evento": "https://raceroster.com/events/2026/118326/yiasou-greek-festival-5k-presented-by-novant-health",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/116189/2026-angel-island-half-marathon-and-10k"
+            "https://raceroster.com/events/2026/118326/yiasou-greek-festival-5k-presented-by-novant-health"
           ],
           "tipo": "inscricao"
         }
@@ -307190,7 +307985,12 @@
       "estado": "CO",
       "distancias": [
         {
-          "km": 21.0,
+          "km": "10 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "4 mi",
           "data": null,
           "horario": null
         }
@@ -313741,10 +314541,10 @@
       "id": "circuito-das-estacoes-recife-primavera",
       "titulo": "Circuito das Estações - Primavera - Recife",
       "data_evento": "2026-09-13",
-      "horario": null,
-      "localizacao": "Recife, PE",
-      "cidade": "Recife",
-      "estado": "PE",
+      "horario": "06:00",
+      "localizacao": "Maceió, AL",
+      "cidade": "Maceió",
+      "estado": "AL",
       "distancias": [
         {
           "km": 5.0,
@@ -313755,24 +314555,19 @@
           "km": 10.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 18.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": null,
+      "imagem_url": "https://cdn.ticketsports.com.br/ticketagora/images/thumb/93PF9W90AJB1RVBHUSNNOC45PELZTU0CBYMW08PH1WTR9P4AD4.png",
       "inscricoes_abertas": true,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/recife/primavera",
+          "nome": "Ticket Sports",
+          "link_evento": "https://www.ticketsports.com.br/e/5%C2%BA+CORRID%C3%83O+ROTAM-+PM+ALAGOAS-++2%C2%BA+LOTE.-86715",
           "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-primavera-recife"
+            "https://www.ticketsports.com.br/e/5%C2%BA+CORRID%C3%83O+ROTAM-+PM+ALAGOAS-++2%C2%BA+LOTE.-86715"
           ],
-          "tipo": "organizador"
+          "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
@@ -314198,6 +314993,113 @@
       "fotos": []
     },
     {
+      "id": "circuito-das-estacoes-belem-primavera",
+      "titulo": "Circuito das Estações - Primavera - Belém",
+      "data_evento": "2026-09-13",
+      "horario": null,
+      "localizacao": "Belém, PA",
+      "cidade": "Belém",
+      "estado": "PA",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": true,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Circuito das Estações",
+          "link_evento": "https://www.circuitodasestacoes.com.br/belem/primavera",
+          "links_inscricao": [
+            "https://www.runningland.com.br/circuito-das-estacoes-2026-primavera-belem"
+          ],
+          "tipo": "organizador"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:08+00:00",
+      "updated_at": "2026-05-30T20:50:32+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_181997_2026",
+      "titulo": "Putnam County Suicide Awareness & Prevention",
+      "data_evento": "2026-09-13",
+      "horario": "14:00",
+      "localizacao": "Ottawa, OH, EUA",
+      "cidade": "Ottawa, OH, EUA",
+      "estado": "OH",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-251398-1744662463.4005-0.bN_w-_.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/OH/Ottawa/PutnamCountySuicideAwarenessPrevention",
+          "links_inscricao": [
+            "https://runsignup.com/Race/OH/Ottawa/PutnamCountySuicideAwarenessPrevention"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:44:32+00:00",
+      "updated_at": "2026-05-30T20:50:32+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_204390_2026",
+      "titulo": "Ptsmc Stride To Provide 5K Run/Walk",
+      "data_evento": "2026-09-13",
+      "horario": "09:00",
+      "localizacao": "Wallingford, CT, EUA",
+      "cidade": "Wallingford, CT, EUA",
+      "estado": "CT",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-278844-1776180690.8252-0.bP3L3s.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/CT/Wallingford/PTSMCStrideToProvide5KRunWalk",
+          "links_inscricao": [
+            "https://runsignup.com/Race/CT/Wallingford/PTSMCStrideToProvide5KRunWalk"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:44:32+00:00",
+      "updated_at": "2026-05-30T20:50:32+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
       "id": "runsignup_153250_2026",
       "titulo": "Pumpkinman Half Marathon And Running Festival!",
       "data_evento": "2026-09-13",
@@ -314440,28 +315342,28 @@
       "id": "raceroster_112914_2026",
       "titulo": "Alcatraz Open Swim 2026",
       "data_evento": "2026-09-13",
-      "horario": "07:30",
-      "localizacao": "SF, CA",
-      "cidade": "SF, CA",
-      "estado": "CA",
+      "horario": "09:00",
+      "localizacao": "Manchester by the Sea, EUA",
+      "cidade": "Manchester By The Sea, EUA",
+      "estado": "MA",
       "distancias": [
         {
-          "km": "1 mi",
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/u3qsvqgap9mmnvsj._original.jpg",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/manchester-by-the-sea_ma_featured.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/112914/alcatraz-open-swim-2026",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/half-marathon-by-the-sea-half-marathon/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/112914/alcatraz-open-swim-2026"
+            "https://www.halfmarathons.net/races/half-marathon-by-the-sea-half-marathon/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -331138,24 +332040,58 @@
       "fotos": []
     },
     {
-      "id": "raceroster_118279_2026",
-      "titulo": "Run With The Cops 5K",
+      "id": "halfmarathons_156629_2026",
+      "titulo": "Run Like A Diva – Chicago",
       "data_evento": "2026-09-19",
-      "horario": "08:30",
-      "localizacao": "Sacramento, CA",
-      "cidade": "Sacramento, CA",
+      "horario": "07:00",
+      "localizacao": "Chicago, EUA",
+      "cidade": "Chicago, EUA",
+      "estado": "IL",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2026/01/Divas-Galveston-Half-Marathon-featured.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/run-like-a-diva-chicago/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/run-like-a-diva-chicago/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:27+00:00",
+      "updated_at": "2026-05-30T20:50:39+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_122996_2026",
+      "titulo": "Rocky Ridge Half Marathon, 10K & 5K",
+      "data_evento": "2026-09-19",
+      "horario": "08:00",
+      "localizacao": "San Ramon, EUA",
+      "cidade": "San Ramon, EUA",
       "estado": "CA",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
-        }
-      ],
-      "imagem_url": null,
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
+        },
         {
           "nome": "Race Roster",
           "link_evento": "https://raceroster.com/events/2026/118279/run-with-the-cops-5k",
@@ -331211,45 +332147,6 @@
       "fotos": []
     },
     {
-      "id": "portaldc_698c3586-0525-4fb7-9bb3-013a74b51e06",
-      "titulo": "1ª Corrida Da Fé",
-      "data_evento": "2026-09-20",
-      "horario": "08:00",
-      "localizacao": "Pouso Alegre, MG",
-      "cidade": "Pouso Alegre",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 12.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://static.wixstatic.com/media/72b0e3_067ac9c3fadb4c9c8597366d2c7161a2~mv2.jpeg/v1/fill/w_1536,h_1024,al_c,q_85/72b0e3_067ac9c3fadb4c9c8597366d2c7161a2~mv2.jpeg",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Portal das Corridas",
-          "link_evento": "https://www.portaldascorridas.com.br/event-details/1-corrida-da-fe",
-          "links_inscricao": [
-            "https://www.portaldascorridas.com.br/event-details/1-corrida-da-fe"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:01+00:00",
-      "updated_at": "2026-05-29T03:41:01+00:00",
-      "pais": "BR",
-      "fotos": []
-    },
-    {
       "id": "portaldc_0141b271-d980-4141-8168-ff91edd06515",
       "titulo": "Caminhada E Corrida Pela Vida",
       "data_evento": "2026-09-20",
@@ -331285,6 +332182,45 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:41:01+00:00",
       "updated_at": "2026-05-30T01:45:16+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "portaldc_698c3586-0525-4fb7-9bb3-013a74b51e06",
+      "titulo": "1ª Corrida Da Fé",
+      "data_evento": "2026-09-20",
+      "horario": "08:00",
+      "localizacao": "Pouso Alegre, MG",
+      "cidade": "Pouso Alegre",
+      "estado": "MG",
+      "distancias": [
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://static.wixstatic.com/media/72b0e3_067ac9c3fadb4c9c8597366d2c7161a2~mv2.jpeg/v1/fill/w_1536,h_1024,al_c,q_85/72b0e3_067ac9c3fadb4c9c8597366d2c7161a2~mv2.jpeg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Portal das Corridas",
+          "link_evento": "https://www.portaldascorridas.com.br/event-details/1-corrida-da-fe",
+          "links_inscricao": [
+            "https://www.portaldascorridas.com.br/event-details/1-corrida-da-fe"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:01+00:00",
+      "updated_at": "2026-05-29T03:41:01+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -332816,6 +333752,45 @@
       "first_seen_at": "2026-05-29T03:42:06+00:00",
       "updated_at": "2026-05-29T03:42:06+00:00",
       "pais": "AU",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_117580_2026",
+      "titulo": "Case Creek Tails On Trails Fall 2K & 5K Run / Walk",
+      "data_evento": "2026-09-20",
+      "horario": "09:30",
+      "localizacao": "Coal Valley, IL",
+      "cidade": "Coal Valley, IL",
+      "estado": "IL",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/uykr97d7fv3sbrew._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/117580/case-creek-tails-on-trails-fall-2k-and-5k-run-walk",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/117580/case-creek-tails-on-trails-fall-2k-and-5k-run-walk"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-29T03:42:06+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -340723,6 +341698,40 @@
       "fotos": []
     },
     {
+      "id": "halfmarathons_122112_2026",
+      "titulo": "Moonlight Half Marathon",
+      "data_evento": "2026-09-25",
+      "horario": "19:00",
+      "localizacao": "Mapleton, EUA",
+      "cidade": "Mapleton, EUA",
+      "estado": "UT",
+      "distancias": [
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/moonlight_ut_featured.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/moonlight-half-marathon/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/moonlight-half-marathon/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:47+00:00",
+      "updated_at": "2026-05-30T20:50:44+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
       "id": "corrida-belem-night-run-etapa-fogo_pa_2026-09-26",
       "titulo": "Corrida Belém Night Run - Etapa Fogo",
       "data_evento": "2026-09-26",
@@ -341175,63 +342184,122 @@
       "id": "raceroster_115382_2026",
       "titulo": "Oktoberfest Run 5K/10K/13.1 Denver/Aurora",
       "data_evento": "2026-09-26",
-      "horario": "07:30",
-      "localizacao": "Aurora, CO",
-      "cidade": "Aurora, CO",
-      "estado": "CO",
+      "horario": "07:00",
+      "localizacao": "Metro Vancouver, BC",
+      "cidade": "Metro Vancouver, BC",
+      "estado": "BC",
       "distancias": [
         {
-          "km": 5.0,
+          "km": 3.0,
           "data": null,
           "horario": null
         },
         {
-          "km": "1 mi",
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": "13.1 mi",
+          "km": 1.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/bjktn7gt6hw2k4u6._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/xndmxj3d2cupfjwq._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/115382/oktoberfest-run-5k10k131-denveraurora",
+          "link_evento": "https://raceroster.com/events/2026/111208/2026-5-peaks-trail-running-series-mount-seymour",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/115382/oktoberfest-run-5k10k131-denveraurora",
-            "https://raceroster.com/events/2026/115459/run-for-donuts-5k10k131-denveraurora"
-          ],
-          "tipo": "inscricao"
-        },
-        {
-          "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CO/Centennial/OktoberfestRun5K10KDENVERAURORA",
-          "links_inscricao": [
-            "https://runsignup.com/Race/CO/Centennial/OktoberfestRun5K10KDENVERAURORA"
+            "https://raceroster.com/events/2026/111208/2026-5-peaks-trail-running-series-mount-seymour"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:44:32+00:00",
-      "updated_at": "2026-05-30T14:36:11+00:00",
-      "pais": "US",
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-29T03:42:06+00:00",
+      "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_119624_2026",
+      "titulo": "Perseverance Trail Run 2026",
+      "data_evento": "2026-09-26",
+      "horario": "11:00",
+      "localizacao": "Cumberland, BC",
+      "cidade": "Cumberland, BC",
+      "estado": "BC",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 6.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7j9622h7744h5zeh._cropped.jpeg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/119624/perseverance-trail-run-2026",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/119624/perseverance-trail-run-2026"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:14+00:00",
+      "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_111201_2026",
+      "titulo": "2026 5 Peaks Trail Running Series: Weaselhead",
+      "data_evento": "2026-09-26",
+      "horario": "08:00",
+      "localizacao": "Calgary, AB",
+      "cidade": "Calgary, AB",
+      "estado": "AB",
+      "distancias": [
+        {
+          "km": 3.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 1.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/2xn6v377wssnd6qr._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/111201/2026-5-peaks-trail-running-series-weaselhead",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/111201/2026-5-peaks-trail-running-series-weaselhead"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-29T03:42:06+00:00",
+      "pais": "CA",
       "fotos": []
     },
     {
@@ -355174,16 +356242,89 @@
       "id": "raceroster_116678_2026",
       "titulo": "The 9Th Annual Belmont Water Dog Run",
       "data_evento": "2026-09-26",
-      "horario": "07:00",
-      "localizacao": "Belmont, CA",
-      "cidade": "Belmont, CA",
-      "estado": "CA",
+      "horario": "09:00",
+      "localizacao": "Stevens Point, EUA",
+      "cidade": "Stevens Point, EUA",
+      "estado": "WI",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/wonderfulwaterrun_wi_featured.webp",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/wonderful-water-run-half-marathon-5k/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/wonderful-water-run-half-marathon-5k/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:29+00:00",
+      "updated_at": "2026-05-30T20:50:46+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_153025_2026",
+      "titulo": "John Wayne Grit Series – Moab, Utah",
+      "data_evento": "2026-09-26",
+      "horario": "07:30",
+      "localizacao": "Moab, EUA",
+      "cidade": "Moab, EUA",
+      "estado": "UT",
       "distancias": [
         {
           "km": 10.0,
           "data": null,
           "horario": null
         },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2025/08/John-Wayne-Grit-Series-Moab-Utah-png-scaled.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/john-wayne-grit-series-moab-utah/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/john-wayne-grit-series-moab-utah/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:34+00:00",
+      "updated_at": "2026-05-30T20:50:46+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_121280_2026",
+      "titulo": "Buckeye Trail Blue Blaze Festival Half Marathon, 10K & 5K",
+      "data_evento": "2026-09-26",
+      "horario": "09:00",
+      "localizacao": "Shawneeio, EUA",
+      "cidade": "Shawneeio, EUA",
+      "estado": "OH",
+      "distancias": [
         {
           "km": 5.0,
           "data": null,
@@ -355195,22 +356336,22 @@
           "horario": null
         },
         {
-          "km": "1 mi",
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/wkw44uq4f5yyq92u._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/buckeyetrail_oh_featured.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/116678/the-9th-annual-belmont-water-dog-run",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/buckeye-trail-blue-blaze-festival-half-marathon-10k-5k/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/116678/the-9th-annual-belmont-water-dog-run"
+            "https://www.halfmarathons.net/races/buckeye-trail-blue-blaze-festival-half-marathon-10k-5k/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -355524,6 +356665,40 @@
       "first_seen_at": "2026-05-29T03:41:01+00:00",
       "updated_at": "2026-05-29T03:41:01+00:00",
       "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "bmw-berlin-marathon_de_2026",
+      "titulo": "BMW Berlin Marathon",
+      "data_evento": "2026-09-27",
+      "horario": "09:15",
+      "localizacao": "Berlim, Alemanha",
+      "cidade": "Berlim, Alemanha",
+      "estado": "BE",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.bmw-berlin-marathon.com/fileadmin/_processed_/4/7/csm_BM25_Website_Teaser_1920x1080_332c01cbb7.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "BMW Berlin Marathon",
+          "link_evento": "https://www.bmw-berlin-marathon.com/en/",
+          "links_inscricao": [
+            "https://www.bmw-berlin-marathon.com/en/"
+          ],
+          "tipo": "organizador"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:38+00:00",
+      "updated_at": "2026-05-30T20:49:23+00:00",
+      "pais": "DE",
       "fotos": []
     },
     {
@@ -356567,34 +357742,19 @@
       "fotos": []
     },
     {
-      "id": "raceroster_119221_2026",
-      "titulo": "Sri Chinmoy Spring Half Marathon, 10 Km, & Kids 2.5 Km",
+      "id": "raceroster_111196_2026",
+      "titulo": "2026 5 Peaks Trail Running Series: Devon",
       "data_evento": "2026-09-27",
-      "horario": "09:00",
-      "localizacao": "Christchurch, CAN",
-      "cidade": "Christchurch, CAN",
-      "estado": "CAN",
+      "horario": "07:30",
+      "localizacao": "Devon, AB",
+      "cidade": "Devon, AB",
+      "estado": "AB",
       "distancias": [
-        {
-          "km": 2.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
         {
           "km": 21.0,
           "data": null,
           "horario": null
-        }
-      ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/senmjv5uyu7xt77b._original.png",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
+        },
         {
           "nome": "Race Roster",
           "link_evento": "https://raceroster.com/events/2026/119221/sri-chinmoy-spring-half-marathon-10-km-and-kids-25-km",
@@ -356752,7 +357912,7 @@
           "horario": null
         },
         {
-          "km": 10.0,
+          "km": 1.0,
           "data": null,
           "horario": null
         },
@@ -362602,13 +363762,13 @@
       "fotos": []
     },
     {
-      "id": "circuito-das-estacoes-florianopolis-primavera",
-      "titulo": "Circuito das Estações - Primavera - Florianópolis",
+      "id": "circuito-das-estacoes-aracaju-primavera",
+      "titulo": "Circuito das Estações - Primavera - Aracaju",
       "data_evento": "2026-09-27",
       "horario": null,
-      "localizacao": "Florianópolis, SC",
-      "cidade": "Florianópolis",
-      "estado": "SC",
+      "localizacao": "Aracaju, SE",
+      "cidade": "Aracaju",
+      "estado": "SE",
       "distancias": [
         {
           "km": 5.0,
@@ -362627,9 +363787,9 @@
       "fontes": [
         {
           "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/florianopolis/primavera",
+          "link_evento": "https://www.circuitodasestacoes.com.br/aracaju/primavera",
           "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-primavera-florianopolis"
+            "https://www.runningland.com.br/circuito-das-estacoes-2026-primavera-aracaju"
           ],
           "tipo": "organizador"
         }
@@ -363044,28 +364204,33 @@
       "id": "raceroster_114677_2026",
       "titulo": "Warrior Way 5K",
       "data_evento": "2026-09-27",
-      "horario": "10:00",
-      "localizacao": "Zephyr Cove, NV",
-      "cidade": "Zephyr Cove, NV",
-      "estado": "NV",
+      "horario": "07:00",
+      "localizacao": "Oklahoma City, EUA",
+      "cidade": "Oklahoma City, EUA",
+      "estado": "OK",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
         }
       ],
-      "imagem_url": null,
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/09/half-marathon-guide-hero-image-landscape.webp",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/114677/warrior-way-5k",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/heroes-and-villains-oklahoma-city/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/114677/warrior-way-5k"
+            "https://www.halfmarathons.net/races/heroes-and-villains-oklahoma-city/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -378501,10 +379666,10 @@
       "id": "raceroster_129837_2026",
       "titulo": "Battle Of The Branches 5K Run",
       "data_evento": "2026-10-03",
-      "horario": "07:30",
-      "localizacao": "Phoenix, AZ",
-      "cidade": "Phoenix, AZ",
-      "estado": "AZ",
+      "horario": "09:00",
+      "localizacao": "Omaha, NE",
+      "cidade": "Omaha, NE",
+      "estado": "NE",
       "distancias": [
         {
           "km": 5.0,
@@ -378512,15 +379677,15 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/tn7t3hwzndnjbv3h._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/bamyrrx2hsp9m5v6._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/129837/battle-of-the-branches-5k-run",
+          "link_evento": "https://raceroster.com/events/2026/118070/43rd-annual-creighton-university-school-of-medicine-walk-for-wishes",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/129837/battle-of-the-branches-5k-run"
+            "https://raceroster.com/events/2026/118070/43rd-annual-creighton-university-school-of-medicine-walk-for-wishes"
           ],
           "tipo": "inscricao"
         }
@@ -378654,12 +379819,46 @@
       "fotos": []
     },
     {
-      "id": "raceroster_117363_2026",
-      "titulo": "Vanish Brewing 5K – The House That Beer Built",
+      "id": "raceroster_129837_2026",
+      "titulo": "Battle Of The Branches 5K Run",
       "data_evento": "2026-10-03",
-      "horario": "10:30",
-      "localizacao": "Leesburg, VA",
-      "cidade": "Leesburg, VA",
+      "horario": "07:30",
+      "localizacao": "Phoenix, AZ",
+      "cidade": "Phoenix, AZ",
+      "estado": "AZ",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/tn7t3hwzndnjbv3h._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/129837/battle-of-the-branches-5k-run",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/129837/battle-of-the-branches-5k-run"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-30T01:31:09+00:00",
+      "updated_at": "2026-05-30T20:50:52+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_117370_2026",
+      "titulo": "Lost Dog 5K & 10K",
+      "data_evento": "2026-10-03",
+      "horario": "17:30",
+      "localizacao": "Lorton, VA",
+      "cidade": "Lorton, VA",
       "estado": "VA",
       "distancias": [
         {
@@ -378668,7 +379867,7 @@
           "horario": null
         },
         {
-          "km": "1 mi",
+          "km": 10.0,
           "data": null,
           "horario": null
         }
@@ -378929,6 +380128,55 @@
       "first_seen_at": "2026-05-29T03:42:01+00:00",
       "updated_at": "2026-05-30T20:51:37+00:00",
       "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_119660_2026",
+      "titulo": "Center Of The Nation Series Day 6 Marathon & Half Marathon",
+      "data_evento": "2026-10-03",
+      "horario": "07:00",
+      "localizacao": "Baker, EUA",
+      "cidade": "Baker, EUA",
+      "estado": "MT",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/Baker-Montana.webp",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/center-of-the-nation-series-day-6-marathon-half-marathon/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/center-of-the-nation-series-day-6-marathon-half-marathon/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:44+00:00",
+      "updated_at": "2026-05-30T20:50:54+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -379196,18 +380444,13 @@
       "id": "raceroster_116844_2026",
       "titulo": "Run Crazy Horse",
       "data_evento": "2026-10-04",
-      "horario": "08:00",
-      "localizacao": "Crazy Horse, SD",
-      "cidade": "Crazy Horse, SD",
-      "estado": "SD",
+      "horario": "06:30",
+      "localizacao": "San Diego County, CA",
+      "cidade": "San Diego County, CA",
+      "estado": "CA",
       "distancias": [
         {
           "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 42.0,
           "data": null,
           "horario": null
         },
@@ -379222,22 +380465,22 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/tqhaxabxusrsnnw2._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/avpa4zjyvzjgmrbb._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/116844/run-crazy-horse",
+          "link_evento": "https://raceroster.com/events/2026/111309/pacific-beach-half-marathon-and-5k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/116844/run-crazy-horse"
+            "https://raceroster.com/events/2026/111309/pacific-beach-half-marathon-and-5k"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T15:36:14+00:00",
-      "updated_at": "2026-05-30T14:36:59+00:00",
+      "first_seen_at": "2026-05-29T03:41:40+00:00",
+      "updated_at": "2026-05-30T20:49:27+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -386792,21 +388035,6 @@
           "km": "26.2 mi",
           "data": null,
           "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
         }
       ],
       "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-89895-1763763579.8104-0.bPiov7.jpg",
@@ -386820,20 +388048,11 @@
             "https://runsignup.com/Race/UT/Syracuse/AntelopeIslandMarathon"
           ],
           "tipo": "inscricao"
-        },
-        {
-          "nome": "HalfMarathons.net",
-          "link_evento": "https://www.halfmarathons.net/races/antelope-island-marathon-26-2-13-1-10k-5k/",
-          "links_inscricao": [
-            "https://www.halfmarathons.net/races/antelope-island-marathon-26-2-13-1-10k-5k/",
-            "https://www.halfmarathons.net/races/antelope-island-marathon-half-marathon-10k-5k-2/"
-          ],
-          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:27+00:00",
-      "updated_at": "2026-05-29T20:42:04+00:00",
+      "updated_at": "2026-05-30T20:49:29+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -387322,7 +388541,7 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/q64p4kpyjttm93mg._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/5fzhkhpb9pddy7fs._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
@@ -387935,13 +389154,18 @@
       "id": "raceroster_110262_2026",
       "titulo": "Sticks N' Stones Trail Race 2026",
       "data_evento": "2026-10-10",
-      "horario": "09:00",
-      "localizacao": "Hamilton, ON",
-      "cidade": "Hamilton, ON",
-      "estado": "ON",
+      "horario": "07:30",
+      "localizacao": "Decatur, GA",
+      "cidade": "Decatur, GA",
+      "estado": "GA",
       "distancias": [
         {
           "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
           "data": null,
           "horario": null
         },
@@ -387951,66 +389175,173 @@
           "horario": null
         },
         {
-          "km": 26.0,
+          "km": 21.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 53.0,
+          "km": "13.1 mi",
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/a3su4rmh7xedtdzp._cropped.jpeg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/5fzhkhpb9pddy7fs._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/110262/sticks-n-stones-trail-race-2026",
+          "link_evento": "https://raceroster.com/events/2026/116679/bagel-run-5k10k131-atlanta",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/110262/sticks-n-stones-trail-race-2026"
+            "https://raceroster.com/events/2026/116679/bagel-run-5k10k131-atlanta"
+          ],
+          "tipo": "inscricao"
+        },
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/GA/Atlanta/BagelRun5K10KATLANTA1010",
+          "links_inscricao": [
+            "https://runsignup.com/Race/GA/Atlanta/BagelRun5K10KATLANTA1010",
+            "https://runsignup.com/Race/GA/Atlanta/CoffeeLoversRun5K10KATLANTA1010"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-29T03:42:06+00:00",
+      "first_seen_at": "2026-05-29T03:44:27+00:00",
+      "updated_at": "2026-05-30T20:49:28+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_114444_2026",
+      "titulo": "Carmel Valley Trail Race",
+      "data_evento": "2026-10-10",
+      "horario": "07:45",
+      "localizacao": "San Diego, CA",
+      "cidade": "San Diego, CA",
+      "estado": "CA",
+      "distancias": [
+        {
+          "km": "10 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/ajdbx94f9nwgtshy._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/114444/carmel-valley-trail-race",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/114444/carmel-valley-trail-race"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:01+00:00",
+      "updated_at": "2026-05-30T19:30:44+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_114999_2026",
+      "titulo": "Valley Vertikiller Trail Race 2026",
+      "data_evento": "2026-10-10",
+      "horario": "09:00",
+      "localizacao": "Abbotsford, BC",
+      "cidade": "Abbotsford, BC",
+      "estado": "BC",
+      "distancias": [
+        {
+          "km": 30.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 20.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/d62kahcn5c25eq3r._cropped.jpeg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/114999/valley-vertikiller-trail-race-2026",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/114999/valley-vertikiller-trail-race-2026"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:17+00:00",
       "pais": "CA",
       "fotos": []
     },
     {
-      "id": "raceroster_113589_2026",
-      "titulo": "Papertown Trail Races",
+      "id": "raceroster_118252_2026",
+      "titulo": "Tour De Essex",
       "data_evento": "2026-10-10",
-      "horario": "09:00",
-      "localizacao": "Canton, NC",
-      "cidade": "Canton, NC",
-      "estado": "NC",
+      "horario": "07:30",
+      "localizacao": "Rochester, MN",
+      "cidade": "Rochester, MN",
+      "estado": "MN",
       "distancias": [
         {
-          "km": "6 mi",
+          "km": 7.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 17.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/bmpjytzpmyrj6cmc._original.jpg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/55454mgbphwbkppy._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/113589/papertown-trail-races",
+          "link_evento": "https://raceroster.com/events/2026/118252/tour-de-essex",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/113589/papertown-trail-races"
+            "https://raceroster.com/events/2026/118252/tour-de-essex"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T13:55:30+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -404469,9 +405800,9 @@
       "id": "raceroster_110379_2026",
       "titulo": "The 2026 Run For Education",
       "data_evento": "2026-10-11",
-      "horario": "08:00",
-      "localizacao": "San Ramon, CA",
-      "cidade": "San Ramon, CA",
+      "horario": "09:00",
+      "localizacao": "Weott, EUA",
+      "cidade": "Weott, EUA",
       "estado": "CA",
       "distancias": [
         {
@@ -404480,27 +405811,22 @@
           "horario": null
         },
         {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": "1 mi",
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/whjdc7ra3yat4pyp._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/weott_ca_featured.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/110379/the-2026-run-for-education",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/humboldt-redwoods-half-marathon-5k/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/110379/the-2026-run-for-education"
+            "https://www.halfmarathons.net/races/humboldt-redwoods-half-marathon-5k/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -406028,33 +407354,48 @@
       "id": "raceroster_110157_2026",
       "titulo": "Saw Wee Kee - Fall Trail Run",
       "data_evento": "2026-10-17",
-      "horario": "15:00",
-      "localizacao": "Yorkville, IL",
-      "cidade": "Yorkville, IL",
-      "estado": "IL",
+      "horario": "06:00",
+      "localizacao": "Agua Dulce, CA",
+      "cidade": "Agua Dulce, CA",
+      "estado": "CA",
       "distancias": [
         {
-          "km": "4 mi",
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 15.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/xc3dmudaea5wgtd6._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/jrumgunr2cnjgtn3._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/110157/saw-wee-kee-fall-trail-run",
+          "link_evento": "https://raceroster.com/events/2026/113954/spacerock-trail-race",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/110157/saw-wee-kee-fall-trail-run"
+            "https://raceroster.com/events/2026/113954/spacerock-trail-race"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:01+00:00",
-      "updated_at": "2026-05-30T14:37:01+00:00",
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:49:26+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -415466,6 +416807,40 @@
       "fotos": []
     },
     {
+      "id": "tcs-amsterdam-marathon_nl_2026",
+      "titulo": "TCS Amsterdam Marathon",
+      "data_evento": "2026-10-18",
+      "horario": "09:15",
+      "localizacao": "Amsterdã, Países Baixos",
+      "cidade": "Amsterdã, Países Baixos",
+      "estado": "NH",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Amsterdam Marathon",
+          "link_evento": "https://www.tcsamsterdammarathon.nl/en/",
+          "links_inscricao": [
+            "https://www.tcsamsterdammarathon.nl/en/"
+          ],
+          "tipo": "organizador"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:42+00:00",
+      "updated_at": "2026-05-30T20:49:23+00:00",
+      "pais": "NL",
+      "fotos": []
+    },
+    {
       "id": "ts_85142",
       "titulo": "Urban Trail Run - Etapa 2 Parque Horto Florestal",
       "data_evento": "2026-10-18",
@@ -416186,27 +417561,17 @@
           "km": 21.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event_logo/2016-06-30_00-51-06_logo_uid192760.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/aqr2zcat5rvpx62f._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/115619/phoenix-wicked-half-marathon-10k-5k-and-spooky-kids-sprint",
+          "link_evento": "https://raceroster.com/events/2026/111610/48th-annual-pumpkin-run-by-senior-coastsiders-october-18-2026",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/115619/phoenix-wicked-half-marathon-10k-5k-and-spooky-kids-sprint"
+            "https://raceroster.com/events/2026/111610/48th-annual-pumpkin-run-by-senior-coastsiders-october-18-2026"
           ],
           "tipo": "inscricao"
         }
@@ -416284,40 +417649,25 @@
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 42.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 16.0,
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/4qscvm26qjwezf2y._original.jpg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/x9sge6eugkxjh57f._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/113063/22nd-annual-prince-edward-island-marathon",
+          "link_evento": "https://raceroster.com/events/2026/118862/cloverdale-vineyard-races-10k-and-5k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/113063/22nd-annual-prince-edward-island-marathon"
+            "https://raceroster.com/events/2026/118862/cloverdale-vineyard-races-10k-and-5k"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-30T13:55:32+00:00",
-      "pais": "CA",
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T20:23:19+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -422020,27 +423370,22 @@
           "horario": null
         },
         {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
+          "km": 3.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/aqr2zcat5rvpx62f._original.png",
+      "imagem_url": null,
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/111610/48th-annual-pumpkin-run-by-senior-coastsiders-october-18-2026",
+          "nome": "Runner Brasil",
+          "link_evento": "https://www.runnerbrasil.com.br/Views/Runner/Runner_CalendarioDetalhe.aspx?idEvento=8939",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/111610/48th-annual-pumpkin-run-by-senior-coastsiders-october-18-2026"
+            "https://www.runnerbrasil.com.br/Views/Runner/Runner_CalendarioDetalhe.aspx?idEvento=8939"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -422179,6 +423524,84 @@
       "first_seen_at": "2026-05-30T01:07:54+00:00",
       "updated_at": "2026-05-30T20:51:41+00:00",
       "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_201986_2026",
+      "titulo": "2026 World Championship Event",
+      "data_evento": "2026-10-19",
+      "horario": "07:00",
+      "localizacao": "Las Vegas, NV, EUA",
+      "cidade": "Las Vegas, NV, EUA",
+      "estado": "NV",
+      "distancias": [
+        {
+          "km": 1.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 2.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-275942-1771964389.0773-0.bPNGFL.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/NV/LasVegas/WorldChampionship",
+          "links_inscricao": [
+            "https://runsignup.com/Race/NV/LasVegas/WorldChampionship"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:44:27+00:00",
+      "updated_at": "2026-05-29T03:44:27+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_119434_2026",
+      "titulo": "Mount Desert Island Marathon, Half Marathon & Relay",
+      "data_evento": "2026-10-18",
+      "horario": "08:30",
+      "localizacao": "Bar Harbor, EUA",
+      "cidade": "Bar Harbor, EUA",
+      "estado": "ME",
+      "distancias": [
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/mountdesertisland_me_featured.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/mount-desert-island-marathon-half-marathon-relay/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/mount-desert-island-marathon-half-marathon-relay/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 1,
+      "first_seen_at": "2026-05-29T03:41:29+00:00",
+      "updated_at": "2026-05-30T20:22:46+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -422555,24 +423978,34 @@
           "km": 5.0,
           "data": null,
           "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/6cqb7aq37u45mkb9._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/texas_tx_featured.png-scaled.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/117315/the-bones-run-5k",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/hidden-wonders-trail-run-half-marathon-10k-5k/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/117315/the-bones-run-5k"
+            "https://www.halfmarathons.net/races/hidden-wonders-trail-run-half-marathon-10k-5k/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-30T08:30:32+00:00",
-      "updated_at": "2026-05-30T14:37:02+00:00",
+      "miss_count": 1,
+      "first_seen_at": "2026-05-29T03:41:35+00:00",
+      "updated_at": "2026-05-30T20:22:46+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -422599,11 +424032,6 @@
           "km": "13.1 mi",
           "data": null,
           "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
         }
       ],
       "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-247368-1748982745.5595-0.bOp1Vz.png",
@@ -422617,19 +424045,11 @@
             "https://runsignup.com/Race/FL/Orlando/DisneyWineDineHalfMarathonWeekend2026"
           ],
           "tipo": "inscricao"
-        },
-        {
-          "nome": "HalfMarathons.net",
-          "link_evento": "https://www.halfmarathons.net/races/disney-wine-dine-half-marathon/",
-          "links_inscricao": [
-            "https://www.halfmarathons.net/races/disney-wine-dine-half-marathon/"
-          ],
-          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:27+00:00",
-      "updated_at": "2026-05-29T20:42:04+00:00",
+      "updated_at": "2026-05-30T20:49:29+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -429498,45 +430918,6 @@
       "fotos": []
     },
     {
-      "id": "runsignup_143765_2026",
-      "titulo": "Miles For Migraine San Francisco",
-      "data_evento": "2026-10-24",
-      "horario": "08:30",
-      "localizacao": "San Francisco, CA, EUA",
-      "cidade": "San Francisco, CA, EUA",
-      "estado": "CA",
-      "distancias": [
-        {
-          "km": "2 mi",
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/races/race143765-scaled-logo-0.bMiuFF.png",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CA/SanFrancisco/MilesforMigraineSanFranciscoFreeEvent",
-          "links_inscricao": [
-            "https://runsignup.com/Race/CA/SanFrancisco/MilesforMigraineSanFranciscoFreeEvent"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:44:32+00:00",
-      "updated_at": "2026-05-30T01:19:14+00:00",
-      "pais": "US",
-      "fotos": []
-    },
-    {
       "id": "runsignup_187388_2026",
       "titulo": "Miles For Smiles 5K Walk/Run",
       "data_evento": "2026-10-24",
@@ -432498,24 +433879,19 @@
       "fotos": []
     },
     {
-      "id": "runsignup_146105_2026",
-      "titulo": "Quail Trail 5K",
+      "id": "halfmarathons_121197_2026",
+      "titulo": "Great Bay Half Marathon & 5K",
       "data_evento": "2026-10-24",
-      "horario": "08:00",
-      "localizacao": "Thomasville, GA, EUA",
-      "cidade": "Thomasville, GA, EUA",
-      "estado": "GA",
+      "horario": "11:00",
+      "localizacao": "Newmarket, EUA",
+      "cidade": "Newmarket, EUA",
+      "estado": "NH",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
-        }
-      ],
-      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/races/race146105-logo-0.bKnfHs.png",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
+        },
         {
           "nome": "RunSignup",
           "link_evento": "https://runsignup.com/Race/GA/Thomasville/QuailTrail5K",
@@ -432556,7 +433932,7 @@
           "links_inscricao": [
             "https://runsignup.com/Race/MO/Springfield/SpringfieldPumpkinRoll5k"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -432896,76 +434272,37 @@
       "fotos": []
     },
     {
-      "id": "portaldc_7c560e22-1ddd-44dc-950b-f6bc634b90d1",
-      "titulo": "2ª Corrida Das Águas",
+      "id": "dublin-city-marathon_ie_2026",
+      "titulo": "Dublin City Marathon",
       "data_evento": "2026-10-25",
-      "horario": "07:00",
-      "localizacao": "Pouso Alegre, MG",
-      "cidade": "Pouso Alegre",
-      "estado": "MG",
+      "horario": "09:00",
+      "localizacao": "Dublin, Irlanda",
+      "cidade": "Dublin, Irlanda",
+      "estado": "D",
       "distancias": [
         {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
+          "km": 42.195,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://static.wixstatic.com/media/72b0e3_da825276830d4c4a8a990093554fb49b~mv2.jpg/v1/fill/w_1600,h_900,al_c,q_85/72b0e3_da825276830d4c4a8a990093554fb49b~mv2.jpg",
-      "inscricoes_abertas": null,
+      "imagem_url": "https://irishlifedublinmarathon.ie/wp-content/uploads/2025/02/irish-life-logo-image.png",
+      "inscricoes_abertas": false,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Portal das Corridas",
-          "link_evento": "https://www.portaldascorridas.com.br/event-details/2-corrida-das-aguas",
+          "nome": "Dublin City Marathon",
+          "link_evento": "https://www.irishlifedublinmarathon.ie/",
           "links_inscricao": [
-            "https://www.portaldascorridas.com.br/event-details/2-corrida-das-aguas"
+            "https://www.irishlifedublinmarathon.ie/"
           ],
-          "tipo": "inscricao"
+          "tipo": "organizador"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:01+00:00",
-      "updated_at": "2026-05-29T19:11:58+00:00",
-      "pais": "BR",
-      "fotos": []
-    },
-    {
-      "id": "portaldc_3227bf19-092d-4cd9-939c-6ca3d9532462",
-      "titulo": "1º Volta Do Aterradinho",
-      "data_evento": "2026-10-25",
-      "horario": "08:00",
-      "localizacao": "Pouso Alegre, MG",
-      "cidade": "Pouso Alegre",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 6.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://static.wixstatic.com/media/72b0e3_eea3ce4f16a0438fa381c5adfdb772ca~mv2.jpeg/v1/fill/w_1066,h_1599,al_c,q_85/72b0e3_eea3ce4f16a0438fa381c5adfdb772ca~mv2.jpeg",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Portal das Corridas",
-          "link_evento": "https://www.portaldascorridas.com.br/event-details/1-volta-do-aterradinho",
-          "links_inscricao": [
-            "https://www.portaldascorridas.com.br/event-details/1-volta-do-aterradinho"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:01+00:00",
-      "updated_at": "2026-05-29T19:11:59+00:00",
-      "pais": "BR",
+      "first_seen_at": "2026-05-29T03:41:42+00:00",
+      "updated_at": "2026-05-30T20:49:23+00:00",
+      "pais": "IE",
       "fotos": []
     },
     {
@@ -433518,6 +434855,50 @@
       "first_seen_at": "2026-05-29T03:42:06+00:00",
       "updated_at": "2026-05-29T03:42:06+00:00",
       "pais": "AU",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_111897_2026",
+      "titulo": "2026 Binational Race",
+      "data_evento": "2026-10-25",
+      "horario": "06:50",
+      "localizacao": "San Diego, CA",
+      "cidade": "San Diego, CA",
+      "estado": "CA",
+      "distancias": [
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 12.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/6wdwkeqj7ba4tttd._original.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2026/111897/2026-binational-race",
+          "links_inscricao": [
+            "https://raceroster.com/events/2026/111897/2026-binational-race"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:20+00:00",
+      "pais": "US",
       "fotos": []
     },
     {
@@ -439884,24 +441265,9 @@
           "km": "1 mi",
           "data": null,
           "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": "13.1 mi",
-          "data": null,
-          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/tytdfzv7tqjw6evg._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/799e4mhqppw3brmt._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
@@ -440134,13 +441500,13 @@
       "fotos": []
     },
     {
-      "id": "raceroster_118911_2026",
-      "titulo": "Halloween Trick Or Trot Run 5K/10K/13.1 Phoenix",
+      "id": "raceroster_118906_2026",
+      "titulo": "Halloween Trick Or Trot Run 5K/10K/13.1 Las Vegas",
       "data_evento": "2026-10-31",
       "horario": "07:30",
-      "localizacao": "Phoenix, AZ",
-      "cidade": "Phoenix, AZ",
-      "estado": "AZ",
+      "localizacao": "Las Vegas, NV",
+      "cidade": "Las Vegas, NV",
+      "estado": "NV",
       "distancias": [
         {
           "km": 5.0,
@@ -440174,24 +441540,24 @@
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118911/halloween-trick-or-trot-run-5k10k131-phoenix",
+          "link_evento": "https://raceroster.com/events/2026/118906/halloween-trick-or-trot-run-5k10k131-las-vegas",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/118911/halloween-trick-or-trot-run-5k10k131-phoenix"
+            "https://raceroster.com/events/2026/118906/halloween-trick-or-trot-run-5k10k131-las-vegas"
           ],
           "tipo": "inscricao"
         },
         {
           "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/AZ/Phoenix/HalloweenTrickOrTrotRun5K10KPHOENIX1031",
+          "link_evento": "https://runsignup.com/Race/NV/LasVegas/HalloweenTrickOrTrotRun5K10KLASVEGAS1031",
           "links_inscricao": [
-            "https://runsignup.com/Race/AZ/Phoenix/HalloweenTrickOrTrotRun5K10KPHOENIX1031"
+            "https://runsignup.com/Race/NV/LasVegas/HalloweenTrickOrTrotRun5K10KLASVEGAS1031"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-30T01:19:11+00:00",
+      "first_seen_at": "2026-05-29T03:44:32+00:00",
+      "updated_at": "2026-05-30T20:49:26+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -442884,9 +444250,9 @@
       "titulo": "Halloween Trick Or Trot Run 5K/10K/13.1 Los Angeles",
       "data_evento": "2026-10-31",
       "horario": "07:30",
-      "localizacao": "Los Angeles, CA, EUA",
-      "cidade": "Los Angeles, CA, EUA",
-      "estado": "CA",
+      "localizacao": "Kansas City, MO, EUA",
+      "cidade": "Kansas City, MO, EUA",
+      "estado": "MO",
       "distancias": [
         {
           "km": 5.0,
@@ -442915,19 +444281,16 @@
       "fontes": [
         {
           "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CA/LosAngeles/2026HalloweenTrickOrTrotRun5K10KLOSANGELES",
+          "link_evento": "https://runsignup.com/Race/MO/KansasCity/HalloweenTrickOrTrotRun5K10KKANSASCITY1031",
           "links_inscricao": [
-            "https://runsignup.com/Race/CA/LosAngeles/2026HalloweenTrickOrTrotRun5K10KLOSANGELES",
-            "https://runsignup.com/Race/CA/Sacramento/HalloweenTrickOrTrotRun5K10KSACRAMENTO1031",
-            "https://runsignup.com/Race/CA/SanDiego/HalloweenTrickOrTrotRun5K10KSANDIEGO1031",
-            "https://runsignup.com/Race/CA/SanFrancisco/HalloweenTrickOrTrotRun5K10KSANFRANCISCO1031"
+            "https://runsignup.com/Race/MO/KansasCity/HalloweenTrickOrTrotRun5K10KKANSASCITY1031"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:44:32+00:00",
-      "updated_at": "2026-05-30T19:30:47+00:00",
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:49:30+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -445778,9 +447141,9 @@
       "titulo": "Pb&J Fuel Run 5K/10K/13.1 Los Angeles",
       "data_evento": "2026-10-31",
       "horario": "07:30",
-      "localizacao": "Los Angeles, CA, EUA",
-      "cidade": "Los Angeles, CA, EUA",
-      "estado": "CA",
+      "localizacao": "Centennial, CO, EUA",
+      "cidade": "Centennial, CO, EUA",
+      "estado": "CO",
       "distancias": [
         {
           "km": 5.0,
@@ -445809,19 +447172,114 @@
       "fontes": [
         {
           "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CA/LosAngeles/PBJFuelRun5K10KLOSANGELES",
+          "link_evento": "https://runsignup.com/Race/CO/Centennial/PBJFuelRun5K10KDENVERAURORA1031",
           "links_inscricao": [
-            "https://runsignup.com/Race/CA/LosAngeles/PBJFuelRun5K10KLOSANGELES",
-            "https://runsignup.com/Race/CA/Sacramento/PBJFuelRun5K10KSACRAMENTO1031",
-            "https://runsignup.com/Race/CA/SanDiego/PBJFuelRun5K10KSANDIEGO1031",
-            "https://runsignup.com/Race/CA/SanFrancisco/PBJFuelRun5K10KSANFRANCISCO1031"
+            "https://runsignup.com/Race/CO/Centennial/PBJFuelRun5K10KDENVERAURORA1031"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-30T19:18:33+00:00",
+      "updated_at": "2026-05-30T20:49:31+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_201635_2026",
+      "titulo": "Pb&J Fuel Run 5K/10K/13.1 Kansas City",
+      "data_evento": "2026-10-31",
+      "horario": "07:30",
+      "localizacao": "Kansas City, MO, EUA",
+      "cidade": "Kansas City, MO, EUA",
+      "estado": "MO",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "13.1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-271248-1768499966.5873-0.bPAsR-.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/MO/KansasCity/PBJFuelRun5K10KKANSASCITY1031",
+          "links_inscricao": [
+            "https://runsignup.com/Race/MO/KansasCity/PBJFuelRun5K10KKANSASCITY1031"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:49:31+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_201637_2026",
+      "titulo": "Pb&J Fuel Run 5K/10K/13.1 Memphis",
+      "data_evento": "2026-10-31",
+      "horario": "07:30",
+      "localizacao": "Memphis, TN, EUA",
+      "cidade": "Memphis, TN, EUA",
+      "estado": "TN",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "13.1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-271248-1768499966.5873-0.bPAsR-.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/TN/Memphis/PBJFuelRun5K10KMEMPHIS1031",
+          "links_inscricao": [
+            "https://runsignup.com/Race/TN/Memphis/PBJFuelRun5K10KMEMPHIS1031"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:32+00:00",
-      "updated_at": "2026-05-30T19:30:47+00:00",
+      "updated_at": "2026-05-30T20:49:31+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -451573,16 +453031,16 @@
       "fotos": []
     },
     {
-      "id": "raceroster_122483_2026",
-      "titulo": "Pen Park Trails Fest",
+      "id": "raceroster_125326_2026",
+      "titulo": "Salute The Troops 5K & 10K",
       "data_evento": "2026-11-07",
-      "horario": "09:00",
-      "localizacao": "Fish Creek, WI",
-      "cidade": "Fish Creek, WI",
-      "estado": "WI",
+      "horario": "09:45",
+      "localizacao": "Glenn Dale, MD",
+      "cidade": "Glenn Dale, MD",
+      "estado": "MD",
       "distancias": [
         {
-          "km": 30.0,
+          "km": 5.0,
           "data": null,
           "horario": null
         },
@@ -451592,15 +453050,15 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/t2ntvb2j93rb5c6n._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/122483/pen-park-trails-fest",
+          "link_evento": "https://raceroster.com/events/2026/125326/salute-the-troops-5k-and-10k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/122483/pen-park-trails-fest"
+            "https://raceroster.com/events/2026/125326/salute-the-troops-5k-and-10k"
           ],
           "tipo": "inscricao"
         }
@@ -459831,6 +461289,40 @@
       "fotos": []
     },
     {
+      "id": "athens-classic-marathon_gr_2026",
+      "titulo": "Athens Classic Marathon",
+      "data_evento": "2026-11-08",
+      "horario": "09:00",
+      "localizacao": "Atenas, Grécia",
+      "cidade": "Atenas, Grécia",
+      "estado": "A",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.athensauthenticmarathon.gr/img/hero/image/thumbs/desktop/programma_diorganosis_arxiki.jpg",
+      "inscricoes_abertas": false,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Athens Classic Marathon",
+          "link_evento": "https://www.athensauthenticmarathon.gr/en/",
+          "links_inscricao": [
+            "https://www.athensauthenticmarathon.gr/en/"
+          ],
+          "tipo": "organizador"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:42+00:00",
+      "updated_at": "2026-05-29T03:41:42+00:00",
+      "pais": "GR",
+      "fotos": []
+    },
+    {
       "id": "ts_85058",
       "titulo": "2026 Nubank Ultravioleta Triday Series - Bertioga Ii",
       "data_evento": "2026-11-08",
@@ -465493,32 +466985,24 @@
       "fotos": []
     },
     {
-      "id": "raceroster_112627_2026",
+      "id": "halfmarathons_142017_2026",
       "titulo": "Bigfoot Half Trail Run",
       "data_evento": "2026-11-14",
       "horario": "08:00",
-      "localizacao": "Hebron, IN",
-      "cidade": "Hebron, IN",
+      "localizacao": "Hebron, EUA",
+      "cidade": "Hebron, EUA",
       "estado": "IN",
       "distancias": [
         {
-          "km": 21.0,
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/zh7d5pk4ybxfyvb9._original.jpg",
+      "imagem_url": null,
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
-        {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/112627/bigfoot-half-trail-run",
-          "links_inscricao": [
-            "https://raceroster.com/events/2026/112627/bigfoot-half-trail-run"
-          ],
-          "tipo": "inscricao"
-        },
         {
           "nome": "HalfMarathons.net",
           "link_evento": "https://www.halfmarathons.net/races/bigfoot-half-trail-run/",
@@ -465530,7 +467014,7 @@
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-30T01:31:09+00:00",
-      "updated_at": "2026-05-30T19:30:44+00:00",
+      "updated_at": "2026-05-30T20:49:29+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -475399,11 +476883,6 @@
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
         }
       ],
       "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/races/race105951-logo-0.bJ4yKw.png",
@@ -475417,14 +476896,6 @@
             "https://runsignup.com/Race/NC/HollySprings/HollySpringsHalfMarathon"
           ],
           "tipo": "inscricao"
-        },
-        {
-          "nome": "HalfMarathons.net",
-          "link_evento": "https://www.halfmarathons.net/races/holly-springs-half-marathon-10k-5k/",
-          "links_inscricao": [
-            "https://www.halfmarathons.net/races/holly-springs-half-marathon-10k-5k/"
-          ],
-          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -480426,6 +481897,53 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:40:51+00:00",
       "updated_at": "2026-05-30T20:50:40+00:00",
+      "pais": "BR",
+      "fotos": []
+    },
+    {
+      "id": "tfsapp_102825",
+      "titulo": "Shopping Plaza Sul Run 2026",
+      "data_evento": "2026-11-22",
+      "horario": null,
+      "localizacao": "Shopping Plaza Sul, SP",
+      "cidade": "Shopping Plaza Sul",
+      "estado": "SP",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d1au5iau2exwyo.cloudfront.net/praia_teste_3f7367ec5f.jpeg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "TF Sports App",
+          "link_evento": "https://www.tfsports.com.br/aulas-e-eventos/shopping-plaza-sul-2026",
+          "links_inscricao": [
+            "https://www.tfsports.com.br/aulas-e-eventos/shopping-plaza-sul-2026"
+          ],
+          "tipo": "organizador"
+        },
+        {
+          "nome": "TF Sports",
+          "link_evento": "https://www.tfsports.com.br/aulas-e-eventos/shopping-plaza-sul-2026",
+          "links_inscricao": [
+            "https://www.tfsports.com.br/aulas-e-eventos/shopping-plaza-sul-2026"
+          ],
+          "tipo": "organizador"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:40:50+00:00",
+      "updated_at": "2026-05-29T03:40:50+00:00",
       "pais": "BR",
       "fotos": []
     },
@@ -488177,50 +489695,6 @@
       "fotos": []
     },
     {
-      "id": "runsignup_110440_2026",
-      "titulo": "Drumstick Dash",
-      "data_evento": "2026-11-26",
-      "horario": "08:30",
-      "localizacao": "North Hollywood, CA, EUA",
-      "cidade": "North Hollywood, CA, EUA",
-      "estado": "CA",
-      "distancias": [
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 1.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-117019-1777473409.0362-0.bP8HEb.png",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CA/NorthHollywood/DrumstickDashLA",
-          "links_inscricao": [
-            "https://runsignup.com/Race/CA/NorthHollywood/DrumstickDashLA"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:44:32+00:00",
-      "updated_at": "2026-05-30T19:30:47+00:00",
-      "pais": "US",
-      "fotos": []
-    },
-    {
       "id": "runsignup_127483_2026",
       "titulo": "East Berlin 5K Turkey Trot",
       "data_evento": "2026-11-26",
@@ -494014,13 +495488,13 @@
       "fotos": []
     },
     {
-      "id": "raceroster_118779_2026",
-      "titulo": "Rylie’S Smile Turkey Escape 5K & 1M",
-      "data_evento": "2026-11-26",
-      "horario": "09:00",
-      "localizacao": "Rehoboth Beach, DE",
-      "cidade": "Rehoboth Beach, DE",
-      "estado": "DE",
+      "id": "raceroster_118304_2026",
+      "titulo": "Lake Anna Turkey Trot 5K, 10K, & Half",
+      "data_evento": "2026-11-27",
+      "horario": "09:30",
+      "localizacao": "Spotsylvania Courthouse, VA",
+      "cidade": "Spotsylvania Courthouse, VA",
+      "estado": "VA",
       "distancias": [
         {
           "km": 5.0,
@@ -494028,7 +495502,12 @@
           "horario": null
         },
         {
-          "km": "1 mi",
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
           "data": null,
           "horario": null
         }
@@ -494053,19 +495532,14 @@
       "fotos": []
     },
     {
-      "id": "raceroster_125465_2026",
-      "titulo": "Bank Of Marin Turkey Trot",
-      "data_evento": "2026-11-26",
-      "horario": "08:00",
-      "localizacao": "Novato, CA",
-      "cidade": "Novato, CA",
-      "estado": "CA",
+      "id": "raceroster_118302_2026",
+      "titulo": "Black Friday 5K & 10K",
+      "data_evento": "2026-11-27",
+      "horario": "08:30",
+      "localizacao": "Herndon, VA",
+      "cidade": "Herndon, VA",
+      "estado": "VA",
       "distancias": [
-        {
-          "km": "1 mi",
-          "data": null,
-          "horario": null
-        },
         {
           "km": 5.0,
           "data": null,
@@ -494077,15 +495551,15 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/wjzhgmxxpcwzvtab._cropped.jpeg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/7469ab247vupetr5._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/125465/bank-of-marin-turkey-trot",
+          "link_evento": "https://raceroster.com/events/2026/118302/black-friday-5k-and-10k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/125465/bank-of-marin-turkey-trot"
+            "https://raceroster.com/events/2026/118302/black-friday-5k-and-10k"
           ],
           "tipo": "inscricao"
         }
@@ -495832,9 +497306,9 @@
       "titulo": "Coffee Lovers Run 5K/10K/13.1 Los Angeles",
       "data_evento": "2026-11-28",
       "horario": "07:30",
-      "localizacao": "Los Angeles, CA, EUA",
-      "cidade": "Los Angeles, CA, EUA",
-      "estado": "CA",
+      "localizacao": "Centennial, CO, EUA",
+      "cidade": "Centennial, CO, EUA",
+      "estado": "CO",
       "distancias": [
         {
           "km": 5.0,
@@ -495863,19 +497337,65 @@
       "fontes": [
         {
           "nome": "RunSignup",
-          "link_evento": "https://runsignup.com/Race/CA/LosAngeles/CoffeeLoversRun5K10KLOSANGELES",
+          "link_evento": "https://runsignup.com/Race/CO/Centennial/CoffeeLoversRun5K10KDENVERAURORA1128",
           "links_inscricao": [
-            "https://runsignup.com/Race/CA/LosAngeles/CoffeeLoversRun5K10KLOSANGELES",
-            "https://runsignup.com/Race/CA/Sacramento/CoffeeLoversRun5K10KSACRAMENTO1128",
-            "https://runsignup.com/Race/CA/SanDiego/CoffeeLoversRun5K10KSANDIEGO1128",
-            "https://runsignup.com/Race/CA/SanFrancisco/CoffeeLoversRun5K10KSANFRANCISCO1128"
+            "https://runsignup.com/Race/CO/Centennial/CoffeeLoversRun5K10KDENVERAURORA1128"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:30+00:00",
-      "updated_at": "2026-05-30T19:30:46+00:00",
+      "updated_at": "2026-05-30T20:49:30+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "runsignup_201462_2026",
+      "titulo": "Coffee Lovers Run 5K/10K/13.1 Kansas City",
+      "data_evento": "2026-11-28",
+      "horario": "07:30",
+      "localizacao": "Kansas City, MO, EUA",
+      "cidade": "Kansas City, MO, EUA",
+      "estado": "MO",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "13.1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-270817-1768484444.1991-0.bPAo5C.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "RunSignup",
+          "link_evento": "https://runsignup.com/Race/MO/KansasCity/CoffeeLoversRun5K10KKANSASCITY1128",
+          "links_inscricao": [
+            "https://runsignup.com/Race/MO/KansasCity/CoffeeLoversRun5K10KKANSASCITY1128"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:06+00:00",
+      "updated_at": "2026-05-30T20:49:30+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -498099,50 +499619,6 @@
       "fotos": []
     },
     {
-      "id": "portaldc_eaa8d7a2-87e8-4357-9608-b9159011c49c",
-      "titulo": "5ª Corrida De Rua E Caminhada De Cristo Rei",
-      "data_evento": "2026-11-29",
-      "horario": "07:00",
-      "localizacao": "Pouso Alegre, MG",
-      "cidade": "Pouso Alegre",
-      "estado": "MG",
-      "distancias": [
-        {
-          "km": 3.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
-          "data": null,
-          "horario": null
-        }
-      ],
-      "imagem_url": "https://static.wixstatic.com/media/72b0e3_4f380da6baec4f0d83cb71de8d058f2c~mv2.jpeg/v1/fill/w_1600,h_900,al_c,q_85/72b0e3_4f380da6baec4f0d83cb71de8d058f2c~mv2.jpeg",
-      "inscricoes_abertas": null,
-      "periodo_inscricao": null,
-      "fontes": [
-        {
-          "nome": "Portal das Corridas",
-          "link_evento": "https://www.portaldascorridas.com.br/event-details/5-corrida-de-rua-e-caminhada-de-cristo-rei",
-          "links_inscricao": [
-            "https://www.portaldascorridas.com.br/event-details/5-corrida-de-rua-e-caminhada-de-cristo-rei"
-          ],
-          "tipo": "inscricao"
-        }
-      ],
-      "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:41:01+00:00",
-      "updated_at": "2026-05-29T03:41:01+00:00",
-      "pais": "BR",
-      "fotos": []
-    },
-    {
       "id": "ts_86471",
       "titulo": "Meia Maratona Coop 2026 - Recife",
       "data_evento": "2026-11-29",
@@ -499862,16 +501338,6 @@
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 42.195,
-          "data": null,
-          "horario": null
         }
       ],
       "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/uploads/generic/genericImage-websiteLogo-266495-1763827894.4182-0.bPiEc2.png",
@@ -499886,19 +501352,11 @@
             "https://runsignup.com/Race/TX/SanAntonio/SanAntonioMarathon"
           ],
           "tipo": "inscricao"
-        },
-        {
-          "nome": "HalfMarathons.net",
-          "link_evento": "https://www.halfmarathons.net/races/san-antonio-marathon/",
-          "links_inscricao": [
-            "https://www.halfmarathons.net/races/san-antonio-marathon/"
-          ],
-          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:25+00:00",
-      "updated_at": "2026-05-29T20:42:04+00:00",
+      "updated_at": "2026-05-30T20:49:29+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -507888,32 +509346,27 @@
       "titulo": "Circuito das Estações - Verão - Rio de Janeiro",
       "data_evento": "2026-12-06",
       "horario": null,
-      "localizacao": "Rio de Janeiro, RJ",
-      "cidade": "Rio de Janeiro",
-      "estado": "RJ",
+      "localizacao": "Singapore, Singapura",
+      "cidade": "Singapore, Singapura",
+      "estado": "01",
       "distancias": [
         {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 10.0,
+          "km": 42.195,
           "data": null,
           "horario": null
         }
       ],
       "imagem_url": null,
-      "inscricoes_abertas": true,
+      "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/rio-de-janeiro/verao",
+          "nome": "World Athletics",
+          "link_evento": "https://worldathletics.org/competitions/road-running/byd-singapore-international-marathon-presented-by-adidas-7235595",
           "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-verao-rio-de-janeiro"
+            "https://worldathletics.org/competitions/road-running/byd-singapore-international-marathon-presented-by-adidas-7235595"
           ],
-          "tipo": "organizador"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -507923,13 +509376,115 @@
       "fotos": []
     },
     {
-      "id": "circuito-das-estacoes-porto-alegre-verao",
-      "titulo": "Circuito das Estações - Verão - Porto Alegre",
+      "id": "worldathletics_7236406_2026",
+      "titulo": "Fukuoka International Marathon",
       "data_evento": "2026-12-06",
       "horario": null,
-      "localizacao": "Porto Alegre, RS",
-      "cidade": "Porto Alegre",
-      "estado": "RS",
+      "localizacao": "Fukuoka, Japão",
+      "cidade": "Fukuoka, Japão",
+      "estado": "40",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "World Athletics",
+          "link_evento": "https://worldathletics.org/competitions/road-running/fukuoka-international-marathon-7236406",
+          "links_inscricao": [
+            "https://worldathletics.org/competitions/road-running/fukuoka-international-marathon-7236406"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 1,
+      "first_seen_at": "2026-05-29T03:41:32+00:00",
+      "updated_at": "2026-05-29T03:41:32+00:00",
+      "pais": "JP",
+      "fotos": []
+    },
+    {
+      "id": "worldathletics_7235577_2026",
+      "titulo": "Shanghai Marathon",
+      "data_evento": "2026-12-06",
+      "horario": null,
+      "localizacao": "Shanghai, China",
+      "cidade": "Shanghai, China",
+      "estado": "SH",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "World Athletics",
+          "link_evento": "https://worldathletics.org/competitions/road-running/shanghai-marathon-7235577",
+          "links_inscricao": [
+            "https://worldathletics.org/competitions/road-running/shanghai-marathon-7235577"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 1,
+      "first_seen_at": "2026-05-29T03:41:32+00:00",
+      "updated_at": "2026-05-29T03:41:32+00:00",
+      "pais": "CN",
+      "fotos": []
+    },
+    {
+      "id": "worldathletics_7236405_2026",
+      "titulo": "57Th Hofu Yomiuri Marathon",
+      "data_evento": "2026-12-06",
+      "horario": null,
+      "localizacao": "Hofu, Japão",
+      "cidade": "Hofu, Japão",
+      "estado": "35",
+      "distancias": [
+        {
+          "km": 42.195,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": null,
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "World Athletics",
+          "link_evento": "https://worldathletics.org/competitions/road-running/57th-hofu-yomiuri-marathon-7236405",
+          "links_inscricao": [
+            "https://worldathletics.org/competitions/road-running/57th-hofu-yomiuri-marathon-7236405"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 1,
+      "first_seen_at": "2026-05-30T02:40:09+00:00",
+      "updated_at": "2026-05-30T02:40:09+00:00",
+      "pais": "JP",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_131474_2026",
+      "titulo": "Run Santa Run Augusta",
+      "data_evento": "2026-12-06",
+      "horario": "08:00",
+      "localizacao": "North Augusta, EUA",
+      "cidade": "North Augusta, EUA",
+      "estado": "SC",
       "distancias": [
         {
           "km": 5.0,
@@ -507940,19 +509495,24 @@
           "km": 10.0,
           "data": null,
           "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
         }
       ],
-      "imagem_url": null,
-      "inscricoes_abertas": true,
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/08/runsantarunatlanta.jpg",
+      "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Circuito das Estações",
-          "link_evento": "https://www.circuitodasestacoes.com.br/porto-alegre/verao",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/run-santa-run-augusta/",
           "links_inscricao": [
-            "https://www.runningland.com.br/circuito-das-estacoes-2026-verao-porto-alegre"
+            "https://www.halfmarathons.net/races/run-santa-run-augusta/"
           ],
-          "tipo": "organizador"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -508799,10 +510359,10 @@
       "id": "raceroster_118981_2026",
       "titulo": "Run For Breast Cancer 5K/10K/13.1 Denver/Aurora",
       "data_evento": "2026-12-12",
-      "horario": "07:30",
-      "localizacao": "Aurora, CO",
-      "cidade": "Aurora, CO",
-      "estado": "CO",
+      "horario": "09:30",
+      "localizacao": "Alexandria, VA",
+      "cidade": "Alexandria, VA",
+      "estado": "VA",
       "distancias": [
         {
           "km": 5.0,
@@ -508810,37 +510370,27 @@
           "horario": null
         },
         {
-          "km": "1 mi",
-          "data": null,
-          "horario": null
-        },
-        {
           "km": 10.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/xuzmhx2uxgcudsqb._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/sgx4txjvnft5fep2._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118981/run-for-breast-cancer-5k10k131-denveraurora",
+          "link_evento": "https://raceroster.com/events/2026/118429/the-faoa-army-navy-game-5k-and-10k",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/118981/run-for-breast-cancer-5k10k131-denveraurora"
+            "https://raceroster.com/events/2026/118429/the-faoa-army-navy-game-5k-and-10k"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T15:36:18+00:00",
-      "updated_at": "2026-05-30T13:55:37+00:00",
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:28+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -508971,17 +510521,12 @@
       "titulo": "Run For Breast Cancer 5K/10K/13.1 Phoenix",
       "data_evento": "2026-12-12",
       "horario": "07:30",
-      "localizacao": "Phoenix, AZ",
-      "cidade": "Phoenix, AZ",
-      "estado": "AZ",
+      "localizacao": "Escondido, CA",
+      "cidade": "Escondido, CA",
+      "estado": "CA",
       "distancias": [
         {
-          "km": 5.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": "1 mi",
+          "km": "10 mi",
           "data": null,
           "horario": null
         },
@@ -508991,27 +510536,27 @@
           "horario": null
         },
         {
-          "km": 21.0,
+          "km": 5.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/xuzmhx2uxgcudsqb._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/au6crq7dqfeyqb2s._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118987/run-for-breast-cancer-5k10k131-phoenix",
+          "link_evento": "https://raceroster.com/events/2026/114445/dixon-lake-1010-trail-race",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/118987/run-for-breast-cancer-5k10k131-phoenix"
+            "https://raceroster.com/events/2026/114445/dixon-lake-1010-trail-race"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:42:06+00:00",
-      "updated_at": "2026-05-30T00:45:05+00:00",
+      "updated_at": "2026-05-29T03:42:06+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -513919,29 +515464,122 @@
       "fotos": []
     },
     {
-      "id": "raceroster_113521_2026",
-      "titulo": "San Diego Santa Run",
+      "id": "halfmarathons_119401_2026",
+      "titulo": "Swamp Stomp Half Marathon",
       "data_evento": "2026-12-12",
-      "horario": "08:00",
-      "localizacao": "San Diego, CA",
-      "cidade": "San Diego, CA",
+      "horario": "07:00",
+      "localizacao": "Lake Charles, EUA",
+      "cidade": "Lake Charles, EUA",
+      "estado": "LA",
+      "distancias": [
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/swampstomp_la_featured.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/swamp-stomp-half-marathon/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/swamp-stomp-half-marathon/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:28+00:00",
+      "updated_at": "2026-05-30T20:51:51+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "halfmarathons_123033_2026",
+      "titulo": "Summit Rock Half Marathon, 10K & 5K",
+      "data_evento": "2026-12-12",
+      "horario": "07:30",
+      "localizacao": "Saratoga, EUA",
+      "cidade": "Saratoga, EUA",
       "estado": "CA",
       "distancias": [
         {
           "km": 5.0,
           "data": null,
           "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
+          "data": null,
+          "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/67xej2fc7hhh4r5z._cropped.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2023/11/Summit-Rock-Half-Marathon-10K-5K-in-Saratoga-CA.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/summit-rock-half-marathon-10k-5k/",
+          "links_inscricao": [
+            "https://www.halfmarathons.net/races/summit-rock-half-marathon-10k-5k/"
+          ],
+          "tipo": "calendario"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:41:28+00:00",
+      "updated_at": "2026-05-30T20:51:51+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_118984_2026",
+      "titulo": "Run For Breast Cancer 5K/10K/13.1 Memphis",
+      "data_evento": "2026-12-12",
+      "horario": "07:30",
+      "localizacao": "Memphis, TN",
+      "cidade": "Memphis, TN",
+      "estado": "TN",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "1 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/xuzmhx2uxgcudsqb._original.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/113521/san-diego-santa-run",
+          "link_evento": "https://raceroster.com/events/2026/118984/run-for-breast-cancer-5k10k131-memphis",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/113521/san-diego-santa-run"
+            "https://raceroster.com/events/2026/118984/run-for-breast-cancer-5k10k131-memphis"
           ],
           "tipo": "inscricao"
         }
@@ -514024,6 +515662,11 @@
           "km": 21.0,
           "data": null,
           "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
         }
       ],
       "imagem_url": "https://cdn.raceroster.com/event-logo/xuzmhx2uxgcudsqb._original.png",
@@ -514095,13 +515738,13 @@
       "fotos": []
     },
     {
-      "id": "raceroster_118419_2026",
-      "titulo": "Army V Navy 5K",
+      "id": "raceroster_113521_2026",
+      "titulo": "San Diego Santa Run",
       "data_evento": "2026-12-12",
-      "horario": "07:30",
-      "localizacao": "Fort Belvoir, VA",
-      "cidade": "Fort Belvoir, VA",
-      "estado": "VA",
+      "horario": "08:00",
+      "localizacao": "San Diego, CA",
+      "cidade": "San Diego, CA",
+      "estado": "CA",
       "distancias": [
         {
           "km": 5.0,
@@ -514109,15 +515752,15 @@
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/5uyanspmvhytvr99._original.png",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/67xej2fc7hhh4r5z._cropped.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/118419/army-v-navy-5k",
+          "link_evento": "https://raceroster.com/events/2026/113521/san-diego-santa-run",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/118419/army-v-navy-5k"
+            "https://raceroster.com/events/2026/113521/san-diego-santa-run"
           ],
           "tipo": "inscricao"
         }
@@ -514179,41 +515822,31 @@
       "fotos": []
     },
     {
-      "id": "raceroster_129638_2026",
-      "titulo": "Ameris Bank Jacksonville Marathon",
+      "id": "halfmarathons_122593_2026",
+      "titulo": "Grandview 13.1",
       "data_evento": "2026-12-12",
-      "horario": "07:00",
-      "localizacao": "Jacksonville, FL",
-      "cidade": "Jacksonville, FL",
-      "estado": "FL",
+      "horario": "09:00",
+      "localizacao": "Columbus, EUA",
+      "cidade": "Columbus, EUA",
+      "estado": "IN",
       "distancias": [
         {
-          "km": 42.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 21.0,
-          "data": null,
-          "horario": null
-        },
-        {
-          "km": 5.0,
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/bf96f93cactu25e6._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2024/07/grandview_in_featured.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2026/129638/ameris-bank-jacksonville-marathon",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/grandview-13-1/",
           "links_inscricao": [
-            "https://raceroster.com/events/2026/129638/ameris-bank-jacksonville-marathon"
+            "https://www.halfmarathons.net/races/grandview-13-1/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -533285,11 +534918,6 @@
           "km": 5.0,
           "data": null,
           "horario": null
-        },
-        {
-          "km": 21.097,
-          "data": null,
-          "horario": null
         }
       ],
       "imagem_url": "https://d368g9lw5ileu7.cloudfront.net/races/race126250-logo-0.bIgcyI.png",
@@ -533303,14 +534931,6 @@
             "https://runsignup.com/Race/IL/Chicago/F3LakeHalfMarathon5k"
           ],
           "tipo": "inscricao"
-        },
-        {
-          "nome": "HalfMarathons.net",
-          "link_evento": "https://www.halfmarathons.net/races/f3-lake-half-marathon-5k/",
-          "links_inscricao": [
-            "https://www.halfmarathons.net/races/f3-lake-half-marathon-5k/"
-          ],
-          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -545327,37 +546947,76 @@
       "estado": "IN",
       "distancias": [
         {
-          "km": 30.0,
+          "km": 42.0,
           "data": null,
           "horario": null
         },
         {
-          "km": 50.0,
+          "km": 21.0,
           "data": null,
           "horario": null
         },
         {
-          "km": "50 mi",
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/edbnds74t3tenaub._original.jpg",
+      "imagem_url": null,
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2027/118875/tombstone-30k50k50-mile",
+          "link_evento": "https://raceroster.com/events/2027/118005/little-rock-marathon-weekend",
           "links_inscricao": [
-            "https://raceroster.com/events/2027/118875/tombstone-30k50k50-mile"
+            "https://raceroster.com/events/2027/118005/little-rock-marathon-weekend"
           ],
           "tipo": "inscricao"
         }
       ],
       "miss_count": 0,
-      "first_seen_at": "2026-05-29T03:42:01+00:00",
-      "updated_at": "2026-05-30T14:37:16+00:00",
+      "first_seen_at": "2026-05-29T15:36:14+00:00",
+      "updated_at": "2026-05-30T20:51:58+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_130559_2027",
+      "titulo": "St. Patrick’S Day 5K Santa Rosa",
+      "data_evento": "2027-03-13",
+      "horario": "10:00",
+      "localizacao": "Santa Rosa, CA",
+      "cidade": "Santa Rosa, CA",
+      "estado": "CA",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/huhqa9usjndbh2wp._original.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2027/130559/st-patricks-day-5k-santa-rosa",
+          "links_inscricao": [
+            "https://raceroster.com/events/2027/130559/st-patricks-day-5k-santa-rosa"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:21+00:00",
+      "updated_at": "2026-05-30T20:23:32+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -547007,26 +548666,80 @@
       "id": "raceroster_130559_2027",
       "titulo": "St. Patrick’S Day 5K Santa Rosa",
       "data_evento": "2027-03-13",
-      "horario": "10:00",
-      "localizacao": "Santa Rosa, CA",
-      "cidade": "Santa Rosa, CA",
+      "horario": "08:00",
+      "localizacao": "Valparaiso, IN",
+      "cidade": "Valparaiso, IN",
+      "estado": "IN",
+      "distancias": [
+        {
+          "km": 30.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 50.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "50 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/edbnds74t3tenaub._original.jpg",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2027/118875/tombstone-30k50k50-mile",
+          "links_inscricao": [
+            "https://raceroster.com/events/2027/118875/tombstone-30k50k50-mile"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T03:42:01+00:00",
+      "updated_at": "2026-05-30T20:51:58+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_117250_2027",
+      "titulo": "2027 Shamrock'N Weekend",
+      "data_evento": "2027-03-14",
+      "horario": "07:45",
+      "localizacao": "West Sacramento, CA",
+      "cidade": "West Sacramento, CA",
       "estado": "CA",
       "distancias": [
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
         {
           "km": 5.0,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/huhqa9usjndbh2wp._original.jpg",
+      "imagem_url": "https://cdn.raceroster.com/event-logo/hqsvh4xd34tf29fx._original.jpg",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
           "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2027/130559/st-patricks-day-5k-santa-rosa",
+          "link_evento": "https://raceroster.com/events/2027/117250/2027-shamrockn-weekend",
           "links_inscricao": [
-            "https://raceroster.com/events/2027/130559/st-patricks-day-5k-santa-rosa"
+            "https://raceroster.com/events/2027/117250/2027-shamrockn-weekend"
           ],
           "tipo": "inscricao"
         }
@@ -549618,6 +551331,55 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-29T03:44:27+00:00",
       "updated_at": "2026-05-29T03:44:27+00:00",
+      "pais": "US",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_119432_2027",
+      "titulo": "2027 Govx San Diego Half Marathon & 5K",
+      "data_evento": "2027-03-21",
+      "horario": "06:30",
+      "localizacao": "San Diego, CA",
+      "cidade": "San Diego, CA",
+      "estado": "CA",
+      "distancias": [
+        {
+          "km": 21.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "13 mi",
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": "3 mi",
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/vx96f7x9puehabue._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2027/119432/2027-govx-san-diego-half-marathon-and-5k",
+          "links_inscricao": [
+            "https://raceroster.com/events/2027/119432/2027-govx-san-diego-half-marathon-and-5k"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-29T10:01:26+00:00",
+      "updated_at": "2026-05-30T20:23:32+00:00",
       "pais": "US",
       "fotos": []
     },
@@ -560210,10 +561972,10 @@
       "id": "raceroster_129636_2027",
       "titulo": "Mt. Diablo Half Marathon",
       "data_evento": "2027-04-24",
-      "horario": "08:00",
-      "localizacao": "Walnut Creek, CA",
-      "cidade": "Walnut Creek, CA",
-      "estado": "CA",
+      "horario": null,
+      "localizacao": "Yankton, EUA",
+      "cidade": "Yankton, EUA",
+      "estado": "SD",
       "distancias": [
         {
           "km": 21.0,
@@ -560260,22 +562022,27 @@
           "horario": null
         },
         {
-          "km": 1.0,
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 21.097,
           "data": null,
           "horario": null
         }
       ],
-      "imagem_url": "https://cdn.raceroster.com/event-logo/dcm6t59c2vvsa2k2._original.png",
+      "imagem_url": "https://www.halfmarathons.net/wp-content/uploads/2023/08/Capture4.png",
       "inscricoes_abertas": null,
       "periodo_inscricao": null,
       "fontes": [
         {
-          "nome": "Race Roster",
-          "link_evento": "https://raceroster.com/events/2027/129932/american-river-parkway-half-marathon-2027",
+          "nome": "HalfMarathons.net",
+          "link_evento": "https://www.halfmarathons.net/races/river-rat-half-marathon-10k-5k/",
           "links_inscricao": [
-            "https://raceroster.com/events/2027/129932/american-river-parkway-half-marathon-2027"
+            "https://www.halfmarathons.net/races/river-rat-half-marathon-10k-5k/"
           ],
-          "tipo": "inscricao"
+          "tipo": "calendario"
         }
       ],
       "miss_count": 0,
@@ -568496,6 +570263,45 @@
       "miss_count": 0,
       "first_seen_at": "2026-05-30T01:08:30+00:00",
       "updated_at": "2026-05-30T20:51:56+00:00",
+      "pais": "CA",
+      "fotos": []
+    },
+    {
+      "id": "raceroster_119375_2027",
+      "titulo": "2027 Run For Water 5K // 10K",
+      "data_evento": "2027-05-30",
+      "horario": "08:00",
+      "localizacao": "Abbotsford, BC",
+      "cidade": "Abbotsford, BC",
+      "estado": "BC",
+      "distancias": [
+        {
+          "km": 5.0,
+          "data": null,
+          "horario": null
+        },
+        {
+          "km": 10.0,
+          "data": null,
+          "horario": null
+        }
+      ],
+      "imagem_url": "https://cdn.raceroster.com/event-logo/bwgs53kkpeqx4gc2._original.png",
+      "inscricoes_abertas": null,
+      "periodo_inscricao": null,
+      "fontes": [
+        {
+          "nome": "Race Roster",
+          "link_evento": "https://raceroster.com/events/2027/119375/2027-run-for-water-5k-10k",
+          "links_inscricao": [
+            "https://raceroster.com/events/2027/119375/2027-run-for-water-5k-10k"
+          ],
+          "tipo": "inscricao"
+        }
+      ],
+      "miss_count": 0,
+      "first_seen_at": "2026-05-30T01:08:30+00:00",
+      "updated_at": "2026-05-30T20:52:00+00:00",
       "pais": "CA",
       "fotos": []
     },

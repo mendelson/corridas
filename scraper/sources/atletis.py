@@ -183,6 +183,8 @@ def _scrape_event(url: str, hint_name: str, today: str, now: str) -> Corrida | N
             ld.get("description") or "",
         ]))
         distancias = _parse_distances_from_text(fallback_text)
+    if not distancias:
+        return None
 
     # Image
     imagem_url = ld.get("image") or None

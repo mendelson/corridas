@@ -236,6 +236,8 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     cidade, estado, localizacao = "", "", "México"
 
     distancias = _extract_distances(titulo)
+    if not distancias:
+        return None
 
     event_id = event_id_param or slugify(titulo)
     fonte = FonteInfo(

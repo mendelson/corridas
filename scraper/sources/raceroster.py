@@ -223,6 +223,17 @@ def _parse_event(ev: dict, today: str, end_date: str) -> "Corrida | None":
     state  = (prov.get("abbreviation") or "").strip().upper()
     pais   = (loc.get("countryISO") or "US").strip().upper()
 
+    # Cross-validate: the API occasionally mislabels countryISO.
+    # When the state code belongs unambiguously to the other country, trust the state.
+    if pais == "CA" and state in _US_STATES:
+        pais = "US"
+    elif pais == "US" and state in _CA_PROVINCES:
+        pais = "CA"
+    elif pais not in ("CA", "US") and state in _US_STATES:
+        pais = "US"
+    elif pais not in ("CA", "US") and state in _CA_PROVINCES:
+        pais = "CA"
+
     if pais == "CA":
         estado, country_pt = (state if state in _CA_PROVINCES else ""), "Canadá"
     elif pais == "US":

@@ -96,8 +96,12 @@ def _validate(source: str, results: list) -> list[str]:
         if not r.titulo or len(r.titulo) < 3:
             bad_titulo += 1
 
-        # Hard: ID contém a data de hoje → muda a cada run, quebra reconciliação
-        if today in (r.id or ""):
+        # Hard: ID contém a data de hoje → muda a cada run, quebra reconciliação.
+        # Exceção: IDs no padrão estável "<slug>_<uf>_<data_evento>" legitimamente
+        # contêm a data quando o evento ocorre hoje — nesse caso a data é do evento
+        # (estável entre runs), não a data do scrape. Só sinaliza quando a data de
+        # hoje aparece no ID mas NÃO corresponde à data do evento.
+        if today in (r.id or "") and (r.data_evento or "")[:10] != today:
             today_in_id += 1
 
         # Duplicate IDs within the batch

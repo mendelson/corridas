@@ -279,7 +279,14 @@ def load_existing() -> dict[str, Corrida]:
     for c in raw.get("corridas", []):
         try:
             corrida = _dict_to_corrida(c)
-            result[corrida.id] = corrida
+            # The stored file can contain duplicate ids (legacy merge bug). When it
+            # does, one copy is sometimes corrupt — empty fontes with a FonteInfo
+            # leaked into distancias. Keep the more complete copy (more fontes)
+            # instead of blindly taking the last occurrence, so a corrupt duplicate
+            # never overwrites a healthy record.
+            prev = result.get(corrida.id)
+            if prev is None or len(corrida.fontes) >= len(prev.fontes):
+                result[corrida.id] = corrida
         except Exception as e:
             errors += 1
             print(f"[main] ignorando evento corrompido '{c.get('id', '?')}': {e}")
@@ -910,6 +917,63 @@ def _drop_invalid_location_events(corridas: list[Corrida]) -> list[Corrida]:
     return ok
 
 
+def _strip_overmerged_fontes(corridas: list[Corrida]) -> None:
+    """Remove fontes that leaked across many distinct events via a bad merge.
+
+    When the same (source name, inscription link) appears on 3+ distinct event
+    records, the link belongs to a single event and was spread to the others by
+    a historical over-merge (e.g. a multi-city series whose editions share a
+    title and state).  Keep the fonte on events where it is the only source —
+    its native record — and strip it from events that still carry another fonte,
+    so no event is ever left without a link.  Mirrors the guarantee enforced by
+    tests/test_site.py::test_no_inscription_link_shared_across_many_events.
+    """
+    from collections import defaultdict
+
+    groups: dict[tuple[str, str], list] = defaultdict(list)
+    for c in corridas:
+        for f in c.fontes:
+            for l in (f.links_inscricao or []):
+                if l:
+                    groups[(f.nome, l.rstrip("/").lower())].append((c, f))
+
+    stripped = 0
+    for (nome, link), pairs in groups.items():
+        if len({id(c) for c, _ in pairs}) < 3:
+            continue
+        for c, f in pairs:
+            # Only strip when the event keeps at least one other source.
+            if len(c.fontes) > 1 and f in c.fontes:
+                c.fontes.remove(f)
+                stripped += 1
+    if stripped:
+        print(f"[main] {stripped} fonte(s) sobre-mescladas removidas")
+
+
+def _drop_linkless_events(corridas: list[Corrida]) -> list[Corrida]:
+    """Drop events that carry no usable link.
+
+    An event with no fontes — or whose fontes all lack a link_evento and
+    links_inscricao — has no source to point the user at and cannot be fixed by
+    _ensure_inscricao_links (there is nothing to attach a link to).  Such records
+    are corruption artifacts (e.g. a FonteInfo that leaked into distancias,
+    leaving the event source-less).  Mirrors the every-event-has-a-link guarantee
+    enforced by tests/test_site.py::test_all_events_have_required_fields.
+    """
+    ok, dropped = [], []
+    for c in corridas:
+        has_link = any(
+            (f.link_evento or (f.links_inscricao[0] if f.links_inscricao else ""))
+            for f in c.fontes
+        )
+        (ok if has_link else dropped).append(c)
+    if dropped:
+        print(f"[main] AVISO: {len(dropped)} evento(s) sem link removido(s):")
+        for c in dropped[:20]:
+            print(f"  • {c.id} ({c.titulo!r})")
+    return ok
+
+
 def _sanitize_images(corridas: list[Corrida]) -> None:
     """Validate imagem_url for all events.
 
@@ -974,7 +1038,9 @@ def main() -> None:
     _normalize_all_locations(final)
     _resolve_missing_locations(final)
     final = _drop_invalid_location_events(final)
+    _strip_overmerged_fontes(final)
     _ensure_inscricao_links(final)
+    final = _drop_linkless_events(final)
     # _find_all_photos(final)
     _enrich_images(final)
     _sanitize_images(final)

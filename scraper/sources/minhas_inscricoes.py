@@ -18,7 +18,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_date, normalize_titulo, now_iso, today_iso
+from ..utils import normalize_date, normalize_time, normalize_titulo, now_iso, today_iso
 from .. import geo as _geo
 
 URL = "https://minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua"
@@ -90,12 +90,14 @@ def _parse_card(card) -> Corrida | None:
         if keycode else URL
     )
 
-    # Fetch the event page for distances + canonical URL
-    link_evento, distancias = _fetch_event_page(redirect_url)
+    # Fetch the event page for distances, canonical URL, and start time
+    link_evento, distancias, horario = _fetch_event_page(redirect_url)
     if not distancias:
         return None
     if not link_evento:
         link_evento = redirect_url
+    if horario is None:
+        return None  # start time not yet published — skip until it is
 
     ev_id = f"mi_{keycode}" if keycode else f"mi_{data}_{cidade.lower().replace(' ', '')}"
 
@@ -110,7 +112,7 @@ def _parse_card(card) -> Corrida | None:
         id=ev_id,
         titulo=titulo,
         data_evento=data,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
@@ -152,14 +154,14 @@ def _parse_location(cap, titulo: str) -> tuple[str, str, str]:
     return localizacao, cidade, estado
 
 
-def _fetch_event_page(url: str) -> tuple[str, list[Distancia]]:
-    """Fetch the event page; return (canonical_url, distancias)."""
+def _fetch_event_page(url: str) -> tuple[str, list[Distancia], str | None]:
+    """Fetch the event page; return (canonical_url, distancias, horario)."""
     try:
         resp = get(url)
         resp.raise_for_status()
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar evento {url}: {e}")
-        return "", []
+        return "", [], None
 
     soup = BeautifulSoup(resp.text, "lxml")
 
@@ -168,10 +170,11 @@ def _fetch_event_page(url: str) -> tuple[str, list[Distancia]]:
     if og and og.get("content"):
         canonical = og["content"]
 
-    # Distances live in the registration prose / modalidades section
+    # Distances and start time from the full page text
     text = soup.get_text(" ", strip=True)
     distancias = _extract_distances(text)
-    return canonical, distancias
+    horario = normalize_time(text)
+    return canonical, distancias, horario
 
 
 def _extract_distances(text: str) -> list[Distancia]:

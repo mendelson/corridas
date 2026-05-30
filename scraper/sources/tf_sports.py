@@ -613,10 +613,13 @@ def _events_to_corridas(
             ed = attrs.get("eventData") or {}
 
             data_evento = ed.get("startDate") or ""
-            if data_evento and data_evento[:10] < today:
+            # Skip events with no date or a past date — both fail the data-quality
+            # test (data_evento is a required, zero-tolerance field). The NO_DATE
+            # endpoints intentionally fetch dateless drafts, but those can't be
+            # stored until a date is announced.
+            if not data_evento or data_evento[:10] < today:
                 continue
-            if data_evento:
-                data_evento = data_evento[:10]
+            data_evento = data_evento[:10]
             location_raw = ed.get("location") or ""
             is_closed = ed.get("isSubscriptionClosed")
 

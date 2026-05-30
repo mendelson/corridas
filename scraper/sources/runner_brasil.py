@@ -1,20 +1,35 @@
-"""Scraper for runnerbrasil.com.br"""
+"""Scraper for runnerbrasil.com.br
+
+The homepage lists upcoming events as <article class="caixa3"> cards, each
+linking to a detail page (Runner_CalendarioDetalhe.aspx?idEvento=<id>). The
+cards themselves carry only "DD/MM - City", so we follow each link and parse
+the detail page, which exposes structured spans:
+
+    Main_label_Nome       → event title
+    Main_label_Dt_Evento  → "Data: DD/MM/YYYY"
+    Main_label_Percurso   → "Percurso: 5 / 10 / 21 km"
+    Main_label_Local      → "Local: City - UF"
+
+The detail page is the source of truth for title, date, distances and location.
+"""
 from __future__ import annotations
 import re
 from datetime import date
+
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_date, normalize_time, normalize_titulo,
-    slugify, infer_estado, now_iso, today_iso
+    normalize_date, normalize_titulo, now_iso, today_iso,
 )
 from .. import geo as _geo
 
 URL = "https://www.runnerbrasil.com.br/"
 BASE = "https://www.runnerbrasil.com.br"
 SOURCE_NAME = "Runner Brasil"
+
+_CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
 
 def scrape() -> list[Corrida]:
@@ -26,73 +41,77 @@ def scrape() -> list[Corrida]:
         return []
 
     soup = BeautifulSoup(resp.text, "lxml")
-    corridas: list[Corrida] = []
+    detail_urls = _find_detail_urls(soup)
+    print(f"[{SOURCE_NAME}] {len(detail_urls)} eventos no calendário")
 
-    for el in _find_events(soup):
+    corridas: list[Corrida] = []
+    for url in detail_urls:
         try:
-            corrida = _parse_event(el)
+            corrida = _scrape_detail(url)
             if corrida:
                 corridas.append(corrida)
         except Exception as e:
-            print(f"[{SOURCE_NAME}] erro: {e}")
+            print(f"[{SOURCE_NAME}] erro em {url}: {e}")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _find_events(soup):
-    for sel in [".event", ".race", ".card", "article", ".post", ".item", "tr", "li"]:
-        els = soup.select(sel)
-        if len(els) > 1:
-            return els
-    return []
+def _find_detail_urls(soup) -> list[str]:
+    urls: list[str] = []
+    seen: set[str] = set()
+    for a in soup.find_all("a", href=re.compile(r"CalendarioDetalhe\.aspx\?idEvento=", re.I)):
+        href = a["href"]
+        if href.startswith("/"):
+            href = BASE + href
+        if href not in seen:
+            seen.add(href)
+            urls.append(href)
+    return urls
 
 
-def _parse_event(el) -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 5:
-        return None
+def _scrape_detail(url: str) -> Corrida | None:
+    resp = get(url)
+    resp.raise_for_status()
+    soup = BeautifulSoup(resp.text, "lxml")
 
-    heading = el.find(["h1", "h2", "h3", "h4", "strong"])
-    titulo_raw = heading.get_text(strip=True) if heading else text[:80]
+    titulo_raw = _label_text(soup, "Main_label_Nome")
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None
 
-    data = _extract_date(text)
+    data_raw = _label_text(soup, "Main_label_Dt_Evento")
+    data = _extract_date(data_raw)
     if not data:
         return None
-    localizacao = _extract_localizacao(el, text)
-    cidade = localizacao.split(",")[0].strip()
-    _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
-    pais = _pais_geo or "BR"
-    estado = infer_estado(localizacao, titulo) or _estado_geo or ""
 
-    img = el.find("img")
-    imagem_url = (img.get("src") or img.get("data-src")) if img else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = BASE + imagem_url
+    local_raw = _label_text(soup, "Main_label_Local")
+    localizacao, cidade, estado = _parse_local(local_raw, titulo)
 
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
-    if link.startswith("/"):
-        link = BASE + link
+    percurso_raw = _label_text(soup, "Main_label_Percurso")
+    distancias = _extract_distances(percurso_raw)
+    if not distancias:
+        return None
+
+    site = _label_text(soup, "Main_label_Site").strip()
+    link = site if site.startswith("http") else url
+
+    m = re.search(r"idEvento=(\d+)", url)
+    ev_id = f"runnerbrasil_{m.group(1)}" if m else f"runnerbrasil_{data}"
 
     now = now_iso()
-    today = today_iso()
-
     fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link], tipo="calendario")
     return Corrida(
-        id=f"{slugify(titulo)}_{estado.lower()}_{data or 'sd'}",
+        id=ev_id,
         titulo=titulo,
-        data_evento=data or "",
-        horario=normalize_time(text),
+        data_evento=data,
+        horario=None,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,
-        pais=pais,
-        distancias=_extract_distances(text),
-        imagem_url=imagem_url,
+        pais="BR",
+        distancias=distancias,
+        imagem_url=None,
         inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[fonte],
@@ -102,15 +121,21 @@ def _parse_event(el) -> Corrida | None:
     )
 
 
+def _label_text(soup, span_id: str) -> str:
+    el = soup.find(id=span_id)
+    if not el:
+        return ""
+    text = el.get_text(" ", strip=True)
+    # Strip the "Label: " prefix
+    return re.sub(r"^[^:]{1,15}:\s*", "", text).strip()
+
+
 def _extract_date(text: str) -> str | None:
-    # DD/MM/YYYY (full year)
+    # DD/MM/YYYY
     m = re.search(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b", text)
     if m:
         return normalize_date(m.group(0))
-    m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
-    if m:
-        return normalize_date(m.group(0))
-    # DD/MM without year (e.g. "31/05 - Guarujá" in the title)
+    # DD/MM (no year) — infer year, rolling forward if already past
     m = re.search(r"\b(\d{1,2})/(\d{1,2})(?!/\d)", text)
     if m:
         d, mo = int(m.group(1)), int(m.group(2))
@@ -123,24 +148,38 @@ def _extract_date(text: str) -> str | None:
     return None
 
 
-def _extract_localizacao(el, text: str) -> str:
-    for cls in ["local", "location", "cidade", "place"]:
-        loc = el.find(class_=re.compile(cls, re.IGNORECASE))
-        if loc:
-            val = loc.get_text(strip=True)
-            if val:
-                return val
-    m = re.search(r"([A-Z][a-záéíóúãõâêô]+(?:\s[A-Z][a-záéíóúãõâêô]+)*)\s*[-–]\s*([A-Z]{2})", text)
-    return m.group(0) if m else ""
+def _parse_local(text: str, titulo: str) -> tuple[str, str, str]:
+    """Parse 'Guarujá - SP' → ('Guarujá, SP', 'Guarujá', 'SP')."""
+    text = text.strip()
+    estado = ""
+    cidade = text
+    m = re.search(r"^(.*?)\s*[-–]\s*([A-Z]{2})\b", text)
+    if m:
+        cidade = m.group(1).strip()
+        estado = m.group(2)
+    if not estado:
+        _pais_geo, _estado_geo = _geo.resolve(text or cidade, cidade, "BR")
+        estado = _estado_geo or ""
+    localizacao = f"{cidade}, {estado}" if estado else cidade
+    return localizacao, cidade, estado
 
 
 def _extract_distances(text: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+)\s*[kK][mM]?\b", text)
+    """Parse 'Percurso: 5 / 10 / 21 km' → [5, 10, 21.097]."""
     seen: set[float] = set()
-    result = []
-    for n in nums:
-        km = float(n)
-        if km not in seen and 1 <= km <= 200:
+    result: list[Distancia] = []
+    for raw in re.findall(r"(\d+(?:[.,]\d+)?)", text):
+        try:
+            km = float(raw.replace(",", "."))
+        except ValueError:
+            continue
+        if not (1 <= km <= 250):
+            continue
+        for canon, lo, hi in _CANONICAL:
+            if lo <= km <= hi:
+                km = canon
+                break
+        if km not in seen:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
     return result

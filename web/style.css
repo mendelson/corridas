@@ -565,16 +565,14 @@ input { font-family: inherit; }
   background: var(--color-surface);
 }
 
+/* Opaque base + transparent tint overlay — prevents content bleed-through on hover
+   regardless of whether the separator is sticky (open section) or in normal flow. */
 .month-separator:hover {
-  background: var(--color-accent-dim);
-}
-
-/* Sticky: keep opaque base so scrolled-behind cards don't bleed through on hover */
-.month-section--open .month-separator:hover {
   background-color: var(--color-surface-2);
   background-image: linear-gradient(var(--color-accent-dim), var(--color-accent-dim));
 }
 
+/* Past sticky separator needs the darker surface base to stay consistent with its rest state. */
 .month-section--open .month-separator.month-separator--past:hover {
   background-color: var(--color-surface);
   background-image: linear-gradient(var(--color-accent-dim), var(--color-accent-dim));
@@ -627,7 +625,8 @@ input { font-family: inherit; }
   color: var(--color-realized);
 }
 .month-separator--past:hover {
-  background: rgba(158, 158, 158, 0.08);
+  background-color: var(--color-surface-2);
+  background-image: linear-gradient(rgba(158, 158, 158, 0.08), rgba(158, 158, 158, 0.08));
 }
 .month-separator--past:hover .month-chevron {
   background: var(--color-realized);

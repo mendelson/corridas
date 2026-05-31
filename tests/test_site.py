@@ -500,6 +500,110 @@ def test_distance_table_time_column_only_when_different_times(page_pt, live_serv
 
 
 # ---------------------------------------------------------------------------
+# Month separator opacity tests
+# ---------------------------------------------------------------------------
+
+def _parse_rgba(color: str):
+    """Parse 'rgb(r,g,b)' or 'rgba(r,g,b,a)' → (r,g,b,a) with a defaulting to 1.0."""
+    import re
+    m = re.match(r'rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)(?:,\s*([\d.]+))?\s*\)', color)
+    if not m:
+        return None
+    r, g, b = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    a = float(m.group(4)) if m.group(4) else 1.0
+    return r, g, b, a
+
+
+def test_closed_month_separator_opaque_on_hover(page_pt, live_server):
+    """Hovering a closed month separator must not make it transparent.
+
+    Regression: .month-separator:hover used background: var(--color-accent-dim)
+    (rgba 15% opacity), making all closed separators transparent on hover and
+    letting the page background bleed through.
+    """
+    separators = page_pt.query_selector_all('.month-separator')
+    # Find one that is NOT in an open section (normal flow, not sticky)
+    closed_sep = None
+    for sep in separators:
+        is_open = page_pt.evaluate(
+            "el => el.closest('.month-section') !== null && "
+            "el.closest('.month-section').classList.contains('month-section--open')",
+            sep,
+        )
+        if not is_open:
+            closed_sep = sep
+            break
+
+    if closed_sep is None:
+        pytest.skip("No closed month sections found — all sections may be open")
+
+    closed_sep.hover()
+    page_pt.wait_for_timeout(50)
+
+    bg = page_pt.evaluate("el => getComputedStyle(el).backgroundColor", closed_sep)
+    parsed = _parse_rgba(bg)
+    assert parsed is not None, f"Unexpected background format: {bg}"
+    _, _, _, alpha = parsed
+    assert alpha >= 0.99, (
+        f"Closed month separator is transparent on hover (background={bg}). "
+        "CSS regression: .month-separator:hover must use an opaque background-color."
+    )
+
+
+def test_open_month_separator_opaque_on_hover(page_pt, live_server):
+    """Hovering the sticky (open) month separator must not make it transparent.
+
+    Regression: .month-separator:hover (specificity 0,2,0) tied with
+    .month-section--open .month-separator (0,2,0); hover appeared later in CSS
+    and won, applying rgba 15% opacity to the sticky header.
+    """
+    separators = page_pt.query_selector_all('.month-section--open .month-separator')
+    if not separators:
+        pytest.skip("No open month sections found")
+
+    sep = separators[0]
+    sep.hover()
+    page_pt.wait_for_timeout(50)
+
+    bg = page_pt.evaluate("el => getComputedStyle(el).backgroundColor", sep)
+    parsed = _parse_rgba(bg)
+    assert parsed is not None, f"Unexpected background format: {bg}"
+    _, _, _, alpha = parsed
+    assert alpha >= 0.99, (
+        f"Open (sticky) month separator is transparent on hover (background={bg}). "
+        "CSS regression in .month-section--open .month-separator:hover."
+    )
+
+
+def test_switching_months_separator_stays_opaque(page_pt, live_server):
+    """Hovering a different month separator while one is already open must be opaque.
+
+    Regression: clicking a second month separator to switch sections triggered
+    a transparent hover state on the newly targeted separator.
+    """
+    separators = page_pt.query_selector_all('.month-separator')
+    if len(separators) < 2:
+        pytest.skip("Need at least 2 month separators to test switching")
+
+    # Open the first section
+    separators[0].click()
+    page_pt.wait_for_timeout(200)
+
+    # Hover the second separator (it is closed; the first is now open)
+    separators[1].hover()
+    page_pt.wait_for_timeout(50)
+
+    bg = page_pt.evaluate("el => getComputedStyle(el).backgroundColor", separators[1])
+    parsed = _parse_rgba(bg)
+    assert parsed is not None, f"Unexpected background format: {bg}"
+    _, _, _, alpha = parsed
+    assert alpha >= 0.99, (
+        f"Month separator is transparent when hovered during section switch "
+        f"(background={bg}). CSS regression."
+    )
+
+
+# ---------------------------------------------------------------------------
 # Pin / home button tests
 # ---------------------------------------------------------------------------
 

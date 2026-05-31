@@ -202,6 +202,8 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     # Distances
     raw_distances: list[str] = meta.get("distance") or []
     distancias = _parse_distances(raw_distances)
+    if not distancias:
+        distancias = _parse_distances_from_title(titulo)
 
     # Links
     reg_link: str = meta.get("registration-link") or post.get("link") or _BASE
@@ -258,6 +260,35 @@ def _parse_distances(raw: list[str]) -> list[Distancia]:
             seen.add(key)
             result.append(Distancia(km=km, data=None, horario=None))
     return sorted(result, key=lambda d: float(str(d.km).replace(" mi", "")) if " mi" not in str(d.km) else float(str(d.km).replace(" mi", "")) * 1.60934)
+
+
+def _parse_distances_from_title(title: str) -> list[Distancia]:
+    """Fallback: extract distances from post title when meta.distance is empty."""
+    title_l = title.lower()
+    seen: set[object] = set()
+    result: list[Distancia] = []
+
+    def _add(km: float | str) -> None:
+        key = km if isinstance(km, str) else round(float(km))
+        if key not in seen:
+            seen.add(key)
+            result.append(Distancia(km=km, data=None, horario=None))
+
+    if re.search(r'half[\s-]marathon', title_l):
+        _add(21.097)
+    t = re.sub(r'half[\s-]marathon', '', title_l)
+    if re.search(r'\bmarathon\b', t):
+        _add(42.195)
+
+    for n in re.findall(r'\b(\d+(?:\.\d+)?)k\b', title_l):
+        km = float(n)
+        if 3 <= km <= 200:
+            _add(km)
+
+    for n in re.findall(r'\b(\d+(?:\.\d+)?)-mile\b', title_l):
+        _add(f"{n} mi")
+
+    return sorted(result, key=lambda d: float(str(d.km).replace(" mi", "")) * 1.60934 if " mi" in str(d.km) else float(str(d.km)))
 
 
 def _strip_html(text: str) -> str:

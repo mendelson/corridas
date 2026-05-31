@@ -122,11 +122,14 @@ def scrape() -> list[Corrida]:
 
 
 def _enrich_locations(corridas: list[Corrida]) -> None:
-    """Fetch convocatoria.php in parallel to populate cidade/estado from JSON-LD."""
-    import os
-    if os.environ.get("SCRAPER_TEST"):
-        return  # skip in test_source CI — only needed in full pipeline
-    needs_location = [c for c in corridas if not c.cidade]
+    """Fetch convocatoria.php in parallel to populate cidade/estado AND horário
+    from the per-event JSON-LD SportsEvent schema.
+
+    This runs in test_source CI too: horário is a hard-required field and is
+    only available on the convocatoria page (the Tiempometa widget list carries
+    no start time). The fetch is cheap — carrerasmexico never lists more than a
+    few dozen events, each response is streamed with a 30 KB cap, 3 in parallel."""
+    needs_location = [c for c in corridas if not c.cidade or not c.horario]
     if not needs_location:
         return
     print(f"[{SOURCE_NAME}] buscando localização para {len(needs_location)} eventos...")
@@ -346,7 +349,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                           timeout=httpx.Timeout(connect=8, read=8, write=5, pool=5)) as r:
             if r.status_code >= 400:
                 print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {r.status_code}")
-                return "", ""
+                return "", "", None
             content = b""
             for chunk in r.iter_bytes(chunk_size=4096):
                 content += chunk
@@ -355,7 +358,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         html = content.decode("utf-8", errors="replace")
     except Exception as e:
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
-        return "", ""
+        return "", "", None
     soup = BeautifulSoup(html, "lxml")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
@@ -366,18 +369,9 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
             schema = next((s for s in schema if isinstance(s, dict) and s.get("@type") == "SportsEvent"), None)
         if not isinstance(schema, dict) or schema.get("@type") != "SportsEvent":
             continue
-        loc = schema.get("location", {})
-        loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
-        if not loc_name:
-            continue
-        parts = re.split(r",\s*", loc_name, maxsplit=1)
-        cidade = parts[0].strip()
-        estado_raw = parts[1].strip() if len(parts) > 1 else ""
-        estado = _state_to_code(estado_raw)
-        if not estado and cidade:
-            _, estado = _geo.resolve(cidade, "", "MX")
-            estado = estado or ""
-        # Extract time from startDate: "2026-09-26T09:30:00-06:00"
+
+        # Extract horário independently of location — the start time must survive
+        # even when location.name is absent (horário is a hard-required field).
         horario: str | None = None
         start_dt = schema.get("startDate") or ""
         mt = re.search(r"[T ](\d{2}):(\d{2})", start_dt)
@@ -385,8 +379,20 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
             h, mi = int(mt.group(1)), int(mt.group(2))
             if 0 <= h <= 23 and 0 <= mi <= 59:
                 horario = f"{h:02d}:{mi:02d}"
+
+        loc = schema.get("location", {})
+        loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
+        cidade, estado = "", ""
+        if loc_name:
+            parts = re.split(r",\s*", loc_name, maxsplit=1)
+            cidade = parts[0].strip()
+            estado_raw = parts[1].strip() if len(parts) > 1 else ""
+            estado = _state_to_code(estado_raw)
+            if not estado and cidade:
+                _, estado = _geo.resolve(cidade, "", "MX")
+                estado = estado or ""
         return cidade, estado, horario
-    return "", "", None
+    return "", "", None, None
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

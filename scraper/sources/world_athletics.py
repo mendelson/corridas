@@ -17,6 +17,7 @@ http_client proxy chain (Scrapestack / Apify) as fallback for Cloudflare.
 from __future__ import annotations
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, timedelta
 
 from bs4 import BeautifulSoup
@@ -112,15 +113,26 @@ def scrape() -> list[Corrida]:
 
     print(f"[{SOURCE_NAME}] {len(competitions)} competições brutas")
 
+    end_date = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).isoformat()
+
+    # Parallelize _parse_competition (each call may fetch a detail page)
     corridas: list[Corrida] = []
     skipped = 0
-    end_date = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).isoformat()
-    for comp in competitions:
-        c = _parse_competition(comp, today_s, end_date)
-        if c:
-            corridas.append(c)
-        else:
-            skipped += 1
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {
+            executor.submit(_parse_competition, comp, today_s, end_date): comp
+            for comp in competitions
+        }
+        for f in as_completed(futures):
+            try:
+                c = f.result()
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] erro: {e}")
+                c = None
+            if c:
+                corridas.append(c)
+            else:
+                skipped += 1
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas válidas ({skipped} ignoradas)")
     return corridas
@@ -362,11 +374,29 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
     if not _has_label(comp):
         return None
 
-    data_evento = _parse_date(
-        comp.get("startDate") or comp.get("start_date") or comp.get("date")
-    )
+    start_raw = comp.get("startDate") or comp.get("start_date") or comp.get("date") or ""
+    data_evento = _parse_date(start_raw)
     if not data_evento or data_evento < today or data_evento > end_date:
         return None
+
+    # Fast path: time already embedded in startDate (e.g. "2026-09-13T08:00:00")
+    _horario_inline: str | None = None
+    m_t = re.search(r"T(\d{2}):(\d{2})", start_raw)
+    if m_t:
+        h, mi = int(m_t.group(1)), int(m_t.group(2))
+        if 4 <= h <= 23:
+            _horario_inline = f"{h:02d}:{mi:02d}"
+    if not _horario_inline:
+        # Check dedicated startTime / time fields
+        for fld in ("startTime", "time", "startHour"):
+            st = comp.get(fld) or ""
+            if isinstance(st, str):
+                m_st = re.search(r"(\d{1,2}):(\d{2})", st)
+                if m_st:
+                    h, mi = int(m_st.group(1)), int(m_st.group(2))
+                    if 4 <= h <= 23:
+                        _horario_inline = f"{h:02d}:{mi:02d}"
+                        break
 
     distancias = _infer_distances(titulo)
     if not distancias:
@@ -424,7 +454,7 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
         link = BASE + ("" if link.startswith("/") else "/") + link
 
     now = now_iso()
-    horario = _fetch_horario(link)
+    horario = _horario_inline or _fetch_horario(link)
     if horario is None:
         print(f"[{SOURCE_NAME}] sem horário para {titulo!r} ({link}) — ignorado")
         return None

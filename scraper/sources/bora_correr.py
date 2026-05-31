@@ -144,10 +144,6 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     if horario is None:
         horario = _extract_horario(dist_hint) or _extract_horario(cells[1].get_text(" ", strip=True))
 
-    # Skip events where start time is unknown — useless for planning
-    if horario is None:
-        return None
-
     # Stable ID — UUID from the report button if present, else fallback to date+title
     uuid_m = _UUID_RE.search(str(cells[2]))
     if uuid_m:

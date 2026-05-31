@@ -22,6 +22,12 @@ _PT_MONTHS = {
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
 _INTERVAL_RE = re.compile(
     r"a cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
     r"|cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
@@ -53,23 +59,25 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: list[Corrida] = []
 
-    # Fetch inscription links and extra detail-page distances in parallel
-    def _fetch_detail(slug: str) -> tuple[str | None, list[Distancia]]:
+    # Fetch inscription links, extra distances, and horario in parallel
+    def _fetch_detail(slug: str) -> tuple[str | None, list[Distancia], str | None]:
         try:
             resp = get(f"{CALENDAR_URL}/{slug}")
             resp.raise_for_status()
             detail_soup = BeautifulSoup(resp.text, "lxml")
             insc_link = _find_insc_link(detail_soup, slug)
-            extra_dists = _parse_distances(detail_soup.get_text(" ", strip=True))
-            return insc_link, extra_dists
+            detail_text = detail_soup.get_text(" ", strip=True)
+            extra_dists = _parse_distances(detail_text)
+            horario = _extract_horario(detail_text)
+            return insc_link, extra_dists, horario
         except Exception:
-            return None, []
+            return None, [], None
 
     with ThreadPoolExecutor(max_workers=6) as ex:
         futures = {ex.submit(_fetch_detail, card["slug"]): card for card in cards}
         for fut in as_completed(futures):
             card = futures[fut]
-            insc_link, detail_dists = fut.result()
+            insc_link, detail_dists, detail_horario = fut.result()
 
             data_evento = card["data_evento"]
             if not data_evento or data_evento < today:
@@ -77,6 +85,11 @@ def scrape() -> list[Corrida]:
 
             titulo = card["titulo"]
             link_evento = f"{CALENDAR_URL}/{card['slug']}"
+
+            horario = card["horario"] or detail_horario
+            if not horario:
+                print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+                continue
 
             distancias = card["distancias"] or detail_dists
             if not distancias:
@@ -103,7 +116,7 @@ def scrape() -> list[Corrida]:
                 id=f"{slugify(titulo)}_{estado.lower()}_{data_evento or 'sd'}",
                 titulo=titulo,
                 data_evento=data_evento,
-                horario=card["horario"],
+                horario=horario,
                 localizacao=localizacao,
                 cidade=cidade,
                 estado=estado,
@@ -179,7 +192,9 @@ def _parse_listing(soup: BeautifulSoup) -> list[dict]:
 
 
 def _parse_date(texts: list[str]) -> tuple[str, str | None]:
-    """Find 'DD Mmm YYYY HH:MM' in card texts."""
+    """Find 'DD Mmm YYYY HH:MM' in card texts; fall back to separate time elements."""
+    iso = ""
+    horario: str | None = None
     for t in texts:
         m = _DATE_RE.search(t)
         if not m:
@@ -189,8 +204,14 @@ def _parse_date(texts: list[str]) -> tuple[str, str | None]:
             continue
         iso = f"{m.group(3)}-{mo}-{m.group(1).zfill(2)}"
         horario = f"{int(m.group(4)):02d}:{m.group(5)}" if m.group(4) else None
-        return iso, horario
-    return "", None
+        break
+    if iso and horario is None:
+        for t in texts:
+            h = _extract_horario(t)
+            if h:
+                horario = h
+                break
+    return iso, horario
 
 
 def _parse_location(texts: list[str]) -> tuple[str, str]:
@@ -208,7 +229,7 @@ def _parse_distances(text: str) -> list[Distancia]:
     clean = _INTERVAL_RE.sub(" ", text)
     seen: set[float] = set()
     result: list[Distancia] = []
-    for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[Kk]\b", clean):
+    for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[Kk][Mm]?\b", clean):
         km = float(n.replace(",", "."))
         for canon, lo, hi in _CANONICAL:
             if lo <= km <= hi:
@@ -218,6 +239,22 @@ def _parse_distances(text: str) -> list[Distancia]:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
     return sorted(result, key=lambda d: d.km)
+
+
+def _extract_horario(text: str) -> str | None:
+    """Parse times like '07h30', '07:30h', '07:30', '7h' from free text."""
+    if not text:
+        return None
+    m = _TIME_RE.search(text)
+    if not m:
+        return None
+    if m.group(1) is not None:
+        h, mi = int(m.group(1)), int(m.group(2))
+    else:
+        h, mi = int(m.group(3)), 0
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
 
 
 def _find_insc_link(soup: BeautifulSoup, slug: str) -> str | None:

@@ -71,6 +71,7 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     link_evento = f"{BASE}/evento/{slug}" if slug else BASE
 
     raw_text = " ".join(filter(None, [
+        titulo,
         event.get("regulamento"),
         event.get("descricao_evento"),
     ]))
@@ -164,9 +165,21 @@ def _extract_distances(text: str) -> list[Distancia]:
     text = _PERCURSO_RE.sub(" ", text)
     # Strip hydration/supply interval mentions ("a cada 2,5km")
     text = _INTERVAL_RE.sub(" ", text)
-    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
+
     seen: set[int] = set()
     result: list[Distancia] = []
+
+    # Keyword recognition for named distances not written as numeric km values
+    text_l = text.lower()
+    if re.search(r'meia[\s-]?maratona|half[\s-]marathon', text_l):
+        seen.add(21)
+        result.append(Distancia(km=21.097, data=None, horario=None))
+    t_stripped = re.sub(r'meia[\s-]?maratona|half[\s-]marathon', '', text_l)
+    if re.search(r'\bmaratona\b|\bmarathon\b', t_stripped):
+        seen.add(42)
+        result.append(Distancia(km=42.195, data=None, horario=None))
+
+    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text, re.IGNORECASE)
     for n in nums:
         km = float(n.replace(",", "."))
         key = round(km)

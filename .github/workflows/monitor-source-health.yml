@@ -4,6 +4,11 @@ name: Monitorar Saúde das Fontes
 # Each source runs as an independent job — visible as separate checks in GitHub.
 # After all jobs finish (pass or fail), a final job updates the README with
 # per-source timestamps and status.
+#
+# Also triggered on PRs that change the validator (test_source.py) or shared
+# infra — ensures stricter validation doesn't silently break passing sources
+# before the change lands on main.  In PR context, update-readme is skipped
+# (read-only run; README is updated after merge via the push trigger).
 
 permissions:
   contents: write
@@ -27,6 +32,14 @@ on:
       - 'scraper/playwright_client.py'
       - 'scraper/test_source.py'
       - '.github/workflows/monitor-source-health.yml'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'scraper/test_source.py'
+      - 'scraper/models.py'
+      - 'scraper/utils.py'
+      - 'scraper/http_client.py'
+      - 'scraper/playwright_client.py'
   workflow_dispatch:
     inputs:
       source:
@@ -122,8 +135,13 @@ jobs:
             else
               SOURCES="$INPUT"
             fi
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            # PRs only trigger this workflow when infra files change — always
+            # test all sources so we know which ones the new validation breaks.
+            echo "PR with infra/validator changes — testing all sources"
+            SOURCES="$ALL_SOURCES"
           else
-            # Push: only test changed source files
+            # Push or schedule: only test changed source files
             CHANGED=$(git diff --name-only HEAD~1 HEAD \
               | grep '^scraper/sources/.*\.py$' \
               | grep -v '__init__\|_base\|test_' \
@@ -220,7 +238,9 @@ jobs:
   update-readme:
     name: Update README status
     needs: [prepare, test]
-    if: always() && needs.prepare.outputs.empty == 'false'
+    # Skip on PRs — this is a read-only validation run. README is updated after
+    # merge when the push trigger fires on main.
+    if: always() && needs.prepare.outputs.empty == 'false' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
     steps:

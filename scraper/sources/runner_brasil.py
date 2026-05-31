@@ -84,11 +84,19 @@ def _scrape_detail(url: str) -> Corrida | None:
     data = _extract_date(data_raw)
     if not data:
         return None
+    if data < today_iso():
+        return None
 
-    # Try to find start time in the date field or anywhere on the page
-    horario = _extract_horario(data_raw) or _extract_horario(soup.get_text(" ", strip=True))
+    # Try to find start time: date label → dedicated horario labels → full page
+    horario = (
+        _extract_horario(data_raw)
+        or _extract_horario(_label_text(soup, "Main_label_Hr_Evento"))
+        or _extract_horario(_label_text(soup, "Main_label_Horario"))
+        or _extract_horario(_label_text(soup, "Main_label_Hora"))
+        or _extract_horario(soup.get_text(" ", strip=True))
+    )
     if horario is None:
-        return None  # no published start time — skip
+        return None  # start time not yet published
 
     local_raw = _label_text(soup, "Main_label_Local")
     localizacao, cidade, estado = _parse_local(local_raw, titulo)
@@ -141,19 +149,31 @@ _HORARIO_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Keyword-anchored variant: "às 7h00", "saída: 07:00", etc.
+_HORARIO_KW_RE = re.compile(
+    r"(?:às?|sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|hora)\s*:?\s*"
+    r"(\d{1,2})[hH:]([0-5]\d)"
+    r"|(?:às?|sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|hora)\s*:?\s*"
+    r"(\d{1,2})\s*[hH]\b(?!\d)",
+    re.IGNORECASE,
+)
+
 
 def _extract_horario(text: str) -> str | None:
     if not text:
         return None
-    m = _HORARIO_RE.search(text)
-    if not m:
-        return None
-    if m.group(1) is not None:
-        h, mi = int(m.group(1)), int(m.group(2))
-    else:
-        h, mi = int(m.group(3)), 0
-    if 4 <= h <= 23:
-        return f"{h:02d}:{mi:02d}"
+    for pattern in (_HORARIO_KW_RE, _HORARIO_RE):
+        m = pattern.search(text)
+        if not m:
+            continue
+        if m.group(1) is not None:
+            h, mi = int(m.group(1)), int(m.group(2))
+        elif m.lastindex and m.lastindex >= 3 and m.group(3) is not None:
+            h, mi = int(m.group(3)), 0
+        else:
+            continue
+        if 4 <= h <= 23 and 0 <= mi <= 59:
+            return f"{h:02d}:{mi:02d}"
     return None
 
 

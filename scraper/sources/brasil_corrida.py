@@ -89,6 +89,9 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
 
     hora_raw = ev.get("eve_hora_largada") or ""
     horario = hora_raw[:5] if hora_raw else None
+    if not horario:
+        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+        return None
 
     cidade_raw = (ev.get("cid_descricao") or ev_card.get("cid_descricao") or "").title()
     estado = (ev.get("eve_end_uf") or ev_card.get("eve_end_uf") or "").upper()

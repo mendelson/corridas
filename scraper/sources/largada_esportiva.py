@@ -430,6 +430,20 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
                   ev.get("startTime") or ev.get("start_time") or ev.get("hora_inicio") or ""
     horario = normalize_time(str(horario_raw)) if horario_raw else None
 
+    # Fallback: extract HH:MM from the ISO datetime used for the date.
+    # Largada Esportiva stores the manually-entered local start time with a
+    # cosmetic "Z" suffix — the raw hour IS the BRT start, not UTC. Confirmed
+    # for Volta do Lago: start="2026-07-05T04:00:00.000Z" and the regulation
+    # text reads "7 – LARGADAS … Largada 04h00". Price-tier cutoff dates, by
+    # contrast, are stored at T03:00Z (= local midnight) as a date-only
+    # placeholder; the 4 AM lower bound below skips that hour-3 placeholder.
+    if horario is None and data_raw:
+        _tm = re.match(r"\d{4}-\d{2}-\d{2}T(\d{2}):(\d{2})", str(data_raw))
+        if _tm:
+            _h, _mn = int(_tm.group(1)), int(_tm.group(2))
+            if 4 <= _h <= 22:  # plausible race-start window; excludes midnight placeholder
+                horario = f"{_h:02d}:{_mn:02d}"
+
     estado = str(ev.get("estado") or ev.get("uf") or ev.get("state") or "").upper()
     if len(estado) != 2:
         estado = ""

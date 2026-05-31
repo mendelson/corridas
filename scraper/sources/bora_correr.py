@@ -144,7 +144,10 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     if horario is None:
         horario = _extract_horario(dist_hint) or _extract_horario(cells[1].get_text(" ", strip=True))
 
-    # Skip events where start time is unknown — useless for planning
+    # Last resort: fetch the event detail page for the start time
+    if horario is None:
+        horario = _fetch_horario_from_detail(link)
+
     if horario is None:
         return None
 
@@ -180,6 +183,18 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
         first_seen_at=now,
         updated_at=now,
     )
+
+
+def _fetch_horario_from_detail(url: str) -> str | None:
+    """Fetch the event page (Ticket Sports / CDC / etc.) and extract start time."""
+    try:
+        resp = get(url)
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "lxml")
+        return _extract_horario(soup.get_text(" ", strip=True))
+    except Exception:
+        return None
 
 
 def _strip_tags(s: str) -> str:

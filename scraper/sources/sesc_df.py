@@ -1,24 +1,52 @@
-"""Scraper for sescdf.com.br/corridas — always DF"""
+"""Scraper for sescdf.com.br/corridas — Liferay portal, DF-only events
+
+The SESC DF running page is a Liferay portal. Each event card contains:
+
+  <h3>                  → event title
+  <i class="la-running"> → identifies this card as a running event
+  <h5>DD/MM/YYYY …</h5> → event date
+  <h6>…</h6>            → location (neighbourhood / park)
+  <div class="card-text"> → free-text description with distances
+  <a class="btn btn-secondary" href="…">Saiba Mais</a> → detail page URL
+
+Horário is NOT listed on the event card — it must be fetched from the
+"Saiba Mais" detail page.  Events without a published start time are
+skipped (the detail page gets the time closer to the event date).
+"""
 from __future__ import annotations
 import re
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import (
-    normalize_date, normalize_time, normalize_titulo,
-    slugify, now_iso, today_iso
-)
+from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
 
 URL = "https://www.sescdf.com.br/corridas"
 BASE = "https://www.sescdf.com.br"
 SOURCE_NAME = "SESC DF"
 
-_ANNC_PREFIX = re.compile(
-    r"^inscri[çc][oõ]es?\s+abertas?\s*(?:para\s+|:\s*)",
+_CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
+
+_DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
+
+# Keyword-anchored: "às 7h30", "saída: 07:00", "largada: 8h", "horário: 08h30"
+_TIME_KW_RE = re.compile(
+    r"(?:às?|sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|hora)\s*:?\s*"
+    r"(\d{1,2})[hH:]([0-5]\d)"
+    r"|(?:às?|sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|hora)\s*:?\s*"
+    r"(\d{1,2})\s*[hH](?:oras?)?\b(?!\d)",
     re.IGNORECASE,
 )
+
+# Generic fallback: "07h30", "07:30", "7h"
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
+_KM_RE = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
 
 
 def scrape() -> list[Corrida]:
@@ -30,108 +58,177 @@ def scrape() -> list[Corrida]:
         return []
 
     soup = BeautifulSoup(resp.text, "lxml")
+    today = today_iso()
+    now = now_iso()
+
     corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
 
-    for el in _find_events(soup):
+    for card in _find_cards(soup):
         try:
-            corrida = _parse_event(el)
-            if corrida:
-                corridas.append(corrida)
+            c = _parse_card(card, today, now)
         except Exception as e:
-            print(f"[{SOURCE_NAME}] erro: {e}")
+            print(f"[{SOURCE_NAME}] erro ao parsear card: {e}")
+            continue
+        if c and c.id not in seen_ids:
+            seen_ids.add(c.id)
+            corridas.append(c)
 
-    # Deduplicate by id (broad selectors may yield the same element via different paths)
-    seen: set[str] = set()
-    corridas = [c for c in corridas if not (c.id in seen or seen.add(c.id))]  # type: ignore[func-returns-value]
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _find_events(soup):
-    for sel in [".event", ".race", ".card", "article", ".post", ".item", "li", "tr"]:
-        els = soup.select(sel)
-        if len(els) > 1:
-            return els
-    return []
+def _find_cards(soup) -> list:
+    """Return card containers that have a la-running icon."""
+    cards = []
+    seen_ids = set()
+    for icon in soup.find_all("i", class_=lambda c: c and "la-running" in c):
+        # Walk up to a container that has both a heading and a date
+        container = icon.parent
+        for _ in range(4):
+            if container.find(["h2", "h3", "h4"]) and _card_has_date(container):
+                break
+            parent = container.parent
+            if parent is None or parent.name in ("html", "body"):
+                break
+            container = parent
+        if id(container) not in seen_ids:
+            seen_ids.add(id(container))
+            cards.append(container)
+    return cards
 
 
-def _parse_event(el) -> Corrida | None:
-    text = el.get_text(" ", strip=True)
-    if not text or len(text) < 5:
+def _card_has_date(el) -> bool:
+    return bool(_DATE_RE.search(el.get_text(" ", strip=True)))
+
+
+def _parse_card(card, today: str, now: str) -> Corrida | None:
+    text = card.get_text(" ", strip=True)
+
+    # Date
+    m = _DATE_RE.search(text)
+    if not m:
+        return None
+    day, month, year = m.groups()
+    data_evento = f"{year}-{month}-{day}"
+    if data_evento < today:
         return None
 
-    heading = el.find(["h1", "h2", "h3", "h4", "strong"])
-    titulo_raw = heading.get_text(strip=True) if heading else text[:80]
-    titulo = normalize_titulo(_ANNC_PREFIX.sub("", titulo_raw).strip())
+    # Title from first significant heading
+    titulo_raw = ""
+    for tag in ["h2", "h3", "h4"]:
+        el = card.find(tag)
+        if el:
+            titulo_raw = el.get_text(" ", strip=True)
+            break
+    titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
         return None
 
-    data = _extract_date(text)
-    if not data:
-        return None  # navigation elements and headings never have event dates
+    # Link: "Saiba Mais" button — required to fetch horario
+    link_tag = card.find("a", class_=lambda c: c and "btn" in c)
+    if not link_tag:
+        link_tag = card.find("a", href=True)
+    href = (link_tag["href"] if link_tag else "").strip()
+    if href.startswith("/"):
+        href = BASE + href
+    link = href or URL
 
-    img = el.find("img")
-    imagem_url = (img.get("src") or img.get("data-src")) if img else None
-    if imagem_url and imagem_url.startswith("/"):
-        imagem_url = BASE + imagem_url
-
-    link_tag = el.find("a", href=True)
-    link = link_tag["href"] if link_tag else URL
-    if link.startswith("/"):
-        link = BASE + link
-
-    horario = normalize_time(text)
+    # Horario: must fetch detail page
+    horario = _fetch_horario(link) if link != URL else None
     if horario is None:
-        return None  # start time not yet published — skip until it is
+        return None
 
-    now = now_iso()
-    today = today_iso()
+    # Distances from card description text
+    desc_el = card.find(class_=lambda c: c and "card-text" in c)
+    dist_text = desc_el.get_text(" ", strip=True) if desc_el else text
+    distancias = _extract_distances(dist_text)
+    if not distancias:
+        distancias = _extract_distances(text)
+    if not distancias:
+        return None
 
-    fonte = FonteInfo(
-        nome=SOURCE_NAME,
-        link_evento=link,
-        links_inscricao=[link],
-        tipo="organizador",
-    )
-
+    stable_id = f"sescdf_{slugify(titulo)}_{data_evento}"
     estado = _geo.resolve("Brasília, DF", "Brasília", "BR")[1] or "DF"
     return Corrida(
-        id=f"sescdf_{slugify(titulo)}",
+        id=stable_id,
         titulo=titulo,
-        data_evento=data or "",
+        data_evento=data_evento,
         horario=horario,
         localizacao="Brasília, DF",
         cidade="Brasília",
         estado=estado,
         pais="BR",
-        distancias=_extract_distances(text),
-        imagem_url=imagem_url,
-        inscricoes_abertas=True if link_tag else None,
+        distancias=distancias,
+        imagem_url=None,
+        inscricoes_abertas=None,
         periodo_inscricao=None,
-        fontes=[fonte],
+        fontes=[FonteInfo(
+            nome=SOURCE_NAME,
+            link_evento=link,
+            links_inscricao=[link],
+            tipo="organizador",
+        )],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
     )
 
 
-def _extract_date(text: str) -> str | None:
-    m = re.search(r"\d{1,2}/\d{1,2}/\d{4}", text)
+def _fetch_horario(url: str) -> str | None:
+    """Fetch the event detail page and extract the start time."""
+    try:
+        resp = get(url)
+        if resp.status_code != 200:
+            return None
+        text = BeautifulSoup(resp.text, "lxml").get_text(" ", strip=True)
+        return _extract_horario(text)
+    except Exception:
+        return None
+
+
+def _extract_horario(text: str) -> str | None:
+    if not text:
+        return None
+    # Try keyword-anchored first
+    m = _TIME_KW_RE.search(text)
     if m:
-        return normalize_date(m.group(0))
-    m = re.search(r"\d{1,2}\s+de\s+\w+\s+de\s+\d{4}", text, re.IGNORECASE)
+        if m.group(1) is not None:
+            h, mi = int(m.group(1)), int(m.group(2))
+        else:
+            h, mi = int(m.group(3)), 0
+        if 4 <= h <= 23:
+            return f"{h:02d}:{mi:02d}"
+    # Generic fallback
+    m = _TIME_RE.search(text)
     if m:
-        return normalize_date(m.group(0))
+        if m.group(1) is not None:
+            h, mi = int(m.group(1)), int(m.group(2))
+        else:
+            h, mi = int(m.group(3)), 0
+        if 4 <= h <= 23:
+            return f"{h:02d}:{mi:02d}"
     return None
 
 
 def _extract_distances(text: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+)\s*[kK][mM]?\b", text)
-    seen: set[float] = set()
-    result = []
-    for n in nums:
-        km = float(n)
-        if km not in seen and 1 <= km <= 200:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    return result
+    seen: list[float] = []
+    for m in _KM_RE.finditer(text):
+        try:
+            raw = float(m.group(1).replace(",", "."))
+        except ValueError:
+            continue
+        if raw < 1 or raw > 200:
+            continue
+        km = raw
+        for canon, lo, hi in _CANONICAL:
+            if lo <= raw <= hi:
+                km = canon
+                break
+        if any(abs(km - s) < 0.5 for s in seen):
+            continue
+        seen.append(km)
+    return sorted(
+        [Distancia(km=k, data=None, horario=None) for k in seen],
+        key=lambda d: float(d.km),
+    )

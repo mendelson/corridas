@@ -53,27 +53,37 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: list[Corrida] = []
 
-    # Fetch inscription links in parallel
-    def _fetch_insc(slug: str) -> str | None:
+    # Fetch inscription links and extra detail-page distances in parallel
+    def _fetch_detail(slug: str) -> tuple[str | None, list[Distancia]]:
         try:
             resp = get(f"{CALENDAR_URL}/{slug}")
             resp.raise_for_status()
-            return _find_insc_link(BeautifulSoup(resp.text, "lxml"), slug)
+            detail_soup = BeautifulSoup(resp.text, "lxml")
+            insc_link = _find_insc_link(detail_soup, slug)
+            extra_dists = _parse_distances(detail_soup.get_text(" ", strip=True))
+            return insc_link, extra_dists
         except Exception:
-            return None
+            return None, []
 
     with ThreadPoolExecutor(max_workers=6) as ex:
-        futures = {ex.submit(_fetch_insc, card["slug"]): card for card in cards}
+        futures = {ex.submit(_fetch_detail, card["slug"]): card for card in cards}
         for fut in as_completed(futures):
             card = futures[fut]
-            insc_link = fut.result()
+            insc_link, detail_dists = fut.result()
 
             data_evento = card["data_evento"]
             if not data_evento or data_evento < today:
                 continue
 
+            titulo = card["titulo"]
+            link_evento = f"{CALENDAR_URL}/{card['slug']}"
+
+            distancias = card["distancias"] or detail_dists
+            if not distancias:
+                print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+                continue
+
             inscricoes_abertas = True if insc_link else None
-            links_insc = [insc_link] if insc_link else []
             cidade, estado = card["cidade"], card["estado"]
             if not estado:
                 _pais_geo, estado = _geo.resolve(cidade or titulo, "", "BR")
@@ -81,12 +91,11 @@ def scrape() -> list[Corrida]:
             else:
                 pais = "BR"
             localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or ""
-            titulo = card["titulo"]
 
             fonte = FonteInfo(
                 nome=SOURCE_NAME,
-                link_evento=f"{CALENDAR_URL}/{card['slug']}",
-                links_inscricao=links_insc,
+                link_evento=link_evento,
+                links_inscricao=[insc_link] if insc_link else [link_evento],
                 tipo="calendario",
             )
 
@@ -99,7 +108,7 @@ def scrape() -> list[Corrida]:
                 cidade=cidade,
                 estado=estado,
                 pais=pais,
-                distancias=card["distancias"],
+                distancias=distancias,
                 imagem_url=card["imagem_url"],
                 inscricoes_abertas=inscricoes_abertas,
                 periodo_inscricao=None,

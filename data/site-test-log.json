@@ -1,229 +1,5 @@
 [
   {
-    "timestamp": "2026-05-24T20:25:01.720874+00:00",
-    "commit": "4b37821c1f6d93cb8fcab640d29a249ae05263ea",
-    "commit_short": "4b37821c",
-    "branch": "main",
-    "passed": 35,
-    "failed": 0,
-    "skipped": 0,
-    "total": 35,
-    "clean": true,
-    "duration_s": 151.14,
-    "results": [
-      {
-        "name": "In pt locale the lang dropdown must start with Português; rest alphabetical.",
-        "status": "passed",
-        "duration_ms": 91.7,
-        "message": null
-      },
-      {
-        "name": "All 5 language labels must appear in the dropdown.",
-        "status": "passed",
-        "duration_ms": 88.3,
-        "message": null
-      },
-      {
-        "name": "Opening location filter and clicking Brasil group header expands its body.",
-        "status": "passed",
-        "duration_ms": 124.4,
-        "message": null
-      },
-      {
-        "name": "Expanding a second accordion group collapses the previously open one.",
-        "status": "passed",
-        "duration_ms": 676.6,
-        "message": null
-      },
-      {
-        "name": "Each checkbox label in the fontes filter must match a real source in the data.",
-        "status": "passed",
-        "duration_ms": 266.9,
-        "message": null
-      },
-      {
-        "name": "Selecting a single fonte shows only cards from that fonte.",
-        "status": "passed",
-        "duration_ms": 878.1,
-        "message": null
-      },
-      {
-        "name": "Every visible card must have at least one .btn-inscricao element.",
-        "status": "passed",
-        "duration_ms": 57333.1,
-        "message": null
-      },
-      {
-        "name": "Card dates in PT must contain a word from the Portuguese month list, not DD/MM/YYYY.",
-        "status": "passed",
-        "duration_ms": 316.5,
-        "message": null
-      },
-      {
-        "name": "Card dates on English page must contain an English month name.",
-        "status": "passed",
-        "duration_ms": 290.2,
-        "message": null
-      },
-      {
-        "name": "A card whose corrida.first_seen_at is within 7 days must show a visible badge-novo.",
-        "status": "passed",
-        "duration_ms": 726.1,
-        "message": null
-      },
-      {
-        "name": "A month section that contains a new event must show .badge-novo in its header.",
-        "status": "passed",
-        "duration_ms": 195.1,
-        "message": null
-      },
-      {
-        "name": "Expanded card: Date column only shown when distances have differing dates.",
-        "status": "passed",
-        "duration_ms": 5889.1,
-        "message": null
-      },
-      {
-        "name": "Expanded card: Time column only shown when distances have differing horarios.",
-        "status": "passed",
-        "duration_ms": 5908.0,
-        "message": null
-      },
-      {
-        "name": "Clicking #btnHome resets the location state toward geo (or 'todos').",
-        "status": "passed",
-        "duration_ms": 3289.0,
-        "message": null
-      },
-      {
-        "name": "Fresh browser context with no storage must load the page correctly.",
-        "status": "passed",
-        "duration_ms": 2235.4,
-        "message": null
-      },
-      {
-        "name": "A context with an unmapped browser locale loads the English strings.",
-        "status": "passed",
-        "duration_ms": 7464.2,
-        "message": null
-      },
-      {
-        "name": "Every .btn-inscricao must have a non-empty href pointing to a URL.",
-        "status": "passed",
-        "duration_ms": 2471.9,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 1983.8,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 2008.8,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 1985.9,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 1980.8,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 2111.8,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 2137.5,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 1997.6,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 2120.9,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 1989.0,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 2001.2,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 2273.8,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 2288.9,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 2286.8,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 2275.3,
-        "message": null
-      },
-      {
-        "name": "All 5 locales in STRINGS must define exactly the same set of keys.",
-        "status": "passed",
-        "duration_ms": 3.6,
-        "message": null
-      },
-      {
-        "name": "No single merged event should accumulate more than 4 distinct fontes.",
-        "status": "passed",
-        "duration_ms": 203.6,
-        "message": null
-      },
-      {
-        "name": "A single inscription URL should not appear in 3+ distinct records.",
-        "status": "passed",
-        "duration_ms": 236.3,
-        "message": null
-      },
-      {
-        "name": "No event title/cidade/localizacao may contain unescaped HTML entities.",
-        "status": "passed",
-        "duration_ms": 212.3,
-        "message": null
-      }
-    ]
-  },
-  {
     "timestamp": "2026-05-24T20:31:19.004741+00:00",
     "commit": "7e89f38b2d37acec957b5680aeb989ffc816a705",
     "commit_short": "7e89f38b",
@@ -7075,6 +6851,248 @@
         "name": "No event title/cidade/localizacao may contain unescaped HTML entities.",
         "status": "passed",
         "duration_ms": 228.1,
+        "message": null
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-05-31T14:44:54.577069+00:00",
+    "commit": "0ccd575f7d0a03aeae4a9747850dba1fc6a0e762",
+    "commit_short": "0ccd575f",
+    "branch": "main",
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "total": 38,
+    "clean": true,
+    "duration_s": 311.02,
+    "results": [
+      {
+        "name": "In pt locale the lang dropdown must start with Português; rest alphabetical.",
+        "status": "passed",
+        "duration_ms": 92.3,
+        "message": null
+      },
+      {
+        "name": "All 5 language labels must appear in the dropdown.",
+        "status": "passed",
+        "duration_ms": 98.1,
+        "message": null
+      },
+      {
+        "name": "Opening location filter and clicking Brasil group header expands its body.",
+        "status": "passed",
+        "duration_ms": 99.1,
+        "message": null
+      },
+      {
+        "name": "Expanding a second accordion group collapses the previously open one.",
+        "status": "passed",
+        "duration_ms": 660.4,
+        "message": null
+      },
+      {
+        "name": "Each checkbox label in the fontes filter must match a real source in the data.",
+        "status": "passed",
+        "duration_ms": 259.7,
+        "message": null
+      },
+      {
+        "name": "Selecting a single fonte shows only cards from that fonte.",
+        "status": "passed",
+        "duration_ms": 884.9,
+        "message": null
+      },
+      {
+        "name": "Every visible card must have at least one .btn-inscricao element.",
+        "status": "passed",
+        "duration_ms": 41521.7,
+        "message": null
+      },
+      {
+        "name": "Card dates in PT must contain a word from the Portuguese month list, not DD/MM/YYYY.",
+        "status": "passed",
+        "duration_ms": 283.5,
+        "message": null
+      },
+      {
+        "name": "Card dates on English page must contain an English month name.",
+        "status": "passed",
+        "duration_ms": 287.0,
+        "message": null
+      },
+      {
+        "name": "A card whose corrida.first_seen_at is within 7 days must show a visible badge-novo.",
+        "status": "passed",
+        "duration_ms": 483.4,
+        "message": null
+      },
+      {
+        "name": "A month section that contains a new event must show .badge-novo in its header.",
+        "status": "passed",
+        "duration_ms": 186.2,
+        "message": null
+      },
+      {
+        "name": "Expanded card: Date column only shown when distances have differing dates.",
+        "status": "passed",
+        "duration_ms": 4100.1,
+        "message": null
+      },
+      {
+        "name": "Expanded card: Time column only shown when distances have differing horarios.",
+        "status": "passed",
+        "duration_ms": 3179.9,
+        "message": null
+      },
+      {
+        "name": "Clicking #btnHome resets the location state toward geo (or 'todos').",
+        "status": "passed",
+        "duration_ms": 5821.4,
+        "message": null
+      },
+      {
+        "name": "Fresh browser context with no storage must load the page correctly.",
+        "status": "passed",
+        "duration_ms": 8062.6,
+        "message": null
+      },
+      {
+        "name": "A context with an unmapped browser locale loads the English strings.",
+        "status": "passed",
+        "duration_ms": 8883.7,
+        "message": null
+      },
+      {
+        "name": "Every .btn-inscricao must have a non-empty href pointing to a URL.",
+        "status": "passed",
+        "duration_ms": 2427.3,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 7730.8,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 7710.2,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 7656.9,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 7672.6,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 7678.1,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 7873.2,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 7690.4,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 7709.3,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 7934.3,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 7763.2,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 8250.5,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 8120.1,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 7998.6,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 8208.5,
+        "message": null
+      },
+      {
+        "name": "All 5 locales in STRINGS must define exactly the same set of keys.",
+        "status": "passed",
+        "duration_ms": 4.1,
+        "message": null
+      },
+      {
+        "name": "Every event in corridas.json must satisfy all location and data requirements.",
+        "status": "passed",
+        "duration_ms": 226.0,
+        "message": null
+      },
+      {
+        "name": "No single merged event should accumulate more than 4 distinct fontes.",
+        "status": "passed",
+        "duration_ms": 203.7,
+        "message": null
+      },
+      {
+        "name": "Every item in distancias must be a Distancia shape (has 'km', no FonteInfo fields).",
+        "status": "passed",
+        "duration_ms": 211.2,
+        "message": null
+      },
+      {
+        "name": "No event in web/corridas.json should have distancias entries that lack 'km'.",
+        "status": "passed",
+        "duration_ms": 201.4,
+        "message": null
+      },
+      {
+        "name": "A single inscription URL should not appear in 3+ distinct records.",
+        "status": "passed",
+        "duration_ms": 352.8,
+        "message": null
+      },
+      {
+        "name": "No event title/cidade/localizacao may contain unescaped HTML entities.",
+        "status": "passed",
+        "duration_ms": 197.2,
         "message": null
       }
     ]

@@ -221,6 +221,12 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)
 
     distancias = _parse_distances(titulo)
+    if not distancias and event_link != _LIST_URL:
+        distancias = _fetch_distances_from_event_page(event_link)
+    if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
+
     imagem = ev.get("imgEventDesktop") or ev.get("imgEvent") or None
 
     ev_id = ev.get("id") or slugify(titulo + "_" + data_evento)
@@ -309,6 +315,55 @@ def _parse_location(text: str, api_city: str = "", api_state: str = "") -> tuple
 
 def _looks_like_venue(text: str) -> bool:
     return bool(re.search(r"\d", text) or _VENUE_KW.search(text) or len(text) > 50)
+
+
+_NEXT_DATA_RE = re.compile(
+    r'<script[^>]+id=["\']__NEXT_DATA__["\'][^>]*>\s*(\{.*?\})\s*</script>',
+    re.DOTALL,
+)
+
+
+def _fetch_distances_from_event_page(url: str) -> list[Distancia]:
+    """Fetch the event convocatoria page and extract distances from __NEXT_DATA__ or page text."""
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=25)
+        resp.raise_for_status()
+        html = resp.text
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:70]}): {e}")
+        return []
+
+    # Try __NEXT_DATA__ first — richer structured data
+    m = _NEXT_DATA_RE.search(html)
+    if m:
+        try:
+            data = json.loads(m.group(1))
+            # pageProps.event may have categories with distances, or a `distance` field
+            page_props = data.get("props", {}).get("pageProps", {})
+            event_obj = page_props.get("event") or page_props.get("data") or {}
+            # Try categories array
+            for cat in (event_obj.get("categories") or event_obj.get("modalidades") or []):
+                if isinstance(cat, dict):
+                    val = cat.get("distance") or cat.get("distancia") or cat.get("categoria") or ""
+                    if val:
+                        dists = _parse_distances(str(val))
+                        if dists:
+                            return dists
+            # Try top-level distance field
+            top_dist = event_obj.get("distance") or event_obj.get("distancia") or ""
+            if top_dist:
+                dists = _parse_distances(str(top_dist))
+                if dists:
+                    return dists
+            # Scan the entire __NEXT_DATA__ blob with the distance regex
+            dists = _parse_distances(m.group(1))
+            if dists:
+                return dists
+        except Exception:
+            pass
+
+    # Last resort: regex over page text
+    return _parse_distances(re.sub(r"<[^>]+>", " ", html))
 
 
 def _parse_distances(titulo: str) -> list[Distancia]:

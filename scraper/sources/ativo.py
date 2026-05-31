@@ -50,6 +50,28 @@ def _parse_km(s: str) -> float | None:
     return km if 1 <= km <= 200 else None
 
 
+def _fetch_distances_from_json(url: str) -> list[Distancia]:
+    """Fetch the per-event JSON (post_json) and extract distances from its distancias array."""
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=15)
+        resp.raise_for_status()
+        ev = resp.json()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:60]}): {e}")
+        return []
+    seen: set[float] = set()
+    result: list[Distancia] = []
+    for d in ev.get("distancias") or []:
+        km = _parse_km(d.get("ds_distancia") or "")
+        if km is not None and km >= 3 and km not in seen:
+            seen.add(km)
+            result.append(Distancia(km=km, data=None, horario=None))
+    if not result:
+        titulo_fallback = normalize_titulo(ev.get("post_title") or "")
+        result = _distances_from_title(titulo_fallback.lower())
+    return sorted(result, key=lambda d: d.km)
+
+
 def _parse_event(ev: dict, today: str) -> Corrida | None:
     tipo = (ev.get("ds_tipo_evento") or "").lower()
     if tipo not in _RUNNING_TYPES:
@@ -93,7 +115,15 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
 
     event_id = str(ev.get("id_evento") or "")
     pay_link = f"{PAY_BASE}/{event_id}" if event_id else None
-    event_page = (ev.get("post_json") or "").replace("/index.json", "") or "https://www.ativo.com"
+    post_json_url = ev.get("post_json") or ""
+    event_page = post_json_url.replace("/index.json", "") or "https://www.ativo.com"
+
+    # Fetch the per-event JSON when listing data has no distances
+    if not distancias and post_json_url:
+        distancias = _fetch_distances_from_json(post_json_url)
+    if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
 
     _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
     pais = _pais_geo or "BR"

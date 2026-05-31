@@ -28,6 +28,7 @@ from .sources import (
     maratona_porto_alegre,
     sp_city_marathon,
     sao_silvestre,
+    poupex,
     tf_sports,
     tf_sports_app,
     iguana_sports,
@@ -110,6 +111,7 @@ SOURCES = [
     maratona_porto_alegre,
     sp_city_marathon,
     sao_silvestre,
+    poupex,
     # World Majors
     tokyo,
     boston,

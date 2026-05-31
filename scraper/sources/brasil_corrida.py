@@ -99,6 +99,11 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
     localizacao = f"{cidade_raw}, {estado}" if cidade_raw else estado
 
     distancias = _parse_distances(ev.get("distancias") or [])
+    if not distancias:
+        distancias = _distances_from_title(titulo)
+    if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
 
     img_path = ev.get("eve_img_destaque") or ev_card.get("eve_img_destaque")
     imagem_url = (S3_BASE + img_path) if img_path else None
@@ -136,6 +141,32 @@ def _fetch_and_parse(ev_card: dict, today: str) -> Corrida | None:
         first_seen_at=now,
         updated_at=now,
     )
+
+
+def _distances_from_title(titulo: str) -> list[Distancia]:
+    tl = titulo.lower()
+    seen: set[float] = set()
+    result: list[Distancia] = []
+
+    def _add(km: float) -> None:
+        if km not in seen:
+            seen.add(km)
+            result.append(Distancia(km=km, data=None, horario=None))
+
+    if re.search(r'meia[\s-]?maratona|half[\s-]?marathon', tl):
+        _add(21.097)
+    t = re.sub(r'meia[\s-]?maratona|half[\s-]?marathon', '', tl)
+    if re.search(r'\bmaratona\b|\bmarathon\b', t):
+        _add(42.195)
+    for m in re.finditer(r'\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b', tl):
+        km = float(m.group(1).replace(',', '.'))
+        for canon, lo, hi in _CANONICAL:
+            if lo <= km <= hi:
+                km = canon
+                break
+        if 3 <= km <= 200:
+            _add(km)
+    return sorted(result, key=lambda d: d.km)
 
 
 def _parse_distances(raw: list[dict]) -> list[Distancia]:

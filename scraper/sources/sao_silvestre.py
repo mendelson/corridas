@@ -39,6 +39,15 @@ _TIME_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Anchored to race-start keywords — avoids matching phone numbers and addresses.
+_RACE_TIME_RE = re.compile(
+    r"(?:sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|come[çc]a|come[çc]o)"
+    r"[^0-9]{0,50}(\d{1,2})[hH:]([0-5]\d)"
+    r"|(?:sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio)"
+    r"[^0-9]{0,50}(\d{1,2})\s*[hH]\b(?!\d)",
+    re.IGNORECASE,
+)
+
 
 def _fetch_page_data() -> tuple[str | None, str | None]:
     """Fetch the official site once; return (inscricao_url, horario)."""
@@ -60,17 +69,22 @@ def _fetch_page_data() -> tuple[str | None, str | None]:
                 if any(k in text for k in ["inscri", "comprar", "inscreva"]) and href.startswith("http"):
                     inscricao_url = href
                     break
-        # Extract start time from page text
+        # Extract start time — prefer keyword-anchored match to avoid garbage.
         horario: str | None = None
         full_text = soup.get_text(" ", strip=True)
-        m = _TIME_RE.search(full_text)
-        if m:
+        for pattern in (_RACE_TIME_RE, _TIME_RE):
+            m = pattern.search(full_text)
+            if not m:
+                continue
             if m.group(1) is not None:
                 h, mi = int(m.group(1)), int(m.group(2))
-            else:
+            elif m.lastindex and m.lastindex >= 3 and m.group(3) is not None:
                 h, mi = int(m.group(3)), 0
-            if 0 <= h <= 23 and 0 <= mi <= 59:
+            else:
+                continue
+            if 4 <= h <= 23 and 0 <= mi <= 59:
                 horario = f"{h:02d}:{mi:02d}"
+                break
         return inscricao_url, horario
     except Exception:
         pass
@@ -114,7 +128,7 @@ def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: s
     titulo = f"{edicao}ª Corrida Internacional de São Silvestre"
     estado = _geo.resolve("São Paulo, SP", "São Paulo", "BR")[1] or "SP"
 
-    links_inscricao = [inscricao_url] if inscricao_url else []
+    links_inscricao = [inscricao_url] if inscricao_url else [SITE_URL]
 
     fonte = FonteInfo(
         nome=SOURCE_NAME,

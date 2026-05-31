@@ -15,9 +15,9 @@ Each event lives in a `<div class="cs-text-widget">` with this structure:
 link_evento is set to that external URL; the platform name is inferred from
 the domain so the merger can correctly attribute the source.
 
-Start times are NOT present on this page. centraldacorrida.com.br (the dominant
-destination, ~38 events) is a Bubble.io SPA and cannot be scraped without JS.
-Those events have horario=None until a dedicated scraper is added.
+Start times are not on the listing page — each event's external link
+(Ticket Sports, CDC, Brasil Corrida, etc.) is fetched to extract the time.
+The HTTP fallback chain handles Cloudflare/SPA sites where needed.
 
 The original scraper used generic CSS selectors (.event/.race/article) that
 never matched this DOM and was incorrectly dropped as "broken".
@@ -77,6 +77,39 @@ _CORRIDA_SEGMENT_RE = re.compile(
     r"([0-9.,\sekmKM\-+]+?)\s*\(\s*corrida[^)]*\)",
     re.IGNORECASE,
 )
+
+_UF_NORM: dict[str, str] = {
+    "Distrito Federal": "DF", "Goiás": "GO", "Minas Gerais": "MG",
+    "São Paulo": "SP", "Rio de Janeiro": "RJ", "Bahia": "BA",
+}
+
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
+
+def _fetch_horario_from_link(url: str) -> str | None:
+    """Fetch external event page and extract the published start time."""
+    try:
+        resp = get(url)
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "lxml")
+        text = soup.get_text(" ", strip=True)
+        m = _TIME_RE.search(text)
+        if not m:
+            return None
+        if m.group(1) is not None:
+            h, mi = int(m.group(1)), int(m.group(2))
+        else:
+            h, mi = int(m.group(3)), 0
+        if 4 <= h <= 23 and 0 <= mi <= 59:
+            return f"{h:02d}:{mi:02d}"
+    except Exception:
+        pass
+    return None
 
 
 def scrape() -> list[Corrida]:
@@ -142,8 +175,60 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
     if not titulo or len(titulo) < 3:
         return None
 
-    # Start times are not published on this page — skip until another source provides one.
-    return None
+    # City / state: look for the <p> that comes right after the date <p>.
+    cidade, estado = "Brasília", "DF"
+    paras = [p.get_text(" ", strip=True) for p in widget.find_all("p") if p.get_text(strip=True)]
+    for i, p_text in enumerate(paras):
+        if _DATE_RE.search(p_text) and i + 1 < len(paras):
+            loc_raw = paras[i + 1]
+            loc_parts = [x.strip() for x in loc_raw.split("/")]
+            if len(loc_parts) == 2:
+                cidade = loc_parts[0].strip()
+                estado_raw = loc_parts[1].strip()
+                estado = _UF_NORM.get(estado_raw, estado_raw)
+            elif loc_parts and loc_parts[0]:
+                cidade = loc_parts[0].strip()
+            break
+    localizacao = f"{cidade}, {estado}" if estado else cidade
+
+    # Distances from the text that follows the date match.
+    after_date = text[m.end():].strip()
+    distancias = _extract_distances(after_date)
+
+    # Stable ID: prefer the page-builder widget id attribute; fall back to date+slug.
+    widget_id = widget.get("id", "").strip()
+    stable_id = f"bqc_{widget_id}" if widget_id else f"bqc_{data_evento}_{slugify(titulo)[:40]}"
+
+    link_evento = link or URL
+
+    # Fetch the external event page to get the start time.
+    horario = _fetch_horario_from_link(link_evento) if link_evento != URL else None
+    if horario is None:
+        return None
+
+    return Corrida(
+        id=stable_id,
+        titulo=titulo,
+        data_evento=data_evento,
+        horario=horario,
+        localizacao=localizacao,
+        cidade=cidade,
+        estado=estado,
+        pais="BR",
+        distancias=distancias,
+        imagem_url=None,
+        inscricoes_abertas=None,
+        periodo_inscricao=None,
+        fontes=[FonteInfo(
+            nome=_nome_for_link(link_evento),
+            link_evento=link_evento,
+            links_inscricao=[link_evento],
+            tipo="calendario",
+        )],
+        miss_count=0,
+        first_seen_at=now,
+        updated_at=now,
+    )
 
 
 def _extract_distances(text: str) -> list[Distancia]:

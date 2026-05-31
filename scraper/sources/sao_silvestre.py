@@ -101,8 +101,7 @@ def scrape() -> list[Corrida]:
     data_evento = f"{year}-12-31"
     inscricao_url, horario = _fetch_page_data()
     if horario is None:
-        print(f"[{SOURCE_NAME}] sem horário publicado no site oficial — evento não incluído")
-        return []
+        print(f"[{SOURCE_NAME}] horário não publicado — incluindo evento sem horário")
     imagem_url = _fetch_og_image()
     return [_build(year, data_evento, inscricao_url, imagem_url, horario)]
 
@@ -114,7 +113,7 @@ def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: s
     titulo = f"{edicao}ª Corrida Internacional de São Silvestre"
     estado = _geo.resolve("São Paulo, SP", "São Paulo", "BR")[1] or "SP"
 
-    links_inscricao = [inscricao_url] if inscricao_url else []
+    links_inscricao = [inscricao_url] if inscricao_url else [SITE_URL]
 
     fonte = FonteInfo(
         nome=SOURCE_NAME,

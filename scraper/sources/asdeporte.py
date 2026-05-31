@@ -197,7 +197,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         mt = re.search(r"[T ](\d{2}):(\d{2})", date_raw)
         if mt:
             h, mi = int(mt.group(1)), int(mt.group(2))
-            if 0 <= h <= 23 and 0 <= mi <= 59:
+            if 4 <= h <= 23 and 0 <= mi <= 59:  # exclude midnight placeholders
                 horario = f"{h:02d}:{mi:02d}"
 
     # Prefer explicit city/state fields if the API provides them
@@ -221,10 +221,17 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)
 
     distancias = _parse_distances(titulo)
-    if not distancias and event_link != _LIST_URL:
-        distancias = _fetch_distances_from_event_page(event_link)
+    if (not distancias or not horario) and event_link != _LIST_URL:
+        extra_dists, extra_horario = _fetch_event_details(event_link)
+        if not distancias and extra_dists:
+            distancias = extra_dists
+        if not horario and extra_horario:
+            horario = extra_horario
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
+    if not horario:
+        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
         return None
 
     imagem = ev.get("imgEventDesktop") or ev.get("imgEvent") or None
@@ -323,47 +330,80 @@ _NEXT_DATA_RE = re.compile(
 )
 
 
-def _fetch_distances_from_event_page(url: str) -> list[Distancia]:
-    """Fetch the event convocatoria page and extract distances from __NEXT_DATA__ or page text."""
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
+
+def _extract_horario(text: str) -> str | None:
+    m = _TIME_RE.search(text)
+    if not m:
+        return None
+    if m.group(1) is not None:
+        h, mi = int(m.group(1)), int(m.group(2))
+    else:
+        h, mi = int(m.group(3)), 0
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _fetch_event_details(url: str) -> tuple[list[Distancia], str | None]:
+    """Fetch the event convocatoria page; return (distances, horario)."""
     try:
         resp = get(url, source=SOURCE_NAME, timeout=25)
         resp.raise_for_status()
         html = resp.text
     except Exception as e:
         print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:70]}): {e}")
-        return []
+        return [], None
+
+    horario: str | None = None
 
     # Try __NEXT_DATA__ first — richer structured data
     m = _NEXT_DATA_RE.search(html)
     if m:
         try:
             data = json.loads(m.group(1))
-            # pageProps.event may have categories with distances, or a `distance` field
             page_props = data.get("props", {}).get("pageProps", {})
             event_obj = page_props.get("event") or page_props.get("data") or {}
-            # Try categories array
+            # Extract horario from event date field
+            for date_key in ("date", "dateStart", "startDate", "fecha"):
+                date_val = event_obj.get(date_key) or ""
+                if date_val and len(date_val) > 10:
+                    mt = re.search(r"[T ](\d{2}):(\d{2})", date_val)
+                    if mt:
+                        h, mi = int(mt.group(1)), int(mt.group(2))
+                        if 4 <= h <= 23 and 0 <= mi <= 59:
+                            horario = f"{h:02d}:{mi:02d}"
+            # Try categories array for distances
             for cat in (event_obj.get("categories") or event_obj.get("modalidades") or []):
                 if isinstance(cat, dict):
                     val = cat.get("distance") or cat.get("distancia") or cat.get("categoria") or ""
                     if val:
                         dists = _parse_distances(str(val))
                         if dists:
-                            return dists
+                            return dists, horario
             # Try top-level distance field
             top_dist = event_obj.get("distance") or event_obj.get("distancia") or ""
             if top_dist:
                 dists = _parse_distances(str(top_dist))
                 if dists:
-                    return dists
+                    return dists, horario
             # Scan the entire __NEXT_DATA__ blob with the distance regex
             dists = _parse_distances(m.group(1))
             if dists:
-                return dists
+                return dists, horario
         except Exception:
             pass
 
     # Last resort: regex over page text
-    return _parse_distances(re.sub(r"<[^>]+>", " ", html))
+    plain_text = re.sub(r"<[^>]+>", " ", html)
+    if not horario:
+        horario = _extract_horario(plain_text)
+    return _parse_distances(plain_text), horario
 
 
 def _parse_distances(titulo: str) -> list[Distancia]:

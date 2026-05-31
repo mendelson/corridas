@@ -45,11 +45,15 @@ _JSONLD_RE   = re.compile(
 )
 _EVENTID_RE  = re.compile(r'"eventId":"([0-9a-f-]{36})"')
 _PERCURSO_RE = re.compile(r'"label":"Percurso","options":\[([^\]]+)\]')
-_FULLADDR_RE = re.compile(
-    r'"fullAddress":\s*\{[^}]*?"country":"([^"]+)"[^}]*?'
-    r'"subdivision":"([^"]*)"[^}]*?"city":"([^"]+)"'
+# Broader: any form options block whose label contains distance-related keywords
+_FORM_OPTS_RE = re.compile(
+    r'"label":"([^"]*(?:percurso|categoria|distanci|modalid)[^"]*)"'
+    r'[^]]*"options":\[([^\]]+)\]',
+    re.IGNORECASE,
 )
 _KM_RE       = re.compile(r"(\d+(?:[.,]\d+)?)\s*KM", re.IGNORECASE)
+# km pattern for general text fallback
+_KM_TEXT_RE  = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", re.IGNORECASE)
 
 
 def scrape() -> list[Corrida]:
@@ -130,7 +134,10 @@ def _parse_event(html: str, url: str, today: str, now: str) -> Corrida | None:
     pais, estado, cidade = _extract_location(html, ld)
     localizacao = ", ".join(p for p in [cidade, estado] if p) or (ld.get("location") or {}).get("address", "")
 
-    distancias = _extract_distances(html)
+    distancias = _extract_distances(html, titulo)
+    if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
 
     eid_m = _EVENTID_RE.search(html)
     stable_id = f"portaldc_{eid_m.group(1)}" if eid_m else f"portaldc_{url.rsplit('/', 1)[-1]}"
@@ -177,9 +184,14 @@ def _extract_jsonld_event(html: str) -> dict | None:
 
 def _extract_location(html: str, ld: dict) -> tuple[str, str, str]:
     """Prefer Wix fullAddress (structured) over JSON-LD location (freeform)."""
-    m = _FULLADDR_RE.search(html)
-    if m:
-        return m.group(1), m.group(2), m.group(3)
+    idx = html.find('"fullAddress"')
+    if idx != -1:
+        window = html[idx: idx + 2000]
+        cm = re.search(r'"country"\s*:\s*"([A-Z]{2})"', window)
+        sm = re.search(r'"subdivision"\s*:\s*"([A-Z]{2,6})"', window)
+        ci = re.search(r'"city"\s*:\s*"([^"]{1,80})"', window)
+        if cm and ci:
+            return cm.group(1), sm.group(1) if sm else "", ci.group(1)
     # Fallback to JSON-LD's freeform address — country defaults to BR.
     loc = ld.get("location") or {}
     addr = loc.get("address") if isinstance(loc, dict) else ""
@@ -191,30 +203,60 @@ def _extract_location(html: str, ld: dict) -> tuple[str, str, str]:
     return "BR", "", ""
 
 
-def _extract_distances(html: str) -> list[Distancia]:
-    """Use the registration form's `Percurso` options — single source of truth."""
-    m = _PERCURSO_RE.search(html)
-    if not m:
-        return []
-    options = re.findall(r'"([^"]+)"', m.group(1))
-
+def _extract_distances(html: str, titulo: str = "") -> list[Distancia]:
+    """Use the registration form's Percurso options, broader form fields, then title."""
     seen: list[float] = []
-    for opt in options:
-        for km_match in _KM_RE.finditer(opt):
-            try:
-                raw = float(km_match.group(1).replace(",", "."))
-            except ValueError:
-                continue
-            if raw < 1 or raw > 200:
-                continue
-            km = raw
-            for canon, lo, hi in _CANONICAL:
-                if lo <= raw <= hi:
-                    km = canon
-                    break
-            if any(abs(km - s) < 0.5 for s in seen):
-                continue
+
+    def _add_km(raw: float) -> None:
+        km = raw
+        for canon, lo, hi in _CANONICAL:
+            if lo <= raw <= hi:
+                km = canon
+                break
+        if 1 <= km <= 200 and not any(abs(km - s) < 0.5 for s in seen):
             seen.append(km)
+
+    def _scan_options(options_str: str) -> None:
+        for opt in re.findall(r'"([^"]+)"', options_str):
+            for km_match in _KM_RE.finditer(opt):
+                try:
+                    _add_km(float(km_match.group(1).replace(",", ".")))
+                except ValueError:
+                    pass
+
+    # 1. Exact "Percurso" form label
+    m = _PERCURSO_RE.search(html)
+    if m:
+        _scan_options(m.group(1))
+
+    # 2. Broader form labels (Categoria, Distância, Modalidade, etc.)
+    if not seen:
+        for fm in _FORM_OPTS_RE.finditer(html):
+            _scan_options(fm.group(2))
+
+    # 3. Title keyword extraction (meia maratona, marathon, Xkm)
+    if not seen and titulo:
+        tl = titulo.lower()
+        if re.search(r'meia[\s-]?maratona|half[\s-]?marathon', tl):
+            _add_km(21.097)
+        t_stripped = re.sub(r'meia[\s-]?maratona|half[\s-]?marathon', '', tl)
+        if re.search(r'\bmaratona\b|\bmarathon\b', t_stripped):
+            _add_km(42.195)
+        for nm in re.findall(r'\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b', tl):
+            try:
+                _add_km(float(nm.replace(',', '.')))
+            except ValueError:
+                pass
+
+    # 4. Scan page text for km values as last resort (noise-prone, use only when nothing else worked)
+    if not seen:
+        stripped = re.sub(r'<[^>]+>', ' ', html)
+        for nm in _KM_TEXT_RE.findall(stripped):
+            try:
+                _add_km(float(nm.replace(',', '.')))
+            except ValueError:
+                pass
+
     return sorted(
         [Distancia(km=k, data=None, horario=None) for k in seen],
         key=lambda d: float(d.km),

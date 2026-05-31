@@ -152,13 +152,31 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
     # Shared event-specific inscription link is conclusive — state mismatch is fine
     if _shared_inscription_link(a, b):
         return True
-    if a.estado != b.estado:
-        return False
+
     # Completely disjoint distances → different events even if names look similar
     # (e.g. "Event (5km e 10km)" vs "Event (21km e 42km)")
     if _distances_disjoint(a, b):
         return False
+
     sim = _titulo_similarity(a.titulo, b.titulo)
+
+    if a.estado != b.estado:
+        # Cross-state: allow merge only for Brazilian events where the state
+        # mismatch is a known data-quality pattern (e.g. GO vs DF for events
+        # in the Greater Brasília metro area that different sources classify
+        # differently). Requires very high title similarity + exact same date.
+        # US and other multi-state event series (Firecracker 5k, Freedom Run…)
+        # are intentionally excluded via the pais check.
+        if (
+            a.pais == "BR" and b.pais == "BR"
+            and sim >= 0.95
+            and a.data_evento and b.data_evento
+            and a.data_evento == b.data_evento
+        ):
+            return True
+        return False
+
+    # Same state: existing logic
     if sim >= 0.95 and _date_ok_relaxed(a, b):
         return True
     if sim >= 0.85 and _date_ok(a, b):

@@ -1,18 +1,26 @@
 name: CI — Validar Scrapers
 
-# Triggered automatically on PRs that add or modify scraper source files.
-# Runs the affected sources, then validates the output with the full test suite.
-# Both steps must pass before the PR can be merged.
+# Triggered automatically on PRs that add or modify scraper source files OR
+# shared scraper infrastructure (pipeline, models, http client).
+#
+# When only source files change: runs only the affected sources (selective mode).
+# When infra files change: runs ALL sources — the pipeline must be validated end-
+# to-end against every source so regressions in main.py/models.py are caught here
+# rather than after merge via data-pipeline.
 #
 # Note: does not commit the rescrape output back to the branch — the branch's
-# corridas.json is not modified.  Use the "Re-scrape Sources" workflow manually
-# to update the data after the PR is merged (or before, if needed).
+# corridas.json is not modified.
 
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - 'scraper/sources/**'
+      - 'scraper/main.py'
+      - 'scraper/models.py'
+      - 'scraper/http_client.py'
+      - 'scraper/utils.py'
+      - 'scraper/playwright_client.py'
 
 permissions:
   contents: read
@@ -47,15 +55,28 @@ jobs:
       - name: Detect changed sources
         id: detect
         run: |
-          CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
-            -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
-            | grep -v '__init__\.py' \
-            | sed 's|scraper/sources/||; s|\.py$||' \
-            | tr '\n' ',' | sed 's/,$//')
-          echo "Detected changed sources: $CHANGED"
-          echo "sources=$CHANGED" >> "$GITHUB_OUTPUT"
+          # If shared infra changed, run ALL sources (empty SCRAPER_SOURCES = all).
+          INFRA=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+            -- 'scraper/main.py' \
+               'scraper/models.py' \
+               'scraper/http_client.py' \
+               'scraper/utils.py' \
+               'scraper/playwright_client.py')
 
-      - name: Run selective scraper
+          if [ -n "$INFRA" ]; then
+            echo "Infra changed (${INFRA//$'\n'/, }) — running all sources"
+            echo "sources=" >> "$GITHUB_OUTPUT"
+          else
+            CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+              -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+              | grep -v '__init__\.py' \
+              | sed 's|scraper/sources/||; s|\.py$||' \
+              | tr '\n' ',' | sed 's/,$//')
+            echo "Detected changed sources: $CHANGED"
+            echo "sources=$CHANGED" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run scraper
         env:
           SCRAPER_SOURCES: ${{ steps.detect.outputs.sources }}
           SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}

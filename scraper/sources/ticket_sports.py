@@ -116,6 +116,11 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] pulando '{c.titulo}' (sem horário publicado)")
     corridas = [c for c in corridas if c.horario is not None]
 
+    no_distancias = [c for c in corridas if not c.distancias]
+    for c in no_distancias:
+        print(f"[{SOURCE_NAME}] pulando '{c.titulo}' (sem distâncias)")
+    corridas = [c for c in corridas if c.distancias]
+
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
@@ -463,6 +468,16 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
                     horario = tv
                     break
         result.append(Distancia(km=k, data=None, horario=horario))
+
+    # Keyword fallback: catch "meia maratona" / "maratona" when no km token appears
+    if not result:
+        tl = text.lower()
+        if re.search(r"\bmeia\s+maratona\b|half[\s\-]marathon", tl):
+            result.append(Distancia(km=21.097, data=None, horario=None))
+        if re.search(r"(?<!meia )\bmaratona\b|(?<!half.)\bmarathon\b", tl):
+            if not any(d.km == 42.195 for d in result):
+                result.append(Distancia(km=42.195, data=None, horario=None))
+
     return result
 
 

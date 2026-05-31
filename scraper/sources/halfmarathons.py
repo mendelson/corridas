@@ -7,6 +7,7 @@ Distances stored as miles strings to match RunSignup convention.
 from __future__ import annotations
 import re
 from datetime import date, datetime, timezone
+from urllib.parse import urlparse
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
@@ -199,15 +200,23 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     cidade = f"{city}, {country}" if city else country
     localizacao = cidade
 
-    # Distances
+    # Links
+    reg_link: str = meta.get("registration-link") or post.get("link") or _BASE
+    event_link: str = post.get("link") or reg_link
+
+    # Distances. Priority: structured meta.distance → event title → external
+    # registration/results page (UltraSignup/RunSignup) for the handful of
+    # trail/ultra events whose distance the API leaves blank.
     raw_distances: list[str] = meta.get("distance") or []
     distancias = _parse_distances(raw_distances)
     if not distancias:
         distancias = _parse_distances_from_title(titulo)
-
-    # Links
-    reg_link: str = meta.get("registration-link") or post.get("link") or _BASE
-    event_link: str = post.get("link") or reg_link
+    if not distancias:
+        distancias = _fetch_distances_external(reg_link)
+    if not distancias:
+        # No determinable fixed distance anywhere (e.g. timed "24 Hour Run").
+        print(f"[{SOURCE_NAME}] sem distância determinável, pulando: {titulo!r}")
+        return None
 
     # ID: stable from WP post ID + year
     post_id = post.get("id") or slugify(titulo)
@@ -264,7 +273,26 @@ def _parse_distances(raw: list[str]) -> list[Distancia]:
 
 def _parse_distances_from_title(title: str) -> list[Distancia]:
     """Fallback: extract distances from post title when meta.distance is empty."""
-    title_l = title.lower()
+    return _extract_distance_tokens(title)
+
+
+# Spelled-out small numbers that appear in race names ("Five Mile", "Ten Mile").
+_SPELLED_NUM = {
+    "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6,
+    "seven": 7, "eight": 8, "nine": 9, "ten": 10, "twelve": 12, "fifteen": 15,
+}
+
+
+def _format_mi(raw: str) -> str:
+    f = float(raw)
+    return f"{int(f)} mi" if f.is_integer() else f"{f} mi"
+
+
+def _extract_distance_tokens(text: str) -> list[Distancia]:
+    """Extract race distances from free text (event title or an external
+    registration/results page). Recognises half-marathon/marathon, numeric and
+    spelled-out mile distances, and km tokens. Returns canonicalised Distancias."""
+    tl = (text or "").lower()
     seen: set[object] = set()
     result: list[Distancia] = []
 
@@ -274,21 +302,143 @@ def _parse_distances_from_title(title: str) -> list[Distancia]:
             seen.add(key)
             result.append(Distancia(km=km, data=None, horario=None))
 
-    if re.search(r'half[\s-]marathon', title_l):
+    # Half marathon — "half marathon", bare "half" (on this site it always means
+    # half marathon: "Killeen Half Marafun", "Hard As Hell Half"), or "1/2 Marathon"
+    # (UltraSignup's label). Strip these before the full-marathon check so the
+    # "marathon" inside "1/2 Marathon" doesn't also register as a full marathon.
+    _half_re = r'half[\s-]?marathon|\bhalf\b|1\s*/\s*2\s*marathon'
+    if re.search(_half_re, tl):
         _add(21.097)
-    t = re.sub(r'half[\s-]marathon', '', title_l)
+    t = re.sub(_half_re, '', tl)
     if re.search(r'\bmarathon\b', t):
         _add(42.195)
 
-    for n in re.findall(r'\b(\d+(?:\.\d+)?)k\b', title_l):
+    # Numeric miles: "50 Miler", "14 mile", "5-mile"
+    for n in re.findall(r'\b(\d+(?:\.\d+)?)\s*-?\s*mile[rs]?\b', tl):
+        f = float(n)
+        if 1 <= f <= 200:
+            _add(_format_mi(n))
+    # Spelled-out miles: "Five Mile"
+    for word, val in _SPELLED_NUM.items():
+        if re.search(rf'\b{word}\s*-?\s*mile[rs]?\b', tl):
+            _add(_format_mi(str(val)))
+
+    # Kilometres: "10k", "50 km"
+    for n in re.findall(r'\b(\d+(?:\.\d+)?)\s*k(?:m)?\b', tl):
         km = float(n)
         if 3 <= km <= 200:
             _add(km)
 
-    for n in re.findall(r'\b(\d+(?:\.\d+)?)-mile\b', title_l):
-        _add(f"{n} mi")
+    # Time-based events ("24 Hour Run", "6-hour", "12 hr") have no fixed distance;
+    # represent them with a verbatim time label (km is polymorphic — the frontend
+    # passes non-numeric strings through unchanged, like the "N mi" convention).
+    for n in re.findall(r'\b(\d+)\s*-?\s*(?:hours?|hrs?)\b', tl):
+        _add(f"{n}h")
 
-    return sorted(result, key=lambda d: float(str(d.km).replace(" mi", "")) * 1.60934 if " mi" in str(d.km) else float(str(d.km)))
+    return sorted(result, key=_dist_sort_key)
+
+
+def _dist_sort_key(d: Distancia) -> float:
+    """Sort numeric km ascending, miles by their km equivalent, and non-numeric
+    labels (timed events like '24h') last."""
+    s = str(d.km)
+    if s.endswith(" mi"):
+        try:
+            return float(s[:-3]) * 1.60934
+        except ValueError:
+            return 9e9
+    try:
+        return float(s)
+    except ValueError:
+        return 9e9
+
+
+_RSU_RACEID_RE = re.compile(r'race_?id["\']?\s*[:=]\s*["\']?(\d{4,})', re.IGNORECASE)
+
+
+def _fetch_distances_external(url: str) -> list[Distancia]:
+    """Last resort for the handful of trail/ultra events whose distance is absent
+    from the halfmarathons.net API and the event title: read it from the external
+    registration page, using a parser tuned to each platform's clean structured
+    source (never a raw full-body scan, which fabricates distances)."""
+    if not url or not url.startswith("http") or "halfmarathons.net" in url:
+        return []
+    host = urlparse(url).netloc.lower()
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=20)
+        resp.raise_for_status()
+        html = resp.text
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:60]}): {e}")
+        return []
+
+    if "ultrasignup.com" in host:
+        return _distances_ultrasignup(html)
+    if "runsignup.com" in host:
+        return _distances_runsignup(html)
+    # Generic platforms (oregontrailruns, …): the meta/og description lists the
+    # distances cleanly ("… Half Marathon, 10K, or 5K options.") without the
+    # navigation noise that pollutes the page body.
+    return _distances_from_meta(html)
+
+
+def _distances_ultrasignup(html: str) -> list[Distancia]:
+    """UltraSignup exposes the distances differently per page type:
+      • results_event.aspx — anchors with class event_link / event_selected_link
+        ('50 Miler', '50K', '1/2 Marathon');
+      • register.aspx — registration fee rows tagged summary-fee-calculation-label
+        ('50 Mile Registration …')."""
+    labels = re.findall(
+        r"class=['\"]event(?:_selected)?_link['\"][^>]*>([^<]+)<", html, re.IGNORECASE
+    )
+    labels += re.findall(
+        r"class=['\"]summary-fee-calculation-label['\"][^>]*>([^<]+)<", html, re.IGNORECASE
+    )
+    return _extract_distance_tokens(" , ".join(labels))
+
+
+def _distances_runsignup(html: str) -> list[Distancia]:
+    """RunSignup loads distances via JS, but the page embeds a numeric raceId.
+    Hit the public REST race endpoint for the structured race_events list."""
+    m = _RSU_RACEID_RE.search(html)
+    if not m:
+        return []
+    race_id = m.group(1)
+    try:
+        resp = get(
+            f"https://runsignup.com/rest/race/{race_id}?format=json&events=T",
+            source=SOURCE_NAME, timeout=20,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] runsignup REST {race_id}: {e}")
+        return []
+    race = data.get("race") if isinstance(data, dict) else None
+    if not isinstance(race, dict):
+        return []
+    events = race.get("race_events") or race.get("events") or []
+    # The structured `distance` field is authoritative ("14 Miles"); the event
+    # `name` ("2027 Sheetz-to-Sheetz Trail Run") usually carries no distance.
+    parts = " , ".join(
+        f"{ev.get('distance', '')} {ev.get('name', '')}"
+        for ev in events if isinstance(ev, dict)
+    )
+    return _extract_distance_tokens(parts)
+
+
+def _distances_from_meta(html: str) -> list[Distancia]:
+    """Read the distances from the page's meta description / og:description."""
+    for pat in (
+        r'<meta[^>]+(?:name|property)=["\'](?:og:)?description["\'][^>]+content=["\']([^"\']+)',
+        r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+(?:name|property)=["\'](?:og:)?description["\']',
+    ):
+        m = re.search(pat, html, re.IGNORECASE)
+        if m:
+            dists = _extract_distance_tokens(_strip_html(m.group(1)))
+            if dists:
+                return dists
+    return []
 
 
 def _strip_html(text: str) -> str:

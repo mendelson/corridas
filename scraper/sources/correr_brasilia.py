@@ -6,6 +6,7 @@ plugin — more reliable than trying to parse the calendar widget's HTML.
 from __future__ import annotations
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 
 from ..http_client import get
@@ -15,6 +16,56 @@ from .. import geo as _geo
 
 URL = "https://correrbrasilia.com.br/calendario/"
 SOURCE_NAME = "Correr Brasília"
+
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
+
+def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None]:
+    """Fetch the individual event page and extract distances and horario."""
+    try:
+        resp = get(url)
+        if resp.status_code != 200:
+            return [], None
+        soup = BeautifulSoup(resp.text, "lxml")
+        # Try JSON-LD first
+        for script in soup.find_all("script", type="application/ld+json"):
+            try:
+                data = json.loads(script.string or "")
+            except Exception:
+                continue
+            if not isinstance(data, dict) or data.get("@type") != "Event":
+                continue
+            desc = data.get("description") or ""
+            dists = _extract_distances(desc, data.get("name") or "")
+            _, horario = _parse_start_date(data.get("startDate") or "")
+            if dists:
+                return dists, horario
+        # Fallback: parse free text
+        text = soup.get_text(" ", strip=True)
+        dists = _extract_distances(text, "")
+        horario = _extract_horario(text)
+        return dists, horario
+    except Exception:
+        return [], None
+
+
+def _extract_horario(text: str) -> str | None:
+    if not text:
+        return None
+    m = _TIME_RE.search(text)
+    if not m:
+        return None
+    if m.group(1) is not None:
+        h, mi = int(m.group(1)), int(m.group(2))
+    else:
+        h, mi = int(m.group(3)), 0
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
 
 
 def scrape() -> list[Corrida]:
@@ -29,9 +80,8 @@ def scrape() -> list[Corrida]:
     today = today_iso()
     now = now_iso()
 
-    corridas: list[Corrida] = []
-    seen_ids: set[str] = set()
-
+    # First pass: parse all JSON-LD events from the listing page
+    candidates: list[dict] = []
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             data = json.loads(script.string or "")
@@ -39,17 +89,82 @@ def scrape() -> list[Corrida]:
             continue
         if not isinstance(data, dict) or data.get("@type") != "Event":
             continue
+        candidates.append(data)
+
+    corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
+
+    # Identify events that need a detail-page fetch (no distances or no horario)
+    needs_detail: list[tuple[dict, str]] = []
+    first_pass: list[Corrida] = []
+    for data in candidates:
         try:
             c = _parse_event(data, today, now)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao parsear evento: {e}")
             continue
-        if c and c.id not in seen_ids:
+        if c is None:
+            continue
+        if not c.distancias or not c.horario:
+            url = data.get("url") or ""
+            if url and url != URL:
+                needs_detail.append((data, url))
+            # keep in first_pass without distancias/horario — will be enriched or dropped
+        first_pass.append(c)
+
+    # Second pass: fetch detail pages for events still missing distances or horario
+    detail_map: dict[str, tuple[list[Distancia], str | None]] = {}
+    if needs_detail:
+        def _fetch(item: tuple[dict, str]) -> tuple[str, list[Distancia], str | None]:
+            ev_data, url = item
+            dists, horario = _fetch_event_page(url)
+            return url, dists, horario
+
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            futures = {ex.submit(_fetch, item): item for item in needs_detail}
+            for fut in as_completed(futures):
+                url, dists, horario = fut.result()
+                detail_map[url] = (dists, horario)
+
+    for data in candidates:
+        try:
+            c = _parse_event(data, today, now)
+        except Exception:
+            continue
+        if c is None:
+            continue
+
+        event_url = data.get("url") or ""
+        if (not c.distancias or not c.horario) and event_url in detail_map:
+            extra_dists, extra_horario = detail_map[event_url]
+            if not c.distancias and extra_dists:
+                c = _replace_distancias(c, extra_dists)
+            if not c.horario and extra_horario:
+                c = _replace_horario(c, extra_horario)
+
+        if not c.distancias:
+            print(f"[{SOURCE_NAME}] sem distâncias, pulando: {c.titulo!r}")
+            continue
+        if not c.horario:
+            print(f"[{SOURCE_NAME}] sem horário, pulando: {c.titulo!r}")
+            continue
+
+        if c.id not in seen_ids:
             seen_ids.add(c.id)
             corridas.append(c)
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
+
+
+def _replace_distancias(c: "Corrida", dists: list[Distancia]) -> "Corrida":
+    from dataclasses import replace
+    return replace(c, distancias=dists)
+
+
+def _replace_horario(c: "Corrida", horario: str) -> "Corrida":
+    from dataclasses import replace
+    return replace(c, horario=horario)
 
 
 def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:

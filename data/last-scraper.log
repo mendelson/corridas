@@ -1,63 +1,65 @@
 [main] iniciando scraping...
-[main] 13553 corridas no estado anterior
+[main] 13570 corridas no estado anterior
 [main] priorizando 21 fonte(s) com falha anterior: central_da_corrida, ticket_sports, tf_sports, tf_sports_app, iguana_sports, yescom, ativo, corridas_brasil, runner_brasil, brasil_corrida, portal_das_corridas, correr_brasilia, bora_correr, brasil_que_corre, sesc_df, largada_esportiva, sao_silvestre, halfmarathons, asdeporte, carreras_mexico, world_athletics
-[Central da Corrida] 68 corridas encontradas
-[Runner Brasil] 17 eventos no calendário
+[Central da Corrida] 67 corridas encontradas
 [TF Sports App] events(data,pt-BR): 7 brutos
-[TF Sports] run-series: 45 eventos brutos
-[Iguana Sports] 8 corridas encontradas
 [TF Sports App] events(sem-data,pt-BR): 0 brutos
+[Runner Brasil] 17 eventos no calendário
+[Iguana Sports] 8 corridas encontradas
+[TF Sports] run-series: 45 eventos brutos
 [TF Sports] pulando 'Iguatemi Campinas' (sem horário publicado)
 [TF Sports] pulando 'Villa Lobos Ii' (sem horário publicado)
 [TF Sports] pulando 'Shopping Recife' (sem horário publicado)
 [TF Sports] pulando 'Motiva Aeroportos - São Luis' (sem horário publicado)
+[Brasil Corrida] 14 corridas encontradas
 [TF Sports] pulando 'Center Norte Ii' (sem horário publicado)
 [TF Sports] pulando 'Iguatemi Fortaleza' (sem horário publicado)
 [TF Sports] pulando 'Bougainville Shopping' (sem horário publicado)
-[Ativo] 9 corridas encontradas
+[Portal das Corridas] 120 páginas para inspecionar
 [TF Sports] pulando 'Motiva Aeroportos - Palmas' (sem horário publicado)
 [TF Sports] pulando 'Shopping Estação Cuiabá' (sem horário publicado)
-[Brasil Corrida] 16 corridas encontradas
+[Ativo] 9 corridas encontradas
 [TF Sports] pulando 'Iguatemi Ribeirão Preto' (sem horário publicado)
 [TF Sports] pulando 'Cidade Jardim Ii' (sem horário publicado)
-[Portal das Corridas] 120 páginas para inspecionar
+[Yescom] 13 corridas encontradas
 [TF Sports] pulando 'Shopping Eldorado' (sem horário publicado)
 [TF Sports] pulando 'Shopping Barra' (sem horário publicado)
-[Yescom] 13 corridas encontradas
 [TF Sports] pulando 'Jk Iguatemi Ii' (sem horário publicado)
 [TF Sports] pulando 'Riomar Recife' (sem horário publicado)
 [TF Sports] pulando 'Plaza Sul - Jd. Botânico' (sem horário publicado)
 [TF Sports] pulando 'Conjunto Nacional' (sem horário publicado)
 [TF Sports] pulando 'Parque Shopping Maia' (sem horário publicado)
 [TF Sports] pulando 'Natal Shopping' (sem horário publicado)
-[Bora Correr] 0 corridas encontradas
 [TF Sports] pulando 'Shopping Abc' (sem horário publicado)
+[Bora Correr] 0 corridas encontradas
 [TF Sports] pulando 'Diamondmall' (sem horário publicado)
+[TF Sports App] events(recentes,pt-BR): 1912 brutos
+[TF Sports App] total Strapi locale=pt-BR: 1912 únicos
 [TF Sports] pulando 'Shopping Campo Grande' (sem horário publicado)
 [TF Sports] pulando 'Aracaju Ii' (sem horário publicado)
 [TF Sports] pulando 'Esporte Clube Pinheiros' (sem horário publicado)
 [TF Sports] pulando 'Pátio Higienópolis - Night' (sem horário publicado)
-[TF Sports] pulando 'Shopping Del Paseo Ii' (sem horário publicado)
 [Brasil que Corre] 0 corridas encontradas
+[TF Sports] pulando 'Shopping Del Paseo Ii' (sem horário publicado)
 [TF Sports] pulando 'Parque Dom Pedro' (sem horário publicado)
+[TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
 [TF Sports] pulando 'Mooca Plaza Shopping' (sem horário publicado)
 [TF Sports] pulando 'Iguatemi Porto Alegre' (sem horário publicado)
 [TF Sports] pulando 'Ribeirãoshopping Ii' (sem horário publicado)
 [TF Sports] pulando 'Motiva Aeroportos - Goiânia' (sem horário publicado)
 [TF Sports] pulando 'Jk Iguatemi Iii' (sem horário publicado)
 [TF Sports] pulando 'Center Norte Iii' (sem horário publicado)
-[SESC DF] 0 corridas encontradas
 [TF Sports] pulando 'Motiva Aeroportos - Londrina' (sem horário publicado)
+[SESC DF] 0 corridas encontradas
 [TF Sports] pulando 'Parkshoppingbarigüi' (sem horário publicado)
 [TF Sports] pulando 'Centervale Shopping' (sem horário publicado)
+[TF Sports] pulando 'Riomar Fortaleza Ll' (sem horário publicado)
 [TF Sports] pulando 'São José Do Rio Preto' (sem horário publicado)
 [Largada Esportiva] HTTP OK 1022B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1022B) mas sem eventos reconhecíveis
-[TF Sports] pulando 'Riomar Fortaleza Ll' (sem horário publicado)
-[TF Sports App] events(recentes,pt-BR): 1912 brutos
-[TF Sports App] total Strapi locale=pt-BR: 1912 únicos
 [TF Sports] pulando 'Shopping Vitória Ii' (sem horário publicado)
+[Runner Brasil] 0 corridas encontradas
 [TF Sports] pulando 'Praia Do Forte' (sem horário publicado)
 [TF Sports] pulando 'Farol Santander' (sem horário publicado)
 [TF Sports] pulando 'Santos Ii' (sem horário publicado)
@@ -65,24 +67,6 @@
 [TF Sports] pulando 'Shopping Vila Olímpia Ii' (sem horário publicado)
 [TF Sports] pulando 'Villalobos Iii' (sem horário publicado)
 [TF Sports] run-series(sem data): 0 eventos brutos
-[TF Sports] run-series(recentes): 100 eventos brutos
-[TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
-[TF Sports] pulando 'Mooca Plaza Shopping' (sem horário publicado)
-[TF Sports] pulando 'Shopping Campo Grande' (sem horário publicado)
-[TF Sports] pulando 'Farol Santander' (sem horário publicado)
-[Runner Brasil] 0 corridas encontradas
-[TF Sports] pulando 'Iguatemi Porto Alegre' (sem horário publicado)
-[TF Sports] pulando 'Conjunto Nacional' (sem horário publicado)
-[São Silvestre] sem horário publicado no site oficial — evento não incluído
-[TF Sports] pulando 'Villalobos Iii' (sem horário publicado)
-[TF Sports] pulando 'Centervale Shopping' (sem horário publicado)
-[TF Sports] pulando 'Natal Shopping' (sem horário publicado)
-[TF Sports] pulando 'São José Do Rio Preto' (sem horário publicado)
-[TF Sports] pulando 'Shopping Estação Cuiabá' (sem horário publicado)
-[TF Sports] pulando 'Motiva Aeroportos - Palmas' (sem horário publicado)
-[TF Sports] pulando 'Iguatemi Fortaleza' (sem horário publicado)
-[TF Sports] pulando 'Motiva Aeroportos - São Luis' (sem horário publicado)
-[TF Sports] pulando 'Motiva Aeroportos - Goiânia' (sem horário publicado)
 [TF Sports App] Playwright listing: 5 eventos capturados
 [TF Sports App] total após merge: 1912
 [TF Sports App] pulando 'Run Series Recife 2026' (sem horário publicado)
@@ -493,15 +477,24 @@
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Beatriz Mello-Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Core | Michelle Sposito | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Core | Michelle Sposito | Continue Em Movimento-Integrado'
+[São Silvestre] sem horário publicado no site oficial — evento não incluído
+[TF Sports] run-series(recentes): 100 eventos brutos
+[TF Sports] pulando 'Mooca Plaza Shopping' (sem horário publicado)
+[TF Sports] pulando 'Shopping Campo Grande' (sem horário publicado)
+[TF Sports] pulando 'Farol Santander' (sem horário publicado)
+[TF Sports] pulando 'Iguatemi Porto Alegre' (sem horário publicado)
+[TF Sports] pulando 'Conjunto Nacional' (sem horário publicado)
+[TF Sports] pulando 'Villalobos Iii' (sem horário publicado)
+[TF Sports] pulando 'Centervale Shopping' (sem horário publicado)
+[TF Sports] pulando 'Natal Shopping' (sem horário publicado)
+[TF Sports] pulando 'São José Do Rio Preto' (sem horário publicado)
+[TF Sports] pulando 'Shopping Estação Cuiabá' (sem horário publicado)
+[TF Sports] pulando 'Motiva Aeroportos - Palmas' (sem horário publicado)
+[TF Sports] pulando 'Iguatemi Fortaleza' (sem horário publicado)
+[TF Sports] pulando 'Motiva Aeroportos - São Luis' (sem horário publicado)
+[TF Sports] pulando 'Motiva Aeroportos - Goiânia' (sem horário publicado)
 [TF Sports] pulando 'Parque Dom Pedro' (sem horário publicado)
 [TF Sports] pulando 'Shopping Del Paseo Ii' (sem horário publicado)
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[TF Sports] pulando 'Pátio Higienópolis - Night' (sem horário publicado)
-[TF Sports] pulando 'Esporte Clube Pinheiros' (sem horário publicado)
-[TF Sports] pulando 'Aracaju Ii' (sem horário publicado)
-[TF Sports] pulando 'Shopping Abc' (sem horário publicado)
-[TF Sports] pulando 'Parque Shopping Maia' (sem horário publicado)
 [TF Sports App] filtrado(sem UF): 'Corrida E Caminhada Cross-Integrado' location='📍Unnamed Road - Itapetininga, SP, Brasil'
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Sarah Araújo | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Majida Majed | Continue Em Movimento-Integrado'
@@ -1777,6 +1770,7 @@
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Personal Hatha Yoga Com Gi Correa-Integrado'
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [TF Sports App] pulando 'Treino Estrada Velha De Santos-Integrado' (sem horário publicado)
 [TF Sports App] filtrado(tipo): 'Conexão Corpo Mente -Integrado'
 [TF Sports App] filtrado(tipo): 'Primeiros Socorros-Integrado'
@@ -2007,6 +2001,12 @@
 [TF Sports App] filtrado(tipo): 'Pickleball'
 [TF Sports App] filtrado(tipo): 'Circuito Das Serras | Parque Da Cidade'
 [TF Sports App] 0 corridas encontradas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[TF Sports] pulando 'Pátio Higienópolis - Night' (sem horário publicado)
+[TF Sports] pulando 'Esporte Clube Pinheiros' (sem horário publicado)
+[TF Sports] pulando 'Aracaju Ii' (sem horário publicado)
+[TF Sports] pulando 'Shopping Abc' (sem horário publicado)
+[TF Sports] pulando 'Parque Shopping Maia' (sem horário publicado)
 [TF Sports] pulando 'Riomar Recife' (sem horário publicado)
 [TF Sports] pulando 'Shopping Barra' (sem horário publicado)
 [TF Sports] pulando 'Jk Iguatemi Ii' (sem horário publicado)
@@ -2027,110 +2027,22 @@
 [TF Sports] pulando 'Parkshoppingbarigüi' (sem horário publicado)
 [TF Sports] pulando 'Shopping Vitória Ii' (sem horário publicado)
 [TF Sports] pulando 'Riomar Fortaleza Ll' (sem horário publicado)
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports] pulando 'Praia Do Forte' (sem horário publicado)
 [TF Sports] pulando 'Motiva Aeroportos - Curitiba' (sem horário publicado)
 [TF Sports] pulando 'Santos Ii' (sem horário publicado)
 [TF Sports] pulando 'Shopping Vila Olímpia Ii' (sem horário publicado)
 [TF Sports] events(data): 7 eventos brutos
+[Asdeporte] 34 corrida(s) encontrada(s)
 [TF Sports] pulando 'Run Series Recife 2026' (sem horário publicado)
 [TF Sports] pulando 'Shopping Plaza Sul Run 2026' (sem horário publicado)
 [TF Sports] pulando 'Run Series Recife 2027' (sem horário publicado)
-[TF Sports] pulando 'Run Series Recife 2028' (sem horário publicado)
-[TF Sports] pulando 'Run Series Recife 2029' (sem horário publicado)
-[TF Sports] events(sem data): 0 eventos brutos
-[TF Sports] events(recentes): 100 eventos brutos
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[TF Sports] pulando 'Run Series Recife 2029' (sem horário publicado)
-[TF Sports] pulando 'Run Series Recife 2028' (sem horário publicado)
-[TF Sports] pulando 'Run Series Recife 2027' (sem horário publicado)
-[TF Sports] pulando 'Shopping Plaza Sul Run 2026' (sem horário publicado)
-[TF Sports] pulando 'Run Series Recife 2026' (sem horário publicado)
-[TF Sports] experiences: 165 eventos brutos
-[TF Sports] filtrado(exp): '10 Anos Inspiratto | 10° Torneio de Peteca' area='Tênis de mesa'
-[TF Sports] filtrado(exp): 'CFB Games' area='Crossfit'
-[TF Sports] filtrado(exp): 'Hype Dog | Edição Rio de Janeiro' area='Funcional'
-[TF Sports] filtrado(exp): 'Reconecte-se 3ª Edição' area='Funcional'
-[TF Sports] filtrado(exp): 'Yoga Sunrise' area='Yoga'
-[TF Sports] filtrado(exp): 'The Best Indoor Bike' area='Bike'
-[TF Sports] filtrado(exp): 'Nutrição Aplicada a Prevenção de Lesões' area='Pilates'
-[TF Sports] filtrado(exp): 'Vila Verde Open By Ponto do Beach' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Judô Inclusivo' area='Judo'
-[TF Sports] filtrado(exp): 'Funcional e Yoga | Shopping Vila Olímpia' area='Yoga'
-[TF Sports] filtrado(exp): 'Manhã Wellness: Flow e Bem-Estar com Lilica Lima' area='Yoga'
-[TF Sports] filtrado(exp): 'Game Funcional | UpStudio' area='Funcional'
-[TF Sports] filtrado(exp): 'Evodia' area='Funcional'
-[TF Sports] filtrado(exp): 'Queens on Court' area='Tênis'
-[TF Sports] filtrado(exp): 'Born to Ski' area='Funcional'
-[TF Sports] filtrado(exp): '1º Viva o Momento | Santa Teresinha' area='Funcional'
-[TF Sports] filtrado(exp): 'Treino Round Studio | 2° Edição' area='Yoga'
-[TF Sports] filtrado(exp): 'Juntos em Quadra – Especial Dia das Mães' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Método Core HD com Michela Soares' area='Pilates'
-[TF Sports] filtrado(exp): 'Habitar-se | Mães e Filhos' area='Yoga'
-[TF Sports] filtrado(exp): 'Torneio Asttéri Brisas do Lago de Beach Tennis' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Training - Functional, Force, Flow' area='Alongamento'
-[TF Sports] filtrado(exp): 'Rio BT Tour | Etapa Niterói | 2° Edição' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Slow Morning' area='Yoga'
-[TF Sports] filtrado(exp): 'Arraia GTBT' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Superliga de Tênis - 7ª edição | 2026' area='Tênis'
-[TF Sports] filtrado(exp): 'Power Flow Let's Move | Indaiatuba' area='Funcional'
-[TF Sports] filtrado(exp): 'MR7' area='Funcional'
-[TF Sports] filtrado(exp): 'Encontro Ignition' area='Pilates'
-[TF Sports] filtrado(exp): 'Circuito AVP - 3° Edição' area='Beach Voley'
-[TF Sports] filtrado(exp): 'Clínica de Altinha | Shopping Vila Olímpia' area='Funcional'
-[TF Sports] filtrado(exp): 'Flor e Ser Yoga' area='Yoga'
-[TF Sports] filtrado(exp): 'Funcional no Palacete | 2° Edição' area='Funcional'
-[TF Sports] filtrado(exp): 'Movimente-se Com Ana Monteiro e Rubens' area='Yoga'
-[TF Sports] filtrado(exp): 'Fábrica Day | O Início da Transformação Começa Aqui' area='Funcional'
-[TF Sports] filtrado(exp): 'Despertar | Bauru' area='Pilates'
-[TF Sports] filtrado(exp): 'Yoga e Música' area='Yoga'
-[TF Sports] filtrado(exp): 'Terra de Mulheres' area='Yoga'
-[TF Sports] filtrado(exp): 'Festival de Bem-Estar | Soma Galeria | 2° Edição' area='Funcional'
-[TF Sports] filtrado(exp): 'Beach Tennis para Eles' area='Beach Tennis'
-[TF Sports] filtrado(exp): '1ª Edição da Copa do Mundo de Beach Tennis | Juiz de Fora' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Yoga ao Amanhecer | 3° Edição' area='Yoga'
-[TF Sports] filtrado(exp): 'Wellness Day | Balwe Club' area='Pilates'
-[TF Sports] filtrado(exp): 'Reset & Move - 2ª Edição' area='Dança'
-[TF Sports] filtrado(exp): '3º Open de Tênis Colinas Kids' area='Tênis'
-[TF Sports] filtrado(exp): 'Yoga Essência Natural' area='Yoga'
-[TF Sports] filtrado(exp): 'Festival de Yoga | Criciúma' area='Yoga'
-[TF Sports] filtrado(exp): 'Amor em Movimento' area='Funcional'
-[TF Sports] filtrado(exp): 'Kangoo e Zumba | Lucas Naide' area='Zumba'
-[TF Sports] filtrado(exp): 'RECONECTAR | 2ª Edição' area='Yoga'
-[TF Sports] filtrado(exp): 'VKN Crossfit' area='Crossfit'
-[TF Sports] filtrado(exp): 'Mamãe em Forma - 2ª Edição' area='Funcional'
-[TF Sports] filtrado(exp): 'Fit Team - São João SAJ' area='Funcional'
-[TF Sports] filtrado(exp): 'I SOMA ACE – TORNEIO DE SOMA DE IDADES' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Body Care e MAC' area='Meditação'
-[TF Sports] filtrado(exp): 'Viver BH' area='Yoga'
-[TF Sports] filtrado(exp): 'Sunset Bike | Gule + Insanos' area='Bike Indoor'
-[TF Sports] filtrado(exp): 'Bike Indoor | Ruca 10.000' area='Bike'
-[TF Sports] filtrado(exp): 'Elite Jump & Dance' area='Funcional'
-[TF Sports] filtrado(exp): 'Circuito Beach Tennis | NR Arena' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Bike Indoor by Rapha Corrêa | Music Ride' area='Bike Indoor'
-[TF Sports] filtrado(exp): 'Treinão CenterVale Shopping' area='Funcional'
-[TF Sports] filtrado(exp): 'Thermal Body | Alom Studio' area='Pilates'
-[TF Sports] filtrado(exp): 'Thermal Body | Alom Studio' area='Pilates'
-[TF Sports] filtrado(exp): 'A Arte de Brincar' area='Futebol de Campo'
-[TF Sports] filtrado(exp): 'Ranking Duplas Mampituba' area='Tênis'
-[TF Sports] filtrado(exp): 'Festival Tênis e Futebol Kids - Clube de Campo' area='Tênis'
-[TF Sports] filtrado(exp): 'II Circuito de Tênis Etapa Clube de Campo' area='Tênis'
-[TF Sports] filtrado(exp): 'Circuito Paraibano de Pickleball | 2ª Etapa' area='Pickleball'
-[TF Sports] filtrado(exp): 'Neon Beach Tennis' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Big Play Campestre I' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
-[TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
-[TF Sports] filtrado(exp): 'Mulheres em Movimento | 2ªedição' area='Futevôlei '
-[TF Sports] filtrado(exp): 'Dia das Mães | Pilates de solo' area='Pilates'
-[TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
-[TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
-[TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
-[TF Sports] filtrado(exp): 'Porto Bike Tour' area='Bike'
-[Corridas Brasil] 1 corridas encontradas
 [Carreras México] PROBE page0 raw repr[:400]: '$("#tiempometa_event_list_div").html(\'<div id=\\"tm_js_container\\">\\n\t<div class=\\"row tm_event_list_item\\">\\n\t\t<div class=\\"col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1\\">\\n\t\t\t<a class=\\"tiempometa tiempometa_event_link\\" href=\\"https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8\\" style=\\"text-decoration: none\\">\\n\t\t\t<img src=\\'
 [Carreras México] PROBE page0 html repr[:400]: '<div id="tm_js_container">\n\t<div class="row tm_event_list_item">\n\t\t<div class="col-md-2 col-xs-4 tiempometa tiempometa_event_image tiempometa_events_col1">\n\t\t\t<a class="tiempometa tiempometa_event_link" href="https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8" style="text-decoration: none">\n\t\t\t<img src="https://tiempometa.s3.amazonaws.com/events/avatars/000'
-[Carreras México] PROBE page 0: 32 items; today=2026-05-30
-[Carreras México] PROBE item[0]: titulo='2a Edicion Carrera Luz de Luna' date='2026-05-30' img='https://tiempometa.s3.amazonaws.com/events/avatars/000/008/933/thumb/icono-luna.jpeg?1775674685'
+[TF Sports] pulando 'Run Series Recife 2028' (sem horário publicado)
+[Carreras México] PROBE page 0: 32 items; today=2026-05-31
+[Carreras México] PROBE item[0]: titulo='2a Edicion Carrera Luz de Luna' date='2027-05-30' img='https://tiempometa.s3.amazonaws.com/events/avatars/000/008/933/thumb/icono-luna.jpeg?1775674685'
 [Carreras México] PROBE item[0] classes: ['clearfix', 'col-md-2', 'col-md-8', 'col-xs-3', 'col-xs-4', 'col-xs-5', 'img-responsive', 'tiempometa', 'tiempometa_event', 'tiempometa_event_date', 'tiempometa_event_image', 'tiempometa_event_link', 'tiempometa_event_title', 'tiempometa_events_col1', 'tiempometa_events_col2', 'tiempometa_events_col3', 'tm_date_day', 'tm_date_link', 'tm_date_month', 'tm_date_weekday', 'tm_event_list_subtitle', 'tm_event_list_title', 'visible-lg-block', 'visible-md-block', 'visible-sm-block', 'visible-xs-block']
 [Carreras México] PROBE item[0] anchor[0]: 'https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8'
 [Carreras México] PROBE item[0] anchor[1]: 'https://carrerasmexico.com/?event=7e893729c6f0bca1dd7abcb82b2267bb&api_key=48513987f33edea8'
@@ -2147,133 +2059,183 @@
 [Carreras México] PROBE item[2] anchor[2]: 'https://carrerasmexico.com/?event=b6d7c6979e45f19cfaf4a4127614f547&api_key=48513987f33edea8'
 [Carreras México] page 0: 32 items, 7 added
 [Carreras México] buscando localização para 7 eventos...
-[TF Sports] pulando 'Barimov' (sem localização determinável)
-[Carreras México] localização: My Coffee Race 5K → Aragón, CMX
+[TF Sports] pulando 'Run Series Recife 2029' (sem horário publicado)
+[TF Sports] events(sem data): 0 eventos brutos
+[TF Sports] events(recentes): 100 eventos brutos
+[TF Sports] pulando 'Run Series Recife 2029' (sem horário publicado)
 [Carreras México] localização: Lomitos Mundialistas 5K → Aragón, CMX
+[Carreras México] localização: My Coffee Race 5K → Aragón, CMX
 [Carreras México] localização: 1A Carrera 5K Atletas Olímpico → Huehuetoca, MEX
-[Carreras México] localização: El Ameyal Half Trail Marathon → Amealco, QRO
-[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
+[TF Sports] pulando 'Run Series Recife 2028' (sem horário publicado)
+[TF Sports] pulando 'Run Series Recife 2027' (sem horário publicado)
+[TF Sports] pulando 'Shopping Plaza Sul Run 2026' (sem horário publicado)
+[TF Sports] pulando 'Run Series Recife 2026' (sem horário publicado)
 [Carreras México] localização: Dinomilco 5K → Parque Ecológico Xochimilco, CMX
+[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
+[Carreras México] localização: El Ameyal Half Trail Marathon → Amealco, QRO
 [Carreras México] localização: Night Run & Rock La Paz, Half  → La Paz, BCS
 [Carreras México] 7 corridas encontradas
+[TF Sports] experiences: 132 eventos brutos
+[TF Sports] filtrado(exp): 'Despertar | Bauru' area='Pilates'
+[TF Sports] filtrado(exp): 'Clínica de Altinha | Shopping Vila Olímpia' area='Funcional'
+[TF Sports] filtrado(exp): 'Flor e Ser Yoga' area='Yoga'
+[TF Sports] filtrado(exp): 'Funcional no Palacete | 2° Edição' area='Funcional'
+[TF Sports] filtrado(exp): 'Movimente-se Com Ana Monteiro e Rubens' area='Yoga'
+[TF Sports] filtrado(exp): 'Fábrica Day | O Início da Transformação Começa Aqui' area='Funcional'
+[TF Sports] filtrado(exp): 'Yoga e Música' area='Yoga'
+[TF Sports] filtrado(exp): 'Terra de Mulheres' area='Yoga'
+[TF Sports] filtrado(exp): 'Festival de Bem-Estar | Soma Galeria | 2° Edição' area='Funcional'
+[TF Sports] filtrado(exp): 'Beach Tennis para Eles' area='Beach Tennis'
+[TF Sports] filtrado(exp): '1ª Edição da Copa do Mundo de Beach Tennis | Juiz de Fora' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Yoga ao Amanhecer | 3° Edição' area='Yoga'
+[TF Sports] filtrado(exp): 'Wellness Day | Balwe Club' area='Pilates'
+[TF Sports] filtrado(exp): 'Reset & Move - 2ª Edição' area='Dança'
+[TF Sports] filtrado(exp): 'Yoga Essência Natural' area='Yoga'
+[TF Sports] filtrado(exp): '3º Open de Tênis Colinas Kids' area='Tênis'
+[TF Sports] filtrado(exp): 'Festival de Yoga | Criciúma' area='Yoga'
+[TF Sports] filtrado(exp): 'Amor em Movimento' area='Funcional'
+[TF Sports] filtrado(exp): 'Kangoo e Zumba | Lucas Naide' area='Zumba'
+[TF Sports] filtrado(exp): 'Mamãe em Forma - 2ª Edição' area='Funcional'
+[TF Sports] filtrado(exp): 'RECONECTAR | 2ª Edição' area='Yoga'
+[TF Sports] filtrado(exp): 'VKN Crossfit' area='Crossfit'
+[TF Sports] filtrado(exp): 'Fit Team - São João SAJ' area='Funcional'
+[TF Sports] filtrado(exp): 'Body Care e MAC' area='Meditação'
+[TF Sports] filtrado(exp): 'I SOMA ACE – TORNEIO DE SOMA DE IDADES' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Viver BH' area='Yoga'
+[TF Sports] filtrado(exp): 'Sunset Bike | Gule + Insanos' area='Bike Indoor'
+[TF Sports] filtrado(exp): 'Bike Indoor | Ruca 10.000' area='Bike'
+[TF Sports] filtrado(exp): 'Elite Jump & Dance' area='Funcional'
+[TF Sports] filtrado(exp): 'Circuito Beach Tennis | NR Arena' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Treinão CenterVale Shopping' area='Funcional'
+[TF Sports] filtrado(exp): 'Bike Indoor by Rapha Corrêa | Music Ride' area='Bike Indoor'
+[TF Sports] filtrado(exp): 'Thermal Body | Alom Studio' area='Pilates'
+[TF Sports] filtrado(exp): 'Yoga & Mindfulness' area='Yoga'
+[TF Sports] filtrado(exp): 'A Arte de Brincar' area='Futebol de Campo'
+[TF Sports] filtrado(exp): 'Ranking Duplas Mampituba' area='Tênis'
+[TF Sports] filtrado(exp): 'Festival Tênis e Futebol Kids - Clube de Campo' area='Tênis'
+[TF Sports] filtrado(exp): 'II Circuito de Tênis Etapa Clube de Campo' area='Tênis'
+[TF Sports] filtrado(exp): 'Circuito Paraibano de Pickleball | 2ª Etapa' area='Pickleball'
+[TF Sports] filtrado(exp): 'Neon Beach Tennis' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Big Play Campestre I' area='Beach Tennis'
+[TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
+[TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
+[TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
+[TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
+[TF Sports] filtrado(exp): 'Mulheres em Movimento | 2ªedição' area='Futevôlei '
+[TF Sports] filtrado(exp): 'Dia das Mães | Pilates de solo' area='Pilates'
+[TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
+[TF Sports] filtrado(exp): 'Porto Bike Tour' area='Bike'
+[TF Sports] pulando 'Limeira' (sem horário publicado)
+[Corridas Brasil] 1 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Asdeporte] 34 corrida(s) encontrada(s)
-[Atletis] 75 candidatos de 93 eventos
-[TF Sports] pulando 'Treinão De Corrida | Run Orla Ponta Negra | 2 Edição' (sem horário publicado)
+[Atletis] 73 candidatos de 93 eventos
+[TF Sports] pulando 'Treinão De Corrida | Douglas Tokuhara Challenge | 2ª Edição' (sem horário publicado)
 [World Athletics] calendarEvents.results: 270 itens
 [World Athletics] 270 competições brutas
 [World Athletics] 0 corridas válidas (270 ignoradas)
-[MKS Esportes] 1 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[MKS Esportes] 1 corridas encontradas
+[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
 [Minhas Inscrições] 20 cards no calendário
-[TF Sports] pulando 'Linq Monstar Run' (sem localização determinável)
-[TF Sports] pulando 'Treinão De Corrida | Douglas Tokuhara Challenge | 2ª Edição' (sem horário publicado)
+[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
 [TF Sports] pulando 'Vilhena' (sem horário publicado)
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
-[Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
-[Largada Esportiva] 1 corridas via Playwright
-[Circuito das Estações] 3 corridas encontradas
-[TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
-[TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
-[Ticket Sports] 932 corridas encontradas
+[Portal das Corridas] 68 corridas encontradas
 [TF Sports] pulando 'Treinão Pelotão Quenia' (sem horário publicado)
 [TF Sports] pulando 'Pantanal Shopping' (sem horário publicado)
 [TF Sports] pulando 'Contagem | 1Rmsports' (sem horário publicado)
 [TF Sports] pulando 'Londrina | Avos' (sem horário publicado)
 [TF Sports] pulando 'Villa Forma' (sem localização determinável)
-[TF Sports] pulando 'Águia Da Fronteira' (sem horário publicado)
-[TF Sports] pulando 'Limeira' (sem horário publicado)
 [TF Sports] pulando 'Vogue Square Runners' (sem horário publicado)
+[TF Sports] pulando 'Águia Da Fronteira' (sem horário publicado)
 [TF Sports] pulando '6º Desafio Lptr – Pindamonhangaba - Morro Do Camelo' (sem horário publicado)
-[Portal das Corridas] 63 corridas encontradas
-[proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
-[Prague Marathon] nenhuma edição futura identificada
-[proxy] Scrapestack retornou 429 para www.stockholmmarathon.se, tentando Apify...
-[proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
-[Stockholm Marathon] erro ao buscar página: todos os métodos falharam para https://www.stockholmmarathon.se/eng/
-[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[Circuito das Estações] 3 corridas encontradas
+[Largada Esportiva] API: https://largadaesportiva.com.br/api/Events/13/products?0=13
+[Largada Esportiva] 1 corridas via Playwright
 [TF Sports] pulando 'Arraiá De Corredores | Goiânia Runners' (sem horário publicado)
-[TF Sports] pulando 'Itapetininga' (sem horário publicado)
 [TF Sports] pulando '1ª Maratona Aquática E De Revezamento De Natal' (sem horário publicado)
+[TF Sports] pulando 'Itapetininga' (sem horário publicado)
 [TF Sports] pulando 'Descubra Juiz De Fora - Mercado Municipal' (sem horário publicado)
-[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
-[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
-[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[Prague Marathon] nenhuma edição futura identificada
+[proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
+[Ticket Sports] 933 corridas encontradas
 [TF Sports] pulando 'Ubá - Edição Namorados' (sem horário publicado)
 [TF Sports] pulando 'Sumaré' (sem horário publicado)
 [TF Sports] pulando 'Amendoeiras Run | 1 Edição' (sem horário publicado)
+[proxy] Scrapestack retornou 429 para www.stockholmmarathon.se, tentando Apify...
+[TF Sports] pulando 'Catanduva' (sem horário publicado)
+[proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
+[Stockholm Marathon] erro ao buscar página: todos os métodos falharam para https://www.stockholmmarathon.se/eng/
+[proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
+[TF Sports] pulando 'Novo Hamburgo | Ifashion Run' (sem horário publicado)
+[TF Sports] pulando 'Treinão Corre No Bairro | Maracanã' (sem horário publicado)
+[TF Sports] pulando 'Running Sinop' (sem horário publicado)
+[TF Sports] pulando 'Profit Runner' (sem horário publicado)
+[TF Sports] pulando 'Alphaville' (sem horário publicado)
+[TF Sports] pulando 'Running Namorados | Bauru Shopping' (sem horário publicado)
+[TF Sports] pulando 'Pirassununga' (sem horário publicado)
+[TF Sports] pulando 'Duathlon Criciúma' (sem horário publicado)
+[TF Sports] pulando 'Running Weber' (sem horário publicado)
+[TF Sports] pulando '3ª Stars Running | Night Edition' (sem horário publicado)
+[TF Sports] pulando 'Parque Ceret I' (sem horário publicado)
+[proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
+[TF Sports] pulando 'Rio Claro' (sem horário publicado)
+[proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
+[Cardiff Half Marathon] erro ao buscar página: todos os métodos falharam para https://www.cardiffhalfmarathon.co.uk/
+[Volta do Lago] 1 corrida(s) encontrada(s) via Largada Esportiva
+[TF Sports] pulando 'Woman Run&Dance - Iguatemi Alphaville' (sem horário publicado)
+[TF Sports] pulando 'Só Vvamo Correr | Parque Olímpico' (sem horário publicado)
+[TF Sports] pulando 'Trail | Fazenda Monjolinho' (sem horário publicado)
+[TF Sports] pulando 'Fortaleza | Desafio Tp Vi' (sem horário publicado)
+[TF Sports] pulando 'Niterói | Desafio Araribóia Ii' (sem horário publicado)
+[TF Sports] pulando 'Rock N' Run | Indaiatuba' (sem horário publicado)
+[TF Sports] pulando 'Niterói - Desafio Araribóia Ii' (sem horário publicado)
+[TF Sports] pulando 'Itabuna' (sem horário publicado)
+[TF Sports] pulando 'Trilife Coffee & Run' (sem horário publicado)
+[TF Sports] pulando '5ª Edição Night Trail - Passa Quatro-Mg' (sem horário publicado)
+[TF Sports] pulando 'Cariri Shopping | Juazeiro Do Norte' (sem horário publicado)
+[TF Sports] pulando 'Mogi Das Cruzes' (sem horário publicado)
+[TF Sports] pulando 'São José Dos Campos' (sem horário publicado)
+[TF Sports] pulando 'Club21 Run' (sem horário publicado)
+[TF Sports] pulando '1 Edição Revezamento Lptr Taubaté' (sem horário publicado)
+[TF Sports] pulando 'Valinhos' (sem horário publicado)
+[TF Sports] pulando 'Vascular Run | Fortaleza' (sem horário publicado)
+[TF Sports] pulando 'Franca' (sem horário publicado)
+[TF Sports] pulando 'Shopping Piracicaba' (sem horário publicado)
+[TF Sports] pulando 'Lomantão Fest Run' (sem horário publicado)
+[TF Sports] pulando 'Uberlândia Shopping' (sem horário publicado)
+[TF Sports] pulando 'Circuito Das Ondas | Saquarema' (sem horário publicado)
+[TF Sports] pulando 'Votuporanga | Rotary Run' (sem horário publicado)
+[TF Sports] pulando 'Laboanalise Run | Cruz Das Almas' (sem horário publicado)
+[TF Sports] pulando 'Mogi Guaçu' (sem horário publicado)
+[TF Sports] pulando 'Running Vital Health' (sem horário publicado)
+[Race Roster] 'running': 361 upcoming de 2000
+[TF Sports] pulando 'Circuito Das Ondas | Saquarema' (sem horário publicado)
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
-[Race Roster] 'running': 370 upcoming de 2000
-[TF Sports] pulando 'Novo Hamburgo | Ifashion Run' (sem horário publicado)
-[Race Roster] 'marathon': 264 upcoming de 2000
-[TF Sports] pulando 'Running Sinop' (sem horário publicado)
-[TF Sports] pulando 'Treinão Corre No Bairro | Maracanã' (sem horário publicado)
-[TF Sports] pulando 'Catanduva' (sem horário publicado)
-[TF Sports] pulando 'Profit Runner' (sem horário publicado)
-[TF Sports] pulando 'Alphaville' (sem horário publicado)
-[TF Sports] pulando 'Duathlon Criciúma' (sem horário publicado)
-[TF Sports] pulando 'Running Namorados | Bauru Shopping' (sem horário publicado)
-[TF Sports] pulando 'Pirassununga' (sem horário publicado)
-[TF Sports] pulando 'Running Weber' (sem horário publicado)
-[RunSignup] página 2: 250 corridas
-[TF Sports] pulando '3ª Stars Running | Night Edition' (sem horário publicado)
-[TF Sports] pulando 'Parque Ceret I' (sem horário publicado)
-[TF Sports] pulando 'Rio Claro' (sem horário publicado)
-[TF Sports] pulando 'Trail | Fazenda Monjolinho' (sem horário publicado)
-[TF Sports] pulando 'Trail | Fazenda Monjolinho' (sem horário publicado)
-[TF Sports] pulando 'Woman Run&Dance - Iguatemi Alphaville' (sem horário publicado)
-[TF Sports] pulando 'Fortaleza | Desafio Tp Vi' (sem horário publicado)
-[TF Sports] pulando 'Rock N' Run | Indaiatuba' (sem horário publicado)
-[TF Sports] pulando 'Niterói - Desafio Araribóia Ii' (sem horário publicado)
-[TF Sports] pulando 'Niterói | Desafio Araribóia Ii' (sem horário publicado)
-[TF Sports] pulando 'Trilife Coffee & Run' (sem horário publicado)
-[TF Sports] pulando 'Itabuna' (sem horário publicado)
-[TF Sports] pulando '5ª Edição Night Trail - Passa Quatro-Mg' (sem horário publicado)
-[Race Roster] '5k': 284 upcoming de 2000
-[TF Sports] pulando 'São José Dos Campos' (sem horário publicado)
-[TF Sports] pulando 'Club21 Run' (sem horário publicado)
-[TF Sports] pulando 'Valinhos' (sem horário publicado)
-[TF Sports] pulando '1 Edição Revezamento Lptr Taubaté' (sem horário publicado)
-[TF Sports] pulando 'Cariri Shopping | Juazeiro Do Norte' (sem horário publicado)
-[TF Sports] pulando 'Mogi Das Cruzes' (sem horário publicado)
-[TF Sports] pulando 'Franca' (sem horário publicado)
-[TF Sports] pulando 'Vascular Run | Fortaleza' (sem horário publicado)
-[TF Sports] pulando 'Shopping Piracicaba' (sem horário publicado)
-[RunSignup] página 3: 250 corridas
-[TF Sports] pulando 'Lomantão Fest Run' (sem horário publicado)
-[TF Sports] pulando 'Laboanalise Run | Cruz Das Almas' (sem horário publicado)
-[TF Sports] pulando 'Mogi Guaçu' (sem horário publicado)
-[TF Sports] pulando 'Iguatemi Esplanada' (sem horário publicado)
-[TF Sports] pulando 'Running Vital Health' (sem horário publicado)
-[TF Sports] pulando 'Uberlândia Shopping' (sem horário publicado)
-[TF Sports] pulando 'Votuporanga | Rotary Run' (sem horário publicado)
-[TF Sports] pulando 'Circuito Das Ondas | Saquarema' (sem horário publicado)
-[TF Sports] pulando 'Conviver Run' (sem horário publicado)
 [TF Sports] pulando 'Tatuí' (sem horário publicado)
-[Race Roster] '10k': 293 upcoming de 2000
+[TF Sports] pulando 'Conviver Run' (sem horário publicado)
 [TF Sports] pulando 'Corrida Gammon Ufla' (sem horário publicado)
 [TF Sports] pulando 'Corrida Do Samba | Recôncavo' (sem horário publicado)
 [TF Sports] pulando 'São Paulo | Centro' (sem horário publicado)
 [TF Sports] pulando 'Montes Claros | 2ª Edição' (sem horário publicado)
 [TF Sports] pulando 'Ladeiras Trail | São Bernardo Do Campo' (sem horário publicado)
-[TF Sports] pulando 'Bragança Paulista' (sem horário publicado)
 [TF Sports] pulando 'Catarina Fashion Outlet | 2ª Edição' (sem horário publicado)
-[RunSignup] página 4: 250 corridas
-[TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
-[Race Roster] 'half marathon': 287 upcoming de 2000
+[TF Sports] pulando 'Bragança Paulista' (sem horário publicado)
 [TF Sports] pulando 'Maxi Shopping Jundiaí' (sem horário publicado)
-[TF Sports] pulando 'Rio Design Barra' (sem horário publicado)
+[Race Roster] 'marathon': 292 upcoming de 2000
+[TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
 [TF Sports] pulando 'Vinhedo' (sem horário publicado)
+[TF Sports] pulando 'Rio Design Barra' (sem horário publicado)
+[RunSignup] página 2: 250 corridas
 [TF Sports] pulando 'Running | Uberaba' (sem horário publicado)
-[TF Sports] pulando 'Iguatemi Alphaville Ii' (sem horário publicado)
-[TF Sports] pulando 'Praia Grande Ii' (sem horário publicado)
 [TF Sports] pulando 'Woman Run&Dance Jardim Sul - Parque Burle Marx' (sem horário publicado)
 [TF Sports] pulando 'Matão' (sem horário publicado)
+[TF Sports] pulando 'Iguatemi Alphaville Ii' (sem horário publicado)
+[TF Sports] pulando 'Praia Grande Ii' (sem horário publicado)
 [TF Sports] pulando 'Porto Running' (sem horário publicado)
 [TF Sports] pulando '4ª Stars Running' (sem horário publicado)
 [TF Sports] pulando 'Rio De Janeiro' (sem horário publicado)
@@ -2351,16 +2313,19 @@
 [TF Sports] filtrado(exp-rec): 'Circuito AVP - 3° Edição' area='Beach Voley'
 [TF Sports] filtrado(exp-rec): 'Slow Morning' area='Yoga'
 [TF Sports] pulando 'Tatuí' (sem horário publicado)
-[Race Roster] 'trail run': 198 upcoming de 2000
-[Race Roster] 7472 eventos únicos após dedup
-[Race Roster] 727 corridas válidas (6745 ignoradas)
-[RunSignup] página 5: 250 corridas
-[RunSignup] página 6: 250 corridas
+[Race Roster] '5k': 233 upcoming de 2000
+[RunSignup] página 3: 250 corridas
+[Race Roster] '10k': 260 upcoming de 2000
+[RunSignup] página 4: 250 corridas
 [TF Sports] pulando 'Arraiá De Corredores | Goiânia Runners' (sem horário publicado)
 [TF Sports] pulando 'Treinão Corre No Bairro | Maracanã' (sem horário publicado)
 [TF Sports] pulando '1ª Maratona Aquática E De Revezamento De Natal' (sem horário publicado)
-[RunSignup] página 7: 250 corridas
+[Race Roster] 'half marathon': 302 upcoming de 2000
+[RunSignup] página 5: 250 corridas
 [TF Sports] pulando 'Somai Pro Run' (sem localização determinável)
+[Race Roster] 'trail run': 196 upcoming de 2000
+[Race Roster] 7491 eventos únicos após dedup
+[Race Roster] 721 corridas válidas (6770 ignoradas)
 [TF Sports] pulando 'Corrida Do Samba | Recôncavo' (sem horário publicado)
 [TF Sports] pulando 'Running | Uberaba' (sem horário publicado)
 [TF Sports] pulando 'Ladeiras Trail | São Bernardo Do Campo' (sem horário publicado)
@@ -2373,33 +2338,33 @@
 [TF Sports] pulando 'Lomantão Fest Run' (sem horário publicado)
 [TF Sports] pulando 'Porto Running' (sem horário publicado)
 [TF Sports] pulando 'Shopping Piracicaba' (sem horário publicado)
+[RunSignup] página 6: 250 corridas
 [TF Sports] pulando 'Praia Grande Ii' (sem horário publicado)
 [TF Sports] pulando '1 Edição Revezamento Lptr Taubaté' (sem horário publicado)
 [TF Sports] pulando 'Club21 Run' (sem horário publicado)
 [TF Sports] pulando 'Só Vvamo Correr | Parque Olímpico' (sem horário publicado)
-[RunSignup] página 8: 250 corridas
 [TF Sports] pulando 'Treinão Pelotão Quenia' (sem horário publicado)
-[RunSignup] página 9: 250 corridas
-[Atletis] 19 corridas encontradas
+[RunSignup] página 7: 250 corridas
+[RunSignup] página 8: 250 corridas
 [TF Sports] pulando 'Treino Delas - 2 Anos' (sem localização determinável)
-[RunSignup] página 10: 250 corridas
+[RunSignup] página 9: 250 corridas
 [TF Sports] pulando 'Corre Caramelo' (sem localização determinável)
-[RunSignup] página 11: 250 corridas
 [TF Sports] pulando 'Treinão De Corrida | Douglas Tokuhara Challenge | 2ª Edição' (sem horário publicado)
+[RunSignup] página 10: 250 corridas
 [TF Sports] pulando 'Vogue Square Runners' (sem horário publicado)
-[RunSignup] página 12: 250 corridas
-[TF Sports] pulando 'Barimov' (sem localização determinável)
-[RunSignup] página 13: 250 corridas
-[TF Sports] pulando 'Treinão De Corrida | Run Orla Ponta Negra | 2 Edição' (sem horário publicado)
 [TF Sports] 0 corridas encontradas
+[Atletis] 19 corridas encontradas
+[RunSignup] página 11: 250 corridas
+[HalfMarathons.net] 1945 corrida(s) encontrada(s)
+[RunSignup] página 12: 250 corridas
+[RunSignup] página 13: 250 corridas
 [RunSignup] página 14: 250 corridas
-[Minhas Inscrições] 10 corridas encontradas
 [RunSignup] página 15: 250 corridas
-[Correr Brasília] 65 corridas encontradas
+[Minhas Inscrições] 10 corridas encontradas
 [RunSignup] página 16: 250 corridas
 [RunSignup] página 17: 250 corridas
 [RunSignup] página 18: 250 corridas
-[HalfMarathons.net] 1964 corrida(s) encontrada(s)
+[Correr Brasília] 63 corridas encontradas
 [RunSignup] página 19: 250 corridas
 [RunSignup] página 20: 250 corridas
 [RunSignup] página 21: 250 corridas
@@ -2433,474 +2398,421 @@
 [RunSignup] página 49: 250 corridas
 [RunSignup] página 50: 250 corridas
 [RunSignup] 12500 corridas brutas no total
-[RunSignup] 10919 corridas válidas (1581 ignoradas)
-[main] 14887 registros coletados (antes do merge)
-[main] 14490 registros após validação
-[main] 13104 corridas após merge
-[main] verificando links de 454 evento(s) não encontrado(s) no scrape...
-[main] 'Emc Dam To Dsm' — link válido, miss_count zerado
-[main] 'Lighthouse 5K' — link válido, miss_count zerado
-[main] 'Puppies & Beer 5K - Venice Beach With Or Without Dog' — link válido, miss_count zerado
-[main] 'Warrior Rush 5K, 10K, And Half' — link válido, miss_count zerado
-[main] 'Marathon For Mental Health And Addiction' — link válido, miss_count zerado
-[main] 'Springbank Relays' — link válido, miss_count zerado
-[main] 'Run 21K - Meia Da Estrada Velha 2026 - Sunset' — link válido, miss_count zerado
-[main] 'Run For The Door' — link válido, miss_count zerado
-[main] 'Ii Corrida E Caminhada Cacau - Salve O Rim De Uma Criança' — link válido, miss_count zerado
-[main] 'Pardinho Trail Experience' — link válido, miss_count zerado
-[main] 'Somos Ato - 2ª Edição' — link válido, miss_count zerado
-[main] 'Good Neighbor Days' — link válido, miss_count zerado
-[main] 'Gaelic Alley Pub 5K' — link válido, miss_count zerado
-[main] 'Run! Ballantyne 8K/5K Race & Fun Run Presented By Northwood Office' — link válido, miss_count zerado
-[main] '9ª Corrida De São José' — link válido, miss_count zerado
-[main] 'Vascorrida 2026 - Maceió' — link válido, miss_count zerado
-[main] 'Bearlodge 10K' — link válido, miss_count zerado
-[main] 'Az Sunrise Series - Scottsdale Sports Complex' — link válido, miss_count zerado
-[main] 'Corrida Do Farmacêutico - 2026' — link válido, miss_count zerado
-[main] 'Angels 5K & Fun Run - 2026' — link válido, miss_count zerado
-[main] 'Noda 5K' — link válido, miss_count zerado
-[main] 'Desafio Do Cimentão 2026' — link válido, miss_count zerado
-[main] 'Pemberton Home Stretch 5K' — link válido, miss_count zerado
+[RunSignup] 10863 corridas válidas (1637 ignoradas)
+[main] 14807 registros coletados (antes do merge)
+[main] 14415 registros após validação
+[main] 13028 corridas após merge
+[main] verificando links de 397 evento(s) não encontrado(s) no scrape...
 [main] 'Blackbird Golden Run' — link válido, miss_count zerado
-[main] 'Wild Earth 'In The Raw'' — link válido, miss_count zerado
-[main] 'Puppet Runner'S Summer Virtual Races 2026' — link válido, miss_count zerado
-[main] 'Spongebob Run 2026' — link válido, miss_count zerado
+[main] 'Desafio Do Cimentão 2026' — link válido, miss_count zerado
+[main] 'Vascorrida 2026 - Maceió' — link válido, miss_count zerado
+[main] 'Corrida Do Farmacêutico - 2026' — link válido, miss_count zerado
+[main] '9ª Corrida De São José' — link válido, miss_count zerado
 [main] 'Circuito Oscar 2026-2027 - 1ª Etapa - Mogi' — link válido, miss_count zerado
+[main] 'Bearlodge 10K' — link válido, miss_count zerado
 [main] 'Muay Thai Run Arena 5K' — link válido, miss_count zerado
+[main] 'Spongebob Run 2026' — link válido, miss_count zerado
+[main] 'Pemberton Home Stretch 5K' — link válido, miss_count zerado
+[main] 'You Yangs Off-Road Festival 2026' — link válido, miss_count zerado
+[main] 'Wild Earth 'In The Raw'' — link válido, miss_count zerado
+[main] 'Randee Mile Kickoff' — link válido, miss_count zerado
 [main] 'Corrida Das Nações' — link válido, miss_count zerado
+[main] 'Fairmont Sunset Mile' — link válido, miss_count zerado
+[main] 'Night At The Island' — link válido, miss_count zerado
 [main] 'Alcal Scoop Scoot 2026' — link válido, miss_count zerado
-[main] 'Pronghorn Pursuit Trail Run' — link válido, miss_count zerado
-[main] '10 Km Chaleur Uni Ckle 2026' — link válido, miss_count zerado
+[main] '8Th Annual Sodel Cares 5K Run / Walk & Non Competitive Mile Walk' — link válido, miss_count zerado
 [main] 'Centennial Airport Runway 5K 2026' — link válido, miss_count zerado
+[main] '10 Km Chaleur Uni Ckle 2026' — link válido, miss_count zerado
 [main] 'Boots On The Meridian 5K - Cattlemen'S Ball 2026' — link válido, miss_count zerado
+[main] '10Th Annual R.E.D. 5K Run/Walk' — link válido, miss_count zerado
 [main] 'The Belmont Mile (Presented By Fleet Feet)' — link válido, miss_count zerado
 [main] 'Bull Valley Monster Hill Challenge' — link válido, miss_count zerado
 [main] 'Carrollton "Tails & Trails" 5K & 1-Mile Fun Run/Walk' — link válido, miss_count zerado
-[main] 'Goat Island Games 5 Mile And 5K' — link válido, miss_count zerado
-[main] 'Shesans Run For Clean Water 5K – Charlotte 2026' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Tracy Pal Donut Dash 2026' — link válido, miss_count zerado
-[main] 'Superheroes Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Suicide Prevention Services: Run For Life! 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Vii Meia Maratona Timbó' — link válido, miss_count zerado
 [main] 'Frankfort Police Department "All Abilities" 5K Walk, Run & Wheel For Special Olympics' — link válido, miss_count zerado
-[main] 'Put-In-Bay Pride 5K' — link válido, miss_count zerado
+[main] 'Superheroes Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Suicide Prevention Services: Run For Life! 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Steamboat Classic' — link válido, miss_count zerado
-[main] 'Greenway 5K' — link válido, miss_count zerado
-[main] 'Chickamauga Chicken And Waffles 5K Dash' — link válido, miss_count zerado
+[main] 'Ashley Rizzuto Memorial Metavivor #Lightupmbc Color Walk' — link válido, miss_count zerado
 [main] 'La Grande Virée Des Sentiers Du Mont-Saint-Bruno Présentée Par Iga - Marchés Lambert' — link válido, miss_count zerado
-[main] 'Rattler 5 Miler' — link válido, miss_count zerado
-[main] 'The Mini-Apple Night Of Miles' — link válido, miss_count zerado
-[main] 'Cwc Stars & Stripes 5K Run' — link válido, miss_count zerado
+[main] 'Chickamauga Chicken And Waffles 5K Dash' — link válido, miss_count zerado
+[main] 'Greenway 5K' — link válido, miss_count zerado
+[main] 'Honda Waterfront Run Barrie' — link válido, miss_count zerado
 [main] '2026 - 402 Squadron Grizzly Ride' — link válido, miss_count zerado
-[main] 'Puro 9:56 Racing 5K & 1Mile Run/Walk' — link válido, miss_count zerado
-[main] 'Queen City Crown' — link válido, miss_count zerado
-[main] 'Corrida Brasil Champions Run' — link válido, miss_count zerado
+[main] 'The Mini-Apple Night Of Miles' — link válido, miss_count zerado
+[main] 'The American Legion First State 5K / 1 Mile Walk' — link válido, miss_count zerado
+[main] 'Cwc Stars & Stripes 5K Run' — link válido, miss_count zerado
+[main] 'Rattler 5 Miler' — link válido, miss_count zerado
 [main] 'Tremont Turkey Festival 5K' — link válido, miss_count zerado
-[main] 'Smoky Hill River Run' — link válido, miss_count zerado
-[main] 'Bear Tracks 5K And 1 Mile Bear Attack' — link válido, miss_count zerado
-[main] 'Corrida Smart Fit Varginha 2026' — link válido, miss_count zerado
-[main] 'John Deere Davenport 5K' — link válido, miss_count zerado
 [main] 'Gigifit Acceptance Challenge' — link válido, miss_count zerado
-[main] 'Circuito Voa Run 2026 - Etapa Novo Hamburgo' — link válido, miss_count zerado
+[main] 'Smoky Hill River Run' — link válido, miss_count zerado
 [main] 'Sacfit 2026 Summer/Fall Half Marathon Training Program' — link válido, miss_count zerado
-[main] 'Az Sunrise Series - Rio Vista Park' — link válido, miss_count zerado
+[main] 'Bear Tracks 5K And 1 Mile Bear Attack' — link válido, miss_count zerado
+[main] 'John Deere Davenport 5K' — link válido, miss_count zerado
 [main] 'Sacfit 2026 Summer/Fall Marathon Training Program' — link válido, miss_count zerado
+[main] 'Circuito Voa Run 2026 - Etapa Novo Hamburgo' — link válido, miss_count zerado
+[main] 'Az Sunrise Series - Rio Vista Park' — link válido, miss_count zerado
 [main] 'Footsteps For Families' — link válido, miss_count zerado
-[main] '30Th Annual Race With Your Heart' — link válido, miss_count zerado
 [main] '44Th Annual Lake Wyola Road Race' — link válido, miss_count zerado
+[main] '24Th Dewey Beach Patrol 5K' — link válido, miss_count zerado
+[main] 'The Third Annual Zeta Rho Lambda Juneteenth 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Judy'S Pancakes 5K & Fun Run Family Day' — link válido, miss_count zerado
-[main] 'The Forever 29 Run' — link válido, miss_count zerado
 [main] 'The Earl 'Helge' Byleen Road Race' — link válido, miss_count zerado
 [main] 'Rosy Rhubarb Walk / Run 2026 - Postponed To 2027' — link válido, miss_count zerado
+[main] 'Xact Kawartha Sun Run 2026' — link válido, miss_count zerado
 [main] 'Stuart Good Egg Days - A Father'S Day Race' — link válido, miss_count zerado
-[main] 'Harvey Mills Longest Day 10K' — link válido, miss_count zerado
-[main] 'Avon Spunktacular Days 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 Elkhart City Festival 5K And Kids Run' — link válido, miss_count zerado
+[main] 'Avon Spunktacular Days 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Harvey Mills Longest Day 10K' — link válido, miss_count zerado
 [main] 'Sista Strut 2026' — link válido, miss_count zerado
 [main] 'Hope K' — link válido, miss_count zerado
 [main] 'The Longest Day Run' — link válido, miss_count zerado
-[main] 'Festies 5K' — link válido, miss_count zerado
-[main] 'Ptxc Community 5K' — link válido, miss_count zerado
-[main] 'Pt. Pleasant Boro. Rotary Father’S Day 5K Run & 1-Mile Fun Run' — link válido, miss_count zerado
-[main] 'Shipwright'S Run' — link válido, miss_count zerado
-[main] 'Project Refresh Inc. "Beat The Heat" 5K/10K/Fun Run' — link válido, miss_count zerado
 [main] '34Th Annual Hopkinton Against The Tide' — link válido, miss_count zerado
-[main] 'The Fab 5K' — link válido, miss_count zerado
+[main] 'Festies 5K' — link válido, miss_count zerado
+[main] 'Frozen Fun Run' — link válido, miss_count zerado
+[main] 'Shipwright'S Run' — link válido, miss_count zerado
 [main] 'Run Juneteenth Day 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'The Sweaty Pig' — link válido, miss_count zerado
-[main] '5H Annual Juneteenth Freedom Run: United We Stand' — link válido, miss_count zerado
-[main] 'Frozen Fun Run' — link válido, miss_count zerado
-[main] '2026 - Champions In Training Program' — link válido, miss_count zerado
-[main] 'Pura Vida 5K Fun Run/Walk' — link válido, miss_count zerado
+[main] 'The Fab 5K' — link válido, miss_count zerado
 [main] 'Johnny Miles Weekend 2026 (Johnny Miles Running Event)' — link válido, miss_count zerado
 [main] 'Cavendish Race Weekend' — link válido, miss_count zerado
-[main] 'Stouffville Main Street 5K' — link válido, miss_count zerado
 [main] 'John P. Mckeon Post Father'S Day Race' — link válido, miss_count zerado
 [main] '2026 Mchenry County Patriot Run' — link válido, miss_count zerado
 [main] 'Prairiefest 5K & One Mile Prairie Dog Jog' — link válido, miss_count zerado
+[main] 'Stouffville Main Street 5K' — link válido, miss_count zerado
+[main] 'Manitoba Marathon 2026' — link válido, miss_count zerado
+[main] 'Hustle For The Heroes 5K' — link válido, miss_count zerado
 [main] 'Bio International Convention 5K And 1 Mile Stroll' — link válido, miss_count zerado
 [main] '2026 Fleet Feet Training Programs' — link válido, miss_count zerado
-[main] 'Hustle For The Heroes 5K' — link válido, miss_count zerado
 [main] 'Race Against Hate 2026' — link válido, miss_count zerado
-[main] 'Manitoba Marathon 2026' — link válido, miss_count zerado
-[main] 'Community Strong Race Weekend' — link válido, miss_count zerado
-[main] 'Run For A Resident 2026' — link válido, miss_count zerado
 [main] 'High Line Canal Summer Scamper' — link válido, miss_count zerado
+[main] '17Th Chesapeake City Canal Race 5K' — link válido, miss_count zerado
+[main] 'Community Strong Race Weekend' — link válido, miss_count zerado
 [main] 'Tri County Educational Foundation Firecracker 5K - 14Th Annual' — link válido, miss_count zerado
+[main] 'Run For A Resident 2026' — link válido, miss_count zerado
 [main] 'Stewart Memorial Hospital And Clinics 2-Mile Fun Run/Walk' — link válido, miss_count zerado
-[main] 'Red White And Blessed 5K Run/Walk' — link válido, miss_count zerado
-[main] 'The Longest Day Purple Powder 5K Run/Walk' — link válido, miss_count zerado
 [main] '2026 East Coast Beast Coast' — link válido, miss_count zerado
+[main] 'Red White And Blessed 5K Run/Walk' — link válido, miss_count zerado
 [main] '55Th Annual Worthington Hills Firecracker Trot 5K' — link válido, miss_count zerado
-[main] 'Rise Above 5K' — link válido, miss_count zerado
-[main] 'Proud To Run: Pride Race – Presented By Walgreens' — link válido, miss_count zerado
+[main] 'The Longest Day Purple Powder 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Bessemer Hometown Run' — link válido, miss_count zerado
 [main] 'The Beat Goes On, Hosted By Firth Rural Fire And Rescue' — link válido, miss_count zerado
 [main] 'Eagan 5K And Kids Run' — link válido, miss_count zerado
-[main] 'Bessemer Hometown Run' — link válido, miss_count zerado
 [main] 'Pride 5K: Walk, Run, & Roll Presented By The Project Of The Quad Cities' — link válido, miss_count zerado
-[main] '2026 Pride & Remembrance Run' — link válido, miss_count zerado
 [main] 'North Bend Old Settlers 5K And 1 Mile Run/Walk' — link válido, miss_count zerado
-[main] 'Miles For Maddog' — link válido, miss_count zerado
+[main] '2026 Pride & Remembrance Run' — link válido, miss_count zerado
 [main] 'Swedish Days Lopp' — link válido, miss_count zerado
-[main] 'Furry Friends 5K And 1 Mile Fun Run/Walk' — link válido, miss_count zerado
+[main] 'Miles For Maddog' — link válido, miss_count zerado
 [main] 'Neighborhood Food Pantries (Nfp) Shopping Cart Shuffle' — link válido, miss_count zerado
-[main] 'Summer Session 10K & 5K' — link válido, miss_count zerado
 [main] 'Firecracker Run/Walk' — link válido, miss_count zerado
-[main] 'Race Across California - 2026' — link válido, miss_count zerado
-[main] 'Belle Fourche Rodeo Run 5K/10K' — link válido, miss_count zerado
-[main] '2026 Niwot Mile' — link válido, miss_count zerado
 [main] 'The Land We Love Run' — link válido, miss_count zerado
-[main] 'Mount Evans Freedom Run 5K' — link válido, miss_count zerado
+[main] 'Race Across California - 2026' — link válido, miss_count zerado
+[main] 'The Ford City 5K And Kids 1/2 Mile' — link válido, miss_count zerado
+[main] 'Furry Friends 5K And 1 Mile Fun Run/Walk' — link válido, miss_count zerado
+[main] 'Morgantown Running 4 On The 4Th' — link válido, miss_count zerado
+[main] 'Four On The Fourth' — link válido, miss_count zerado
+[main] '40Th Firecracker 5K Run Walk' — link válido, miss_count zerado
+[main] '20Th Dewey Beach Liquors 5K' — link válido, miss_count zerado
+[main] 'Mexico Beach Sandy Shoes 5K Fun Run' — link válido, miss_count zerado
 [main] '2026 Lincolnshire Rotary Red, White & Boom 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Seward Freedom Run - 2026' — link válido, miss_count zerado
+[main] '2026 Niwot Mile' — link válido, miss_count zerado
+[main] 'Belle Fourche Rodeo Run 5K/10K' — link válido, miss_count zerado
+[main] 'Mount Evans Freedom Run 5K' — link válido, miss_count zerado
 [main] '4Th Of July Annual Freedom Fun Run - Dexter' — link válido, miss_count zerado
 [main] '4Th Of July Barrington' — link válido, miss_count zerado
+[main] 'Seward Freedom Run - 2026' — link válido, miss_count zerado
 [main] 'Freedom Four' — link válido, miss_count zerado
-[main] 'Freedom Run' — link válido, miss_count zerado
 [main] 'Ralston Independence Day Fun Run/Walk 3 Mile 2026' — link válido, miss_count zerado
-[main] 'Urbandale Independence Day Races' — link válido, miss_count zerado
 [main] 'Sigourney Fourth Of July 5K / 1 Mile' — link válido, miss_count zerado
-[main] 'Red, White & Run 4 Miler.' — link válido, miss_count zerado
-[main] 'Corrida E Caminhada Movimenta Sest Senat 2026' — link válido, miss_count zerado
-[main] 'Prior Lake Firecracker 5K' — link válido, miss_count zerado
-[main] '12ª Corrida Da Apae Poços Caldas' — link válido, miss_count zerado
-[main] 'Pulpit To Pulpit' — link válido, miss_count zerado
+[main] 'Freedom Run' — link válido, miss_count zerado
+[main] 'Urbandale Independence Day Races' — link válido, miss_count zerado
 [main] 'Firecracker Run Presented By Mercy One Genesis' — link válido, miss_count zerado
 [main] 'Peoria Jaycees' Firecracker 5000' — link válido, miss_count zerado
+[main] 'Red, White & Run 4 Miler.' — link válido, miss_count zerado
 [main] 'O'Fallon Firecracker Run' — link válido, miss_count zerado
+[main] 'Prior Lake Firecracker 5K' — link válido, miss_count zerado
 [main] 'Fifth Season Races - 2026 41St Year' — link válido, miss_count zerado
 [main] 'Run For Chocolate 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Deerfield Rotary Club Race' — link válido, miss_count zerado
-[main] 'Run For Chocolate 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] 'Pleasant Hill Firecracker 5K' — link válido, miss_count zerado
+[main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
+[main] 'Run For Chocolate 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
 [main] '21St Annual Footloose Freedom Mile' — link válido, miss_count zerado
 [main] 'America'S 250 Freedom Run 5K' — link válido, miss_count zerado
 [main] 'Heritage Days Fun Run Sponsored By The Mount Vernon Alumni Association' — link válido, miss_count zerado
-[main] 'Maple Leaf Races "In Training" Classes' — link válido, miss_count zerado
-[main] 'Ames Midnight Madness Road Race' — link válido, miss_count zerado
-[main] '5Th Annual Lost Paws Memorial 5K And 1 Mile' — link válido, miss_count zerado
-[main] 'Wayne Chicken Run 5K And 1 Mile' — link válido, miss_count zerado
 [main] 'Low Moor Days 2026 5K Rock-N-Run' — link válido, miss_count zerado
+[main] 'Bases Loaded 5K, Home Run For Hodge' — link válido, miss_count zerado
+[main] '5Th Annual Lost Paws Memorial 5K And 1 Mile' — link válido, miss_count zerado
+[main] 'Ames Midnight Madness Road Race' — link válido, miss_count zerado
+[main] 'Wayne Chicken Run 5K And 1 Mile' — link válido, miss_count zerado
 [main] 'Giant Days 5K' — link válido, miss_count zerado
+[main] '3Rd Rusty Rudder 5K' — link válido, miss_count zerado
 [main] 'Tristan'S Trail 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Heatwave Half Marathon - Lansing' — link válido, miss_count zerado
 [main] 'Bristol Progress Days 5K And 1.5 Mile Run/Walk' — link válido, miss_count zerado
 [main] 'Moonlight Chase' — link válido, miss_count zerado
 [main] 'Chester Chipmunk'S Trail Run Challenge' — link válido, miss_count zerado
-[main] 'Heatwave Half Marathon - Lansing' — link válido, miss_count zerado
-[main] 'Project Purple Pretzel Run' — link válido, miss_count zerado
-[main] '5 Desafio Crossrun' — link válido, miss_count zerado
-[main] 'Madelia Health Foundation 5K/1M Run/Walk' — link válido, miss_count zerado
 [main] 'Pattersons Pellet—53Rd Summer Series Week Two' — link válido, miss_count zerado
-[main] 'Bloom Energy & Tarana Wireless Stars And Strides 5K-10K Run/Walk & Kids Fun Run' — link válido, miss_count zerado
 [main] 'Run For Life 5K' — link válido, miss_count zerado
-[main] 'Cmv Canada Half Marathon' — link válido, miss_count zerado
-[main] '33Rd Annual Run For The Health Of It' — link válido, miss_count zerado
 [main] 'Eyota Days Color Run' — link válido, miss_count zerado
-[main] 'Clive Running Festival - 2026' — link válido, miss_count zerado
+[main] 'America'S Mile Presented By Visitpittsburgh' — link válido, miss_count zerado
+[main] 'Madelia Health Foundation 5K/1M Run/Walk' — link válido, miss_count zerado
 [main] 'Lincoln Running Co Mile - 2026' — link válido, miss_count zerado
+[main] 'Clive Running Festival - 2026' — link válido, miss_count zerado
 [main] 'St Charles Old Settlers Gateway 5K/1K Fun Run' — link válido, miss_count zerado
-[main] 'Drewby Dash' — link válido, miss_count zerado
-[main] 'Eagle Lake Tator Days 5K And Kids 1 Mile' — link válido, miss_count zerado
+[main] '33Rd Annual Run For The Health Of It' — link válido, miss_count zerado
+[main] 'Bloom Energy & Tarana Wireless Stars And Strides 5K-10K Run/Walk & Kids Fun Run' — link válido, miss_count zerado
 [main] 'Bob Lauterbach Memorial Columbus Downtown Runaround' — link válido, miss_count zerado
 [main] 'Mound Westonka Rotary - Spirit Of The Lakes 5K' — link válido, miss_count zerado
-[main] 'Summer Nights 5K + 1 Miler' — link válido, miss_count zerado
-[main] 'Blueberry Run—53Rd Summer Series Week Three' — link válido, miss_count zerado
-[main] '5K Run/Walk For Lynne' — link válido, miss_count zerado
-[main] 'Tour De Save 2026' — link válido, miss_count zerado
+[main] 'Drewby Dash' — link válido, miss_count zerado
 [main] 'Colby Cheese Days: Run For Jamison' — link válido, miss_count zerado
-[main] 'Project SC - One Mile Challenge Sponsored By Asics' — link válido, miss_count zerado
-[main] 'Quaker Dash Ice Cream 5K' — link válido, miss_count zerado
+[main] '5K Run/Walk For Lynne' — link válido, miss_count zerado
+[main] 'Eagle Lake Tator Days 5K And Kids 1 Mile' — link válido, miss_count zerado
+[main] 'Blueberry Run—53Rd Summer Series Week Three' — link válido, miss_count zerado
+[main] 'Tour De Save 2026' — link válido, miss_count zerado
 [main] 'Floyd Hill Dash' — link válido, miss_count zerado
 [main] '9Th Annual Courtney Roderick Run For Recovery' — link válido, miss_count zerado
-[main] 'Haven Half Marathon, 30K & 10K' — link válido, miss_count zerado
-[main] 'Iop Beach Run 2026' — link válido, miss_count zerado
 [main] 'Walker Pickle Days 5K And 1-Mile Fun Run' — link válido, miss_count zerado
-[main] 'Michael'S Run For Life Festival' — link válido, miss_count zerado
 [main] 'Detweiller At Dark' — link válido, miss_count zerado
+[main] 'Haven Half Marathon, 30K & 10K' — link válido, miss_count zerado
+[main] '24Th Penn State College Day 5K' — link válido, miss_count zerado
 [main] 'Run For Coffee Lovers 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Queen City 5K' — link válido, miss_count zerado
 [main] 'Lace Up For Hope With The Landingmn' — link válido, miss_count zerado
+[main] 'Michael'S Run For Life Festival' — link válido, miss_count zerado
 [main] 'Lou’S Run—53Rd Summer Series Week Four' — link válido, miss_count zerado
 [main] 'Rochester Women’S 4-Mile Race' — link válido, miss_count zerado
 [main] 'Run For Coffee Lovers 5K/10K/13.1 Sacramento' — link válido, miss_count zerado
-[main] 'Project SC - One Mile Challenge - Gvl' — link válido, miss_count zerado
-[main] 'Whitney’S Walk For Suicide Prevention & Awareness' — link válido, miss_count zerado
-[main] '2026 Lindsay Milk Run' — link válido, miss_count zerado
 [main] 'Az Sunrise Series - Arizona Boardwalk' — link válido, miss_count zerado
-[main] 'Publix Woodstock 5K' — link válido, miss_count zerado
+[main] 'Whitney’S Walk For Suicide Prevention & Awareness' — link válido, miss_count zerado
 [main] 'Ncsl Fun Run 5K' — link válido, miss_count zerado
-[main] 'Run For Coffee Lovers 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
-[main] 'Awards/Fun Run—53Rd Summer Series Finale' — link válido, miss_count zerado
 [main] 'Reggie Oeltjen Douglas Trail 11-Mile Race' — link válido, miss_count zerado
-[main] 'Prowl The Peak Twilight 5K Run & 3K Walk' — link válido, miss_count zerado
+[main] '2026 Lindsay Milk Run' — link válido, miss_count zerado
 [main] 'Indian Creek 5K' — link válido, miss_count zerado
-[main] 'Prospector'S 50K | 30K' — link válido, miss_count zerado
+[main] 'Awards/Fun Run—53Rd Summer Series Finale' — link válido, miss_count zerado
 [main] '5K Race For Plates (Stockthesummer.Ca)' — link válido, miss_count zerado
 [main] 'Totally Awesome Casa Costume 5K' — link válido, miss_count zerado
+[main] '2026 Rvn3 Bubba Run' — link válido, miss_count zerado
 [main] '2026 Washington Town & Country Fair Run' — link válido, miss_count zerado
 [main] 'Run To Rescue - 14Th Annual' — link válido, miss_count zerado
-[main] '2026 Rvn3 Bubba Run' — link válido, miss_count zerado
-[main] 'Q-Town Evening Road Races' — link válido, miss_count zerado
 [main] 'Nolan'S Smile Run' — link válido, miss_count zerado
 [main] 'Case Creek Obstacles Mud Run For Everyone' — link válido, miss_count zerado
-[main] 'Prostate Cancer Awareness 5K Walk/Run/Bike-Most Worshipful Prince Hall Grand Lodge Of Il (One Race Four Locations Simulantaneously)' — link válido, miss_count zerado
 [main] 'Chad’S Day For Change Urban Trail Race' — link válido, miss_count zerado
-[main] 'Case Creek Obstacles Kids Ninja Adventure Run' — link válido, miss_count zerado
-[main] '2026 Demi-Marathon Mont-Tremblant' — link válido, miss_count zerado
+[main] '4Th Community Matters Foundation 5K' — link válido, miss_count zerado
 [main] 'Mindful Miles 5K' — link válido, miss_count zerado
 [main] 'Freedom Run Presented By Unitypoint Health' — link válido, miss_count zerado
+[main] 'Case Creek Obstacles Kids Ninja Adventure Run' — link válido, miss_count zerado
+[main] 'Pfc. Joseph "Dimps" Marquez Memorial 5K' — link válido, miss_count zerado
+[main] 'Rolling Of The Bulls 5K' — link válido, miss_count zerado
 [main] 'New Windsor Rodeo Run' — link válido, miss_count zerado
 [main] '2026 Mt. Sneffels Half Marathon-10K-Kids-Fun Run' — link válido, miss_count zerado
-[main] 'Project Life 5K' — link válido, miss_count zerado
-[main] 'Rolling Of The Bulls 5K' — link válido, miss_count zerado
-[main] 'Prospect Acres Ranch 2,4 & 8 Hour Ultra' — link válido, miss_count zerado
-[main] 'Brimfield Old Settlers Days 5K' — link válido, miss_count zerado
-[main] 'Cannon Ballers Shooting Star 5K' — link válido, miss_count zerado
 [main] '2026 Lance Pfrimmer Memorial Run' — link válido, miss_count zerado
-[main] 'Ptb - Walk, Run, Plant Hope 5K' — link válido, miss_count zerado
+[main] 'Brimfield Old Settlers Days 5K' — link válido, miss_count zerado
 [main] 'Along The Vines 5K/10K' — link válido, miss_count zerado
+[main] '24Th Annual Beat The Heat 5K' — link válido, miss_count zerado
 [main] 'Eager Beaver Run' — link válido, miss_count zerado
-[main] 'Xterra Sleeping Giant - 2026' — link válido, miss_count zerado
-[main] '7.00Wolfdog Moon' — link válido, miss_count zerado
 [main] 'Rileystrong 5K Run And Youth Fun Run' — link válido, miss_count zerado
-[main] 'Max-Fun Colour Run 5K' — link válido, miss_count zerado
-[main] 'Quarry Summer Challenge 5K, 10K, 15K' — link válido, miss_count zerado
-[main] 'Proud To Be Lsd Back To School 5K' — link válido, miss_count zerado
-[main] 'Hawthorn Hustle' — link válido, miss_count zerado
+[main] '7.00Wolfdog Moon' — link válido, miss_count zerado
 [main] 'St. Monica Summerfest 5K Run/Walk And Mini Mustang Dash' — link válido, miss_count zerado
+[main] 'Max-Fun Colour Run 5K' — link válido, miss_count zerado
+[main] '23Rd Outlet Liquors 5K At The Rusty Rudder' — link válido, miss_count zerado
+[main] 'Hawthorn Hustle' — link válido, miss_count zerado
 [main] 'I Love Regina Run & Walk' — link válido, miss_count zerado
-[main] 'Pajamas All Day 5K & Fun Run' — link válido, miss_count zerado
-[main] 'Putnam County Running Series' — link válido, miss_count zerado
-[main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Yiasou Greek Festival 5K Presented By Novant Health' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
+[main] 'Xterra Sleeping Giant - 2026' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Tampa' — link válido, miss_count zerado
 [main] 'See Dick Run Grand Forks 10' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Quassapaug Sailing Center Open Water Swim' — link válido, miss_count zerado
-[main] 'Cobequid Trail Run' — link válido, miss_count zerado
-[main] 'Project Gabriela: Race For Babies' — link válido, miss_count zerado
-[main] 'Community Matters 5K' — link válido, miss_count zerado
-[main] 'Donahue Kids Race' — link válido, miss_count zerado
-[main] 'Broncos 7K' — link válido, miss_count zerado
-[main] 'Victory Races' — link válido, miss_count zerado
-[main] 'Impact The Cause' — link válido, miss_count zerado
+[main] 'Sloth Run 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] 'Grape Day 5K - 2026' — link válido, miss_count zerado
-[main] 'Whiskey Run Atlanta' — link válido, miss_count zerado
-[main] 'Project Hope Arkansas Black Sheep 5K And 1 Mile Run' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Cobequid Trail Run' — link válido, miss_count zerado
+[main] '2026 Barefoot Half Marathon (13.1 Miles)' — link válido, miss_count zerado
+[main] 'Donahue Kids Race' — link válido, miss_count zerado
+[main] '14Th Summer’S End 5K' — link válido, miss_count zerado
+[main] 'Victory Races' — link válido, miss_count zerado
+[main] 'Broncos 7K' — link válido, miss_count zerado
+[main] 'Impact The Cause' — link válido, miss_count zerado
+[main] 'Picture Me In A Tree 5 Km, 10 Km & 6 Hour Trail Run Or Walk' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Broad Cove Fun Run 2026' — link válido, miss_count zerado
 [main] '2026 Call To Duty Memorial 10K & 5K' — link válido, miss_count zerado
-[main] '2026 Rino 5K + Larimer Mile' — link válido, miss_count zerado
-[main] 'Jace'S Journey 5K & Fun Run' — link válido, miss_count zerado
-[main] 'South End Shuffle 5K & 1 Mile' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
+[main] 'Broad Cove Fun Run 2026' — link válido, miss_count zerado
 [main] 'The Kroc Center Bubble Fun 5K Run/Walk' — link válido, miss_count zerado
-[main] '31St Annual Run To The Rock' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
+[main] '2026 Rino 5K + Larimer Mile' — link válido, miss_count zerado
 [main] 'Marigold Mile' — link válido, miss_count zerado
+[main] '31St Annual Run To The Rock' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Memphis' — link válido, miss_count zerado
-[main] 'Chick-Uamegon' — link válido, miss_count zerado
-[main] 'Course De La Cité-Limoilou 2026' — link válido, miss_count zerado
+[main] 'Hap Crim Festival Of Races' — link válido, miss_count zerado
 [main] 'Pirate'S Booty' — link válido, miss_count zerado
+[main] 'Chick-Uamegon' — link válido, miss_count zerado
 [main] 'Volunteer Registration - Gospel Run 2026' — link válido, miss_count zerado
 [main] 'Patriot Day Run' — link válido, miss_count zerado
 [main] 'Turbot Trot' — link válido, miss_count zerado
+[main] 'Course De La Cité-Limoilou 2026' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Tampa' — link válido, miss_count zerado
-[main] '2026 Too Hot To Handle 5K, 10K & Half' — link válido, miss_count zerado
+[main] 'Tree House Brewing Company Half Marathon 2026' — link válido, miss_count zerado
 [main] 'Sundance To Spearfish Marathon' — link válido, miss_count zerado
 [main] 'Colorado Mountain Half+ Series 2026' — link válido, miss_count zerado
 [main] 'Lead King Loop 25K, 8M, Kids Run' — link válido, miss_count zerado
-[main] 'Putnam County Suicide Awareness & Prevention' — link válido, miss_count zerado
 [main] 'Konza 25K & 10K' — link válido, miss_count zerado
-[main] 'Ptsmc Stride To Provide 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Challenge Esprit Montreal' — link válido, miss_count zerado
+[main] 'Georgina Marathon & Half-Marathon' — link válido, miss_count zerado
+[main] '2026 Too Hot To Handle 5K, 10K & Half' — link válido, miss_count zerado
 [main] 'Dubuque Benefit Classic - 48Th Annual' — link válido, miss_count zerado
-[main] 'Pumpkinman Half Marathon And Running Festival!' — link válido, miss_count zerado
-[main] 'Gms Queen City Marathon - 2026' — link válido, miss_count zerado
 [main] 'The Boiler Dash' — link válido, miss_count zerado
-[main] 'Ps I Love You 5K And 1 Mile' — link válido, miss_count zerado
-[main] 'Ascent At Mountain Air 5K' — link válido, miss_count zerado
+[main] 'Challenge Esprit Montreal' — link válido, miss_count zerado
+[main] 'Gms Queen City Marathon - 2026' — link válido, miss_count zerado
+[main] 'Inaugural Sussex County Habitat For Humanity 5K Run / 1 Mile Walk / Kids Dash' — link válido, miss_count zerado
+[main] 'The Steven Locascio Memorial Fund Heart To Heart 5K' — link válido, miss_count zerado
 [main] 'Buffalo Stampede 10-Mile And 4-Mile Run/Walk' — link válido, miss_count zerado
-[main] 'Put-In-Bay 5K' — link válido, miss_count zerado
+[main] 'Ascent At Mountain Air 5K' — link válido, miss_count zerado
+[main] '16Th Docf Teal Ribbon 5K Run-Walk To Fight Ovarian Cancer' — link válido, miss_count zerado
 [main] 'Marine Memorial 5K' — link válido, miss_count zerado
 [main] 'Marathon Groupe Ouellet Bolduc De Rimouski 2026 Propulsé Par Desjardins' — link válido, miss_count zerado
 [main] 'Civic League Day Nursery Race, Roll And Stroll' — link válido, miss_count zerado
-[main] 'Fe For A Cure Race/Walk' — link válido, miss_count zerado
 [main] 'Third Annual Fallfest 5K' — link válido, miss_count zerado
-[main] 'The Bismarck Marathon' — link válido, miss_count zerado
+[main] '1ª Corrida De São Benedito' — link válido, miss_count zerado
 [main] 'Homeboy 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Puffin' 5K' — link válido, miss_count zerado
-[main] '14Th Annual Run Fore Cancer' — link válido, miss_count zerado
-[main] 'Pulse Walk: Penny Per Step Challenge' — link válido, miss_count zerado
+[main] 'Fe For A Cure Race/Walk' — link válido, miss_count zerado
+[main] 'The Bismarck Marathon' — link válido, miss_count zerado
 [main] 'Ely Fall Fest 5K And 1 Mile Run' — link válido, miss_count zerado
-[main] 'Thumbs Up Run/Walk/Bike Event - 13Th Annual' — link válido, miss_count zerado
-[main] 'Inaugural Treherne Pinker-Ten Trail Race' — link válido, miss_count zerado
-[main] 'Treherne Run For The Hills 2026' — link válido, miss_count zerado
+[main] '14Th Annual Run Fore Cancer' — link válido, miss_count zerado
 [main] '2026 - 2Nd Annual Hbcu Run & Brunch' — link válido, miss_count zerado
+[main] 'Inaugural Treherne Pinker-Ten Trail Race' — link válido, miss_count zerado
 [main] 'D67 Dash 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Treherne Run For The Hills 2026' — link válido, miss_count zerado
+[main] 'Thumbs Up Run/Walk/Bike Event - 13Th Annual' — link válido, miss_count zerado
+[main] 'Running Bear At The Rocks' — link válido, miss_count zerado
 [main] 'Stronger Together 2026! 1K/5K Walk/Run And Family Event! Sunday, September 20Th' — link válido, miss_count zerado
-[main] 'Que Classic' — link válido, miss_count zerado
-[main] '13Th Annual Represent Yourself 5K Run/Walk' — link válido, miss_count zerado
-[main] 'Pumpkin Run/Walk' — link válido, miss_count zerado
-[main] 'San Francisco Aloha Run' — link válido, miss_count zerado
-[main] 'Bump N' Run 5K And Mro Fest' — link válido, miss_count zerado
 [main] '2026 Light Up The Night For Noelle' — link válido, miss_count zerado
 [main] 'Bh Runners Club Trail Series Championship' — link válido, miss_count zerado
-[main] 'Perseverance Trail Run 2026' — link válido, miss_count zerado
+[main] '13Th Annual Represent Yourself 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Wilmington High School Alumni, Inc, 2Nd Annual 5K Run/Walk' — link válido, miss_count zerado
 [main] 'Run For Pie 5K & Kids 1 Mile Fun Run' — link válido, miss_count zerado
+[main] 'San Francisco Aloha Run' — link válido, miss_count zerado
 [main] '1In5K Dyslexia Dash' — link válido, miss_count zerado
-[main] 'Omaha Marathon 2026' — link válido, miss_count zerado
+[main] '5ª Caldense Running' — link válido, miss_count zerado
+[main] 'Perseverance Trail Run 2026' — link válido, miss_count zerado
 [main] 'Moraine Hills Run For The Hills' — link válido, miss_count zerado
-[main] '2026 Diamondbacks Race Against Cancer' — link válido, miss_count zerado
-[main] 'Urban Cow Weekend 2026' — link válido, miss_count zerado
+[main] 'Sussex Superhero 5K' — link válido, miss_count zerado
 [main] 'Cousins Memorial Run' — link válido, miss_count zerado
-[main] 'Inside Out Club Fall Family 5K' — link válido, miss_count zerado
-[main] '43Rd Annual Creighton University School Of Medicine Walk For Wishes' — link válido, miss_count zerado
+[main] 'Omaha Marathon 2026' — link válido, miss_count zerado
+[main] 'Adirondack Marathon Distance Festival' — link válido, miss_count zerado
+[main] '2026 Diamondbacks Race Against Cancer' — link válido, miss_count zerado
+[main] 'Run4Health 2026' — link válido, miss_count zerado
+[main] 'Urban Cow Weekend 2026' — link válido, miss_count zerado
 [main] '2026 5 Peaks Trail Running Series: Devon' — link válido, miss_count zerado
+[main] 'Inside Out Club Fall Family 5K' — link válido, miss_count zerado
 [main] 'Navy Mid-South Half Marathon' — link válido, miss_count zerado
-[main] 'Wheat City Run' — link válido, miss_count zerado
+[main] '43Rd Annual Creighton University School Of Medicine Walk For Wishes' — link válido, miss_count zerado
 [main] 'Flatlanders Road Race' — link válido, miss_count zerado
-[main] 'Phm Run For The Residents' — link válido, miss_count zerado
+[main] 'Wheat City Run' — link válido, miss_count zerado
 [main] 'Rut Run 5K' — link válido, miss_count zerado
-[main] '2026 Jackass Half Marathon & 5K' — link válido, miss_count zerado
 [main] 'Corpuscle Shuffle 5K Run/Walk' — link válido, miss_count zerado
-[main] 'The 2026 Cowtown C.A.L.F. Race' — link válido, miss_count zerado
+[main] '2026 Jackass Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'Phm Run For The Residents' — link válido, miss_count zerado
 [main] 'Brains Together Annual Event' — link válido, miss_count zerado
 [main] 'Panting Four Paws' — link válido, miss_count zerado
-[main] 'Pumpkin Spice 5K' — link válido, miss_count zerado
 [main] 'Montgomery River Run 2026' — link válido, miss_count zerado
-[main] 'Pumpkin Run 10K, 5K & 1Mile' — link válido, miss_count zerado
+[main] 'Tbk Bank Quad Cities Marathon' — link válido, miss_count zerado
+[main] 'Lighthouse To Lighthouse Half Marathon & 5K' — link válido, miss_count zerado
+[main] 'The County Marathon 2026' — link válido, miss_count zerado
 [main] 'Monster Mash' — link válido, miss_count zerado
 [main] 'Qc Java Jog' — link válido, miss_count zerado
 [main] 'Ajax Waterfront Race' — link válido, miss_count zerado
-[main] 'Puyallup Valley Fall Hops Harvest 5K' — link válido, miss_count zerado
-[main] 'Pumpkin Spice Run' — link válido, miss_count zerado
-[main] 'Pumpkin Patch Dash 5K' — link válido, miss_count zerado
+[main] 'Duck Dash 5K' — link válido, miss_count zerado
+[main] 'Tour De Essex' — link válido, miss_count zerado
 [main] 'Valley Vertikiller Trail Race 2026' — link válido, miss_count zerado
-[main] 'Tbk Bank Quad Cities Marathon' — link válido, miss_count zerado
-[main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
+[main] 'Superhero For Hope 8Th Annual Run/Walk 5K' — link válido, miss_count zerado
+[main] 'Bowers Heritage Day 5K' — link válido, miss_count zerado
 [main] 'The Rogue Marathon' — link válido, miss_count zerado
-[main] 'Prodisee Pantry Turkey Trot 2026' — link válido, miss_count zerado
+[main] '6Th Annual Lap The Lake' — link válido, miss_count zerado
+[main] '2026 Women'S Training Program' — link válido, miss_count zerado
 [main] '2026 Muskoka Marathon' — link válido, miss_count zerado
+[main] '2026 Tcs Toronto Waterfront Marathon' — link válido, miss_count zerado
+[main] '2Nd Annual Creepy Crawl 5K' — link válido, miss_count zerado
 [main] 'The Bones Run 5K' — link válido, miss_count zerado
 [main] 'Cloverdale Vineyard Races: 10K And 5K' — link válido, miss_count zerado
-[main] 'Purdue Boilermaker Half-Marathon & 5K' — link válido, miss_count zerado
-[main] 'Pumpkin Pacer 5K @ White Barn Farm' — link válido, miss_count zerado
-[main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
-[main] 'Race For Peace' — link válido, miss_count zerado
-[main] 'Vancouver Island Trail Running Series - Qualicum Bay 2026' — link válido, miss_count zerado
-[main] 'Pumpkin Run' — link válido, miss_count zerado
 [main] 'Day Of The Dead - Day 1 And Day 2' — link válido, miss_count zerado
-[main] 'Red Sneakers Peoria 5K & Teal Pumpkin Festival' — link válido, miss_count zerado
-[main] 'North Shore Distance Classic - Corridor Running' — link válido, miss_count zerado
+[main] 'Vancouver Island Trail Running Series - Qualicum Bay 2026' — link válido, miss_count zerado
 [main] 'Sanderson Ford Giraffe Jam Family Fun Run 2026' — link válido, miss_count zerado
-[main] 'Pumpkin Glow Run' — link válido, miss_count zerado
+[main] 'North Shore Distance Classic - Corridor Running' — link válido, miss_count zerado
+[main] '48Th Annual Pumpkin Run By Senior Coastsiders October 18, 2026' — link válido, miss_count zerado
+[main] 'Red Sneakers Peoria 5K & Teal Pumpkin Festival' — link válido, miss_count zerado
 [main] 'Sycamore Pumpkin 10K Run & 1 Mile Fun Run' — link válido, miss_count zerado
-[main] 'Intracoastal Waterway Century' — link válido, miss_count zerado
-[main] '7 Bridges Marathon' — link válido, miss_count zerado
-[main] 'Quarry Shack 5 Miler 6Th Annual 10/31/26' — link válido, miss_count zerado
-[main] 'Crown Point Relay Runs' — link válido, miss_count zerado
-[main] 'Justice Run Fort Worth' — link válido, miss_count zerado
 [main] 'The Monster Dash 5K' — link válido, miss_count zerado
-[main] 'Qrf 5K - Miles For Mental Health' — link válido, miss_count zerado
-[main] 'Pumpkin Run' — link válido, miss_count zerado
-[main] 'Puzzle Palooza Jigsaw Tournament' — link válido, miss_count zerado
-[main] 'Pumpkin Run And (Free Kid Mile Run)' — link válido, miss_count zerado
+[main] 'Crown Point Relay Runs' — link válido, miss_count zerado
+[main] 'Intracoastal Waterway Century' — link válido, miss_count zerado
 [main] 'Loop The Vedder Trail Half Marathon & 10K' — link válido, miss_count zerado
 [main] '22Nd Annual Prince Edward Island Marathon' — link válido, miss_count zerado
+[main] '2026 Theresa Tracy Trot' — link válido, miss_count zerado
+[main] 'Coyote Crawl 5K And Head For The Hills 10K' — link válido, miss_count zerado
 [main] 'Gobbler Hobbler 10K & Mashed Potato Mile' — link válido, miss_count zerado
 [main] 'Bourbonnais Turkey Trot' — link válido, miss_count zerado
-[main] 'Coyote Crawl 5K And Head For The Hills 10K' — link válido, miss_count zerado
-[main] '2026 Theresa Tracy Trot' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'First Steps, Big Dreams 5K' — link válido, miss_count zerado
 [main] 'Shopping Vitória Ii' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] 'Run For Mental Health 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
-[main] 'Pumpkin Pie 5K/10K' — link válido, miss_count zerado
-[main] 'Provincetown 5K Pilgrim Trot' — link válido, miss_count zerado
-[main] 'Run For Mental Health 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
-[main] 'Greensboro Gobbler 5K' — link válido, miss_count zerado
-[main] '2026 Seal Beach Turkey Trot' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Walking Beside Kaden 5K Run/Walk' — link válido, miss_count zerado
+[main] 'Justice Run Fort Worth' — link válido, miss_count zerado
+[main] '3Rd Annual New Garden Gobbler' — link válido, miss_count zerado
+[main] 'Run For Mental Health 5K/10K/13.1 Phoenix' — link válido, miss_count zerado
 [main] '23Rd Annual Runlawrence Thanksgiving Day 5K' — link válido, miss_count zerado
+[main] 'Rylie’S Smile Turkey Escape 5K & 1M' — link válido, miss_count zerado
 [main] 'Feed Your Soul Turkey Trot 5K' — link válido, miss_count zerado
-[main] 'Bear Country 10K & 5K' — link válido, miss_count zerado
 [main] 'The Animal Run 5K Tofurkey Trot' — link válido, miss_count zerado
 [main] 'Encinitas Turkey Trot 2026' — link válido, miss_count zerado
-[main] 'Peer Power Big River Crossing Race' — link válido, miss_count zerado
 [main] 'Mesa Turkey Trot 5K - 10K' — link válido, miss_count zerado
+[main] '2026 Seal Beach Turkey Trot' — link válido, miss_count zerado
 [main] 'The Chocolate Turkey 3 Mile' — link válido, miss_count zerado
-[main] 'The Leftovers 10K / 5K Run' — link válido, miss_count zerado
-[main] 'Naperville Noon Lions Turkey Trot 5K 2026' — link válido, miss_count zerado
-[main] 'Corrida Do Bombeiro 2ª Edição' — link válido, miss_count zerado
+[main] '28Th Milford Cross Country Booster Reindeer Stampede 5K' — link válido, miss_count zerado
 [main] 'Turkey Trot La 2026' — link válido, miss_count zerado
+[main] 'Naperville Noon Lions Turkey Trot 5K 2026' — link válido, miss_count zerado
+[main] 'Peer Power Big River Crossing Race' — link válido, miss_count zerado
+[main] 'The Leftovers 10K / 5K Run' — link válido, miss_count zerado
 [main] 'Holiday Run - 2026' — link válido, miss_count zerado
-[main] 'Night Owl 5K' — link válido, miss_count zerado
-[main] 'Run Santa Run Nashville' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Las Vegas' — link válido, miss_count zerado
 [main] 'Black Mtn Turkey Burner' — link válido, miss_count zerado
 [main] 'Run For Breast Cancer 5K/10K/13.1 Dallas Fort Worth' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Atlanta' — link válido, miss_count zerado
-[main] 'Run Run Rudolph' — link válido, miss_count zerado
-[main] 'Run Santa Run Atlanta' — link válido, miss_count zerado
-[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
 [main] '2026 Bmw Dallas Marathon' — link válido, miss_count zerado
-[main] 'Run Santa Run Chattanooga' — link válido, miss_count zerado
 [main] 'San Diego Santa Run' — link válido, miss_count zerado
+[main] 'Run For Breast Cancer 5K/10K/13.1 Memphis' — link válido, miss_count zerado
+[main] 'Run Run Rudolph' — link válido, miss_count zerado
 [main] 'Niagara-On-The-Lake Og Santa Run' — link válido, miss_count zerado
-[main] 'Publix Run To The Arts 5K - 2027' — link válido, miss_count zerado
-[main] 'Tucson Marathon Events' — link válido, miss_count zerado
-[main] 'Whiskey Run Chattanooga' — link válido, miss_count zerado
+[main] 'Heart Of The Ozarks Half Marathon' — link válido, miss_count zerado
+[main] 'Victory 2027' — link válido, miss_count zerado
+[main] 'Little Rockers Kids Marathon' — link válido, miss_count zerado
 [main] 'All Abilities Marathon' — link válido, miss_count zerado
 [main] 'The Kook Run' — link válido, miss_count zerado
-[main] 'Heart Of The Ozarks Half Marathon' — link válido, miss_count zerado
-[main] 'Little Rockers Kids Marathon' — link válido, miss_count zerado
-[main] 'Little Rock Marathon Weekend' — link válido, miss_count zerado
-[main] 'Publix Savannah Women'S Half & 5K Fitness Expo' — link válido, miss_count zerado
-[main] 'Victory 2027' — link válido, miss_count zerado
-[main] 'Mountain To Fountain' — link válido, miss_count zerado
+[main] 'Tucson Marathon Events' — link válido, miss_count zerado
 [main] '2027 Govx San Diego Half Marathon & 5K' — link válido, miss_count zerado
-[main] 'Carlsbad 5000' — link válido, miss_count zerado
-[main] 'American River Parkway Half Marathon 2027' — link válido, miss_count zerado
-[main] '2027 Run Seal Beach 5K, 10K & Kids Fun Run' — link válido, miss_count zerado
-[main] 'Quarryman Challenge' — link válido, miss_count zerado
+[main] 'Little Rock Marathon Weekend' — link válido, miss_count zerado
+[main] 'Mountain To Fountain' — link válido, miss_count zerado
 [main] 'The 2027 Cowtown Race Weekend' — link válido, miss_count zerado
+[main] 'American River Parkway Half Marathon 2027' — link válido, miss_count zerado
+[main] 'Dyngus Day 5K - 7Th Annual' — link válido, miss_count zerado
+[main] 'Carlsbad 5000' — link válido, miss_count zerado
+[main] '2027 Run Seal Beach 5K, 10K & Kids Fun Run' — link válido, miss_count zerado
+[main] 'Chicken Run' — link válido, miss_count zerado
 [main] 'Santa Cruz Westside Half Marathon 10K/5K' — link válido, miss_count zerado
 [main] '2027 500 Festival Running Events' — link válido, miss_count zerado
-[main] 'Chicken Run' — link válido, miss_count zerado
-[main] 'Nun Run For Cancer' — link válido, miss_count zerado
 [main] '2027 Shamrock'N Weekend' — link válido, miss_count zerado
-[main] 'R&B Running Series' — link válido, miss_count zerado
 [main] '2027 Mother'S Day 5K Run/Walk' — link válido, miss_count zerado
-[main] 13573 corridas após reconciliação
-[main] 13570 corridas após dedup final
+[main] 'Nun Run For Cancer' — link válido, miss_count zerado
+[main] 'R&B Running Series' — link válido, miss_count zerado
+[main] 13765 corridas após reconciliação
+[main] 13761 corridas após dedup final
 [main] 5 estado(s) resolvido(s) pelo geo cache
 [main] 1 fonte(s) com links_inscricao preenchido a partir de link_evento
-[main] buscando imagens para 268 evento(s) sem foto...
+[main] buscando imagens para 261 evento(s) sem foto...
 [proxy] www.stockholmmarathon.se bloqueado (403), tentando Scrapestack...
 [proxy] www.cardiffhalfmarathon.co.uk bloqueado (403), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para www.stockholmmarathon.se, tentando Apify...
 [proxy] Apify falhou para www.stockholmmarathon.se: 403 Forbidden
 [proxy] Scrapestack retornou 429 para www.cardiffhalfmarathon.co.uk, tentando Apify...
 [proxy] Apify falhou para www.cardiffhalfmarathon.co.uk: 403 Forbidden
-[main] 12/268 imagens encontradas
-[main] 13570 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 1/261 imagens encontradas
+[main] removendo imagem inválida de 'Happy Valley Half Marathon': https://cdn.raceroster.com/event-logo/5bs3ehx22a9epw5a._orig
+[main] removendo imagem inválida de 'Swanzey Covered Bridges Half Marathon': https://cdn.raceroster.com/event-logo/dty9zgjzgdmbu5nr._orig
+[main] removendo imagem inválida de 'Race With Your Heart': https://cdn.raceroster.com/event-logo/c2juk259hkbaygza._crop
+[main] 3 imagem(ns) inválida(s) removida(s)
+[main] 13761 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

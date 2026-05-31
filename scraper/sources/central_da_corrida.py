@@ -45,12 +45,28 @@ def scrape() -> list[Corrida]:
     return corridas
 
 
+_KIDS_RE = re.compile(
+    r'\bkids?\b|\bpezinho\s+veloz\b|\binfantil\b|\bgraesp\s+kids\b',
+    re.IGNORECASE,
+)
+_URL_RE = re.compile(r'https?://[^\s\[\]"\'<>]+')
+
+
 def _parse_event(event: dict, today: str) -> Corrida | None:
     if event.get("Publicado") != "sim":
         return None
 
+    # Drop explicitly cancelled events
+    ativo = (event.get("Ativo") or "").strip().lower()
+    if ativo in ("não", "nao", "no"):
+        return None
+
     titulo = normalize_titulo(event.get("Nome_evento") or "")
     if not titulo or len(titulo) < 3:
+        return None
+
+    # Drop kids events — no adult distances exist for these
+    if _KIDS_RE.search(titulo):
         return None
 
     estado = event.get("Estado") or ""
@@ -76,6 +92,24 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
         event.get("descricao_evento"),
     ]))
     distancias = _extract_distances(raw_text)
+
+    # Fallback: try external URLs embedded in regulamento / mais_informacoes
+    if not distancias:
+        for field_name in ("regulamento", "mais_informacoes", "link_inscricao"):
+            field_val = event.get(field_name) or ""
+            for m in _URL_RE.finditer(field_val):
+                ext_url = m.group(0).rstrip(".,;)")
+                if "centraldacorrida.com.br" in ext_url:
+                    continue
+                distancias = _fetch_distances_from_url(ext_url)
+                if distancias:
+                    break
+            if distancias:
+                break
+
+    if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
 
     inscricoes_abertas = _parse_inscricoes_abertas(event)
 
@@ -156,6 +190,17 @@ _INTERVAL_RE = re.compile(
 
 
 _CANON_KM: dict[int, float] = {21: 21.097, 42: 42.195}
+
+
+def _fetch_distances_from_url(url: str) -> list[Distancia]:
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=15)
+        resp.raise_for_status()
+        page_text = re.sub(r"<[^>]+>", " ", resp.text)
+        return _extract_distances(page_text)
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:60]}): {e}")
+        return []
 
 
 def _extract_distances(text: str) -> list[Distancia]:

@@ -15,9 +15,9 @@ Each event lives in a `<div class="cs-text-widget">` with this structure:
 link_evento is set to that external URL; the platform name is inferred from
 the domain so the merger can correctly attribute the source.
 
-Start times are NOT present on this page. centraldacorrida.com.br (the dominant
-destination, ~38 events) is a Bubble.io SPA and cannot be scraped without JS.
-Those events have horario=None until a dedicated scraper is added.
+Start times are not on the listing page — each event's external link
+(Ticket Sports, CDC, Brasil Corrida, etc.) is fetched to extract the time.
+The HTTP fallback chain handles Cloudflare/SPA sites where needed.
 
 The original scraper used generic CSS selectors (.event/.race/article) that
 never matched this DOM and was incorrectly dropped as "broken".
@@ -82,6 +82,34 @@ _UF_NORM: dict[str, str] = {
     "Distrito Federal": "DF", "Goiás": "GO", "Minas Gerais": "MG",
     "São Paulo": "SP", "Rio de Janeiro": "RJ", "Bahia": "BA",
 }
+
+_TIME_RE = re.compile(
+    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
+    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
+    re.IGNORECASE,
+)
+
+
+def _fetch_horario_from_link(url: str) -> str | None:
+    """Fetch external event page and extract the published start time."""
+    try:
+        resp = get(url)
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "lxml")
+        text = soup.get_text(" ", strip=True)
+        m = _TIME_RE.search(text)
+        if not m:
+            return None
+        if m.group(1) is not None:
+            h, mi = int(m.group(1)), int(m.group(2))
+        else:
+            h, mi = int(m.group(3)), 0
+        if 4 <= h <= 23 and 0 <= mi <= 59:
+            return f"{h:02d}:{mi:02d}"
+    except Exception:
+        pass
+    return None
 
 
 def scrape() -> list[Corrida]:
@@ -173,11 +201,16 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
 
     link_evento = link or URL
 
+    # Fetch the external event page to get the start time.
+    horario = _fetch_horario_from_link(link_evento) if link_evento != URL else None
+    if horario is None:
+        return None
+
     return Corrida(
         id=stable_id,
         titulo=titulo,
         data_evento=data_evento,
-        horario=None,
+        horario=horario,
         localizacao=localizacao,
         cidade=cidade,
         estado=estado,

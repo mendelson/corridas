@@ -24,7 +24,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-05-31 00:19 | ❌ 0 eventos | 2026-05-30 03:29 |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-05-31 00:17 | ❌ 3/13 eventos sem distâncias | 2026-05-30 22:32 |
 | Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-05-31 00:17 | ✅ | 2026-05-31 00:17 |
-| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-05-31 00:16 | ❌ 1/14 eventos sem distâncias | 2026-05-30 22:32 |
+| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-06-01 12:48 | ❌ | 2026-05-30 22:32 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-05-31 00:16 | ❌ 2/8 eventos sem distâncias | 2026-05-30 22:31 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-05-31 00:17 | ❌ 6/9 eventos sem distâncias | 2026-05-30 22:31 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-05-31 00:16 | ✅ | 2026-05-31 00:16 |

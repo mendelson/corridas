@@ -51,8 +51,17 @@ _RACE_TIME_RE = re.compile(
 
 def _fetch_page_data() -> tuple[str | None, str | None]:
     """Fetch the official site once; return (inscricao_url, horario)."""
+    for render_js in (False, True):
+        result = _try_fetch_page(render_js=render_js)
+        if result[1] is not None:
+            return result
+    return None, None
+
+
+def _try_fetch_page(render_js: bool = False) -> tuple[str | None, str | None]:
+    """Single fetch attempt of the official site; return (inscricao_url, horario)."""
     try:
-        resp = get(SITE_URL)
+        resp = get(SITE_URL, render_js=render_js)
         if resp.status_code != 200:
             return None, None
         soup = BeautifulSoup(resp.text, "lxml")

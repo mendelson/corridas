@@ -272,3 +272,4 @@ def _extract_distances(text: str) -> list[Distancia]:
         key=lambda d: float(d.km),
     )
 
+

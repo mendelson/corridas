@@ -3,6 +3,13 @@ name: CI — Validar Scrapers
 # Triggered automatically on PRs that add or modify scraper source files OR
 # shared scraper infrastructure (pipeline, models, http client).
 #
+# Also triggered on direct pushes to fix/** and claude/** branches (scraper
+# paths only) so that branches with merge conflicts can still get validated
+# without needing a clean merge commit.
+#
+# workflow_dispatch lets you run the validate job manually from the Actions UI
+# against any branch, passing an optional comma-separated list of sources.
+#
 # When only source files change: runs only the affected sources (selective mode).
 # When infra files change: runs ALL sources — the pipeline must be validated end-
 # to-end against every source so regressions in main.py/models.py are caught here
@@ -21,19 +28,38 @@ on:
       - 'scraper/http_client.py'
       - 'scraper/utils.py'
       - 'scraper/playwright_client.py'
+  push:
+    branches:
+      - 'fix/**'
+      - 'claude/**'
+    paths:
+      - 'scraper/sources/**'
+      - 'scraper/main.py'
+      - 'scraper/models.py'
+      - 'scraper/http_client.py'
+      - 'scraper/utils.py'
+      - 'scraper/playwright_client.py'
+  workflow_dispatch:
+    inputs:
+      sources:
+        description: 'Comma-separated source names to test (empty = all)'
+        required: false
+        default: ''
 
 permissions:
   contents: read
 
-# Keep only the newest run per PR ref: pushing a new commit cancels the
-# superseded selective-scrape run instead of letting both finish.
+# Keep only the newest run per branch/PR ref.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   validate:
-    if: "!github.event.pull_request.draft"
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'push' ||
+      !github.event.pull_request.draft
     runs-on: ubuntu-latest
 
     steps:
@@ -55,25 +81,50 @@ jobs:
       - name: Detect changed sources
         id: detect
         run: |
-          # If shared infra changed, run ALL sources (empty SCRAPER_SOURCES = all).
-          INFRA=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
-            -- 'scraper/main.py' \
-               'scraper/models.py' \
-               'scraper/http_client.py' \
-               'scraper/utils.py' \
-               'scraper/playwright_client.py')
-
-          if [ -n "$INFRA" ]; then
-            echo "Infra changed (${INFRA//$'\n'/, }) — running all sources"
-            echo "sources=" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "sources=${{ inputs.sources }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            # For direct branch pushes, compare the pushed commit(s) against main.
+            INFRA=$(git diff --name-only "origin/main...HEAD" \
+              -- 'scraper/main.py' \
+                 'scraper/models.py' \
+                 'scraper/http_client.py' \
+                 'scraper/utils.py' \
+                 'scraper/playwright_client.py' 2>/dev/null || true)
+            if [ -n "$INFRA" ]; then
+              echo "Infra changed — running all sources"
+              echo "sources=" >> "$GITHUB_OUTPUT"
+            else
+              CHANGED=$(git diff --name-only "origin/main...HEAD" \
+                -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+                | grep -v '__init__\.py' \
+                | sed 's|scraper/sources/||; s|\.py$||' \
+                | tr '\n' ',' | sed 's/,$//')
+              echo "Detected changed sources: $CHANGED"
+              echo "sources=$CHANGED" >> "$GITHUB_OUTPUT"
+            fi
           else
-            CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
-              -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
-              | grep -v '__init__\.py' \
-              | sed 's|scraper/sources/||; s|\.py$||' \
-              | tr '\n' ',' | sed 's/,$//')
-            echo "Detected changed sources: $CHANGED"
-            echo "sources=$CHANGED" >> "$GITHUB_OUTPUT"
+            # PR event — existing logic.
+            # If shared infra changed, run ALL sources (empty SCRAPER_SOURCES = all).
+            INFRA=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+              -- 'scraper/main.py' \
+                 'scraper/models.py' \
+                 'scraper/http_client.py' \
+                 'scraper/utils.py' \
+                 'scraper/playwright_client.py')
+
+            if [ -n "$INFRA" ]; then
+              echo "Infra changed (${INFRA//$'\n'/, }) — running all sources"
+              echo "sources=" >> "$GITHUB_OUTPUT"
+            else
+              CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+                -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+                | grep -v '__init__\.py' \
+                | sed 's|scraper/sources/||; s|\.py$||' \
+                | tr '\n' ',' | sed 's/,$//')
+              echo "Detected changed sources: $CHANGED"
+              echo "sources=$CHANGED" >> "$GITHUB_OUTPUT"
+            fi
           fi
 
       - name: Run scraper

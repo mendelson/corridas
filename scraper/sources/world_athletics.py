@@ -288,7 +288,16 @@ def _infer_distances(name: str) -> list[Distancia]:
 
 
 def _fetch_horario(url: str) -> str | None:
-    """Fetch the event page and extract the start time.
+    """Fetch the event page and extract the start time (plain GET first, then render_js)."""
+    for render_js in (False, True):
+        result = _fetch_horario_once(url, render_js=render_js)
+        if result is not None:
+            return result
+    return None
+
+
+def _fetch_horario_once(url: str, render_js: bool = False) -> str | None:
+    """Single fetch attempt for event start time.
 
     Tries (in order):
       1. JSON-LD Event.startDate with a time component ("T08:00")
@@ -297,7 +306,7 @@ def _fetch_horario(url: str) -> str | None:
       4. Generic time regex as last resort
     """
     try:
-        resp = get(url, timeout=20)
+        resp = get(url, timeout=20, render_js=render_js)
         if resp.status_code != 200:
             return None
         soup = BeautifulSoup(resp.text, "lxml")

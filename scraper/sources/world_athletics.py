@@ -491,4 +491,3 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
         first_seen_at=now,
         updated_at=now,
     )
-

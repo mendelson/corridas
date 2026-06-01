@@ -426,3 +426,4 @@ def _parse_distances(titulo: str) -> list[Distancia]:
             seen.add(key)
             result.append(Distancia(km=km, data=None, horario=None))
     return result
+

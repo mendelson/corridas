@@ -199,4 +199,3 @@ def _distances_from_title(titulo_lower: str) -> list[Distancia]:
             result.append(Distancia(km=km, data=None, horario=None))
 
     return sorted(result, key=lambda d: d.km)
-

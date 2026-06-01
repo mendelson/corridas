@@ -269,3 +269,4 @@ def _find_insc_link(soup: BeautifulSoup, slug: str) -> str | None:
         if products_path in href:
             return href if href.startswith("http") else BASE + href
     return None
+

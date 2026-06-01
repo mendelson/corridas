@@ -377,7 +377,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         mt = re.search(r"[T ](\d{2}):(\d{2})", start_dt)
         if mt:
             h, mi = int(mt.group(1)), int(mt.group(2))
-            if 0 <= h <= 23 and 0 <= mi <= 59:
+            if 4 <= h <= 23 and 0 <= mi <= 59:
                 horario = f"{h:02d}:{mi:02d}"
 
         loc = schema.get("location", {})

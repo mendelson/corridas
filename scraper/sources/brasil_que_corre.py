@@ -267,3 +267,4 @@ def _extract_distances(text: str) -> list[Distancia]:
         [Distancia(km=k, data=None, horario=None) for k in seen],
         key=lambda d: float(d.km),
     )
+

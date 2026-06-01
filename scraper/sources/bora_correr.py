@@ -187,14 +187,18 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
 
 def _fetch_horario_from_detail(url: str) -> str | None:
     """Fetch the event page (Ticket Sports / CDC / etc.) and extract start time."""
-    try:
-        resp = get(url)
-        if resp.status_code != 200:
-            return None
-        soup = BeautifulSoup(resp.text, "lxml")
-        return _extract_horario(soup.get_text(" ", strip=True))
-    except Exception:
-        return None
+    for render_js in (False, True):
+        try:
+            resp = get(url, render_js=render_js)
+            if resp.status_code != 200:
+                continue
+            soup = BeautifulSoup(resp.text, "lxml")
+            h = _extract_horario(soup.get_text(" ", strip=True))
+            if h:
+                return h
+        except Exception:
+            pass
+    return None
 
 
 def _strip_tags(s: str) -> str:

@@ -65,38 +65,13 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page}: erro {e}")
             break
 
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page0 raw repr[:400]: {resp.text[:400]!r}")
-
         html = _extract_html(resp.text)
         if html is None:
             print(f"[{SOURCE_NAME}] page {page}: payload inesperado; raw[:200]={resp.text[:200]}")
             break
 
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page0 html repr[:400]: {html[:400]!r}")
-
         soup = BeautifulSoup(html, "lxml")
         items = soup.select(".tm_event_list_item")
-
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items; today={today}")
-            for i, el in enumerate(items[:3]):
-                title_div = el.find(class_="tm_event_list_title")
-                titulo_raw = title_div.get_text(" ", strip=True) if title_div else "<NOT FOUND>"
-                month_el = el.find(class_="tm_date_month")
-                day_el = el.find(class_="tm_date_day")
-                month_raw = month_el.get_text(" ", strip=True) if month_el else "<NOT FOUND>"
-                day_raw = day_el.get_text(" ", strip=True) if day_el else "<NOT FOUND>"
-                data_evento = _extract_date_from_widget(el, today)
-                all_hrefs = [a["href"] for a in el.find_all("a", href=True)]
-                all_classes = sorted({cls for tag in el.find_all(class_=True) for cls in tag.get("class", [])})
-                img_el = el.find("img")
-                img_src = (img_el.get("src") or img_el.get("data-src") or "") if img_el else ""
-                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo={titulo_raw[:60]!r} date={data_evento!r} img={img_src[:100]!r}")
-                print(f"[{SOURCE_NAME}] PROBE item[{i}] classes: {all_classes}")
-                for j, h in enumerate(all_hrefs):
-                    print(f"[{SOURCE_NAME}] PROBE item[{i}] anchor[{j}]: {h[:140]!r}")
 
         if not items:
             break
@@ -365,9 +340,6 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
         return "", "", None
     soup = BeautifulSoup(html, "lxml")
-    # Diagnostic: show first 500 chars of page text to identify time format
-    page_text_preview = soup.get_text(" ", strip=True)[:500]
-    print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]} text[:500]: {page_text_preview!r}")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             schema = json.loads(script.string or "")
@@ -400,13 +372,15 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                 _, estado = _geo.resolve(cidade, "", "MX")
                 estado = estado or ""
 
-        # Fallback: scan visible text for "HH:MM hrs" / "HH:MM am" / "Hora: HH:MM"
+        # Fallback: scan visible text for "Hora: HH:MM" / "HH:MM hrs" / "HHhMM"
         if not horario:
             page_text = soup.get_text(" ", strip=True)
             ht = re.search(
-                r"(?:hora\s*(?:de\s*salida\s*)?:?\s*)"
-                r"([0-9]{1,2}):([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?|h)\b"
-                r"|([0-9]{1,2}):([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?|h)\b",
+                # keyword-anchored: unit optional (matches "hora de salida: 7:00")
+                r"hora\s*(?:de\s*salida\s*)?:?\s*"
+                r"([0-9]{1,2})[hH:]([0-5][0-9])(?:\s*(?:hrs?|a\.?m\.?|p\.?m\.?))?"
+                # generic: unit required to avoid false positives
+                r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)\b",
                 page_text,
                 re.IGNORECASE,
             )

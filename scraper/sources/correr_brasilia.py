@@ -178,6 +178,8 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
 
     if _NON_RUNNING_RE.search(titulo_raw):
         return None  # orienteering / non-running event
+    if _KIDS_RE.search(titulo_raw):
+        return None  # kids-only event (e.g. Marotinga) — no adult distances
 
     date_str, horario = _parse_start_date(ev.get("startDate") or "")
     if date_str and date_str < today:
@@ -269,6 +271,14 @@ _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 _NON_RUNNING_RE = re.compile(
     r"\borientak?[çc]|\bse orienta\b|\bbuss?ola\b|\borienteering\b"
     r"|\bciclismo\b|\bbike\b|\bnatação\b|\btriathlon\b",
+    re.IGNORECASE,
+)
+
+# Kids-only events — no adult distances exist for these. "Marotinga" is a
+# Brasília kids-run brand whose title carries no "kids"/"infantil" marker,
+# so it must be matched by name. Mirrors central_da_corrida._KIDS_RE.
+_KIDS_RE = re.compile(
+    r"\bkids?\b|\binfantil\b|\bmarotinga\b|\bpezinho\s+veloz\b",
     re.IGNORECASE,
 )
 

@@ -66,6 +66,7 @@ _ISO_TO_PT: dict[str, str] = {
 _NON_RUNNING = re.compile(
     r"\btriathlon\b|\bduathlon\b|\baquathlon\b|\baquabike\b"
     r"|\bcycling\b|\bcyclocross\b|\bbike\s*ride\b"
+    r"|\bxco\b|\bxcm\b|\bmtb\b|\bmountain\s+bike\b"
     r"|\bswim\s*meet\b|\bpaddle\b|\bkayak\b"
     r"|\bspartan\b|\bobstacle\s*race\b|\bocr\b"
     r"|\borienteering\b|\borientak?[çc]\b|\bse\s+orienta\b|\bbuss?ola\b",

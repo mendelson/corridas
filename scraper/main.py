@@ -27,7 +27,6 @@ from .sources import (
     maratona_rio,
     maratona_porto_alegre,
     sp_city_marathon,
-    sao_silvestre,
     poupex,
     tf_sports,
     tf_sports_app,
@@ -78,6 +77,7 @@ from .sources.majors import (
     manchester,
     manchester_half,
     brighton,
+    sao_silvestre,
 )
 
 SOURCES = [

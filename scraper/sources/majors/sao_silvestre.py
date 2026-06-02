@@ -8,6 +8,9 @@ Data e edição são computadas dinamicamente: sempre 31/12 do ano corrente
 (ou do próximo ano se a edição já passou). O link de inscrição no Ticket
 Sports é extraído dinamicamente do site oficial; se não encontrado, cai
 de volta para o site oficial.
+
+Retorna lista vazia quando o horário de largada ainda não foi divulgado —
+comportamento esperado entre edições (Jan–Out de cada ano).
 """
 from __future__ import annotations
 from datetime import date
@@ -15,10 +18,10 @@ import re
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get
-from ..models import Corrida, Distancia, FonteInfo
-from ..utils import slugify, now_iso, today_iso
-from .. import geo as _geo
+from ...http_client import get
+from ...models import Corrida, Distancia, FonteInfo
+from ...utils import now_iso, today_iso
+from ... import geo as _geo
 
 SITE_URL    = "https://www.saosilvestre.com.br"
 SOURCE_NAME = "São Silvestre"
@@ -39,7 +42,6 @@ _TIME_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Anchored to race-start keywords — avoids matching phone numbers and addresses.
 _RACE_TIME_RE = re.compile(
     r"(?:sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|come[çc]a|come[çc]o)"
     r"[^0-9]{0,50}(\d{1,2})[hH:]([0-5]\d)"
@@ -78,7 +80,6 @@ def _try_fetch_page(render_js: bool = False) -> tuple[str | None, str | None]:
                 if any(k in text for k in ["inscri", "comprar", "inscreva"]) and href.startswith("http"):
                     inscricao_url = href
                     break
-        # Extract start time — prefer keyword-anchored match to avoid garbage.
         horario: str | None = None
         full_text = soup.get_text(" ", strip=True)
         for pattern in (_RACE_TIME_RE, _TIME_RE):
@@ -98,12 +99,6 @@ def _try_fetch_page(render_js: bool = False) -> tuple[str | None, str | None]:
     except Exception:
         pass
     return None, None
-
-
-def _fetch_inscricao_url() -> str | None:
-    """Try to extract the Ticket Sports registration link from the official site."""
-    inscricao_url, _ = _fetch_page_data()
-    return inscricao_url
 
 
 def _fetch_og_image() -> str | None:
@@ -132,7 +127,6 @@ def scrape() -> list[Corrida]:
 
 def _build(year: int, data_evento: str, inscricao_url: str | None, imagem_url: str | None, horario: str | None = None) -> Corrida:
     now = now_iso()
-    today = today_iso()
     edicao = year - 1925  # 100ª em 2025, 101ª em 2026, etc.
     titulo = f"{edicao}ª Corrida Internacional de São Silvestre"
     estado = _geo.resolve("São Paulo, SP", "São Paulo", "BR")[1] or "SP"

@@ -71,20 +71,27 @@ def _find_detail_urls(soup) -> list[str]:
 
 
 def _scrape_detail(url: str) -> Corrida | None:
-    resp = get(url)
-    resp.raise_for_status()
+    try:
+        resp = get(url)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] HTTP erro {url[-40:]!r}: {e}")
+        return None
     soup = BeautifulSoup(resp.text, "lxml")
 
     titulo_raw = _label_text(soup, "Main_label_Nome")
     titulo = normalize_titulo(titulo_raw)
     if not titulo or len(titulo) < 3:
+        print(f"[{SOURCE_NAME}] sem título, pulando {url[-40:]!r} (raw={titulo_raw[:60]!r})")
         return None
 
     data_raw = _label_text(soup, "Main_label_Dt_Evento")
     data = _extract_date(data_raw)
     if not data:
+        print(f"[{SOURCE_NAME}] sem data, pulando {titulo!r} (raw={data_raw!r})")
         return None
     if data < today_iso():
+        print(f"[{SOURCE_NAME}] evento passado, pulando {titulo!r} {data}")
         return None
 
     # Try to find start time: date label → dedicated horario labels → full page
@@ -96,7 +103,9 @@ def _scrape_detail(url: str) -> Corrida | None:
         or _extract_horario(soup.get_text(" ", strip=True))
     )
     if horario is None:
-        return None  # start time not yet published
+        page_text = soup.get_text(" ", strip=True)
+        print(f"[{SOURCE_NAME}] sem horário, pulando {titulo!r} {data} — página[:300]={page_text[:300]!r}")
+        return None
 
     local_raw = _label_text(soup, "Main_label_Local")
     localizacao, cidade, estado = _parse_local(local_raw, titulo)
@@ -104,6 +113,7 @@ def _scrape_detail(url: str) -> Corrida | None:
     percurso_raw = _label_text(soup, "Main_label_Percurso")
     distancias = _extract_distances(percurso_raw)
     if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando {titulo!r} (percurso={percurso_raw!r})")
         return None
 
     site = _label_text(soup, "Main_label_Site").strip()

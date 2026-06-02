@@ -1,12 +1,16 @@
 """Scraper for Corrida da Volta do Lago Paranoá — Brasília, DF
 
-Primary source: Largada Esportiva REST API (largadaesportiva.com.br/api/Events).
-Ticket Sports is kept as a fallback in case the event migrates platforms.
+Primary source: Correr Brasília event page (EventOn JSON-LD) — reliably reachable
+and carries the full event data (date, start time, distances, location) plus the
+official registration link (voltadolago.com.br) in its "Saiba Mais" row.
+Largada Esportiva REST API and Ticket Sports are kept as fallbacks in case the
+event migrates platforms.
 The official site (voltadolago.com.br) is a JS SPA that cannot be scraped directly.
 """
 from __future__ import annotations
 import json
 import re
+from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
@@ -14,6 +18,8 @@ from ..utils import normalize_titulo, infer_estado, now_iso, today_iso
 from .. import geo as _geo
 
 SOURCE_NAME = "Volta do Lago"
+
+_CB_CALENDAR = "https://correrbrasilia.com.br/calendario/"
 
 _LE_API  = "https://largadaesportiva.com.br/api/Events"
 _LE_BASE = "https://largadaesportiva.com.br"
@@ -48,13 +54,20 @@ _PT_MONTHS = {
 def scrape() -> list[Corrida]:
     today = today_iso()
 
-    # 1. Largada Esportiva REST API — primary
+    # 1. Correr Brasília (EventOn JSON-LD) — primary: reliably reachable and
+    #    carries full event data + the official registration link.
+    result = _search_correr_brasilia(today)
+    if result:
+        print(f"[{SOURCE_NAME}] {len(result)} corrida(s) encontrada(s) via Correr Brasília")
+        return result
+
+    # 2. Largada Esportiva REST API — fallback
     result = _search_largada_esportiva(today)
     if result:
         print(f"[{SOURCE_NAME}] {len(result)} corrida(s) encontrada(s) via Largada Esportiva")
         return result
 
-    # 2. Ticket Sports — fallback
+    # 3. Ticket Sports — fallback
     result = _search_ticket_sports(today)
     if result:
         print(f"[{SOURCE_NAME}] {len(result)} corrida(s) encontrada(s) via Ticket Sports")
@@ -62,6 +75,142 @@ def scrape() -> list[Corrida]:
 
     print(f"[{SOURCE_NAME}] evento não encontrado em nenhuma plataforma")
     return []
+
+
+# ---------------------------------------------------------------------------
+# Correr Brasília (EventOn JSON-LD)
+# ---------------------------------------------------------------------------
+
+# EventOn custom distance row: <i>Distância</i></em><em>50km, 70km e 100km</em>
+_CB_DIST_ROW = re.compile(
+    r"<i>\s*Dist[âa]ncia\s*</i>\s*</em>\s*<em>([^<]+)</em>", re.IGNORECASE
+)
+# EventOn "Saiba Mais" row → external registration URL (voltadolago.com.br)
+_CB_LEARNMORE = re.compile(
+    r"evcal_evdata_row\s+evo_clik_row[^>]*href=[\"']([^\"']+)[\"']", re.IGNORECASE
+)
+_CB_START_RE = re.compile(r"(\d{4})-(\d{1,2})-(\d{1,2})T(\d{2}:\d{2})")
+
+
+def _search_correr_brasilia(today: str) -> list[Corrida]:
+    try:
+        resp = get(_CB_CALENDAR, source=SOURCE_NAME, timeout=30)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] Correr Brasília erro: {e}")
+        return []
+
+    soup = BeautifulSoup(resp.text, "lxml")
+
+    # Locate the JSON-LD Event whose name matches "Volta do Lago" — slug-independent.
+    ev_data: dict | None = None
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads(script.string or "")
+        except Exception:
+            continue
+        if not isinstance(data, dict) or data.get("@type") != "Event":
+            continue
+        if _MATCH_RE.search(data.get("name") or ""):
+            ev_data = data
+            break
+
+    if not ev_data:
+        return []
+
+    event_url = ev_data.get("url") or _CB_CALENDAR
+    name = ev_data.get("name") or "Volta do Lago"
+
+    # Date + start time from startDate ("2026-7-5T04:00-3:00")
+    data_evento, horario = "", None
+    m = _CB_START_RE.match(ev_data.get("startDate") or "")
+    if m:
+        y, mo, d, hm = m.groups()
+        data_evento = f"{y}-{int(mo):02d}-{int(d):02d}"
+        horario = hm
+    if not data_evento or data_evento < today:
+        return []
+
+    # Location from the JSON-LD Place; Volta do Lago is always Brasília/DF.
+    cidade, estado = _cb_location(ev_data)
+
+    # Fetch the detail page for the distances row and the registration link.
+    distancias, reg_link = _fetch_cb_detail(event_url, name)
+    link = reg_link or event_url
+
+    now = now_iso()
+    return [Corrida(
+        id=f"volta-do-lago_{estado.lower() or 'df'}_{data_evento[:4]}",
+        titulo=normalize_titulo(name),
+        data_evento=data_evento,
+        horario=horario,
+        localizacao=f"{cidade}, {estado}" if cidade and estado else (estado or cidade),
+        cidade=cidade,
+        estado=estado or "DF",
+        pais="BR",
+        distancias=distancias,
+        imagem_url=ev_data.get("image") or None,
+        inscricoes_abertas=None,
+        periodo_inscricao=None,
+        fontes=[FonteInfo(
+            nome="Volta do Lago",
+            link_evento=link,
+            links_inscricao=[link],
+            tipo="organizador",
+        )],
+        miss_count=0,
+        first_seen_at=now,
+        updated_at=now,
+    )]
+
+
+def _cb_location(ev_data: dict) -> tuple[str, str]:
+    """Extract (cidade, estado) from the JSON-LD Place address. Defaults to Brasília/DF."""
+    loc = ev_data.get("location")
+    if isinstance(loc, list):
+        loc = loc[0] if loc else None
+    addr = ""
+    if isinstance(loc, dict):
+        a = loc.get("address")
+        if isinstance(a, dict):
+            addr = a.get("streetAddress") or ""
+        elif isinstance(a, str):
+            addr = a
+    m = re.search(r"([A-Za-zÀ-ÿ\.\s]+?)\s*[-–]\s*([A-Z]{2})\b", addr)
+    if m:
+        cidade = normalize_titulo(m.group(1).strip().split(",")[-1].strip())
+        return cidade or "Brasília", m.group(2)
+    return "Brasília", "DF"
+
+
+def _fetch_cb_detail(url: str, name: str) -> tuple[list[Distancia], str | None]:
+    """Fetch the Correr Brasília event page: distances (EventOn row) + registration link."""
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=30)
+        if resp.status_code != 200:
+            return [], None
+        html = resp.text
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] Correr Brasília detalhe erro: {e}")
+        return [], None
+
+    distancias: list[Distancia] = []
+    m = _CB_DIST_ROW.search(html)
+    if m:
+        distancias = _extract_distances(m.group(1))
+    if not distancias:
+        # Fallback to free text of the page
+        distancias = _extract_distances(BeautifulSoup(html, "lxml").get_text(" ", strip=True))
+
+    reg_link = None
+    lm = _CB_LEARNMORE.search(html)
+    if lm:
+        href = lm.group(1).strip()
+        host = re.sub(r"^https?://(www\.)?", "", href).split("/")[0].lower()
+        if host and "correrbrasilia.com.br" not in host:
+            reg_link = href
+
+    return distancias, reg_link
 
 
 # ---------------------------------------------------------------------------

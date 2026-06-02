@@ -262,6 +262,7 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] {len(races)} corridas brutas no total")
 
     corridas: list[Corrida] = []
+    seen_ids: set[str] = set()
     skipped = 0
     for entry in races:
         race = entry.get("race") if isinstance(entry, dict) else None
@@ -272,7 +273,11 @@ def scrape() -> list[Corrida]:
         try:
             c = _parse_race(race, today_s)
             if c:
-                corridas.append(c)
+                if c.id in seen_ids:
+                    skipped += 1
+                else:
+                    seen_ids.add(c.id)
+                    corridas.append(c)
             else:
                 skipped += 1
         except Exception as e:

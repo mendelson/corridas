@@ -4,26 +4,21 @@ on:
   schedule:
     - cron: '0 0,6,12,18 * * *'  # quatro vezes ao dia: 00:00, 06:00, 12:00 e 18:00 UTC
   workflow_dispatch:
-  pull_request:
-    types: [closed]
+  push:
     branches: [main]
 
 permissions:
   contents: write
 
 # Only one data-pipeline run at a time, and it is always the most recent one.
-# The group is a FIXED string (not github.ref): pull_request "closed" events
-# carry a per-PR ref (refs/pull/<N>/merge), so a ref-based group would NOT
-# coalesce two different merges. With a fixed group, a new merge (or schedule
-# /dispatch) cancels the in-progress run and starts fresh, so main always ends
-# up with the data and tests from the latest code.
+# Commits made by the pipeline itself carry [skip ci] so they don't re-trigger.
 concurrency:
   group: data-pipeline
   cancel-in-progress: true
 
 jobs:
   scrape:
-    if: github.event_name != 'pull_request' || github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
     runs-on: ubuntu-latest
 
     steps:

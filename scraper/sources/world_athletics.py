@@ -17,7 +17,6 @@ http_client proxy chain (Scrapestack / Apify) as fallback for Cloudflare.
 from __future__ import annotations
 import json
 import re
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, timedelta
 
 from bs4 import BeautifulSoup
@@ -29,22 +28,6 @@ from ..utils import normalize_titulo, slugify, now_iso, today_iso
 
 BASE        = "https://worldathletics.org"
 SOURCE_NAME = "World Athletics"
-
-# Keyword-anchored time pattern for race start
-_RACE_TIME_RE = re.compile(
-    r"(?:start|gun|race\s*start|begins?|start\s*time|wave\s*1|elite\s*start)"
-    r"[^0-9]{0,40}(\d{1,2})[:\.]([0-5]\d)\s*(?:am|pm|h)?"
-    r"|(?:start|gun|race\s*start|begins?|start\s*time)"
-    r"[^0-9]{0,40}(\d{1,2})\s*(?:am|pm|h)\b",
-    re.IGNORECASE,
-)
-
-# Generic fallback for European/Brazilian race page times
-_GENERIC_TIME_RE = re.compile(
-    r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
-    r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
-    re.IGNORECASE,
-)
 
 _PAGE_URL   = f"{BASE}/competitions/world-athletics-label-road-races"
 _LOOKAHEAD_DAYS = 730  # two years — labeled races announced well in advance
@@ -115,24 +98,18 @@ def scrape() -> list[Corrida]:
 
     end_date = (date.today() + timedelta(days=_LOOKAHEAD_DAYS)).isoformat()
 
-    # Parallelize _parse_competition (each call may fetch a detail page)
     corridas: list[Corrida] = []
     skipped = 0
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {
-            executor.submit(_parse_competition, comp, today_s, end_date): comp
-            for comp in competitions
-        }
-        for f in as_completed(futures):
-            try:
-                c = f.result()
-            except Exception as e:
-                print(f"[{SOURCE_NAME}] erro: {e}")
-                c = None
-            if c:
-                corridas.append(c)
-            else:
-                skipped += 1
+    for comp in competitions:
+        try:
+            c = _parse_competition(comp, today_s, end_date)
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] erro: {e}")
+            c = None
+        if c:
+            corridas.append(c)
+        else:
+            skipped += 1
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas válidas ({skipped} ignoradas)")
     return corridas
@@ -287,86 +264,6 @@ def _infer_distances(name: str) -> list[Distancia]:
     return result
 
 
-def _fetch_horario(url: str) -> str | None:
-    """Fetch the event page and extract the start time (plain GET first, then render_js)."""
-    for render_js in (False, True):
-        result = _fetch_horario_once(url, render_js=render_js)
-        if result is not None:
-            return result
-    return None
-
-
-def _fetch_horario_once(url: str, render_js: bool = False) -> str | None:
-    """Single fetch attempt for event start time.
-
-    Tries (in order):
-      1. JSON-LD Event.startDate with a time component ("T08:00")
-      2. __NEXT_DATA__ fields: startTime, time, startDateTime
-      3. Keyword-anchored text regex
-      4. Generic time regex as last resort
-    """
-    try:
-        resp = get(url, timeout=20, render_js=render_js)
-        if resp.status_code != 200:
-            return None
-        soup = BeautifulSoup(resp.text, "lxml")
-
-        # 1. JSON-LD Event with time
-        import json as _json
-        for script in soup.find_all("script", type="application/ld+json"):
-            try:
-                obj = _json.loads(script.string or "")
-                if isinstance(obj, dict) and obj.get("@type") in ("Event", "SportsEvent"):
-                    raw = obj.get("startDate") or ""
-                    m = re.search(r"T(\d{2}):(\d{2})", raw)
-                    if m:
-                        h, mi = int(m.group(1)), int(m.group(2))
-                        if 4 <= h <= 23:
-                            return f"{h:02d}:{mi:02d}"
-            except Exception:
-                pass
-
-        # 2. __NEXT_DATA__ time fields
-        nd_tag = soup.find("script", id="__NEXT_DATA__")
-        if nd_tag and nd_tag.string:
-            text_nd = nd_tag.string
-            for pattern in [
-                r'"startTime"\s*:\s*"(\d{2}:\d{2})"',
-                r'"time"\s*:\s*"(\d{2}:\d{2})"',
-                r'"startDateTime"\s*:\s*"[^"]*T(\d{2}:\d{2})',
-            ]:
-                m = re.search(pattern, text_nd)
-                if m:
-                    parts = m.group(1).split(":")
-                    h = int(parts[0])
-                    mi = int(parts[1]) if len(parts) > 1 else 0
-                    if 4 <= h <= 23:
-                        return f"{h:02d}:{mi:02d}"
-
-        # 3. Keyword-anchored text
-        full_text = soup.get_text(" ", strip=True)
-        m = _RACE_TIME_RE.search(full_text)
-        if m:
-            if m.group(1) is not None:
-                h, mi = int(m.group(1)), int(m.group(2))
-            else:
-                h, mi = int(m.group(3)), 0
-            if 4 <= h <= 23:
-                return f"{h:02d}:{mi:02d}"
-
-        # 4. Generic fallback
-        m = _GENERIC_TIME_RE.search(full_text)
-        if m:
-            if m.group(1) is not None:
-                h, mi = int(m.group(1)), int(m.group(2))
-            else:
-                h, mi = int(m.group(3)), 0
-            if 4 <= h <= 23:
-                return f"{h:02d}:{mi:02d}"
-    except Exception:
-        pass
-    return None
-
 
 def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
     name_raw = (comp.get("name") or comp.get("title") or "").strip()
@@ -455,18 +352,15 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
 
     comp_id = comp.get("id") or slugify(titulo)
     year    = data_evento[:4]
-    # Build URL from slugified name + id (WA URL pattern)
-    name_slug = re.sub(r"[^a-z0-9]+", "-", titulo.lower()).strip("-")
-    link = (comp.get("url") or comp.get("link")
-            or f"{BASE}/competitions/road-running/{name_slug}-{comp_id}")
+    # Individual event URLs require the WAWEvent integer id (not available in
+    # calendarEvents.results — only eventId_WA is present). The constructed URL
+    # returns 404, so we use the listing page as the canonical link for all events.
+    link = comp.get("url") or comp.get("link") or _PAGE_URL
     if link and not link.startswith("http"):
         link = BASE + ("" if link.startswith("/") else "/") + link
 
     now = now_iso()
-    horario = _horario_inline or _fetch_horario(link)
-    if horario is None:
-        print(f"[{SOURCE_NAME}] sem horário para {titulo!r} ({link}) — ignorado")
-        return None
+    horario = _horario_inline
 
     return Corrida(
         id=f"worldathletics_{comp_id}_{year}",

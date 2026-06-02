@@ -1493,6 +1493,7 @@ function formatKm(km) {
 const _PLACEHOLDER_IMG_PATTERNS = [
   '/img/logos/genericwebsitelogos/',  // RunSignup generic sport clipart (running-shoe, ultra, bike…)
   '/img/socialshare',                  // RunSignup generic social-share card
+  '/uploads/generic/genericimage-websitelogo',  // RunSignup auto-assigned generic logo (no real event photo)
   'halfmarathons.net/wp-content/uploads/2024/09/half-marathon-guide-hero-image',  // generic guide hero
   'youmovin.com.br/imagens/social-media',  // YouMovin generic social image
   'quedasadventure.com.br/public/img/thumb',  // Quedas Adventure generic thumb

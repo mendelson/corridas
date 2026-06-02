@@ -117,6 +117,11 @@ def scrape() -> list[Corrida]:
 
     result = list(corridas.values())
     _enrich_locations(result)
+    before = len(result)
+    result = [c for c in result if c.horario]
+    dropped = before - len(result)
+    if dropped:
+        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário publicado")
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
 
@@ -360,6 +365,9 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
         return "", "", None
     soup = BeautifulSoup(html, "lxml")
+    # Diagnostic: show first 500 chars of page text to identify time format
+    page_text_preview = soup.get_text(" ", strip=True)[:500]
+    print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]} text[:500]: {page_text_preview!r}")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             schema = json.loads(script.string or "")
@@ -391,8 +399,26 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
             if not estado and cidade:
                 _, estado = _geo.resolve(cidade, "", "MX")
                 estado = estado or ""
+
+        # Fallback: scan visible text for "HH:MM hrs" / "HH:MM am" / "Hora: HH:MM"
+        if not horario:
+            page_text = soup.get_text(" ", strip=True)
+            ht = re.search(
+                r"(?:hora\s*(?:de\s*salida\s*)?:?\s*)"
+                r"([0-9]{1,2}):([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?|h)\b"
+                r"|([0-9]{1,2}):([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?|h)\b",
+                page_text,
+                re.IGNORECASE,
+            )
+            if ht:
+                h_str = ht.group(1) or ht.group(3)
+                m_str = ht.group(2) or ht.group(4)
+                h2, mi2 = int(h_str), int(m_str)
+                if 4 <= h2 <= 23:
+                    horario = f"{h2:02d}:{mi2:02d}"
+
         return cidade, estado, horario
-    return "", "", None, None
+    return "", "", None
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

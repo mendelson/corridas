@@ -1223,6 +1223,10 @@ function buildCard(c, today, threeDaysAgo) {
 
   const img = card.querySelector('.card-img');
   const placeholder = card.querySelector('.card-img-placeholder');
+  // Per-state tint for the branded fallback graphic (CSS layers the runner
+  // glyph + gradient on top of it). Set on the variable, not `background`,
+  // so the gradient/glyph survive.
+  placeholder.style.setProperty('--ph-tint', stateColor(c.estado));
   if (c.imagem_url) {
     img.src = c.imagem_url;
     img.alt = c.titulo;
@@ -1231,12 +1235,10 @@ function buildCard(c, today, threeDaysAgo) {
     img.addEventListener('error', () => {
       img.style.display = 'none';
       placeholder.style.display = '';
-      placeholder.style.background = stateColor(c.estado);
     });
   } else {
     img.style.display = 'none';
     placeholder.style.display = '';
-    placeholder.style.background = stateColor(c.estado);
   }
 
   card.querySelector('.card-title').textContent    = c.titulo;

@@ -42,7 +42,7 @@ _NON_RUNNING_KW = [
 _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
 _KIDS_RE = re.compile(
-    r'\bkids?\b|\binfantil\b|\bpezinho\s+veloz\b|\bmaratona\s+kids?\b',
+    r'\bmaratona\s+kids?\b|\bmaratoninha\s+kids?\b|\bpezinho\s+veloz\b',
     re.IGNORECASE,
 )
 

@@ -1132,7 +1132,11 @@ function buildPastSection(corridas, today, threeDaysAgo) {
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
-    window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      const headerEl = document.querySelector('.app-header');
+      const offset = headerEl ? headerEl.offsetHeight + 8 : 8;
+      window.scrollTo({ top: btn.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    });
   });
 
   section.appendChild(btn);
@@ -1175,7 +1179,11 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
-    window.scrollBy({ top: btn.getBoundingClientRect().top - anchorTop, behavior: 'instant' });
+    requestAnimationFrame(() => {
+      const headerEl = document.querySelector('.app-header');
+      const offset = headerEl ? headerEl.offsetHeight + 8 : 8;
+      window.scrollTo({ top: btn.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+    });
   });
 
   section.appendChild(btn);

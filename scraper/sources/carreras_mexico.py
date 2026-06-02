@@ -65,38 +65,13 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page}: erro {e}")
             break
 
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page0 raw repr[:400]: {resp.text[:400]!r}")
-
         html = _extract_html(resp.text)
         if html is None:
             print(f"[{SOURCE_NAME}] page {page}: payload inesperado; raw[:200]={resp.text[:200]}")
             break
 
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page0 html repr[:400]: {html[:400]!r}")
-
         soup = BeautifulSoup(html, "lxml")
         items = soup.select(".tm_event_list_item")
-
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items; today={today}")
-            for i, el in enumerate(items[:3]):
-                title_div = el.find(class_="tm_event_list_title")
-                titulo_raw = title_div.get_text(" ", strip=True) if title_div else "<NOT FOUND>"
-                month_el = el.find(class_="tm_date_month")
-                day_el = el.find(class_="tm_date_day")
-                month_raw = month_el.get_text(" ", strip=True) if month_el else "<NOT FOUND>"
-                day_raw = day_el.get_text(" ", strip=True) if day_el else "<NOT FOUND>"
-                data_evento = _extract_date_from_widget(el, today)
-                all_hrefs = [a["href"] for a in el.find_all("a", href=True)]
-                all_classes = sorted({cls for tag in el.find_all(class_=True) for cls in tag.get("class", [])})
-                img_el = el.find("img")
-                img_src = (img_el.get("src") or img_el.get("data-src") or "") if img_el else ""
-                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo={titulo_raw[:60]!r} date={data_evento!r} img={img_src[:100]!r}")
-                print(f"[{SOURCE_NAME}] PROBE item[{i}] classes: {all_classes}")
-                for j, h in enumerate(all_hrefs):
-                    print(f"[{SOURCE_NAME}] PROBE item[{i}] anchor[{j}]: {h[:140]!r}")
 
         if not items:
             break

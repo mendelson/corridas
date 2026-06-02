@@ -1,10 +1,3 @@
-[Correr Brasília] 63 corridas encontradas
-✅  correr_brasilia: 63 evento(s)
-    {"titulo": "Circuito Desbrava Brasília 2026", "data": "2026-05-31", "estado": "DF", "km": "5.0, 10.0"}
-    {"titulo": "Corrida Nu Vai Bem - Etapa Brasília", "data": "2026-05-31", "estado": "DF", "km": "5.0, 10.0, 15.0"}
-    {"titulo": "Encontro Delas Caixa - Brasília", "data": "2026-05-31", "estado": "DF", "km": "5.0, 10.0"}
-    {"titulo": "Corrida Rede Multifla", "data": "2026-05-31", "estado": "DF"}
-    {"titulo": "Corrida E Caminhada Para Cristo", "data": "2026-05-31", "estado": "DF", "km": "5.0"}
-    ... e mais 58
-❌  correr_brasilia: 26/63 eventos sem distâncias
-FAILURE_NOTE:26/63 eventos sem distâncias
+[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: [Errno 101] Network is unreachable
+⚠️   correr_brasilia: 0 eventos retornados
+FAILURE_NOTE:0 eventos

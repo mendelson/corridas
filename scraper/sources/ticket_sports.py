@@ -41,6 +41,11 @@ _NON_RUNNING_KW = [
 
 _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
 
+_KIDS_RE = re.compile(
+    r'\bkids?\b|\binfantil\b|\bpezinho\s+veloz\b|\bmaratona\s+kids?\b',
+    re.IGNORECASE,
+)
+
 # Addresses / title keywords that indicate a virtual/online event with no fixed location
 _VIRTUAL_ADDR_KW = {
     "de onde você estiver", "de onde voce estiver",
@@ -272,6 +277,9 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if not _is_running(titulo_lower):
         return None
 
+    if _KIDS_RE.search(titulo):
+        return None
+
     if _VIRTUAL_TITLE_RE.search(titulo) or addr.lower().strip() in _VIRTUAL_ADDR_KW:
         return None
 
@@ -474,7 +482,7 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
         tl = text.lower()
         if re.search(r"\bmeia\s+maratona\b|half[\s\-]marathon", tl):
             result.append(Distancia(km=21.097, data=None, horario=None))
-        if re.search(r"(?<!meia )\bmaratona\b|(?<!half.)\bmarathon\b", tl):
+        if re.search(r"(?<!meia )\bmaratona\b(?!\s+kids?)|(?<!half.)\bmarathon\b(?!\s+kids?)", tl):
             if not any(d.km == 42.195 for d in result):
                 result.append(Distancia(km=42.195, data=None, horario=None))
 
@@ -489,7 +497,7 @@ def _extract_distances(titulo_lower: str) -> list[Distancia]:
         seen.add(21.097)
         result.append(Distancia(km=21.097, data=None, horario=None))
 
-    if re.search(r"(?<!meia )\bmaratona\b|(?<!half )\bmarathon\b", titulo_lower):
+    if re.search(r"(?<!meia )\bmaratona\b(?!\s+kids?)|\bmarathon\b(?!\s+kids?)", titulo_lower):
         if 42.195 not in seen:
             seen.add(42.195)
             result.append(Distancia(km=42.195, data=None, horario=None))

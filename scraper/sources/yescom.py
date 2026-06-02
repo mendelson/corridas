@@ -169,7 +169,14 @@ def _parse_event_page(url: str) -> Corrida | None:
     localizacao = f"{city}, {state}" if city and state else city or state or ""
 
     distancias = _extract_distances(soup)
+    if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
+
     horario = _extract_horario(full_text)
+    if not horario:
+        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+        return None
 
     insc_link = _find_inscription_link(soup)
     today = today_iso()
@@ -239,7 +246,7 @@ def _extract_horario(text: str) -> str | None:
         h, mi = int(m.group(1)), int(m.group(2))
     else:
         h, mi = int(m.group(3)), 0
-    if not (0 <= h <= 23 and 0 <= mi <= 59):
+    if not (4 <= h <= 23 and 0 <= mi <= 59):
         return None
     return f"{h:02d}:{mi:02d}"
 
@@ -298,9 +305,25 @@ def _extract_distances(soup: BeautifulSoup) -> list[Distancia]:
         # Only keep whole-number km or canonical half/full marathon distances
         if km not in (42.195, 21.097) and km != int(km):
             continue
-        if km not in seen and 3 <= km <= 60:
+        if km not in seen and 1 <= km <= 60:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
+
+    # Fallback: scan the full page text for distances not found in headings/short elements
+    if not result:
+        full_text = soup.get_text(" ", strip=True)
+        clean_full = _INTERVAL_RE.sub(" ", full_text)
+        for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean_full, re.IGNORECASE):
+            km = float(n.replace(",", "."))
+            for canon, lo, hi in _CANONICAL:
+                if lo <= km <= hi:
+                    km = canon
+                    break
+            if km not in (42.195, 21.097) and km != int(km):
+                continue
+            if km not in seen and 1 <= km <= 60:
+                seen.add(km)
+                result.append(Distancia(km=km, data=None, horario=None))
 
     return sorted(result, key=lambda d: d.km)
 

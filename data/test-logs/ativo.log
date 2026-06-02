@@ -1,10 +1,11 @@
-[Ativo] 9 corridas encontradas
-✅  ativo: 9 evento(s)
-    {"titulo": "Circuito De Corridas Vale - São Luís", "data": "2026-06-21", "estado": "MA"}
-    {"titulo": "Girl Power - Belo Horizonte - Cortesia", "data": "2026-06-07", "estado": "MG"}
-    {"titulo": "Girl Power - Belo Horizonte", "data": "2026-06-07", "estado": "MG", "km": "5.0, 10.0"}
-    {"titulo": "Corrida Poupex 2026", "data": "2026-07-25", "estado": "DF"}
-    {"titulo": "Circuito De Corridas Vale - Vitória", "data": "2026-06-14", "estado": "ES"}
-    ... e mais 4
-❌  ativo: 6/9 eventos sem distâncias
-FAILURE_NOTE:6/9 eventos sem distâncias
+[Ativo] sem distâncias, pulando: 'Circuito De Corridas Vale - São Luís'
+[Ativo] fetch externo falhou (https://www.ativo.com/calendario/eventos/america-do-sul/br/m): Exceeded maximum allowed redirects.
+[Ativo] sem distâncias, pulando: 'Girl Power - Belo Horizonte - Cortesia'
+[Ativo] sem horário, pulando: 'Girl Power - Belo Horizonte'
+[Ativo] sem distâncias, pulando: 'Corrida Poupex 2026'
+[Ativo] sem distâncias, pulando: 'Circuito De Corridas Vale - Vitória'
+[Ativo] sem horário, pulando: 'Netshoes Run 2026 - Recife'
+[Ativo] sem horário, pulando: 'Netshoes Run 2026 - São Paulo'
+[Ativo] 0 corridas encontradas
+⚠️   ativo: 0 eventos retornados
+FAILURE_NOTE:0 eventos

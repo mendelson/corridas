@@ -18,19 +18,19 @@
 [Carreras México] PROBE item[2] anchor[2]: 'https://carrerasmexico.com/?event=11cbe361ce20f816b17a8058914bdc7c&api_key=48513987f33edea8'
 [Carreras México] page 0: 29 items, 6 added
 [Carreras México] buscando localização para 6 eventos...
-[Carreras México] localização: Lomitos Mundialistas 5K → Aragón, CMX
+[Carreras México] convocatoria dc03764d text[:500]: 'El Ameyal Half Trail Marathon — Carreras México El Ameyal Half Trail Marathon — Carreras México'
 [Carreras México] localização: El Ameyal Half Trail Marathon → Amealco, QRO
+[Carreras México] convocatoria a4665c71 text[:500]: 'Lomitos Mundialistas 5k — Carreras México Lomitos Mundialistas 5k — Carreras México'
+[Carreras México] localização: Lomitos Mundialistas 5K → Aragón, CMX
+[Carreras México] convocatoria cd584857 text[:500]: '1a Carrera 5k Atletas Olímpicos — Carreras México 1a Carrera 5k Atletas Olímpicos — Carreras México'
 [Carreras México] localização: 1A Carrera 5K Atletas Olímpico → Huehuetoca, MEX
-[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
+[Carreras México] convocatoria 41b92c1a text[:500]: 'Night Run &amp; Rock La Paz, Half Marathon 2026 — Carreras México Night Run & Rock La Paz, Half Marathon 2026 — Carreras México'
 [Carreras México] localização: Night Run & Rock La Paz, Half  → La Paz, BCS
+[Carreras México] convocatoria c20cc0d0 text[:500]: 'Ultra Maratón Amealco Bosques de Niebla Green Walker Trail Series — Carreras México Ultra Maratón Amealco Bosques de Niebla Green Walker Trail Series — Carreras México'
+[Carreras México] localização: Ultra Maratón Amealco Bosques  → Amealco, QRO
+[Carreras México] convocatoria baba1a09 text[:500]: 'Dinomilco 5k — Carreras México Dinomilco 5k — Carreras México'
 [Carreras México] localização: Dinomilco 5K → Parque Ecológico Xochimilco, CMX
-[Carreras México] 6 corridas encontradas
-✅  carreras_mexico: 6 evento(s)
-    {"titulo": "1A Carrera 5K Atletas Olímpicos", "data": "2026-06-28", "estado": "MEX", "km": "5.0"}
-    {"titulo": "Lomitos Mundialistas 5K", "data": "2026-07-12", "estado": "CMX", "km": "5.0"}
-    {"titulo": "El Ameyal Half Trail Marathon", "data": "2026-07-12", "estado": "QRO", "km": "42.195"}
-    {"titulo": "Dinomilco 5K", "data": "2026-07-19", "estado": "CMX", "km": "5.0"}
-    {"titulo": "Ultra Maratón Amealco Bosques De Niebla Green Walker Trail Series", "data": "2026-08-23", "estado": "QRO", "km": "42.195"}
-    ... e mais 1
-❌  carreras_mexico: 6/6 eventos sem horário publicado
-FAILURE_NOTE:6/6 eventos sem horário publicado
+[Carreras México] descartados 6 eventos sem horário publicado
+[Carreras México] 0 corridas encontradas
+⚠️   carreras_mexico: 0 eventos retornados
+FAILURE_NOTE:0 eventos

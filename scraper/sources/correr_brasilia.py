@@ -353,6 +353,19 @@ _DIST_LIST_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Matches "5 e 10 km" (shared km suffix) — extremely common in Brazilian Portuguese
+# e.g. "provas de 5 e 10 km", "distâncias de 5, 10 e 21km"
+_DIST_SHARED_SUFFIX_RE = re.compile(
+    r"(\d+(?:[.,]\d+)?)"
+    r"(?:\s*(?:,|e|ou)\s*(\d+(?:[.,]\d+)?))+"
+    r"\s*[kK][mM]?\b",
+    re.IGNORECASE,
+)
+
+_HALF_MARATHON_RE = re.compile(
+    r"meia[\s-]?maratona|half[\s-]?marathon",
+    re.IGNORECASE,
+)
 
 
 def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
@@ -362,23 +375,61 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
       1. Grouped list in description ("7km e 14km") — the EventOn plugin embeds
          explicit "Distância: Xkm e Ykm" metadata in the description, making this
          the most reliable source for the specific distances offered at this edition.
-      2. Any km mention in description.
-      3. Parenthetical hint in title as last resort.
+      2. Shared-suffix pattern ("5 e 10 km") — common in Brazilian Portuguese.
+      3. Any km mention in description.
+      4. "meia maratona" / "maratona" keywords in description or title.
+      5. Parenthetical hint in title as last resort.
     """
-    # Priority 1: grouped list pattern in description (e.g. "Distância: 5km e 10km")
+    combined = f"{desc} {titulo}"
+
+    # Priority 1: grouped list with explicit km on each element
     values = _parse_km_values_from_list(desc, min_km=1.0)
     if not values:
-        # Priority 2: any km mention in description
+        # Priority 2: shared km suffix ("5 e 10 km")
+        values = _parse_shared_suffix(combined, min_km=1.0)
+    if not values:
+        # Priority 3: any km mention in description
         values = _parse_km_values(desc, min_km=1.0)
     if not values:
-        # Priority 3: parenthetical hint in title only
+        # Priority 4: keyword-based
+        values = _parse_km_values(titulo, min_km=1.0)
+    if not values:
+        # Priority 5: parenthetical hint in title only
         paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
         if paren:
             values = _parse_km_values(paren.group(0), min_km=1.0)
+
+    # Supplement with keyword-based distances not captured by numeric patterns
+    seen_kms = set(values)
+    text_for_kw = combined
+    if _HALF_MARATHON_RE.search(text_for_kw):
+        if 21.097 not in seen_kms:
+            values.append(21.097)
+            seen_kms.add(21.097)
+        # Strip "meia maratona" so we don't also add 42.195 for it
+        text_for_kw = _HALF_MARATHON_RE.sub("", text_for_kw)
+    if re.search(r"\bmaratona\b|\bmarathon\b", text_for_kw, re.IGNORECASE):
+        if 42.195 not in seen_kms:
+            values.append(42.195)
+
     return sorted(
         [Distancia(km=km, data=None, horario=None) for km in values[:8]],
         key=lambda d: float(d.km),
     )
+
+
+def _parse_shared_suffix(text: str, min_km: float) -> list[float]:
+    """Extract distances from 'N e M km' patterns (shared km unit suffix)."""
+    raw: list[float] = []
+    for m in _DIST_SHARED_SUFFIX_RE.finditer(text):
+        segment = m.group(0)
+        for num_m in re.finditer(r"(\d+(?:[.,]\d+)?)", segment):
+            # Skip the trailing unit digits (km suffix has no decimal)
+            try:
+                raw.append(float(num_m.group(1).replace(",", ".")))
+            except ValueError:
+                pass
+    return _filter_km_values(raw, min_km)
 
 
 def _filter_km_values(raw_values: list[float], min_km: float) -> list[float]:

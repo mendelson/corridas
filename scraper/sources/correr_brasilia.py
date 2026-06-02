@@ -6,6 +6,7 @@ plugin — more reliable than trying to parse the calendar widget's HTML.
 from __future__ import annotations
 import json
 import re
+from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 
@@ -24,13 +25,16 @@ _TIME_RE = re.compile(
 )
 
 
-def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None]:
-    """Fetch the individual event page and extract distances and horario."""
+def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None, str | None]:
+    """Fetch the individual event page and extract distances, horario and the
+    external registration link (EventOn "Learn More" → the real inscription
+    platform, e.g. esportes.agenciasisters.com.br)."""
     try:
         resp = get(url)
         if resp.status_code != 200:
-            return [], None
+            return [], None, None
         soup = BeautifulSoup(resp.text, "lxml")
+        reg_link = _extract_registration_link(soup)
         # Try JSON-LD first
         for script in soup.find_all("script", type="application/ld+json"):
             try:
@@ -43,14 +47,74 @@ def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None]:
             dists = _extract_distances(desc, data.get("name") or "")
             _, horario = _parse_start_date(data.get("startDate") or "")
             if dists:
-                return dists, horario
+                return dists, horario, reg_link
         # Fallback: parse free text
         text = soup.get_text(" ", strip=True)
         dists = _extract_distances(text, "")
         horario = _extract_horario(text)
-        return dists, horario
+        return dists, horario, reg_link
     except Exception:
-        return [], None
+        return [], None, None
+
+
+def _extract_registration_link(soup: BeautifulSoup) -> str | None:
+    """EventOn stores the organizer's external link (registration page) in the
+    "Learn More" row: <a class="evcal_evdata_row evo_clik_row" href="..."> inside
+    #event_learnmore (.evo_metarow_learnmore). Return it when it's a real external
+    URL (not correrbrasilia itself, not a social network)."""
+    for a in soup.select(
+        "#event_learnmore a[href], .evo_metarow_learnmore a[href], a.evo_clik_row[href]"
+    ):
+        href = (a.get("href") or "").strip()
+        if href.startswith("http") and _is_external_registration(href):
+            return href
+    return None
+
+
+def _is_external_registration(url: str) -> bool:
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    if not host or "correrbrasilia.com.br" in host:
+        return False
+    return not any(s in host for s in _SOCIAL_HOSTS)
+
+
+_SOCIAL_HOSTS = (
+    "facebook.", "instagram.", "twitter.", "x.com", "youtube.", "youtu.be",
+    "whatsapp.", "wa.me", "t.me", "tiktok.", "linkedin.", "strava.",
+)
+
+# Map known registration/inscription platforms to a display name + tipo so the
+# extracted "Learn More" link is attributed correctly (the frontend orders
+# inscricao buttons first). Unknown domains → name derived from the domain,
+# tipo="inscricao" (the Learn More link is the organizer's registration page).
+_REG_DOMAIN_MAP: list[tuple[str, str, str]] = [
+    ("agenciasisters.com.br",   "Agência Sisters",    "inscricao"),
+    ("ticketsports.com.br",     "Ticket Sports",      "inscricao"),
+    ("ticketagora.com.br",      "Ticket Sports",      "inscricao"),
+    ("sympla.com.br",           "Sympla",             "inscricao"),
+    ("ativo.com",               "Ativo",              "inscricao"),
+    ("minhasinscricoes.com.br", "Minhas Inscrições",  "inscricao"),
+    ("doity.com.br",            "Doity",              "inscricao"),
+    ("e-inscricao.com",         "e-Inscrição",        "inscricao"),
+    ("brasilcorrida.com.br",    "Brasil Corrida",     "calendario"),
+    ("centraldacorrida.com.br", "Central da Corrida", "calendario"),
+]
+
+
+def _registration_fonte(url: str) -> FonteInfo | None:
+    """Build an inscription FonteInfo for an extracted external registration URL."""
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    nome, tipo = None, "inscricao"
+    for frag, n, t in _REG_DOMAIN_MAP:
+        if frag in host:
+            nome, tipo = n, t
+            break
+    if nome is None:
+        # e.g. "esportes.agenciasisters.com.br" → "Agenciasisters"
+        parts = host.split(".")
+        base = parts[-3] if len(parts) >= 3 else parts[0]
+        nome = base.replace("-", " ").title() or "Inscrição"
+    return FonteInfo(nome=nome, link_evento=url, links_inscricao=[url], tipo=tipo)
 
 
 def _extract_horario(text: str) -> str | None:
@@ -94,9 +158,28 @@ def scrape() -> list[Corrida]:
     corridas: list[Corrida] = []
     seen_ids: set[str] = set()
 
-    # Identify events that need a detail-page fetch (no distances or no horario)
-    needs_detail: list[tuple[dict, str]] = []
-    first_pass: list[Corrida] = []
+    # Fetch each event's detail page once: it carries the external registration
+    # link (EventOn "Learn More" → the real inscription platform) and backfills
+    # any distances/horario the listing JSON-LD omitted.
+    to_fetch: list[str] = []
+    seen_urls: set[str] = set()
+    for data in candidates:
+        url = data.get("url") or ""
+        if url and url != URL and url not in seen_urls:
+            seen_urls.add(url)
+            to_fetch.append(url)
+
+    detail_map: dict[str, tuple[list[Distancia], str | None, str | None]] = {}
+    if to_fetch:
+        with ThreadPoolExecutor(max_workers=8) as ex:
+            futures = {ex.submit(_fetch_event_page, u): u for u in to_fetch}
+            for fut in as_completed(futures):
+                url = futures[fut]
+                try:
+                    detail_map[url] = fut.result()
+                except Exception:
+                    detail_map[url] = ([], None, None)
+
     for data in candidates:
         try:
             c = _parse_event(data, today, now)
@@ -105,42 +188,19 @@ def scrape() -> list[Corrida]:
             continue
         if c is None:
             continue
-        if not c.distancias or not c.horario:
-            url = data.get("url") or ""
-            if url and url != URL:
-                needs_detail.append((data, url))
-            # keep in first_pass without distancias/horario — will be enriched or dropped
-        first_pass.append(c)
-
-    # Second pass: fetch detail pages for events still missing distances or horario
-    detail_map: dict[str, tuple[list[Distancia], str | None]] = {}
-    if needs_detail:
-        def _fetch(item: tuple[dict, str]) -> tuple[str, list[Distancia], str | None]:
-            ev_data, url = item
-            dists, horario = _fetch_event_page(url)
-            return url, dists, horario
-
-        with ThreadPoolExecutor(max_workers=8) as ex:
-            futures = {ex.submit(_fetch, item): item for item in needs_detail}
-            for fut in as_completed(futures):
-                url, dists, horario = fut.result()
-                detail_map[url] = (dists, horario)
-
-    for data in candidates:
-        try:
-            c = _parse_event(data, today, now)
-        except Exception:
-            continue
-        if c is None:
-            continue
 
         event_url = data.get("url") or ""
-        if (not c.distancias or not c.horario) and event_url in detail_map:
-            extra_dists, extra_horario = detail_map[event_url]
+        if event_url in detail_map:
+            extra_dists, extra_horario, reg_link = detail_map[event_url]
             if not c.distancias and extra_dists:
                 c = _replace_distancias(c, extra_dists)
             if not c.horario and extra_horario:
                 c = _replace_horario(c, extra_horario)
+            # Attach the real registration platform as an inscription source.
+            if reg_link:
+                reg = _registration_fonte(reg_link)
+                if reg and all(f.nome != reg.nome for f in c.fontes):
+                    c.fontes.append(reg)
 
         if not c.distancias:
             print(f"[{SOURCE_NAME}] sem distâncias, pulando: {c.titulo!r}")

@@ -50,15 +50,15 @@ def _parse_km(s: str) -> float | None:
     return km if 1 <= km <= 200 else None
 
 
-def _fetch_distances_from_json(url: str) -> list[Distancia]:
-    """Fetch the per-event JSON (post_json) and extract distances from its distancias array."""
+def _fetch_event_json(url: str) -> tuple[list[Distancia], str | None]:
+    """Fetch the per-event JSON (post_json); return (distances, horario)."""
     try:
         resp = get(url, source=SOURCE_NAME, timeout=15)
         resp.raise_for_status()
         ev = resp.json()
     except Exception as e:
         print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:60]}): {e}")
-        return []
+        return [], None
     seen: set[float] = set()
     result: list[Distancia] = []
     for d in ev.get("distancias") or []:
@@ -69,7 +69,18 @@ def _fetch_distances_from_json(url: str) -> list[Distancia]:
     if not result:
         titulo_fallback = normalize_titulo(ev.get("post_title") or "")
         result = _distances_from_title(titulo_fallback.lower())
-    return sorted(result, key=lambda d: d.km)
+    # Try to extract horario from event JSON date fields
+    horario: str | None = None
+    for key in ("dt_evento", "dt_inicio", "start_date"):
+        dt = ev.get(key) or ""
+        if len(dt) > 10:
+            m_t = re.search(r"[T ](\d{2}):(\d{2})", dt)
+            if m_t:
+                h, mi = int(m_t.group(1)), int(m_t.group(2))
+                if 4 <= h <= 23 and 0 <= mi <= 59:
+                    horario = f"{h:02d}:{mi:02d}"
+                    break
+    return sorted(result, key=lambda d: d.km), horario
 
 
 def _parse_event(ev: dict, today: str) -> Corrida | None:
@@ -94,7 +105,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         m_t = re.search(r"[T ](\d{2}):(\d{2})", dt_raw)
         if m_t:
             h, mi = int(m_t.group(1)), int(m_t.group(2))
-            if 0 <= h <= 23 and 0 <= mi <= 59:
+            if 4 <= h <= 23 and 0 <= mi <= 59:  # exclude midnight placeholders
                 horario = f"{h:02d}:{mi:02d}"
 
     estado = (ev.get("ds_estado") or "").strip()
@@ -118,11 +129,18 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     post_json_url = ev.get("post_json") or ""
     event_page = post_json_url.replace("/index.json", "") or "https://www.ativo.com"
 
-    # Fetch the per-event JSON when listing data has no distances
-    if not distancias and post_json_url:
-        distancias = _fetch_distances_from_json(post_json_url)
+    # Fetch the per-event JSON when listing data has no distances or no horario
+    if (not distancias or not horario) and post_json_url:
+        extra_dists, extra_horario = _fetch_event_json(post_json_url)
+        if not distancias and extra_dists:
+            distancias = extra_dists
+        if not horario and extra_horario:
+            horario = extra_horario
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        return None
+    if not horario:
+        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
         return None
 
     _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")

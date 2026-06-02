@@ -39,7 +39,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-05-31 00:17 | ❌ 26/63 eventos sem distâncias | 2026-05-30 22:32 |
-| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-05-31 00:17 | ❌ 0 eventos | 2026-05-30 03:28 |
+| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-06-01 14:09 | ✅ | 2026-06-01 14:09 |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-05-31 00:17 | ❌ 0 eventos | 2026-05-30 03:27 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-05-31 00:17 | ❌ 0 eventos | 2026-05-30 03:28 |
 | Corrida POUPEX<!--poupex--> | ✅ | `corrida.poupex.com.br` | HTML (OG tags) | — | — | — |
@@ -58,7 +58,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-05-31 00:16 | ❌ 20/34 eventos sem distâncias | 2026-05-30 22:32 |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-06-01 13:59 | ✅ | 2026-06-01 13:59 |
 
 ### Fontes internacionais — plataformas agregadoras
 

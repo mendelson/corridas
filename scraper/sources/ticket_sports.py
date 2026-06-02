@@ -40,6 +40,7 @@ _NON_RUNNING_KW = [
 ]
 
 _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)
+_CYCLING_RE = re.compile(r'\bxco\b|\bxcm\b|\bmtb\b|\bmountain\s+bike\b', re.IGNORECASE)
 
 _KIDS_RE = re.compile(
     r'\bmaratona\s+kids?\b|\bmaratoninha\s+kids?\b|\bpezinho\s+veloz\b',
@@ -261,6 +262,8 @@ def _is_running(titulo_lower: str) -> bool:
     if any(kw in titulo_lower for kw in _NON_RUNNING_KW):
         return False
     if _TRI_DIGIT_RE.search(titulo_lower):
+        return False
+    if _CYCLING_RE.search(titulo_lower):
         return False
     return True
 

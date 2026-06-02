@@ -1,7 +1,7 @@
 name: Monitorar Saúde das Fontes
 
 # Triggered automatically when any source file changes, or manually.
-# Schedule: daily at 09:00 UTC — always tests ALL sources (full health snapshot).
+# Schedule (09:00 UTC daily): always tests ALL sources for a full health snapshot.
 # Each source runs as an independent job — visible as separate checks in GitHub.
 # After all jobs finish (pass or fail), a final job updates the README with
 # per-source timestamps and status.

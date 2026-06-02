@@ -139,6 +139,93 @@ def _time_from_val(val) -> str | None:
     return None
 
 
+_HORARIO_TEXT_RE = re.compile(
+    r"(?:hor[áa]rio|largada|sa[íi]da|in[íi]cio|partida|às?)\s*:?\s*(\d{1,2})[h:](\d{2})"
+    r"|\b(\d{1,2})[h:](\d{2})\s*(?:h(?:oras?)?)?\b",
+    re.IGNORECASE,
+)
+
+
+def _horario_from_text(text: str) -> str | None:
+    m = _HORARIO_TEXT_RE.search(text)
+    if not m:
+        return None
+    h_str = m.group(1) or m.group(3)
+    mi_str = m.group(2) or m.group(4)
+    if not h_str or not mi_str:
+        return None
+    h, mi = int(h_str), int(mi_str)
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _horario_from_json(obj, visited: set) -> str | None:
+    """Recursively search JSON for a non-midnight event start time (4-23h)."""
+    obj_id = id(obj)
+    if obj_id in visited:
+        return None
+    visited.add(obj_id)
+    if isinstance(obj, str):
+        m = re.search(r"T(\d{2}):(\d{2})", obj)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+        return None
+    if isinstance(obj, list):
+        for item in obj:
+            r = _horario_from_json(item, visited)
+            if r:
+                return r
+        return None
+    if isinstance(obj, dict):
+        for key in ("startDate", "startTime", "start_date", "start_time", "horario", "hora"):
+            val = obj.get(key)
+            if val:
+                r = _horario_from_json(val, visited)
+                if r:
+                    return r
+        for v in obj.values():
+            r = _horario_from_json(v, visited)
+            if r:
+                return r
+    return None
+
+
+def _horario_from_event_page(slug: str) -> str | None:
+    """Fetch the event detail page and extract horario from JSON or visible text."""
+    if not slug:
+        return None
+    try:
+        resp = httpx.get(
+            f"{LISTING_URL}/{slug}",
+            headers={
+                "User-Agent": _UA,
+                "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
+                "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.7",
+            },
+            timeout=30,
+            follow_redirects=True,
+        )
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "lxml")
+        tag = soup.find("script", id="__NEXT_DATA__")
+        if tag and tag.string:
+            try:
+                import json as _json
+                data = _json.loads(tag.string)
+                h = _horario_from_json(data, set())
+                if h:
+                    return h
+            except Exception:
+                pass
+        return _horario_from_text(soup.get_text(" ", strip=True))
+    except Exception:
+        return None
+
+
 def _distances_from_modalities(modalities_raw) -> tuple[list[Distancia], str | None]:
     """Returns (distancias, earliest_horario)."""
     items: list[dict] = []
@@ -361,6 +448,8 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
 
     distancias, horario = _distances_from_attrs(attrs, titulo)
     horario = horario or horario_from_date
+    if horario is None:
+        horario = _horario_from_event_page(slug)
     if horario is None:
         print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
         return None

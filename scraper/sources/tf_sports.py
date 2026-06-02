@@ -408,6 +408,60 @@ def _km_from_val(val) -> float | None:
 
 _TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::\d{2})?")
 
+_HORARIO_TEXT_RE = re.compile(
+    r"(?:hor[áa]rio|largada|sa[íi]da|in[íi]cio|partida|às?)\s*:?\s*(\d{1,2})[h:](\d{2})"
+    r"|\b(\d{1,2})[h:](\d{2})\s*(?:h(?:oras?)?)?\b",
+    re.IGNORECASE,
+)
+
+
+def _horario_from_text(text: str) -> str | None:
+    """Extract start time from visible page text."""
+    m = _HORARIO_TEXT_RE.search(text)
+    if not m:
+        return None
+    h_str = m.group(1) or m.group(3)
+    mi_str = m.group(2) or m.group(4)
+    if not h_str or not mi_str:
+        return None
+    h, mi = int(h_str), int(mi_str)
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _horario_from_json(obj, visited: set) -> str | None:
+    """Recursively search JSON for a non-midnight event start time (4-23h)."""
+    obj_id = id(obj)
+    if obj_id in visited:
+        return None
+    visited.add(obj_id)
+    if isinstance(obj, str):
+        m = re.search(r"T(\d{2}):(\d{2})", obj)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+        return None
+    if isinstance(obj, list):
+        for item in obj:
+            r = _horario_from_json(item, visited)
+            if r:
+                return r
+        return None
+    if isinstance(obj, dict):
+        for key in ("startDate", "startTime", "start_date", "start_time", "horario", "hora"):
+            val = obj.get(key)
+            if val:
+                r = _horario_from_json(val, visited)
+                if r:
+                    return r
+        for v in obj.values():
+            r = _horario_from_json(v, visited)
+            if r:
+                return r
+    return None
+
 
 def _time_from_val(val) -> str | None:
     """Extract HH:MM from a time/datetime value."""
@@ -472,8 +526,12 @@ def _distances_from_api(attrs: dict) -> list[Distancia]:
     return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
 
 
-def _distances_from_next_data(slug: str) -> list[Distancia]:
-    """Fall back to the event detail page's __NEXT_DATA__ for modalities."""
+def _distances_from_next_data(slug: str) -> tuple[list[Distancia], str | None]:
+    """Fall back to the event detail page for modalities and horario.
+
+    Returns (distances, horario): horario is extracted from __NEXT_DATA__ via
+    broad JSON search or full page text as a fallback.
+    """
     try:
         resp = httpx.get(
             f"{BASE}/run-series/{slug}",
@@ -484,15 +542,21 @@ def _distances_from_next_data(slug: str) -> list[Distancia]:
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
         tag = soup.find("script", id="__NEXT_DATA__")
-        if not tag or not tag.string:
-            return []
-        data = json.loads(tag.string)
-        seen: set[float] = set()
-        result: list[Distancia] = []
-        _walk_modalities(data, result, seen)
-        return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
+        horario = None
+        distances: list[Distancia] = []
+        if tag and tag.string:
+            data = json.loads(tag.string)
+            seen: set[float] = set()
+            result: list[Distancia] = []
+            _walk_modalities(data, result, seen)
+            distances = sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
+            horario = _horario_from_json(data, set())
+        if not horario:
+            text = soup.get_text(" ", strip=True)
+            horario = _horario_from_text(text)
+        return distances, horario
     except Exception:
-        return []
+        return [], None
 
 
 def _distances_from_title(titulo: str) -> list[Distancia]:
@@ -513,18 +577,23 @@ _TF_DEFAULT_DISTANCES = [
 ]
 
 
-def _get_distances(attrs: dict, slug: str) -> list[Distancia]:
+def _get_distances(attrs: dict, slug: str) -> tuple[list[Distancia], str | None]:
+    """Return (distances, horario_from_detail_page).
+
+    horario_from_detail_page is non-None when the detail page reveals the start
+    time even though the Strapi API field is midnight/absent.
+    """
     d = _distances_from_api(attrs)
     if d:
-        return d
-    d = _distances_from_next_data(slug)
+        return d, None
+    d, h = _distances_from_next_data(slug)
     if d:
-        return d
+        return d, h
     d = _distances_from_title(attrs.get("title", ""))
     if d:
-        return d
+        return d, h
     # Track&Field Run Series is a standardized circuit — always 5km and 10km
-    return _TF_DEFAULT_DISTANCES
+    return _TF_DEFAULT_DISTANCES, h
 
 
 # ---------------------------------------------------------------------------
@@ -669,11 +738,11 @@ def _events_to_corridas(
                 print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem localização determinável)")
                 continue
 
-            distancias = _get_distances(attrs, slug)
+            distancias, horario_detail = _get_distances(attrs, slug)
             imagem_url = _extract_image(attrs)
 
             horarios_dist = [d.horario for d in distancias if d.horario]
-            horario_evento = min(horarios_dist) if horarios_dist else horario_from_date
+            horario_evento = min(horarios_dist) if horarios_dist else horario_from_date or horario_detail
             if horario_evento is None:
                 print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
                 continue

@@ -6,7 +6,7 @@ provides browser fixtures with geo mocking.
 """
 import json
 import threading
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 import pytest
 
@@ -25,7 +25,7 @@ class _Handler(SimpleHTTPRequestHandler):
 
 @pytest.fixture(scope="session")
 def live_server():
-    server = HTTPServer(("127.0.0.1", SERVER_PORT), _Handler)
+    server = ThreadingHTTPServer(("127.0.0.1", SERVER_PORT), _Handler)
     t = threading.Thread(target=server.serve_forever, daemon=True)
     t.start()
     yield f"http://127.0.0.1:{SERVER_PORT}"

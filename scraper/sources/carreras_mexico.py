@@ -350,15 +350,44 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         if not isinstance(schema, dict) or schema.get("@type") != "SportsEvent":
             continue
 
-        # Extract horário independently of location — the start time must survive
-        # even when location.name is absent (horário is a hard-required field).
         horario: str | None = None
-        start_dt = schema.get("startDate") or ""
-        mt = re.search(r"[T ](\d{2}):(\d{2})", start_dt)
-        if mt:
-            h, mi = int(mt.group(1)), int(mt.group(2))
-            if 4 <= h <= 23 and 0 <= mi <= 59:
-                horario = f"{h:02d}:{mi:02d}"
+
+        # 1. startDate with time component
+        for dt_src in [schema.get("startDate") or "",
+                       schema.get("doorTime") or ""]:
+            mt = re.search(r"[T ](\d{2}):(\d{2})", dt_src)
+            if not mt:
+                mt = re.search(r"\b(\d{1,2}):(\d{2})\b", dt_src)
+            if mt:
+                h, mi = int(mt.group(1)), int(mt.group(2))
+                if 4 <= h <= 23 and 0 <= mi <= 59:
+                    horario = f"{h:02d}:{mi:02d}"
+                    break
+
+        # 2. subEvent array (e.g. sub-races with individual start times)
+        if not horario:
+            for sub in (schema.get("subEvent") or []):
+                if not isinstance(sub, dict):
+                    continue
+                mt = re.search(r"[T ](\d{2}):(\d{2})", sub.get("startDate") or "")
+                if mt:
+                    h, mi = int(mt.group(1)), int(mt.group(2))
+                    if 4 <= h <= 23:
+                        horario = f"{h:02d}:{mi:02d}"
+                        break
+
+        # 3. JSON-LD description field
+        if not horario:
+            desc = schema.get("description") or ""
+            mt = re.search(
+                r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
+                r"inicio|salida|arranque)\s*:?\s*(\d{1,2})[hH:]([0-5]\d)",
+                desc, re.IGNORECASE,
+            )
+            if mt:
+                h, mi = int(mt.group(1)), int(mt.group(2))
+                if 4 <= h <= 23:
+                    horario = f"{h:02d}:{mi:02d}"
 
         loc = schema.get("location", {})
         loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
@@ -372,14 +401,13 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                 _, estado = _geo.resolve(cidade, "", "MX")
                 estado = estado or ""
 
-        # Fallback: scan visible text for "Hora: HH:MM" / "HH:MM hrs" / "HHhMM"
+        # 4. Fallback: scan visible page text for time patterns
         if not horario:
             page_text = soup.get_text(" ", strip=True)
             ht = re.search(
-                # keyword-anchored: unit optional (matches "hora de salida: 7:00")
-                r"hora\s*(?:de\s*salida\s*)?:?\s*"
+                r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
+                r"inicio|salida|arranque|largada)\s*:?\s*"
                 r"([0-9]{1,2})[hH:]([0-5][0-9])(?:\s*(?:hrs?|a\.?m\.?|p\.?m\.?))?"
-                # generic: unit required to avoid false positives
                 r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)\b",
                 page_text,
                 re.IGNORECASE,

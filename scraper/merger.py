@@ -36,6 +36,12 @@ def _titulo_similarity(a: str, b: str) -> float:
     nb = normalize_titulo_merge(b)
     if not na or not nb:
         return 0.0
+    # Single-word normalizations are too generic to drive merging.
+    # "Corrida da Copa" and "Copa Run" both reduce to "copa", giving
+    # sim=1.0 and causing cross-city false merges. Require ≥2 meaningful
+    # tokens from both titles before using title similarity as a signal.
+    if len(na.split()) < 2 or len(nb.split()) < 2:
+        return 0.0
     return difflib.SequenceMatcher(None, na, nb).ratio()
 
 

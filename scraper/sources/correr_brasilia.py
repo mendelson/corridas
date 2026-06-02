@@ -61,9 +61,13 @@ def _extract_registration_link(soup: BeautifulSoup) -> str | None:
     """EventOn stores the organizer's external link (registration page) in the
     "Learn More" row: <a class="evcal_evdata_row evo_clik_row" href="..."> inside
     #event_learnmore (.evo_metarow_learnmore). Return it when it's a real external
-    URL (not correrbrasilia itself, not a social network)."""
+    URL (not correrbrasilia itself, not a social network).
+
+    Scoped strictly to the Learn More container: other EventOn rows (location/map,
+    organizer) also use `a.evo_clik_row` and can render first, so a page-wide
+    `a.evo_clik_row` scan would attach a map/organizer URL as the registration."""
     for a in soup.select(
-        "#event_learnmore a[href], .evo_metarow_learnmore a[href], a.evo_clik_row[href]"
+        "#event_learnmore a[href], .evo_metarow_learnmore a[href]"
     ):
         href = (a.get("href") or "").strip()
         if href.startswith("http") and _is_external_registration(href):

@@ -91,24 +91,25 @@ _TIME_RE = re.compile(
 
 
 def _fetch_horario_from_link(url: str) -> str | None:
-    """Fetch external event page and extract the published start time."""
-    try:
-        resp = get(url)
-        if resp.status_code != 200:
-            return None
-        soup = BeautifulSoup(resp.text, "lxml")
-        text = soup.get_text(" ", strip=True)
-        m = _TIME_RE.search(text)
-        if not m:
-            return None
-        if m.group(1) is not None:
-            h, mi = int(m.group(1)), int(m.group(2))
-        else:
-            h, mi = int(m.group(3)), 0
-        if 4 <= h <= 23 and 0 <= mi <= 59:
-            return f"{h:02d}:{mi:02d}"
-    except Exception:
-        pass
+    """Fetch external event page (with JS-rendering fallback) and extract start time."""
+    for render_js in (False, True):
+        try:
+            resp = get(url, render_js=render_js)
+            if resp.status_code != 200:
+                continue
+            soup = BeautifulSoup(resp.text, "lxml")
+            text = soup.get_text(" ", strip=True)
+            m = _TIME_RE.search(text)
+            if not m:
+                continue
+            if m.group(1) is not None:
+                h, mi = int(m.group(1)), int(m.group(2))
+            else:
+                h, mi = int(m.group(3)), 0
+            if 4 <= h <= 23 and 0 <= mi <= 59:
+                return f"{h:02d}:{mi:02d}"
+        except Exception:
+            pass
     return None
 
 

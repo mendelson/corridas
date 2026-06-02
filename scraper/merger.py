@@ -1,6 +1,7 @@
 from __future__ import annotations
 import difflib
 import re
+import unicodedata
 from collections import defaultdict
 from datetime import date, timedelta
 
@@ -140,6 +141,23 @@ def _km_key(km) -> object:
     return round(km)
 
 
+def _norm_city(s: str) -> str:
+    s = unicodedata.normalize('NFKD', s.strip().lower())
+    return ''.join(c for c in s if not unicodedata.combining(c))
+
+
+def _city_mismatch(a: Corrida, b: Corrida) -> bool:
+    """True when both records declare an explicit city and those cities differ.
+
+    Distinct cities within the same state are strong evidence of distinct events
+    (e.g. a 10 K race in São Paulo vs one in Campinas on the same date).
+    We normalize away accents before comparing so "São Paulo" == "Sao Paulo".
+    """
+    ca = _norm_city(a.cidade or '')
+    cb = _norm_city(b.cidade or '')
+    return bool(ca and cb and ca != cb)
+
+
 def _distances_disjoint(a: Corrida, b: Corrida) -> bool:
     """True when both events have distances and none overlap.
 
@@ -182,17 +200,20 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
             return True
         return False
 
-    # Same state: existing logic
+    # Same state: if both records name a distinct city, treat them as different events.
+    # Two races with identical titles in São Paulo and Campinas are not the same race.
+    # The only conclusive override is a shared inscription link (handled above).
+    city_diff = _city_mismatch(a, b)
+
     if sim >= 0.95 and _date_ok_relaxed(a, b):
-        return True
+        return not city_diff
     if sim >= 0.85 and _date_ok(a, b):
-        return True
+        return not city_diff
     if a.data_evento and b.data_evento and a.data_evento == b.data_evento:
-        # Same exact date: strong similarity or one title contained in the other
         if sim >= 0.75:
-            return True
+            return not city_diff
         if _title_words_contained(a, b):
-            return True
+            return not city_diff
     return False
 
 

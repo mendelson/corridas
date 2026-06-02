@@ -10,10 +10,14 @@ the detail page, which exposes structured spans:
     Main_label_Percurso   → "Percurso: 5 / 10 / 21 km"
     Main_label_Local      → "Local: City - UF"
 
+Start time is NOT always on the detail page itself — many events only list the
+time on the linked external inscription platform (Ticket Sports, Atletis, etc.)
+or on the race's own website.  We follow those links to find the time.
 Events without a published start time are skipped.
 """
 from __future__ import annotations
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date
 
 from bs4 import BeautifulSoup
@@ -31,6 +35,15 @@ SOURCE_NAME = "Runner Brasil"
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
+# Domains of known inscription/registration platforms that typically show start times
+_INSC_DOMAINS = (
+    "ticketsports.com.br", "ticket.com.br",
+    "atletis.com.br", "sympla.com.br",
+    "ativo.com", "minhasinscricoes.com.br",
+    "portaldascorridas.com.br", "raceroster.com",
+    "runsignup.com", "eventbrite.com", "yescom.com.br",
+)
+
 
 def scrape() -> list[Corrida]:
     try:
@@ -45,13 +58,16 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] {len(detail_urls)} eventos no calendário")
 
     corridas: list[Corrida] = []
-    for url in detail_urls:
-        try:
-            corrida = _scrape_detail(url)
-            if corrida:
-                corridas.append(corrida)
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] erro em {url}: {e}")
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        futures = {ex.submit(_scrape_detail, url): url for url in detail_urls}
+        for fut in as_completed(futures):
+            url = futures[fut]
+            try:
+                corrida = fut.result()
+                if corrida:
+                    corridas.append(corrida)
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] erro em {url}: {e}")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
@@ -68,6 +84,34 @@ def _find_detail_urls(soup) -> list[str]:
             seen.add(href)
             urls.append(href)
     return urls
+
+
+def _find_external_url(soup: BeautifulSoup) -> str | None:
+    """Return the first external inscription-platform or race-website link."""
+    for a in soup.find_all("a", href=True):
+        href = a["href"]
+        if not href.startswith("http"):
+            continue
+        if "runnerbrasil.com.br" in href:
+            continue
+        if any(domain in href for domain in _INSC_DOMAINS):
+            return href
+        text = a.get_text(strip=True).lower()
+        if "inscri" in text or "registr" in text or "clique aqui" in text:
+            return href
+    return None
+
+
+def _fetch_horario_from_url(url: str) -> str | None:
+    """Fetch a page and try to extract a start time from its text."""
+    try:
+        resp = get(url, timeout=15)
+        if resp.status_code != 200:
+            return None
+        text = BeautifulSoup(resp.text, "lxml").get_text(" ", strip=True)
+        return _extract_horario(text)
+    except Exception:
+        return None
 
 
 def _scrape_detail(url: str) -> Corrida | None:
@@ -87,7 +131,7 @@ def _scrape_detail(url: str) -> Corrida | None:
     if data < today_iso():
         return None
 
-    # Try to find start time: date label → dedicated horario labels → full page
+    # 1. Try the detail page itself (date field, dedicated spans, full text)
     horario = (
         _extract_horario(data_raw)
         or _extract_horario(_label_text(soup, "Main_label_Hr_Evento"))
@@ -95,8 +139,21 @@ def _scrape_detail(url: str) -> Corrida | None:
         or _extract_horario(_label_text(soup, "Main_label_Hora"))
         or _extract_horario(soup.get_text(" ", strip=True))
     )
+
+    # 2. Follow the external inscription-platform link (Ticket Sports, Atletis…)
+    insc_url = _find_external_url(soup) if horario is None else None
+    if horario is None and insc_url:
+        horario = _fetch_horario_from_url(insc_url)
+
+    # 3. Try the race's own website (Main_label_Site)
+    site_raw = _label_text(soup, "Main_label_Site").strip()
+    site_url = (site_raw if site_raw.startswith("http") else "https://" + site_raw) if site_raw else None
+    if horario is None and site_url:
+        horario = _fetch_horario_from_url(site_url)
+
     if horario is None:
-        return None  # start time not yet published
+        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+        return None
 
     local_raw = _label_text(soup, "Main_label_Local")
     localizacao, cidade, estado = _parse_local(local_raw, titulo)
@@ -104,16 +161,23 @@ def _scrape_detail(url: str) -> Corrida | None:
     percurso_raw = _label_text(soup, "Main_label_Percurso")
     distancias = _extract_distances(percurso_raw)
     if not distancias:
+        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
         return None
 
-    site = _label_text(soup, "Main_label_Site").strip()
-    link = site if site.startswith("http") else url
+    # Prefer inscription URL → site URL → runner_brasil URL for links
+    link_evento = url
+    links_inscricao = [insc_url or site_url or url]
 
     m = re.search(r"idEvento=(\d+)", url)
     ev_id = f"runnerbrasil_{m.group(1)}" if m else f"runnerbrasil_{data}"
 
     now = now_iso()
-    fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link, links_inscricao=[link], tipo="calendario")
+    fonte = FonteInfo(
+        nome=SOURCE_NAME,
+        link_evento=link_evento,
+        links_inscricao=links_inscricao,
+        tipo="calendario",
+    )
     return Corrida(
         id=ev_id,
         titulo=titulo,
@@ -139,7 +203,6 @@ def _label_text(soup, span_id: str) -> str:
     if not el:
         return ""
     text = el.get_text(" ", strip=True)
-    # Strip the "Label: " prefix
     return re.sub(r"^[^:]{1,15}:\s*", "", text).strip()
 
 
@@ -149,7 +212,6 @@ _HORARIO_RE = re.compile(
     re.IGNORECASE,
 )
 
-# Keyword-anchored variant: "às 7h00", "saída: 07:00", etc.
 _HORARIO_KW_RE = re.compile(
     r"(?:às?|sa[íi]da|largada|in[íi]cio|partida|hor[áa]rio|hora)\s*:?\s*"
     r"(\d{1,2})[hH:]([0-5]\d)"
@@ -178,11 +240,9 @@ def _extract_horario(text: str) -> str | None:
 
 
 def _extract_date(text: str) -> str | None:
-    # DD/MM/YYYY
     m = re.search(r"\b(\d{1,2})/(\d{1,2})/(\d{4})\b", text)
     if m:
         return normalize_date(m.group(0))
-    # DD/MM (no year) — infer year, rolling forward if already past
     m = re.search(r"\b(\d{1,2})/(\d{1,2})(?!/\d)", text)
     if m:
         d, mo = int(m.group(1)), int(m.group(2))

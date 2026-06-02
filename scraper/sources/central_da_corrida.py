@@ -91,7 +91,7 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
         event.get("regulamento"),
         event.get("descricao_evento"),
     ]))
-    distancias = _extract_distances(raw_text)
+    distancias = _extract_distances(raw_text, titulo_kw=titulo)
 
     # Fallback: try external URLs embedded in regulamento / mais_informacoes
     if not distancias:
@@ -203,7 +203,7 @@ def _fetch_distances_from_url(url: str) -> list[Distancia]:
         return []
 
 
-def _extract_distances(text: str) -> list[Distancia]:
+def _extract_distances(text: str, titulo_kw: str = "") -> list[Distancia]:
     # Strip Bubble rich-text markup
     text = re.sub(r"\[.*?\]", " ", text)
     # Strip age-restriction clauses ("percurso de 10 km até 30 km: 18 anos")
@@ -214,12 +214,14 @@ def _extract_distances(text: str) -> list[Distancia]:
     seen: set[int] = set()
     result: list[Distancia] = []
 
-    # Keyword recognition for named distances not written as numeric km values
-    text_l = text.lower()
-    if re.search(r'meia[\s-]?maratona|half[\s-]marathon', text_l):
+    # Keyword recognition: only check the title so that "maratona" appearing in
+    # race regulations or descriptions (e.g. "equivalent to a marathon effort")
+    # does not incorrectly add 42.195 km to non-marathon events.
+    kw_text = titulo_kw.lower() if titulo_kw else text.lower()
+    if re.search(r'meia[\s-]?maratona|half[\s-]marathon', kw_text):
         seen.add(21)
         result.append(Distancia(km=21.097, data=None, horario=None))
-    t_stripped = re.sub(r'meia[\s-]?maratona|half[\s-]marathon', '', text_l)
+    t_stripped = re.sub(r'meia[\s-]?maratona|half[\s-]marathon', '', kw_text)
     if re.search(r'\bmaratona\b|\bmarathon\b', t_stripped):
         seen.add(42)
         result.append(Distancia(km=42.195, data=None, horario=None))

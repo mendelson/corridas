@@ -365,9 +365,6 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
         return "", "", None
     soup = BeautifulSoup(html, "lxml")
-    # Diagnostic: show first 500 chars of page text to identify time format
-    page_text_preview = soup.get_text(" ", strip=True)[:500]
-    print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]} text[:500]: {page_text_preview!r}")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             schema = json.loads(script.string or "")
@@ -400,13 +397,15 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                 _, estado = _geo.resolve(cidade, "", "MX")
                 estado = estado or ""
 
-        # Fallback: scan visible text for "HH:MM hrs" / "HH:MM am" / "Hora: HH:MM"
+        # Fallback: scan visible text for "Hora: HH:MM" / "HH:MM hrs" / "HHhMM"
         if not horario:
             page_text = soup.get_text(" ", strip=True)
             ht = re.search(
-                r"(?:hora\s*(?:de\s*salida\s*)?:?\s*)"
-                r"([0-9]{1,2}):([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?|h)\b"
-                r"|([0-9]{1,2}):([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?|h)\b",
+                # keyword-anchored: unit optional (matches "hora de salida: 7:00")
+                r"hora\s*(?:de\s*salida\s*)?:?\s*"
+                r"([0-9]{1,2})[hH:]([0-5][0-9])(?:\s*(?:hrs?|a\.?m\.?|p\.?m\.?))?"
+                # generic: unit required to avoid false positives
+                r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)\b",
                 page_text,
                 re.IGNORECASE,
             )

@@ -25,15 +25,27 @@ _TIME_RE = re.compile(
 )
 
 
-def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None, str | None]:
+def _fetch_event_page(url: str, use_playwright: bool = False) -> tuple[list[Distancia], str | None, str | None]:
     """Fetch the individual event page and extract distances, horario and the
     external registration link (EventOn "Learn More" → the real inscription
     platform, e.g. esportes.agenciasisters.com.br)."""
+    html_text: str | None = None
     try:
         resp = get(url)
-        if resp.status_code != 200:
-            return [], None, None
-        soup = BeautifulSoup(resp.text, "lxml")
+        if resp.status_code == 200:
+            html_text = resp.text
+    except Exception:
+        pass
+    if not html_text and use_playwright:
+        try:
+            from ..playwright_client import get_page_html
+            html_text = get_page_html(url, timeout=20_000)
+        except Exception:
+            pass
+    if not html_text:
+        return [], None, None
+    try:
+        soup = BeautifulSoup(html_text, "lxml")
         reg_link = _extract_registration_link(soup)
         # Try JSON-LD first
         for script in soup.find_all("script", type="application/ld+json"):
@@ -137,14 +149,28 @@ def _extract_horario(text: str) -> str | None:
 
 
 def scrape() -> list[Corrida]:
+    html_text: str | None = None
+    used_playwright = False
     try:
         resp = get(URL)
         resp.raise_for_status()
+        html_text = resp.text
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
+        print(f"[{SOURCE_NAME}] proxy chain falhou: {e}; tentando Playwright...")
+        try:
+            from ..playwright_client import get_page_html
+            html_text = get_page_html(URL, timeout=30_000)
+            if html_text:
+                used_playwright = True
+                print(f"[{SOURCE_NAME}] Playwright ok para {URL}")
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright falhou: {e2}")
+
+    if not html_text:
+        print(f"[{SOURCE_NAME}] todos os métodos falharam para {URL}")
         return []
 
-    soup = BeautifulSoup(resp.text, "lxml")
+    soup = BeautifulSoup(html_text, "lxml")
     today = today_iso()
     now = now_iso()
 
@@ -165,6 +191,7 @@ def scrape() -> list[Corrida]:
     # Fetch each event's detail page once: it carries the external registration
     # link (EventOn "Learn More" → the real inscription platform) and backfills
     # any distances/horario the listing JSON-LD omitted.
+    # Lower concurrency when using Playwright to avoid resource exhaustion.
     to_fetch: list[str] = []
     seen_urls: set[str] = set()
     for data in candidates:
@@ -173,10 +200,11 @@ def scrape() -> list[Corrida]:
             seen_urls.add(url)
             to_fetch.append(url)
 
+    max_workers = 3 if used_playwright else 8
     detail_map: dict[str, tuple[list[Distancia], str | None, str | None]] = {}
     if to_fetch:
-        with ThreadPoolExecutor(max_workers=8) as ex:
-            futures = {ex.submit(_fetch_event_page, u): u for u in to_fetch}
+        with ThreadPoolExecutor(max_workers=max_workers) as ex:
+            futures = {ex.submit(_fetch_event_page, u, used_playwright): u for u in to_fetch}
             for fut in as_completed(futures):
                 url = futures[fut]
                 try:

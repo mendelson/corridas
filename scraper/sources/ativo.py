@@ -2,6 +2,8 @@
 from __future__ import annotations
 import re
 
+from bs4 import BeautifulSoup
+
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, now_iso, today_iso
@@ -14,6 +16,18 @@ SOURCE_NAME = "Ativo"
 _RUNNING_TYPES = {"corrida de rua", "corrida de montanha", "trail running", "corrida"}
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
+
+# Keyword-anchored time for Brazilian Portuguese race pages
+_HORARIO_KW_RE = re.compile(
+    r"(?:hor[aá]rio|largada|in[íi]cio|sa[íi]da|hora\s+de\s+(?:in[íi]cio|largada|sa[íi]da))"
+    r"[^0-9]{0,40}(\d{1,2})[h:](\d{2})"
+    r"|(?:hor[aá]rio|largada|in[íi]cio)[^0-9]{0,40}(\d{1,2})\s*[hH]\b",
+    re.IGNORECASE,
+)
+_GENERIC_TIME_RE = re.compile(
+    r"\b(\d{1,2})[h:](\d{2})\s*(?:h(?:rs?|oras?)?)?\b(?!\s*(?:km|k\b))",
+    re.IGNORECASE,
+)
 
 
 def scrape() -> list[Corrida]:
@@ -50,6 +64,56 @@ def _parse_km(s: str) -> float | None:
     return km if 1 <= km <= 200 else None
 
 
+def _extract_horario_from_json(ev: dict) -> str | None:
+    """Pull start time from any field in a per-event JSON dict."""
+    # Datetime fields with embedded time component
+    for key in ("dt_evento", "dt_inicio", "dt_largada", "start_date", "start_datetime"):
+        dt = ev.get(key) or ""
+        if isinstance(dt, str) and len(dt) > 10:
+            m_t = re.search(r"[T ](\d{2}):(\d{2})", dt)
+            if m_t:
+                h, mi = int(m_t.group(1)), int(m_t.group(2))
+                if 4 <= h <= 23 and 0 <= mi <= 59:
+                    return f"{h:02d}:{mi:02d}"
+    # Time-only fields
+    for key in ("hora_largada", "horario", "hora_inicio", "hora_evento",
+                "ds_horario", "hr_evento", "tm_evento", "hora", "hora_inicio_evento"):
+        val = ev.get(key) or ""
+        if isinstance(val, str) and val.strip():
+            m_t = re.search(r"(\d{1,2}):(\d{2})", val)
+            if m_t:
+                h, mi = int(m_t.group(1)), int(m_t.group(2))
+                if 4 <= h <= 23 and 0 <= mi <= 59:
+                    return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _fetch_horario_from_page(url: str) -> str | None:
+    """Fetch the HTML event page and extract start time from visible text."""
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=20)
+        if resp.status_code != 200:
+            return None
+        soup = BeautifulSoup(resp.text, "lxml")
+        text = soup.get_text(" ", strip=True)
+        m = _HORARIO_KW_RE.search(text)
+        if m:
+            if m.group(1) is not None:
+                h, mi = int(m.group(1)), int(m.group(2))
+            else:
+                h, mi = int(m.group(3)), 0
+            if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+        m = _GENERIC_TIME_RE.search(text)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] HTML page fetch falhou ({url[:60]}): {e}")
+    return None
+
+
 def _fetch_event_json(url: str) -> tuple[list[Distancia], str | None]:
     """Fetch the per-event JSON (post_json); return (distances, horario)."""
     try:
@@ -57,7 +121,7 @@ def _fetch_event_json(url: str) -> tuple[list[Distancia], str | None]:
         resp.raise_for_status()
         ev = resp.json()
     except Exception as e:
-        print(f"[{SOURCE_NAME}] fetch externo falhou ({url[:60]}): {e}")
+        print(f"[{SOURCE_NAME}] fetch JSON falhou ({url[:60]}): {e}")
         return [], None
     seen: set[float] = set()
     result: list[Distancia] = []
@@ -69,17 +133,7 @@ def _fetch_event_json(url: str) -> tuple[list[Distancia], str | None]:
     if not result:
         titulo_fallback = normalize_titulo(ev.get("post_title") or "")
         result = _distances_from_title(titulo_fallback.lower())
-    # Try to extract horario from event JSON date fields
-    horario: str | None = None
-    for key in ("dt_evento", "dt_inicio", "start_date"):
-        dt = ev.get(key) or ""
-        if len(dt) > 10:
-            m_t = re.search(r"[T ](\d{2}):(\d{2})", dt)
-            if m_t:
-                h, mi = int(m_t.group(1)), int(m_t.group(2))
-                if 4 <= h <= 23 and 0 <= mi <= 59:
-                    horario = f"{h:02d}:{mi:02d}"
-                    break
+    horario = _extract_horario_from_json(ev)
     return sorted(result, key=lambda d: d.km), horario
 
 
@@ -100,13 +154,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if not data_evento or data_evento < today:
         return None
 
-    horario: str | None = None
-    if len(dt_raw) > 10:
-        m_t = re.search(r"[T ](\d{2}):(\d{2})", dt_raw)
-        if m_t:
-            h, mi = int(m_t.group(1)), int(m_t.group(2))
-            if 4 <= h <= 23 and 0 <= mi <= 59:  # exclude midnight placeholders
-                horario = f"{h:02d}:{mi:02d}"
+    # Try all time fields available in the listing payload first
+    horario: str | None = _extract_horario_from_json(ev)
 
     estado = (ev.get("ds_estado") or "").strip()
     cidade = (ev.get("ds_cidade") or "").strip()
@@ -129,13 +178,18 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     post_json_url = ev.get("post_json") or ""
     event_page = post_json_url.replace("/index.json", "") or "https://www.ativo.com"
 
-    # Fetch the per-event JSON when listing data has no distances or no horario
+    # Fetch per-event JSON when listing data lacks distances or horario
     if (not distancias or not horario) and post_json_url:
         extra_dists, extra_horario = _fetch_event_json(post_json_url)
         if not distancias and extra_dists:
             distancias = extra_dists
         if not horario and extra_horario:
             horario = extra_horario
+
+    # Last resort: scrape the HTML event page for start time
+    if not horario and event_page and event_page != "https://www.ativo.com":
+        horario = _fetch_horario_from_page(event_page)
+
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
         return None

@@ -526,37 +526,65 @@ def _distances_from_api(attrs: dict) -> list[Distancia]:
     return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
 
 
-def _distances_from_next_data(slug: str) -> tuple[list[Distancia], str | None]:
-    """Fall back to the event detail page for modalities and horario.
+def _fetch_detail_page(url: str) -> tuple[list[Distancia], str | None]:
+    """Fetch modalities and horario from a detail page URL.
 
-    Returns (distances, horario): horario is extracted from __NEXT_DATA__ via
-    broad JSON search or full page text as a fallback.
+    Tries the proxy chain first; falls back to Playwright (full JS rendering)
+    when the proxy chain succeeds but yields no start time — the site is
+    Next.js and some start times are only populated by client-side JS.
+
+    Returns (distances, horario).
     """
-    try:
-        resp = httpx.get(
-            f"{BASE}/run-series/{slug}",
-            headers=_HEADERS_HTML,
-            timeout=_TIMEOUT,
-            follow_redirects=True,
-        )
-        resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "lxml")
-        tag = soup.find("script", id="__NEXT_DATA__")
-        horario = None
+    def _parse(html_text: str) -> tuple[list[Distancia], str | None]:
+        soup = BeautifulSoup(html_text, "lxml")
+        horario: str | None = None
         distances: list[Distancia] = []
+        tag = soup.find("script", id="__NEXT_DATA__")
         if tag and tag.string:
-            data = json.loads(tag.string)
-            seen: set[float] = set()
-            result: list[Distancia] = []
-            _walk_modalities(data, result, seen)
-            distances = sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
-            horario = _horario_from_json(data, set())
+            try:
+                data = json.loads(tag.string)
+                seen: set[float] = set()
+                result: list[Distancia] = []
+                _walk_modalities(data, result, seen)
+                distances = sorted(
+                    result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999
+                )
+                horario = _horario_from_json(data, set())
+            except Exception:
+                pass
         if not horario:
-            text = soup.get_text(" ", strip=True)
-            horario = _horario_from_text(text)
+            horario = _horario_from_text(soup.get_text(" ", strip=True))
         return distances, horario
+
+    # Try 1: proxy chain (handles WAF / Cloudflare)
+    html_proxy: str | None = None
+    try:
+        resp = _http_get(url, source=SOURCE_NAME, timeout=_TIMEOUT)
+        if resp.status_code == 200:
+            html_proxy = resp.text
     except Exception:
-        return [], None
+        pass
+
+    if html_proxy:
+        d, h = _parse(html_proxy)
+        if h:
+            return d, h
+
+    # Try 2: Playwright — renders client-side JS that populates start times
+    try:
+        from ..playwright_client import get_page_html as _pw_html
+        pw_html = _pw_html(url, timeout=30_000)
+        if pw_html:
+            return _parse(pw_html)
+    except Exception:
+        pass
+
+    # Return whatever distances the proxy gave us (horario still None)
+    if html_proxy:
+        d, _ = _parse(html_proxy)
+        return d, None
+
+    return [], None
 
 
 def _distances_from_title(titulo: str) -> list[Distancia]:
@@ -577,23 +605,22 @@ _TF_DEFAULT_DISTANCES = [
 ]
 
 
-def _get_distances(attrs: dict, slug: str) -> tuple[list[Distancia], str | None]:
-    """Return (distances, horario_from_detail_page).
+def _get_distances(attrs: dict, slug: str, detail_url: str = "") -> tuple[list[Distancia], str | None]:
+    """Return (distances, horario).
 
-    horario_from_detail_page is non-None when the detail page reveals the start
-    time even though the Strapi API field is midnight/absent.
+    Always fetches the detail page for horario — the Strapi API stores midnight
+    UTC as a placeholder for all events and the actual start time is only
+    visible on the rendered detail page.
     """
-    d = _distances_from_api(attrs)
-    if d:
-        return d, None
-    d, h = _distances_from_next_data(slug)
-    if d:
-        return d, h
-    d = _distances_from_title(attrs.get("title", ""))
-    if d:
-        return d, h
-    # Track&Field Run Series is a standardized circuit — always 5km and 10km
-    return _TF_DEFAULT_DISTANCES, h
+    url = detail_url or f"{BASE}/run-series/{slug}"
+    d_api = _distances_from_api(attrs)
+    d_page, h_page = _fetch_detail_page(url)
+    d = d_api or d_page
+    if not d:
+        d = _distances_from_title(attrs.get("title", ""))
+    if not d:
+        d = _TF_DEFAULT_DISTANCES
+    return d, h_page
 
 
 # ---------------------------------------------------------------------------
@@ -738,7 +765,8 @@ def _events_to_corridas(
                 print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem localização determinável)")
                 continue
 
-            distancias, horario_detail = _get_distances(attrs, slug)
+            link_evento = f"{link_prefix}/{slug}"
+            distancias, horario_detail = _get_distances(attrs, slug, link_evento)
             imagem_url = _extract_image(attrs)
 
             horarios_dist = [d.horario for d in distancias if d.horario]
@@ -746,8 +774,6 @@ def _events_to_corridas(
             if horario_evento is None:
                 print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
                 continue
-
-            link_evento = f"{link_prefix}/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)
 
             fonte = FonteInfo(

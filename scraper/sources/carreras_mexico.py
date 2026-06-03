@@ -26,9 +26,8 @@ from typing import Optional
 from bs4 import BeautifulSoup
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import httpx
 
-from ..http_client import get, HEADERS
+from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
@@ -323,22 +322,26 @@ def _extract_date(el, text: str) -> Optional[str]:
 def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | None]:
     """Fetch convocatoria.php and extract (cidade, estado, horario) from JSON-LD SportsEvent schema."""
     url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
-    # Stream and stop after 30KB — JSON-LD is in the first ~5KB of the <head>
+    html: str | None = None
     try:
-        with httpx.stream("GET", url, headers=HEADERS, follow_redirects=True,
-                          timeout=httpx.Timeout(connect=8, read=8, write=5, pool=5)) as r:
-            if r.status_code >= 400:
-                print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {r.status_code}")
-                return "", "", None
-            content = b""
-            for chunk in r.iter_bytes(chunk_size=4096):
-                content += chunk
-                if len(content) >= 30_000:
-                    break
-        html = content.decode("utf-8", errors="replace")
+        resp = get(url, source=SOURCE_NAME, timeout=30)
+        if resp.status_code < 400:
+            html = resp.text
+        else:
+            print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {resp.status_code}")
     except Exception as e:
-        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
+        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: proxy chain falhou: {e}; tentando Playwright...")
+
+    if not html:
+        try:
+            from ..playwright_client import get_page_html
+            html = get_page_html(url, timeout=30_000)
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright convocatoria {event_id[:8]}: {e2}")
+
+    if not html:
         return "", "", None
+
     soup = BeautifulSoup(html, "lxml")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
@@ -352,7 +355,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
 
         horario: str | None = None
 
-        # 1. startDate with time component
+        # 1. startDate / doorTime with time component
         for dt_src in [schema.get("startDate") or "",
                        schema.get("doorTime") or ""]:
             mt = re.search(r"[T ](\d{2}):(\d{2})", dt_src)
@@ -364,7 +367,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                     horario = f"{h:02d}:{mi:02d}"
                     break
 
-        # 2. subEvent array (e.g. sub-races with individual start times)
+        # 2. subEvent array (sub-races with individual start times)
         if not horario:
             for sub in (schema.get("subEvent") or []):
                 if not isinstance(sub, dict):
@@ -376,7 +379,7 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                         horario = f"{h:02d}:{mi:02d}"
                         break
 
-        # 3. JSON-LD description field
+        # 3. JSON-LD description field — keyword-anchored
         if not horario:
             desc = schema.get("description") or ""
             mt = re.search(
@@ -401,14 +404,14 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                 _, estado = _geo.resolve(cidade, "", "MX")
                 estado = estado or ""
 
-        # 4. Fallback: scan visible page text for time patterns
+        # 4. Keyword-anchored scan of visible page text; also used by step 5
+        page_text = soup.get_text(" ", strip=True)
         if not horario:
-            page_text = soup.get_text(" ", strip=True)
             ht = re.search(
                 r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
                 r"inicio|salida|arranque|largada)\s*:?\s*"
                 r"([0-9]{1,2})[hH:]([0-5][0-9])(?:\s*(?:hrs?|a\.?m\.?|p\.?m\.?))?"
-                r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)\b",
+                r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)",
                 page_text,
                 re.IGNORECASE,
             )
@@ -418,6 +421,14 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
                 h2, mi2 = int(h_str), int(m_str)
                 if 4 <= h2 <= 23:
                     horario = f"{h2:02d}:{mi2:02d}"
+
+        # 5. Broad fallback: any HH:MM in 04:00–23:59 range (no keyword required)
+        if not horario:
+            for m_t in re.finditer(r"\b([0-9]{1,2})[hH:]([0-5][0-9])\b", page_text):
+                h2, mi2 = int(m_t.group(1)), int(m_t.group(2))
+                if 4 <= h2 <= 23:
+                    horario = f"{h2:02d}:{mi2:02d}"
+                    break
 
         return cidade, estado, horario
     return "", "", None

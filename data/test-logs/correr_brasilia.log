@@ -1,3 +1,6 @@
-[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: [Errno 101] Network is unreachable
+[proxy] correrbrasilia.com.br falhou diretamente (ConnectError: [Errno 101] Network is unreachable), tentando Scrapestack...
+[proxy] Scrapestack retornou 429 para correrbrasilia.com.br, tentando Apify...
+[proxy] Apify falhou para correrbrasilia.com.br: 403 Forbidden
+[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: todos os métodos falharam para https://correrbrasilia.com.br/calendario/
 ⚠️   correr_brasilia: 0 eventos retornados
 FAILURE_NOTE:0 eventos

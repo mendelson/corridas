@@ -54,8 +54,8 @@ def get(url: str, **kwargs) -> httpx.Response:
         if resp.status_code not in _WAF_STATUSES:
             return resp
         print(f"[proxy] {_domain} bloqueado ({resp.status_code}), tentando Scrapestack...")
-    except (httpx.TimeoutException, httpx.ConnectError, httpx.NetworkError):
-        raise
+    except (httpx.TimeoutException, httpx.ConnectError, httpx.NetworkError) as e:
+        print(f"[proxy] {_domain} falhou diretamente ({type(e).__name__}: {e}), tentando Scrapestack...")
 
     # 2. Scrapestack
     if SCRAPESTACK_KEY:

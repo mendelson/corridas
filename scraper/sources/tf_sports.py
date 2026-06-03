@@ -408,6 +408,60 @@ def _km_from_val(val) -> float | None:
 
 _TIME_RE = re.compile(r"^(\d{1,2}):(\d{2})(?::\d{2})?")
 
+_HORARIO_TEXT_RE = re.compile(
+    r"(?:hor[áa]rio|largada|sa[íi]da|in[íi]cio|partida|às?)\s*:?\s*(\d{1,2})[h:](\d{2})"
+    r"|\b(\d{1,2})[h:](\d{2})\s*(?:h(?:oras?)?)?\b",
+    re.IGNORECASE,
+)
+
+
+def _horario_from_text(text: str) -> str | None:
+    """Extract start time from visible page text."""
+    m = _HORARIO_TEXT_RE.search(text)
+    if not m:
+        return None
+    h_str = m.group(1) or m.group(3)
+    mi_str = m.group(2) or m.group(4)
+    if not h_str or not mi_str:
+        return None
+    h, mi = int(h_str), int(mi_str)
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _horario_from_json(obj, visited: set) -> str | None:
+    """Recursively search JSON for a non-midnight event start time (4-23h)."""
+    obj_id = id(obj)
+    if obj_id in visited:
+        return None
+    visited.add(obj_id)
+    if isinstance(obj, str):
+        m = re.search(r"T(\d{2}):(\d{2})", obj)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+        return None
+    if isinstance(obj, list):
+        for item in obj:
+            r = _horario_from_json(item, visited)
+            if r:
+                return r
+        return None
+    if isinstance(obj, dict):
+        for key in ("startDate", "startTime", "start_date", "start_time", "horario", "hora"):
+            val = obj.get(key)
+            if val:
+                r = _horario_from_json(val, visited)
+                if r:
+                    return r
+        for v in obj.values():
+            r = _horario_from_json(v, visited)
+            if r:
+                return r
+    return None
+
 
 def _time_from_val(val) -> str | None:
     """Extract HH:MM from a time/datetime value."""
@@ -472,27 +526,65 @@ def _distances_from_api(attrs: dict) -> list[Distancia]:
     return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
 
 
-def _distances_from_next_data(slug: str) -> list[Distancia]:
-    """Fall back to the event detail page's __NEXT_DATA__ for modalities."""
-    try:
-        resp = httpx.get(
-            f"{BASE}/run-series/{slug}",
-            headers=_HEADERS_HTML,
-            timeout=_TIMEOUT,
-            follow_redirects=True,
-        )
-        resp.raise_for_status()
-        soup = BeautifulSoup(resp.text, "lxml")
+def _fetch_detail_page(url: str) -> tuple[list[Distancia], str | None]:
+    """Fetch modalities and horario from a detail page URL.
+
+    Tries the proxy chain first; falls back to Playwright (full JS rendering)
+    when the proxy chain succeeds but yields no start time — the site is
+    Next.js and some start times are only populated by client-side JS.
+
+    Returns (distances, horario).
+    """
+    def _parse(html_text: str) -> tuple[list[Distancia], str | None]:
+        soup = BeautifulSoup(html_text, "lxml")
+        horario: str | None = None
+        distances: list[Distancia] = []
         tag = soup.find("script", id="__NEXT_DATA__")
-        if not tag or not tag.string:
-            return []
-        data = json.loads(tag.string)
-        seen: set[float] = set()
-        result: list[Distancia] = []
-        _walk_modalities(data, result, seen)
-        return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)
+        if tag and tag.string:
+            try:
+                data = json.loads(tag.string)
+                seen: set[float] = set()
+                result: list[Distancia] = []
+                _walk_modalities(data, result, seen)
+                distances = sorted(
+                    result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999
+                )
+                horario = _horario_from_json(data, set())
+            except Exception:
+                pass
+        if not horario:
+            horario = _horario_from_text(soup.get_text(" ", strip=True))
+        return distances, horario
+
+    # Try 1: proxy chain (handles WAF / Cloudflare)
+    html_proxy: str | None = None
+    try:
+        resp = _http_get(url, source=SOURCE_NAME, timeout=_TIMEOUT)
+        if resp.status_code == 200:
+            html_proxy = resp.text
     except Exception:
-        return []
+        pass
+
+    if html_proxy:
+        d, h = _parse(html_proxy)
+        if h:
+            return d, h
+
+    # Try 2: Playwright — renders client-side JS that populates start times
+    try:
+        from ..playwright_client import get_page_html as _pw_html
+        pw_html = _pw_html(url, timeout=30_000)
+        if pw_html:
+            return _parse(pw_html)
+    except Exception:
+        pass
+
+    # Return whatever distances the proxy gave us (horario still None)
+    if html_proxy:
+        d, _ = _parse(html_proxy)
+        return d, None
+
+    return [], None
 
 
 def _distances_from_title(titulo: str) -> list[Distancia]:
@@ -513,18 +605,22 @@ _TF_DEFAULT_DISTANCES = [
 ]
 
 
-def _get_distances(attrs: dict, slug: str) -> list[Distancia]:
-    d = _distances_from_api(attrs)
-    if d:
-        return d
-    d = _distances_from_next_data(slug)
-    if d:
-        return d
-    d = _distances_from_title(attrs.get("title", ""))
-    if d:
-        return d
-    # Track&Field Run Series is a standardized circuit — always 5km and 10km
-    return _TF_DEFAULT_DISTANCES
+def _get_distances(attrs: dict, slug: str, detail_url: str = "") -> tuple[list[Distancia], str | None]:
+    """Return (distances, horario).
+
+    Always fetches the detail page for horario — the Strapi API stores midnight
+    UTC as a placeholder for all events and the actual start time is only
+    visible on the rendered detail page.
+    """
+    url = detail_url or f"{BASE}/run-series/{slug}"
+    d_api = _distances_from_api(attrs)
+    d_page, h_page = _fetch_detail_page(url)
+    d = d_api or d_page
+    if not d:
+        d = _distances_from_title(attrs.get("title", ""))
+    if not d:
+        d = _TF_DEFAULT_DISTANCES
+    return d, h_page
 
 
 # ---------------------------------------------------------------------------
@@ -669,16 +765,15 @@ def _events_to_corridas(
                 print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem localização determinável)")
                 continue
 
-            distancias = _get_distances(attrs, slug)
+            link_evento = f"{link_prefix}/{slug}"
+            distancias, horario_detail = _get_distances(attrs, slug, link_evento)
             imagem_url = _extract_image(attrs)
 
             horarios_dist = [d.horario for d in distancias if d.horario]
-            horario_evento = min(horarios_dist) if horarios_dist else horario_from_date
+            horario_evento = min(horarios_dist) if horarios_dist else horario_from_date or horario_detail
             if horario_evento is None:
                 print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
                 continue
-
-            link_evento = f"{link_prefix}/{slug}"
             inscricoes_abertas = None if is_closed is None else (not is_closed)
 
             fonte = FonteInfo(

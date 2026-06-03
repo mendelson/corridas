@@ -106,6 +106,52 @@ def _normalize_time(raw: str | None) -> str | None:
     return f"{h:02d}:{mi:02d}"
 
 
+def _fetch_page(page: int) -> tuple[list[dict] | None, int]:
+    """Fetch one API page, returning (posts, total_pages).
+
+    The halfmarathons.net WordPress REST API is occasionally served behind a
+    Cloudflare JS-challenge that returns an HTML interstitial instead of JSON.
+    A plain GET then fails to parse ("Expecting value: line 1 column 1"). The
+    API itself is healthy, so this is transient — retry the page, escalating to
+    render_js=True (Scrapestack executes the JS challenge) before giving up.
+
+    Returns (None, 0) only when every attempt fails — the caller decides whether
+    that ends pagination.
+    """
+    last_total = page
+    for attempt, render_js in enumerate(((False), (False), (True))):
+        try:
+            resp = get(
+                _API,
+                params={"per_page": _PER_PAGE, "page": page},
+                source=SOURCE_NAME,
+                timeout=25,
+                render_js=render_js,
+            )
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] page {page} erro (tentativa {attempt + 1}): {e}")
+            continue
+
+        if resp.status_code in (400, 404):
+            return [], last_total  # genuine past-end-of-results
+
+        if resp.status_code != 200:
+            print(f"[{SOURCE_NAME}] page {page} HTTP {resp.status_code} (tentativa {attempt + 1})")
+            continue
+
+        try:
+            posts: list[dict] = resp.json()
+        except Exception as e:
+            snippet = (resp.text or "")[:80].replace("\n", " ")
+            print(f"[{SOURCE_NAME}] page {page} JSON erro (tentativa {attempt + 1}): {e} | {snippet!r}")
+            continue
+
+        last_total = int(resp.headers.get("X-WP-TotalPages", page) or page)
+        return posts, last_total
+
+    return None, last_total
+
+
 def scrape() -> list[Corrida]:
     today = today_iso()
     corridas: list[Corrida] = []
@@ -113,31 +159,11 @@ def scrape() -> list[Corrida]:
     page = 0
     while True:
         page += 1
-        try:
-            resp = get(
-                _API,
-                params={"per_page": _PER_PAGE, "page": page},
-                source=SOURCE_NAME,
-                timeout=20,
-            )
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] page {page} erro: {e}")
-            break
+        posts, total_pages = _fetch_page(page)
 
-        if resp.status_code in (400, 404):
-            break  # past end of results
-        try:
-            resp.raise_for_status()
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] page {page} HTTP {resp.status_code}: {e}")
+        if posts is None:
+            print(f"[{SOURCE_NAME}] page {page} falhou após todas as tentativas — parando")
             break
-
-        try:
-            posts: list[dict] = resp.json()
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] page {page} JSON erro: {e}")
-            break
-
         if not posts:
             break
 
@@ -146,7 +172,6 @@ def scrape() -> list[Corrida]:
             if c:
                 corridas.append(c)
 
-        total_pages = int(resp.headers.get("X-WP-TotalPages", page))
         if page >= total_pages:
             break
 

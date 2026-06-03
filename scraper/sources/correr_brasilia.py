@@ -6,6 +6,7 @@ plugin — more reliable than trying to parse the calendar widget's HTML.
 from __future__ import annotations
 import json
 import re
+from urllib.parse import urlparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from bs4 import BeautifulSoup
 
@@ -24,13 +25,28 @@ _TIME_RE = re.compile(
 )
 
 
-def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None]:
-    """Fetch the individual event page and extract distances and horario."""
+def _fetch_event_page(url: str, use_playwright: bool = False) -> tuple[list[Distancia], str | None, str | None]:
+    """Fetch the individual event page and extract distances, horario and the
+    external registration link (EventOn "Learn More" → the real inscription
+    platform, e.g. esportes.agenciasisters.com.br)."""
+    html_text: str | None = None
     try:
         resp = get(url)
-        if resp.status_code != 200:
-            return [], None
-        soup = BeautifulSoup(resp.text, "lxml")
+        if resp.status_code == 200:
+            html_text = resp.text
+    except Exception:
+        pass
+    if not html_text and use_playwright:
+        try:
+            from ..playwright_client import get_page_html
+            html_text = get_page_html(url, timeout=20_000)
+        except Exception:
+            pass
+    if not html_text:
+        return [], None, None
+    try:
+        soup = BeautifulSoup(html_text, "lxml")
+        reg_link = _extract_registration_link(soup)
         # Try JSON-LD first
         for script in soup.find_all("script", type="application/ld+json"):
             try:
@@ -43,14 +59,78 @@ def _fetch_event_page(url: str) -> tuple[list[Distancia], str | None]:
             dists = _extract_distances(desc, data.get("name") or "")
             _, horario = _parse_start_date(data.get("startDate") or "")
             if dists:
-                return dists, horario
+                return dists, horario, reg_link
         # Fallback: parse free text
         text = soup.get_text(" ", strip=True)
         dists = _extract_distances(text, "")
         horario = _extract_horario(text)
-        return dists, horario
+        return dists, horario, reg_link
     except Exception:
-        return [], None
+        return [], None, None
+
+
+def _extract_registration_link(soup: BeautifulSoup) -> str | None:
+    """EventOn stores the organizer's external link (registration page) in the
+    "Learn More" row: <a class="evcal_evdata_row evo_clik_row" href="..."> inside
+    #event_learnmore (.evo_metarow_learnmore). Return it when it's a real external
+    URL (not correrbrasilia itself, not a social network).
+
+    Scoped strictly to the Learn More container: other EventOn rows (location/map,
+    organizer) also use `a.evo_clik_row` and can render first, so a page-wide
+    `a.evo_clik_row` scan would attach a map/organizer URL as the registration."""
+    for a in soup.select(
+        "#event_learnmore a[href], .evo_metarow_learnmore a[href]"
+    ):
+        href = (a.get("href") or "").strip()
+        if href.startswith("http") and _is_external_registration(href):
+            return href
+    return None
+
+
+def _is_external_registration(url: str) -> bool:
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    if not host or "correrbrasilia.com.br" in host:
+        return False
+    return not any(s in host for s in _SOCIAL_HOSTS)
+
+
+_SOCIAL_HOSTS = (
+    "facebook.", "instagram.", "twitter.", "x.com", "youtube.", "youtu.be",
+    "whatsapp.", "wa.me", "t.me", "tiktok.", "linkedin.", "strava.",
+)
+
+# Map known registration/inscription platforms to a display name + tipo so the
+# extracted "Learn More" link is attributed correctly (the frontend orders
+# inscricao buttons first). Unknown domains → name derived from the domain,
+# tipo="inscricao" (the Learn More link is the organizer's registration page).
+_REG_DOMAIN_MAP: list[tuple[str, str, str]] = [
+    ("agenciasisters.com.br",   "Agência Sisters",    "inscricao"),
+    ("ticketsports.com.br",     "Ticket Sports",      "inscricao"),
+    ("ticketagora.com.br",      "Ticket Sports",      "inscricao"),
+    ("sympla.com.br",           "Sympla",             "inscricao"),
+    ("ativo.com",               "Ativo",              "inscricao"),
+    ("minhasinscricoes.com.br", "Minhas Inscrições",  "inscricao"),
+    ("doity.com.br",            "Doity",              "inscricao"),
+    ("e-inscricao.com",         "e-Inscrição",        "inscricao"),
+    ("brasilcorrida.com.br",    "Brasil Corrida",     "calendario"),
+    ("centraldacorrida.com.br", "Central da Corrida", "calendario"),
+]
+
+
+def _registration_fonte(url: str) -> FonteInfo | None:
+    """Build an inscription FonteInfo for an extracted external registration URL."""
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    nome, tipo = None, "inscricao"
+    for frag, n, t in _REG_DOMAIN_MAP:
+        if frag in host:
+            nome, tipo = n, t
+            break
+    if nome is None:
+        # e.g. "esportes.agenciasisters.com.br" → "Agenciasisters"
+        parts = host.split(".")
+        base = parts[-3] if len(parts) >= 3 else parts[0]
+        nome = base.replace("-", " ").title() or "Inscrição"
+    return FonteInfo(nome=nome, link_evento=url, links_inscricao=[url], tipo=tipo)
 
 
 def _extract_horario(text: str) -> str | None:
@@ -69,14 +149,28 @@ def _extract_horario(text: str) -> str | None:
 
 
 def scrape() -> list[Corrida]:
+    html_text: str | None = None
+    used_playwright = False
     try:
         resp = get(URL)
         resp.raise_for_status()
+        html_text = resp.text
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
+        print(f"[{SOURCE_NAME}] proxy chain falhou: {e}; tentando Playwright...")
+        try:
+            from ..playwright_client import get_page_html
+            html_text = get_page_html(URL, timeout=30_000)
+            if html_text:
+                used_playwright = True
+                print(f"[{SOURCE_NAME}] Playwright ok para {URL}")
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright falhou: {e2}")
+
+    if not html_text:
+        print(f"[{SOURCE_NAME}] todos os métodos falharam para {URL}")
         return []
 
-    soup = BeautifulSoup(resp.text, "lxml")
+    soup = BeautifulSoup(html_text, "lxml")
     today = today_iso()
     now = now_iso()
 
@@ -94,9 +188,30 @@ def scrape() -> list[Corrida]:
     corridas: list[Corrida] = []
     seen_ids: set[str] = set()
 
-    # Identify events that need a detail-page fetch (no distances or no horario)
-    needs_detail: list[tuple[dict, str]] = []
-    first_pass: list[Corrida] = []
+    # Fetch each event's detail page once: it carries the external registration
+    # link (EventOn "Learn More" → the real inscription platform) and backfills
+    # any distances/horario the listing JSON-LD omitted.
+    # Lower concurrency when using Playwright to avoid resource exhaustion.
+    to_fetch: list[str] = []
+    seen_urls: set[str] = set()
+    for data in candidates:
+        url = data.get("url") or ""
+        if url and url != URL and url not in seen_urls:
+            seen_urls.add(url)
+            to_fetch.append(url)
+
+    max_workers = 3 if used_playwright else 8
+    detail_map: dict[str, tuple[list[Distancia], str | None, str | None]] = {}
+    if to_fetch:
+        with ThreadPoolExecutor(max_workers=max_workers) as ex:
+            futures = {ex.submit(_fetch_event_page, u, used_playwright): u for u in to_fetch}
+            for fut in as_completed(futures):
+                url = futures[fut]
+                try:
+                    detail_map[url] = fut.result()
+                except Exception:
+                    detail_map[url] = ([], None, None)
+
     for data in candidates:
         try:
             c = _parse_event(data, today, now)
@@ -105,42 +220,19 @@ def scrape() -> list[Corrida]:
             continue
         if c is None:
             continue
-        if not c.distancias or not c.horario:
-            url = data.get("url") or ""
-            if url and url != URL:
-                needs_detail.append((data, url))
-            # keep in first_pass without distancias/horario — will be enriched or dropped
-        first_pass.append(c)
-
-    # Second pass: fetch detail pages for events still missing distances or horario
-    detail_map: dict[str, tuple[list[Distancia], str | None]] = {}
-    if needs_detail:
-        def _fetch(item: tuple[dict, str]) -> tuple[str, list[Distancia], str | None]:
-            ev_data, url = item
-            dists, horario = _fetch_event_page(url)
-            return url, dists, horario
-
-        with ThreadPoolExecutor(max_workers=8) as ex:
-            futures = {ex.submit(_fetch, item): item for item in needs_detail}
-            for fut in as_completed(futures):
-                url, dists, horario = fut.result()
-                detail_map[url] = (dists, horario)
-
-    for data in candidates:
-        try:
-            c = _parse_event(data, today, now)
-        except Exception:
-            continue
-        if c is None:
-            continue
 
         event_url = data.get("url") or ""
-        if (not c.distancias or not c.horario) and event_url in detail_map:
-            extra_dists, extra_horario = detail_map[event_url]
+        if event_url in detail_map:
+            extra_dists, extra_horario, reg_link = detail_map[event_url]
             if not c.distancias and extra_dists:
                 c = _replace_distancias(c, extra_dists)
             if not c.horario and extra_horario:
                 c = _replace_horario(c, extra_horario)
+            # Attach the real registration platform as an inscription source.
+            if reg_link:
+                reg = _registration_fonte(reg_link)
+                if reg and all(f.nome != reg.nome for f in c.fontes):
+                    c.fontes.append(reg)
 
         if not c.distancias:
             print(f"[{SOURCE_NAME}] sem distâncias, pulando: {c.titulo!r}")
@@ -178,6 +270,8 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
 
     if _NON_RUNNING_RE.search(titulo_raw):
         return None  # orienteering / non-running event
+    if _KIDS_RE.search(titulo_raw):
+        return None  # kids-only event (e.g. Marotinga) — no adult distances
 
     date_str, horario = _parse_start_date(ev.get("startDate") or "")
     if date_str and date_str < today:
@@ -272,6 +366,14 @@ _NON_RUNNING_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Kids-only events — no adult distances exist for these. "Marotinga" is a
+# Brasília kids-run brand whose title carries no "kids"/"infantil" marker,
+# so it must be matched by name. Mirrors central_da_corrida._KIDS_RE.
+_KIDS_RE = re.compile(
+    r"\bkids?\b|\binfantil\b|\bmarotinga\b|\bpezinho\s+veloz\b",
+    re.IGNORECASE,
+)
+
 # Matches 2+ distances listed together: "7km e 14km", "7km, 14km, 21km", "7K|14K"
 _DIST_LIST_RE = re.compile(
     r"(\d+(?:[.,]\d+)?)\s*[kK][mM]?"
@@ -279,6 +381,19 @@ _DIST_LIST_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Matches "5 e 10 km" (shared km suffix) — extremely common in Brazilian Portuguese
+# e.g. "provas de 5 e 10 km", "distâncias de 5, 10 e 21km"
+_DIST_SHARED_SUFFIX_RE = re.compile(
+    r"(\d+(?:[.,]\d+)?)"
+    r"(?:\s*(?:,|e|ou)\s*(\d+(?:[.,]\d+)?))+"
+    r"\s*[kK][mM]?\b",
+    re.IGNORECASE,
+)
+
+_HALF_MARATHON_RE = re.compile(
+    r"meia[\s-]?maratona|half[\s-]?marathon",
+    re.IGNORECASE,
+)
 
 
 def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
@@ -288,23 +403,61 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
       1. Grouped list in description ("7km e 14km") — the EventOn plugin embeds
          explicit "Distância: Xkm e Ykm" metadata in the description, making this
          the most reliable source for the specific distances offered at this edition.
-      2. Any km mention in description.
-      3. Parenthetical hint in title as last resort.
+      2. Shared-suffix pattern ("5 e 10 km") — common in Brazilian Portuguese.
+      3. Any km mention in description.
+      4. "meia maratona" / "maratona" keywords in description or title.
+      5. Parenthetical hint in title as last resort.
     """
-    # Priority 1: grouped list pattern in description (e.g. "Distância: 5km e 10km")
+    combined = f"{desc} {titulo}"
+
+    # Priority 1: grouped list with explicit km on each element
     values = _parse_km_values_from_list(desc, min_km=1.0)
     if not values:
-        # Priority 2: any km mention in description
+        # Priority 2: shared km suffix ("5 e 10 km")
+        values = _parse_shared_suffix(combined, min_km=1.0)
+    if not values:
+        # Priority 3: any km mention in description
         values = _parse_km_values(desc, min_km=1.0)
     if not values:
-        # Priority 3: parenthetical hint in title only
+        # Priority 4: keyword-based
+        values = _parse_km_values(titulo, min_km=1.0)
+    if not values:
+        # Priority 5: parenthetical hint in title only
         paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
         if paren:
             values = _parse_km_values(paren.group(0), min_km=1.0)
+
+    # Supplement with keyword-based distances not captured by numeric patterns
+    seen_kms = set(values)
+    text_for_kw = combined
+    if _HALF_MARATHON_RE.search(text_for_kw):
+        if 21.097 not in seen_kms:
+            values.append(21.097)
+            seen_kms.add(21.097)
+        # Strip "meia maratona" so we don't also add 42.195 for it
+        text_for_kw = _HALF_MARATHON_RE.sub("", text_for_kw)
+    if re.search(r"\bmaratona\b|\bmarathon\b", text_for_kw, re.IGNORECASE):
+        if 42.195 not in seen_kms:
+            values.append(42.195)
+
     return sorted(
         [Distancia(km=km, data=None, horario=None) for km in values[:8]],
         key=lambda d: float(d.km),
     )
+
+
+def _parse_shared_suffix(text: str, min_km: float) -> list[float]:
+    """Extract distances from 'N e M km' patterns (shared km unit suffix)."""
+    raw: list[float] = []
+    for m in _DIST_SHARED_SUFFIX_RE.finditer(text):
+        segment = m.group(0)
+        for num_m in re.finditer(r"(\d+(?:[.,]\d+)?)", segment):
+            # Skip the trailing unit digits (km suffix has no decimal)
+            try:
+                raw.append(float(num_m.group(1).replace(",", ".")))
+            except ValueError:
+                pass
+    return _filter_km_values(raw, min_km)
 
 
 def _filter_km_values(raw_values: list[float], min_km: float) -> list[float]:

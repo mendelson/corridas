@@ -1,6 +1,7 @@
 name: Monitorar Saúde das Fontes
 
 # Triggered automatically when any source file changes, or manually.
+# Schedule (09:00 UTC daily): always tests ALL sources for a full health snapshot.
 # Each source runs as an independent job — visible as separate checks in GitHub.
 # After all jobs finish (pass or fail), a final job updates the README with
 # per-source timestamps and status.
@@ -141,8 +142,12 @@ jobs:
             # test all sources so we know which ones the new validation breaks.
             echo "PR with infra/validator changes — testing all sources"
             SOURCES="$ALL_SOURCES"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            # Daily cron: always test all sources for a full health snapshot.
+            echo "Scheduled run — testing all sources"
+            SOURCES="$ALL_SOURCES"
           else
-            # Push or schedule: only test changed source files
+            # Push: only test changed source files
             CHANGED=$(git diff --name-only HEAD~1 HEAD \
               | grep '^scraper/sources/.*\.py$' \
               | grep -v '__init__\|_base\|test_' \
@@ -152,7 +157,8 @@ jobs:
             INFRA=$(git diff --name-only HEAD~1 HEAD \
               -- 'scraper/models.py' 'scraper/utils.py' \
               'scraper/http_client.py' 'scraper/playwright_client.py' \
-              'scraper/test_source.py')
+              'scraper/test_source.py' \
+              '.github/workflows/monitor-source-health.yml')
 
             if [ -n "$INFRA" ]; then
               echo "Shared infra changed — testing all sources"

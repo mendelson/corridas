@@ -139,6 +139,112 @@ def _time_from_val(val) -> str | None:
     return None
 
 
+_HORARIO_TEXT_RE = re.compile(
+    r"(?:hor[áa]rio|largada|sa[íi]da|in[íi]cio|partida|às?)\s*:?\s*(\d{1,2})[h:](\d{2})"
+    r"|\b(\d{1,2})[h:](\d{2})\s*(?:h(?:oras?)?)?\b",
+    re.IGNORECASE,
+)
+
+
+def _horario_from_text(text: str) -> str | None:
+    m = _HORARIO_TEXT_RE.search(text)
+    if not m:
+        return None
+    h_str = m.group(1) or m.group(3)
+    mi_str = m.group(2) or m.group(4)
+    if not h_str or not mi_str:
+        return None
+    h, mi = int(h_str), int(mi_str)
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _horario_from_json(obj, visited: set) -> str | None:
+    """Recursively search JSON for a non-midnight event start time (4-23h)."""
+    obj_id = id(obj)
+    if obj_id in visited:
+        return None
+    visited.add(obj_id)
+    if isinstance(obj, str):
+        m = re.search(r"T(\d{2}):(\d{2})", obj)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+        return None
+    if isinstance(obj, list):
+        for item in obj:
+            r = _horario_from_json(item, visited)
+            if r:
+                return r
+        return None
+    if isinstance(obj, dict):
+        for key in ("startDate", "startTime", "start_date", "start_time", "horario", "hora"):
+            val = obj.get(key)
+            if val:
+                r = _horario_from_json(val, visited)
+                if r:
+                    return r
+        for v in obj.values():
+            r = _horario_from_json(v, visited)
+            if r:
+                return r
+    return None
+
+
+def _horario_from_event_page(slug: str) -> str | None:
+    """Fetch the event detail page and extract horario from JSON or visible text.
+
+    Tries the proxy chain first; falls back to Playwright (full JS rendering)
+    when the proxy chain succeeds but yields no start time — the site is
+    Next.js and start times may only be populated by client-side JS.
+    """
+    if not slug:
+        return None
+    url = f"{LISTING_URL}/{slug}"
+
+    import json as _json
+
+    def _parse(html_text: str) -> str | None:
+        soup = BeautifulSoup(html_text, "lxml")
+        tag = soup.find("script", id="__NEXT_DATA__")
+        if tag and tag.string:
+            try:
+                data = _json.loads(tag.string)
+                h = _horario_from_json(data, set())
+                if h:
+                    return h
+            except Exception:
+                pass
+        return _horario_from_text(soup.get_text(" ", strip=True))
+
+    # Try 1: proxy chain (handles WAF / Cloudflare)
+    html_proxy: str | None = None
+    try:
+        resp = _http_get(url, source=SOURCE_NAME, timeout=_TIMEOUT)
+        if resp.status_code == 200:
+            html_proxy = resp.text
+    except Exception:
+        pass
+
+    if html_proxy:
+        h = _parse(html_proxy)
+        if h:
+            return h
+
+    # Try 2: Playwright — renders client-side JS that populates start times
+    try:
+        from ..playwright_client import get_page_html as _pw_html
+        pw_html = _pw_html(url, timeout=30_000)
+        if pw_html:
+            return _parse(pw_html)
+    except Exception:
+        pass
+
+    return None
+
+
 def _distances_from_modalities(modalities_raw) -> tuple[list[Distancia], str | None]:
     """Returns (distancias, earliest_horario)."""
     items: list[dict] = []
@@ -361,6 +467,8 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
 
     distancias, horario = _distances_from_attrs(attrs, titulo)
     horario = horario or horario_from_date
+    if horario is None:
+        horario = _horario_from_event_page(slug)
     if horario is None:
         print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
         return None

@@ -1223,7 +1223,13 @@ function buildCard(c, today, threeDaysAgo) {
 
   const img = card.querySelector('.card-img');
   const placeholder = card.querySelector('.card-img-placeholder');
-  if (c.imagem_url) {
+  // Per-state tint for the branded fallback graphic (CSS layers the runner
+  // glyph + gradient on top of it). Set on the variable, not `background`,
+  // so the gradient/glyph survive.
+  placeholder.style.setProperty('--ph-tint', stateColor(c.estado));
+  // Treat known generic/placeholder source images as "no image" so they show
+  // the branded fallback instead of a non-photo that looks like a failure.
+  if (c.imagem_url && !isPlaceholderImage(c.imagem_url)) {
     img.src = c.imagem_url;
     img.alt = c.titulo;
     img.style.display = '';
@@ -1231,12 +1237,10 @@ function buildCard(c, today, threeDaysAgo) {
     img.addEventListener('error', () => {
       img.style.display = 'none';
       placeholder.style.display = '';
-      placeholder.style.background = stateColor(c.estado);
     });
   } else {
     img.style.display = 'none';
     placeholder.style.display = '';
-    placeholder.style.background = stateColor(c.estado);
   }
 
   card.querySelector('.card-title').textContent    = c.titulo;
@@ -1481,6 +1485,25 @@ function formatKm(km) {
   return km + 'K';
 }
 
+
+// Known generic/placeholder image URLs served by source platforms in place of a
+// real event photo (generic sport clipart, social-share cards, stock heroes).
+// These read as broken/non-photos, so we treat them as "no image" and show the
+// branded fallback instead. Substring match, case-insensitive.
+const _PLACEHOLDER_IMG_PATTERNS = [
+  '/img/logos/genericwebsitelogos/',  // RunSignup generic sport clipart (running-shoe, ultra, bike…)
+  '/img/socialshare',                  // RunSignup generic social-share card
+  '/uploads/generic/genericimage-websitelogo',  // RunSignup auto-assigned generic logo (no real event photo)
+  'halfmarathons.net/wp-content/uploads/2024/09/half-marathon-guide-hero-image',  // generic guide hero
+  'youmovin.com.br/imagens/social-media',  // YouMovin generic social image
+  'quedasadventure.com.br/public/img/thumb',  // Quedas Adventure generic thumb
+];
+
+function isPlaceholderImage(url) {
+  if (!url) return false;
+  const u = url.toLowerCase();
+  return _PLACEHOLDER_IMG_PATTERNS.some(p => u.includes(p));
+}
 
 function stateColor(estado) {
   const map = {

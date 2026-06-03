@@ -26,9 +26,8 @@ from typing import Optional
 from bs4 import BeautifulSoup
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import httpx
 
-from ..http_client import get, HEADERS
+from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso
 from .. import geo as _geo
@@ -65,38 +64,13 @@ def scrape() -> list[Corrida]:
             print(f"[{SOURCE_NAME}] page {page}: erro {e}")
             break
 
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page0 raw repr[:400]: {resp.text[:400]!r}")
-
         html = _extract_html(resp.text)
         if html is None:
             print(f"[{SOURCE_NAME}] page {page}: payload inesperado; raw[:200]={resp.text[:200]}")
             break
 
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page0 html repr[:400]: {html[:400]!r}")
-
         soup = BeautifulSoup(html, "lxml")
         items = soup.select(".tm_event_list_item")
-
-        if page == 0:
-            print(f"[{SOURCE_NAME}] PROBE page 0: {len(items)} items; today={today}")
-            for i, el in enumerate(items[:3]):
-                title_div = el.find(class_="tm_event_list_title")
-                titulo_raw = title_div.get_text(" ", strip=True) if title_div else "<NOT FOUND>"
-                month_el = el.find(class_="tm_date_month")
-                day_el = el.find(class_="tm_date_day")
-                month_raw = month_el.get_text(" ", strip=True) if month_el else "<NOT FOUND>"
-                day_raw = day_el.get_text(" ", strip=True) if day_el else "<NOT FOUND>"
-                data_evento = _extract_date_from_widget(el, today)
-                all_hrefs = [a["href"] for a in el.find_all("a", href=True)]
-                all_classes = sorted({cls for tag in el.find_all(class_=True) for cls in tag.get("class", [])})
-                img_el = el.find("img")
-                img_src = (img_el.get("src") or img_el.get("data-src") or "") if img_el else ""
-                print(f"[{SOURCE_NAME}] PROBE item[{i}]: titulo={titulo_raw[:60]!r} date={data_evento!r} img={img_src[:100]!r}")
-                print(f"[{SOURCE_NAME}] PROBE item[{i}] classes: {all_classes}")
-                for j, h in enumerate(all_hrefs):
-                    print(f"[{SOURCE_NAME}] PROBE item[{i}] anchor[{j}]: {h[:140]!r}")
 
         if not items:
             break
@@ -117,6 +91,11 @@ def scrape() -> list[Corrida]:
 
     result = list(corridas.values())
     _enrich_locations(result)
+    before = len(result)
+    result = [c for c in result if c.horario]
+    dropped = before - len(result)
+    if dropped:
+        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário publicado")
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
 
@@ -343,22 +322,26 @@ def _extract_date(el, text: str) -> Optional[str]:
 def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | None]:
     """Fetch convocatoria.php and extract (cidade, estado, horario) from JSON-LD SportsEvent schema."""
     url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
-    # Stream and stop after 30KB — JSON-LD is in the first ~5KB of the <head>
+    html: str | None = None
     try:
-        with httpx.stream("GET", url, headers=HEADERS, follow_redirects=True,
-                          timeout=httpx.Timeout(connect=8, read=8, write=5, pool=5)) as r:
-            if r.status_code >= 400:
-                print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {r.status_code}")
-                return "", "", None
-            content = b""
-            for chunk in r.iter_bytes(chunk_size=4096):
-                content += chunk
-                if len(content) >= 30_000:
-                    break
-        html = content.decode("utf-8", errors="replace")
+        resp = get(url, source=SOURCE_NAME, timeout=30)
+        if resp.status_code < 400:
+            html = resp.text
+        else:
+            print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {resp.status_code}")
     except Exception as e:
-        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: erro {e}")
+        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: proxy chain falhou: {e}; tentando Playwright...")
+
+    if not html:
+        try:
+            from ..playwright_client import get_page_html
+            html = get_page_html(url, timeout=30_000)
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright convocatoria {event_id[:8]}: {e2}")
+
+    if not html:
         return "", "", None
+
     soup = BeautifulSoup(html, "lxml")
     for script in soup.find_all("script", type="application/ld+json"):
         try:
@@ -370,15 +353,44 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         if not isinstance(schema, dict) or schema.get("@type") != "SportsEvent":
             continue
 
-        # Extract horário independently of location — the start time must survive
-        # even when location.name is absent (horário is a hard-required field).
         horario: str | None = None
-        start_dt = schema.get("startDate") or ""
-        mt = re.search(r"[T ](\d{2}):(\d{2})", start_dt)
-        if mt:
-            h, mi = int(mt.group(1)), int(mt.group(2))
-            if 4 <= h <= 23 and 0 <= mi <= 59:
-                horario = f"{h:02d}:{mi:02d}"
+
+        # 1. startDate / doorTime with time component
+        for dt_src in [schema.get("startDate") or "",
+                       schema.get("doorTime") or ""]:
+            mt = re.search(r"[T ](\d{2}):(\d{2})", dt_src)
+            if not mt:
+                mt = re.search(r"\b(\d{1,2}):(\d{2})\b", dt_src)
+            if mt:
+                h, mi = int(mt.group(1)), int(mt.group(2))
+                if 4 <= h <= 23 and 0 <= mi <= 59:
+                    horario = f"{h:02d}:{mi:02d}"
+                    break
+
+        # 2. subEvent array (sub-races with individual start times)
+        if not horario:
+            for sub in (schema.get("subEvent") or []):
+                if not isinstance(sub, dict):
+                    continue
+                mt = re.search(r"[T ](\d{2}):(\d{2})", sub.get("startDate") or "")
+                if mt:
+                    h, mi = int(mt.group(1)), int(mt.group(2))
+                    if 4 <= h <= 23:
+                        horario = f"{h:02d}:{mi:02d}"
+                        break
+
+        # 3. JSON-LD description field — keyword-anchored
+        if not horario:
+            desc = schema.get("description") or ""
+            mt = re.search(
+                r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
+                r"inicio|salida|arranque)\s*:?\s*(\d{1,2})[hH:]([0-5]\d)",
+                desc, re.IGNORECASE,
+            )
+            if mt:
+                h, mi = int(mt.group(1)), int(mt.group(2))
+                if 4 <= h <= 23:
+                    horario = f"{h:02d}:{mi:02d}"
 
         loc = schema.get("location", {})
         loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
@@ -391,8 +403,35 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
             if not estado and cidade:
                 _, estado = _geo.resolve(cidade, "", "MX")
                 estado = estado or ""
+
+        # 4. Keyword-anchored scan of visible page text; also used by step 5
+        page_text = soup.get_text(" ", strip=True)
+        if not horario:
+            ht = re.search(
+                r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
+                r"inicio|salida|arranque|largada)\s*:?\s*"
+                r"([0-9]{1,2})[hH:]([0-5][0-9])(?:\s*(?:hrs?|a\.?m\.?|p\.?m\.?))?"
+                r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)",
+                page_text,
+                re.IGNORECASE,
+            )
+            if ht:
+                h_str = ht.group(1) or ht.group(3)
+                m_str = ht.group(2) or ht.group(4)
+                h2, mi2 = int(h_str), int(m_str)
+                if 4 <= h2 <= 23:
+                    horario = f"{h2:02d}:{mi2:02d}"
+
+        # 5. Broad fallback: any HH:MM in 04:00–23:59 range (no keyword required)
+        if not horario:
+            for m_t in re.finditer(r"\b([0-9]{1,2})[hH:]([0-5][0-9])\b", page_text):
+                h2, mi2 = int(m_t.group(1)), int(m_t.group(2))
+                if 4 <= h2 <= 23:
+                    horario = f"{h2:02d}:{mi2:02d}"
+                    break
+
         return cidade, estado, horario
-    return "", "", None, None
+    return "", "", None
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

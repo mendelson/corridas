@@ -28,7 +28,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-06-03 12:51 | ✅ | 2026-06-03 12:51 |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-06-03 12:50 | ❌ 0 eventos | 2026-05-30 22:31 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-06-03 12:52 | ✅ | 2026-06-03 12:52 |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-06-03 13:11 | ❌ | 2026-06-02 12:49 |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-06-03 13:11 | ❌ | 2026-06-03 13:25 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-03 12:53 | ✅ | 2026-06-03 12:53 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-06-03 12:50 | ✅ | 2026-06-03 12:50 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-06-03 12:50 | ✅ | 2026-06-03 12:50 |
@@ -42,7 +42,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-06-03 12:50 | ✅ | 2026-06-03 12:50 |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-06-03 12:54 | ✅ | 2026-06-03 12:54 |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-06-03 12:51 | ✅ | 2026-06-03 12:51 |
-| Corrida POUPEX<!--poupex--> | ✅ | `corrida.poupex.com.br` | HTML (OG tags) | 2026-06-03 12:52 | ❌ 0 eventos | 2026-06-02 12:36 |
+| Corrida POUPEX<!--poupex--> | ✅ | `corrida.poupex.com.br` | HTML (OG tags) | 2026-06-03 17:35 | ✅ | 2026-06-03 17:35 |
 
 ### Fontes brasileiras — eventos específicos
 

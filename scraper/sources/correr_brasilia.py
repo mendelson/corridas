@@ -18,6 +18,10 @@ from .. import geo as _geo
 URL = "https://correrbrasilia.com.br/calendario/"
 SOURCE_NAME = "Correr Brasília"
 
+# Temporary: dump raw description for the events the user flagged (false 42K).
+# Removed before the PR is finalized.
+_DEBUG_DISTANCES = True
+
 _TIME_RE = re.compile(
     r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
     r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
@@ -405,8 +409,8 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
          the most reliable source for the specific distances offered at this edition.
       2. Shared-suffix pattern ("5 e 10 km") — common in Brazilian Portuguese.
       3. Any km mention in description.
-      4. "meia maratona" / "maratona" keywords in description or title.
-      5. Parenthetical hint in title as last resort.
+      4. "meia maratona" / "maratona" keyword in the title as last resort.
+      5. Parenthetical hint in title.
     """
     combined = f"{desc} {titulo}"
 
@@ -427,9 +431,14 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
         if paren:
             values = _parse_km_values(paren.group(0), min_km=1.0)
 
-    # Supplement with keyword-based distances not captured by numeric patterns
+    # Supplement with keyword-based marquee distances (half / full marathon).
+    # IMPORTANT: scope this to the TITLE only. The event's headline distance is
+    # declared in its title ("Meia Maratona de Brasília", "Maratona Internacional");
+    # descriptions use "maratona"/"marathon" colloquially ("a maior maratona de
+    # corrida de rua…"), which previously injected a phantom 42.195 km into events
+    # that clearly don't offer one (Corridona 2026, Corrida do Fogo, Brutus Race).
     seen_kms = set(values)
-    text_for_kw = combined
+    text_for_kw = titulo
     if _HALF_MARATHON_RE.search(text_for_kw):
         if 21.097 not in seen_kms:
             values.append(21.097)
@@ -439,6 +448,9 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     if re.search(r"\bmaratona\b|\bmarathon\b", text_for_kw, re.IGNORECASE):
         if 42.195 not in seen_kms:
             values.append(42.195)
+
+    if _DEBUG_DISTANCES and re.search(r"corridona|corrida do fogo|brutus", combined, re.IGNORECASE):
+        print(f"[{SOURCE_NAME}][DEBUG] titulo={titulo!r} -> {[float(v) for v in values]} | desc={desc[:300]!r}")
 
     return sorted(
         [Distancia(km=km, data=None, horario=None) for km in values[:8]],

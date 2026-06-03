@@ -93,14 +93,24 @@ _CB_START_RE = re.compile(r"(\d{4})-(\d{1,2})-(\d{1,2})T(\d{2}:\d{2})")
 
 
 def _search_correr_brasilia(today: str) -> list[Corrida]:
+    html_text: str | None = None
     try:
         resp = get(_CB_CALENDAR, source=SOURCE_NAME, timeout=30)
         resp.raise_for_status()
+        html_text = resp.text
     except Exception as e:
-        print(f"[{SOURCE_NAME}] Correr Brasília erro: {e}")
+        print(f"[{SOURCE_NAME}] Correr Brasília proxy chain falhou: {e}; tentando Playwright...")
+        try:
+            from ..playwright_client import get_page_html
+            html_text = get_page_html(_CB_CALENDAR, timeout=30_000)
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright Correr Brasília falhou: {e2}")
+
+    if not html_text:
+        print(f"[{SOURCE_NAME}] Correr Brasília erro: todos os métodos falharam para {_CB_CALENDAR}")
         return []
 
-    soup = BeautifulSoup(resp.text, "lxml")
+    soup = BeautifulSoup(html_text, "lxml")
 
     # Locate the JSON-LD Event whose name matches "Volta do Lago" — slug-independent.
     ev_data: dict | None = None
@@ -185,13 +195,20 @@ def _cb_location(ev_data: dict) -> tuple[str, str]:
 
 def _fetch_cb_detail(url: str, name: str) -> tuple[list[Distancia], str | None]:
     """Fetch the Correr Brasília event page: distances (EventOn row) + registration link."""
+    html: str | None = None
     try:
         resp = get(url, source=SOURCE_NAME, timeout=30)
-        if resp.status_code != 200:
-            return [], None
-        html = resp.text
+        if resp.status_code == 200:
+            html = resp.text
     except Exception as e:
-        print(f"[{SOURCE_NAME}] Correr Brasília detalhe erro: {e}")
+        print(f"[{SOURCE_NAME}] Correr Brasília detalhe proxy falhou: {e}; tentando Playwright...")
+    if not html:
+        try:
+            from ..playwright_client import get_page_html
+            html = get_page_html(url, timeout=20_000)
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright detalhe falhou: {e2}")
+    if not html:
         return [], None
 
     distancias: list[Distancia] = []
@@ -218,13 +235,22 @@ def _fetch_cb_detail(url: str, name: str) -> tuple[list[Distancia], str | None]:
 # ---------------------------------------------------------------------------
 
 def _search_largada_esportiva(today: str) -> list[Corrida]:
+    events = None
     try:
         resp = get(_LE_API, source=SOURCE_NAME, timeout=20)
         resp.raise_for_status()
         events = resp.json()
     except Exception as e:
-        print(f"[{SOURCE_NAME}] Largada Esportiva erro: {e}")
-        return []
+        print(f"[{SOURCE_NAME}] Largada Esportiva proxy chain falhou: {e}; tentando Playwright...")
+        try:
+            from ..playwright_client import get_page_html
+            html = get_page_html(_LE_API, timeout=30_000)
+            if html:
+                soup_j = BeautifulSoup(html, "lxml")
+                body_text = (soup_j.find("pre") or soup_j.find("body") or soup_j).get_text()
+                events = json.loads(body_text)
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright Largada Esportiva falhou: {e2}")
 
     if not isinstance(events, list):
         return []

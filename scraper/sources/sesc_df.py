@@ -175,8 +175,34 @@ def _parse_card(card, today: str, now: str) -> Corrida | None:
     )
 
 
+_BC_API = "https://brasilcorrida.com.br/api/src/Site/EventoDetalhe.php"
+_BC_SLUG_RE = re.compile(r"brasilcorrida\.com\.br/#/evento/([^?&#]+)")
+
+
 def _fetch_horario(url: str) -> str | None:
-    """Fetch the event detail page and extract the start time."""
+    """Fetch the event detail page and extract the start time.
+
+    When the URL is a brasilcorrida.com.br SPA hash link, use their REST API
+    (EventoDetalhe.php?eventoToken=…) to get the published start time.
+    """
+    m = _BC_SLUG_RE.search(url)
+    if m:
+        token = m.group(1)
+        try:
+            resp = get(f"{_BC_API}?eventoToken={token}")
+            if resp.status_code == 200:
+                ev = resp.json()
+                hora = ev.get("eve_hora_largada") or ""
+                if hora:
+                    parts = hora.split(":")
+                    h = int(parts[0])
+                    mi = int(parts[1]) if len(parts) > 1 else 0
+                    if 4 <= h <= 23:
+                        return f"{h:02d}:{mi:02d}"
+        except Exception:
+            pass
+        return None
+
     try:
         resp = get(url)
         if resp.status_code != 200:

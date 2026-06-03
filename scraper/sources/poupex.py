@@ -52,15 +52,43 @@ _TIME_RE = re.compile(
 _KM_RE = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]\b")
 
 
-def scrape() -> list[Corrida]:
+def _fetch_html() -> str | None:
+    """Fetch SITE_URL via proxy chain, falling back to Playwright."""
+    html_text: str | None = None
     try:
         resp = get(SITE_URL)
         resp.raise_for_status()
+        html_text = resp.text
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro: {e}")
+        print(f"[{SOURCE_NAME}] proxy chain falhou: {e}; tentando Playwright...")
+
+    # Also try Playwright when proxy chain returned HTML without expected meta tags
+    if html_text:
+        soup_check = BeautifulSoup(html_text, "lxml")
+        og = soup_check.find("meta", attrs={"property": "og:description"})
+        if not og or not og.get("content"):
+            print(f"[{SOURCE_NAME}] og:description ausente na resposta; tentando Playwright...")
+            html_text = None
+
+    if not html_text:
+        try:
+            from ..playwright_client import get_page_html
+            html_text = get_page_html(SITE_URL, timeout=30_000)
+            if html_text:
+                print(f"[{SOURCE_NAME}] Playwright ok")
+        except Exception as e2:
+            print(f"[{SOURCE_NAME}] Playwright falhou: {e2}")
+
+    return html_text
+
+
+def scrape() -> list[Corrida]:
+    html_text = _fetch_html()
+    if not html_text:
+        print(f"[{SOURCE_NAME}] todos os métodos falharam")
         return []
 
-    soup = BeautifulSoup(resp.text, "lxml")
+    soup = BeautifulSoup(html_text, "lxml")
 
     og_desc = _meta(soup, "og:description") or ""
     og_image = _meta(soup, "og:image") or None
@@ -82,8 +110,10 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] evento já passou ({data_evento})")
         return []
 
-    # Time: try og:description first, then full page
+    # Time: try og:description first, then full page, then broad fallback
     horario = _extract_horario(og_desc) or _extract_horario(full_text)
+    if horario is None:
+        horario = _extract_horario_broad(full_text)
     if horario is None:
         print(f"[{SOURCE_NAME}] horário não encontrado")
         return []
@@ -143,6 +173,15 @@ def _meta(soup, property_name: str) -> str | None:
     tag = soup.find("meta", attrs={"property": property_name})
     if tag and tag.get("content"):
         return tag["content"].strip()
+    return None
+
+
+def _extract_horario_broad(text: str) -> str | None:
+    """Fallback: any HH:MM or HHhMM in 04:00–23:59 range, no keyword required."""
+    for m in re.finditer(r"\b(\d{1,2})[hH:]([0-5]\d)\b", text):
+        h, mi = int(m.group(1)), int(m.group(2))
+        if 4 <= h <= 23:
+            return f"{h:02d}:{mi:02d}"
     return None
 
 

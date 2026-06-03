@@ -1,6 +1,7 @@
 """Scraper for ativo.com — JSON API"""
 from __future__ import annotations
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from bs4 import BeautifulSoup
 
@@ -41,13 +42,16 @@ def scrape() -> list[Corrida]:
         return []
 
     corridas: list[Corrida] = []
-    for ev in events:
-        try:
-            corrida = _parse_event(ev, today)
-            if corrida:
-                corridas.append(corrida)
-        except Exception as e:
-            print(f"[{SOURCE_NAME}] erro ao parsear '{ev.get('post_title')}': {e}")
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(_parse_event, ev, today): ev for ev in events}
+        for future in as_completed(futures):
+            ev = futures[future]
+            try:
+                corrida = future.result()
+                if corrida:
+                    corridas.append(corrida)
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] erro ao parsear '{ev.get('post_title')}': {e}")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

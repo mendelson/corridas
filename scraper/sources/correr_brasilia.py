@@ -18,10 +18,6 @@ from .. import geo as _geo
 URL = "https://correrbrasilia.com.br/calendario/"
 SOURCE_NAME = "Correr Brasília"
 
-# Temporary: dump raw description for the events the user flagged (false 42K).
-# Removed before the PR is finalized.
-_DEBUG_DISTANCES = True
-
 _TIME_RE = re.compile(
     r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
     r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
@@ -448,9 +444,6 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
     if re.search(r"\bmaratona\b|\bmarathon\b", text_for_kw, re.IGNORECASE):
         if 42.195 not in seen_kms:
             values.append(42.195)
-
-    if _DEBUG_DISTANCES and re.search(r"corridona|corrida do fogo|brutus", combined, re.IGNORECASE):
-        print(f"[{SOURCE_NAME}][DEBUG] titulo={titulo!r} -> {[float(v) for v in values]} | desc={desc[:300]!r}")
 
     return sorted(
         [Distancia(km=km, data=None, horario=None) for km in values[:8]],

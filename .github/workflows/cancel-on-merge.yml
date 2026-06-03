@@ -1,9 +1,10 @@
-name: Cancelar Actions ao Mergear PR
+name: Cancelar Actions ao Fechar PR
 
-# Quando uma PR é mergeada, qualquer Action ainda em execução (ou na fila) no
-# branch de origem da PR torna-se obsoleta — o código já está no main. Este
-# workflow cancela essas execuções automaticamente para não desperdiçar minutos
-# de CI nem manter jobs rodando à toa.
+# Quando uma PR é fechada — mergeada OU descartada sem merge — qualquer Action
+# ainda em execução (ou na fila) no branch de origem da PR torna-se obsoleta:
+# se foi mergeada, o código já está no main; se foi fechada sem merge, a mudança
+# foi abandonada. Em ambos os casos este workflow cancela essas execuções
+# automaticamente para não desperdiçar minutos de CI nem manter jobs rodando à toa.
 
 on:
   pull_request:
@@ -14,18 +15,20 @@ permissions:
 
 jobs:
   cancel:
-    if: github.event.pull_request.merged == true
+    # Dispara em qualquer fechamento de PR (mergeada ou não).
     runs-on: ubuntu-latest
     steps:
-      - name: Cancelar execuções em andamento do branch da PR mergeada
+      - name: Cancelar execuções em andamento do branch da PR fechada
         env:
           GH_TOKEN: ${{ github.token }}
           HEAD_REF: ${{ github.event.pull_request.head.ref }}
           REPO: ${{ github.repository }}
+          MERGED: ${{ github.event.pull_request.merged }}
         run: |
           set -euo pipefail
+          echo "PR fechada (merged=${MERGED}); cancelando runs pendentes do branch ${HEAD_REF}"
           # Cancela runs em andamento (in_progress) e enfileiradas (queued) cujo
-          # head_branch é o branch de origem da PR recém-mergeada.
+          # head_branch é o branch de origem da PR recém-fechada.
           for status in in_progress queued; do
             gh api --paginate \
               "repos/${REPO}/actions/runs?branch=${HEAD_REF}&status=${status}" \

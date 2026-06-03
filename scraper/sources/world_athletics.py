@@ -164,6 +164,35 @@ def _fetch_competitions() -> list[dict]:
     return []
 
 
+def _extract_wa_slugs(data: dict) -> dict[str, str]:
+    """Extract WAWEvent id → nameUrlSlug from apolloState (any common nesting)."""
+    slugs: dict[str, str] = {}
+    props = data.get("props", {})
+    candidates = [
+        props.get("apolloState"),
+        props.get("pageProps", {}).get("apolloState"),
+    ]
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        # Flat: apolloState["WAWEvent:123"] = {...}
+        for k, v in candidate.items():
+            if k.startswith("WAWEvent:") and isinstance(v, dict):
+                slug = v.get("nameUrlSlug")
+                if slug:
+                    slugs[k.split(":", 1)[-1]] = slug
+        # Nested: apolloState["data"]["WAWEvent:123"] = {...}
+        for sub_key in ("data", "ROOT_QUERY"):
+            nested = candidate.get(sub_key) or {}
+            if isinstance(nested, dict):
+                for k, v in nested.items():
+                    if k.startswith("WAWEvent:") and isinstance(v, dict):
+                        slug = v.get("nameUrlSlug")
+                        if slug:
+                            slugs[k.split(":", 1)[-1]] = slug
+    return slugs
+
+
 def _parse_next_data(html: str) -> list[dict]:
     """Extract competition list from Next.js __NEXT_DATA__ script tag."""
     soup = BeautifulSoup(html, "lxml")
@@ -176,34 +205,53 @@ def _parse_next_data(html: str) -> list[dict]:
         return []
 
     pp = data.get("props", {}).get("pageProps", {})
+    items: list[dict] = []
 
     # Primary: calendarEvents.results (confirmed structure as of 2026)
     cal = pp.get("calendarEvents") or {}
     if isinstance(cal, dict):
-        items = cal.get("results") or []
-        if isinstance(items, list) and items:
-            print(f"[{SOURCE_NAME}] calendarEvents.results: {len(items)} itens")
-            return items
+        raw = cal.get("results") or []
+        if isinstance(raw, list) and raw:
+            print(f"[{SOURCE_NAME}] calendarEvents.results: {len(raw)} itens")
+            items = raw
 
-    # Fallback: top-level list keys
-    for key in ("competitions", "labelRaces", "events", "races", "roadRaces", "results"):
-        items = pp.get(key) or []
-        if isinstance(items, list) and items:
-            print(f"[{SOURCE_NAME}] __NEXT_DATA__['{key}']: {len(items)} itens")
-            return items
+    if not items:
+        # Fallback: top-level list keys
+        for key in ("competitions", "labelRaces", "events", "races", "roadRaces", "results"):
+            raw = pp.get(key) or []
+            if isinstance(raw, list) and raw:
+                print(f"[{SOURCE_NAME}] __NEXT_DATA__['{key}']: {len(raw)} itens")
+                items = raw
+                break
 
-    # Fallback: nested dicts
-    for v in pp.values():
-        if isinstance(v, dict):
-            for key2 in ("competitions", "events", "races", "results", "items", "data"):
-                items = v.get(key2) or []
-                if isinstance(items, list) and items:
-                    return items
-        if isinstance(v, list) and v and isinstance(v[0], dict):
-            if any(k in v[0] for k in ("name", "startDate", "venue", "country")):
-                return v
+    if not items:
+        # Fallback: nested dicts
+        for v in pp.values():
+            if isinstance(v, dict):
+                for key2 in ("competitions", "events", "races", "results", "items", "data"):
+                    raw = v.get(key2) or []
+                    if isinstance(raw, list) and raw:
+                        items = raw
+                        break
+            if not items and isinstance(v, list) and v and isinstance(v[0], dict):
+                if any(k in v[0] for k in ("name", "startDate", "venue", "country")):
+                    items = v
+            if items:
+                break
 
-    return []
+    if not items:
+        return []
+
+    # Enrich each item with correct nameUrlSlug from apolloState WAWEvent cache
+    wa_slugs = _extract_wa_slugs(data)
+    if wa_slugs:
+        print(f"[{SOURCE_NAME}] apolloState WAWEvent slugs encontrados: {len(wa_slugs)}")
+        for item in items:
+            item_id = str(item.get("id") or "")
+            if item_id and item_id in wa_slugs and "nameUrlSlug" not in item:
+                item["nameUrlSlug"] = wa_slugs[item_id]
+
+    return items
 
 
 def _parse_html_table(html: str) -> list[dict]:
@@ -455,10 +503,14 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
 
     comp_id = comp.get("id") or slugify(titulo)
     year    = data_evento[:4]
-    # Build URL from slugified name + id (WA URL pattern)
-    name_slug = re.sub(r"[^a-z0-9]+", "-", titulo.lower()).strip("-")
-    link = (comp.get("url") or comp.get("link")
-            or f"{BASE}/competitions/road-running/{name_slug}-{comp_id}")
+    # Prefer nameUrlSlug injected from apolloState (exact WA slug, avoids 404s)
+    name_url_slug = comp.get("nameUrlSlug")
+    if name_url_slug:
+        link = f"{BASE}/competitions/road-running/{name_url_slug}"
+    else:
+        name_slug = re.sub(r"[^a-z0-9]+", "-", titulo.lower()).strip("-")
+        link = (comp.get("url") or comp.get("link")
+                or f"{BASE}/competitions/road-running/{name_slug}-{comp_id}")
     if link and not link.startswith("http"):
         link = BASE + ("" if link.startswith("/") else "/") + link
 

@@ -24,7 +24,7 @@ from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, normalize_date, normalize_time,
     slugify, infer_estado, now_iso, today_iso,
-    validate_image_url,
+    validate_image_url, extract_distances_from_text,
 )
 from .. import geo as _geo
 
@@ -653,23 +653,12 @@ def _extract_distances_text(text: str) -> list[Distancia]:
         re.IGNORECASE,
     )
     text_clean = _INTERVAL.sub(" ", text)
-    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", text_clean, re.IGNORECASE)
-    seen: set[float] = set()
-    result: list[Distancia] = []
-    for raw in nums:
-        try:
-            km = float(raw.replace(",", "."))
-        except ValueError:
-            continue
-        if not (1 <= km <= 250):
-            continue
-        for canon, lo, hi in _CANONICAL:
-            if lo <= km <= hi:
-                km = canon
-                break
-        if km not in seen:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
+    # Shared-suffix-aware numeric extraction; named distances handled by the
+    # keyword fallback below (allow_named=False).
+    result: list[Distancia] = [
+        Distancia(km=km, data=None, horario=None)
+        for km in extract_distances_from_text(text_clean, min_km=1.0, max_km=250.0, allow_named=False)
+    ]
     if not result:
         ltext = text.lower()
         is_half = bool(re.search(r"\b(meia\s+maratona|half\s+marathon|21k)\b", ltext))

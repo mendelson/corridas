@@ -29,7 +29,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
 SOURCE_NAME = "Carreras México"
@@ -515,19 +515,19 @@ def _state_to_code(raw: str) -> str:
 def _extract_distances(text: str) -> list[Distancia]:
     seen: set[float] = set()
     result: list[Distancia] = []
-    for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[kK](?:m|M)?\b", text):
-        km = float(n.replace(",", "."))
-        key = round(km)
-        canon = _CANON_KM.get(key, km)
-        if canon not in seen and 3 <= canon <= 200:
+    # Shared-suffix + Spanish-"y"-connector aware ("5, 10 y 21 km" → [5,10,21.097]);
+    # named distances are handled by the keyword fallback below (allow_named=False).
+    for canon in extract_distances_from_text(text, min_km=3.0, allow_named=False):
+        if canon not in seen:
             seen.add(canon)
             result.append(Distancia(km=canon, data=None, horario=None))
     if not result:
-        ltext = text.lower()
-        is_half = bool(re.search(r"\b(media\s+maratón?|media\s+maraton|half\s+marathon|21k)\b", ltext))
-        is_full = bool(re.search(r"\b(maratón?|maraton|marathon)\b", ltext))
-        if is_half:
-            result.append(Distancia(km=21.097, data=None, horario=None))
-        elif is_full:
-            result.append(Distancia(km=42.195, data=None, horario=None))
+        # No numeric distance: fall back to a named distance found in the prose.
+        # The helper correctly maps "medio maratón" → 21.097 and a standalone
+        # "maratón" → 42.195 (the previous regex checked "media", missing the
+        # Mexican "medio maratón" and mislabelling it as a full marathon).
+        for canon in extract_distances_from_text(text, min_km=3.0, named_in_prose=True):
+            if canon not in seen:
+                seen.add(canon)
+                result.append(Distancia(km=canon, data=None, horario=None))
     return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)

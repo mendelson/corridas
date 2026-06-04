@@ -95,6 +95,171 @@ def normalize_distance(raw: str | None) -> float | str | None:
 
 
 # ---------------------------------------------------------------------------
+# Distance-list extraction from prose / titles (shared helper)
+# ---------------------------------------------------------------------------
+#
+# Many scrapers read distances out of free text ("provas de 3, 5 e 10 km").
+# A naive per-number regex like ``\b(\d+)\s*km\b`` only matches the number that
+# directly carries the "km" token, so in a *shared-suffix* list ("3, 5 e 10 km")
+# it silently drops the 3 and the 5. This helper — ported from the gold-standard
+# ``correr_brasilia._extract_distances`` — handles every common enumeration form
+# in pt / es / en, snaps 21/42 to their canonical half/full-marathon lengths and
+# near-dedups. Use it instead of hand-rolling another per-number km regex.
+
+_CANONICAL_KM = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
+
+_HALF_MARATHON_RE = re.compile(
+    r"meia[\s-]?maratona|half[\s-]?marathon|medi[oa][\s-]?marat[oó]n", re.IGNORECASE
+)
+_FULL_MARATHON_RE = re.compile(
+    r"\bmaratona\b|\bmarathon\b|\bmarat[oó]n\b", re.IGNORECASE
+)
+
+# A single distance "token": an explicit numeric km value OR a named distance.
+_DIST_TOKEN = (
+    r"(?:meia[\s-]?maratona|half[\s-]?marathon|medi[oa][\s-]?marat[oó]n"
+    r"|maratona|marathon|marat[oó]n"
+    r"|\d+(?:[.,]\d+)?\s*[kK][mM]?)"
+)
+# Connectors that join list members, across pt ("e"/"ou"), es ("y") and en ("and").
+_DIST_CONNECTOR = r"(?:,|;|/|\||\be\b|\bou\b|\by\b|\band\b)"
+_DIST_LIST_RE = re.compile(
+    rf"{_DIST_TOKEN}(?:\s*{_DIST_CONNECTOR}\s*{_DIST_TOKEN})+", re.IGNORECASE
+)
+# Shared km suffix: "5 e 10 km", "3, 5 e 10km", "5, 10 y 21 km", "5 / 10 / 21 km".
+# The leading-number lookbehind ``(?<![:.\d])`` stops a clock time ("07:00 e 10km")
+# or a decimal fragment from seeding a bogus list — the "00" after ":" must not be
+# read as the first distance.
+_DIST_SHARED_SUFFIX_RE = re.compile(
+    r"(?<![:.\d])(\d+(?:[.,]\d+)?)"
+    r"(?:\s*(?:,|;|/|\||e|ou|y|and)\s*(\d+(?:[.,]\d+)?))+"
+    r"\s*[kK][mM]?\b",
+    re.IGNORECASE,
+)
+_DIST_LABEL = (
+    r"dist[âa]ncias?|modalidades?|percursos?|provas?|categorias?"
+    r"|trajetos?|recorridos?"
+)
+_DIST_LABELLED_RE = re.compile(
+    rf"(?:{_DIST_LABEL})\s*:?\s*({_DIST_TOKEN})", re.IGNORECASE
+)
+_DIST_KM_RE = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
+
+
+def _dist_token_to_km(tok: str, allow_named: bool) -> float | None:
+    """Convert one distance token (numeric km or a named distance) to km."""
+    t = tok.strip().lower()
+    if allow_named and _HALF_MARATHON_RE.search(t):
+        return 21.097
+    if allow_named and _FULL_MARATHON_RE.search(t):
+        return 42.195
+    m = re.match(r"(\d+(?:[.,]\d+)?)", t)
+    if m:
+        try:
+            return float(m.group(1).replace(",", "."))
+        except ValueError:
+            return None
+    return None
+
+
+def _filter_km_values(raw_values: list[float], min_km: float, max_km: float = 200.0) -> list[float]:
+    """Snap 21/42 to canonical lengths, drop out-of-range, near-dedup (<0.5 km)."""
+    seen: list[float] = []
+    for raw in raw_values:
+        if raw < min_km or raw > max_km:
+            continue
+        km = raw
+        for canon, lo, hi in _CANONICAL_KM:
+            if lo <= raw <= hi:
+                km = canon
+                break
+        if any(abs(km - s) < 0.5 for s in seen):
+            continue
+        seen.append(km)
+    return seen
+
+
+def extract_distances_from_text(
+    text: str | None,
+    *,
+    min_km: float = 3.0,
+    max_km: float = 200.0,
+    allow_named: bool = True,
+    named_in_prose: bool = False,
+    title: str = "",
+    max_results: int = 8,
+) -> list[float]:
+    """Extract race distances (km) from prose or a title, robust to shared suffixes.
+
+    Resolution order (first non-empty wins), mirroring correr_brasilia:
+      1. Explicit distance lists of 2+ tokens ("5km, 10km e meia maratona").
+      2. Shared km suffix ("3, 5 e 10 km" / "5, 10 y 21 km" / "5 / 10 / 21 km").
+      3. A labelled single value ("Modalidade: Maratona", "Distância: 42km").
+      4. Prose-safe numeric km scan (named terms are NOT inferred from loose prose).
+      5. A parenthetical km list in the title ("(5km e 10km)").
+
+    Named distances (maratona / meia maratona / marathon / medio maratón) count
+    only as enumeration tokens by default — never inferred from free prose — which
+    prevents phantom marathons from text like "a maior maratona de rua do DF". Pass
+    ``named_in_prose=True`` for short, reliable strings (e.g. an event *title* such
+    as "Meia Maratona de São Paulo") where a standalone named distance should count.
+    Numeric 21/42 are canonical-snapped (21.097 / 42.195) and values within 0.5 km
+    of an already-seen distance are deduped. Returns a sorted list of unique floats.
+    """
+    text = text or ""
+    raw: list[float] = []
+
+    # 0. Standalone named distance, opt-in (titles only — avoids phantom marathons).
+    if named_in_prose and allow_named:
+        if _HALF_MARATHON_RE.search(text):
+            raw.append(21.097)
+        # "maratona" but not preceded by "meia"/"half" (handled above).
+        for m in _FULL_MARATHON_RE.finditer(text):
+            start = m.start()
+            preceding = text[max(0, start - 6):start].lower()
+            if "meia" not in preceding and "half" not in preceding and "medio" not in preceding and "média" not in preceding:
+                raw.append(42.195)
+
+    # 1. Distance lists (2+ tokens).
+    for list_m in _DIST_LIST_RE.finditer(text):
+        for tok_m in re.finditer(_DIST_TOKEN, list_m.group(0), re.IGNORECASE):
+            km = _dist_token_to_km(tok_m.group(0), allow_named)
+            if km is not None:
+                raw.append(km)
+    # 2. Shared km suffix.
+    for m in _DIST_SHARED_SUFFIX_RE.finditer(text):
+        for num_m in re.finditer(r"\d+(?:[.,]\d+)?", m.group(0)):
+            try:
+                raw.append(float(num_m.group(0).replace(",", ".")))
+            except ValueError:
+                pass
+    # 3. Labelled single distance.
+    if not raw:
+        for lab_m in _DIST_LABELLED_RE.finditer(text):
+            km = _dist_token_to_km(lab_m.group(1), allow_named)
+            if km is not None:
+                raw.append(km)
+    # 4. Prose-safe numeric km scan (explicit numbers only).
+    if not raw:
+        for m in _DIST_KM_RE.finditer(text):
+            try:
+                raw.append(float(m.group(1).replace(",", ".")))
+            except ValueError:
+                continue
+    # 5. Parenthetical km list in the title.
+    if not raw and title:
+        paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", title)
+        if paren:
+            for m in _DIST_KM_RE.finditer(paren.group(0)):
+                try:
+                    raw.append(float(m.group(1).replace(",", ".")))
+                except ValueError:
+                    continue
+
+    return sorted(_filter_km_values(raw, min_km, max_km)[:max_results])
+
+
+# ---------------------------------------------------------------------------
 # Money normalization
 # ---------------------------------------------------------------------------
 

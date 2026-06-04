@@ -13,7 +13,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
 SOURCE_NAME = "Asdeporte"
@@ -409,21 +409,20 @@ def _fetch_event_details(url: str) -> tuple[list[Distancia], str | None]:
 def _parse_distances(titulo: str) -> list[Distancia]:
     result: list[Distancia] = []
     seen: set = set()
-    for m in _DIST_RE.finditer(titulo):
-        km_str, mi_str, marat, medio = m.group(1), m.group(2), m.group(3), m.group(4)
-        if marat:
-            km: float | str = 42.195
-        elif medio:
-            km = 21.097
-        elif km_str:
-            km = float(km_str)
-        elif mi_str:
-            km = f"{mi_str} mi"
-        else:
-            continue
-        key = km if isinstance(km, str) else round(float(km))
+    # Numeric km + named distances (maratón / medio maratón), shared-suffix and
+    # Spanish-"y"-connector aware. named_in_prose=True preserves the prior
+    # behaviour of recognising a standalone "Maratón"/"Medio Maratón".
+    for km in extract_distances_from_text(titulo, min_km=1.0, named_in_prose=True):
+        key = round(float(km))
         if key not in seen:
             seen.add(key)
             result.append(Distancia(km=km, data=None, horario=None))
+    # Miles distances are preserved verbatim as "N mi" strings (formatKm passes
+    # them through); the km helper only handles kilometres.
+    for m in re.finditer(r"\b(\d+(?:\.\d+)?)\s*mi(?:les?)?\b", titulo, re.IGNORECASE):
+        mi = f"{m.group(1)} mi"
+        if mi not in seen:
+            seen.add(mi)
+            result.append(Distancia(km=mi, data=None, horario=None))
     return result
 

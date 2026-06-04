@@ -19,7 +19,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
 URL = "https://www.sescdf.com.br/corridas"
@@ -238,23 +238,4 @@ def _extract_horario(text: str) -> str | None:
 
 
 def _extract_distances(text: str) -> list[Distancia]:
-    seen: list[float] = []
-    for m in _KM_RE.finditer(text):
-        try:
-            raw = float(m.group(1).replace(",", "."))
-        except ValueError:
-            continue
-        if raw < 1 or raw > 200:
-            continue
-        km = raw
-        for canon, lo, hi in _CANONICAL:
-            if lo <= raw <= hi:
-                km = canon
-                break
-        if any(abs(km - s) < 0.5 for s in seen):
-            continue
-        seen.append(km)
-    return sorted(
-        [Distancia(km=k, data=None, horario=None) for k in seen],
-        key=lambda d: float(d.km),
-    )
+    return [Distancia(km=km, data=None, horario=None) for km in extract_distances_from_text(text, min_km=1.0)]

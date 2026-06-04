@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
 BASE = "https://www.mksesportes.com.br"
@@ -294,8 +294,7 @@ def _extract_distances(titulo_lower: str, text: str) -> list[Distancia]:
             _add(42.195)
 
     clean = _INTERVAL_RE.sub(" ", text)
-    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE):
-        km = float(m.group(1).replace(",", "."))
+    for km in extract_distances_from_text(clean, min_km=3.0, allow_named=False):
         _add(km)
 
     return sorted(result, key=lambda d: d.km)

@@ -108,7 +108,9 @@ def get_direct(url: str, **kwargs) -> httpx.Response:
     """HTTP GET without proxy fallback — for optional/non-critical requests."""
     kwargs.pop("source", None)
     kwargs.setdefault("timeout", TIMEOUT)
-    return httpx.get(url, headers=HEADERS, follow_redirects=True, **kwargs)
+    extra_headers = kwargs.pop("extra_headers", None)
+    headers = {**HEADERS, **extra_headers} if extra_headers else HEADERS
+    return httpx.get(url, headers=headers, follow_redirects=True, **kwargs)
 
 
 # Kept for backward compatibility — get() already includes fallback

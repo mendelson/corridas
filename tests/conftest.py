@@ -33,19 +33,37 @@ def live_server():
 
 
 def _add_geo_mocks(context):
-    """Route all IP-geolocation API calls to return a deterministic SP response."""
+    """Make the browser context deterministic and self-contained for e2e tests.
+
+    A single catch-all route handles every request the page issues:
+
+    * IP-geolocation APIs (ipwho.is / freeipapi.com / api.ip.sb) are fulfilled
+      with a fixed São Paulo response so the location pipeline is deterministic.
+    * Same-origin requests (the local test server on 127.0.0.1 / localhost) are
+      allowed through untouched — that's the site we're actually testing.
+    * Every other (third-party) request is aborted. Event-photo CDNs, Google
+      Fonts and similar resources are irrelevant to what the tests assert, and
+      a single slow/hanging external host would otherwise keep ``networkidle``
+      from ever settling, timing out ``page.goto`` after 30s. Aborting them is
+      what makes the suite independent of third-party uptime — not a test
+      shortcut, but the removal of an external dependency we don't control.
+
+    Using one combined handler (instead of separate geo routes plus a catch-all)
+    avoids any dependence on Playwright's route-matching order.
+    """
     fake_body = json.dumps(GEO_FAKE)
+    _GEO_HOSTS = ("ipwho.is", "freeipapi.com", "api.ip.sb")
 
     def handle(route, request):
-        route.fulfill(
-            status=200,
-            content_type="application/json",
-            body=fake_body,
-        )
+        url = request.url
+        if any(h in url for h in _GEO_HOSTS):
+            route.fulfill(status=200, content_type="application/json", body=fake_body)
+        elif "127.0.0.1" in url or "localhost" in url:
+            route.continue_()
+        else:
+            route.abort()
 
-    context.route("**/ipwho.is/**", handle)
-    context.route("**/freeipapi.com/**", handle)
-    context.route("**/api.ip.sb/**", handle)
+    context.route("**/*", handle)
 
 
 def pytest_collection_modifyitems(items):

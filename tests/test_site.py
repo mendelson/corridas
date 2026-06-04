@@ -11,6 +11,27 @@ from pathlib import Path
 
 import pytest
 
+
+def _isolate_context(ctx):
+    """Mock geo APIs and abort all third-party requests so networkidle settles.
+
+    Mirrors conftest._add_geo_mocks for tests that build their own context.
+    """
+    fake = json.dumps({"country_code": "BR", "region_code": "SP", "city": "São Paulo",
+                       "latitude": -23.5, "longitude": -46.6})
+    _geo = ("ipwho.is", "freeipapi.com", "api.ip.sb")
+
+    def handle(route, request):
+        url = request.url
+        if any(h in url for h in _geo):
+            route.fulfill(status=200, content_type="application/json", body=fake)
+        elif "127.0.0.1" in url or "localhost" in url:
+            route.continue_()
+        else:
+            route.abort()
+
+    ctx.route("**/*", handle)
+
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
@@ -636,15 +657,8 @@ def test_pin_resets_location_filter(page_pt, live_server):
 def test_initial_load_no_session_cache(browser, live_server):
     """Fresh browser context with no storage must load the page correctly."""
     ctx = browser.new_context(locale="pt-BR")
-    # mock geo
-    import json as _json
-    fake = _json.dumps({"country_code": "BR", "region_code": "SP", "city": "SP",
-                        "latitude": -23.5, "longitude": -46.6})
-    def _handle(route, req):
-        route.fulfill(status=200, content_type="application/json", body=fake)
-    ctx.route("**/ipwho.is/**", _handle)
-    ctx.route("**/freeipapi.com/**", _handle)
-    ctx.route("**/api.ip.sb/**", _handle)
+    # Geo mocks + abort of all third-party requests so networkidle settles.
+    _isolate_context(ctx)
 
     page = ctx.new_page()
     # clear storage explicitly (new context starts empty, but be explicit)
@@ -707,14 +721,8 @@ def test_language_fallback_to_english(browser, live_server):
     """A context with an unmapped browser locale loads the English strings."""
     # 'zh-TW' is not mapped → BROWSER_LANG should fall back to 'en'
     ctx = browser.new_context(locale="zh-TW")
-    import json as _json
-    fake = _json.dumps({"country_code": "US", "region_code": "CA", "city": "X",
-                        "latitude": 37.7, "longitude": -122.4})
-    def _handle(route, req):
-        route.fulfill(status=200, content_type="application/json", body=fake)
-    ctx.route("**/ipwho.is/**", _handle)
-    ctx.route("**/freeipapi.com/**", _handle)
-    ctx.route("**/api.ip.sb/**", _handle)
+    # Geo mocks + abort of all third-party requests so networkidle settles.
+    _isolate_context(ctx)
     page = ctx.new_page()
     # Navigate to /en/ explicitly (fallback applies to URL-less root; /en/ gives English)
     page.goto(live_server + "/en/", wait_until="networkidle")

@@ -645,6 +645,8 @@ def test_initial_load_no_session_cache(browser, live_server):
     ctx.route("**/ipwho.is/**", _handle)
     ctx.route("**/freeipapi.com/**", _handle)
     ctx.route("**/api.ip.sb/**", _handle)
+    # Abort external requests so networkidle resolves without waiting for image CDNs
+    ctx.route("**/*", lambda route, req: route.continue_() if "127.0.0.1" in req.url else route.abort())
 
     page = ctx.new_page()
     # clear storage explicitly (new context starts empty, but be explicit)
@@ -715,6 +717,8 @@ def test_language_fallback_to_english(browser, live_server):
     ctx.route("**/ipwho.is/**", _handle)
     ctx.route("**/freeipapi.com/**", _handle)
     ctx.route("**/api.ip.sb/**", _handle)
+    # Abort external requests so networkidle resolves without waiting for image CDNs
+    ctx.route("**/*", lambda route, req: route.continue_() if "127.0.0.1" in req.url else route.abort())
     page = ctx.new_page()
     # Navigate to /en/ explicitly (fallback applies to URL-less root; /en/ gives English)
     page.goto(live_server + "/en/", wait_until="networkidle")

@@ -45,14 +45,14 @@ listed below.
 | Source | Distance origin | Before | Action taken |
 |---|---|---|---|
 | `correr_brasilia` | JSON-LD prose | reference impl | gold standard — unchanged |
-| `central_da_corrida` | regulamento prose | own list parser, **no shared-suffix** | routed through helper (PR follow-up) |
+| `central_da_corrida` | regulamento prose | own list parser, **no shared-suffix** | fixed in #198 (own shared-suffix parser; not the shared helper) |
 | `iguana_sports` | card/detail prose | naive per-number | **routed through helper** (`min_km=3`) |
 | `mks_esportes` | title + prose | naive per-number + named blocks | numeric scan → helper (`allow_named=False`); named blocks kept |
 | `sesc_df` | page prose | naive per-number | **routed through helper** (`min_km=1`) |
 | `poupex` | page prose | naive per-number | **routed through helper** (`min_km=1`) |
 | `minhas_inscricoes` | page prose | naive per-number | **routed through helper** (`min_km=1, max_km=250`) |
 | `yescom` | headings + text | naive per-number, integer-only | **routed through helper** (`min_km=1, max_km=60`); integer-only filter kept |
-| `carreras_mexico` | título (es) | naive per-number, **no `y`** | routed through helper (PR follow-up) |
+| `carreras_mexico` | título (es) | naive per-number, **no `y`** | **routed through helper**; also fixed a fallback bug that mislabelled "medio maratón" (es) as a full marathon |
 | `asdeporte` | título + prose (es) | `_DIST_RE` per-number, **no `y`**, has miles | helper for km/named; miles path kept |
 | `ticket_sports` | título + detail prose | naive per-number (fallback only) | fallback routed through helper |
 | `largada_esportiva` | structured + text fallback | structured safe; fallback naive | fallback routed through helper |

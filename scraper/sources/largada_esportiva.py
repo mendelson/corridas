@@ -342,7 +342,10 @@ def _playwright_one_url(url: str, today: str) -> list[Corrida]:
                     pass
 
         page.on("response", _on_response)
-        page.goto(url, timeout=30_000)
+        # domcontentloaded, not the default "load": this SPA hangs the load event
+        # on never-completing subresources, so goto() would time out at 30s even
+        # though the document (and the XHR JSON we intercept) is already available.
+        page.goto(url, timeout=30_000, wait_until="domcontentloaded")
         try:
             page.wait_for_load_state("networkidle", timeout=20_000)
         except Exception:

@@ -52,7 +52,7 @@ from .sources import (
     carreras_mexico,
     raceroster,
     # letsdothis,   # inviável: WAF bloqueia todos os proxies — ver README
-    world_athletics,
+    # world_athletics,  # desativada 2026-06-04 — ver docs/source-research/world_athletics.md
 )
 from .sources.majors import (
     tokyo,
@@ -147,7 +147,7 @@ SOURCES = [
     asdeporte,
     carreras_mexico,
     # IAAF Label Road Races
-    world_athletics,
+    # world_athletics,  # desativada 2026-06-04 — ver docs/source-research/world_athletics.md
 ]
 
 # Selective-rescrape mode: when SCRAPER_SOURCES is set, only the listed sources

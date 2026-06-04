@@ -23,6 +23,16 @@ SOURCE_NAME = "Race Roster"
 _SEARCH_API = "https://search.raceroster.com/search"
 _PAGE_SIZE  = 100
 
+# search.raceroster.com is an XHR/JSON endpoint called from raceroster.com.
+# Without these headers it intermittently answers HTTP 202 with an empty body
+# (it expects a same-origin JSON fetch, not a document navigation). Sending the
+# browser-XHR triplet makes the direct request return 200 deterministically.
+_API_HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "Referer": "https://raceroster.com/",
+    "Origin": "https://raceroster.com",
+}
+
 _LOOKAHEAD_DAYS = 365
 
 _SEARCH_TERMS = ["running", "marathon", "5k", "10k", "half marathon", "trail run"]
@@ -94,7 +104,7 @@ def _fetch_term(term: str) -> list[dict]:
         page += 1
         try:
             resp = get(_SEARCH_API, params={"q": term, "l": _PAGE_SIZE, "p": page},
-                       source=SOURCE_NAME, timeout=30)
+                       source=SOURCE_NAME, timeout=30, extra_headers=_API_HEADERS)
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro '{term}' p{page}: {e}")
             break

@@ -39,16 +39,22 @@ def get(url: str, **kwargs) -> httpx.Response:
     """
     # Pop kwargs that are not httpx-native
     kwargs.pop("source", None)
-    verify     = kwargs.pop("verify", True)
-    timeout    = kwargs.pop("timeout", TIMEOUT)
-    render_js  = kwargs.pop("render_js", False)
+    verify        = kwargs.pop("verify", True)
+    timeout       = kwargs.pop("timeout", TIMEOUT)
+    render_js     = kwargs.pop("render_js", False)
+    # Per-call header overrides merged on top of the shared browser headers.
+    # Needed by JSON/XHR endpoints that reject document-style requests (e.g.
+    # raceroster's search API answers 202 with an empty body unless it sees
+    # Accept: application/json + a same-origin Referer/Origin).
+    extra_headers = kwargs.pop("extra_headers", None)
+    headers       = {**HEADERS, **extra_headers} if extra_headers else HEADERS
 
     _domain = urllib.parse.urlparse(url).netloc
 
     # 1. Direct request
     try:
         resp = httpx.get(
-            url, headers=HEADERS, follow_redirects=True,
+            url, headers=headers, follow_redirects=True,
             verify=verify, timeout=timeout, **kwargs,
         )
         if resp.status_code not in _WAF_STATUSES:
@@ -66,7 +72,7 @@ def get(url: str, **kwargs) -> httpx.Response:
                 f"&url={urllib.parse.quote(url, safe='')}"
                 + ("&render_js=1" if render_js else "")
             )
-            resp = httpx.get(ss_url, headers=HEADERS, follow_redirects=True, timeout=timeout)
+            resp = httpx.get(ss_url, headers=headers, follow_redirects=True, timeout=timeout)
             if resp.status_code < 400:
                 print(f"[proxy] {_domain} obtido via Scrapestack")
                 return resp
@@ -79,7 +85,7 @@ def get(url: str, **kwargs) -> httpx.Response:
         try:
             resp = httpx.get(
                 url,
-                headers=HEADERS,
+                headers=headers,
                 follow_redirects=True,
                 timeout=timeout,
                 proxy=f"http://auto:{APIFY_PROXY_PASSWORD}@proxy.apify.com:8000",

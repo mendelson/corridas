@@ -69,11 +69,20 @@ _STATE_FULL_TO_UF = {
 }
 
 
+_COUNTRY_WORDS = {"brasil", "brazil"}
+
+
 def _parse_location(location: str | None, titulo: str = "") -> tuple[str, str]:
-    """Return (city, state) from a location string."""
+    """Return (city, state) from a location string.
+
+    Handles both comma-separated and pipe-separated formats used by TF Sports,
+    e.g. "Rua X - SP" or "Street | Neighborhood, City | Brasil".
+    """
     if not location:
         return "", ""
-    parts = [p.strip() for p in location.split(",")]
+    # Normalise pipe separators to commas for uniform splitting
+    normalised = location.replace("|", ",")
+    parts = [p.strip() for p in normalised.split(",") if p.strip()]
     city, state = "", ""
     for part in parts:
         m = re.match(r"^(.*?[A-Za-zÀ-ÿ])\s*[-–]\s*([A-Z]{2})$", part.strip())
@@ -91,8 +100,12 @@ def _parse_location(location: str | None, titulo: str = "") -> tuple[str, str]:
                 break
         if state:
             break
-    if not city and parts:
-        city = parts[0].strip()
+    if not city:
+        # When pipes were present, use the last non-country, non-address-like segment
+        # e.g. "Estrada | Bairro, Cidade | Brasil" → "Cidade"
+        non_country = [p for p in parts if p.lower() not in _COUNTRY_WORDS]
+        if non_country:
+            city = non_country[-1]
     return city, state
 
 
@@ -167,10 +180,17 @@ def _horario_from_json(obj, visited: set) -> str | None:
         return None
     visited.add(obj_id)
     if isinstance(obj, str):
+        # ISO timestamp: "2026-07-15T07:00:00.000Z"
         m = re.search(r"T(\d{2}):(\d{2})", obj)
         if m:
             h, mi = int(m.group(1)), int(m.group(2))
             if 4 <= h <= 23:
+                return f"{h:02d}:{mi:02d}"
+        # Plain time string: "07:00", "7h00", "07h30"
+        m = re.search(r"^\s*(\d{1,2})[h:](\d{2})\s*$", obj)
+        if m:
+            h, mi = int(m.group(1)), int(m.group(2))
+            if 4 <= h <= 23 and 0 <= mi <= 59:
                 return f"{h:02d}:{mi:02d}"
         return None
     if isinstance(obj, list):
@@ -196,13 +216,12 @@ def _horario_from_json(obj, visited: set) -> str | None:
 def _horario_from_event_page(slug: str) -> str | None:
     """Fetch the event detail page and extract horario from JSON or visible text.
 
-    Tries the proxy chain first; falls back to Playwright (full JS rendering)
-    when the proxy chain succeeds but yields no start time — the site is
-    Next.js and start times may only be populated by client-side JS.
+    Tries multiple URL patterns (events and run-series), proxy chain first,
+    then Playwright (full JS rendering) as a fallback — the site is Next.js
+    and start times may only be populated by client-side JS.
     """
     if not slug:
         return None
-    url = f"{LISTING_URL}/{slug}"
 
     import json as _json
 
@@ -219,28 +238,36 @@ def _horario_from_event_page(slug: str) -> str | None:
                 pass
         return _horario_from_text(soup.get_text(" ", strip=True))
 
-    # Try 1: proxy chain (handles WAF / Cloudflare)
-    html_proxy: str | None = None
-    try:
-        resp = _http_get(url, source=SOURCE_NAME, timeout=_TIMEOUT)
-        if resp.status_code == 200:
-            html_proxy = resp.text
-    except Exception:
-        pass
+    def _try_url(url: str) -> str | None:
+        html_proxy: str | None = None
+        try:
+            resp = _http_get(url, source=SOURCE_NAME, timeout=_TIMEOUT)
+            if resp.status_code == 200:
+                html_proxy = resp.text
+        except Exception:
+            pass
 
-    if html_proxy:
-        h = _parse(html_proxy)
+        if html_proxy:
+            h = _parse(html_proxy)
+            if h:
+                return h
+
+        # Playwright — renders client-side JS that populates start times
+        try:
+            from ..playwright_client import get_page_html as _pw_html
+            pw_html = _pw_html(url, timeout=30_000)
+            if pw_html:
+                return _parse(pw_html)
+        except Exception:
+            pass
+        return None
+
+    # Try the events listing URL first, then run-series URL as fallback
+    # (some events appear in both collections and /run-series/ pages have SSR time data)
+    for url in (f"{LISTING_URL}/{slug}", f"{BASE}/run-series/{slug}"):
+        h = _try_url(url)
         if h:
             return h
-
-    # Try 2: Playwright — renders client-side JS that populates start times
-    try:
-        from ..playwright_client import get_page_html as _pw_html
-        pw_html = _pw_html(url, timeout=30_000)
-        if pw_html:
-            return _parse(pw_html)
-    except Exception:
-        pass
 
     return None
 

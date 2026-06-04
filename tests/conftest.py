@@ -33,19 +33,31 @@ def live_server():
 
 
 def _add_geo_mocks(context):
-    """Route all IP-geolocation API calls to return a deterministic SP response."""
+    """Route geo-IP calls to a deterministic SP response and abort all other
+    external requests.  Aborting external image/CDN loads is necessary so the
+    browser reaches networkidle quickly — otherwise pending <img> src requests
+    to unreachable external servers stall the 30 s goto timeout in CI."""
     fake_body = json.dumps(GEO_FAKE)
 
-    def handle(route, request):
+    def handle_geo(route, request):
         route.fulfill(
             status=200,
             content_type="application/json",
             body=fake_body,
         )
 
-    context.route("**/ipwho.is/**", handle)
-    context.route("**/freeipapi.com/**", handle)
-    context.route("**/api.ip.sb/**", handle)
+    def handle_external(route, request):
+        if "127.0.0.1" in request.url:
+            route.continue_()
+        else:
+            route.abort()
+
+    context.route("**/ipwho.is/**", handle_geo)
+    context.route("**/freeipapi.com/**", handle_geo)
+    context.route("**/api.ip.sb/**", handle_geo)
+    # Catch-all: local requests pass through; everything else is aborted so
+    # external image loads don't block networkidle.
+    context.route("**/*", handle_external)
 
 
 def pytest_collection_modifyitems(items):

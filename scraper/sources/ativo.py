@@ -92,53 +92,90 @@ def _extract_horario_from_json(ev: dict) -> str | None:
     return None
 
 
-def _fetch_horario_from_page(url: str) -> str | None:
-    """Fetch the HTML event page and extract start time from visible text."""
-    try:
-        resp = get(url, source=SOURCE_NAME, timeout=20)
-        if resp.status_code != 200:
-            return None
-        soup = BeautifulSoup(resp.text, "lxml")
-        text = soup.get_text(" ", strip=True)
-        m = _HORARIO_KW_RE.search(text)
-        if m:
-            if m.group(1) is not None:
-                h, mi = int(m.group(1)), int(m.group(2))
-            else:
-                h, mi = int(m.group(3)), 0
-            if 4 <= h <= 23:
-                return f"{h:02d}:{mi:02d}"
-        m = _GENERIC_TIME_RE.search(text)
-        if m:
+def _extract_horario_from_text(text: str) -> str | None:
+    """Extract a race start time from visible page text."""
+    m = _HORARIO_KW_RE.search(text)
+    if m:
+        if m.group(1) is not None:
             h, mi = int(m.group(1)), int(m.group(2))
-            if 4 <= h <= 23:
-                return f"{h:02d}:{mi:02d}"
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] HTML page fetch falhou ({url[:60]}): {e}")
+        else:
+            h, mi = int(m.group(3)), 0
+        if 4 <= h <= 23:
+            return f"{h:02d}:{mi:02d}"
+    m = _GENERIC_TIME_RE.search(text)
+    if m:
+        h, mi = int(m.group(1)), int(m.group(2))
+        if 4 <= h <= 23:
+            return f"{h:02d}:{mi:02d}"
     return None
 
 
-def _fetch_event_json(url: str) -> tuple[list[Distancia], str | None]:
-    """Fetch the per-event JSON (post_json); return (distances, horario)."""
-    try:
-        resp = get(url, source=SOURCE_NAME, timeout=15)
-        resp.raise_for_status()
-        ev = resp.json()
-    except Exception as e:
-        print(f"[{SOURCE_NAME}] fetch JSON falhou ({url[:60]}): {e}")
-        return [], None
-    seen: set[float] = set()
+def _parse_distance_text(text: str) -> list[Distancia]:
+    """Parse distances from an ativo info-card snippet.
+
+    Handles both per-token lists ("Corrida 5K, Corrida 10K") and the shared-km
+    suffix form ("5 e 10km", where only the last value carries the unit). Walks
+    and kids distances (<3 km) are dropped; 21/42 km are canonical-snapped.
+    """
+    raw: list[float] = []
+    # Shared km suffix ("5 e 10km") — only the last number carries the unit.
+    for m in re.finditer(
+        r"(\d+(?:[.,]\d+)?)(?:\s*(?:,|e|ou)\s*(\d+(?:[.,]\d+)?))+\s*[kK][mM]?\b",
+        text, re.IGNORECASE,
+    ):
+        for num in re.finditer(r"\d+(?:[.,]\d+)?", m.group(0)):
+            raw.append(float(num.group(0).replace(",", ".")))
+    # Per-token "5K" / "10 km".
+    for m in re.finditer(r"(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", text):
+        raw.append(float(m.group(1).replace(",", ".")))
+
+    seen: list[float] = []
     result: list[Distancia] = []
-    for d in ev.get("distancias") or []:
-        km = _parse_km(d.get("ds_distancia") or "")
-        if km is not None and km >= 3 and km not in seen:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    if not result:
-        titulo_fallback = normalize_titulo(ev.get("post_title") or "")
-        result = _distances_from_title(titulo_fallback.lower())
-    horario = _extract_horario_from_json(ev)
-    return sorted(result, key=lambda d: d.km), horario
+    for r in raw:
+        if not (3 <= r <= 200):
+            continue
+        km = r
+        for canon, lo, hi in _CANONICAL:
+            if lo <= r <= hi:
+                km = canon
+                break
+        if any(abs(km - s) < 0.5 for s in seen):
+            continue
+        seen.append(km)
+        result.append(Distancia(km=km, data=None, horario=None))
+    return sorted(result, key=lambda d: d.km)
+
+
+def _fetch_event_html(url: str) -> tuple[list[Distancia], str | None]:
+    """Fetch the HTML event page; return (distances, horario).
+
+    The listing JSON and per-event index.json carry empty `distancias` and a
+    midnight `dt_evento` placeholder. The authoritative values live in the HTML
+    page's "Distâncias" / "Horários" info cards (and per-route "Percurso" cards).
+    """
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=20)
+        if resp.status_code != 200:
+            return [], None
+        soup = BeautifulSoup(resp.text, "lxml")
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] HTML page fetch falhou ({url[:60]}): {e}")
+        return [], None
+
+    # Distances: the "Distâncias" info card <p>, plus per-route "Percurso" spans.
+    dist_text = ""
+    for h3 in soup.find_all("h3", class_="info-title"):
+        if re.search(r"dist[âa]ncia", h3.get_text(), re.IGNORECASE):
+            p = h3.find_next("p")
+            if p:
+                dist_text += " " + p.get_text(" ", strip=True)
+    for span in soup.select("p.route-distance span"):
+        dist_text += " " + span.get_text(" ", strip=True)
+    distancias = _parse_distance_text(dist_text)
+
+    # Horário: keyword-anchored scan of the visible text ("Largada às 5h30").
+    horario = _extract_horario_from_text(soup.get_text(" ", strip=True))
+    return distancias, horario
 
 
 def _parse_event(ev: dict, today: str) -> Corrida | None:
@@ -174,25 +211,23 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
             distancias.append(Distancia(km=km, data=None, horario=None))
     distancias.sort(key=lambda d: d.km)
 
-    if not distancias:
-        distancias = _distances_from_title(titulo.lower())
-
     event_id = str(ev.get("id_evento") or "")
     pay_link = f"{PAY_BASE}/{event_id}" if event_id else None
     post_json_url = ev.get("post_json") or ""
     event_page = post_json_url.replace("/index.json", "") or "https://www.ativo.com"
 
-    # Fetch per-event JSON when listing data lacks distances or horario
-    if (not distancias or not horario) and post_json_url:
-        extra_dists, extra_horario = _fetch_event_json(post_json_url)
+    # The listing never carries a real start time and rarely the distances —
+    # fetch the HTML event page, whose info cards hold both authoritatively.
+    if (not distancias or not horario) and event_page and event_page != "https://www.ativo.com":
+        extra_dists, extra_horario = _fetch_event_html(event_page)
         if not distancias and extra_dists:
             distancias = extra_dists
         if not horario and extra_horario:
             horario = extra_horario
 
-    # Last resort: scrape the HTML event page for start time
-    if not horario and event_page and event_page != "https://www.ativo.com":
-        horario = _fetch_horario_from_page(event_page)
+    # Last resort for distances: infer from the title.
+    if not distancias:
+        distancias = _distances_from_title(titulo.lower())
 
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")

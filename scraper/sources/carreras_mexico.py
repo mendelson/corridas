@@ -41,8 +41,24 @@ MAX_PAGES = 20  # 1000 events upper bound — far more than carrerasmexico ever 
 
 _CANON_KM = {21: 21.097, 42: 42.195}
 
-# carrerasmexico uses DIF for CDMX; standard UF is CMX
-_NORMALIZE_UF = {"DIF": "CMX"}
+# Tiempometa uses its own state abbreviations that diverge from the ISO-3166-2
+# MX codes used in web/locations/MX.json. Map the known divergences; anything not
+# listed is validated against MX.json (and geo-resolved) downstream, so an unknown
+# code never reaches the data as an invalid subdivision.
+_NORMALIZE_UF = {
+    "DIF": "CMX", "CDMX": "CMX",           # Ciudad de México (ISO CMX)
+    "TLX": "TLA", "TLAX": "TLA",           # Tlaxcala (ISO TLA)
+    "AGS": "AGU",                          # Aguascalientes (ISO AGU)
+    "DGO": "DUR",                          # Durango (ISO DUR)
+    "GTO": "GUA",                          # Guanajuato (ISO GUA)
+    "HGO": "HID",                          # Hidalgo (ISO HID)
+    "QRO": "QUE",                          # Querétaro (ISO QUE)
+    "QROO": "ROO",                         # Quintana Roo (ISO ROO)
+    "NL": "NLE", "NVL": "NLE",             # Nuevo León (ISO NLE)
+    "BC": "BCN",                           # Baja California (ISO BCN)
+    "MICH": "MIC", "CHIS": "CHP", "CHIH": "CHH",
+    "COAH": "COA", "TAMPS": "TAM", "EDOMEX": "MEX",
+}
 
 
 def scrape() -> list[Corrida]:
@@ -92,10 +108,17 @@ def scrape() -> list[Corrida]:
     result = list(corridas.values())
     _enrich_locations(result)
     before = len(result)
-    result = [c for c in result if c.horario]
+    # Emit only events with every hard-required field. Horário and a valid MX
+    # subdivision come from the convocatoria page (behind a JS anti-bot challenge,
+    # fetched via Playwright); events where they couldn't be recovered are dropped
+    # rather than stored invalid.
+    result = [
+        c for c in result
+        if c.horario and c.cidade and _geo.validate_estado("MX", c.estado)
+    ]
     dropped = before - len(result)
     if dropped:
-        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário publicado")
+        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário/cidade/UF válida")
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
 
@@ -325,9 +348,14 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
     html: str | None = None
     try:
         resp = get(url, source=SOURCE_NAME, timeout=30)
-        if resp.status_code < 400:
+        # convocatoria.php sits behind a JS anti-bot challenge that answers with
+        # HTTP 200 and a "Um momento, por favor…" reload page — no event data.
+        # Only accept the proxy-chain response when it carries the real SportsEvent
+        # schema; otherwise fall through to Playwright (which passes the browser
+        # property checks the challenge enforces).
+        if resp.status_code < 400 and "SportsEvent" in resp.text:
             html = resp.text
-        else:
+        elif resp.status_code >= 400:
             print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {resp.status_code}")
     except Exception as e:
         print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: proxy chain falhou: {e}; tentando Playwright...")
@@ -399,10 +427,13 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
             parts = re.split(r",\s*", loc_name, maxsplit=1)
             cidade = parts[0].strip()
             estado_raw = parts[1].strip() if len(parts) > 1 else ""
-            estado = _state_to_code(estado_raw)
+            # Map Tiempometa code → ISO and validate against MX.json; geo-resolve
+            # from the city when the code is missing or not a real subdivision so
+            # an invalid estado (e.g. "TLX") never reaches the data.
+            estado = _geo.validate_estado("MX", _state_to_code(estado_raw))
             if not estado and cidade:
-                _, estado = _geo.resolve(cidade, "", "MX")
-                estado = estado or ""
+                _, geo_estado = _geo.resolve(cidade, "", "MX")
+                estado = _geo.validate_estado("MX", geo_estado or "")
 
         # 4. Keyword-anchored scan of visible page text; also used by step 5
         page_text = soup.get_text(" ", strip=True)
@@ -471,14 +502,14 @@ _STATE_NAME_TO_CODE = {
 
 
 def _state_to_code(raw: str) -> str:
-    raw = (raw or "").strip().lower()
+    raw = (raw or "").strip()
     if not raw:
         return ""
-    # Already a 2-3-letter UF?
-    if re.match(r"^[A-Z]{2,3}$", raw, re.IGNORECASE):
+    # Already a 2-4-letter UF (Tiempometa codes can be up to 4 chars, e.g. QROO)?
+    if re.match(r"^[A-Za-z]{2,4}$", raw):
         u = raw.upper()
         return _NORMALIZE_UF.get(u, u)
-    return _STATE_NAME_TO_CODE.get(raw, "")
+    return _STATE_NAME_TO_CODE.get(raw.lower(), "")
 
 
 def _extract_distances(text: str) -> list[Distancia]:

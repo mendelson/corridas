@@ -46,7 +46,7 @@ from .sources import (
     brasil_corrida,
     circuito_das_estacoes,
     largada_esportiva,
-    volta_do_lago,
+    # volta_do_lago,  # desativada 2026-06-04 — ver docs/source-research/volta_do_lago.md
     runsignup,
     halfmarathons,
     asdeporte,
@@ -138,7 +138,7 @@ SOURCES = [
     manchester_half,
     brighton,
     # Single events (DF)
-    volta_do_lago,
+    # volta_do_lago,  # desativada 2026-06-04 — ver docs/source-research/volta_do_lago.md
     # US/global running calendar
     runsignup,
     halfmarathons,

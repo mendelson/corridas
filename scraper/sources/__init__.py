@@ -23,7 +23,9 @@ from . import (
     mks_esportes,
     circuito_das_estacoes,
     largada_esportiva,
-    volta_do_lago,
+    # volta_do_lago,  # desativada 2026-06-04: todas as fontes de dados esgotadas —
+    #                 # LE API timeout, voltadolago.com.br timeout, TS lista vazia.
+    #                 # O evento é capturado por largada_esportiva. Ver docs/source-research/volta_do_lago.md
     runsignup,
     halfmarathons,
     asdeporte,

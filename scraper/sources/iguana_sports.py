@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
 BASE = "https://www.iguanasports.com.br"
@@ -227,18 +227,7 @@ def _parse_location(texts: list[str]) -> tuple[str, str]:
 
 def _parse_distances(text: str) -> list[Distancia]:
     clean = _INTERVAL_RE.sub(" ", text)
-    seen: set[float] = set()
-    result: list[Distancia] = []
-    for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[Kk][Mm]?\b", clean):
-        km = float(n.replace(",", "."))
-        for canon, lo, hi in _CANONICAL:
-            if lo <= km <= hi:
-                km = canon
-                break
-        if km not in seen and 3 <= km <= 200:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    return sorted(result, key=lambda d: d.km)
+    return [Distancia(km=km, data=None, horario=None) for km in extract_distances_from_text(clean, min_km=3.0)]
 
 
 def _extract_horario(text: str) -> str | None:

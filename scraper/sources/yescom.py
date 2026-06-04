@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, infer_estado, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
 BASE = "https://www.yescom.com.br"
@@ -296,16 +296,11 @@ def _extract_distances(soup: BeautifulSoup) -> list[Distancia]:
 
     seen: set[float] = set()
     result: list[Distancia] = []
-    for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE):
-        km = float(n.replace(",", "."))
-        for canon, lo, hi in _CANONICAL:
-            if lo <= km <= hi:
-                km = canon
-                break
+    for km in extract_distances_from_text(clean, min_km=1.0, max_km=60.0):
         # Only keep whole-number km or canonical half/full marathon distances
         if km not in (42.195, 21.097) and km != int(km):
             continue
-        if km not in seen and 1 <= km <= 60:
+        if km not in seen:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
 
@@ -313,15 +308,10 @@ def _extract_distances(soup: BeautifulSoup) -> list[Distancia]:
     if not result:
         full_text = soup.get_text(" ", strip=True)
         clean_full = _INTERVAL_RE.sub(" ", full_text)
-        for n in re.findall(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean_full, re.IGNORECASE):
-            km = float(n.replace(",", "."))
-            for canon, lo, hi in _CANONICAL:
-                if lo <= km <= hi:
-                    km = canon
-                    break
+        for km in extract_distances_from_text(clean_full, min_km=1.0, max_km=60.0):
             if km not in (42.195, 21.097) and km != int(km):
                 continue
-            if km not in seen and 1 <= km <= 60:
+            if km not in seen:
                 seen.add(km)
                 result.append(Distancia(km=km, data=None, horario=None))
 

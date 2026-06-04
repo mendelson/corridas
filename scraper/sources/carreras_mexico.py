@@ -389,32 +389,50 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
     return cidade, estado, horario
 
 
+def _build_horario(h_str: str, m_str: str, suffix: str | None) -> str | None:
+    """Build a 24-hour "HH:MM" (04:00–23:59) from a parsed time + optional suffix.
+
+    A 12-hour clock suffix is honoured: "7:00 p.m." → 19:00, "12:00 a.m." → 00:00,
+    "12:30 p.m." stays 12:30. A "hrs"/"horas" (or no) suffix is treated as already
+    24-hour. Times outside 04:00–23:59 after conversion are rejected as noise."""
+    h, mi = int(h_str), int(m_str)
+    suf = re.sub(r"[\s.]", "", (suffix or "").lower())
+    if suf == "pm" and h < 12:
+        h += 12
+    elif suf == "am" and h == 12:
+        h = 0
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
 def _horario_from_prose(text: str) -> str | None:
     """Extract a plausible start time (HH:MM, 04:00–23:59) from convocatoria prose.
 
     Convocatorias state it as e.g. "FECHA: 7 de junio de 2026, 9:30 hrs." or
-    "Hora de salida: 7:00 am". Prefer a keyword-anchored match, then fall back
+    "Hora de salida: 7:00 p.m.". Prefer a keyword-anchored match, then fall back
     to any HH:MM carrying an explicit hrs/am/pm suffix (bare numbers like a
-    distance "10:00" without a unit are ignored)."""
+    distance "10:00" without a unit are ignored). 12-hour times are converted to
+    24-hour via the am/pm suffix (see _build_horario)."""
     # 1. Keyword-anchored (fecha/hora/salida/inicio/arranque/largada → HH[:.]MM)
     mt = re.search(
         r"(?:fecha|hora(?:rio)?(?:\s*de\s*(?:salida|inicio|arranque|largada))?|"
         r"salida|inicio|arranque|largada)[^\d]{0,40}?"
-        r"\b([0-9]{1,2})[:.hH]([0-5][0-9])\s*(?:hrs?|horas?|a\.?\s*m\.?|p\.?\s*m\.?)?",
+        r"\b([0-9]{1,2})[:.hH]([0-5][0-9])\s*(hrs?|horas?|a\.?\s*m\.?|p\.?\s*m\.?)?",
         text, re.IGNORECASE,
     )
     if mt:
-        h, mi = int(mt.group(1)), int(mt.group(2))
-        if 4 <= h <= 23:
-            return f"{h:02d}:{mi:02d}"
+        t = _build_horario(mt.group(1), mt.group(2), mt.group(3))
+        if t:
+            return t
     # 2. Any time with an explicit hrs/am/pm suffix
     for m in re.finditer(
         r"\b([0-9]{1,2})[:.hH]([0-5][0-9])\s*(hrs?|horas?|a\.?\s*m\.?|p\.?\s*m\.?)",
         text, re.IGNORECASE,
     ):
-        h, mi = int(m.group(1)), int(m.group(2))
-        if 4 <= h <= 23:
-            return f"{h:02d}:{mi:02d}"
+        t = _build_horario(m.group(1), m.group(2), m.group(3))
+        if t:
+            return t
     return None
 
 

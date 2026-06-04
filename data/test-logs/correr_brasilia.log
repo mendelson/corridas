@@ -1,6 +1,11 @@
 [proxy] correrbrasilia.com.br falhou diretamente (ConnectError: [Errno 101] Network is unreachable), tentando Scrapestack...
 [proxy] Scrapestack retornou 429 para correrbrasilia.com.br, tentando Apify...
 [proxy] Apify falhou para correrbrasilia.com.br: 403 Forbidden
-[Correr Brasília] erro ao buscar https://correrbrasilia.com.br/calendario/: todos os métodos falharam para https://correrbrasilia.com.br/calendario/
+[Correr Brasília] proxy chain falhou: todos os métodos falharam para https://correrbrasilia.com.br/calendario/; tentando Playwright...
+[playwright] https://correrbrasilia.com.br/calendario/: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://correrbrasilia.com.br/calendario/", waiting until "load"
+
+[Correr Brasília] todos os métodos falharam para https://correrbrasilia.com.br/calendario/
 ⚠️   correr_brasilia: 0 eventos retornados
 FAILURE_NOTE:0 eventos

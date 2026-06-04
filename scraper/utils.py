@@ -127,8 +127,11 @@ _DIST_LIST_RE = re.compile(
     rf"{_DIST_TOKEN}(?:\s*{_DIST_CONNECTOR}\s*{_DIST_TOKEN})+", re.IGNORECASE
 )
 # Shared km suffix: "5 e 10 km", "3, 5 e 10km", "5, 10 y 21 km", "5 / 10 / 21 km".
+# The leading-number lookbehind ``(?<![:.\d])`` stops a clock time ("07:00 e 10km")
+# or a decimal fragment from seeding a bogus list — the "00" after ":" must not be
+# read as the first distance.
 _DIST_SHARED_SUFFIX_RE = re.compile(
-    r"(\d+(?:[.,]\d+)?)"
+    r"(?<![:.\d])(\d+(?:[.,]\d+)?)"
     r"(?:\s*(?:,|;|/|\||e|ou|y|and)\s*(\d+(?:[.,]\d+)?))+"
     r"\s*[kK][mM]?\b",
     re.IGNORECASE,

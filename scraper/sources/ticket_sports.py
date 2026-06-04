@@ -10,6 +10,7 @@ from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, slugify, infer_estado, now_iso, today_iso,
+    extract_distances_from_text,
 )
 from .. import geo as _geo
 
@@ -465,10 +466,9 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
             time_map[km] = f"{h:02d}:{mi}"
 
     clean = _INTERVAL_RE.sub(" ", text)
-    raw = re.findall(r"(?<![.,])\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", clean, re.IGNORECASE)
-    kms = [float(n.replace(",", ".")) for n in raw]
-    kms = [k for k in kms if 3 <= k <= 200]
-    kms = _canonicalize(kms)
+    # Shared-suffix-aware numeric extraction ("5 e 10 km" → [5, 10]); named
+    # distances are handled by the keyword fallback below (allow_named=False).
+    kms = extract_distances_from_text(clean, min_km=3.0, allow_named=False)
 
     result = []
     for k in sorted(kms):
@@ -505,10 +505,8 @@ def _extract_distances(titulo_lower: str) -> list[Distancia]:
             seen.add(42.195)
             result.append(Distancia(km=42.195, data=None, horario=None))
 
-    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", titulo_lower):
-        km = float(m.group(1).replace(",", "."))
-        km_c = next((c for c, lo, hi in _CANONICAL if lo <= km <= hi), km)
-        if km_c not in seen and 1 <= km <= 200:
+    for km_c in extract_distances_from_text(titulo_lower, min_km=1.0, allow_named=False):
+        if km_c not in seen:
             seen.add(km_c)
             result.append(Distancia(km=km_c, data=None, horario=None))
 

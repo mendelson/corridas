@@ -33,31 +33,37 @@ def live_server():
 
 
 def _add_geo_mocks(context):
-    """Route geo-IP calls to a deterministic SP response and abort all other
-    external requests.  Aborting external image/CDN loads is necessary so the
-    browser reaches networkidle quickly — otherwise pending <img> src requests
-    to unreachable external servers stall the 30 s goto timeout in CI."""
+    """Make the browser context deterministic and self-contained for e2e tests.
+
+    A single catch-all route handles every request the page issues:
+
+    * IP-geolocation APIs (ipwho.is / freeipapi.com / api.ip.sb) are fulfilled
+      with a fixed São Paulo response so the location pipeline is deterministic.
+    * Same-origin requests (the local test server on 127.0.0.1 / localhost) are
+      allowed through untouched — that's the site we're actually testing.
+    * Every other (third-party) request is aborted. Event-photo CDNs, Google
+      Fonts and similar resources are irrelevant to what the tests assert, and
+      a single slow/hanging external host would otherwise keep ``networkidle``
+      from ever settling, timing out ``page.goto`` after 30s. Aborting them is
+      what makes the suite independent of third-party uptime — not a test
+      shortcut, but the removal of an external dependency we don't control.
+
+    Using one combined handler (instead of separate geo routes plus a catch-all)
+    avoids any dependence on Playwright's route-matching order.
+    """
     fake_body = json.dumps(GEO_FAKE)
+    _GEO_HOSTS = ("ipwho.is", "freeipapi.com", "api.ip.sb")
 
-    def handle_geo(route, request):
-        route.fulfill(
-            status=200,
-            content_type="application/json",
-            body=fake_body,
-        )
-
-    def handle_external(route, request):
-        if "127.0.0.1" in request.url:
+    def handle(route, request):
+        url = request.url
+        if any(h in url for h in _GEO_HOSTS):
+            route.fulfill(status=200, content_type="application/json", body=fake_body)
+        elif "127.0.0.1" in url or "localhost" in url:
             route.continue_()
         else:
             route.abort()
 
-    context.route("**/ipwho.is/**", handle_geo)
-    context.route("**/freeipapi.com/**", handle_geo)
-    context.route("**/api.ip.sb/**", handle_geo)
-    # Catch-all: local requests pass through; everything else is aborted so
-    # external image loads don't block networkidle.
-    context.route("**/*", handle_external)
+    context.route("**/*", handle)
 
 
 def pytest_collection_modifyitems(items):

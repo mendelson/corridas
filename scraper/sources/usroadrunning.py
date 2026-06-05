@@ -18,8 +18,9 @@ Each Event block carries `name`, `startDate` (date **and** start time),
 setting `start_date` to the day after the last event seen, until a page returns
 no new upcoming events.
 
-Distances come from the event name (`"… 5K, 10K, & 13.1M …"`): `NK` → N km,
-`NM` → "N mi" (miles preserved verbatim, as RunSignup/Race Roster do).
+Distances come from the structured `keywords`/`description` fields (e.g.
+"… 5K, 10K, Half Marathon, running race …"), parsed via the shared
+extract_distances_from_text helper — never from the title.
 """
 from __future__ import annotations
 import json
@@ -31,7 +32,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from .. import geo as _geo
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, now_iso, today_iso
+from ..utils import normalize_titulo, now_iso, today_iso, extract_distances_from_text
 
 SOURCE_NAME = "US Road Running"
 BASE = "https://usroadrunning.com"
@@ -47,8 +48,6 @@ _US_STATES: frozenset[str] = frozenset({
     "WI", "WY", "DC",
 })
 
-_KM_RE = re.compile(r"\b(\d+(?:\.\d+)?)\s*K\b", re.IGNORECASE)
-_MI_RE = re.compile(r"\b(\d+(?:\.\d+)?)\s*M\b", re.IGNORECASE)
 _ID_RE = re.compile(r"/Races/[A-Z]{2}/[^/]+/(\d+)-", re.IGNORECASE)
 
 
@@ -160,7 +159,7 @@ def _parse_event(blk: dict, today: str, end_date: str) -> Corrida | None:
     if not estado or not cidade:
         return None
 
-    distancias = _parse_distances(name)
+    distancias = _parse_distances(blk)
     if not distancias:
         return None
 
@@ -204,20 +203,23 @@ def _parse_event(blk: dict, today: str, end_date: str) -> Corrida | None:
     )
 
 
-def _parse_distances(name: str) -> list[Distancia]:
-    """Parse distances from the event name: `NK` → N km, `NM` → "N mi"."""
+def _parse_distances(blk: dict) -> list[Distancia]:
+    """Parse distances from the event's structured fields, not its title.
+
+    Prefer the `keywords` tag list (e.g. "US Road Running, 5K, 10K, Half
+    Marathon, running race, …"), falling back to the `description`. Both are
+    dedicated text fields that enumerate the distances explicitly; titles are
+    not a reliable distance source. Parsing goes through the shared
+    `extract_distances_from_text` helper (5K→5, 10K→10, "Half Marathon"→21.097)."""
+    kw = blk.get("keywords")
+    if isinstance(kw, (list, tuple)):
+        kw = ", ".join(str(x) for x in kw)
+    field = kw or blk.get("description") or ""
+
     seen: set = set()
     out: list[Distancia] = []
-    for mt in _KM_RE.finditer(name):
-        km = float(mt.group(1))
-        if 1 <= km <= 250 and km not in seen:
+    for km in extract_distances_from_text(field, min_km=1.0, named_in_prose=True):
+        if km not in seen:
             seen.add(km)
             out.append(Distancia(km=km, data=None, horario=None))
-    for mt in _MI_RE.finditer(name):
-        n = float(mt.group(1))
-        if 1 <= n <= 200:
-            mi = f"{int(n) if n == int(n) else n:g} mi"
-            if mi not in seen:
-                seen.add(mi)
-                out.append(Distancia(km=mi, data=None, horario=None))
     return out

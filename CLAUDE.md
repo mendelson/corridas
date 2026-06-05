@@ -45,20 +45,24 @@ There is no test suite, no linter, and no build step. Source health is verified 
 1. **`run_all_scrapers()`** invokes each module in `SOURCES` in a `ThreadPoolExecutor`. Every source module exports a `scrape() -> list[Corrida]` function — that's the entire interface. Failures in one source never block the others.
 2. **`reconcile()`** matches each freshly-scraped `Corrida` against `data/corridas.json` from the previous run by `id` and by `merger.are_duplicates()`. Found matches are updated via `_update_from`, missing ones increment `miss_count` and are dropped after 10 consecutive misses.
 3. **`merger.merge_rodada()`** runs a within-batch dedup: same event seen in multiple sources collapses into one record whose champion is selected by `merger.score()` (completeness heuristic), and whose `fontes` list accumulates every source that found it. Title similarity uses `normalize_titulo_merge` + `difflib.SequenceMatcher`; date tolerance is 14 days (30 if titles match almost exactly).
-4. **`_find_all_photos()` / `_enrich_images()`** opportunistically pull missing images via OG tags or platform-specific photo galleries (`scraper/fotos.py`). Uses `http_client.get_direct()` to avoid burning Scrapestack credits.
+4. **`_find_all_photos()` / `_enrich_images()`** opportunistically pull missing images via OG tags or platform-specific photo galleries (`scraper/fotos.py`). Uses `http_client.get_direct()` (no WAF-raising) for these optional fetches.
 5. **`save()`** sorts by `data_evento`, writes `data/corridas.json` (and the workflow then copies it to `web/corridas.json`).
 
 The `Corrida` dataclass (`scraper/models.py`) is the canonical shape — including `Distancia.km` which can be a `float` (kilometres) **or a `str` like `"5 mi"`** (miles preserved verbatim — the frontend's `formatKm` passes strings through). Don't normalize miles to km. `Distancia.data` and `Distancia.horario` are per-distance overrides; the frontend only renders those columns when **values differ across distances**.
 
 ### HTTP fallback chain (`scraper/http_client.py`)
 
-Every scraper calls `get(url, ...)`. The chain is:
-
-1. Direct `httpx` request with browser-like headers
-2. **Scrapestack** (`SCRAPESTACK_KEY` env) — pass `render_js=True` to make it execute JS for Cloudflare-challenge sites
-3. **Apify residential proxy** (`APIFY_PROXY_PASSWORD` / `APIFY_TOKEN` env)
-
-WAF statuses (403/406/429) trigger fallback automatically; transient httpx exceptions (timeout/connect) re-raise. Sources can fall through to **Playwright** (`scraper/playwright_client.py` — basic anti-detection: disables `navigator.webdriver`, fakes `window.chrome`) when even the proxy chain fails. `get_direct()` skips the proxy chain entirely — used by `fotos.py`.
+Every scraper calls `get(url, ...)`. It makes a **direct `httpx` request** with
+browser-like headers — there is no third-party proxy layer. (Scrapestack and
+Apify were removed in 2026-06: both trial keys had lapsed and every fallback
+through them returned 429/403, so they only added latency without ever
+succeeding.) A WAF status (403/406/429) raises `httpx.HTTPStatusError` so the
+caller can fall through to **Playwright** (`scraper/playwright_client.py` — basic
+anti-detection: disables `navigator.webdriver`, fakes `window.chrome`). Pass
+`extra_headers={...}` to merge per-call header overrides on top of the shared
+`HEADERS` (e.g. the `Accept: application/json` + `Referer`/`Origin` triplet
+raceroster's XHR API needs). `get_direct()` is identical but does not raise on
+WAF statuses — used by `fotos.py` for optional image fetches.
 
 ### Adding a new source
 
@@ -152,7 +156,7 @@ The correct process before removing a source:
 
 1. **Read the CI logs.** Trigger the "Diagnosticar Fonte" workflow (`diagnose-source.yml`) with the source name and download the full log artifact. Look for explicit HTTP error codes (403, 429, Cloudflare challenge page, WAF fingerprint in HTML), not just "0 eventos".
 2. **Distinguish root causes:**
-   - HTTP 403/406 from all fallbacks (direct + Scrapestack + Apify proxy) + Playwright also blocked → likely WAF. Confirm by checking whether the response body is a Cloudflare challenge page (look for `cf-ray`, `cf-mitigated`, or `Just a moment...` in the HTML).
+   - HTTP 403/406 on the direct request + Playwright also blocked → likely WAF. Confirm by checking whether the response body is a Cloudflare challenge page (look for `cf-ray`, `cf-mitigated`, or `Just a moment...` in the HTML).
    - Empty HTML / missing CSS selectors / JSON parse error / changed API path → scraper bug or site restructure — fix the scraper.
    - No events in the date range → not a failure; leave the source active.
 3. **Only drop a source** once you have unambiguous confirmation (explicit HTTP blocks across all proxy layers, or Cloudflare challenge HTML confirmed in logs) that the block is at datacenter-IP level and no bypass exists. Document the reason in the README commit message and the source-status.json.
@@ -183,7 +187,7 @@ and produces false "inviable" conclusions.
 
 Use the **"Probe URL"** GitHub Actions workflow (Actions → Probe URL → Run
 workflow). It runs in ~1 minute, uses the full proxy chain
-(direct → Scrapestack → Apify), and uploads the full response as an artifact.
+(direct `httpx` request), and uploads the full response as an artifact.
 
 **Always probe at least two URLs per source:**
 
@@ -258,7 +262,7 @@ Actions → "Debug Scraper"  → Run workflow → source: <name>
 ```
 
 Download the log artifact and look for:
-- The HTTP status on each attempt (direct / Scrapestack / Apify)
+- The HTTP status of the direct request (and any Playwright fallback)
 - How many raw events were fetched before filtering
 - Which filter (`_is_running_event`, `_parse_distances`, date check) dropped events
 - Whether the JSON structure matched what you saw in the probe

@@ -3,8 +3,7 @@
 The site is a JS SPA (Hostinger VPS, no WAF). A plain httpx request returns only
 the HTML shell. Strategy:
 
-1. HTTP GET with render_js=True (Scrapestack executes JS). Tries /eventos, /corridas,
-   /calendario, and / in order.
+1. HTTP GET (direct httpx). Tries /eventos, /corridas, /calendario, and / in order.
 2. Within the rendered HTML: extract __NEXT_DATA__ (Next.js), then other embedded
    JSON blobs (window.__STATE__ etc.), then HTML card parsing.
 3. Playwright fallback with fetch/XHR response interception → JSON API capture.
@@ -119,7 +118,7 @@ def scrape() -> list[Corrida]:
 def _fetch_html_http() -> tuple[str | None, str]:
     for url in _CANDIDATE_URLS:
         try:
-            resp = get(url, render_js=True)
+            resp = get(url)
             resp.raise_for_status()
             html = resp.text
             if len(html) > 1000 and "<html" in html.lower():

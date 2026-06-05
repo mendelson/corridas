@@ -108,17 +108,20 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 
 ## Estratégia de acesso
 
-Cada requisição HTTP passa pela cadeia de fallback implementada em `http_client.py`:
+Cada requisição HTTP é feita diretamente via `httpx` (`http_client.py`), com
+headers de browser realista — **sem camada de proxy externo**. (Scrapestack e
+Apify foram removidos em 2026-06: as chaves de trial expiraram e todo fallback
+por eles retornava 429/403, só adicionando latência sem nunca obter sucesso.)
 
-1. **Direto** — request padrão com headers de browser realista
-2. **Scrapestack** — proxy reverso (100 req/mês no plano gratuito); ativado via `SCRAPESTACK_KEY`
-3. **Apify proxy** — proxy de datacenter; ativado via `APIFY_PROXY_PASSWORD`
-
-Se todos falharem (403/429), o scraper da fonte tenta **Playwright headless** com configurações básicas anti-detecção (desativa `navigator.webdriver`, simula `window.chrome`). Isso funciona para alguns WAFs, mas não para Cloudflare em modo estrito.
+Quando a requisição direta recebe um status de WAF (403/406/429), o `get()`
+lança exceção e o scraper da fonte cai para **Playwright headless** com
+configurações básicas anti-detecção (desativa `navigator.webdriver`, simula
+`window.chrome`). Isso funciona para alguns WAFs, mas não para Cloudflare em
+modo estrito.
 
 Os scrapers de grandes corridas internacionais (`majors/`) têm fallback adicional: quando o HTTP falha, retornam o evento com a data conhecida (`known_date`) em vez de retornar zero resultados.
 
-Buscas de fotos (`fotos.py`) usam `get_direct()` — sem proxy — para não consumir créditos do Scrapestack.
+Buscas de fotos (`fotos.py`) usam `get_direct()`, que não lança exceção em status de WAF — para essas buscas opcionais de imagem.
 
 ---
 
@@ -158,7 +161,7 @@ corridas/
 │   ├── models.py            # Dataclasses: Corrida, Distancia, FonteInfo, etc.
 │   ├── merger.py            # Deduplicação e merge entre fontes
 │   ├── utils.py             # Normalização de datas, strings, slugify, cidade→estado
-│   ├── http_client.py       # GET com fallback: direto → Scrapestack → Apify
+│   ├── http_client.py       # GET direto (httpx); WAF → exceção → Playwright
 │   ├── playwright_client.py # Playwright headless com evasão básica de bot-detection
 │   ├── fotos.py             # Busca de fotos em plataformas (desativada temporariamente)
 │   └── sources/

@@ -35,7 +35,14 @@ def get_page_html(url: str, timeout: int = 30_000, wait: str = "networkidle") ->
             )
             page = ctx.new_page()
             page.add_init_script(_STEALTH_JS)
-            page.goto(url, timeout=timeout)
+            # Wait only for the DOM, never the full "load" event: many target sites
+            # hang on a third-party subresource (ads, analytics, slow CDN images)
+            # that never completes, so goto() with the default wait_until="load"
+            # raises a 30s timeout even though the page's HTML is already there.
+            # domcontentloaded returns as soon as the document is parsed; the
+            # best-effort wait_for_load_state below then gives client-rendered
+            # content a chance to settle without ever blocking the result.
+            page.goto(url, timeout=timeout, wait_until="domcontentloaded")
             try:
                 page.wait_for_load_state(wait, timeout=timeout)
             except Exception:

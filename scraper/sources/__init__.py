@@ -28,6 +28,7 @@ from . import (
     asdeporte,
     carreras_mexico,
     raceroster,
+    usroadrunning,
     # letsdothis,    # inviável: WAF bloqueia todos os proxies (direct 403, Scrapestack 500, Apify 403)
     # world_athletics,  # desativada 2026-06-04: páginas de competição retornam 404 e o
     #                    # horário (campo obrigatório) é indisponível em qualquer fonte pública.

@@ -28,6 +28,7 @@ from . import (
     asdeporte,
     carreras_mexico,
     raceroster,
+    worldsmarathons,
     # letsdothis,    # inviável: WAF bloqueia o acesso direto (HTTP 403) e o Playwright
     # world_athletics,  # desativada 2026-06-04: páginas de competição retornam 404 e o
     #                    # horário (campo obrigatório) é indisponível em qualquer fonte pública.

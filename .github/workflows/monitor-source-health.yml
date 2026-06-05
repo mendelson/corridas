@@ -120,6 +120,13 @@ jobs:
       - name: Build source list
         id: build
         run: |
+          # Sources disabled in __init__.py (commented-out imports, e.g.
+          # "# world_athletics,") must not appear in the health matrix — a
+          # disabled source would otherwise always report a failure. Extract
+          # their module names so we can filter them out below.
+          DISABLED=$(grep -oE '^[[:space:]]*#[[:space:]]*[a-z_]+,' scraper/sources/__init__.py \
+            | tr -d ' #,' | sort -u)
+
           ALL_SOURCES=$(
             find scraper/sources -name "*.py" \
               ! -name "__init__*" \
@@ -128,6 +135,9 @@ jobs:
             | sed 's|scraper/sources/||; s|\.py$||' \
             | sort
           )
+          if [ -n "$DISABLED" ]; then
+            ALL_SOURCES=$(echo "$ALL_SOURCES" | grep -vxF "$DISABLED" || true)
+          fi
 
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             INPUT="${{ github.event.inputs.source }}"

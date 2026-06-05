@@ -187,9 +187,9 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
 
 def _fetch_horario_from_detail(url: str) -> str | None:
     """Fetch the event page (Ticket Sports / CDC / etc.) and extract start time."""
-    for render_js in (False, True):
+    for _attempt in range(2):
         try:
-            resp = get(url, render_js=render_js)
+            resp = get(url)
             if resp.status_code != 200:
                 continue
             soup = BeautifulSoup(resp.text, "lxml")

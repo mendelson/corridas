@@ -112,21 +112,20 @@ def _fetch_page(page: int) -> tuple[list[dict] | None, int]:
     The halfmarathons.net WordPress REST API is occasionally served behind a
     Cloudflare JS-challenge that returns an HTML interstitial instead of JSON.
     A plain GET then fails to parse ("Expecting value: line 1 column 1"). The
-    API itself is healthy, so this is transient — retry the page, escalating to
-    render_js=True (Scrapestack executes the JS challenge) before giving up.
+    API itself is healthy, so this is transient — retry the page a few times
+    before giving up.
 
     Returns (None, 0) only when every attempt fails — the caller decides whether
     that ends pagination.
     """
     last_total = page
-    for attempt, render_js in enumerate(((False), (False), (True))):
+    for attempt in range(3):
         try:
             resp = get(
                 _API,
                 params={"per_page": _PER_PAGE, "page": page},
                 source=SOURCE_NAME,
                 timeout=25,
-                render_js=render_js,
             )
         except Exception as e:
             print(f"[{SOURCE_NAME}] page {page} erro (tentativa {attempt + 1}): {e}")

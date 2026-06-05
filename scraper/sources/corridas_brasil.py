@@ -183,9 +183,9 @@ def _fetch_detail(url: str) -> dict | None:
 
 def _fetch_horario_from_url(url: str) -> str | None:
     """Fetch organizer/registration page and extract start time."""
-    for render_js in (False, True):
+    for _attempt in range(2):
         try:
-            resp = get(url, render_js=render_js)
+            resp = get(url)
             if resp.status_code != 200:
                 continue
             soup = BeautifulSoup(resp.text, "lxml")

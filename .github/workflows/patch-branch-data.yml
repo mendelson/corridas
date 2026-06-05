@@ -54,9 +54,6 @@ jobs:
       - name: Run selective scraper
         env:
           SCRAPER_SOURCES: ${{ github.event.inputs.sources }}
-          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
-          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
-          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: |
           set -o pipefail
           python -m scraper.main 2>&1 | tee rescrape.log

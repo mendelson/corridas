@@ -202,10 +202,6 @@ jobs:
 
       - name: Test ${{ matrix.source }}
         id: run_test
-        env:
-          SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
-          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
-          APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
         run: |
           python -m scraper.test_source "${{ matrix.source }}" 2>&1 | tee /tmp/test-out.txt
           EXIT=${PIPESTATUS[0]}

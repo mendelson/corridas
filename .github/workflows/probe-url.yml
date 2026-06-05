@@ -78,10 +78,6 @@ jobs:
 
       - name: Run probe (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
-        env:
-          SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
-          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
-          APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
         run: |
           python scripts/probe_url.py \
             "${{ inputs.url }}" \
@@ -93,10 +89,6 @@ jobs:
 
       - name: Run probe (probe-config.json)
         if: github.event_name == 'push'
-        env:
-          SCRAPESTACK_KEY:      ${{ secrets.SCRAPESTACK_KEY }}
-          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
-          APIFY_TOKEN:          ${{ secrets.APIFY_TOKEN }}
         run: |
           mkdir -p probe-output
           # If probe-config.json has {"source": "..."}, run scraper test.

@@ -19,7 +19,6 @@ Endpoint that works (HTTP 200):
 """
 from __future__ import annotations
 import html as _html_mod
-import json
 import re
 from typing import Optional
 
@@ -35,6 +34,12 @@ from .. import geo as _geo
 SOURCE_NAME = "Carreras México"
 BASE = "https://carrerasmexico.com"
 API = "https://www.tiempometa.com/api3/js_site/events"
+# Event-detail widget. The 2025 convocatoria.php redesign dropped the
+# SportsEvent JSON-LD; date/time, location and distances are now injected
+# client-side from this JSONP endpoint (jQuery `.html(...)` payload). The
+# `<div class="tiempometa_calling">` block in the response carries the
+# organizer's full convocatoria prose, already rendered.
+CALLING_API = "https://www.tiempometa.com/api3/js_site/calling"
 API_KEY = "48513987f33edea8"
 PAGE_SIZE = 50
 MAX_PAGES = 20  # 1000 events upper bound — far more than carrerasmexico ever has
@@ -343,126 +348,129 @@ def _extract_date(el, text: str) -> Optional[str]:
 
 
 def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | None]:
-    """Fetch convocatoria.php and extract (cidade, estado, horario) from JSON-LD SportsEvent schema."""
-    url = f"{BASE}/convocatoria.php?event={event_id}&api_key={API_KEY}"
-    html: str | None = None
+    """Fetch the event detail via the TiempoMeta `calling` widget and parse
+    (cidade, estado, horario) from the rendered convocatoria prose.
+
+    The convocatoria.php redesign (2025) dropped the SportsEvent JSON-LD and now
+    injects the event data client-side from /api3/js_site/calling — a JSONP
+    `$("#…").html('…')` payload. Inside it, `<div class="tiempometa_calling">`
+    holds the organizer's full convocatoria text, already rendered: FECHA (with
+    the start time), SALIDA/SEDE (the Mexican state), and the route distances.
+    The static convocatoria.php HTML only has empty placeholders, which is why
+    the old SportsEvent-based extraction returned nothing and every event was
+    dropped.
+    """
+    url = f"{CALLING_API}?event_id={event_id}&api_key={API_KEY}&callback=cb"
+    payload = ""
     try:
         resp = get(url, source=SOURCE_NAME, timeout=30)
-        # convocatoria.php sits behind a JS anti-bot challenge that answers with
-        # HTTP 200 and a "Um momento, por favor…" reload page — no event data.
-        # Only accept the proxy-chain response when it carries the real SportsEvent
-        # schema; otherwise fall through to Playwright (which passes the browser
-        # property checks the challenge enforces).
-        if resp.status_code < 400 and "SportsEvent" in resp.text:
-            html = resp.text
-        elif resp.status_code >= 400:
-            print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: HTTP {resp.status_code}")
+        if resp.status_code < 400:
+            payload = resp.text
+        else:
+            print(f"[{SOURCE_NAME}] calling {event_id[:8]}: HTTP {resp.status_code}")
     except Exception as e:
-        print(f"[{SOURCE_NAME}] convocatoria {event_id[:8]}: proxy chain falhou: {e}; tentando Playwright...")
+        print(f"[{SOURCE_NAME}] calling {event_id[:8]}: {e}")
 
-    if not html:
-        try:
-            from ..playwright_client import get_page_html
-            html = get_page_html(url, timeout=30_000)
-        except Exception as e2:
-            print(f"[{SOURCE_NAME}] Playwright convocatoria {event_id[:8]}: {e2}")
-
-    if not html:
+    if not payload:
         return "", "", None
 
-    soup = BeautifulSoup(html, "lxml")
-    for script in soup.find_all("script", type="application/ld+json"):
-        try:
-            schema = json.loads(script.string or "")
-        except Exception:
+    inner = _extract_html(payload)
+    if not inner:
+        return "", "", None
+
+    soup = BeautifulSoup(inner, "lxml")
+    prose_el = soup.find(class_="tiempometa_calling")
+    prose = (prose_el or soup).get_text(" ", strip=True)
+    if not prose:
+        return "", "", None
+
+    horario = _horario_from_prose(prose)
+    cidade, estado = _location_from_prose(prose)
+    return cidade, estado, horario
+
+
+def _build_horario(h_str: str, m_str: str, suffix: str | None) -> str | None:
+    """Build a 24-hour "HH:MM" (04:00–23:59) from a parsed time + optional suffix.
+
+    A 12-hour clock suffix is honoured: "7:00 p.m." → 19:00, "12:00 a.m." → 00:00,
+    "12:30 p.m." stays 12:30. A "hrs"/"horas" (or no) suffix is treated as already
+    24-hour. Times outside 04:00–23:59 after conversion are rejected as noise."""
+    h, mi = int(h_str), int(m_str)
+    suf = re.sub(r"[\s.]", "", (suffix or "").lower())
+    if suf == "pm" and h < 12:
+        h += 12
+    elif suf == "am" and h == 12:
+        h = 0
+    if 4 <= h <= 23 and 0 <= mi <= 59:
+        return f"{h:02d}:{mi:02d}"
+    return None
+
+
+def _horario_from_prose(text: str) -> str | None:
+    """Extract a plausible start time (HH:MM, 04:00–23:59) from convocatoria prose.
+
+    Convocatorias state it as e.g. "FECHA: 7 de junio de 2026, 9:30 hrs." or
+    "Hora de salida: 7:00 p.m.". Prefer a keyword-anchored match, then fall back
+    to any HH:MM carrying an explicit hrs/am/pm suffix (bare numbers like a
+    distance "10:00" without a unit are ignored). 12-hour times are converted to
+    24-hour via the am/pm suffix (see _build_horario)."""
+    # 1. Keyword-anchored (fecha/hora/salida/inicio/arranque/largada → HH[:.]MM)
+    mt = re.search(
+        r"(?:fecha|hora(?:rio)?(?:\s*de\s*(?:salida|inicio|arranque|largada))?|"
+        r"salida|inicio|arranque|largada)[^\d]{0,40}?"
+        r"\b([0-9]{1,2})[:.hH]([0-5][0-9])\s*(hrs?|horas?|a\.?\s*m\.?|p\.?\s*m\.?)?",
+        text, re.IGNORECASE,
+    )
+    if mt:
+        t = _build_horario(mt.group(1), mt.group(2), mt.group(3))
+        if t:
+            return t
+    # 2. Any time with an explicit hrs/am/pm suffix
+    for m in re.finditer(
+        r"\b([0-9]{1,2})[:.hH]([0-5][0-9])\s*(hrs?|horas?|a\.?\s*m\.?|p\.?\s*m\.?)",
+        text, re.IGNORECASE,
+    ):
+        t = _build_horario(m.group(1), m.group(2), m.group(3))
+        if t:
+            return t
+    return None
+
+
+def _location_from_prose(text: str) -> tuple[str, str]:
+    """Return (cidade, estado_code) by scanning prose for a Mexican state name.
+
+    estado drives the frontend location label (validated against MX.json); when
+    the prose also exposes a "<City>, <State>" pair we keep the city, otherwise
+    cidade falls back to the state name so `localizacao` is never empty.
+    State names are scanned longest-first so "baja california sur" matches
+    before "baja california", etc. (`_STATE_NAME_TO_CODE` is defined below, so
+    the sort is resolved here at call time rather than at import.)"""
+    low = text.lower()
+    for name in sorted(_STATE_NAME_TO_CODE.keys(), key=len, reverse=True):
+        if len(name) < 5:  # skip the short ambiguous abbreviations in the map
             continue
-        if isinstance(schema, list):
-            schema = next((s for s in schema if isinstance(s, dict) and s.get("@type") == "SportsEvent"), None)
-        if not isinstance(schema, dict) or schema.get("@type") != "SportsEvent":
+        idx = low.find(name)
+        if idx == -1:
             continue
-
-        horario: str | None = None
-
-        # 1. startDate / doorTime with time component
-        for dt_src in [schema.get("startDate") or "",
-                       schema.get("doorTime") or ""]:
-            mt = re.search(r"[T ](\d{2}):(\d{2})", dt_src)
-            if not mt:
-                mt = re.search(r"\b(\d{1,2}):(\d{2})\b", dt_src)
-            if mt:
-                h, mi = int(mt.group(1)), int(mt.group(2))
-                if 4 <= h <= 23 and 0 <= mi <= 59:
-                    horario = f"{h:02d}:{mi:02d}"
-                    break
-
-        # 2. subEvent array (sub-races with individual start times)
-        if not horario:
-            for sub in (schema.get("subEvent") or []):
-                if not isinstance(sub, dict):
-                    continue
-                mt = re.search(r"[T ](\d{2}):(\d{2})", sub.get("startDate") or "")
-                if mt:
-                    h, mi = int(mt.group(1)), int(mt.group(2))
-                    if 4 <= h <= 23:
-                        horario = f"{h:02d}:{mi:02d}"
-                        break
-
-        # 3. JSON-LD description field — keyword-anchored
-        if not horario:
-            desc = schema.get("description") or ""
-            mt = re.search(
-                r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
-                r"inicio|salida|arranque)\s*:?\s*(\d{1,2})[hH:]([0-5]\d)",
-                desc, re.IGNORECASE,
-            )
-            if mt:
-                h, mi = int(mt.group(1)), int(mt.group(2))
-                if 4 <= h <= 23:
-                    horario = f"{h:02d}:{mi:02d}"
-
-        loc = schema.get("location", {})
-        loc_name = loc.get("name", "") if isinstance(loc, dict) else ""
-        cidade, estado = "", ""
-        if loc_name:
-            parts = re.split(r",\s*", loc_name, maxsplit=1)
-            cidade = parts[0].strip()
-            estado_raw = parts[1].strip() if len(parts) > 1 else ""
-            # Map Tiempometa code → ISO and validate against MX.json; geo-resolve
-            # from the city when the code is missing or not a real subdivision so
-            # an invalid estado (e.g. "TLX") never reaches the data.
-            estado = _geo.validate_estado("MX", _state_to_code(estado_raw))
-            if not estado and cidade:
-                _, geo_estado = _geo.resolve(cidade, "", "MX")
-                estado = _geo.validate_estado("MX", geo_estado or "")
-
-        # 4. Keyword-anchored scan of visible page text; also used by step 5
-        page_text = soup.get_text(" ", strip=True)
-        if not horario:
-            ht = re.search(
-                r"(?:hora\s*(?:de\s*(?:salida|inicio|arranque|largada)\s*)?|"
-                r"inicio|salida|arranque|largada)\s*:?\s*"
-                r"([0-9]{1,2})[hH:]([0-5][0-9])(?:\s*(?:hrs?|a\.?m\.?|p\.?m\.?))?"
-                r"|([0-9]{1,2})[hH:]([0-5][0-9])\s*(?:hrs?|a\.?m\.?|p\.?m\.?)",
-                page_text,
-                re.IGNORECASE,
-            )
-            if ht:
-                h_str = ht.group(1) or ht.group(3)
-                m_str = ht.group(2) or ht.group(4)
-                h2, mi2 = int(h_str), int(m_str)
-                if 4 <= h2 <= 23:
-                    horario = f"{h2:02d}:{mi2:02d}"
-
-        # 5. Broad fallback: any HH:MM in 04:00–23:59 range (no keyword required)
-        if not horario:
-            for m_t in re.finditer(r"\b([0-9]{1,2})[hH:]([0-5][0-9])\b", page_text):
-                h2, mi2 = int(m_t.group(1)), int(m_t.group(2))
-                if 4 <= h2 <= 23:
-                    horario = f"{h2:02d}:{mi2:02d}"
-                    break
-
-        return cidade, estado, horario
-    return "", "", None
+        estado = _geo.validate_estado("MX", _STATE_NAME_TO_CODE[name])
+        if not estado:
+            continue
+        # Prefer an explicit "<City>, <State>" pair appearing just before the name
+        cidade = ""
+        m = re.search(
+            r"([A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑáéíóúñ.\-]+(?:\s+[A-ZÁÉÍÓÚÑa-zñáéíóú.\-]+){0,2})"
+            r"\s*,\s*" + re.escape(text[idx:idx + len(name)]),
+            text,
+        )
+        if m:
+            cand = m.group(1).strip(" .,-")
+            # Reject obvious non-city captures (sentence fragments)
+            if 2 <= len(cand) <= 40 and cand.lower() != name:
+                cidade = cand
+        if not cidade:
+            cidade = text[idx:idx + len(name)].title()
+        return cidade, estado
+    return "", ""
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:

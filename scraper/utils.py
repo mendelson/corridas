@@ -723,3 +723,48 @@ def validate_image_url(url: str | None, source_domain: str | None = None) -> str
         if _reg_domain(src_host) != img_base:
             return None
     return url
+
+
+# ---------------------------------------------------------------------------
+# Kids-only event detection
+# ---------------------------------------------------------------------------
+# Kids-only races (dashes, "corrida mirim/infantil") pollute a road-running
+# calendar. The hard part is NOT removing *adult* races that merely offer a kids
+# sub-event ("Eagle Run 5K & Kids Run", "Missoula Marathon … Kids Marathon").
+# Rule: an event is kids-only when its title is a known kids brand, OR it carries
+# explicit kids wording AND has no adult running distance (>= 3 km).
+_KIDS_BRAND_RE = re.compile(r"\bmarotinga\b|pezinho\s+veloz", re.IGNORECASE)
+_KIDS_WORD_RE = re.compile(
+    r"\binfantil\b|\bmirim\b|\bkids?\s+run\b|\bkids?\s+dash\b"
+    r"|corrida\s+(?:de\s+)?kids|baby\s+run|\bkids?\s+marathon\b",
+    re.IGNORECASE,
+)
+
+
+def _has_adult_distance(distancias) -> bool:
+    for d in distancias or []:
+        km = getattr(d, "km", None)
+        if km is None and isinstance(d, dict):
+            km = d.get("km")
+        if isinstance(km, (int, float)) and km >= 3.0:
+            return True
+        if isinstance(km, str):  # miles string like "1.8 mi"
+            m = re.match(r"\s*([0-9]+(?:\.[0-9]+)?)", km)
+            if m and float(m.group(1)) * 1.60934 >= 3.0:
+                return True
+    return False
+
+
+def is_kids_event(titulo: str, distancias=None) -> bool:
+    """True for kids-only races (filtered out of the calendar).
+
+    Conservative: a known kids brand always counts; otherwise kids wording only
+    counts when there is no adult distance, so adult races with a kids sub-event
+    are kept.
+    """
+    t = titulo or ""
+    if _KIDS_BRAND_RE.search(t):
+        return True
+    if _KIDS_WORD_RE.search(t) and not _has_adult_distance(distancias):
+        return True
+    return False

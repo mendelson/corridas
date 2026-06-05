@@ -1,10 +1,10 @@
 [proxy] corrida.poupex.com.br falhou diretamente (ConnectTimeout: _ssl.c:993: The handshake operation timed out), tentando Scrapestack...
-[proxy] Scrapestack falhou para corrida.poupex.com.br: timed out
+[proxy] Scrapestack retornou 429 para corrida.poupex.com.br, tentando Apify...
 [proxy] Apify falhou para corrida.poupex.com.br: 403 Forbidden
 [Corrida POUPEX] proxy chain falhou: todos os métodos falharam para https://corrida.poupex.com.br/; tentando Playwright...
 [playwright] https://corrida.poupex.com.br/: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://corrida.poupex.com.br/", waiting until "load"
+  - navigating to "https://corrida.poupex.com.br/", waiting until "domcontentloaded"
 
 [Corrida POUPEX] todos os métodos falharam
 ⚠️   poupex: 0 eventos retornados

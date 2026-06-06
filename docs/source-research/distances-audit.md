@@ -61,7 +61,7 @@ listed below.
 | `atletis`, `ativo`, `brasil_corrida`, `tf_sports`, `tf_sports_app`, `portal_das_corridas`, `halfmarathons` | structured fields (primary) | safe primary, naive fallback | primary path safe; fallbacks low-impact, hardened where touched |
 | `runner_brasil` | `Percurso: 5 / 10 / 21 km` | splits on all `\d+` | already safe |
 | `runsignup`, `raceroster`, `circuito_das_estacoes`, `asdeporte`(structured) | structured per-distance | one token each | safe — no change |
-| `sp_city_marathon`, `maratona_rio`, `maratona_porto_alegre`, all `majors/*` | hardcoded constants | n/a | safe — no change |
+| `sp_city_marathon`, `maratona_rio`, `maratona_porto_alegre`, all `evento_unico/*` | hardcoded constants | n/a | safe — no change |
 | `volta_do_lago` | prose | naive per-number | source being disabled |
 | `world_athletics` | título | naive per-number | source disabled |
 

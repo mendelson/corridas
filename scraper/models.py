@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import Literal
 
 # "inscricao"  — platform where the user actually registers (Ticket Sports, RunSignup, …)
-# "organizador" — official race organizer site (Maratona Rio, TF Sports, majors, …)
+# "organizador" — official race organizer site (Maratona Rio, TF Sports, eventos únicos, …)
 # "calendario"  — aggregator/calendar that lists events but doesn't process registration
 FonteTipo = Literal["inscricao", "organizador", "calendario"]
 

@@ -50,7 +50,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-06-06 19:50 | ✅ | 2026-06-06 19:50 |
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-06-06 19:50 | ✅ | 2026-06-06 19:50 |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| São Silvestre<!--majors/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
 | Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
 
 ### Fontes mexicanas
@@ -72,36 +72,38 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 ## Grandes corridas internacionais
 
-22 scrapers dedicados em `scraper/sources/majors/`. Cada um retorna 1–2 edições futuras;
-quando todas as datas conhecidas já passaram, o scraper aguarda o anúncio da próxima edição.
+Scrapers de evento único dedicados, em `scraper/sources/evento_unico/` (a São Silvestre
+usa o mesmo scaffold mas está listada acima, nas fontes brasileiras). Cada um retorna 1–2
+edições futuras; quando todas as datas conhecidas já passaram, o scraper aguarda o anúncio
+da próxima edição.
 
 Os 7 marcados com ⭐ são os **Abbott World Marathon Majors** (as "Six Majors" + Sydney).
 Os demais são grandes provas internacionais de destaque mas não pertencem ao grupo WMM.
 
 | Evento | ⭐ WMM | Em uso | URL oficial | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tokyo Marathon<!--majors/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| Boston Marathon<!--majors/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| TCS London Marathon<!--majors/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| BMW Berlin Marathon<!--majors/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Bank of America Chicago Marathon<!--majors/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-06-06 19:51 | ✅ | 2026-06-06 19:51 |
-| TCS New York City Marathon<!--majors/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| TCS Sydney Marathon<!--majors/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-06-06 19:53 | ✅ | 2026-06-06 19:53 |
-| Schneider Electric Paris Marathon<!--majors/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Brighton Marathon<!--majors/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| Volkswagen Prague Marathon<!--majors/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Copenhagen Marathon<!--majors/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-06-06 19:53 | ✅ | 2026-06-06 19:53 |
-| Edinburgh Marathon Festival<!--majors/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| Stockholm Marathon<!--majors/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-06-06 19:53 | ✅ | 2026-06-06 19:53 |
-| Manchester Marathon<!--majors/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| Great North Run<!--majors/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
-| Cardiff Half Marathon<!--majors/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-06-06 19:52 | ✅ | 2026-06-06 19:52 |
-| Manchester Half Marathon<!--majors/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-06-06 19:50 | ✅ | 2026-06-06 19:50 |
-| TCS Amsterdam Marathon<!--majors/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Venice Marathon<!--majors/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Dublin City Marathon<!--majors/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Athens Classic Marathon<!--majors/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
-| Valencia Trinidad Alfonso Marathon<!--majors/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-06-06 19:50 | ✅ | 2026-06-06 19:50 |
+| Tokyo Marathon<!--evento_unico/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| Boston Marathon<!--evento_unico/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| TCS London Marathon<!--evento_unico/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| BMW Berlin Marathon<!--evento_unico/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Bank of America Chicago Marathon<!--evento_unico/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-06-06 19:51 | ✅ | 2026-06-06 19:51 |
+| TCS New York City Marathon<!--evento_unico/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| TCS Sydney Marathon<!--evento_unico/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-06-06 19:53 | ✅ | 2026-06-06 19:53 |
+| Schneider Electric Paris Marathon<!--evento_unico/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Brighton Marathon<!--evento_unico/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| Volkswagen Prague Marathon<!--evento_unico/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Copenhagen Marathon<!--evento_unico/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-06-06 19:53 | ✅ | 2026-06-06 19:53 |
+| Edinburgh Marathon Festival<!--evento_unico/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| Stockholm Marathon<!--evento_unico/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-06-06 19:53 | ✅ | 2026-06-06 19:53 |
+| Manchester Marathon<!--evento_unico/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| Great North Run<!--evento_unico/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-06-06 19:49 | ✅ | 2026-06-06 19:49 |
+| Cardiff Half Marathon<!--evento_unico/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-06-06 19:52 | ✅ | 2026-06-06 19:52 |
+| Manchester Half Marathon<!--evento_unico/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-06-06 19:50 | ✅ | 2026-06-06 19:50 |
+| TCS Amsterdam Marathon<!--evento_unico/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Venice Marathon<!--evento_unico/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Dublin City Marathon<!--evento_unico/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Athens Classic Marathon<!--evento_unico/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-06-06 19:48 | ✅ | 2026-06-06 19:48 |
+| Valencia Trinidad Alfonso Marathon<!--evento_unico/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-06-06 19:50 | ✅ | 2026-06-06 19:50 |
 
 ---
 
@@ -118,7 +120,7 @@ configurações básicas anti-detecção (desativa `navigator.webdriver`, simula
 `window.chrome`). Isso funciona para alguns WAFs, mas não para Cloudflare em
 modo estrito.
 
-Os scrapers de grandes corridas internacionais (`majors/`) têm fallback adicional: quando o HTTP falha, retornam o evento com a data conhecida (`known_date`) em vez de retornar zero resultados.
+Os scrapers de grandes corridas internacionais (`evento_unico/`) têm fallback adicional: quando o HTTP falha, retornam o evento com a data conhecida (`known_date`) em vez de retornar zero resultados.
 
 Buscas de fotos (`fotos.py`) usam `get_direct()`, que não lança exceção em status de WAF — para essas buscas opcionais de imagem.
 
@@ -165,7 +167,7 @@ corridas/
 │   ├── fotos.py             # Busca de fotos em plataformas (desativada temporariamente)
 │   └── sources/
 │       ├── *.py             # Scrapers brasileiros e internacionais
-│       └── majors/          # Scrapers de grandes corridas internacionais
+│       └── evento_unico/          # Scrapers de grandes corridas internacionais
 ├── data/
 │   ├── corridas.json        # Base acumulativa (versionada no repo)
 │   └── last-scraper.log     # Log da última execução do CI

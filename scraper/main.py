@@ -55,7 +55,7 @@ from .sources import (
     # letsdothis,   # inviável: WAF bloqueia todos os proxies — ver README
     # world_athletics,  # desativada 2026-06-04 — ver docs/source-research/world_athletics.md
 )
-from .sources.majors import (
+from .sources.evento_unico import (
     tokyo,
     boston,
     london,
@@ -193,7 +193,7 @@ _LEGACY_TIPO: dict[str, str] = {
     "TF Sports":                        "organizador",
     "TF Sports App":                    "organizador",
     "Volta do Lago":                    "organizador",
-    # majors
+    # eventos únicos (grandes corridas internacionais)
     "Amsterdam Marathon":               "organizador",
     "Athens Classic Marathon":          "organizador",
     "BMW Berlin Marathon":              "organizador",
@@ -795,7 +795,7 @@ def _source_status_key(src) -> str:
     """Map a source module to its key in source-status.json.
 
     scraper.sources.carreras_mexico → carreras_mexico
-    scraper.sources.majors.london   → majors/london
+    scraper.sources.evento_unico.london   → evento_unico/london
     """
     name = src.__name__
     prefix = "scraper.sources."

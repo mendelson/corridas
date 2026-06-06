@@ -96,7 +96,7 @@ jobs:
               echo "sources=" >> "$GITHUB_OUTPUT"
             else
               CHANGED=$(git diff --name-only "origin/main...HEAD" \
-                -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+                -- 'scraper/sources/*.py' 'scraper/sources/evento_unico/*.py' \
                 | grep -v '__init__\.py' \
                 | sed 's|scraper/sources/||; s|\.py$||' \
                 | tr '\n' ',' | sed 's/,$//')
@@ -118,7 +118,7 @@ jobs:
               echo "sources=" >> "$GITHUB_OUTPUT"
             else
               CHANGED=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
-                -- 'scraper/sources/*.py' 'scraper/sources/majors/*.py' \
+                -- 'scraper/sources/*.py' 'scraper/sources/evento_unico/*.py' \
                 | grep -v '__init__\.py' \
                 | sed 's|scraper/sources/||; s|\.py$||' \
                 | tr '\n' ',' | sed 's/,$//')

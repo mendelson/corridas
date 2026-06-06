@@ -21,7 +21,7 @@ name: Sondar URL
 #
 #    probe-config.json format — scraper source test:
 #      {"source": "tf_sports"}        ← runs python -m scraper.test_source tf_sports
-#      {"source": "majors/london"}    ← works for majors/ sub-sources too
+#      {"source": "evento_unico/london"}    ← works for evento_unico/ sub-sources too
 
 on:
   workflow_dispatch:

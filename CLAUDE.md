@@ -17,10 +17,10 @@ playwright install chromium --with-deps
 python -m scraper.main
 
 # Test a single source (used by CI). Path is the module name under scraper/sources/
-# or scraper/sources/majors/. Prints first 5 events and FAILURE_NOTE: line on
+# or scraper/sources/evento_unico/. Prints first 5 events and FAILURE_NOTE: line on
 # failure, returns exit 1 on failure or zero events.
 python -m scraper.test_source ticket_sports
-python -m scraper.test_source majors/london
+python -m scraper.test_source evento_unico/london
 
 # Debug a source with full pipeline log via GitHub Actions UI
 # → run "Debug Scraper" workflow with input=<source-name>
@@ -68,8 +68,8 @@ WAF statuses — used by `fotos.py` for optional image fetches.
 
 1. Create `scraper/sources/<name>.py` exporting `scrape() -> list[Corrida]`. Use `from ..models import Corrida, Distancia, FonteInfo` and `from ..http_client import get`. Each `Corrida` must include exactly one `FonteInfo` (the merger handles multi-source consolidation later). Set `first_seen_at` / `updated_at` to `now_iso()`.
 2. Register the module in **both** `scraper/sources/__init__.py` (the import block) and `scraper/main.py` (`SOURCES` list — order is unimportant but keep section comments consistent).
-3. Add the module name (e.g. `runsignup` or `majors/london`) to the dropdown options in `.github/workflows/monitor-source-health.yml`. Sort alphabetically within the existing groupings.
-4. Reference patterns: `ticket_sports.py` for direct JSON APIs, `tf_sports.py` for Strapi APIs with Bearer tokens scraped from a Next.js bundle, `runsignup.py` for paginated REST APIs, `majors/_base.py` for the shared single-event scaffold.
+3. Add the module name (e.g. `runsignup` or `evento_unico/london`) to the dropdown options in `.github/workflows/monitor-source-health.yml`. Sort alphabetically within the existing groupings.
+4. Reference patterns: `ticket_sports.py` for direct JSON APIs, `tf_sports.py` for Strapi APIs with Bearer tokens scraped from a Next.js bundle, `runsignup.py` for paginated REST APIs, `evento_unico/_base.py` for the shared single-event scaffold.
 5. Strict scope: title-keyword filtering (running terms in, non-running out) is mandatory for general-purpose platforms (`sympla.py`, `runsignup.py`) — they list thousands of unrelated events. Always apply both an inclusion and an exclusion regex, mirroring `sympla.py` `_RUNNING_KW` / `_NON_RUNNING_KW`.
 6. **Every `FonteInfo` must declare `tipo`** — one of the three values below. This is enforced by `test_source.py` (hard failure if missing or invalid). The frontend uses `tipo` to order source buttons (inscription/organizer first, calendar last).
 
@@ -80,7 +80,7 @@ Every source module must set `tipo` on its `FonteInfo`. The three categories and
 | `tipo` | Meaning | Current sources |
 |---|---|---|
 | `"inscricao"` | Platform where the user actually registers | `atletis`, `ativo`, `asdeporte`, `minhas_inscricoes`, `portal_das_corridas`, `raceroster`, `runsignup`, `ticket_sports`, `yescom` |
-| `"organizador"` | Official race organizer — owns and runs the event | `circuito_das_estacoes`, `maratona_porto_alegre`, `maratona_rio`, `mks_esportes`, `sao_silvestre`, `sesc_df`, `sp_city_marathon`, `tf_sports`, `tf_sports_app`, `usroadrunning`, `volta_do_lago`, all `majors/` |
+| `"organizador"` | Official race organizer — owns and runs the event | `circuito_das_estacoes`, `maratona_porto_alegre`, `maratona_rio`, `mks_esportes`, `sao_silvestre`, `sesc_df`, `sp_city_marathon`, `tf_sports`, `tf_sports_app`, `usroadrunning`, `volta_do_lago`, all `evento_unico/` |
 | `"calendario"` | Aggregator/calendar that lists events but doesn't process registration | `bora_correr`, `brasil_corrida`, `brasil_que_corre`, `carreras_mexico`, `central_da_corrida`, `correr_brasilia`, `corridas_brasil`, `halfmarathons`, `iguana_sports`, `largada_esportiva`, `runner_brasil`, `world_athletics` |
 
 When in doubt: if you can click a "register" button on that source's page and pay money, it's `"inscricao"`. If the site is the race's official page, it's `"organizador"`. Otherwise, `"calendario"`.
@@ -241,7 +241,7 @@ Choose the right pattern:
 | Paginated REST JSON API | `runsignup.py`, `halfmarathons.py` |
 | Next.js `__NEXT_DATA__` | `asdeporte.py` |
 | Strapi / Next.js with token in JS bundle | `tf_sports.py` |
-| Single known event page | `scraper/sources/majors/_base.py` |
+| Single known event page | `scraper/sources/evento_unico/_base.py` |
 | Playwright needed | `largada_esportiva.py` |
 
 Multi-sport platforms (anything listing cycling, triathlon, yoga, …) **must**

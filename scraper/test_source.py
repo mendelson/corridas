@@ -16,7 +16,7 @@ def run(source: str) -> int:
     mod = None
     for mod_path in [
         f"scraper.sources.{source}",
-        f"scraper.sources.majors.{source.split('/')[-1]}",
+        f"scraper.sources.evento_unico.{source.split('/')[-1]}",
     ]:
         try:
             mod = importlib.import_module(mod_path)
@@ -49,7 +49,7 @@ def run(source: str) -> int:
     # this line and persists it into data/source-status.json).
     print(f"EVENT_COUNT:{n}")
     if n == 0:
-        if source.startswith("majors/"):
+        if source.startswith("evento_unico/"):
             print(f"ℹ️   {source}: 0 eventos (sem edição futura anunciada — comportamento esperado entre edições)")
             return 0
         print(f"⚠️   {source}: 0 eventos retornados")

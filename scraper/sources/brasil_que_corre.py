@@ -92,9 +92,9 @@ _TIME_RE = re.compile(
 
 def _fetch_horario_from_link(url: str) -> str | None:
     """Fetch external event page (with JS-rendering fallback) and extract start time."""
-    for render_js in (False, True):
+    for _attempt in range(2):
         try:
-            resp = get(url, render_js=render_js)
+            resp = get(url)
             if resp.status_code != 200:
                 continue
             soup = BeautifulSoup(resp.text, "lxml")

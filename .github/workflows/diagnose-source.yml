@@ -36,18 +36,10 @@ jobs:
 
       - name: Run scraper (full pipeline)
         if: ${{ github.event.inputs.source == 'all' || github.event.inputs.source == '' }}
-        env:
-          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
-          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
-          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: python -m scraper.main 2>&1 | tee debug.log
 
       - name: Run single source
         if: ${{ github.event.inputs.source != 'all' && github.event.inputs.source != '' }}
-        env:
-          SCRAPESTACK_KEY: ${{ secrets.SCRAPESTACK_KEY }}
-          APIFY_PROXY_PASSWORD: ${{ secrets.APIFY_PROXY_PASSWORD }}
-          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: |
           python - << 'EOF'
           import sys, importlib, json

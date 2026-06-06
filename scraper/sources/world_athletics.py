@@ -11,8 +11,8 @@ Distances are inferred from the competition name.
 
 Note: The WA GraphQL API requires rotating credentials that are embedded in
 the site's JS and change periodically — that approach is not maintainable.
-This HTML-scraping approach uses the public page directly, with the standard
-http_client proxy chain (Scrapestack / Apify) as fallback for Cloudflare.
+This HTML-scraping approach uses the public page directly, falling back to
+Playwright (basic anti-bot evasion) when the direct request hits Cloudflare.
 """
 from __future__ import annotations
 import json
@@ -336,15 +336,15 @@ def _infer_distances(name: str) -> list[Distancia]:
 
 
 def _fetch_horario(url: str) -> str | None:
-    """Fetch the event page and extract the start time (plain GET first, then render_js)."""
-    for render_js in (False, True):
-        result = _fetch_horario_once(url, render_js=render_js)
+    """Fetch the event page and extract the start time (plain GET, retried)."""
+    for _attempt in range(2):
+        result = _fetch_horario_once(url)
         if result is not None:
             return result
     return None
 
 
-def _fetch_horario_once(url: str, render_js: bool = False) -> str | None:
+def _fetch_horario_once(url: str) -> str | None:
     """Single fetch attempt for event start time.
 
     Tries (in order):
@@ -354,7 +354,7 @@ def _fetch_horario_once(url: str, render_js: bool = False) -> str | None:
       4. Generic time regex as last resort
     """
     try:
-        resp = get(url, timeout=20, render_js=render_js)
+        resp = get(url, timeout=20)
         if resp.status_code != 200:
             return None
         soup = BeautifulSoup(resp.text, "lxml")

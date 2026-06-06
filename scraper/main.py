@@ -12,7 +12,7 @@ from pathlib import Path
 
 from .merger import are_duplicates, merge_rodada
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
-from .utils import now_iso, today_iso, normalize_cidade, validate_image_url
+from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event
 from .http_client import get as http_get
 from . import geo as _geo
 
@@ -52,6 +52,7 @@ from .sources import (
     carreras_mexico,
     raceroster,
     usroadrunning,
+    worldsmarathons,
     # letsdothis,   # inviável: WAF bloqueia todos os proxies — ver README
     # world_athletics,  # desativada 2026-06-04 — ver docs/source-research/world_athletics.md
 )
@@ -145,6 +146,7 @@ SOURCES = [
     halfmarathons,
     raceroster,
     usroadrunning,
+    worldsmarathons,
     # Mexican running calendars
     asdeporte,
     carreras_mexico,
@@ -766,6 +768,13 @@ def _is_valid(c: Corrida) -> bool:
     if any(kw in titulo_lower for kw in _NON_RUNNING_KW):
         return False
 
+    # Reject kids-only races (brand names, or kids wording with no adult distance).
+    # This also lets stale kids events age out of an existing dataset even when
+    # their source page still resolves (the reconcile link-rescue would otherwise
+    # keep them forever).
+    if is_kids_event(c.titulo, c.distancias):
+        return False
+
     # Reject triathlon events named "Tri<number>" (e.g. "Tri257")
     if _TRI_DIGIT_RE.search(titulo_lower):
         return False
@@ -978,6 +987,23 @@ def _drop_linkless_events(corridas: list[Corrida]) -> list[Corrida]:
     return ok
 
 
+def _drop_kids_events(corridas: list[Corrida]) -> list[Corrida]:
+    """Drop kids-only races from any source.
+
+    `_is_valid` already rejects them on the reconcile path, but fresh events from
+    a source that doesn't filter kids itself only reach here, so this final pass
+    guarantees no kids-only event is saved. Adult races that merely offer a kids
+    sub-event are kept (see utils.is_kids_event)."""
+    ok, dropped = [], []
+    for c in corridas:
+        (dropped if is_kids_event(c.titulo, c.distancias) else ok).append(c)
+    if dropped:
+        print(f"[main] {len(dropped)} evento(s) kids removido(s):")
+        for c in dropped[:20]:
+            print(f"  • {c.id} ({c.titulo!r})")
+    return ok
+
+
 def _drop_events_without_horario(corridas: list[Corrida]) -> list[Corrida]:
     """Drop events that have no published start time.
 
@@ -1127,6 +1153,7 @@ def main() -> None:
     final = _drop_nonunique_link_events(final)
     _ensure_inscricao_links(final)
     final = _drop_linkless_events(final)
+    final = _drop_kids_events(final)
     final = _drop_events_without_horario(final)
     final = _dedupe_by_id(final)
     # _find_all_photos(final)

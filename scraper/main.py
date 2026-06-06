@@ -107,12 +107,13 @@ SOURCES = [
     circuito_das_estacoes,
     # Brazilian running event platforms
     largada_esportiva,
-    # Single major events (BR)
+    # Single-event sources (BR)
     maratona_rio,
     maratona_porto_alegre,
     sp_city_marathon,
     sao_silvestre,
-    # World Majors
+    # Single-event sources (international) — the ⭐ ones below are the 7 Abbott
+    # World Marathon Majors; the rest are other notable international races.
     tokyo,
     boston,
     london,
@@ -121,7 +122,7 @@ SOURCES = [
     nyc,
     sydney,
     venice,
-    # European Marathons
+    # — more European races
     prague,
     copenhagen,
     stockholm,

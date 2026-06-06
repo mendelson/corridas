@@ -6,7 +6,9 @@ Usage:
     python scripts/update_source_status.py <results_dir>
 
 Each *.json file in <results_dir> must contain:
-    {"source": "<module_path>", "status": "ok|fail", "tested_at": "<ISO timestamp>"}
+    {"source": "<module_path>", "status": "ok|fail", "tested_at": "<ISO timestamp>",
+     "note": "<failure note>", "count": <event count>}
+("note" and "count" are optional; "count" is persisted as "event_count".)
 
 Persistent state lives in data/source-status.json.
 The README is updated in-place: status columns are added on the first run and
@@ -131,10 +133,16 @@ def _apply_results(status: dict, results_dir: Path) -> dict:
             note = None
             if not ok:
                 note = r.get("note") or _STATIC_NOTES.get(source)
+            # Event count from this run. Fall back to the previously stored value
+            # when the result JSON predates the count field (keeps old entries stable).
+            count = r.get("count")
+            if count is None:
+                count = prev.get("event_count")
             status[source] = {
                 "tested_at": tested_at,
                 "status": "ok" if ok else "fail",
                 "failure_note": note,
+                "event_count": count,
                 "last_success": tested_at if ok else prev.get("last_success"),
             }
         except Exception as e:

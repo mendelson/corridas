@@ -80,7 +80,7 @@ Every source module must set `tipo` on its `FonteInfo`. The three categories and
 | `tipo` | Meaning | Current sources |
 |---|---|---|
 | `"inscricao"` | Platform where the user actually registers | `atletis`, `ativo`, `asdeporte`, `minhas_inscricoes`, `portal_das_corridas`, `raceroster`, `runsignup`, `ticket_sports`, `yescom` |
-| `"organizador"` | Official race organizer — owns and runs the event | `circuito_das_estacoes`, `maratona_porto_alegre`, `maratona_rio`, `mks_esportes`, `sao_silvestre`, `sesc_df`, `sp_city_marathon`, `tf_sports`, `tf_sports_app`, `volta_do_lago`, all `majors/` |
+| `"organizador"` | Official race organizer — owns and runs the event | `circuito_das_estacoes`, `maratona_porto_alegre`, `maratona_rio`, `mks_esportes`, `sao_silvestre`, `sesc_df`, `sp_city_marathon`, `tf_sports`, `tf_sports_app`, `usroadrunning`, `volta_do_lago`, all `majors/` |
 | `"calendario"` | Aggregator/calendar that lists events but doesn't process registration | `bora_correr`, `brasil_corrida`, `brasil_que_corre`, `carreras_mexico`, `central_da_corrida`, `correr_brasilia`, `corridas_brasil`, `halfmarathons`, `iguana_sports`, `largada_esportiva`, `runner_brasil`, `world_athletics` |
 
 When in doubt: if you can click a "register" button on that source's page and pay money, it's `"inscricao"`. If the site is the race's official page, it's `"organizador"`. Otherwise, `"calendario"`.

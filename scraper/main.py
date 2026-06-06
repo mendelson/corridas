@@ -51,6 +51,7 @@ from .sources import (
     asdeporte,
     carreras_mexico,
     raceroster,
+    usroadrunning,
     worldsmarathons,
     # letsdothis,   # inviável: WAF bloqueia todos os proxies — ver README
     # world_athletics,  # desativada 2026-06-04 — ver docs/source-research/world_athletics.md
@@ -144,6 +145,7 @@ SOURCES = [
     runsignup,
     halfmarathons,
     raceroster,
+    usroadrunning,
     worldsmarathons,
     # Mexican running calendars
     asdeporte,

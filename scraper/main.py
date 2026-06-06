@@ -608,7 +608,7 @@ def _enrich_images(corridas: list[Corrida]) -> None:
         return c, None
 
     found = 0
-    with ThreadPoolExecutor(max_workers=10) as ex:
+    with ThreadPoolExecutor(max_workers=16) as ex:
         futures = {ex.submit(_try_fetch, c): c for c in missing}
         for fut in as_completed(futures):
             try:
@@ -672,7 +672,7 @@ def reconcile(
     # Check inscription links in parallel for unmatched future events
     if unmatched_future:
         print(f"[main] verificando links de {len(unmatched_future)} evento(s) não encontrado(s) no scrape...")
-        with ThreadPoolExecutor(max_workers=8) as executor:
+        with ThreadPoolExecutor(max_workers=16) as executor:
             futures = {executor.submit(_check_and_refresh_links, ev): ev for ev in unmatched_future}
             for future in as_completed(futures):
                 existing = futures[future]
@@ -846,7 +846,11 @@ def run_all_scrapers(selective: frozenset[str] = frozenset()) -> list[Corrida]:
         print(f"[main] priorizando {len(failed)} fonte(s) com falha anterior: "
               f"{', '.join(_source_status_key(s) for s in failed)}")
 
-    with ThreadPoolExecutor(max_workers=8) as executor:
+    # Each source hits a distinct domain, so concurrency is bounded by the runner,
+    # not a shared rate limit (the Scrapestack 429 that justified keeping this at 8
+    # was removed in #208). Raised to 12 to drain the queue behind the few slow
+    # Playwright-fallback sources faster.
+    with ThreadPoolExecutor(max_workers=12) as executor:
         futures = {executor.submit(src.scrape): src.__name__ for src in ordered}
         for future in as_completed(futures):
             source_name = futures[future]

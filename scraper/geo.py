@@ -7,7 +7,9 @@ from pathlib import Path
 
 from unidecode import unidecode
 
-_LOCATIONS_DIR = Path(__file__).parent.parent / "locations"
+# Canonical subdivisions index — the SAME directory the frontend (web/app.js)
+# reads. There is exactly one copy of this reference data, under web/locations/.
+_LOCATIONS_DIR = Path(__file__).parent.parent / "web" / "locations"
 _CACHE_PATH = Path(__file__).parent.parent / "data" / "geo_cache.json"
 
 # Loaded once at import time

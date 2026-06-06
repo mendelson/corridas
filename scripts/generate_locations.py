@@ -1,4 +1,9 @@
-"""Generate locations/*.json — one file per country with official subdivisions."""
+"""Generate web/locations/*.json — one file per country with official subdivisions.
+
+web/locations/ is the single canonical home for the subdivisions reference data:
+it is served statically to the frontend (web/app.js) and read by the scraper's
+geo resolver (scraper/geo.py). There is no separate top-level locations/ copy.
+"""
 from __future__ import annotations
 import json
 import os
@@ -1806,7 +1811,7 @@ _DATA: list[tuple[str, str, list[tuple[str, str]]]] = [
 
 
 def main() -> None:
-    out_dir = os.path.join(os.path.dirname(__file__), "..", "locations")
+    out_dir = os.path.join(os.path.dirname(__file__), "..", "web", "locations")
     os.makedirs(out_dir, exist_ok=True)
     for code, name, subs in _DATA:
         data = {

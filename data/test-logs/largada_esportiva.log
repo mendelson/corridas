@@ -1,43 +1,29 @@
-[proxy] largadaesportiva.com.br falhou diretamente (ConnectTimeout: timed out), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para largadaesportiva.com.br, tentando Apify...
-[proxy] Apify falhou para largadaesportiva.com.br: 403 Forbidden
-[Largada Esportiva] HTTP https://largadaesportiva.com.br/eventos: todos os métodos falharam para https://largadaesportiva.com.br/eventos
-[proxy] largadaesportiva.com.br falhou diretamente (ConnectTimeout: timed out), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para largadaesportiva.com.br, tentando Apify...
-[proxy] Apify falhou para largadaesportiva.com.br: 403 Forbidden
-[Largada Esportiva] HTTP https://largadaesportiva.com.br/corridas: todos os métodos falharam para https://largadaesportiva.com.br/corridas
-[proxy] largadaesportiva.com.br falhou diretamente (ConnectTimeout: timed out), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para largadaesportiva.com.br, tentando Apify...
-[proxy] Apify falhou para largadaesportiva.com.br: 403 Forbidden
-[Largada Esportiva] HTTP https://largadaesportiva.com.br/calendario: todos os métodos falharam para https://largadaesportiva.com.br/calendario
-[proxy] largadaesportiva.com.br falhou diretamente (ConnectTimeout: timed out), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para largadaesportiva.com.br, tentando Apify...
-[proxy] Apify falhou para largadaesportiva.com.br: 403 Forbidden
-[Largada Esportiva] HTTP https://largadaesportiva.com.br/corridas-de-rua: todos os métodos falharam para https://largadaesportiva.com.br/corridas-de-rua
-[proxy] largadaesportiva.com.br falhou diretamente (ConnectTimeout: timed out), tentando Scrapestack...
-[proxy] Scrapestack retornou 429 para largadaesportiva.com.br, tentando Apify...
-[proxy] Apify falhou para largadaesportiva.com.br: 403 Forbidden
-[Largada Esportiva] HTTP https://largadaesportiva.com.br: todos os métodos falharam para https://largadaesportiva.com.br
+[Largada Esportiva] HTTP https://largadaesportiva.com.br/eventos: timed out
+[Largada Esportiva] HTTP https://largadaesportiva.com.br/corridas: timed out
+[Largada Esportiva] HTTP https://largadaesportiva.com.br/calendario: timed out
+[Largada Esportiva] HTTP https://largadaesportiva.com.br/corridas-de-rua: timed out
+[Largada Esportiva] HTTP https://largadaesportiva.com.br: timed out
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://largadaesportiva.com.br/eventos", waiting until "load"
+  - navigating to "https://largadaesportiva.com.br/eventos", waiting until "domcontentloaded"
 
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://largadaesportiva.com.br/corridas", waiting until "load"
+  - navigating to "https://largadaesportiva.com.br/corridas", waiting until "domcontentloaded"
 
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://largadaesportiva.com.br/calendario", waiting until "load"
+  - navigating to "https://largadaesportiva.com.br/calendario", waiting until "domcontentloaded"
 
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://largadaesportiva.com.br/corridas-de-rua", waiting until "load"
+  - navigating to "https://largadaesportiva.com.br/corridas-de-rua", waiting until "domcontentloaded"
 
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: Page.goto: Timeout 30000ms exceeded.
 Call log:
-  - navigating to "https://largadaesportiva.com.br/", waiting until "load"
+  - navigating to "https://largadaesportiva.com.br/", waiting until "domcontentloaded"
 
 [Largada Esportiva] 0 corridas encontradas
+EVENT_COUNT:0
 ⚠️   largada_esportiva: 0 eventos retornados
 FAILURE_NOTE:0 eventos

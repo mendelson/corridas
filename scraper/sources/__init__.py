@@ -16,10 +16,6 @@ from . import (
     maratona_rio,
     maratona_porto_alegre,
     sp_city_marathon,
-    # poupex,  # desativada 2026-06-06: corrida.poupex.com.br não completa o handshake
-    #          # TLS a partir dos runners (httpx: "_ssl.c:993 handshake timed out" +
-    #          # Playwright: Page.goto timeout 30s). Falha confirmada em 2 runs (10:53
-    #          # e re-check 17:30). Reativar quando o site voltar a responder.
     yescom,
     ativo,
     mks_esportes,

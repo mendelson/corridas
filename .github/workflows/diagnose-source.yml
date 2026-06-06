@@ -44,7 +44,7 @@ jobs:
           python - << 'EOF'
           import sys, importlib, json
           source = "${{ github.event.inputs.source }}"
-          for mod_path in [f"scraper.sources.majors.{source}", f"scraper.sources.{source}"]:
+          for mod_path in [f"scraper.sources.evento_unico.{source}", f"scraper.sources.{source}"]:
               try:
                   mod = importlib.import_module(mod_path)
                   print(f"Loaded: {mod_path}")
@@ -63,11 +63,11 @@ jobs:
               except ModuleNotFoundError:
                   continue
           print(f"Source '{source}' not found. Available sources:")
-          import pkgutil, scraper.sources as s, scraper.sources.majors as m
+          import pkgutil, scraper.sources as s, scraper.sources.evento_unico as m
           for info in pkgutil.iter_modules(s.__path__):
               if not info.name.startswith('_'):
                   print(f"  {info.name}")
-          print("  majors/:")
+          print("  evento_unico/:")
           for info in pkgutil.iter_modules(m.__path__):
               if not info.name.startswith('_'):
                   print(f"    {info.name}")

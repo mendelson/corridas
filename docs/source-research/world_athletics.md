@@ -121,9 +121,9 @@ essa página não há horário.
    o `urlSlug` certo (ou por `CalendarEvent.id`), a resposta provavelmente traz o
    horário. Requer descobrir o endpoint, headers e se há credencial rotativa (a WA
    historicamente embute chaves rotativas no bundle JS — ver nota no CLAUDE.md).
-3. **Fonte de horário alternativa por evento.** Muitos desses eventos são majors/
+3. **Fonte de horário alternativa por evento.** Muitos desses eventos são evento_unico/
    label races grandes com site próprio (ex.: Houston, Valencia, Xiamen). Um
-   enriquecimento de horário via OG/JSON-LD do site oficial — como `majors/_base.py`
+   enriquecimento de horário via OG/JSON-LD do site oficial — como `evento_unico/_base.py`
    faz — poderia preencher o campo, mas exigiria um mapeamento nome→site por evento.
 
 ## Por que NÃO foi simplesmente "dropada"

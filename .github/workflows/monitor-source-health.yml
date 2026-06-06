@@ -81,29 +81,29 @@ on:
           - volta_do_lago
           - worldsmarathons
           - yescom
-          - majors/amsterdam
-          - majors/athens
-          - majors/berlin
-          - majors/boston
-          - majors/brighton
-          - majors/cardiff_half
-          - majors/chicago
-          - majors/copenhagen
-          - majors/dublin
-          - majors/edinburgh
-          - majors/great_north_run
-          - majors/london
-          - majors/manchester
-          - majors/manchester_half
-          - majors/nyc
-          - majors/paris
-          - majors/prague
-          - majors/sao_silvestre
-          - majors/stockholm
-          - majors/sydney
-          - majors/tokyo
-          - majors/valencia
-          - majors/venice
+          - evento_unico/amsterdam
+          - evento_unico/athens
+          - evento_unico/berlin
+          - evento_unico/boston
+          - evento_unico/brighton
+          - evento_unico/cardiff_half
+          - evento_unico/chicago
+          - evento_unico/copenhagen
+          - evento_unico/dublin
+          - evento_unico/edinburgh
+          - evento_unico/great_north_run
+          - evento_unico/london
+          - evento_unico/manchester
+          - evento_unico/manchester_half
+          - evento_unico/nyc
+          - evento_unico/paris
+          - evento_unico/prague
+          - evento_unico/sao_silvestre
+          - evento_unico/stockholm
+          - evento_unico/sydney
+          - evento_unico/tokyo
+          - evento_unico/valencia
+          - evento_unico/venice
 
 jobs:
   # ── Step 1: decide which sources to test ────────────────────────────────────

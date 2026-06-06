@@ -14,7 +14,7 @@ name: Corrigir Dados da Branch
 # Source keys match the monitor-source-health.yml dropdown values:
 #   runsignup, world_athletics, raceroster, ticket_sports, tf_sports,
 #   correr_brasilia, bora_correr, brasil_que_corre, portal_das_corridas,
-#   majors/london, majors/berlin, ... (module path without .py)
+#   evento_unico/london, evento_unico/berlin, ... (module path without .py)
 #
 # Special value:
 #   geo  — skip all scrapers, just re-run _resolve_missing_locations() using

@@ -33,6 +33,7 @@ def run(source: str) -> int:
     except Exception as exc:
         msg = str(exc)
         print(f"❌  {source}: exceção durante scrape()\n    {exc}")
+        print("EVENT_COUNT:0")
         if "403" in msg or "Forbidden" in msg:
             print("FAILURE_NOTE:HTTP 403")
         elif "timeout" in msg.lower() or "timed out" in msg.lower():
@@ -44,6 +45,9 @@ def run(source: str) -> int:
         return 1
 
     n = len(results)
+    # Emit a machine-parseable event count for every run (the CI workflow greps
+    # this line and persists it into data/source-status.json).
+    print(f"EVENT_COUNT:{n}")
     if n == 0:
         if source.startswith("majors/"):
             print(f"ℹ️   {source}: 0 eventos (sem edição futura anunciada — comportamento esperado entre edições)")

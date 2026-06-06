@@ -27,7 +27,7 @@ from .sources import (
     maratona_rio,
     maratona_porto_alegre,
     sp_city_marathon,
-    poupex,
+    # poupex,  # desativada 2026-06-06 — site com TLS handshake timeout (ver __init__.py)
     tf_sports,
     tf_sports_app,
     iguana_sports,
@@ -113,7 +113,7 @@ SOURCES = [
     maratona_porto_alegre,
     sp_city_marathon,
     sao_silvestre,
-    poupex,
+    # poupex,  # desativada 2026-06-06 — site com TLS handshake timeout (ver __init__.py)
     # World Majors
     tokyo,
     boston,

@@ -221,24 +221,27 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
         _, estado = _geo.resolve(city, "", pais)
     if not city and not estado:
         return None  # no location data — can't determine required estado
-    cidade = f"{city}, {country}" if city else country
-    localizacao = cidade
+    # cidade holds the bare city name (used for dedup/geo); the human-readable
+    # "City, Country" string lives in localizacao. Previously cidade carried the
+    # country too (e.g. "Savannah, EUA"), polluting the city field.
+    cidade = city
+    localizacao = f"{city}, {country}" if city else country
 
     # Links
     reg_link: str = meta.get("registration-link") or post.get("link") or _BASE
     event_link: str = post.get("link") or reg_link
 
-    # Distances. Priority: structured meta.distance → event title → external
-    # registration/results page (UltraSignup/RunSignup) for the handful of
-    # trail/ultra events whose distance the API leaves blank.
+    # Distances. Priority: structured meta.distance → external registration/
+    # results page (UltraSignup/RunSignup) for the handful of trail/ultra events
+    # whose distance the API leaves blank. The event title is NEVER parsed for
+    # distances — only explicit structured fields count.
     raw_distances: list[str] = meta.get("distance") or []
     distancias = _parse_distances(raw_distances)
     if not distancias:
-        distancias = _parse_distances_from_title(titulo)
-    if not distancias:
         distancias = _fetch_distances_external(reg_link)
     if not distancias:
-        # No determinable fixed distance anywhere (e.g. timed "24 Hour Run").
+        # No determinable fixed distance in any structured source — skip rather
+        # than guess from the title.
         print(f"[{SOURCE_NAME}] sem distância determinável, pulando: {titulo!r}")
         return None
 
@@ -293,11 +296,6 @@ def _parse_distances(raw: list[str]) -> list[Distancia]:
             seen.add(key)
             result.append(Distancia(km=km, data=None, horario=None))
     return sorted(result, key=lambda d: float(str(d.km).replace(" mi", "")) if " mi" not in str(d.km) else float(str(d.km).replace(" mi", "")) * 1.60934)
-
-
-def _parse_distances_from_title(title: str) -> list[Distancia]:
-    """Fallback: extract distances from post title when meta.distance is empty."""
-    return _extract_distance_tokens(title)
 
 
 # Spelled-out small numbers that appear in race names ("Five Mile", "Ten Mile").

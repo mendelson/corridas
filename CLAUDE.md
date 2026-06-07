@@ -302,6 +302,16 @@ This repository is often touched from a Claude Code sandbox where outbound HTTP 
 
 Event information (dates, location, title) must be obtained **explicitly** from page content, API response fields, or structured data — never inferred from ID strings, URL slugs, or opaque identifiers. Platform IDs like `02605131942` in a URL are opaque: they encode nothing meaningful and must never be decoded as a date, location, or any other value. If explicit data is not available from a page or API field, leave the field empty or unset — do not guess.
 
+## Never extract event data from the title
+
+The event **title** (the race name) is the source for the `titulo` field and **nothing else**. Never parse the title to obtain distances, dates, location/city/state, horário, or any other field — even when the value seems to be "right there" in the name (e.g. "Corrida 5K e 10K", "Maratona de Veneza", "… Half Marathon 10K 5K"). Those values must come from a **dedicated structured field or an explicit non-title region of the page** (an API distance field, a `<distance>`/percurso block, an address/venue field, a date field, etc.). If a field is only available inside the title, treat it as unavailable: leave it empty or skip the event — do not parse the name.
+
+This is **stricter** than the opaque-ID rule above: a title is real page content, but the race name is not a reliable structured carrier of distance/location, and parsing it produces wrong data (a "Montezuma" festival held in Savannah/NY, a "Copa" race whose distances are guessed, etc.).
+
+**Filtering by title keywords is different and still required.** Deciding *whether* an event is a running event from its name — the mandatory inclusion/exclusion regexes on general-purpose platforms (`_RUNNING_KW` / `_NON_RUNNING_KW`, see `sympla.py`/`runsignup.py`) — is allowed: that classifies the event, it does not extract a field value from the name. The ban is specifically on reading distances/dates/locations *out of* the title.
+
+Practical patterns to remove when you see them: `_distances_from_title(titulo)`, `_parse_distances(titulo)`, `infer_estado(..., titulo)`, `_parse_location(..., titulo)`, `_infer_distances(titulo)` and similar — replace with the structured field, or `geo.resolve(city, "", pais)` for the state, or skip the event.
+
 ## Source-specific research notes
 
 These are findings from past deep-dives. Read before touching the relevant sources.

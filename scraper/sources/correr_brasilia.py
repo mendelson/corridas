@@ -56,13 +56,13 @@ def _fetch_event_page(url: str, use_playwright: bool = False) -> tuple[list[Dist
             if not isinstance(data, dict) or data.get("@type") != "Event":
                 continue
             desc = data.get("description") or ""
-            dists = _extract_distances(desc, data.get("name") or "")
+            dists = _extract_distances(desc)
             _, horario = _parse_start_date(data.get("startDate") or "")
             if dists:
                 return dists, horario, reg_link
         # Fallback: parse free text
         text = soup.get_text(" ", strip=True)
-        dists = _extract_distances(text, "")
+        dists = _extract_distances(text)
         horario = _extract_horario(text)
         return dists, horario, reg_link
     except Exception:
@@ -317,7 +317,7 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     localizacao = f"{city}, {estado}"
 
     desc = ev.get("description") or ""
-    distancias = _extract_distances(desc, titulo_raw)
+    distancias = _extract_distances(desc)
 
     return Corrida(
         id=stable_id,
@@ -430,7 +430,7 @@ def _token_to_km(tok: str) -> float | None:
     return None
 
 
-def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
+def _extract_distances(desc: str) -> list[Distancia]:
     """Extract race distances from the event's dedicated distance enumeration.
 
     Distances come from the description, where the EventOn plugin embeds the
@@ -469,11 +469,6 @@ def _extract_distances(desc: str, titulo: str = "") -> list[Distancia]:
         # 4. Any numeric km mention in the description (named terms are NOT inferred
         #    here — this pass is prose-safe because it only reads explicit numbers).
         raw = _parse_km_values(desc, min_km=1.0, snap=False)
-    if not raw:
-        # 5. Last resort: an explicit parenthetical km list in the title ("(5km e 10km)").
-        paren = re.search(r"\([^)]*\d+\s*[kK][mM]?[^)]*\)", titulo)
-        if paren:
-            raw = _parse_km_values(paren.group(0), min_km=1.0, snap=False)
 
     values = _filter_km_values(raw, min_km=1.0)
     return sorted(

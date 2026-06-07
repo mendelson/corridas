@@ -225,10 +225,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         if not horario and extra_horario:
             horario = extra_horario
 
-    # Last resort for distances: infer from the title.
-    if not distancias:
-        distancias = _distances_from_title(titulo.lower())
-
+    # Distances come only from structured page regions (the event-page
+    # "Distâncias"/"Percurso" info cards fetched above), never from the title.
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
         return None
@@ -268,27 +266,3 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     )
 
 
-def _distances_from_title(titulo_lower: str) -> list[Distancia]:
-    seen: set[float] = set()
-    result: list[Distancia] = []
-
-    if "meia maratona" in titulo_lower or "half marathon" in titulo_lower:
-        seen.add(21.097)
-        result.append(Distancia(km=21.097, data=None, horario=None))
-
-    if re.search(r"(?<!meia )\bmaratona\b|(?<!half )\bmarathon\b", titulo_lower):
-        if 42.195 not in seen:
-            seen.add(42.195)
-            result.append(Distancia(km=42.195, data=None, horario=None))
-
-    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", titulo_lower):
-        km = float(m.group(1).replace(",", "."))
-        for canon, lo, hi in _CANONICAL:
-            if lo <= km <= hi:
-                km = canon
-                break
-        if km not in seen and 3 <= km <= 200:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-
-    return sorted(result, key=lambda d: d.km)

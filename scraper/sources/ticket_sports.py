@@ -347,7 +347,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         cidade=cidade,
         estado=estado,
         pais=pais_iso2,
-        distancias=_extract_distances(titulo_lower),
+        distancias=[],  # filled from the authoritative detail description in _enrich_all_distances; never the title
         imagem_url=ev.get("logoImageSource") or None,
         inscricoes_abertas=inscricoes_abertas,
         periodo_inscricao=None,
@@ -491,24 +491,3 @@ def _extract_distances_from_text(text: str) -> list[Distancia]:
                 result.append(Distancia(km=42.195, data=None, horario=None))
 
     return result
-
-
-def _extract_distances(titulo_lower: str) -> list[Distancia]:
-    seen: set[float] = set()
-    result: list[Distancia] = []
-
-    if "meia maratona" in titulo_lower or "half marathon" in titulo_lower:
-        seen.add(21.097)
-        result.append(Distancia(km=21.097, data=None, horario=None))
-
-    if re.search(r"(?<!meia )\bmaratona\b(?!\s+kids?)|\bmarathon\b(?!\s+kids?)", titulo_lower):
-        if 42.195 not in seen:
-            seen.add(42.195)
-            result.append(Distancia(km=42.195, data=None, horario=None))
-
-    for km_c in extract_distances_from_text(titulo_lower, min_km=1.0, allow_named=False):
-        if km_c not in seen:
-            seen.add(km_c)
-            result.append(Distancia(km=km_c, data=None, horario=None))
-
-    return sorted(result, key=lambda d: d.km if isinstance(d.km, (int, float)) else 999)

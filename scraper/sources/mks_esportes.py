@@ -176,13 +176,13 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
     horario = _extract_time(text)
     if horario is None:
         return None  # start time not yet published — skip until it is
-    distancias = _extract_distances(titulo.lower(), text)
+    distancias = _extract_distances(text)
 
     slug = url.rstrip("/").split("/")[-1].lower()
     if slug in _KNOWN_LOCATIONS:
         cidade, estado = _KNOWN_LOCATIONS[slug]
     else:
-        cidade, estado = _extract_location(text, titulo)
+        cidade, estado = _extract_location(text)
     localizacao = f"{cidade}, {estado}" if cidade and estado else cidade or estado or ""
 
     og_img = soup.find("meta", property="og:image")
@@ -269,7 +269,8 @@ def _extract_time(text: str) -> str | None:
     return None
 
 
-def _extract_distances(titulo_lower: str, text: str) -> list[Distancia]:
+def _extract_distances(text: str) -> list[Distancia]:
+    # Distances come from the event-page text only — never the title.
     seen: set[float] = set()
     result: list[Distancia] = []
 
@@ -283,13 +284,10 @@ def _extract_distances(titulo_lower: str, text: str) -> list[Distancia]:
             result.append(Distancia(km=km, data=None, horario=None))
 
     text_lower = text.lower()
-    if "meia maratona" in titulo_lower or "meia maratona" in text_lower:
-        _add(21.097)
-    if "meia de" in titulo_lower:  # "Meia de Búzios"
+    if "meia maratona" in text_lower:
         _add(21.097)
     # "maratona" but not "meia maratona" or "ultra maratona" / "ultramaratona"
-    if re.search(r"(?<!meia )(?<!ultra )\bmaratona\b", titulo_lower) or \
-       re.search(r"(?<!meia )(?<!ultra )\bmaratona\b", text_lower):
+    if re.search(r"(?<!meia )(?<!ultra )\bmaratona\b", text_lower):
         if 42.195 not in seen:
             _add(42.195)
 
@@ -300,7 +298,8 @@ def _extract_distances(titulo_lower: str, text: str) -> list[Distancia]:
     return sorted(result, key=lambda d: d.km)
 
 
-def _extract_location(text: str, titulo: str) -> tuple[str, str]:
+def _extract_location(text: str) -> tuple[str, str]:
+    # City/state from the page text + geo only — never the title.
     for m in _CITY_STATE_RE.finditer(text):
         city = m.group(1).strip().title()
         state = m.group(2).upper()
@@ -308,5 +307,5 @@ def _extract_location(text: str, titulo: str) -> tuple[str, str]:
             return city, state
 
     _, _geo_state = _geo.resolve(text, "", "BR")
-    state = infer_estado(text, titulo) or _geo_state or ""
+    state = infer_estado(text) or _geo_state or ""
     return "", state

@@ -461,7 +461,8 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
     if not estado:
         _pais_geo, _estado_geo = _geo.resolve(localizacao, cidade, "BR")
         pais_dict = _pais_geo or "BR"
-        estado = infer_estado(localizacao, titulo) or _estado_geo or ""
+        # estado from the structured address only (+ geo fallback) — never the title.
+        estado = infer_estado(localizacao) or _estado_geo or ""
     else:
         pais_dict = "BR"
     if not cidade:

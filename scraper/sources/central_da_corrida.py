@@ -86,12 +86,13 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     slug = event.get("slug") or ""
     link_evento = f"{BASE}/evento/{slug}" if slug else BASE
 
+    # Distances come from the event's regulamento/description prose (its explicit
+    # distance enumeration) — never from the title.
     raw_text = " ".join(filter(None, [
-        titulo,
         event.get("regulamento"),
         event.get("descricao_evento"),
     ]))
-    distancias = _extract_distances(raw_text, titulo_kw=titulo)
+    distancias = _extract_distances(raw_text)
 
     # Fallback: try external URLs embedded in regulamento / mais_informacoes
     if not distancias:
@@ -276,7 +277,7 @@ def _filter_km_values(raw_values: list[float]) -> list[float]:
     return seen
 
 
-def _extract_distances(text: str, titulo_kw: str = "") -> list[Distancia]:
+def _extract_distances(text: str) -> list[Distancia]:
     """Extract race distances from the event's dedicated distance enumeration.
 
     Distances always come from an explicit enumeration — a distance list, a

@@ -78,7 +78,7 @@ def _parse_card(card) -> Corrida | None:
         return None
 
     # Location: <span> after the map-marker icon → "City, UF"
-    localizacao, cidade, estado = _parse_location(cap, titulo)
+    localizacao, cidade, estado = _parse_location(cap)
     if not estado:
         return None
 
@@ -128,7 +128,7 @@ def _parse_card(card) -> Corrida | None:
     )
 
 
-def _parse_location(cap, titulo: str) -> tuple[str, str, str]:
+def _parse_location(cap) -> tuple[str, str, str]:
     """Extract (localizacao, cidade, estado) from 'City, UF' span."""
     raw = ""
     marker = cap.find("i", class_=re.compile("map-marker"))

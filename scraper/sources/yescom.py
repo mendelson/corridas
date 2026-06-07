@@ -165,7 +165,7 @@ def _parse_event_page(url: str) -> Corrida | None:
     full_text = soup.get_text(" ", strip=True)
 
     data_evento = _extract_event_date(heading_texts, full_text)
-    city, state, pais = _extract_location(heading_texts, url, titulo)
+    city, state, pais = _extract_location(heading_texts, url)
     localizacao = f"{city}, {state}" if city and state else city or state or ""
 
     distancias = _extract_distances(soup)
@@ -251,14 +251,14 @@ def _extract_horario(text: str) -> str | None:
     return f"{h:02d}:{mi:02d}"
 
 
-def _extract_location(heading_texts: list[str], url: str, titulo: str) -> tuple[str, str, str]:
+def _extract_location(heading_texts: list[str], url: str) -> tuple[str, str, str]:
     # 1. "CITY • DD Month YYYY" pattern in headings
     for text in heading_texts:
         m = _CITY_DATE_RE.match(text.strip())
         if m:
             city_raw = m.group(1).strip().title()
             _pais_geo, _estado_geo = _geo.resolve(city_raw, "", "BR")
-            state = infer_estado(city_raw, titulo) or _estado_geo or ""
+            state = infer_estado(city_raw) or _estado_geo or ""
             return city_raw, state, _pais_geo or "BR"
 
     # 2. State abbreviation in URL path (e.g. /rj/, /sp/)
@@ -272,8 +272,9 @@ def _extract_location(heading_texts: list[str], url: str, titulo: str) -> tuple[
         if f"/{slug}/" in url_lower:
             return city, uf, "BR"
 
-    # 4. Fallback: infer from title, default SP (most Yescom events are SP)
-    state = infer_estado("", titulo) or "SP"
+    # 4. Fallback: default to SP (most Yescom events are SP). The title is never
+    #    parsed for the state.
+    state = "SP"
     return "", state, "BR"
 
 

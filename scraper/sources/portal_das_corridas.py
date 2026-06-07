@@ -52,8 +52,6 @@ _FORM_OPTS_RE = re.compile(
     re.IGNORECASE,
 )
 _KM_RE       = re.compile(r"(\d+(?:[.,]\d+)?)\s*KM", re.IGNORECASE)
-# km pattern for general text fallback
-_KM_TEXT_RE  = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b", re.IGNORECASE)
 
 
 def scrape() -> list[Corrida]:
@@ -137,7 +135,7 @@ def _parse_event(html: str, url: str, today: str, now: str) -> Corrida | None:
     pais, estado, cidade = _extract_location(html, ld)
     localizacao = ", ".join(p for p in [cidade, estado] if p) or (ld.get("location") or {}).get("address", "")
 
-    distancias = _extract_distances(html, titulo)
+    distancias = _extract_distances(html)
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
         return None
@@ -206,8 +204,10 @@ def _extract_location(html: str, ld: dict) -> tuple[str, str, str]:
     return "BR", "", ""
 
 
-def _extract_distances(html: str, titulo: str = "") -> list[Distancia]:
-    """Use the registration form's Percurso options, broader form fields, then title."""
+def _extract_distances(html: str) -> list[Distancia]:
+    """Distances from the registration form's Percurso/Categoria/Distância options
+    only — a dedicated structured field. Never parsed from the title or loose page
+    text."""
     seen: list[float] = []
 
     def _add_km(raw: float) -> None:
@@ -236,29 +236,6 @@ def _extract_distances(html: str, titulo: str = "") -> list[Distancia]:
     if not seen:
         for fm in _FORM_OPTS_RE.finditer(html):
             _scan_options(fm.group(2))
-
-    # 3. Title keyword extraction (meia maratona, marathon, Xkm)
-    if not seen and titulo:
-        tl = titulo.lower()
-        if re.search(r'meia[\s-]?maratona|half[\s-]?marathon', tl):
-            _add_km(21.097)
-        t_stripped = re.sub(r'meia[\s-]?maratona|half[\s-]?marathon', '', tl)
-        if re.search(r'\bmaratona\b|\bmarathon\b', t_stripped):
-            _add_km(42.195)
-        for nm in re.findall(r'\b(\d+(?:[.,]\d+)?)\s*k(?:m)?\b', tl):
-            try:
-                _add_km(float(nm.replace(',', '.')))
-            except ValueError:
-                pass
-
-    # 4. Scan page text for km values as last resort (noise-prone, use only when nothing else worked)
-    if not seen:
-        stripped = re.sub(r'<[^>]+>', ' ', html)
-        for nm in _KM_TEXT_RE.findall(stripped):
-            try:
-                _add_km(float(nm.replace(',', '.')))
-            except ValueError:
-                pass
 
     return sorted(
         [Distancia(km=k, data=None, horario=None) for k in seen],

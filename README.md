@@ -26,7 +26,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-06-06 20:15 | ✅ | 2026-06-06 20:15 |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-06-06 20:15 | ✅ | 2026-06-06 20:15 |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-06-06 20:16 | ✅ | 2026-06-06 20:16 |
-| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-06-06 20:15 | ✅ | 2026-06-06 20:15 |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-06-07 06:26 | ✅ | 2026-06-07 06:26 |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-06-06 20:15 | ✅ | 2026-06-06 20:15 |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-06-06 20:31 | ✅ | 2026-06-06 11:06 |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-06 20:18 | ✅ | 2026-06-06 20:18 |

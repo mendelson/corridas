@@ -1230,14 +1230,22 @@ function buildCard(c, today, threeDaysAgo) {
   // Treat known generic/placeholder source images as "no image" so they show
   // the branded fallback instead of a non-photo that looks like a failure.
   if (c.imagem_url && !isPlaceholderImage(c.imagem_url)) {
-    img.src = c.imagem_url;
+    const showPlaceholder = () => {
+      img.style.display = 'none';
+      placeholder.style.display = '';
+    };
+    // Attach the error handler BEFORE assigning src: a dead/404 URL — especially
+    // one already cached as a failure (common when filtering re-renders cards) —
+    // can fire `error` synchronously, before a listener added afterwards exists,
+    // which would leave a broken-image icon on screen.
+    img.addEventListener('error', showPlaceholder);
     img.alt = c.titulo;
     img.style.display = '';
     placeholder.style.display = 'none';
-    img.addEventListener('error', () => {
-      img.style.display = 'none';
-      placeholder.style.display = '';
-    });
+    img.src = c.imagem_url;
+    // If the resource was already in cache as a failure, the `error` event may
+    // have fired (or won't fire again) — detect that synchronously and fall back.
+    if (img.complete && img.naturalWidth === 0) showPlaceholder();
   } else {
     img.style.display = 'none';
     placeholder.style.display = '';

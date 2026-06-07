@@ -124,10 +124,10 @@ def _parse_listing(soup, today: str) -> list[dict]:
         if not detail_url:
             continue
 
+        # Distances come from the listing table's dedicated distance column
+        # (tds[3]) only — never parsed from the event title.
         dist_text = tds[3].get_text(strip=True)
         distancias = _extract_distances(dist_text)
-        if not distancias:
-            distancias = _distances_from_title(titulo.lower())
         if not distancias:
             continue
 
@@ -279,28 +279,6 @@ def _extract_distances(dist_text: str) -> list[Distancia]:
             seen.add(km)
             result.append(Distancia(km=km, data=None, horario=None))
 
-    return sorted(result, key=lambda d: d.km)
-
-
-def _distances_from_title(titulo_lower: str) -> list[Distancia]:
-    seen: set[float] = set()
-    result: list[Distancia] = []
-    if "meia maratona" in titulo_lower or "half marathon" in titulo_lower:
-        seen.add(21.097)
-        result.append(Distancia(km=21.097, data=None, horario=None))
-    if re.search(r"(?<!meia )\bmaratona\b|(?<!half )\bmarathon\b", titulo_lower):
-        if 42.195 not in seen:
-            seen.add(42.195)
-            result.append(Distancia(km=42.195, data=None, horario=None))
-    for mm in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*k[m]?\b", titulo_lower):
-        km = float(mm.group(1).replace(",", "."))
-        for canon, lo, hi in _CANONICAL:
-            if lo <= km <= hi:
-                km = canon
-                break
-        if km not in seen and 3 <= km <= 200:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
     return sorted(result, key=lambda d: d.km)
 
 

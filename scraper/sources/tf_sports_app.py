@@ -72,7 +72,7 @@ _STATE_FULL_TO_UF = {
 _COUNTRY_WORDS = {"brasil", "brazil"}
 
 
-def _parse_location(location: str | None, titulo: str = "") -> tuple[str, str]:
+def _parse_location(location: str | None) -> tuple[str, str]:
     """Return (city, state) from a location string.
 
     Handles both comma-separated and pipe-separated formats used by TF Sports,
@@ -307,22 +307,16 @@ def _distances_from_modalities(modalities_raw) -> tuple[list[Distancia], str | N
     return dists, (min(horarios) if horarios else None)
 
 
-def _distances_from_attrs(attrs: dict, titulo: str) -> tuple[list[Distancia], str | None]:
-    """Extract distances and start time from eventData.modalities, then title keywords."""
+def _distances_from_attrs(attrs: dict) -> tuple[list[Distancia], str | None]:
+    """Distances and start time from the structured eventData.modalities only —
+    never the title. Falls back to the default distance set when the API exposes
+    no modalities."""
     ev = attrs.get("eventData") or {}
     modalities = ev.get("modalities") or ev.get("modalitiesItems") or []
     dists, horario = _distances_from_modalities(modalities)
     if dists:
         return dists, horario
-    result: list[Distancia] = []
-    for m in re.finditer(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", titulo):
-        try:
-            km = float(m.group(1).replace(",", "."))
-            if 3 <= km <= 100:
-                result.append(Distancia(km=km, data=None, horario=None))
-        except ValueError:
-            pass
-    return (result if result else list(_TF_DEFAULT_DISTANCES)), None
+    return list(_TF_DEFAULT_DISTANCES), None
 
 
 # ---------------------------------------------------------------------------
@@ -480,19 +474,19 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
                 horario_from_date = f"{h:02d}:{mi:02d}"
 
     location_raw = ev.get("location") or attrs.get("location") or ""
-    city, state = _parse_location(location_raw, titulo)
+    city, state = _parse_location(location_raw)
     if not state or state == "??":
         # When _parse_location found no UF pattern, city came from the raw string fallback.
         # Pass empty city to geo.resolve to avoid doubling the venue name in the cache key.
         geo_city = city if state else ""
-        _, geo_state = _geo.resolve(location_raw or titulo, geo_city, "BR")
+        _, geo_state = _geo.resolve(location_raw, geo_city, "BR")
         state = geo_state or ""
     if not state:
         print(f"[{SOURCE_NAME}] filtrado(sem UF): {titulo!r} location={location_raw!r}")
         return None
     localizacao = ", ".join(p for p in [city, state] if p)
 
-    distancias, horario = _distances_from_attrs(attrs, titulo)
+    distancias, horario = _distances_from_attrs(attrs)
     horario = horario or horario_from_date
     if horario is None:
         horario = _horario_from_event_page(slug)

@@ -528,18 +528,6 @@ def _fetch_detail_page(url: str) -> tuple[list[Distancia], str | None]:
     return [], None
 
 
-def _distances_from_title(titulo: str) -> list[Distancia]:
-    nums = re.findall(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b", titulo)
-    seen: set[float] = set()
-    result: list[Distancia] = []
-    for n in nums:
-        km = float(n.replace(",", "."))
-        if km not in seen and 3 <= km <= 100:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    return result
-
-
 _TF_DEFAULT_DISTANCES = [
     Distancia(km=5.0, data=None, horario=None),
     Distancia(km=10.0, data=None, horario=None),
@@ -556,11 +544,11 @@ def _get_distances(attrs: dict, slug: str, detail_url: str = "") -> tuple[list[D
     url = detail_url or f"{BASE}/run-series/{slug}"
     d_api = _distances_from_api(attrs)
     d_page, h_page = _fetch_detail_page(url)
-    d = d_api or d_page
-    if not d:
-        d = _distances_from_title(attrs.get("title", ""))
-    if not d:
-        d = _TF_DEFAULT_DISTANCES
+    # Distances come only from structured fields — the Strapi API modalities
+    # (_distances_from_api) or the detail page's __NEXT_DATA__ modalities
+    # (_fetch_detail_page). Never parse them out of the event title. When no
+    # structured field carries them, fall back to the platform default.
+    d = d_api or d_page or _TF_DEFAULT_DISTANCES
     return d, h_page
 
 

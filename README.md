@@ -57,7 +57,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-06-06 20:15 | ✅ | 2026-06-06 20:15 |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-06-07 02:39 | ✅ | 2026-06-07 02:39 |
 
 ### Fontes internacionais — plataformas agregadoras
 

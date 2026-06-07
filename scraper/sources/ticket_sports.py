@@ -309,7 +309,8 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
             _pais_geo, _estado_geo = _geo.resolve(addr, "", "BR")
             if _pais_geo and _pais_geo != "BR":
                 pais_iso2 = _pais_geo
-            estado = infer_estado(addr, titulo) or _estado_geo or ""
+            # estado from the structured address only (+ geo fallback) — never the title.
+            estado = infer_estado(addr) or _estado_geo or ""
 
     data_evento = _parse_date(ev.get("date") or "")
     if not data_evento or data_evento < today:

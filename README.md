@@ -32,7 +32,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-06 20:18 | ✅ | 2026-06-06 20:18 |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-06-06 20:15 | ✅ | 2026-06-06 20:15 |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-06-06 20:22 | ❌ 0 eventos | 2026-06-06 19:49 |
-| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-06-06 20:17 | ✅ | 2026-06-06 20:17 |
+| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-06-07 06:48 | ❌ | 2026-06-06 20:17 |
 
 ### Fontes brasileiras — específicas Brasília-DF
 

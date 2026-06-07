@@ -214,6 +214,25 @@ def are_duplicates(a: Corrida, b: Corrida) -> bool:
             return not city_diff
         if _title_words_contained(a, b):
             return not city_diff
+
+    # Identical normalized brand title on the EXACT same date (same state + city).
+    # Catches events whose title collapses to a single token after stop-word/year
+    # stripping — e.g. "Corrida POUPEX 2026" → "poupex" — which _titulo_similarity
+    # deliberately reports as 0.0 (the >=2-token guard against generic single-word
+    # false merges). Requiring identical tokens + same city + the exact same date
+    # keeps that guard's intent: "Corrida da Copa" (Santo Ângelo) and "Copa Run"
+    # (Brasília) both reduce to "copa" but never merge — different cities. Disjoint
+    # distances already returned False above, so survivors share at least one.
+    na = normalize_titulo_merge(a.titulo)
+    nb = normalize_titulo_merge(b.titulo)
+    if (
+        na and na == nb
+        and not city_diff
+        and a.data_evento and b.data_evento
+        and a.data_evento == b.data_evento
+    ):
+        return True
+
     return False
 
 

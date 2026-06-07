@@ -156,7 +156,7 @@ def _scrape_detail(url: str) -> Corrida | None:
         return None
 
     local_raw = _label_text(soup, "Main_label_Local")
-    localizacao, cidade, estado = _parse_local(local_raw, titulo)
+    localizacao, cidade, estado = _parse_local(local_raw)
 
     percurso_raw = _label_text(soup, "Main_label_Percurso")
     distancias = _extract_distances(percurso_raw)
@@ -255,7 +255,7 @@ def _extract_date(text: str) -> str | None:
     return None
 
 
-def _parse_local(text: str, titulo: str) -> tuple[str, str, str]:
+def _parse_local(text: str) -> tuple[str, str, str]:
     """Parse 'Guarujá - SP' → ('Guarujá, SP', 'Guarujá', 'SP')."""
     text = text.strip()
     estado = ""

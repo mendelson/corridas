@@ -119,11 +119,11 @@ def scrape() -> list[Corrida]:
     # rather than stored invalid.
     result = [
         c for c in result
-        if c.horario and c.cidade and _geo.validate_estado("MX", c.estado)
+        if c.horario and c.cidade and c.distancias and _geo.validate_estado("MX", c.estado)
     ]
     dropped = before - len(result)
     if dropped:
-        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário/cidade/UF válida")
+        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário/cidade/UF/distância válida")
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
 
@@ -136,21 +136,21 @@ def _enrich_locations(corridas: list[Corrida]) -> None:
     only available on the convocatoria page (the Tiempometa widget list carries
     no start time). The fetch is cheap — carrerasmexico never lists more than a
     few dozen events, each response is streamed with a 30 KB cap, 3 in parallel."""
-    needs_location = [c for c in corridas if not c.cidade or not c.horario]
-    if not needs_location:
+    needs_fetch = [c for c in corridas if not c.cidade or not c.horario or not c.distancias]
+    if not needs_fetch:
         return
-    print(f"[{SOURCE_NAME}] buscando localização para {len(needs_location)} eventos...")
+    print(f"[{SOURCE_NAME}] buscando convocatoria para {len(needs_fetch)} eventos...")
 
-    def fetch(c: Corrida) -> tuple[Corrida, str, str, str | None]:
+    def fetch(c: Corrida) -> tuple[Corrida, str, str, str | None, list[Distancia]]:
         ev_id = c.id.replace("cm_", "")
-        cidade, estado, horario = _fetch_location_from_convocatoria(ev_id)
-        return c, cidade, estado, horario
+        cidade, estado, horario, distancias = _fetch_location_from_convocatoria(ev_id)
+        return c, cidade, estado, horario, distancias
 
     with ThreadPoolExecutor(max_workers=3) as pool:
-        futures = {pool.submit(fetch, c): c for c in needs_location}
+        futures = {pool.submit(fetch, c): c for c in needs_fetch}
         for future in as_completed(futures):
             try:
-                c, cidade, estado, horario = future.result()
+                c, cidade, estado, horario, distancias = future.result()
             except Exception as e:
                 print(f"[{SOURCE_NAME}] enrich erro: {e}")
                 continue
@@ -161,6 +161,8 @@ def _enrich_locations(corridas: list[Corrida]) -> None:
                 print(f"[{SOURCE_NAME}] localização: {c.titulo[:30]} → {c.localizacao}")
             if horario and not c.horario:
                 c.horario = horario
+            if distancias and not c.distancias:
+                c.distancias = distancias
 
 
 def _extract_html(payload: str) -> Optional[str]:
@@ -242,12 +244,10 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
         cm_link = BASE
     link = external_link or cm_link
 
-    # Location populated later in _enrich_locations (parallel convocatoria.php fetch)
+    # Location AND distances are populated later in _enrich_locations from the
+    # convocatoria detail page (parallel fetch) — never parsed from the title.
     cidade, estado, localizacao = "", "", "México"
-
-    distancias = _extract_distances(titulo)
-    if not distancias:
-        return None
+    distancias: list[Distancia] = []
 
     event_id = event_id_param or slugify(titulo)
     fonte = FonteInfo(
@@ -372,21 +372,22 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
         print(f"[{SOURCE_NAME}] calling {event_id[:8]}: {e}")
 
     if not payload:
-        return "", "", None
+        return "", "", None, []
 
     inner = _extract_html(payload)
     if not inner:
-        return "", "", None
+        return "", "", None, []
 
     soup = BeautifulSoup(inner, "lxml")
     prose_el = soup.find(class_="tiempometa_calling")
     prose = (prose_el or soup).get_text(" ", strip=True)
     if not prose:
-        return "", "", None
+        return "", "", None, []
 
     horario = _horario_from_prose(prose)
     cidade, estado = _location_from_prose(prose)
-    return cidade, estado, horario
+    distancias = _extract_distances(prose)  # from the convocatoria text, not the title
+    return cidade, estado, horario, distancias
 
 
 def _build_horario(h_str: str, m_str: str, suffix: str | None) -> str | None:

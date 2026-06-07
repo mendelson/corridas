@@ -208,27 +208,24 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if not estado:
         _, estado = _geo.resolve(place or api_city, "", "MX")
     if not estado:
-        # Last resort: scan title for known city names
-        title_norm = re.sub(r"[^\w\s]", "", titulo).lower()
-        for city, city_code in sorted(_MX_CITY_STATE.items(), key=lambda x: -len(x[0])):
-            if re.search(r"\b" + re.escape(city) + r"\b", title_norm):
-                estado = city_code
-                if not ciudad or ciudad.lower() in ("mexico", "méxico"):
-                    ciudad = city.title() + ", México"
-                break
+        # estado must come from structured fields (API place/city/state) or the
+        # geo resolver — never scanned out of the event title. Skip if unknown.
+        print(f"[{SOURCE_NAME}] estado indeterminável, pulando: {titulo!r}")
+        return None
 
     route = ev.get("routeConvocatoria") or ""
     event_link = _BASE + route if route.startswith("/") else (route or _LIST_URL)
 
-    distancias = _parse_distances(titulo)
-    if (not distancias or not horario) and event_link != _LIST_URL:
+    # Distances + horário come from the event's convocatoria page (structured
+    # __NEXT_DATA__ / page fields) — never parsed out of the title.
+    distancias: list[Distancia] = []
+    if event_link != _LIST_URL:
         extra_dists, extra_horario = _fetch_event_details(event_link)
-        if not distancias and extra_dists:
-            distancias = extra_dists
+        distancias = extra_dists
         if not horario and extra_horario:
             horario = extra_horario
     if not distancias:
-        print(f"[{SOURCE_NAME}] sem distâncias, pulando: {titulo!r}")
+        print(f"[{SOURCE_NAME}] sem distâncias estruturadas, pulando: {titulo!r}")
         return None
     if not horario:
         print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")

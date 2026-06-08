@@ -1133,9 +1133,18 @@ function buildPastSection(corridas, today, threeDaysAgo) {
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
     requestAnimationFrame(() => {
-      const headerEl = document.querySelector('.app-header');
-      const offset = headerEl ? headerEl.offsetHeight + 8 : 8;
-      window.scrollTo({ top: btn.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+      // Measure the (non-sticky) section, NOT the separator button: once the
+      // section is open its separator is position:sticky, so btn.getBoundingClientRect()
+      // can report the *stuck* offset instead of its natural top. When a tall month
+      // above has just collapsed, that made the list scroll past the first events
+      // and land in the middle of the month. The section element is always in normal
+      // flow, so its top is reliable. Offset by the sticky bars (header + filters)
+      // so the first event sits right below them.
+      const cs = getComputedStyle(document.documentElement);
+      const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
+      const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
+      const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
+      window.scrollTo({ top, behavior: 'smooth' });
     });
   });
 
@@ -1180,9 +1189,18 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
     requestAnimationFrame(() => {
-      const headerEl = document.querySelector('.app-header');
-      const offset = headerEl ? headerEl.offsetHeight + 8 : 8;
-      window.scrollTo({ top: btn.getBoundingClientRect().top + window.scrollY - offset, behavior: 'smooth' });
+      // Measure the (non-sticky) section, NOT the separator button: once the
+      // section is open its separator is position:sticky, so btn.getBoundingClientRect()
+      // can report the *stuck* offset instead of its natural top. When a tall month
+      // above has just collapsed, that made the list scroll past the first events
+      // and land in the middle of the month. The section element is always in normal
+      // flow, so its top is reliable. Offset by the sticky bars (header + filters)
+      // so the first event sits right below them.
+      const cs = getComputedStyle(document.documentElement);
+      const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
+      const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
+      const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
+      window.scrollTo({ top, behavior: 'smooth' });
     });
   });
 

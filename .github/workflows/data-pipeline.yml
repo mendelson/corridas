@@ -48,6 +48,10 @@ jobs:
       - name: Copy JSON to web folder
         run: cp data/corridas.json web/corridas.json
 
+      # Regenerate the sitemap so its <lastmod> tracks this data refresh.
+      - name: Regenerate sitemap
+        run: python scripts/generate_sitemap.py
+
       # Quality gate: the freshly scraped data must pass the full test suite
       # before it can land on main. If it fails, the commit step below never
       # runs, so main keeps the last known-good corridas.json and the failure
@@ -60,7 +64,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           cp scraper.log data/last-scraper.log
-          git add data/corridas.json web/corridas.json data/last-scraper.log data/geo_cache.json data/historico/
+          git add data/corridas.json web/corridas.json web/sitemap.xml data/last-scraper.log data/geo_cache.json data/historico/
           if git diff --cached --quiet; then
             echo "No changes — skipping commit."
           else

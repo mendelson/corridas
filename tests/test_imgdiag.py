@@ -1,36 +1,31 @@
-"""TEMPORARY diagnostic — reproduce buildCard's image sync-check in a real browser
-against a real, reachable image, to see whether `img.complete` misfires. Surfaces
-results via an intentional assertion so they appear in the CI log. Deleted after."""
-REAL = "https://d368g9lw5ileu7.cloudfront.net/races/race128258-logo-0.bL-e_9.png"
+"""TEMPORARY diagnostic — load the REAL production page in a CI browser and report
+the actual image state of the first cards, to see why every card shows the
+placeholder. Surfaces results via an intentional assertion. Deleted after."""
 
 def test_diag(browser):
     page = browser.new_page()
-    # Tall spacer so an in-DOM lazy image sits below the viewport (deferred).
-    page.set_content("<div style='height:3000px'></div><div id='host'></div>")
+    page.goto("https://run.mmendelson.com/pt/", wait_until="domcontentloaded", timeout=60000)
+    page.wait_for_selector(".card", state="attached", timeout=30000)
+    page.wait_for_timeout(6000)  # let images attempt to load
     res = page.evaluate(
-        """async (REAL) => {
-        function probe(makeImg) {
-            const img = makeImg();
-            img.src = REAL;
-            return {complete_sync: img.complete, nw_sync: img.naturalWidth, img};
-        }
-        const out = {};
-        // Scenario A: detached createElement + loading=lazy (the buildCard path)
-        {
-            const r = probe(() => { const i=document.createElement('img'); i.loading='lazy'; return i; });
-            out.A_detached_lazy = {complete_sync: r.complete_sync, nw_sync: r.nw_sync};
-            document.getElementById('host').appendChild(r.img);
-            await new Promise(res=>{ r.img.onload=res; r.img.onerror=res; setTimeout(res,5000); });
-            out.A_detached_lazy.complete_after = r.img.complete;
-            out.A_detached_lazy.nw_after = r.img.naturalWidth;
-        }
-        // Scenario B: detached createElement WITHOUT lazy
-        {
-            const r = probe(() => document.createElement('img'));
-            out.B_detached_eager = {complete_sync: r.complete_sync, nw_sync: r.nw_sync};
+        """() => {
+        const out = {ua: navigator.userAgent.slice(0,40), cards: []};
+        const cards = [...document.querySelectorAll('.card')].slice(0, 8);
+        for (const card of cards) {
+            const img = card.querySelector('.card-img');
+            const ph = card.querySelector('.card-img-placeholder');
+            out.cards.push({
+                title: (card.querySelector('.card-title')||{}).textContent || '',
+                src: img ? (img.getAttribute('src') || '') : null,
+                currentSrc: img ? img.currentSrc : null,
+                complete: img ? img.complete : null,
+                naturalWidth: img ? img.naturalWidth : null,
+                img_display: img ? getComputedStyle(img).display : null,
+                ph_display: ph ? getComputedStyle(ph).display : null,
+            });
         }
         return out;
-    }""",
-        REAL,
+    }"""
     )
-    raise AssertionError("IMGDIAG=" + str(res))
+    import json
+    raise AssertionError("IMGDIAG=" + json.dumps(res, ensure_ascii=False))

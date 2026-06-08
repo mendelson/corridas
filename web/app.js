@@ -1234,18 +1234,21 @@ function buildCard(c, today, threeDaysAgo) {
       img.style.display = 'none';
       placeholder.style.display = '';
     };
-    // Attach the error handler BEFORE assigning src: a dead/404 URL — especially
-    // one already cached as a failure (common when filtering re-renders cards) —
-    // can fire `error` synchronously, before a listener added afterwards exists,
-    // which would leave a broken-image icon on screen.
+    // Attach handlers BEFORE assigning src so no early `error` is missed (a URL
+    // cached as a failure re-fires `error` when src is reassigned, covering the
+    // re-render case too).
     img.addEventListener('error', showPlaceholder);
+    // A 200 that fails to decode fires `load` with zero intrinsic size.
+    img.addEventListener('load', () => { if (img.naturalWidth === 0) showPlaceholder(); });
     img.alt = c.titulo;
     img.style.display = '';
     placeholder.style.display = 'none';
     img.src = c.imagem_url;
-    // If the resource was already in cache as a failure, the `error` event may
-    // have fired (or won't fire again) — detect that synchronously and fall back.
-    if (img.complete && img.naturalWidth === 0) showPlaceholder();
+    // NB: no synchronous `img.complete && naturalWidth === 0` check here. Setting
+    // `src` only QUEUES the load (a microtask); synchronously a freshly-cloned
+    // <img> still reports complete===true with naturalWidth===0, so that check
+    // fired for every valid image and forced the placeholder across the whole
+    // list. Rely on the async error/load events instead.
   } else {
     img.style.display = 'none';
     placeholder.style.display = '';

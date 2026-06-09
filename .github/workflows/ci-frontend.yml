@@ -32,6 +32,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add diag-result.json
+          git add diag-result.json diag-shot-*.png
           git commit -m "diag result [skip ci]"
           git push

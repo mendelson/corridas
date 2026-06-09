@@ -1258,6 +1258,14 @@ function buildCard(c, today, threeDaysAgo) {
     img.addEventListener('error', showPlaceholder);
     // A 200 that fails to decode fires `load` with zero intrinsic size.
     img.addEventListener('load', () => { if (img.naturalWidth === 0) showPlaceholder(); });
+    // Omit the Referer: correrbrasilia.com.br (and similar WordPress hosts) run
+    // referer-based hotlink protection that returns HTTP 200 with a stock
+    // "no photo" substitute (red slashed camera) for foreign referers — an
+    // image that loads successfully, so error/load fallbacks can't catch it.
+    // With no referer the host serves the real event art (verified by probing
+    // the same URL with and without Referer). Hotlink configs universally
+    // allow empty referers (direct navigation would break otherwise).
+    img.referrerPolicy = 'no-referrer';
     img.alt = c.titulo;
     img.style.display = '';
     placeholder.style.display = 'none';

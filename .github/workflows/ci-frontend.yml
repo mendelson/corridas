@@ -1,27 +1,17 @@
 name: CI — Testar Frontend
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
-    paths-ignore:
-      - 'scraper/sources/**'
   workflow_dispatch:
 
 permissions:
   contents: write
 
-# Keep only the newest run per ref. On main, successive merges collapse to the
-# latest run; on a PR, pushing a new commit cancels the superseded run.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
+# TEMPORARY (branch-only): replaced by the img-diag survey with git-based
+# result delivery. Never merged to main.
 jobs:
   test:
-    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -35,17 +25,13 @@ jobs:
       - name: Install Playwright browsers
         run: playwright install chromium --with-deps
 
-      - name: Run site tests
-        run: python -m pytest tests/ -v --tb=short --json-report --json-report-file=test-results.json
+      - name: Run img diag
+        run: python scripts/run_imgdiag.py
 
-      - name: Update test log (main only)
-        if: github.ref == 'refs/heads/main'
-        run: python scripts/update_test_log.py test-results.json
-
-      - name: Commit test log (main only)
-        if: github.ref == 'refs/heads/main'
+      - name: Commit result back
         run: |
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          git add data/site-test-log.json
-          git diff --staged --quiet || (git commit -m "ci: update site test log [skip ci]" && git pull --rebase -X ours && git push)
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add diag-result.json
+          git commit -m "diag result [skip ci]"
+          git push

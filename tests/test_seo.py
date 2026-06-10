@@ -236,3 +236,32 @@ def test_jsonld_itemlist_valid_and_consistent():
             assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}", ev["startDate"]), (
                 f"{path}: bad startDate {ev['startDate']!r}"
             )
+
+
+# ---------------------------------------------------------------------------
+# Open Graph / Twitter Cards
+# ---------------------------------------------------------------------------
+
+_OG_RE = _re.compile(r'<meta property="og:([a-z_:]+)" content="([^"]*)"')
+_TW_RE = _re.compile(r'<meta name="twitter:([a-z]+)" content="([^"]*)"')
+_OG_LOCALES = {"pt": "pt_BR", "en": "en_US", "es": "es_ES", "de": "de_DE", "fr": "fr_FR"}
+
+
+def test_og_tags_consistent_with_head():
+    """og:title/url must mirror the page's own title/canonical — divergence
+    means stale tags producing wrong share previews."""
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        og = {}
+        for k, v in _OG_RE.findall(html):
+            og.setdefault(k, v)
+        (title,) = _TITLE_RE.findall(html)
+        (canon,) = _CANON_RE.findall(html)
+        assert og.get("title") == title, f"{path}: og:title != <title>"
+        assert og.get("url") == canon, f"{path}: og:url != canonical"
+        assert og.get("type") == "website"
+        assert og.get("image", "").startswith("https://"), f"{path}: og:image not absolute"
+        assert og.get("locale") == _OG_LOCALES[prefix], f"{path}: og:locale"
+        tw = dict(_TW_RE.findall(html))
+        assert tw.get("card") == "summary", f"{path}: twitter:card missing"
+        assert tw.get("title") == title, f"{path}: twitter:title != <title>"

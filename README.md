@@ -67,6 +67,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-06-10 12:20 | ✅ | 2026-06-10 12:20 |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-06-05 12:00 | ❌ 0 eventos | 2026-05-30 03:27 |
 | Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-06-10 12:19 | ✅ | 2026-06-10 12:19 |
+| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-06-10 13:44 | ✅ | 2026-06-10 13:44 |
 
 ---
 
@@ -138,7 +139,6 @@ Buscas de fotos (`fotos.py`) usam `get_direct()`, que não lança exceção em s
 | --- | --- | --- | --- | --- | --- |
 | Corridas BR<!--corridas_br--> | `corridasbr.com.br/df/calendario.asp` | **NÃO REATIVAR.** Agregador de baixa qualidade — informações frequentemente erradas, sem links de inscrição reais (apenas redireciona para outras fontes). Mesmo se voltasse a responder com 200, os dados são pouco confiáveis. Permanentemente removido. | 2026-05-22 19:17 | ❌ | — |
 | Ahotu | `ahotu.com/pt-br/races` | WAF bloqueia IPs de datacenter em nível de rede. Playwright não resolve. | — | — | — |
-| Finishers | `finishers.com/pt-br/races?country=BR` | Mesmo bloqueio que Ahotu. | — | — | — |
 | FMAA<!--fmaa--> | `fmaa.apps-mexico.com/wp-json/tribe/events/v1/events` | (1) WAF: 403 em todos os domínios FMAA (`fmaa.apps-mexico.com`, `fmaa.mx`); domínios secundários (`fmaa.com.mx`, `fmaa.planin.mx`) fora do ar. (2) Escopo incompatível: federação de atletismo competitivo (campeonatos nacionais sub-18/sub-20, pista, cross country), não corridas de participação em massa. Corridas mexicanas de público geral cobertas pelo Asdeporte. | 2026-05-21 20:50 | ❌ | — |
 | GoDream<!--godream--> | `godream.com.br/corrida-de-rua` | WAF confirmado: 403 direto + Scrapestack 429 + Apify 403 + Playwright `ERR_TUNNEL_CONNECTION_FAILED`. | 2026-05-11 15:57 | ❌ | — |
 | Let's Do This<!--lets_do_this--> | `letsdothis.com` | WAF confirmado: 403 direto + Scrapestack 500 + Apify 403 em todas as tentativas. | 2026-05-15 | ❌ | — |

@@ -87,6 +87,27 @@ _DATE_KEYS = (
 # Entry point
 # ---------------------------------------------------------------------------
 
+
+# Venue phrases ("Largada na Orla da Ponte JK – SCES Trecho 2 …") sometimes end
+# up in the free-text location field that we fall back to for the city. A venue
+# is not a city: emitting it as `cidade` breaks the merger's city check and
+# leaves duplicates (e.g. two "20ª Volta do Lago" records). Reject implausible
+# city names so the empty-cidade fallbacks (UF capital) apply instead.
+_VENUE_WORDS_RE = re.compile(
+    r"\b(largada|chegada|orla|trecho|estacionamento|est[áa]dio|gin[áa]sio|"
+    r"arena|setor|quadra|lote|rodovia|avenida|av\.|rua|r\.|p[óo]rtico|"
+    r"p[íi]er|deck|complexo)\b",
+    re.IGNORECASE,
+)
+
+
+def _plausible_city(name: str) -> bool:
+    if not name or len(name) > 35 or any(ch.isdigit() for ch in name):
+        return False
+    if len(name.split()) > 4:
+        return False
+    return not _VENUE_WORDS_RE.search(name)
+
 def scrape() -> list[Corrida]:
     today = today_iso()
 
@@ -466,7 +487,10 @@ def _parse_event_dict(ev: dict, today: str, page_url: str) -> Corrida | None:
     else:
         pais_dict = "BR"
     if not cidade:
-        cidade = localizacao.split(",")[0].split("-")[0].strip()
+        derived = localizacao.split(",")[0].split("-")[0].strip()
+        # also split on en/em dashes the venue lines use
+        derived = re.split(r"[–—]", derived)[0].strip()
+        cidade = derived if _plausible_city(derived) else ""
     if not cidade and estado in _UF_TO_CAPITAL:
         cidade = _UF_TO_CAPITAL[estado]
     if cidade and estado and len(estado) == 2:

@@ -290,6 +290,12 @@ jobs:
           fi
 
       - name: Commit README update
+        # Only main carries the status files. On feature-branch dispatches
+        # (validation runs) this step used to rebase the branch ONTO MAIN and
+        # push — guaranteed non-fast-forward (no retry can fix a rewritten
+        # history), and when it did succeed it polluted PR branches with
+        # status commits that caused rebase conflicts.
+        if: github.ref == 'refs/heads/main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

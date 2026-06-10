@@ -390,7 +390,7 @@ def test_distance_table_date_column_only_when_different_dates(page_pt, live_serv
             continue
         dates = [d["data"] for d in dists if d.get("data")]
         if dates and len(set(dates)) == 1:
-            same_date_id = c["id"]
+            same_date_id = c["titulo"]
             same_date_title = c["titulo"]
             break
 
@@ -402,7 +402,7 @@ def test_distance_table_date_column_only_when_different_dates(page_pt, live_serv
             continue
         dates = [d["data"] for d in dists if d.get("data")]
         if len(set(dates)) > 1:
-            diff_date_id = c["id"]
+            diff_date_id = c["titulo"]
             diff_date_title = c["titulo"]
             break
 
@@ -462,7 +462,7 @@ def test_distance_table_time_column_only_when_different_times(page_pt, live_serv
             continue
         times = [d["horario"] for d in dists if d.get("horario")]
         if times and len(set(times)) == 1:
-            same_time_id = c["id"]
+            same_time_id = c["titulo"]
             same_time_title = c["titulo"]
             break
 
@@ -474,7 +474,7 @@ def test_distance_table_time_column_only_when_different_times(page_pt, live_serv
             continue
         times = [d["horario"] for d in dists if d.get("horario")]
         if len(set(times)) > 1:
-            diff_time_id = c["id"]
+            diff_time_id = c["titulo"]
             diff_time_title = c["titulo"]
             break
 

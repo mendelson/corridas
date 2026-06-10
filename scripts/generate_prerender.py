@@ -64,7 +64,8 @@ def select_events(corridas: list[dict], today: str) -> list[dict]:
     return upcoming[:MAX_EVENTS]
 
 
-def build_html(events: list[dict]) -> str:
+def build_html(events: list[dict], slugs: dict[str, str] | None = None) -> str:
+    slugs = slugs or {}
     parts = []
     for ev in events:
         titulo = html.escape(ev.get("titulo") or "")
@@ -74,8 +75,13 @@ def build_html(events: list[dict]) -> str:
             html.escape(_fmt_km(d.get("km")))
             for d in (ev.get("distancias") or []) if d.get("km") is not None
         )
-        link = html.escape(_event_link(ev))
-        title_html = f'<a href="{link}" rel="nofollow">{titulo}</a>' if link else titulo
+        slug = slugs.get(ev.get("id") or "")
+        if slug:
+            # internal event page: crawlable (no nofollow)
+            title_html = f'<a href="/evento/{html.escape(slug)}">{titulo}</a>'
+        else:
+            link = html.escape(_event_link(ev))
+            title_html = f'<a href="{link}" rel="nofollow">{titulo}</a>' if link else titulo
         parts.append(
             "<article>"
             f"<h3>{title_html}</h3>"
@@ -126,10 +132,15 @@ def _replace_block(text: str, start: str, end: str, payload: str, path: Path) ->
 
 
 def main() -> None:
-    data = json.loads((WEB / "corridas.json").read_text(encoding="utf-8"))
+    # Read the FULL data file (it carries stable ids) so event titles can link
+    # to the internal per-event pages via the slug registry. Falls back to the
+    # external source link for events without a page (non-BR, for now).
+    data = json.loads((ROOT / "data" / "corridas.json").read_text(encoding="utf-8"))
     corridas = data["corridas"] if isinstance(data, dict) else data
+    registry_path = ROOT / "data" / "event-slugs.json"
+    slugs = json.loads(registry_path.read_text(encoding="utf-8")) if registry_path.exists() else {}
     events = select_events(corridas, date.today().isoformat())
-    html_block = build_html(events)
+    html_block = build_html(events, slugs)
     jsonld_block = f'<script type="application/ld+json">{build_jsonld(events)}</script>'
 
     for prefix, _code in LANGS:

@@ -48,6 +48,10 @@ jobs:
       - name: Project slim JSON to web folder
         run: python scripts/generate_web_data.py
 
+      # One static page per BR event (stable slugs) + their sitemap.
+      - name: Regenerate event pages
+        run: python scripts/generate_event_pages.py
+
       # Regenerate the sitemap so its <lastmod> tracks this data refresh.
       - name: Regenerate sitemap
         run: python scripts/generate_sitemap.py
@@ -68,7 +72,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           cp scraper.log data/last-scraper.log
-          git add data/corridas.json web/corridas.json web/sitemap.xml web/pt/index.html web/en/index.html web/es/index.html web/de/index.html web/fr/index.html data/last-scraper.log data/geo_cache.json data/historico/
+          git add data/corridas.json web/corridas.json web/sitemap.xml web/sitemap-eventos.xml web/evento/ data/event-slugs.json web/pt/index.html web/en/index.html web/es/index.html web/de/index.html web/fr/index.html data/last-scraper.log data/geo_cache.json data/historico/
           if git diff --cached --quiet; then
             echo "No changes — skipping commit."
           else

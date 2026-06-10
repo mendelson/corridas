@@ -467,7 +467,8 @@ def _token_to_km(tok: str) -> float | None:
 _INTERVAL_RE = re.compile(
     r"a cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
     r"|cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
-    r"|\d+(?:[.,]\d+)?\s*k(?:m)?\s*(?:de hidrat|de água|de abastec)",
+    r"|\d+(?:[.,]\d+)?\s*k(?:m)?\s*"
+    r"(?:de hidrat|de água|de abastec|de extens|de altimetria|de desn[íi]vel|de eleva)",
     re.IGNORECASE,
 )
 

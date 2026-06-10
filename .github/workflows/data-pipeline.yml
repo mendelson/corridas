@@ -45,8 +45,8 @@ jobs:
           path: scraper.log
           retention-days: 7
 
-      - name: Copy JSON to web folder
-        run: cp data/corridas.json web/corridas.json
+      - name: Project slim JSON to web folder
+        run: python scripts/generate_web_data.py
 
       # Regenerate the sitemap so its <lastmod> tracks this data refresh.
       - name: Regenerate sitemap

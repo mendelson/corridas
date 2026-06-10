@@ -1,28 +1,37 @@
-"""Scraper for finishers.com — Typesense `races` collection, road discipline.
+"""Scraper for finishers.com — Typesense `races` list + per-event start time.
 
-finishers.com is a Next.js/Vercel site whose race search is backed by a hosted
-Typesense cluster. The search-only API key + host live in the public JS bundle
-(like a public Algolia search key); we extract them at runtime (resilient to
-rotation) and query the `races` collection directly — a clean paginated JSON
-API, no WAF (the old "blocked like Ahotu" note in the README was never tested
-and is false: every endpoint returns HTTP 200).
+finishers.com is a Next.js/Vercel site (no WAF — the old README "blocked like
+Ahotu" note was never tested and is false). Two structured data sources:
 
-Scope: `raceDiscipline:=road` (street running) only — the collection also holds
-trail, triathlon, cycling, etc. Worldwide. Each Typesense doc is one race
-(distance) of an event; we group by `eventId` into one Corrida with several
-Distancia.
+1. A hosted **Typesense** cluster (search-only host+key in the public JS bundle)
+   backs the race search. The `races` collection holds every race with its
+   discipline, distance, date, location, slug — everything EXCEPT the start
+   time. Worldwide; we keep `raceDiscipline:=road` (street running).
 
-Field map (from the live schema): eventName→titulo, eventSlug→link
-(/course/{slug}), editionStartDate→data_evento, raceDistance/raceDistanceUnit→
-distancias, city + countryCode→location (estado matched offline against
-web/locations via geo._match_subdiv; pipeline's geo.resolve fills the rest).
+2. The **event page data route** `/_next/data/{buildId}/en/event/{slug}.json`
+   carries `pageProps.races[].time` (the start time, e.g. "08:30:00"), which
+   the search index omits.
+
+The project requires a published start time per event, so we enrich each event
+with its time from (2). Because that's one fetch per event, a persistent cache
+(data/finishers_horarios.json, like data/geo_cache.json) means each event's
+time is fetched once and reused; only new events are fetched on later runs, and
+a per-run cap bounds the very first cold run. Events still without a published
+time are skipped (re-tried on later runs until a time appears).
+
+Each Typesense doc is one race of an event; grouped by `eventId` into one
+Corrida (eventName→titulo, editionStartDate→data, raceDistance→distancias,
+city+countryCode→location via geo._match_subdiv, /course/{slug}→link).
 """
 from __future__ import annotations
 
+import json
 import re
 import time
 from collections import defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
+from pathlib import Path
 
 import httpx
 
@@ -35,22 +44,25 @@ SOURCE_NAME = "Finishers"
 BASE = "https://www.finishers.com"
 EVENT_URL = BASE + "/course/{slug}"
 
-# Last-known Typesense search-only credentials (extracted from the bundle on
-# 2026-06-10). _get_ts_config() refreshes these from the live bundle each run;
-# these are only the fallback if extraction fails.
+# Last-known Typesense search-only credentials (from the bundle 2026-06-10);
+# refreshed from the live bundle each run, these are only the fallback.
 _TS_HOST_FALLBACK = "vn2qtcjsbg0ea481p-1.a1.typesense.net"
 _TS_KEY_FALLBACK = "G1BPjGr3KDU7n6yylcfOREpRVGUBpKYW"
 
 _PER_PAGE = 250
-_MAX_PAGES = 80  # safety bound (≈20k docs); road set is ~11k worldwide
+_MAX_PAGES = 80              # safety bound on the Typesense scan (~20k docs)
+_MAX_NEW_FETCHES = 1500      # cap event-page time fetches per run (cache fills over runs)
+_FETCH_WORKERS = 10
+
+_CACHE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "finishers_horarios.json"
 
 _TS_CONFIG_RE = re.compile(
     r'host:"([a-z0-9-]+\.[a-z0-9]+\.typesense\.net)"'
     r'[^{}]{0,160}?apiKey:"([A-Za-z0-9]{16,})"'
 )
 _CHUNK_RE = re.compile(r'/_next/static/chunks/[0-9]+-[a-f0-9]+\.js')
+_BUILDID_RE = re.compile(r'"buildId":"([A-Za-z0-9_-]+)"')
 
-# region-name prefixes Finishers prepends in various languages
 _REGION_PREFIX_RE = re.compile(
     r"^(?:state of|estado de|estado do|état de|etat de|région|regione|provincia|"
     r"province|bundesland|land)\s+", re.IGNORECASE)
@@ -58,48 +70,111 @@ _REGION_PREFIX_RE = re.compile(
 _CANONICAL = [(42.195, 41.0, 43.0), (21.097, 20.5, 21.5)]
 
 
-def _get_ts_config() -> tuple[str, str]:
-    """Extract the Typesense host + search key from the live JS bundle.
+# ---------------------------------------------------------------------------
+# Live config from the JS bundle (resilient to credential / build rotation)
+# ---------------------------------------------------------------------------
 
-    Mirrors tf_sports' token-from-bundle approach so credential rotation
-    doesn't silently break the source. Falls back to the last-known constants.
-    """
+def _get_ts_config() -> tuple[str, str]:
     try:
         html = get(f"{BASE}/courses").text
-        for chunk in dict.fromkeys(_CHUNK_RE.findall(html)):  # dedupe, keep order
+        for chunk in dict.fromkeys(_CHUNK_RE.findall(html)):
             try:
                 js = get(f"{BASE}{chunk}").text
             except Exception:
                 continue
             m = _TS_CONFIG_RE.search(js)
             if m:
-                print(f"[{SOURCE_NAME}] typesense config extracted from {chunk}")
                 return m.group(1), m.group(2)
-        print(f"[{SOURCE_NAME}] config not found in bundle — using fallback")
     except Exception as e:
-        print(f"[{SOURCE_NAME}] config extraction failed ({e}) — using fallback")
+        print(f"[{SOURCE_NAME}] typesense config extraction failed ({e}); fallback")
     return _TS_HOST_FALLBACK, _TS_KEY_FALLBACK
 
 
+def _get_build_id() -> str | None:
+    for path in (f"{BASE}/en/courses", f"{BASE}/courses"):
+        try:
+            m = _BUILDID_RE.search(get(path).text)
+            if m:
+                return m.group(1)
+        except Exception:
+            continue
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Stage 1 — Typesense road race list
+# ---------------------------------------------------------------------------
+
 def _search(host: str, key: str, page: int, now_unix: int) -> dict:
     body = {"searches": [{
-        "collection": "races",
-        "q": "*",
-        "query_by": "eventName",
+        "collection": "races", "q": "*", "query_by": "eventName",
         "filter_by": f"raceDiscipline:=road && raceDate:>={now_unix}",
-        "sort_by": "raceDate:asc",
-        "per_page": _PER_PAGE,
-        "page": page,
+        "sort_by": "raceDate:asc", "per_page": _PER_PAGE, "page": page,
     }]}
     resp = httpx.post(
-        f"https://{host}/multi_search",
-        params={"x-typesense-api-key": key},
+        f"https://{host}/multi_search", params={"x-typesense-api-key": key},
         json=body, timeout=30,
         headers={"Accept": "application/json", "Origin": BASE, "Referer": BASE + "/"},
     )
     resp.raise_for_status()
     return resp.json()["results"][0]
 
+
+# ---------------------------------------------------------------------------
+# Stage 2 — per-event start time (cached)
+# ---------------------------------------------------------------------------
+
+def _load_cache() -> dict[str, str]:
+    try:
+        return json.loads(_CACHE_PATH.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def _save_cache(cache: dict[str, str]) -> None:
+    try:
+        _CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        _CACHE_PATH.write_text(
+            json.dumps(cache, ensure_ascii=False, sort_keys=True, indent=0),
+            encoding="utf-8")
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] não consegui salvar o cache de horários: {e}")
+
+
+def _fetch_time(slug: str, build_id: str | None) -> str | None:
+    """Fetch the event page and return its earliest race start time as HH:MM."""
+    payloads = []
+    if build_id:
+        try:
+            r = httpx.get(f"{BASE}/_next/data/{build_id}/en/event/{slug}.json",
+                          timeout=25, headers={"Accept": "application/json"})
+            if r.status_code == 200:
+                payloads.append(r.json())
+        except Exception:
+            pass
+    if not payloads:  # fallback: parse __NEXT_DATA__ from the HTML page
+        try:
+            html = get(f"{BASE}/en/event/{slug}").text
+            m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.DOTALL)
+            if m:
+                payloads.append(json.loads(m.group(1)).get("props", {}))
+        except Exception:
+            return None
+    for p in payloads:
+        pp = p.get("pageProps") or p.get("props", {}).get("pageProps") or p
+        times = []
+        for race in (pp.get("races") or []):
+            t = race.get("time")
+            if isinstance(t, str) and re.match(r"\d{1,2}:\d{2}", t):
+                times.append(t[:5])
+        if times:
+            return min(times)
+    return None
+
+
+# ---------------------------------------------------------------------------
+# Field helpers
+# ---------------------------------------------------------------------------
 
 def _canon(km: float) -> float:
     for canon, lo, hi in _CANONICAL:
@@ -109,15 +184,12 @@ def _canon(km: float) -> float:
 
 
 def _distance(doc: dict):
-    """Return a Distancia.km value (float km, or '<n> mi' string) or None."""
     raw = doc.get("raceDistance")
     unit = (doc.get("raceDistanceUnit") or "meters").lower()
     if not raw or raw <= 0:
         return None
     if "mile" in unit or unit == "mi":
-        miles = round(raw, 2)
-        return f"{miles:g} mi"
-    # meters / kilometers → km
+        return f"{round(raw, 2):g} mi"
     km = raw / 1000.0 if raw > 500 else float(raw)
     if not (1.0 <= km <= 300.0):
         return None
@@ -125,16 +197,12 @@ def _distance(doc: dict):
 
 
 def _estado(doc: dict, pais: str) -> str:
-    """Match the event's region name to a subdivision code offline (no Nominatim).
-
-    The pipeline's _resolve_missing_locations() fills any that stay empty.
-    """
     for key in ("level1_pt", "level1_en", "level1"):
         name = doc.get(key)
         if not name:
             continue
-        for candidate in (name, _REGION_PREFIX_RE.sub("", name)):
-            code = _geo._match_subdiv(pais, candidate)
+        for cand in (name, _REGION_PREFIX_RE.sub("", name)):
+            code = _geo._match_subdiv(pais, cand)
             if code:
                 return code
     return ""
@@ -145,19 +213,20 @@ def _event_date(docs: list[dict]) -> str:
         iso = d.get("editionStartDate")
         if iso and re.fullmatch(r"\d{4}-\d{2}-\d{2}", iso):
             return iso
-    # fallback: raceDate unix → date
     ts = min((d.get("raceDate") or 0) for d in docs)
-    if ts:
-        return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d")
-    return ""
+    return datetime.fromtimestamp(ts, tz=timezone.utc).strftime("%Y-%m-%d") if ts else ""
 
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
 
 def scrape() -> list[Corrida]:
     host, key = _get_ts_config()
     now_unix = int(time.time())
 
     by_event: dict[str, list[dict]] = defaultdict(list)
-    seen_total = 0
+    seen = 0
     for page in range(1, _MAX_PAGES + 1):
         try:
             res = _search(host, key, page, now_unix)
@@ -169,17 +238,39 @@ def scrape() -> list[Corrida]:
             break
         for h in hits:
             doc = h.get("document") or {}
-            eid = doc.get("eventId")
-            if eid:
-                by_event[eid].append(doc)
-        seen_total += len(hits)
-        if seen_total >= (res.get("found") or 0):
+            if doc.get("eventId"):
+                by_event[doc["eventId"]].append(doc)
+        seen += len(hits)
+        if seen >= (res.get("found") or 0):
             break
+    print(f"[{SOURCE_NAME}] {len(by_event)} eventos road (de {seen} provas) no Typesense")
+
+    # Stage 2: fill missing start times (cached), soonest events first, capped.
+    cache = _load_cache()
+    ordered = sorted(by_event.items(), key=lambda kv: _event_date(kv[1]) or "9999")
+    todo = [(eid, docs[0].get("eventSlug")) for eid, docs in ordered
+            if eid not in cache and docs[0].get("eventSlug")][:_MAX_NEW_FETCHES]
+    if todo:
+        build_id = _get_build_id()
+        print(f"[{SOURCE_NAME}] buscando horário de {len(todo)} eventos novos (buildId={build_id})")
+        with ThreadPoolExecutor(max_workers=_FETCH_WORKERS) as ex:
+            futs = {ex.submit(_fetch_time, slug, build_id): eid for eid, slug in todo}
+            for fut in as_completed(futs):
+                eid = futs[fut]
+                try:
+                    cache[eid] = fut.result() or ""
+                except Exception:
+                    cache[eid] = ""
+        _save_cache(cache)
 
     today = today_iso()
     now = now_iso()
     corridas: list[Corrida] = []
     for eid, docs in by_event.items():
+        horario = cache.get(eid) or ""
+        if not horario:
+            continue  # no published start time → skip (project requirement)
+
         head = docs[0]
         titulo = normalize_titulo(head.get("eventName") or "")
         if not titulo:
@@ -200,45 +291,27 @@ def scrape() -> list[Corrida]:
         distancias.sort(key=lambda x: x.km if isinstance(x.km, (int, float)) else 9e9)
 
         pais = (head.get("countryCode") or "").upper()
-        if not pais:
+        slug = head.get("eventSlug")
+        if not pais or not slug:
             continue
         cidade = head.get("city") or ""
         estado = _estado(head, pais)
         localizacao = ", ".join(p for p in (cidade, estado) if p) or cidade
-
-        slug = head.get("eventSlug")
-        if not slug:
-            continue
         link = EVENT_URL.format(slug=slug)
 
         image = head.get("image")
         imagem = (f"https://res.cloudinary.com/kavval/image/upload/q_auto:good,f_auto/{image}"
                   if image else None)
 
-        fonte = FonteInfo(
-            nome=SOURCE_NAME,
-            link_evento=link,
-            links_inscricao=[link],
-            tipo="calendario",
-        )
+        fonte = FonteInfo(nome=SOURCE_NAME, link_evento=link,
+                          links_inscricao=[link], tipo="calendario")
         corridas.append(Corrida(
-            id=f"finishers_{eid}",
-            titulo=titulo,
-            data_evento=data_evento,
-            horario=None,
-            localizacao=localizacao,
-            cidade=cidade,
-            estado=estado,
-            pais=pais,
-            distancias=distancias,
-            imagem_url=imagem,
-            inscricoes_abertas=None,
-            periodo_inscricao=None,
-            fontes=[fonte],
-            miss_count=0,
-            first_seen_at=now,
-            updated_at=now,
+            id=f"finishers_{eid}", titulo=titulo, data_evento=data_evento,
+            horario=horario, localizacao=localizacao, cidade=cidade,
+            estado=estado, pais=pais, distancias=distancias, imagem_url=imagem,
+            inscricoes_abertas=None, periodo_inscricao=None, fontes=[fonte],
+            miss_count=0, first_seen_at=now, updated_at=now,
         ))
 
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas (de {len(by_event)} eventos road)")
+    print(f"[{SOURCE_NAME}] {len(corridas)} corridas com horário publicado")
     return corridas

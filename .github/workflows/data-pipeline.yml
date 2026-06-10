@@ -52,6 +52,10 @@ jobs:
       - name: Regenerate sitemap
         run: python scripts/generate_sitemap.py
 
+      # Refresh the pre-rendered event list + JSON-LD in the language shells.
+      - name: Regenerate pre-rendered content
+        run: python scripts/generate_prerender.py
+
       # Quality gate: the freshly scraped data must pass the full test suite
       # before it can land on main. If it fails, the commit step below never
       # runs, so main keeps the last known-good corridas.json and the failure
@@ -64,7 +68,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           cp scraper.log data/last-scraper.log
-          git add data/corridas.json web/corridas.json web/sitemap.xml data/last-scraper.log data/geo_cache.json data/historico/
+          git add data/corridas.json web/corridas.json web/sitemap.xml web/pt/index.html web/en/index.html web/es/index.html web/de/index.html web/fr/index.html data/last-scraper.log data/geo_cache.json data/historico/
           if git diff --cached --quiet; then
             echo "No changes — skipping commit."
           else

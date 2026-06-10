@@ -18,6 +18,22 @@ from .. import geo as _geo
 URL = "https://correrbrasilia.com.br/calendario/"
 SOURCE_NAME = "Correr Brasília"
 
+# Freeform "..., Cidade - UF, 00000-000" address tail (Correr Brasília's JSON-LD
+# often omits addressLocality/addressRegion but keeps the city/UF in streetAddress).
+_CITY_UF_RE = re.compile(r"([A-Za-zÀ-ÿ.'\s]+?)\s*-\s*([A-Z]{2})\s*,?\s*\d{5}-?\d{3}")
+_CITY_UF_NOCEP_RE = re.compile(r",\s*([A-Za-zÀ-ÿ.'\s]+?)\s*-\s*([A-Z]{2})\b")
+
+
+def _city_uf_from_street(street: str) -> tuple[str, str]:
+    """Extract (city, UF) from a freeform Brazilian street address, or ("","")."""
+    if not street:
+        return "", ""
+    m = _CITY_UF_RE.search(street) or _CITY_UF_NOCEP_RE.search(street)
+    if not m:
+        return "", ""
+    return m.group(1).strip(" ,-"), m.group(2).upper()
+
+
 _TIME_RE = re.compile(
     r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
     r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
@@ -300,21 +316,33 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
     address_locality = address.get("addressLocality") or ""
     address_region = address.get("addressRegion") or ""
 
-    # Use addressLocality as city; fall back to "Brasília" (this calendar is Brasília-focused)
-    city = address_locality or "Brasília"
+    # This is a Brasília-focused calendar, but it also lists events held
+    # elsewhere (e.g. a Goiânia marathon). The structured addressLocality/
+    # addressRegion fields are frequently empty even when the freeform
+    # streetAddress carries the real "Cidade - UF, CEP" — defaulting those to
+    # Brasília/DF mislocated out-of-DF events. So parse the street address
+    # (a structured field) before falling back, and only assume Brasília when
+    # there is no address information at all.
+    street_city, street_uf = _city_uf_from_street(street)
 
-    # Resolve estado: prefer addressRegion if it's a valid UF code, then geocode
-    if address_region:
-        estado = _geo.validate_estado("BR", address_region.strip())
-        if not estado:
-            _, estado = _geo.resolve(city, "", "BR")
-        estado = estado or "DF"
-    else:
-        geo_query = ", ".join(p for p in [city, place_name, street] if p) or "Brasília, DF"
-        _, estado = _geo.resolve(geo_query, "", "BR")
-        estado = estado or "DF"
+    city = address_locality or street_city
+    estado = _geo.validate_estado("BR", address_region.strip()) if address_region else ""
+    if not estado and street_uf:
+        estado = _geo.validate_estado("BR", street_uf)
+    if not estado:
+        geo_query = ", ".join(p for p in [city, place_name, street] if p)
+        if geo_query:
+            _, estado = _geo.resolve(geo_query, "", "BR")
 
-    localizacao = f"{city}, {estado}"
+    if not city and not estado:
+        # No usable address anywhere → this DF calendar's safe default.
+        city, estado = "Brasília", "DF"
+    elif not city:
+        city = "Brasília" if estado == "DF" else (place_name or "")
+    elif not estado:
+        _, estado = _geo.resolve(f"{city}", "", "BR")
+
+    localizacao = ", ".join(p for p in (city, estado) if p) or "Brasília, DF"
 
     desc = ev.get("description") or ""
     distancias = _extract_distances(desc)

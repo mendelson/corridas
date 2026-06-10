@@ -111,3 +111,62 @@ def test_robots_allows_crawling_and_advertises_sitemap():
     # The advertised sitemap must live on the same canonical origin the
     # generator anchors every URL to — a mismatch would silently de-list us.
     assert sitemap_lines[0].split(":", 1)[1].strip() == f"{BASE}/sitemap.xml"
+
+
+# ---------------------------------------------------------------------------
+# Page <head>: canonical + hreflang + localized title/description
+# ---------------------------------------------------------------------------
+
+import re as _re
+
+_PAGES = {prefix: WEB / prefix / "index.html" for prefix, _ in GEN.LANGS}
+_CANON_RE = _re.compile(r'<link rel="canonical" href="([^"]+)"')
+_HREFLANG_RE = _re.compile(r'<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"')
+_TITLE_RE = _re.compile(r"<title>([^<]*)</title>")
+_DESC_RE = _re.compile(r'<meta name="description" content="([^"]*)"')
+
+_EXPECTED_ALTS = {code: f"{BASE}/{prefix}/" for prefix, code in GEN.LANGS}
+_EXPECTED_ALTS["x-default"] = f"{BASE}/"
+
+
+def test_every_language_page_has_exactly_one_correct_canonical():
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        canons = _CANON_RE.findall(html)
+        assert canons == [f"{BASE}/{prefix}/"], f"{path}: canonical = {canons}"
+
+
+def test_every_language_page_declares_full_reciprocal_hreflang():
+    """Each page must carry the SAME full alternate cluster (all languages +
+    x-default) with absolute hrefs — reciprocity is what Google requires."""
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        alts = dict(_HREFLANG_RE.findall(html))
+        assert alts == _EXPECTED_ALTS, (
+            f"{path}: hreflang drift: {set(alts.items()) ^ set(_EXPECTED_ALTS.items())}"
+        )
+
+
+def test_root_redirect_page_has_canonical_hreflang_and_noscript():
+    html = (WEB / "index.html").read_text(encoding="utf-8")
+    assert _CANON_RE.findall(html) == [f"{BASE}/"]
+    assert dict(_HREFLANG_RE.findall(html)) == _EXPECTED_ALTS
+    assert "<noscript>" in html and 'href="/pt/"' in html, (
+        "root page must link the language homes for non-JS crawlers"
+    )
+
+
+def test_titles_and_descriptions_are_localized_and_distinct():
+    """Generic identical titles across languages waste the SERP snippet; each
+    language must have its own non-trivial title and description."""
+    titles, descs = {}, {}
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        (title,) = _TITLE_RE.findall(html)
+        (desc,) = _DESC_RE.findall(html)
+        assert len(title) >= 25, f"{path}: title too short/generic: {title!r}"
+        assert len(desc) >= 60, f"{path}: description too short: {desc!r}"
+        titles[prefix] = title
+        descs[prefix] = desc
+    assert len(set(titles.values())) == len(titles), f"duplicated titles: {titles}"
+    assert len(set(descs.values())) == len(descs), f"duplicated descriptions: {descs}"

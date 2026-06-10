@@ -458,6 +458,20 @@ def _token_to_km(tok: str) -> float | None:
     return None
 
 
+
+
+# Hydration/support-interval phrases mention distances that are NOT race
+# distances ("Pontos de hidratação a cada 3,5km") — strip them before any
+# extraction pass, mirroring mks_esportes. Without this, Desafio das Torres
+# (10km/21km) gained a phantom 3.5km distance.
+_INTERVAL_RE = re.compile(
+    r"a cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
+    r"|cada \d+(?:[.,]\d+)?\s*k(?:m)?\b"
+    r"|\d+(?:[.,]\d+)?\s*k(?:m)?\s*(?:de hidrat|de água|de abastec)",
+    re.IGNORECASE,
+)
+
+
 def _extract_distances(desc: str) -> list[Distancia]:
     """Extract race distances from the event's dedicated distance enumeration.
 
@@ -475,6 +489,8 @@ def _extract_distances(desc: str) -> list[Distancia]:
     Numeric values are canonical-snapped so 42 / 42,2 / 42.195 km collapse to a
     single distance (likewise 21 / 21,1 / 21.097).
     """
+    desc = _INTERVAL_RE.sub(" ", desc)
+
     raw: list[float] = []
 
     # 1. Distance lists (2+ tokens) — the most reliable enumeration. Tokens may be

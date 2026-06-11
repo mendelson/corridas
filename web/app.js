@@ -417,6 +417,9 @@ async function loadData() {
     await loadLocationsData(paisSet);
     await initFilters();
     if (fullPromise) await _applyFullData(fullPromise);
+    // Automation/test hook: the dataset is as complete as it will get and no
+    // further background re-render will replace the card list.
+    document.body.dataset.fullDataReady = '1';
   } catch (e) {
     resultCount.textContent = T.loadError;
     console.error('loadData error', e);

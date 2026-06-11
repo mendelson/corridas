@@ -83,6 +83,7 @@ def page_pt(browser, live_server):
     page = ctx.new_page()
     page.goto(live_server + "/pt/", wait_until="networkidle")
     page.wait_for_selector(".card:not(.prerender)", state="attached", timeout=15000)
+    page.wait_for_selector("body[data-full-data-ready]", state="attached", timeout=15000)
     yield page
     ctx.close()
 
@@ -94,6 +95,7 @@ def page_en(browser, live_server):
     page = ctx.new_page()
     page.goto(live_server + "/en/", wait_until="networkidle")
     page.wait_for_selector(".card:not(.prerender)", state="attached", timeout=15000)
+    page.wait_for_selector("body[data-full-data-ready]", state="attached", timeout=15000)
     yield page
     ctx.close()
 
@@ -110,6 +112,7 @@ def page_factory(browser, live_server):
         page = ctx.new_page()
         page.goto(live_server + f"/{lang}/", wait_until="networkidle")
         page.wait_for_selector(".card:not(.prerender)", state="attached", timeout=15000)
+        page.wait_for_selector("body[data-full-data-ready]", state="attached", timeout=15000)
         contexts.append(ctx)
         return page
 

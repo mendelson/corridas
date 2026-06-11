@@ -434,19 +434,26 @@ async function initFilters() {
   populateEstadoFilter({ skipGeo: true });
   populateFontesFilter();
 
-  // Geolocation
+  // First paint immediately — geolocation (IP lookup, up to 3 external
+  // services) must never hold the card list hostage. The geo filter is
+  // applied in a second render when (and if) it resolves.
+  const estadoAtFirstPaint = state.estado;
+  applyFilters();
+  renderCards();
+  updateCount();
+
   const geo = await detectGeoEstado();
-  if (geo && _estadoAvailableValues.has(geo)) {
+  // Respect any location the user picked while geo was in flight.
+  if (geo && _estadoAvailableValues.has(geo) && state.estado === estadoAtFirstPaint) {
     state.estado = geo;
     _geoApplied  = geo;
     _updateEstadoLabel();
     populateEstadoFilter({ skipGeo: true });
     populateFontesFilter();
+    applyFilters();
+    renderCards();
+    updateCount();
   }
-
-  applyFilters();
-  renderCards();
-  updateCount();
 }
 
 // ---------------------------------------------------------------------------

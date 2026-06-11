@@ -1131,3 +1131,27 @@ def _find_card_by_title(page, title):
         if el and el.text_content().strip() == title:
             return card
     return None
+
+
+# ---------------------------------------------------------------------------
+# Initial scroll anchoring
+# ---------------------------------------------------------------------------
+
+def test_initial_load_anchors_current_month(page_pt, live_server):
+    """On load the current (open) month sits at the top of the scroll — the
+    collapsed past-events section is scrolled out above, and the month's first
+    events are immediately visible below the sticky bars."""
+    pos = page_pt.evaluate("""() => {
+        const sec = document.querySelector('.month-section--open');
+        const cs = getComputedStyle(document.documentElement);
+        const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
+        const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
+        return { top: sec ? sec.getBoundingClientRect().top : null,
+                 bars: headerH + filtersH,
+                 scrollY: window.scrollY };
+    }""")
+    assert pos["top"] is not None, "no open month section on load"
+    assert pos["scrollY"] > 0, "page did not scroll to the current month on load"
+    assert abs(pos["top"] - (pos["bars"] + 8)) <= 24, (
+        f"open month not anchored right below the sticky bars: {pos}"
+    )

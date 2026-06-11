@@ -38,7 +38,10 @@ _NON_RUNNING_KW = [
     "granfondo", "gran fondo", "gran-fondo",
     "l'étape", "l etape", "letape",  # Tour de France cycling sportives
     " gf ",  # Gran Fondo abbreviation (e.g. "6ª GF João Pessoa")
-    "ciclismo", "pedalada", "bike tour",
+    "ciclismo", "ciclístic", "ciclistic", "pedalada", "pedalando", "bike tour",
+    "bike and run", "bike & run",
+    "travessia",  # open-water swim crossings (Travessia Poliana Okimoto etc.)
+    "wakeboard", "hyrox",
 ]
 
 _TRI_DIGIT_RE = re.compile(r'\btri\d', re.IGNORECASE)

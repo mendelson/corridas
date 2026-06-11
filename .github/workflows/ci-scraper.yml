@@ -134,8 +134,14 @@ jobs:
           set -o pipefail
           python -m scraper.main 2>&1 | tee rescrape.log
 
-      - name: Copy to web
-        run: cp data/corridas.json web/corridas.json
+      # Mirror the data pipeline: web copy is the slim projection (+ boot
+      # shard), and the pre-rendered shells must match the fresh corridas.json
+      # or the SEO tests fail on stale titles.
+      - name: Project slim JSON to web folder
+        run: python scripts/generate_web_data.py
+
+      - name: Regenerate pre-rendered content
+        run: python scripts/generate_prerender.py
 
       - name: Upload scrape log
         if: always()

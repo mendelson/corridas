@@ -105,7 +105,7 @@ When in doubt: if you can click a "register" button on that source's page and pa
 
 ### CI workflows
 
-- **`data-pipeline.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, copies `corridas.json` to `web/`, commits with `[skip ci]`.
+- **`data-pipeline.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, projects the slim web copy, and delivers the data via an **automated PR with auto-merge** (`data/scrape-*` branch; squash subject carries `[skip ci]`). Main has required status checks (ruleset), so no workflow pushes to it directly — the status/test-log commits follow the same PR flow (`ci/status-*`, `ci/test-log-*`). Requires the `AUTOMERGE_PAT` secret (PRs created with the default token don't trigger workflows).
 - **`monitor-source-health.yml`** — daily 09:00 UTC + on push to `scraper/sources/`. Builds a job matrix dynamically: when shared infra (`models.py`, `utils.py`, `http_client.py`, `playwright_client.py`) changes, all sources are tested; otherwise only changed source files. Each job uploads a single-result artifact, then a final `update-readme` job aggregates all artifacts and runs `scripts/update_source_status.py` to refresh README tables and `data/source-status.json` (the source's row in README.md uses an embedded HTML comment `<!--module_name-->` for stable matching).
 - **`diagnose-source.yml`** — manual trigger with a `source` input; uploads full log as artifact.
 

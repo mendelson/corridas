@@ -63,7 +63,14 @@ jobs:
       - name: Validate scraped data
         run: python -m pytest tests/ -q
 
-      - name: Commit updated data
+      # A main exige checks obrigatórios (ruleset): o pipeline entrega os dados
+      # via PR com auto-merge em vez de push direto. O assunto do squash leva
+      # [skip ci] para não redisparar o pipeline (mesmo mecanismo de antes).
+      - name: Commit updated data via PR
+        env:
+          # PAT do mantenedor: PRs criadas com o github.token não disparam
+          # workflows, então os required checks nunca reportariam.
+          GH_TOKEN: ${{ secrets.AUTOMERGE_PAT || github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -71,8 +78,23 @@ jobs:
           git add data/corridas.json web/corridas.json web/corridas-boot.json web/sitemap.xml web/pt/index.html web/en/index.html web/es/index.html web/de/index.html web/fr/index.html data/last-scraper.log data/geo_cache.json data/finishers_horarios.json data/historico/
           if git diff --cached --quiet; then
             echo "No changes — skipping commit."
-          else
-            git commit -m "chore: atualiza corridas $(date -u +%Y-%m-%d) [skip ci]"
-            git pull --rebase -X ours origin main
-            git push
+            exit 0
           fi
+          [ -z "${{ secrets.AUTOMERGE_PAT }}" ] && echo "::warning::AUTOMERGE_PAT ausente — usando github.token (checks não rodarão na PR de dados)."
+          STAMP=$(date -u +%Y-%m-%d)
+          BRANCH="data/scrape-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "chore: atualiza corridas $STAMP"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "$BRANCH"
+          # PRs de scrape anteriores ainda abertas estão supersedidas — fechar.
+          for old in $(gh pr list --state open --json number,headRefName \
+                         -q '.[] | select(.headRefName | startswith("data/scrape-")) | .number'); do
+            gh pr close "$old" -c "Superseded pelo scrape mais recente." -d || true
+          done
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore: atualiza corridas $STAMP" \
+            --body "PR automática do pipeline de dados — merge automático quando os checks passarem. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh pr merge "$BRANCH" --auto --squash --delete-branch \
+            -t "chore: atualiza corridas $STAMP [skip ci]" -b "" \
+            || gh pr merge "$BRANCH" --squash --delete-branch \
+                 -t "chore: atualiza corridas $STAMP [skip ci]" -b ""

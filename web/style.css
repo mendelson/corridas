@@ -724,6 +724,13 @@ input { font-family: inherit; }
   -webkit-box-orient: vertical;
 }
 
+/* Pre-rendered cards put the title inside an anchor (crawlable link);
+   keep it visually identical to the live cards' plain-text title. */
+.card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
 .card-meta {
   display: flex;
   flex-direction: column;

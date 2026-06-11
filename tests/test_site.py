@@ -639,7 +639,7 @@ def test_pin_resets_location_filter(page_pt, live_server):
         }
     """)
     page_pt.reload(wait_until="networkidle")
-    page_pt.wait_for_selector(".card", state="attached", timeout=15000)
+    page_pt.wait_for_selector(".card:not(.prerender)", state="attached", timeout=15000)
 
     label_before = page_pt.query_selector("#estadoFilterLabel").text_content().strip()
 
@@ -663,7 +663,7 @@ def test_initial_load_no_session_cache(browser, live_server):
     page = ctx.new_page()
     # clear storage explicitly (new context starts empty, but be explicit)
     page.goto(live_server + "/pt/", wait_until="networkidle")
-    page.wait_for_selector(".card", state="attached", timeout=15000)
+    page.wait_for_selector(".card:not(.prerender)", state="attached", timeout=15000)
     cards = page.query_selector_all(".card")
     assert len(cards) > 0, "No cards rendered on fresh load"
     ctx.close()
@@ -726,7 +726,7 @@ def test_language_fallback_to_english(browser, live_server):
     page = ctx.new_page()
     # Navigate to /en/ explicitly (fallback applies to URL-less root; /en/ gives English)
     page.goto(live_server + "/en/", wait_until="networkidle")
-    page.wait_for_selector(".card", state="attached", timeout=15000)
+    page.wait_for_selector(".card:not(.prerender)", state="attached", timeout=15000)
     # The register button text must be the English one
     # Click first card to expand it to see the btn-inscricao
     cards = page.query_selector_all(".card")

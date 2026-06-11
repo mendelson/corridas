@@ -280,6 +280,21 @@ def test_jsonld_itemlist_valid_and_consistent():
             assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}", ev["startDate"]), (
                 f"{path}: bad startDate {ev['startDate']!r}"
             )
+            # Rich-result fields: every linked event must expose an Offer
+            # pointing at the same registration URL.
+            if "url" in ev:
+                offers = ev.get("offers")
+                assert offers and offers.get("url") == ev["url"], (
+                    f"{path}: {ev['name']!r} has url but no matching offers.url"
+                )
+            if "endDate" in ev:
+                assert ev["endDate"] >= ev["startDate"], (
+                    f"{path}: {ev['name']!r} endDate before startDate"
+                )
+            if "organizer" in ev:
+                assert ev["organizer"].get("name"), (
+                    f"{path}: {ev['name']!r} organizer without name"
+                )
 
 
 # ---------------------------------------------------------------------------

@@ -67,6 +67,31 @@ input { font-family: inherit; }
   font-weight: 700;
   color: var(--color-accent);
   letter-spacing: -0.02em;
+  margin: 0; /* .app-title is an <h1>: kill the UA heading margins */
+}
+
+.site-footer {
+  padding: 24px 20px 32px;
+  text-align: center;
+  color: var(--color-text-muted, #888);
+  font-size: 0.85rem;
+}
+
+.site-about {
+  max-width: 640px;
+  margin: 0 auto 12px;
+  line-height: 1.5;
+}
+
+.footer-langs {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.footer-langs a {
+  color: inherit;
 }
 
 .header-actions {

@@ -1,0 +1,7 @@
+# Keep the *.pages.dev mirrors (production alias + per-deploy previews) out of
+# search indexes — only the custom domain run.mmendelson.com should rank.
+https://corridas.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.corridas.pages.dev/*
+  X-Robots-Tag: noindex

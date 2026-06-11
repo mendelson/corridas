@@ -23,6 +23,7 @@ from . import geo as _geo
 from .sources import (
     atletis,
     central_da_corrida,
+    conta_passos,
     ticket_sports,
     maratona_rio,
     maratona_porto_alegre,
@@ -100,6 +101,7 @@ SOURCES = [
     brasil_corrida,
     portal_das_corridas,
     # DF-specific sources
+    conta_passos,
     correr_brasilia,
     bora_correr,
     brasil_que_corre,

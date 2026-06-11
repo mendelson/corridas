@@ -138,12 +138,19 @@ def _apply_results(status: dict, results_dir: Path) -> dict:
             count = r.get("count")
             if count is None:
                 count = prev.get("event_count")
+            # Count at the last SUCCESSFUL run — event_count alone loses it as
+            # soon as a source fails (it becomes 0 while last_success still
+            # points at the old run).
+            last_success_count = prev.get("last_success_count")
+            if ok and count is not None:
+                last_success_count = count
             status[source] = {
                 "tested_at": tested_at,
                 "status": "ok" if ok else "fail",
                 "failure_note": note,
                 "event_count": count,
                 "last_success": tested_at if ok else prev.get("last_success"),
+                "last_success_count": last_success_count,
             }
         except Exception as e:
             print(f"  Warning: skipping {f.name}: {e}", file=sys.stderr)
@@ -158,6 +165,13 @@ def _fmt(ts: str | None) -> str:
         return dt.strftime("%Y-%m-%d %H:%M")
     except Exception:
         return ts[:16]
+
+
+def _fmt_success(s: dict) -> str:
+    """'Últ. sucesso' cell: timestamp plus how many events that run returned."""
+    ts = _fmt(s.get("last_success"))
+    n = s.get("last_success_count")
+    return f"{ts} · {n} ev" if ts != "—" and n is not None else ts
 
 
 # ---------------------------------------------------------------------------
@@ -246,7 +260,7 @@ def _process_table(rows: list[str], status: dict) -> list[str]:
                     note = (s.get("failure_note") or _STATIC_NOTES.get(module)) if not ok else None
                     cells[-3] = _fmt(s.get("tested_at"))
                     cells[-2] = f"❌ {note}" if note else ("✅" if ok else "❌")
-                    cells[-1] = _fmt(s.get("last_success"))
+                    cells[-1] = _fmt_success(s)
                 # else: preserve whatever is already in cells[-3:-1]
             else:
                 # First run: append new cells
@@ -256,7 +270,7 @@ def _process_table(rows: list[str], status: dict) -> list[str]:
                     note = (s.get("failure_note") or _STATIC_NOTES.get(module)) if not ok else None
                     cells += [_fmt(s.get("tested_at")),
                                f"❌ {note}" if note else ("✅" if ok else "❌"),
-                               _fmt(s.get("last_success"))]
+                               _fmt_success(s)]
                 else:
                     cells += ["—", "—", "—"]
 

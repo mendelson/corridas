@@ -401,18 +401,46 @@ async function loadData() {
   resultCount.textContent = T.loading;
   if (btnRefresh) btnRefresh.classList.add('spinning');
   try {
-    const res = await fetch('/corridas.json', { cache: 'no-cache' });
+    // Boot shard first (~1/3 of the full payload: default-filter window) so
+    // the first paint doesn't wait for the whole dataset on mobile.
+    let res = await fetch('/corridas-boot.json', { cache: 'no-cache' });
+    if (!res.ok) res = await fetch('/corridas.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
     allCorridas = json.corridas || json;
+    // Start the full download in parallel with geo detection inside
+    // initFilters; apply it only after the first paint.
+    const fullPromise = json.parcial
+      ? fetch('/corridas.json', { cache: 'no-cache' }).catch(() => null)
+      : null;
     const paisSet = new Set(allCorridas.map(c => c.pais || 'BR').filter(Boolean));
     await loadLocationsData(paisSet);
     await initFilters();
+    if (fullPromise) await _applyFullData(fullPromise);
   } catch (e) {
     resultCount.textContent = T.loadError;
     console.error('loadData error', e);
   } finally {
     if (btnRefresh) btnRefresh.classList.remove('spinning');
+  }
+}
+
+async function _applyFullData(fullPromise) {
+  try {
+    const res = await fullPromise;
+    if (!res || !res.ok) return;
+    const json = await res.json();
+    const full = json.corridas || json;
+    if (!Array.isArray(full) || full.length < allCorridas.length) return;
+    allCorridas = full;
+    await loadLocationsData(new Set(full.map(c => c.pais || 'BR').filter(Boolean)));
+    populateEstadoFilter({ skipGeo: true });
+    populateFontesFilter();
+    applyFilters();
+    renderCards();
+    updateCount();
+  } catch (e) {
+    console.error('full data load error', e);
   }
 }
 

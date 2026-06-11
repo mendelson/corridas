@@ -69,3 +69,38 @@ def test_committed_web_copy_matches_generator():
     }
     assert json.loads(committed) == regenerated, (
         "web/corridas.json is stale — re-run scripts/generate_web_data.py")
+
+
+# ---------------------------------------------------------------------------
+# Boot shard (web/corridas-boot.json) — first-paint payload
+# ---------------------------------------------------------------------------
+
+def _boot():
+    return json.loads((ROOT / "web" / "corridas-boot.json").read_text(encoding="utf-8"))
+
+
+def test_boot_shard_window_and_flag():
+    boot = _boot()
+    assert boot.get("parcial") is True, "boot shard must carry parcial:true"
+    lo, hi = GEN.boot_window(boot.get("gerado_em"))
+    assert boot["corridas"], "boot shard is empty"
+    for c in boot["corridas"]:
+        assert lo <= c["data_evento"] <= hi, (
+            f"{c['titulo']}: {c['data_evento']} outside boot window {lo}..{hi}"
+        )
+    assert boot["total"] == len(boot["corridas"])
+
+
+def test_boot_shard_is_exact_subset_of_web_copy():
+    boot, slim = _boot(), _load("web/corridas.json")
+    lo, hi = GEN.boot_window(boot.get("gerado_em"))
+    expected = [c for c in slim if lo <= (c.get("data_evento") or "") <= hi]
+    assert boot["corridas"] == expected, (
+        "web/corridas-boot.json is stale — re-run scripts/generate_web_data.py"
+    )
+
+
+def test_boot_shard_meaningfully_smaller_than_web_copy():
+    boot = (ROOT / "web" / "corridas-boot.json").stat().st_size
+    slim = (ROOT / "web" / "corridas.json").stat().st_size
+    assert boot < slim * 0.6, f"boot={boot} slim={slim}: shard not slimming first paint"

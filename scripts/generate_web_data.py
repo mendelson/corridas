@@ -27,6 +27,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 FULL = ROOT / "data" / "corridas.json"
 SLIM = ROOT / "web" / "corridas.json"
+BOOT = ROOT / "web" / "corridas-boot.json"
+
+# First-paint shard window, anchored on the dataset's own gerado_em date (NOT
+# the wall clock — keeps the file reproducible from data/corridas.json alone).
+# −15d matches the frontend's default "past15" period filter; +60d covers the
+# first screens of the date-sorted list. The full file loads in background.
+BOOT_PAST_DAYS = 15
+BOOT_FUTURE_DAYS = 60
 
 # Top-level event fields the frontend reads (see app.js: c.<field>).
 KEEP = (
@@ -70,18 +78,44 @@ def _slim_event(ev: dict) -> dict:
     return out
 
 
+def boot_window(gerado_em: str | None) -> tuple[str, str]:
+    """[from, to] ISO dates for the boot shard, anchored on gerado_em."""
+    from datetime import date, timedelta
+    try:
+        anchor = date.fromisoformat((gerado_em or "")[:10])
+    except ValueError:
+        anchor = date.today()
+    return ((anchor - timedelta(days=BOOT_PAST_DAYS)).isoformat(),
+            (anchor + timedelta(days=BOOT_FUTURE_DAYS)).isoformat())
+
+
 def main() -> None:
     data = json.loads(FULL.read_text(encoding="utf-8"))
     corridas = data["corridas"] if isinstance(data, dict) else data
+    gerado_em = data.get("gerado_em") if isinstance(data, dict) else None
+    slim_events = [_slim_event(ev) for ev in corridas]
     slim = {
-        "gerado_em": data.get("gerado_em") if isinstance(data, dict) else None,
+        "gerado_em": gerado_em,
         "total": len(corridas),
-        "corridas": [_slim_event(ev) for ev in corridas],
+        "corridas": slim_events,
     }
     SLIM.write_text(json.dumps(slim, ensure_ascii=False, separators=(",", ":")),
                     encoding="utf-8")
+
+    lo, hi = boot_window(gerado_em)
+    boot_events = [ev for ev in slim_events if lo <= (ev.get("data_evento") or "") <= hi]
+    boot = {
+        "gerado_em": gerado_em,
+        "parcial": True,  # tells app.js to fetch the full file in background
+        "total": len(boot_events),
+        "corridas": boot_events,
+    }
+    BOOT.write_text(json.dumps(boot, ensure_ascii=False, separators=(",", ":")),
+                    encoding="utf-8")
     print(f"web/corridas.json: {len(corridas)} eventos, "
           f"{SLIM.stat().st_size/1e6:.1f} MB (full: {FULL.stat().st_size/1e6:.1f} MB)")
+    print(f"web/corridas-boot.json: {len(boot_events)} eventos "
+          f"({lo}..{hi}), {BOOT.stat().st_size/1e6:.1f} MB")
 
 
 if __name__ == "__main__":

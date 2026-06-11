@@ -215,6 +215,11 @@ jobs:
 
       - name: Test ${{ matrix.source }}
         id: run_test
+        # A failing source does NOT fail its matrix job: the verdict moved to
+        # the update-readme job, which applies the health policy (alarm only
+        # when a source never succeeded or failed 3 consecutive runs). The
+        # step outcome still records ok/fail for the result artifact.
+        continue-on-error: true
         run: |
           python -m scraper.test_source "${{ matrix.source }}" 2>&1 | tee /tmp/test-out.txt
           EXIT=${PIPESTATUS[0]}
@@ -279,6 +284,10 @@ jobs:
           path: test-results/
 
       - name: Update README
+        id: agg
+        # Exits 1 when the health policy is violated; continue so the status
+        # commit below still lands, then the policy step fails the run.
+        continue-on-error: true
         run: python scripts/update_source_status.py test-results/
 
       - name: Stash failure logs
@@ -300,7 +309,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md data/source-status.json data/test-logs/
+          git add README.md data/source-status.json data/source-history.json data/test-logs/
           if git diff --cached --quiet; then
             echo "No status changes — nothing to commit."
             exit 0
@@ -319,4 +328,10 @@ jobs:
             sleep $((RANDOM % 5 + 2))
           done
           echo "::error::could not push README status after 5 attempts"
+          exit 1
+
+      - name: Enforce health policy
+        if: steps.agg.outcome == 'failure'
+        run: |
+          echo "::error::Política de saúde violada — fontes sem nenhum sucesso ou com 3+ falhas consecutivas (ver log do passo 'Update README')."
           exit 1

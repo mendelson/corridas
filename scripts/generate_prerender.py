@@ -176,8 +176,28 @@ def build_jsonld(events: list[dict]) -> str:
         link = _event_link(ev)
         if link:
             item["url"] = link
+            item["offers"] = {
+                "@type": "Offer",
+                "url": link,
+                "availability": "https://schema.org/InStock",
+            }
         if ev.get("imagem_url"):
             item["image"] = ev["imagem_url"]
+        # Multi-day events: per-distance dates differ → endDate = last day.
+        dist_dates = {d.get("data") for d in (ev.get("distancias") or []) if d.get("data")}
+        dist_dates.add(ev.get("data_evento") or "")
+        dist_dates.discard("")
+        if len(dist_dates) > 1:
+            item["endDate"] = max(dist_dates)
+        # Only a fonte the pipeline classified as the event's own organizer
+        # may be claimed as schema.org organizer — registration platforms and
+        # calendars are not the organizer.
+        org = next((f for f in (ev.get("fontes") or [])
+                    if f.get("tipo") == "organizador" and f.get("nome")), None)
+        if org:
+            item["organizer"] = {"@type": "Organization", "name": org["nome"]}
+            if org.get("link_evento"):
+                item["organizer"]["url"] = org["link_evento"]
         items.append({"@type": "ListItem", "position": i, "item": item})
     data = {"@context": "https://schema.org", "@type": "ItemList",
             "numberOfItems": len(items), "itemListElement": items}

@@ -25,6 +25,18 @@ from pathlib import Path
 
 README = Path("README.md")
 STATUS_JSON = Path("data/source-status.json")
+HISTORY_JSON = Path("data/source-history.json")
+
+# Rolling per-source window of test executions ({"t": ts, "ok": bool, "n": count}).
+# 40 entries ≈ a month+ of daily health runs — enough for trend/flake analysis
+# without unbounded growth.
+MAX_HISTORY = 40
+
+# Health policy (decided 2026-06-11): a source is only a PROBLEM when it has
+# never had a successful run with ≥1 event, or when it fails this many times
+# in a row. Anything less is a tolerated flake (⚠️ in the README, run stays
+# green) — one-off DNS/runner hiccups must not page anyone.
+FAIL_THRESHOLD = 3
 
 # Module path → display name as it appears in the README first column
 _MODULE_TO_NAME: dict[str, str] = {
@@ -122,7 +134,38 @@ def _save_status(status: dict) -> None:
     )
 
 
-def _apply_results(status: dict, results_dir: Path) -> dict:
+def _load_history() -> dict:
+    if HISTORY_JSON.exists():
+        try:
+            return json.loads(HISTORY_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _save_history(history: dict) -> None:
+    HISTORY_JSON.parent.mkdir(exist_ok=True)
+    HISTORY_JSON.write_text(
+        json.dumps(history, indent=1, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _append_history(history: dict, source: str, tested_at: str,
+                    ok: bool, count) -> None:
+    entries = history.setdefault(source, [])
+    entry = {"t": tested_at, "ok": ok, "n": count}
+    # Re-runs of the same workflow re-upload artifacts with the same source —
+    # replace instead of duplicating when the timestamp repeats.
+    if entries and entries[-1]["t"] == tested_at:
+        entries[-1] = entry
+    else:
+        entries.append(entry)
+    del entries[:-MAX_HISTORY]
+
+
+def _apply_results(status: dict, results_dir: Path, history: dict | None = None) -> tuple[dict, set]:
+    tested: set[str] = set()
     for f in sorted(results_dir.glob("*.json")):
         try:
             r = json.loads(f.read_text(encoding="utf-8"))
@@ -138,16 +181,41 @@ def _apply_results(status: dict, results_dir: Path) -> dict:
             count = r.get("count")
             if count is None:
                 count = prev.get("event_count")
+            # Count at the last SUCCESSFUL run — event_count alone loses it as
+            # soon as a source fails (it becomes 0 while last_success still
+            # points at the old run).
+            last_success_count = prev.get("last_success_count")
+            if ok and count is not None:
+                last_success_count = count
             status[source] = {
                 "tested_at": tested_at,
                 "status": "ok" if ok else "fail",
                 "failure_note": note,
                 "event_count": count,
                 "last_success": tested_at if ok else prev.get("last_success"),
+                "last_success_count": last_success_count,
+                "consecutive_failures": 0 if ok else (prev.get("consecutive_failures") or 0) + 1,
             }
+            tested.add(source)
+            if history is not None:
+                _append_history(history, source, tested_at, ok, r.get("count"))
         except Exception as e:
             print(f"  Warning: skipping {f.name}: {e}", file=sys.stderr)
-    return status
+    return status, tested
+
+
+def _violations(status: dict, tested: set[str]) -> list[tuple[str, str]]:
+    """Sources (among those tested in this batch) violating the health policy."""
+    out = []
+    for src in sorted(tested):
+        s = status.get(src) or {}
+        if s.get("status") != "fail":
+            continue
+        if not s.get("last_success"):
+            out.append((src, "nunca teve execução com sucesso (≥1 evento)"))
+        elif (s.get("consecutive_failures") or 0) >= FAIL_THRESHOLD:
+            out.append((src, f"{s['consecutive_failures']} falhas consecutivas"))
+    return out
 
 
 def _fmt(ts: str | None) -> str:
@@ -158,6 +226,25 @@ def _fmt(ts: str | None) -> str:
         return dt.strftime("%Y-%m-%d %H:%M")
     except Exception:
         return ts[:16]
+
+
+def _fmt_success(s: dict) -> str:
+    """'Últ. sucesso' cell: timestamp plus how many events that run returned."""
+    ts = _fmt(s.get("last_success"))
+    n = s.get("last_success_count")
+    return f"{ts} · {n} ev" if ts != "—" and n is not None else ts
+
+
+def _fmt_status(s: dict, module: str) -> str:
+    """Status cell: ✅ ok · ⚠️ failing within tolerance (n/3) · ❌ policy violation."""
+    if s.get("status") == "ok":
+        return "✅"
+    note = s.get("failure_note") or _STATIC_NOTES.get(module) or ""
+    n = s.get("consecutive_failures") or 0
+    never = not s.get("last_success")
+    if never or n >= FAIL_THRESHOLD:
+        return f"❌ {note}".strip()
+    return f"⚠️ {note} ({n}/{FAIL_THRESHOLD})".strip()
 
 
 # ---------------------------------------------------------------------------
@@ -242,21 +329,17 @@ def _process_table(rows: list[str], status: dict) -> list[str]:
                 # Only update if we have fresh data for this source
                 if module and module in status:
                     s = status[module]
-                    ok = s.get("status") == "ok"
-                    note = (s.get("failure_note") or _STATIC_NOTES.get(module)) if not ok else None
                     cells[-3] = _fmt(s.get("tested_at"))
-                    cells[-2] = f"❌ {note}" if note else ("✅" if ok else "❌")
-                    cells[-1] = _fmt(s.get("last_success"))
+                    cells[-2] = _fmt_status(s, module)
+                    cells[-1] = _fmt_success(s)
                 # else: preserve whatever is already in cells[-3:-1]
             else:
                 # First run: append new cells
                 if module and module in status:
                     s = status[module]
-                    ok = s.get("status") == "ok"
-                    note = (s.get("failure_note") or _STATIC_NOTES.get(module)) if not ok else None
                     cells += [_fmt(s.get("tested_at")),
-                               f"❌ {note}" if note else ("✅" if ok else "❌"),
-                               _fmt(s.get("last_success"))]
+                               _fmt_status(s, module),
+                               _fmt_success(s)]
                 else:
                     cells += ["—", "—", "—"]
 
@@ -304,10 +387,24 @@ def main() -> None:
         sys.exit(1)
 
     status = _load_status()
-    status = _apply_results(status, results_dir)
+    history = _load_history()
+    status, tested = _apply_results(status, results_dir, history)
     _save_status(status)
+    _save_history(history)
     update_readme(status)
-    print(f"Done. Status tracked for {len(status)} source(s).")
+    print(f"Done. Status tracked for {len(status)} source(s); "
+          f"history for {len(history)}.")
+
+    bad = _violations(status, tested)
+    if bad:
+        print("\nPOLÍTICA DE SAÚDE VIOLADA:", file=sys.stderr)
+        for src, reason in bad:
+            print(f"  ❌ {src}: {reason}", file=sys.stderr)
+        sys.exit(1)
+    flaky = [s for s in sorted(tested)
+             if status.get(s, {}).get("status") == "fail"]
+    if flaky:
+        print(f"Falhas toleradas (dentro da política): {', '.join(flaky)}")
 
 
 if __name__ == "__main__":

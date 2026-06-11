@@ -280,6 +280,21 @@ def test_jsonld_itemlist_valid_and_consistent():
             assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}", ev["startDate"]), (
                 f"{path}: bad startDate {ev['startDate']!r}"
             )
+            # Rich-result fields: every linked event must expose an Offer
+            # pointing at the same registration URL.
+            if "url" in ev:
+                offers = ev.get("offers")
+                assert offers and offers.get("url") == ev["url"], (
+                    f"{path}: {ev['name']!r} has url but no matching offers.url"
+                )
+            if "endDate" in ev:
+                assert ev["endDate"] >= ev["startDate"], (
+                    f"{path}: {ev['name']!r} endDate before startDate"
+                )
+            if "organizer" in ev:
+                assert ev["organizer"].get("name"), (
+                    f"{path}: {ev['name']!r} organizer without name"
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -309,3 +324,56 @@ def test_og_tags_consistent_with_head():
         tw = dict(_TW_RE.findall(html))
         assert tw.get("card") == "summary", f"{path}: twitter:card missing"
         assert tw.get("title") == title, f"{path}: twitter:title != <title>"
+
+
+# ---------------------------------------------------------------------------
+# On-page essentials: h1, crawlable footer (intro + language links), preview
+# deployment noindex
+# ---------------------------------------------------------------------------
+
+_SITE_NAMES = {
+    "pt": "Próxima Corrida",
+    "en": "Next Race",
+    "es": "Próxima Carrera",
+    "de": "Nächstes Rennen",
+    "fr": "Prochaine Course",
+}
+
+
+def test_every_home_has_exactly_one_h1_with_site_name():
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        h1s = _re.findall(r"<h1[^>]*>(.*?)</h1>", html, _re.DOTALL)
+        assert len(h1s) == 1, f"{path}: expected exactly 1 <h1>, got {len(h1s)}"
+        assert _SITE_NAMES[prefix] in h1s[0], (
+            f"{path}: <h1> must carry the site name {_SITE_NAMES[prefix]!r}"
+        )
+
+
+def test_footer_has_localized_intro_and_crawlable_language_links():
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        m = _re.search(r'<footer class="site-footer">(.*?)</footer>', html, _re.DOTALL)
+        assert m, f"{path}: site footer missing"
+        footer = m.group(1)
+        assert _SITE_NAMES[prefix] in footer, f"{path}: intro must mention the site name"
+        for lang in _SITE_NAMES:
+            assert f'<a href="/{lang}/">' in footer, (
+                f"{path}: footer missing crawlable link to /{lang}/"
+            )
+
+
+def test_pages_dev_mirrors_are_noindexed():
+    headers = (WEB / "_headers").read_text(encoding="utf-8")
+    rules = [
+        block for block in headers.split("\n\n")
+        if "pages.dev" in block
+    ]
+    assert rules, "_headers: no pages.dev rule found"
+    for block in rules:
+        assert "X-Robots-Tag: noindex" in block, f"_headers: pages.dev block lacks noindex:\n{block}"
+    # never noindex the canonical custom domain
+    assert "run.mmendelson.com" not in "".join(
+        line for line in headers.splitlines()
+        if "X-Robots-Tag" in line or line.startswith("https://")
+    ).replace("# ", ""), "_headers must not noindex the custom domain"

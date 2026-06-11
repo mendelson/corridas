@@ -24,6 +24,20 @@ TIMEOUT = 30
 _WAF_STATUSES = {403, 406, 429}
 
 
+# GitHub-hosted runners have no IPv6 route. Dual-stack hosts (e.g. Hostinger,
+# which serves correrbrasilia.com.br with an AAAA record) intermittently get
+# resolved AAAA-first, and connect() dies with ENETUNREACH (Errno 101) before
+# any HTTP exchange. Binding the local side to 0.0.0.0 forces AF_INET, and
+# transport-level retries absorb one-off connect hiccups.
+def _request(url: str, headers: dict, verify: bool, timeout, **kwargs) -> httpx.Response:
+    transport = httpx.HTTPTransport(verify=verify, retries=2, local_address="0.0.0.0")
+    with httpx.Client(
+        transport=transport, headers=headers,
+        follow_redirects=True, timeout=timeout,
+    ) as client:
+        return client.get(url, **kwargs)
+
+
 def get(url: str, **kwargs) -> httpx.Response:
     """HTTP GET with browser-like headers.
 
@@ -45,10 +59,7 @@ def get(url: str, **kwargs) -> httpx.Response:
     extra_headers = kwargs.pop("extra_headers", None)
     headers       = {**HEADERS, **extra_headers} if extra_headers else HEADERS
 
-    resp = httpx.get(
-        url, headers=headers, follow_redirects=True,
-        verify=verify, timeout=timeout, **kwargs,
-    )
+    resp = _request(url, headers, verify, timeout, **kwargs)
     if resp.status_code in _WAF_STATUSES:
         domain = urllib.parse.urlparse(url).netloc
         raise httpx.HTTPStatusError(
@@ -61,10 +72,11 @@ def get(url: str, **kwargs) -> httpx.Response:
 def get_direct(url: str, **kwargs) -> httpx.Response:
     """HTTP GET without WAF-raising — for optional/non-critical requests."""
     kwargs.pop("source", None)
-    kwargs.setdefault("timeout", TIMEOUT)
+    timeout = kwargs.pop("timeout", TIMEOUT)
+    verify = kwargs.pop("verify", True)
     extra_headers = kwargs.pop("extra_headers", None)
     headers = {**HEADERS, **extra_headers} if extra_headers else HEADERS
-    return httpx.get(url, headers=headers, follow_redirects=True, **kwargs)
+    return _request(url, headers, verify, timeout, **kwargs)
 
 
 # Kept for backward compatibility — get() is the single entry point.

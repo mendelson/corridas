@@ -472,6 +472,7 @@ async function initFilters() {
   applyFilters();
   renderCards();
   updateCount();
+  _anchorOpenMonth();
 
   const geo = await detectGeoEstado();
   // Respect any location the user picked while geo was in flight.
@@ -484,6 +485,8 @@ async function initFilters() {
     applyFilters();
     renderCards();
     updateCount();
+    // The list above the current month changed — re-anchor (still load-time).
+    _anchorOpenMonth();
   }
 }
 
@@ -1132,6 +1135,29 @@ function renderCards() {
   cardsList.appendChild(frag);
 }
 
+
+// Scroll a month section to the top of the viewport, leaving its first cards
+// visible right below the sticky bars. Measures the (non-sticky) section, NOT
+// the separator button: once a section is open its separator is
+// position:sticky, so the button can report the *stuck* offset instead of its
+// natural top (e.g. right after a tall month above collapsed). The section
+// element is always in normal flow, so its top is reliable.
+function _scrollSectionToTop(section, behavior = 'smooth') {
+  const cs = getComputedStyle(document.documentElement);
+  const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
+  const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
+  const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
+  window.scrollTo({ top: Math.max(0, top), behavior });
+}
+
+// On load, anchor the initially-open month (the current one) at the top of
+// the scroll so its most recent events are immediately visible — instead of
+// landing on the collapsed past-events section at scroll 0.
+function _anchorOpenMonth() {
+  const section = cardsList.querySelector('.month-section--open');
+  if (section) _scrollSectionToTop(section, 'instant');
+}
+
 function buildPastSection(corridas, today, threeDaysAgo) {
   const sorted = [...corridas].sort((a, b) =>
     (b.data_evento || '').localeCompare(a.data_evento || ''));
@@ -1170,20 +1196,7 @@ function buildPastSection(corridas, today, threeDaysAgo) {
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
-    requestAnimationFrame(() => {
-      // Measure the (non-sticky) section, NOT the separator button: once the
-      // section is open its separator is position:sticky, so btn.getBoundingClientRect()
-      // can report the *stuck* offset instead of its natural top. When a tall month
-      // above has just collapsed, that made the list scroll past the first events
-      // and land in the middle of the month. The section element is always in normal
-      // flow, so its top is reliable. Offset by the sticky bars (header + filters)
-      // so the first event sits right below them.
-      const cs = getComputedStyle(document.documentElement);
-      const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
-      const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
-      const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
+    requestAnimationFrame(() => _scrollSectionToTop(section));
   });
 
   section.appendChild(btn);
@@ -1226,20 +1239,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
-    requestAnimationFrame(() => {
-      // Measure the (non-sticky) section, NOT the separator button: once the
-      // section is open its separator is position:sticky, so btn.getBoundingClientRect()
-      // can report the *stuck* offset instead of its natural top. When a tall month
-      // above has just collapsed, that made the list scroll past the first events
-      // and land in the middle of the month. The section element is always in normal
-      // flow, so its top is reliable. Offset by the sticky bars (header + filters)
-      // so the first event sits right below them.
-      const cs = getComputedStyle(document.documentElement);
-      const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
-      const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
-      const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
+    requestAnimationFrame(() => _scrollSectionToTop(section));
   });
 
   section.appendChild(btn);

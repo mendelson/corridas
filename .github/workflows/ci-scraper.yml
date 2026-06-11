@@ -19,15 +19,12 @@ name: CI — Validar Scrapers
 # corridas.json is not modified.
 
 on:
+  # No paths filter on pull_request: `validate` is a REQUIRED status check, and
+  # a required check that never reports blocks the PR forever. The `changes`
+  # gate job below skips the heavy validation on PRs that don't touch scraper
+  # code — a skipped job satisfies required status checks.
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-    paths:
-      - 'scraper/sources/**'
-      - 'scraper/main.py'
-      - 'scraper/models.py'
-      - 'scraper/http_client.py'
-      - 'scraper/utils.py'
-      - 'scraper/playwright_client.py'
   push:
     branches:
       - 'fix/**'
@@ -55,11 +52,51 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Cheap PR gate: did this PR touch scraper code at all? Uses the PR files
+  # API (paginated) instead of a full-history checkout.
+  changes:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      scraper: ${{ steps.diff.outputs.scraper }}
+    steps:
+      - id: diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, urllib.request
+          token, repo, pr = os.environ["GH_TOKEN"], os.environ["REPO"], os.environ["PR"]
+          pat = re.compile(r"^scraper/(sources/|main\.py|models\.py|http_client\.py|utils\.py|playwright_client\.py)")
+          hit, page = False, 1
+          while True:
+              req = urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/pulls/{pr}/files?per_page=100&page={page}",
+                  headers={"Authorization": f"Bearer {token}",
+                           "Accept": "application/vnd.github+json"})
+              files = json.load(urllib.request.urlopen(req))
+              if any(pat.match(f["filename"]) for f in files):
+                  hit = True
+                  break
+              if len(files) < 100:
+                  break
+              page += 1
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"scraper={'true' if hit else 'false'}\n")
+          print("scraper changed:", hit)
+          PY
+
   validate:
+    needs: changes
     if: >-
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'push' ||
-      !github.event.pull_request.draft
+      always() &&
+      (
+        github.event_name == 'workflow_dispatch' ||
+        github.event_name == 'push' ||
+        (!github.event.pull_request.draft && needs.changes.outputs.scraper == 'true')
+      )
     runs-on: ubuntu-latest
 
     steps:

@@ -3,10 +3,11 @@ from __future__ import annotations
 import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from io import BytesIO
 
 from bs4 import BeautifulSoup
 
-from ..http_client import get
+from ..http_client import get, get_direct
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, slugify, infer_estado, now_iso, today_iso,
@@ -242,6 +243,9 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
                     d.horario = section_times[km_key]
             corrida.distancias = dists
 
+    if not corrida.distancias:
+        _fetch_regulation_distances(corrida, detail)
+
     per_dist_times = [d.horario for d in corrida.distancias if d.horario]
     if per_dist_times:
         corrida.horario = min(per_dist_times)
@@ -250,6 +254,53 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
         m = re.search(r"\d{4}-\d{2}-\d{2}\s+(\d{1,2}):(\d{2})", real_date)
         if m:
             corrida.horario = f"{int(m.group(1)):02d}:{m.group(2)}"
+
+
+_PDF_MAX_BYTES = 15 * 1024 * 1024
+_PDF_MAX_PAGES = 20
+
+
+def _pdf_to_text(blob: bytes) -> str:
+    from pypdf import PdfReader
+
+    reader = PdfReader(BytesIO(blob))
+    pages: list[str] = []
+    for page in reader.pages[:_PDF_MAX_PAGES]:
+        try:
+            pages.append(page.extract_text() or "")
+        except Exception:
+            pass
+    return "\n".join(pages)
+
+
+def _fetch_regulation_distances(corrida: Corrida, detail: dict) -> None:
+    """Fallback: extract distances from the regulation PDF when the event
+    description carries none (e.g. Hoka Speed Run lists distances only in the
+    regulation). PDFs live on Azure blob storage — get_direct skips the proxy
+    chain since there's no WAF in front of them."""
+    url = detail.get("regulationDocument") or ""
+    if not url.lower().split("?")[0].endswith(".pdf"):
+        return
+    try:
+        resp = get_direct(url, timeout=30)
+        resp.raise_for_status()
+        if len(resp.content) > _PDF_MAX_BYTES:
+            return
+        text = _pdf_to_text(resp.content)
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] regulamento '{corrida.titulo}' falhou: {e}")
+        return
+
+    schedule = _extract_schedule(text)
+    if schedule:
+        corrida.distancias = [
+            Distancia(km=km, data=date, horario=horario)
+            for km, (date, horario) in sorted(schedule.items())
+        ]
+    else:
+        corrida.distancias = _extract_distances_from_text(text)
+    if corrida.distancias:
+        print(f"[{SOURCE_NAME}] distâncias de '{corrida.titulo}' obtidas do regulamento")
 
 
 def _enrich_all_distances(corridas: list[Corrida]) -> None:

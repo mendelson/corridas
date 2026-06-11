@@ -298,13 +298,15 @@ jobs:
             cp test-results/*.log data/test-logs/
           fi
 
-      - name: Commit README update
-        # Only main carries the status files. On feature-branch dispatches
-        # (validation runs) this step used to rebase the branch ONTO MAIN and
-        # push — guaranteed non-fast-forward (no retry can fix a rewritten
-        # history), and when it did succeed it polluted PR branches with
-        # status commits that caused rebase conflicts.
+      - name: Commit README update via PR
+        # Only main carries the status files (feature-branch dispatches are
+        # read-only validation runs). A main exige checks obrigatórios
+        # (ruleset): o status é entregue via PR com auto-merge.
         if: github.ref == 'refs/heads/main'
+        env:
+          # PAT do mantenedor: PRs criadas com o github.token não disparam
+          # workflows, então os required checks nunca reportariam.
+          GH_TOKEN: ${{ secrets.AUTOMERGE_PAT || github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -313,21 +315,23 @@ jobs:
             echo "No status changes — nothing to commit."
             exit 0
           fi
-          git commit -m "ci: update source status in README [skip ci]"
-          # Concurrent workflows (data-pipeline, ci-frontend test log) also push
-          # to main, so the rebase+push can lose a race. Retry the loop instead
-          # of failing the run on a transient non-fast-forward.
-          for attempt in 1 2 3 4 5; do
-            git pull --rebase -X ours origin main
-            if git push; then
-              echo "pushed on attempt $attempt"
-              exit 0
-            fi
-            echo "push race on attempt $attempt — retrying..."
-            sleep $((RANDOM % 5 + 2))
+          [ -z "${{ secrets.AUTOMERGE_PAT }}" ] && echo "::warning::AUTOMERGE_PAT ausente — usando github.token (checks não rodarão na PR de status)."
+          BRANCH="ci/status-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "ci: update source status in README"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "$BRANCH"
+          # PRs de status anteriores ainda abertas estão supersedidas — fechar.
+          for old in $(gh pr list --state open --json number,headRefName \
+                         -q '.[] | select(.headRefName | startswith("ci/status-")) | .number'); do
+            gh pr close "$old" -c "Superseded pelo status mais recente." -d || true
           done
-          echo "::error::could not push README status after 5 attempts"
-          exit 1
+          gh pr create --base main --head "$BRANCH" \
+            --title "ci: update source status in README" \
+            --body "PR automática do monitor de saúde — merge automático quando os checks passarem."
+          gh pr merge "$BRANCH" --auto --squash --delete-branch \
+            -t "ci: update source status in README [skip ci]" -b "" \
+            || gh pr merge "$BRANCH" --squash --delete-branch \
+                 -t "ci: update source status in README [skip ci]" -b ""
 
       - name: Enforce health policy
         if: steps.agg.outcome == 'failure'

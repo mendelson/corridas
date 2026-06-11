@@ -3,10 +3,10 @@ name: CI — Testar Frontend
 on:
   push:
     branches: [main]
+  # No paths-ignore: `test` is a required status check and must report on
+  # every PR (scraper-only PRs included) or they would block forever.
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
-    paths-ignore:
-      - 'scraper/sources/**'
   workflow_dispatch:
 
 permissions:
@@ -42,10 +42,26 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: python scripts/update_test_log.py test-results.json
 
-      - name: Commit test log (main only)
+      - name: Commit test log via PR (main only)
         if: github.ref == 'refs/heads/main'
+        env:
+          # PAT do mantenedor: PRs criadas com o github.token não disparam
+          # workflows, então os required checks nunca reportariam.
+          GH_TOKEN: ${{ secrets.AUTOMERGE_PAT || github.token }}
         run: |
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add data/site-test-log.json
-          git diff --staged --quiet || (git commit -m "ci: update site test log [skip ci]" && git pull --rebase -X ours && git push)
+          if git diff --staged --quiet; then exit 0; fi
+          [ -z "${{ secrets.AUTOMERGE_PAT }}" ] && echo "::warning::AUTOMERGE_PAT ausente — usando github.token (checks não rodarão na PR de log)."
+          BRANCH="ci/test-log-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "ci: update site test log"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "ci: update site test log" \
+            --body "PR automática (log de testes do site). Merge automático quando os checks passarem."
+          gh pr merge "$BRANCH" --auto --squash --delete-branch \
+            -t "ci: update site test log [skip ci]" -b "" \
+            || gh pr merge "$BRANCH" --squash --delete-branch \
+                 -t "ci: update site test log [skip ci]" -b ""

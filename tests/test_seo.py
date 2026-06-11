@@ -184,7 +184,7 @@ _PR_BLOCK_RE = _re.compile(
 _JSONLD_BLOCK_RE = _re.compile(
     r'<!-- prerender:jsonld:start -->\s*<script type="application/ld\+json">(.*?)</script>',
     _re.DOTALL)
-_ARTICLE_TITLE_RE = _re.compile(r"<h3>(?:<a [^>]*>)?([^<]+)")
+_ARTICLE_TITLE_RE = _re.compile(r'<h2 class="card-title">(?:<a [^>]*>)?([^<]+)')
 
 
 def _prerender_blocks():
@@ -196,26 +196,70 @@ def _prerender_blocks():
     return out
 
 
-def test_prerender_present_capped_and_identical_across_languages():
+def test_prerender_present_capped_and_styled():
+    """Each shell carries pre-rendered cards using the real card markup —
+    the page must look like the site before app.js boots (no unstyled flash)."""
     blocks = _prerender_blocks()
-    counts = {p: b.count("<article>") for p, b in blocks.items()}
+    counts = {p: b.count('<article class="card prerender"') for p, b in blocks.items()}
     for p, n in counts.items():
-        assert 1 <= n <= 200, f"{p}: {n} pre-rendered articles"
-    assert len(set(blocks.values())) == 1, (
-        "pre-rendered content must be identical across language shells "
-        f"(counts: {counts})"
+        assert 1 <= n <= 200, f"{p}: {n} pre-rendered cards"
+        assert "<article>" not in blocks[p], f"{p}: bare unstyled <article> in pre-render"
+        for cls in ("card-collapsed", "card-body", "card-title", "card-meta"):
+            assert cls in blocks[p], f"{p}: pre-render missing .{cls} markup"
+
+
+def test_prerender_localized_per_language():
+    """Selection is per-language: targeted countries lead each shell's block,
+    so the blocks must NOT all be identical (worldwide aggregator — each
+    locale gets the events its audience searches for)."""
+    gp_path = ROOT / "scripts" / "generate_prerender.py"
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        spec = importlib.util.spec_from_file_location("generate_prerender", gp_path)
+        gp = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(gp)
+    finally:
+        _sys.path.pop(0)
+
+    data = _json.loads((WEB / "corridas.json").read_text(encoding="utf-8"))
+    corridas = data["corridas"] if isinstance(data, dict) else data
+    title_paises: dict[str, set] = {}
+    for c in corridas:
+        title_paises.setdefault(c.get("titulo"), set()).add(c.get("pais") or "")
+
+    blocks = _prerender_blocks()
+    assert len(set(blocks.values())) > 1, (
+        "pre-rendered blocks are identical across languages — localization lost"
     )
+    claimed = set().union(*gp.LANG_COUNTRIES.values())
+    for prefix, block in blocks.items():
+        titles = [_html.unescape(t.strip()) for t in _ARTICLE_TITLE_RE.findall(block)]
+        assert titles, f"{prefix}: no titles extracted from pre-render block"
+        allowed = gp.LANG_COUNTRIES.get(prefix)
+        first = titles[0]
+        paises = title_paises.get(first, set())
+        if allowed is None:  # en — global fallback: first event not claimed elsewhere
+            assert paises - claimed or not paises & claimed, (
+                f"en: first pre-rendered event '{first}' belongs to another locale ({paises})"
+            )
+        else:
+            assert paises & allowed, (
+                f"{prefix}: first pre-rendered event '{first}' not in {sorted(allowed)} ({paises})"
+            )
 
 
 def test_prerender_titles_exist_in_corridas_json():
     data = _json.loads((WEB / "corridas.json").read_text(encoding="utf-8"))
     corridas = data["corridas"] if isinstance(data, dict) else data
     titles = {c.get("titulo") for c in corridas}
-    block = next(iter(_prerender_blocks().values()))
-    extracted = [_html.unescape(t.strip()) for t in _ARTICLE_TITLE_RE.findall(block)]
-    assert extracted, "no titles extracted from pre-render block"
-    missing = [t for t in extracted if t not in titles]
-    assert not missing, f"pre-rendered events absent from corridas.json: {missing[:5]}"
+    for prefix, block in _prerender_blocks().items():
+        extracted = [_html.unescape(t.strip()) for t in _ARTICLE_TITLE_RE.findall(block)]
+        assert extracted, f"{prefix}: no titles extracted from pre-render block"
+        missing = [t for t in extracted if t not in titles]
+        assert not missing, (
+            f"{prefix}: pre-rendered events absent from corridas.json: {missing[:5]}"
+        )
 
 
 def test_jsonld_itemlist_valid_and_consistent():
@@ -227,7 +271,7 @@ def test_jsonld_itemlist_valid_and_consistent():
         assert data["@type"] == "ItemList"
         items = data["itemListElement"]
         assert data["numberOfItems"] == len(items) > 0
-        n_articles = _PR_BLOCK_RE.search(text).group(1).count("<article>")
+        n_articles = _PR_BLOCK_RE.search(text).group(1).count("<article")
         assert len(items) == n_articles, f"{path}: JSON-LD/HTML count mismatch"
         for li in items:
             ev = li["item"]
@@ -236,6 +280,21 @@ def test_jsonld_itemlist_valid_and_consistent():
             assert _re.fullmatch(r"\d{4}-\d{2}-\d{2}", ev["startDate"]), (
                 f"{path}: bad startDate {ev['startDate']!r}"
             )
+            # Rich-result fields: every linked event must expose an Offer
+            # pointing at the same registration URL.
+            if "url" in ev:
+                offers = ev.get("offers")
+                assert offers and offers.get("url") == ev["url"], (
+                    f"{path}: {ev['name']!r} has url but no matching offers.url"
+                )
+            if "endDate" in ev:
+                assert ev["endDate"] >= ev["startDate"], (
+                    f"{path}: {ev['name']!r} endDate before startDate"
+                )
+            if "organizer" in ev:
+                assert ev["organizer"].get("name"), (
+                    f"{path}: {ev['name']!r} organizer without name"
+                )
 
 
 # ---------------------------------------------------------------------------
@@ -265,3 +324,56 @@ def test_og_tags_consistent_with_head():
         tw = dict(_TW_RE.findall(html))
         assert tw.get("card") == "summary", f"{path}: twitter:card missing"
         assert tw.get("title") == title, f"{path}: twitter:title != <title>"
+
+
+# ---------------------------------------------------------------------------
+# On-page essentials: h1, crawlable footer (intro + language links), preview
+# deployment noindex
+# ---------------------------------------------------------------------------
+
+_SITE_NAMES = {
+    "pt": "Próxima Corrida",
+    "en": "Next Race",
+    "es": "Próxima Carrera",
+    "de": "Nächstes Rennen",
+    "fr": "Prochaine Course",
+}
+
+
+def test_every_home_has_exactly_one_h1_with_site_name():
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        h1s = _re.findall(r"<h1[^>]*>(.*?)</h1>", html, _re.DOTALL)
+        assert len(h1s) == 1, f"{path}: expected exactly 1 <h1>, got {len(h1s)}"
+        assert _SITE_NAMES[prefix] in h1s[0], (
+            f"{path}: <h1> must carry the site name {_SITE_NAMES[prefix]!r}"
+        )
+
+
+def test_footer_has_localized_intro_and_crawlable_language_links():
+    for prefix, path in _PAGES.items():
+        html = path.read_text(encoding="utf-8")
+        m = _re.search(r'<footer class="site-footer">(.*?)</footer>', html, _re.DOTALL)
+        assert m, f"{path}: site footer missing"
+        footer = m.group(1)
+        assert _SITE_NAMES[prefix] in footer, f"{path}: intro must mention the site name"
+        for lang in _SITE_NAMES:
+            assert f'<a href="/{lang}/">' in footer, (
+                f"{path}: footer missing crawlable link to /{lang}/"
+            )
+
+
+def test_pages_dev_mirrors_are_noindexed():
+    headers = (WEB / "_headers").read_text(encoding="utf-8")
+    rules = [
+        block for block in headers.split("\n\n")
+        if "pages.dev" in block
+    ]
+    assert rules, "_headers: no pages.dev rule found"
+    for block in rules:
+        assert "X-Robots-Tag: noindex" in block, f"_headers: pages.dev block lacks noindex:\n{block}"
+    # never noindex the canonical custom domain
+    assert "run.mmendelson.com" not in "".join(
+        line for line in headers.splitlines()
+        if "X-Robots-Tag" in line or line.startswith("https://")
+    ).replace("# ", ""), "_headers must not noindex the custom domain"

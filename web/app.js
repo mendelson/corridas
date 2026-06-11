@@ -401,18 +401,49 @@ async function loadData() {
   resultCount.textContent = T.loading;
   if (btnRefresh) btnRefresh.classList.add('spinning');
   try {
-    const res = await fetch('/corridas.json', { cache: 'no-cache' });
+    // Boot shard first (~1/3 of the full payload: default-filter window) so
+    // the first paint doesn't wait for the whole dataset on mobile.
+    let res = await fetch('/corridas-boot.json', { cache: 'no-cache' });
+    if (!res.ok) res = await fetch('/corridas.json', { cache: 'no-cache' });
     if (!res.ok) throw new Error(res.status);
     const json = await res.json();
     allCorridas = json.corridas || json;
+    // Start the full download in parallel with geo detection inside
+    // initFilters; apply it only after the first paint.
+    const fullPromise = json.parcial
+      ? fetch('/corridas.json', { cache: 'no-cache' }).catch(() => null)
+      : null;
     const paisSet = new Set(allCorridas.map(c => c.pais || 'BR').filter(Boolean));
     await loadLocationsData(paisSet);
     await initFilters();
+    if (fullPromise) await _applyFullData(fullPromise);
+    // Automation/test hook: the dataset is as complete as it will get and no
+    // further background re-render will replace the card list.
+    document.body.dataset.fullDataReady = '1';
   } catch (e) {
     resultCount.textContent = T.loadError;
     console.error('loadData error', e);
   } finally {
     if (btnRefresh) btnRefresh.classList.remove('spinning');
+  }
+}
+
+async function _applyFullData(fullPromise) {
+  try {
+    const res = await fullPromise;
+    if (!res || !res.ok) return;
+    const json = await res.json();
+    const full = json.corridas || json;
+    if (!Array.isArray(full) || full.length < allCorridas.length) return;
+    allCorridas = full;
+    await loadLocationsData(new Set(full.map(c => c.pais || 'BR').filter(Boolean)));
+    populateEstadoFilter({ skipGeo: true });
+    populateFontesFilter();
+    applyFilters();
+    renderCards();
+    updateCount();
+  } catch (e) {
+    console.error('full data load error', e);
   }
 }
 
@@ -434,19 +465,29 @@ async function initFilters() {
   populateEstadoFilter({ skipGeo: true });
   populateFontesFilter();
 
-  // Geolocation
+  // First paint immediately — geolocation (IP lookup, up to 3 external
+  // services) must never hold the card list hostage. The geo filter is
+  // applied in a second render when (and if) it resolves.
+  const estadoAtFirstPaint = state.estado;
+  applyFilters();
+  renderCards();
+  updateCount();
+  _anchorOpenMonth();
+
   const geo = await detectGeoEstado();
-  if (geo && _estadoAvailableValues.has(geo)) {
+  // Respect any location the user picked while geo was in flight.
+  if (geo && _estadoAvailableValues.has(geo) && state.estado === estadoAtFirstPaint) {
     state.estado = geo;
     _geoApplied  = geo;
     _updateEstadoLabel();
     populateEstadoFilter({ skipGeo: true });
     populateFontesFilter();
+    applyFilters();
+    renderCards();
+    updateCount();
+    // The list above the current month changed — re-anchor (still load-time).
+    _anchorOpenMonth();
   }
-
-  applyFilters();
-  renderCards();
-  updateCount();
 }
 
 // ---------------------------------------------------------------------------
@@ -1094,6 +1135,29 @@ function renderCards() {
   cardsList.appendChild(frag);
 }
 
+
+// Scroll a month section to the top of the viewport, leaving its first cards
+// visible right below the sticky bars. Measures the (non-sticky) section, NOT
+// the separator button: once a section is open its separator is
+// position:sticky, so the button can report the *stuck* offset instead of its
+// natural top (e.g. right after a tall month above collapsed). The section
+// element is always in normal flow, so its top is reliable.
+function _scrollSectionToTop(section, behavior = 'smooth') {
+  const cs = getComputedStyle(document.documentElement);
+  const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
+  const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
+  const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
+  window.scrollTo({ top: Math.max(0, top), behavior });
+}
+
+// On load, anchor the initially-open month (the current one) at the top of
+// the scroll so its most recent events are immediately visible — instead of
+// landing on the collapsed past-events section at scroll 0.
+function _anchorOpenMonth() {
+  const section = cardsList.querySelector('.month-section--open');
+  if (section) _scrollSectionToTop(section, 'instant');
+}
+
 function buildPastSection(corridas, today, threeDaysAgo) {
   const sorted = [...corridas].sort((a, b) =>
     (b.data_evento || '').localeCompare(a.data_evento || ''));
@@ -1132,20 +1196,7 @@ function buildPastSection(corridas, today, threeDaysAgo) {
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
-    requestAnimationFrame(() => {
-      // Measure the (non-sticky) section, NOT the separator button: once the
-      // section is open its separator is position:sticky, so btn.getBoundingClientRect()
-      // can report the *stuck* offset instead of its natural top. When a tall month
-      // above has just collapsed, that made the list scroll past the first events
-      // and land in the middle of the month. The section element is always in normal
-      // flow, so its top is reliable. Offset by the sticky bars (header + filters)
-      // so the first event sits right below them.
-      const cs = getComputedStyle(document.documentElement);
-      const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
-      const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
-      const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
+    requestAnimationFrame(() => _scrollSectionToTop(section));
   });
 
   section.appendChild(btn);
@@ -1188,20 +1239,7 @@ function buildMonthSection(monthKey, count, expanded = false, hasNew = false) {
     btn.setAttribute('aria-expanded', 'true');
     btn.querySelector('.month-chevron').textContent = '▾';
     section.classList.add('month-section--open');
-    requestAnimationFrame(() => {
-      // Measure the (non-sticky) section, NOT the separator button: once the
-      // section is open its separator is position:sticky, so btn.getBoundingClientRect()
-      // can report the *stuck* offset instead of its natural top. When a tall month
-      // above has just collapsed, that made the list scroll past the first events
-      // and land in the middle of the month. The section element is always in normal
-      // flow, so its top is reliable. Offset by the sticky bars (header + filters)
-      // so the first event sits right below them.
-      const cs = getComputedStyle(document.documentElement);
-      const headerH  = parseInt(cs.getPropertyValue('--header-h'))  || 0;
-      const filtersH = parseInt(cs.getPropertyValue('--filters-h')) || 0;
-      const top = section.getBoundingClientRect().top + window.scrollY - headerH - filtersH - 8;
-      window.scrollTo({ top, behavior: 'smooth' });
-    });
+    requestAnimationFrame(() => _scrollSectionToTop(section));
   });
 
   section.appendChild(btn);

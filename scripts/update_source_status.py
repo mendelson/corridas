@@ -25,6 +25,12 @@ from pathlib import Path
 
 README = Path("README.md")
 STATUS_JSON = Path("data/source-status.json")
+HISTORY_JSON = Path("data/source-history.json")
+
+# Rolling per-source window of test executions ({"t": ts, "ok": bool, "n": count}).
+# 40 entries ≈ a month+ of daily health runs — enough for trend/flake analysis
+# without unbounded growth.
+MAX_HISTORY = 40
 
 # Module path → display name as it appears in the README first column
 _MODULE_TO_NAME: dict[str, str] = {
@@ -122,7 +128,37 @@ def _save_status(status: dict) -> None:
     )
 
 
-def _apply_results(status: dict, results_dir: Path) -> dict:
+def _load_history() -> dict:
+    if HISTORY_JSON.exists():
+        try:
+            return json.loads(HISTORY_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return {}
+
+
+def _save_history(history: dict) -> None:
+    HISTORY_JSON.parent.mkdir(exist_ok=True)
+    HISTORY_JSON.write_text(
+        json.dumps(history, indent=1, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+
+def _append_history(history: dict, source: str, tested_at: str,
+                    ok: bool, count) -> None:
+    entries = history.setdefault(source, [])
+    entry = {"t": tested_at, "ok": ok, "n": count}
+    # Re-runs of the same workflow re-upload artifacts with the same source —
+    # replace instead of duplicating when the timestamp repeats.
+    if entries and entries[-1]["t"] == tested_at:
+        entries[-1] = entry
+    else:
+        entries.append(entry)
+    del entries[:-MAX_HISTORY]
+
+
+def _apply_results(status: dict, results_dir: Path, history: dict | None = None) -> dict:
     for f in sorted(results_dir.glob("*.json")):
         try:
             r = json.loads(f.read_text(encoding="utf-8"))
@@ -152,6 +188,8 @@ def _apply_results(status: dict, results_dir: Path) -> dict:
                 "last_success": tested_at if ok else prev.get("last_success"),
                 "last_success_count": last_success_count,
             }
+            if history is not None:
+                _append_history(history, source, tested_at, ok, r.get("count"))
         except Exception as e:
             print(f"  Warning: skipping {f.name}: {e}", file=sys.stderr)
     return status
@@ -318,10 +356,13 @@ def main() -> None:
         sys.exit(1)
 
     status = _load_status()
-    status = _apply_results(status, results_dir)
+    history = _load_history()
+    status = _apply_results(status, results_dir, history)
     _save_status(status)
+    _save_history(history)
     update_readme(status)
-    print(f"Done. Status tracked for {len(status)} source(s).")
+    print(f"Done. Status tracked for {len(status)} source(s); "
+          f"history for {len(history)}.")
 
 
 if __name__ == "__main__":

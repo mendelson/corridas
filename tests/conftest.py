@@ -1,8 +1,8 @@
 """
 Pytest fixtures for end-to-end site tests.
 
-Starts a local HTTP server on port 8765 serving the web/ directory and
-provides browser fixtures with geo mocking.
+Starts a local HTTP server on an OS-assigned port serving the web/ directory
+and provides browser fixtures with geo mocking.
 """
 import json
 import threading
@@ -11,7 +11,11 @@ from pathlib import Path
 import pytest
 
 WEB_DIR = Path(__file__).parent.parent / "web"
-SERVER_PORT = 8765
+# Port 0 lets the OS assign a free port. This keeps the server collision-free
+# when the suite runs in parallel (pytest-xdist spawns one server per worker
+# process); the fixture yields the actually-bound port. The geo route mock
+# matches on host (127.0.0.1), not port, so any port works.
+SERVER_PORT = 0
 GEO_FAKE = {"country_code": "BR", "region_code": "SP", "city": "São Paulo", "latitude": -23.5, "longitude": -46.6}
 
 
@@ -26,9 +30,10 @@ class _Handler(SimpleHTTPRequestHandler):
 @pytest.fixture(scope="session")
 def live_server():
     server = ThreadingHTTPServer(("127.0.0.1", SERVER_PORT), _Handler)
+    port = server.server_address[1]
     t = threading.Thread(target=server.serve_forever, daemon=True)
     t.start()
-    yield f"http://127.0.0.1:{SERVER_PORT}"
+    yield f"http://127.0.0.1:{port}"
     server.shutdown()
 
 

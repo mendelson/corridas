@@ -2,7 +2,7 @@
 End-to-end Playwright tests for the corridas static site.
 
 Uses sync playwright API via pytest-playwright.
-All tests assume the live_server fixture (port 8765) is running
+All tests assume the live_server fixture (OS-assigned port) is running
 and that corridas.json is populated with real data.
 """
 import json

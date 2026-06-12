@@ -1170,6 +1170,11 @@ def test_selo_filter_and_badges(page_pt, live_server):
     a selo filters the list. Real selo data only lands post-scrape, so the
     test seeds it client-side to exercise the UI deterministically."""
     result = page_pt.evaluate("""() => {
+        // Neutralize geo/period filters so a CI-detected location can't drop
+        // the synthetic events (the widget correctly hides when the active
+        // filter excludes every labelled race — not what we're testing here).
+        state.estado = 'todos'; state.periodo = 'all';
+        state.fontes.clear(); state.activePills.clear(); state.selos.clear();
         // Seed two synthetic events with official designations.
         const base = allCorridas[0];
         const mk = (titulo, selo, major) => Object.assign({}, base, {

@@ -311,6 +311,12 @@ def normalize_titulo(raw: str | None) -> str:
         # Restore distance tokens: 5K, 10K, 21K, 42K
         elif re.match(r'^\d+[kKmM],?$', orig):
             words.append(re.sub(r'[kKmM]', lambda m: m.group().upper(), orig))
+        # Edition numerals stay uppercase ("IX Corrida", "Etapa III"). Only
+        # I/V/X forms (1–39) — allowing L/C/D/M would catch real words that
+        # title-case into roman lookalikes ("Mix", "Liv", "Dom"...).
+        elif re.fullmatch(r'x{0,3}(?:ix|iv|v?i{0,3})[ªº°.,]?', orig, re.IGNORECASE) \
+                and re.search(r'[ivxIVX]', orig):
+            words.append(orig.upper())
         else:
             words.append(titled_word)
     return " ".join(words)

@@ -40,6 +40,7 @@ BOOT_FUTURE_DAYS = 60
 KEEP = (
     "titulo", "data_evento", "horario", "localizacao", "cidade", "estado",
     "pais", "distancias", "imagem_url", "fotos", "first_seen_at", "fontes",
+    "selo", "major",
 )
 # Required fields are always kept even when empty, so the data-quality tests
 # keep validating the web copy as-is.

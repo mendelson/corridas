@@ -11,6 +11,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 from .merger import are_duplicates, merge_rodada, _merge_pair
+from .enrichment_selos import enrich as _enrich_selos
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event
 from .http_client import get as http_get
@@ -1173,6 +1174,7 @@ def main() -> None:
     _normalize_all_locations(final)
     _resolve_missing_locations(final)
     final = _drop_invalid_location_events(final)
+    _enrich_selos(final)  # World Athletics labels + Abbott Majors (dynamic)
     _strip_overmerged_fontes(final)
     final = _drop_nonunique_link_events(final)
     _ensure_inscricao_links(final)

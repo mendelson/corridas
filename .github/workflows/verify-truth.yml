@@ -1,0 +1,73 @@
+name: Verificar Veracidade (amostral)
+
+# Compara, para uma amostra diária de eventos, o que o site exibe com o que a
+# própria página da fonte declara (JSON-LD + padrões Cidade-UF) — independente
+# do scraper que produziu o registro. Divergência de LOCALIZAÇÃO falha o run;
+# divergência de data é aviso (adiamentos são legítimos e o próximo scrape
+# sincroniza). Estado em data/truth-check.json, entregue via PR + auto-merge.
+
+on:
+  schedule:
+    - cron: '30 14 * * *'  # diário, fora dos horários do pipeline/saúde
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: verify-truth
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verificar amostra contra as fontes
+        id: verify
+        continue-on-error: true
+        run: python scripts/verify_truth.py 2>&1 | tee verify.log
+
+      - name: Commit estado via PR
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.AUTOMERGE_PAT || github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/truth-check.json
+          if git diff --cached --quiet; then
+            echo "Sem mudanças de estado."
+            exit 0
+          fi
+          BRANCH="ci/truth-${{ github.run_id }}"
+          git checkout -b "$BRANCH"
+          git commit -m "ci: truth-check amostral"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "$BRANCH"
+          for old in $(gh pr list --state open --json number,headRefName \
+                         -q '.[] | select(.headRefName | startswith("ci/truth-")) | .number'); do
+            gh pr close "$old" -c "Superseded pela verificação mais recente." -d || true
+          done
+          gh pr create --base main --head "$BRANCH" \
+            --title "ci: truth-check amostral" \
+            --body "PR automática do verificador de veracidade — merge automático quando os checks passarem."
+          gh pr merge "$BRANCH" --auto --squash --delete-branch \
+            -t "ci: truth-check amostral [skip ci]" -b "" \
+            || gh pr merge "$BRANCH" --squash --delete-branch \
+                 -t "ci: truth-check amostral [skip ci]" -b ""
+
+      - name: Alarmar divergência de localização
+        if: steps.verify.outcome == 'failure'
+        run: |
+          echo "::error::Divergência de localização confirmada entre o site e a(s) página(s)-fonte — ver log do passo 'Verificar amostra'."
+          exit 1

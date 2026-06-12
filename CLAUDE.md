@@ -108,6 +108,7 @@ When in doubt: if you can click a "register" button on that source's page and pa
 - **`data-pipeline.yml`** — four times daily (00:00, 06:00, 12:00 and 18:00 UTC) + on push to `scraper/`/`web/`. Runs `scraper.main`, projects the slim web copy, and delivers the data via an **automated PR with auto-merge** (`data/scrape-*` branch; squash subject carries `[skip ci]`). Main has required status checks (ruleset), so no workflow pushes to it directly — the status/test-log commits follow the same PR flow (`ci/status-*`, `ci/test-log-*`). Requires the `AUTOMERGE_PAT` secret (PRs created with the default token don't trigger workflows).
 - **`monitor-source-health.yml`** — daily 09:00 UTC + on push to `scraper/sources/`. Builds a job matrix dynamically: when shared infra (`models.py`, `utils.py`, `http_client.py`, `playwright_client.py`) changes, all sources are tested; otherwise only changed source files. Each job uploads a single-result artifact, then a final `update-readme` job aggregates all artifacts and runs `scripts/update_source_status.py` to refresh README tables and `data/source-status.json` (the source's row in README.md uses an embedded HTML comment `<!--module_name-->` for stable matching).
 - **`diagnose-source.yml`** — manual trigger with a `source` input; uploads full log as artifact.
+- **`verify-truth.yml`** — daily 14:30 UTC + manual. Samples ~40 future events (75% single-source first; no event resampled for 14 days), re-fetches each fonte page and compares **independently of the scraper**: schema.org Event JSON-LD (startDate / addressRegion / street "Cidade-UF") plus a BR "Cidade-UF" pattern scan. **Location divergence fails the run** (the CPTR class: page says "Pirenópolis-GO", site shows "Brasília, DF"); date divergence is a warning only (postponements are legit). State in `data/truth-check.json`, delivered via PR + auto-merge (`ci/truth-*`). This catches *wrong-but-valid* data that `tests/` (which only check validity) cannot.
 
 ### Frontend (`web/`)
 
@@ -299,6 +300,40 @@ A passing CI run (`✅ N eventos`) is necessary but not sufficient. Check:
 ## Sandbox / local-dev caveats
 
 This repository is often touched from a Claude Code sandbox where outbound HTTP is restricted (`Host not in allowlist` returning 403). When a scraper appears to fail locally with 403 from `httpx`, that's almost always the sandbox — not the source. Validate fixes by pushing and watching `Test Sources` CI rather than relying on local runs.
+
+## GOLDEN RULE: no hardcoded event data, anywhere
+
+**Every event field — date, distance, location, time, title, image, registration
+link — must be read at scrape time from the source (page content, API field, or
+structured data). Nothing about a specific event may be baked into the code.**
+
+This is the single most important data rule in the project. It outranks
+convenience: a scraper that hardcodes a "known" value is wrong even when that
+value is currently correct, because it will silently go stale or wrong when the
+source changes, and it hides breakage (the scraper looks healthy while serving a
+frozen value).
+
+Concretely forbidden:
+- `KNOWN_DATE = "2026-09-27"` style fallbacks that get emitted when live
+  extraction fails;
+- hardcoded distances, start times, cities/states, or finish lines for a
+  specific event;
+- any per-event constant that substitutes for reading the source.
+
+Allowed (these are not event data):
+- **Reference/geographic invariants**: subdivision tables in `web/locations/`,
+  the persistent `data/geo_cache.json` (city→state resolution), `_CEP_RANGES`,
+  ISO country lists. These describe the world, not a specific edition.
+- **Classification keywords**: running/non-running regexes (`_RUNNING_KW`,
+  `_NON_RUNNING_KW`). They decide *whether* to include an event, never *what its
+  values are*.
+- **The source URL / selectors / parse patterns** a scraper uses to reach and
+  read the data.
+
+When the source cannot be read, emit nothing for that field (or skip the event
+if a required field is missing) — never substitute a stored value. A source that
+returns `[]` because its page changed is the system working correctly: the
+health monitor flags it and we fix the parser, instead of shipping a lie.
 
 ## Never infer event data from opaque IDs
 

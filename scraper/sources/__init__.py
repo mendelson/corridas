@@ -5,6 +5,7 @@ from . import (
     brasil_que_corre,
     portal_das_corridas,
     central_da_corrida,
+    conta_passos,
     minhas_inscricoes,
     corridas_brasil,
     brasil_corrida,

@@ -73,6 +73,7 @@ from .sources.evento_unico import (
     dublin,
     athens,
     valencia,
+    comrades,
     paris,
     edinburgh,
     great_north_run,
@@ -133,6 +134,7 @@ SOURCES = [
     dublin,
     athens,
     valencia,
+    comrades,
     paris,
     # UK Events
     edinburgh,

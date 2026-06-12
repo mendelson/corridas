@@ -84,6 +84,12 @@ def scrape_major(
             if single and single >= today:
                 live_dates = [single]
         dates_to_use = live_dates if live_dates else _resolve_dates(all_known, today)
+        # Diagnóstico de aderência ao princípio "nada hardcoded": registra se a
+        # data veio da página (LIVE) ou do fallback confirmado (FALLBACK).
+        if live_dates:
+            print(f"[{source_name}] DATE_SOURCE=LIVE {live_dates}")
+        else:
+            print(f"[{source_name}] DATE_SOURCE=FALLBACK {_resolve_dates(all_known, today)}")
 
         imagem_url = (
             _og_image(soup, url)
@@ -93,6 +99,7 @@ def scrape_major(
         inscricoes_abertas = _check_status(soup, open_kw, closed_kw)
     else:
         dates_to_use = _resolve_dates(all_known, today)
+        print(f"[{source_name}] DATE_SOURCE=FALLBACK (página inacessível) {dates_to_use}")
 
     imagem_url = imagem_url or known_image
     now = now_iso()

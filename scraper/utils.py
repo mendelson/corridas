@@ -144,6 +144,14 @@ _DIST_LABELLED_RE = re.compile(
     rf"(?:{_DIST_LABEL})\s*:?\s*({_DIST_TOKEN})", re.IGNORECASE
 )
 _DIST_KM_RE = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
+# Currency-tagged amounts ("R$ 129,90", "US$ 25", "€ 30") — stripped before any
+# distance extraction. Price tables like "7 KM: R$ 129,90 | 15 KM: R$ 139,90"
+# otherwise feed the shared-suffix matcher via the "|" connector, turning lot
+# prices into 129.9 km "distances".
+_PRICE_RE = re.compile(r"(?:R\$|US?\$|\$|€|£)\s*\d+(?:[.,]\d{1,2})?")
+# A number with exactly two decimals is money formatting, not a distance
+# ("139,90"); real fractional distances use one ("7,5") or three ("21,097").
+_TWO_DECIMALS_RE = re.compile(r"^\d+[.,]\d{2}$")
 
 
 def _dist_token_to_km(tok: str, allow_named: bool) -> float | None:
@@ -206,7 +214,7 @@ def extract_distances_from_text(
     Numeric 21/42 are canonical-snapped (21.097 / 42.195) and values within 0.5 km
     of an already-seen distance are deduped. Returns a sorted list of unique floats.
     """
-    text = text or ""
+    text = _PRICE_RE.sub(" ", text or "")
     raw: list[float] = []
 
     # 0. Standalone named distance, opt-in (titles only — avoids phantom marathons).
@@ -229,6 +237,8 @@ def extract_distances_from_text(
     # 2. Shared km suffix.
     for m in _DIST_SHARED_SUFFIX_RE.finditer(text):
         for num_m in re.finditer(r"\d+(?:[.,]\d+)?", m.group(0)):
+            if _TWO_DECIMALS_RE.match(num_m.group(0)):
+                continue  # money formatting, not a distance
             try:
                 raw.append(float(num_m.group(0).replace(",", ".")))
             except ValueError:

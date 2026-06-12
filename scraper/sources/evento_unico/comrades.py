@@ -1,26 +1,23 @@
 """Comrades Marathon — the world's oldest/largest ultramarathon (KwaZulu-Natal, ZA).
 
 Not a World Marathon Major and not on any aggregator platform, so it needs a
-dedicated single-event scraper. Two specifics drive the design:
+dedicated single-event scraper. The course ALTERNATES direction each year —
+"Up Run" (Durban → Pietermaritzburg) vs "Down Run" (Pietermaritzburg → Durban)
+— so distance and finish city change per edition.
 
-  * The course ALTERNATES direction each year — "Up Run" (Durban →
-    Pietermaritzburg) vs "Down Run" (Pietermaritzburg → Durban) — so the
-    distance AND finish city change per edition. They are read from the page
-    every run, never carried from one edition to the next.
-  * The race-information page lists EXPO dates ("07–10 Jun") *before* race day,
-    so a naive "earliest future date" extraction would grab the expo. The race
-    date is therefore parsed from the weekday-anchored line ("Sunday, DD Month
-    YYYY"), which the expo dates never carry.
+Everything is read from the page on every run; nothing is hardcoded (CLAUDE.md:
+event data must be obtained explicitly from page content — if it isn't there,
+emit nothing, never guess). Future editions therefore update automatically.
+If the page can't be fetched or parsed, the scraper returns [] (the health
+monitor flags the regression); it never ships stale/guessed data.
 
-The page is parsed live so future editions update automatically. A confirmed
-hardcoded edition is the safety net: if the page wording changes and parsing
-fails, the known edition is still emitted (and the health monitor flags the
-parse regression after 3 misses). Everything is read explicitly — nothing is
-guessed (CLAUDE.md: never infer dates/distances).
-
-Probed 2026-06-12 (comrades.com/race-information): "UP RUN starts in Durban
-and finishes in Pietermaritzburg … Sunday, 14 June 2026 … race distance is
-85.77km".
+Extracted from comrades.com/race-information (probed 2026-06-12):
+  * date    — weekday-anchored "Sunday, DD Month YYYY" (expo dates carry no
+              weekday, so they're never matched);
+  * distance — "the race distance is 85.77km";
+  * finish  — "…finishes in Pietermaritzburg".
+horario is left unset: the start is batched by group (05h00/05h15/05h30), so
+there is no single official gun time to read (horario is optional).
 """
 from __future__ import annotations
 
@@ -32,21 +29,12 @@ from bs4 import BeautifulSoup
 from ...http_client import get
 from ...models import Corrida, Distancia, FonteInfo
 from ...utils import slugify, now_iso, today_iso
+from ... import geo as _geo
 from ._base import _og_image, _twitter_image, _first_race_photo, _check_status
 
 SOURCE_NAME = "Comrades Marathon"
 URL = "https://comrades.com/race-information"
 PAIS = "ZA"
-ESTADO = "KZN"  # KwaZulu-Natal — both Durban and Pietermaritzburg are in KZN
-HORARIO = "05:45"  # traditional Comrades gun time (05h45 SAST)
-
-# Route invariant (not a guess): the Up Run finishes in Pietermaritzburg, the
-# Down Run finishes in Durban.
-_FINISH = {"up": "Pietermaritzburg", "down": "Durban"}
-
-# Safety net — the last edition we confirmed by hand. Emitted only if live
-# parsing fails AND the date is still future.
-_FALLBACK = {"data": "2026-06-14", "km": 85.77, "direction": "up"}
 
 _MONTHS = {m: i for i, m in enumerate(
     ["january", "february", "march", "april", "may", "june", "july",
@@ -57,22 +45,19 @@ _MONTHS = {m: i for i, m in enumerate(
 _DATE_RE = re.compile(
     r"\b(?:Sunday|Sun)[,\s]+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", re.IGNORECASE)
 _DIST_RE = re.compile(r"race distance is\s*(\d+(?:\.\d+)?)\s*km", re.IGNORECASE)
-_UP_RE = re.compile(r"\bUP\s+RUN\b", re.IGNORECASE)
-_DOWN_RE = re.compile(r"\bDOWN\s+RUN\b", re.IGNORECASE)
+_FINISH_RE = re.compile(r"finish(?:es)?\s+in\s+([A-Z][A-Za-z]+(?:\s[A-Z][A-Za-z]+)?)")
 
 _OPEN = ["enter now", "entries open", "register now", "entries are open"]
 _CLOSED = ["entries closed", "sold out", "entries are closed", "entry closed"]
 
 
 def _parse_page(soup: BeautifulSoup) -> dict | None:
-    """Extract {data, km, direction} explicitly from the page, or None."""
+    """Extract {data, km, cidade} explicitly from the page, or None if any is missing."""
     text = html.unescape(re.sub(r"\s+", " ", soup.get_text(" ", strip=True)))
 
     md = _DATE_RE.search(text)
-    if not md:
-        return None
-    mon = _MONTHS.get(md.group(2).lower())
-    if not mon:
+    mon = _MONTHS.get(md.group(2).lower()) if md else None
+    if not md or not mon:
         return None
     data = f"{md.group(3)}-{mon:02d}-{int(md.group(1)):02d}"
 
@@ -83,56 +68,50 @@ def _parse_page(soup: BeautifulSoup) -> dict | None:
     if not 80 <= km <= 95:  # sanity: Comrades is ~85–90 km
         return None
 
-    up, down = bool(_UP_RE.search(text)), bool(_DOWN_RE.search(text))
-    direction = "up" if (up and not down) else ("down" if (down and not up) else None)
-    if direction is None:
+    fm = _FINISH_RE.search(text)
+    if not fm:
         return None
+    cidade = fm.group(1).strip()
 
-    return {"data": data, "km": km, "direction": direction}
+    return {"data": data, "km": km, "cidade": cidade}
 
 
 def scrape() -> list[Corrida]:
     today = today_iso()
-    soup = None
-    imagem_url = None
-    inscricoes_abertas = None
     try:
         resp = get(URL, source=SOURCE_NAME)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
-        imagem_url = _og_image(soup, URL) or _twitter_image(soup, URL) or _first_race_photo(soup, URL)
-        inscricoes_abertas = _check_status(soup, _OPEN, _CLOSED)
     except Exception as e:
         print(f"[{SOURCE_NAME}] erro ao buscar página: {e}")
-
-    edition = _parse_page(soup) if soup else None
-    if edition:
-        print(f"[{SOURCE_NAME}] edição lida da página: {edition['data']} "
-              f"{edition['km']}km ({edition['direction']} run)")
-    elif _FALLBACK["data"] >= today:
-        edition = _FALLBACK
-        print(f"[{SOURCE_NAME}] parsing falhou — usando edição confirmada {edition['data']}")
-    else:
-        print(f"[{SOURCE_NAME}] sem edição futura na página — aguardando anúncio")
         return []
 
-    if edition["data"] < today:
-        print(f"[{SOURCE_NAME}] edição {edition['data']} já passou — aguardando anúncio")
+    ed = _parse_page(soup)
+    if not ed:
+        print(f"[{SOURCE_NAME}] não foi possível extrair data/distância/chegada da página")
+        return []
+    if ed["data"] < today:
+        print(f"[{SOURCE_NAME}] edição {ed['data']} já passou — aguardando anúncio")
         return []
 
-    cidade = _FINISH[edition["direction"]]
-    year = edition["data"][:4]
+    _pais, estado = _geo.resolve(ed["cidade"], "", PAIS)
+    if estado == "" or _pais != PAIS:
+        print(f"[{SOURCE_NAME}] estado não resolvido para '{ed['cidade']}' — pulando")
+        return []
+
+    imagem_url = _og_image(soup, URL) or _twitter_image(soup, URL) or _first_race_photo(soup, URL)
+    inscricoes_abertas = _check_status(soup, _OPEN, _CLOSED)
     now = now_iso()
     corrida = Corrida(
-        id=f"{slugify('Comrades Marathon')}_{PAIS.lower()}_{year}",
+        id=f"{slugify('Comrades Marathon')}_{PAIS.lower()}_{ed['data'][:4]}",
         titulo="Comrades Marathon",
-        data_evento=edition["data"],
-        horario=HORARIO,
-        localizacao=f"{cidade}, KwaZulu-Natal",
-        cidade=cidade,
-        estado=ESTADO,
+        data_evento=ed["data"],
+        horario=None,  # batched group starts — no single gun time on the page
+        localizacao=f"{ed['cidade']}, KwaZulu-Natal",
+        cidade=ed["cidade"],
+        estado=estado,
         pais=PAIS,
-        distancias=[Distancia(km=edition["km"], data=None, horario=None)],
+        distancias=[Distancia(km=ed["km"], data=None, horario=None)],
         imagem_url=imagem_url,
         inscricoes_abertas=inscricoes_abertas,
         periodo_inscricao=None,
@@ -142,5 +121,5 @@ def scrape() -> list[Corrida]:
         first_seen_at=now,
         updated_at=now,
     )
-    print(f"[{SOURCE_NAME}] 1 edição ({edition['data']}, {cidade})")
+    print(f"[{SOURCE_NAME}] 1 edição ({ed['data']}, {ed['cidade']}/{estado}, {ed['km']}km)")
     return [corrida]

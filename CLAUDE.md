@@ -300,6 +300,40 @@ A passing CI run (`✅ N eventos`) is necessary but not sufficient. Check:
 
 This repository is often touched from a Claude Code sandbox where outbound HTTP is restricted (`Host not in allowlist` returning 403). When a scraper appears to fail locally with 403 from `httpx`, that's almost always the sandbox — not the source. Validate fixes by pushing and watching `Test Sources` CI rather than relying on local runs.
 
+## GOLDEN RULE: no hardcoded event data, anywhere
+
+**Every event field — date, distance, location, time, title, image, registration
+link — must be read at scrape time from the source (page content, API field, or
+structured data). Nothing about a specific event may be baked into the code.**
+
+This is the single most important data rule in the project. It outranks
+convenience: a scraper that hardcodes a "known" value is wrong even when that
+value is currently correct, because it will silently go stale or wrong when the
+source changes, and it hides breakage (the scraper looks healthy while serving a
+frozen value).
+
+Concretely forbidden:
+- `KNOWN_DATE = "2026-09-27"` style fallbacks that get emitted when live
+  extraction fails;
+- hardcoded distances, start times, cities/states, or finish lines for a
+  specific event;
+- any per-event constant that substitutes for reading the source.
+
+Allowed (these are not event data):
+- **Reference/geographic invariants**: subdivision tables in `web/locations/`,
+  the persistent `data/geo_cache.json` (city→state resolution), `_CEP_RANGES`,
+  ISO country lists. These describe the world, not a specific edition.
+- **Classification keywords**: running/non-running regexes (`_RUNNING_KW`,
+  `_NON_RUNNING_KW`). They decide *whether* to include an event, never *what its
+  values are*.
+- **The source URL / selectors / parse patterns** a scraper uses to reach and
+  read the data.
+
+When the source cannot be read, emit nothing for that field (or skip the event
+if a required field is missing) — never substitute a stored value. A source that
+returns `[]` because its page changed is the system working correctly: the
+health monitor flags it and we fix the parser, instead of shipping a lie.
+
 ## Never infer event data from opaque IDs
 
 Event information (dates, location, title) must be obtained **explicitly** from page content, API response fields, or structured data — never inferred from ID strings, URL slugs, or opaque identifiers. Platform IDs like `02605131942` in a URL are opaque: they encode nothing meaningful and must never be decoded as a date, location, or any other value. If explicit data is not available from a page or API field, leave the field empty or unset — do not guess.

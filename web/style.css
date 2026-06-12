@@ -497,6 +497,16 @@ input { font-family: inherit; }
 }
 .fonte-filter-option:hover { background: var(--color-surface-2); color: var(--color-text); }
 .fonte-filter-option.checked { color: var(--color-text); }
+/* Master "All" row: pinned at the top, separated from the list, slightly bolder. */
+.fonte-filter-option.fonte-filter-all {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-weight: 600;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.fonte-filter-option.fonte-filter-all:hover { background: var(--color-surface-2); }
 .fonte-filter-option input[type="checkbox"] {
   accent-color: var(--color-accent);
   width: 15px;

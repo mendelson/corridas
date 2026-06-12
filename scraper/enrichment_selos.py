@@ -26,6 +26,7 @@ from __future__ import annotations
 import json
 import re
 import difflib
+from pathlib import Path
 
 from .http_client import get
 from .models import Corrida
@@ -55,18 +56,52 @@ _IOC_TO_ISO2 = {
     "HUN": "HU", "ROU": "RO", "CRO": "HR", "SLO": "SI", "SVK": "SK", "LUX": "LU",
 }
 
-# Abbott World Marathon Majors — reference membership (6 classic + Sydney, the
-# 7th, added 2025). Matched dynamically to events by title token + city. Each
-# entry: (title-token that must appear, city-token that must appear, ISO2).
-_MAJORS = [
-    ("tokyo", "tokyo", "JP"),
-    ("boston", "boston", "US"),
-    ("london", "london", "GB"),
-    ("berlin", "berlin", "DE"),
-    ("chicago", "chicago", "US"),
-    ("new york", "new york", "US"),
-    ("sydney", "sydney", "AU"),
-]
+# Abbott World Marathon Majors — membership read DYNAMICALLY from Wikidata
+# (entity Q282092 "World Marathon Majors", property P527 "has parts"), so the
+# system adapts automatically when a race is added or removed (e.g. Sydney,
+# added 2025). Abbott itself publishes no machine-readable list. A local cache
+# (data/majors_cache.json) mirrors the last successful fetch and is used if
+# Wikidata is unreachable — a machine-maintained cache of a live source, like
+# data/geo_cache.json (NOT a hand-authored constant).
+WIKIDATA_SPARQL = "https://query.wikidata.org/sparql"
+_MAJORS_QUERY = (
+    'SELECT ?raceLabel ?iso WHERE { wd:Q282092 wdt:P527 ?race. '
+    '?race wdt:P17 ?country. ?country wdt:P297 ?iso. '
+    'SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } }'
+)
+_MAJORS_CACHE = Path(__file__).resolve().parent.parent / "data" / "majors_cache.json"
+
+# Stop-words when reducing a Wikidata race name to its distinctive tokens.
+_MAJOR_STOP = {"marathon", "city"}
+
+
+def _fetch_majors() -> list[dict]:
+    """[{tokens:set, iso2:str, name:str}] of current Majors, Wikidata→cache."""
+    raw = None
+    try:
+        resp = get(WIKIDATA_SPARQL, source="Wikidata (majors)",
+                   params={"format": "json", "query": _MAJORS_QUERY},
+                   extra_headers={"Accept": "application/sparql-results+json"})
+        resp.raise_for_status()
+        rows = resp.json()["results"]["bindings"]
+        raw = [{"name": r["raceLabel"]["value"], "iso2": r["iso"]["value"]}
+               for r in rows if r.get("raceLabel") and r.get("iso")]
+        if raw:
+            _MAJORS_CACHE.write_text(
+                json.dumps(raw, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    except Exception as e:
+        print(f"[selos] Wikidata indisponível — usando cache de majors: {e}")
+    if not raw:
+        try:
+            raw = json.loads(_MAJORS_CACHE.read_text(encoding="utf-8"))
+        except Exception:
+            return []
+    majors = []
+    for m in raw:
+        toks = set(normalize_titulo_merge(m["name"]).split()) - _MAJOR_STOP
+        if toks and m.get("iso2"):
+            majors.append({"tokens": toks, "iso2": m["iso2"], "name": m["name"]})
+    return majors
 
 
 def _fetch_wa_labels() -> list[dict]:
@@ -133,20 +168,25 @@ def _matches(corrida: Corrida, wa: dict) -> bool:
     return False
 
 
-def _apply_majors(corrida: Corrida) -> None:
-    ct = normalize_titulo_merge(corrida.titulo)
-    city = normalize_titulo_merge(corrida.cidade)
-    for title_tok, city_tok, iso2 in _MAJORS:
-        if corrida.pais == iso2 and title_tok in ct and (city_tok in city or city_tok in ct):
+def _apply_majors(corrida: Corrida, majors: list[dict]) -> None:
+    ct = set(normalize_titulo_merge(corrida.titulo).split())
+    for mj in majors:
+        if corrida.pais == mj["iso2"] and mj["tokens"] <= ct:
             corrida.major = True
             return
 
 
 def enrich(corridas: list[Corrida]) -> None:
     """Annotate corridas in place with selo (World Athletics) and major (Abbott)."""
-    # Majors first — pure reference match, never fails.
-    for c in corridas:
-        _apply_majors(c)
+    # Majors — dynamic membership from Wikidata (auto-adapts to additions/removals).
+    majors = _fetch_majors()
+    if majors:
+        print(f"[selos] {len(majors)} Majors do Wikidata: {sorted(m['name'] for m in majors)}")
+        for c in corridas:
+            c.major = False
+            _apply_majors(c, majors)
+    else:
+        print("[selos] lista de Majors indisponível (Wikidata + cache) — major preservado")
 
     try:
         labels = _fetch_wa_labels()

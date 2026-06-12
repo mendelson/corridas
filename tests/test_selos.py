@@ -30,21 +30,51 @@ def _mk(titulo, data, cidade, estado, pais):
         updated_at="2026-01-01T00:00:00+00:00", pais=pais)
 
 
+# Dynamic majors: build the list the way _fetch_majors would from cache rows.
+def _majors_from(rows):
+    from scraper.utils import normalize_titulo_merge
+    out = []
+    for m in rows:
+        toks = set(normalize_titulo_merge(m["name"]).split()) - es._MAJOR_STOP
+        out.append({"tokens": toks, "iso2": m["iso2"], "name": m["name"]})
+    return out
+
+
+_CUR_MAJORS = _majors_from([
+    {"name": "Berlin Marathon", "iso2": "DE"},
+    {"name": "Sydney Marathon", "iso2": "AU"},
+    {"name": "New York City Marathon", "iso2": "US"},
+    {"name": "Tokyo Marathon", "iso2": "JP"},
+])
+
+
 def test_majors_matched_by_title_and_country():
     berlin = _mk("BMW Berlin Marathon", "2026-09-27", "Berlim", "BE", "DE")
     sydney = _mk("TCS Sydney Marathon", "2026-08-30", "Sydney", "NSW", "AU")
+    nyc = _mk("TCS New York City Marathon", "2026-11-01", "New York", "NY", "US")
     sp = _mk("Maratona de São Paulo", "2026-04-12", "São Paulo", "SP", "BR")
-    for c in (berlin, sydney, sp):
-        es._apply_majors(c)
-    assert berlin.major and sydney.major
+    for c in (berlin, sydney, nyc, sp):
+        es._apply_majors(c, _CUR_MAJORS)
+    assert berlin.major and sydney.major and nyc.major
     assert not sp.major
 
 
 def test_major_requires_country_match():
     # A "Tokyo"-named race in the wrong country must not become a Major.
     fake = _mk("Tokyo Run Brasil", "2026-03-07", "São Paulo", "SP", "BR")
-    es._apply_majors(fake)
+    es._apply_majors(fake, _CUR_MAJORS)
     assert not fake.major
+
+
+def test_majors_auto_adapt_to_membership():
+    # If Wikidata stops listing a race, it stops being a Major next run —
+    # and a newly-added race becomes one. No code change needed.
+    only_sydney = _majors_from([{"name": "Sydney Marathon", "iso2": "AU"}])
+    berlin = _mk("BMW Berlin Marathon", "2026-09-27", "Berlim", "BE", "DE")
+    sydney = _mk("TCS Sydney Marathon", "2026-08-30", "Sydney", "NSW", "AU")
+    es._apply_majors(berlin, only_sydney)
+    es._apply_majors(sydney, only_sydney)
+    assert sydney.major and not berlin.major
 
 
 def test_selo_matcher_precision():

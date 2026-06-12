@@ -320,9 +320,16 @@ def test_og_tags_consistent_with_head():
         assert og.get("url") == canon, f"{path}: og:url != canonical"
         assert og.get("type") == "website"
         assert og.get("image", "").startswith("https://"), f"{path}: og:image not absolute"
+        # Localized share card: each shell points at its own og-{lang}.png and
+        # the committed file actually exists (1200×630, generated per locale).
+        assert og.get("image", "").endswith(f"/og-{prefix}.png"), (
+            f"{path}: og:image must be the localized card og-{prefix}.png"
+        )
+        assert (WEB / f"og-{prefix}.png").exists(), f"og-{prefix}.png missing in web/"
         assert og.get("locale") == _OG_LOCALES[prefix], f"{path}: og:locale"
         tw = dict(_TW_RE.findall(html))
-        assert tw.get("card") == "summary", f"{path}: twitter:card missing"
+        assert tw.get("card") == "summary_large_image", f"{path}: twitter:card"
+        assert tw.get("image", "").endswith(f"/og-{prefix}.png"), f"{path}: twitter:image"
         assert tw.get("title") == title, f"{path}: twitter:title != <title>"
 
 

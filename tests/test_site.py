@@ -1158,3 +1158,69 @@ def test_initial_load_anchors_current_month(page_pt, live_server):
     assert abs(pos["top"] - (pos["bars"] + 8)) <= 24, (
         f"open month not anchored right below the sticky bars: {pos}"
     )
+
+
+# ---------------------------------------------------------------------------
+# Selos / Majors filter + badges
+# ---------------------------------------------------------------------------
+
+def test_selo_filter_and_badges(page_pt, live_server):
+    """Inject a labelled + a Major event, re-render, and verify: the selo
+    filter widget appears with options, badges render on cards, and selecting
+    a selo filters the list. Real selo data only lands post-scrape, so the
+    test seeds it client-side to exercise the UI deterministically."""
+    result = page_pt.evaluate("""() => {
+        // Neutralize geo/period filters so a CI-detected location can't drop
+        // the synthetic events (the widget correctly hides when the active
+        // filter excludes every labelled race — not what we're testing here).
+        state.estado = 'todos'; state.periodo = 'all';
+        state.fontes.clear(); state.activePills.clear(); state.selos.clear();
+        // Seed two synthetic events with official designations.
+        const base = allCorridas[0];
+        const mk = (titulo, selo, major) => Object.assign({}, base, {
+            titulo, selo, major,
+            data_evento: new Date(Date.now()+7*864e5).toISOString().slice(0,10),
+        });
+        allCorridas = [mk('Selo Gold Test', 'gold', false),
+                       mk('Major Test', null, true),
+                       Object.assign({}, base, {titulo:'Sem Selo', selo:null, major:false,
+                         data_evento: new Date(Date.now()+7*864e5).toISOString().slice(0,10)})];
+        populateSelosFilter();
+        applyFilters(); renderCards(); updateCount();
+        const wrap = document.getElementById('seloFilterWrapper');
+        const opts = [...document.querySelectorAll('#seloFilterDropdown .fonte-filter-option')]
+                       .map(o => o.textContent.trim());
+        const badges = [...document.querySelectorAll('.badge-selo')].map(b => b.className);
+        return { wrapHidden: wrap.classList.contains('hidden'), opts, badges };
+    }""")
+    assert result["wrapHidden"] is False, "selo filter should be visible when labels exist"
+    assert any("Gold" in o for o in result["opts"]), result["opts"]
+    assert any("Major" in o for o in result["opts"]), result["opts"]
+    assert any("badge-selo--gold" in b for b in result["badges"]), result["badges"]
+    assert any("badge-selo--major" in b for b in result["badges"]), result["badges"]
+
+    # Select "Gold" → only the gold event remains.
+    shown = page_pt.evaluate("""() => {
+        state.selos = new Set(['gold']);
+        applyFilters(); renderCards(); updateCount();
+        return filteredCorridas.map(c => c.titulo);
+    }""")
+    assert shown == ["Selo Gold Test"], shown
+
+
+def test_selo_legend_opens(page_pt, live_server):
+    """The (?) legend toggles a panel explaining the hierarchy (Platinum>…>Label)."""
+    opened = page_pt.evaluate("""() => {
+        const base = allCorridas[0];
+        allCorridas = [Object.assign({}, base, {selo:'platinum', major:false,
+            data_evento: new Date(Date.now()+7*864e5).toISOString().slice(0,10)})];
+        populateSelosFilter();
+        document.getElementById('seloLegendBtn').click();
+        const legend = document.getElementById('seloLegend');
+        return { visible: !legend.classList.contains('hidden'),
+                 text: legend.textContent };
+    }""")
+    assert opened["visible"] is True
+    # Legend must teach the hierarchy (user doesn't know the ranking).
+    for tier in ("Platinum", "Gold", "Elite", "Label", "Major"):
+        assert tier in opened["text"], f"legend missing {tier}"

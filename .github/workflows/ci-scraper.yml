@@ -113,7 +113,19 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r requirements-test.txt
-          playwright install chromium --with-deps
+
+      # Cache the downloaded Chromium build (~150 MB). Key includes both reqs
+      # files since either can move the pinned Playwright version.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements.txt', 'requirements-test.txt') }}
+
+      - name: Install Playwright browsers
+        run: |
+          playwright install-deps chromium
+          playwright install chromium
 
       - name: Detect changed sources
         id: detect
@@ -189,4 +201,4 @@ jobs:
           retention-days: 7
 
       - name: Run site tests
-        run: python -m pytest tests/ -v --tb=short
+        run: python -m pytest tests/ -n auto --tb=short

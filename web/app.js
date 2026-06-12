@@ -47,6 +47,13 @@ const STRINGS = {
     allBrazil: 'Todo o Brasil',
     allSources: 'Todas as fontes',
     nSources: n => n === 1 ? `${n} fonte` : `${n} fontes`,
+    allSelos: 'Todos os selos',
+    nSelos: n => n === 1 ? `${n} selo` : `${n} selos`,
+    seloNames: { platinum: 'Platinum', gold: 'Gold', elite: 'Elite', label: 'Label', major: 'Major' },
+    seloLegendTitle: 'Selos oficiais',
+    seloLegendIntro: 'A World Athletics (entidade máxima do atletismo) premia as melhores corridas de rua do mundo. Do mais alto ao mais baixo:',
+    seloLegendMajor: 'Major: uma das 7 Abbott World Marathon Majors — as maratonas mais prestigiadas do planeta.',
+    seloLegendAria: 'O que significam os selos',
     badgeNovo: 'novo',
     loading: 'Carregando...',
     loadError: 'Erro ao carregar dados.',
@@ -105,6 +112,13 @@ const STRINGS = {
     allBrazil: 'All Brazil',
     allSources: 'All sources',
     nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    allSelos: 'All labels',
+    nSelos: n => n === 1 ? `${n} label` : `${n} labels`,
+    seloNames: { platinum: 'Platinum', gold: 'Gold', elite: 'Elite', label: 'Label', major: 'Major' },
+    seloLegendTitle: 'Official labels',
+    seloLegendIntro: 'World Athletics (the sport\'s governing body) awards the world\'s best road races. Highest to lowest:',
+    seloLegendMajor: 'Major: one of the 7 Abbott World Marathon Majors — the most prestigious marathons on earth.',
+    seloLegendAria: 'What the labels mean',
     badgeNovo: 'new',
     loading: 'Loading...',
     loadError: 'Error loading data.',
@@ -163,6 +177,13 @@ const STRINGS = {
     allBrazil: 'Todo Brasil',
     allSources: 'Todas las fuentes',
     nSources: n => n === 1 ? `${n} fuente` : `${n} fuentes`,
+    allSelos: 'Todos los sellos',
+    nSelos: n => n === 1 ? `${n} sello` : `${n} sellos`,
+    seloNames: { platinum: 'Platinum', gold: 'Gold', elite: 'Elite', label: 'Label', major: 'Major' },
+    seloLegendTitle: 'Sellos oficiales',
+    seloLegendIntro: 'World Athletics (el organismo rector del atletismo) premia las mejores carreras de calle del mundo. De mayor a menor:',
+    seloLegendMajor: 'Major: una de las 7 Abbott World Marathon Majors — las maratones más prestigiosas del planeta.',
+    seloLegendAria: 'Qué significan los sellos',
     badgeNovo: 'nuevo',
     loading: 'Cargando...',
     loadError: 'Error al cargar datos.',
@@ -221,6 +242,13 @@ const STRINGS = {
     allBrazil: 'Ganz Brasilien',
     allSources: 'Alle Quellen',
     nSources: n => n === 1 ? `${n} Quelle` : `${n} Quellen`,
+    allSelos: 'Alle Labels',
+    nSelos: n => n === 1 ? `${n} Label` : `${n} Labels`,
+    seloNames: { platinum: 'Platinum', gold: 'Gold', elite: 'Elite', label: 'Label', major: 'Major' },
+    seloLegendTitle: 'Offizielle Labels',
+    seloLegendIntro: 'World Athletics (der Dachverband der Leichtathletik) zeichnet die besten Straßenläufe der Welt aus. Von hoch nach niedrig:',
+    seloLegendMajor: 'Major: einer der 7 Abbott World Marathon Majors — die renommiertesten Marathons der Welt.',
+    seloLegendAria: 'Was die Labels bedeuten',
     badgeNovo: 'neu',
     loading: 'Laden...',
     loadError: 'Fehler beim Laden der Daten.',
@@ -279,6 +307,13 @@ const STRINGS = {
     allBrazil: 'Tout le Brésil',
     allSources: 'Toutes les sources',
     nSources: n => n === 1 ? `${n} source` : `${n} sources`,
+    allSelos: 'Tous les labels',
+    nSelos: n => n === 1 ? `${n} label` : `${n} labels`,
+    seloNames: { platinum: 'Platinum', gold: 'Gold', elite: 'Elite', label: 'Label', major: 'Major' },
+    seloLegendTitle: 'Labels officiels',
+    seloLegendIntro: 'World Athletics (la fédération internationale d\'athlétisme) récompense les meilleures courses sur route du monde. Du plus haut au plus bas :',
+    seloLegendMajor: 'Major : l\'une des 7 Abbott World Marathon Majors — les marathons les plus prestigieux de la planète.',
+    seloLegendAria: 'Ce que signifient les labels',
     badgeNovo: 'nouveau',
     loading: 'Chargement...',
     loadError: 'Erreur lors du chargement des données.',
@@ -341,6 +376,7 @@ const state = {
   dateTo:       null,
   estado:       'todos',
   fontes:       new Set(),
+  selos:        new Set(),
 };
 
 let allCorridas      = [];
@@ -439,6 +475,7 @@ async function _applyFullData(fullPromise) {
     await loadLocationsData(new Set(full.map(c => c.pais || 'BR').filter(Boolean)));
     populateEstadoFilter({ skipGeo: true });
     populateFontesFilter();
+    populateSelosFilter();
     applyFilters();
     renderCards();
     updateCount();
@@ -462,8 +499,10 @@ async function loadLocationsData(paisSet) {
 // ---------------------------------------------------------------------------
 async function initFilters() {
   restoreFilters();
+  _buildSeloWidget();
   populateEstadoFilter({ skipGeo: true });
   populateFontesFilter();
+  populateSelosFilter();
 
   // First paint immediately — geolocation (IP lookup, up to 3 external
   // services) must never hold the card list hostage. The geo filter is
@@ -977,6 +1016,121 @@ function populateFontesFilter() {
   _updateFonteLabel();
 }
 
+// Selos / Majors filter — ranked highest→lowest so the legend reads top-down.
+const _SELO_ORDER = ['platinum', 'gold', 'elite', 'label', 'major'];
+
+function populateSelosFilter() {
+  const dd = document.getElementById('seloFilterDropdown');
+  if (!dd) return;
+  const base = allCorridas.filter(c =>
+    matchesPeriodo(c) && matchesEstado(c) && matchesDistancia(c) && matchesSearch(c)
+  );
+  const available = new Set(base.flatMap(_seloTokens));
+
+  for (const s of [...state.selos]) {
+    if (!available.has(s)) state.selos.delete(s);
+  }
+
+  dd.innerHTML = '';
+  const present = _SELO_ORDER.filter(s => available.has(s));
+  if (present.length === 0) {
+    const wrap = document.getElementById('seloFilterWrapper');
+    if (wrap) wrap.classList.add('hidden');
+    _updateSeloLabel();
+    return;
+  }
+  const wrap = document.getElementById('seloFilterWrapper');
+  if (wrap) wrap.classList.remove('hidden');
+
+  for (const s of present) {
+    const label = document.createElement('label');
+    label.className = 'fonte-filter-option' + (state.selos.has(s) ? ' checked' : '');
+    label.setAttribute('role', 'option');
+    label.setAttribute('aria-selected', String(state.selos.has(s)));
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.value = s;
+    cb.checked = state.selos.has(s);
+
+    const dot = document.createElement('span');
+    dot.className = `selo-dot badge-selo--${s}`;
+
+    label.appendChild(cb);
+    label.appendChild(dot);
+    label.appendChild(document.createTextNode((T.seloNames && T.seloNames[s]) || s));
+
+    cb.addEventListener('change', () => {
+      if (cb.checked) { state.selos.add(s); label.classList.add('checked'); label.setAttribute('aria-selected', 'true'); }
+      else { state.selos.delete(s); label.classList.remove('checked'); label.setAttribute('aria-selected', 'false'); }
+      _updateSeloLabel();
+      onFilterChange();
+    });
+    dd.appendChild(label);
+  }
+  _updateSeloLabel();
+}
+
+function _updateSeloLabel() {
+  const lbl = document.getElementById('seloFilterLabel');
+  const btn = document.getElementById('seloFilterBtn');
+  if (!lbl || !btn) return;
+  const n = state.selos.size;
+  if (n === 0) { lbl.textContent = T.allSelos; btn.classList.remove('active'); }
+  else if (n === 1) { lbl.textContent = (T.seloNames && T.seloNames[[...state.selos][0]]) || T.nSelos(1); btn.classList.add('active'); }
+  else { lbl.textContent = T.nSelos(n); btn.classList.add('active'); }
+}
+
+// Build the selo filter widget + legend once and append to the selects row.
+function _buildSeloWidget() {
+  const row = document.querySelector('.filter-row-selects');
+  if (!row || document.getElementById('seloFilterWrapper')) return;
+
+  const wrap = document.createElement('div');
+  wrap.className = 'fonte-filter-wrapper selo-filter-wrapper hidden';
+  wrap.id = 'seloFilterWrapper';
+  wrap.innerHTML =
+    `<button class="fonte-filter-btn" id="seloFilterBtn" aria-haspopup="listbox" aria-expanded="false">
+       <span id="seloFilterLabel">${T.allSelos}</span>
+       <span class="fonte-filter-chevron" aria-hidden="true">▾</span>
+     </button>
+     <button class="selo-legend-btn" id="seloLegendBtn" type="button" aria-label="${T.seloLegendAria}">?</button>
+     <div class="fonte-filter-dropdown hidden" id="seloFilterDropdown" role="listbox" aria-multiselectable="true"></div>`;
+  row.appendChild(wrap);
+
+  const legend = document.createElement('div');
+  legend.className = 'selo-legend hidden';
+  legend.id = 'seloLegend';
+  legend.innerHTML =
+    `<strong>${T.seloLegendTitle}</strong><p>${T.seloLegendIntro}</p>
+     <ul>
+       <li><span class="selo-dot badge-selo--platinum"></span>${T.seloNames.platinum}</li>
+       <li><span class="selo-dot badge-selo--gold"></span>${T.seloNames.gold}</li>
+       <li><span class="selo-dot badge-selo--elite"></span>${T.seloNames.elite}</li>
+       <li><span class="selo-dot badge-selo--label"></span>${T.seloNames.label}</li>
+     </ul>
+     <p class="selo-legend-major"><span class="selo-dot badge-selo--major"></span>${T.seloLegendMajor}</p>`;
+  wrap.appendChild(legend);
+
+  const btn = wrap.querySelector('#seloFilterBtn');
+  const dd = wrap.querySelector('#seloFilterDropdown');
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    const open = !dd.classList.contains('hidden');
+    closeAllDropdowns();
+    if (!open) { dd.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); }
+  });
+  dd.addEventListener('click', e => e.stopPropagation());
+
+  const legendBtn = wrap.querySelector('#seloLegendBtn');
+  legendBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    legend.classList.toggle('hidden');
+  });
+  legend.addEventListener('click', e => e.stopPropagation());
+  document.addEventListener('click', () => legend.classList.add('hidden'));
+}
+
 function _updateFonteLabel() {
   const n = state.fontes.size;
   if (n === 0) {
@@ -1005,7 +1159,7 @@ function onFilterChange() {
 function applyFilters() {
   filteredCorridas = allCorridas.filter(c =>
     matchesPeriodo(c) && matchesEstado(c) && matchesFonte(c) &&
-    matchesDistancia(c) && matchesSearch(c)
+    matchesDistancia(c) && matchesSearch(c) && matchesSelo(c)
   );
 }
 
@@ -1047,6 +1201,20 @@ function matchesEstado(c) {
 function matchesFonte(c) {
   if (state.fontes.size === 0) return true;
   return (c.fontes || []).some(f => state.fontes.has(f.nome));
+}
+
+// A corrida's selo set: its World Athletics label plus a synthetic "major"
+// token when it's an Abbott Major — so both filter through one widget.
+function _seloTokens(c) {
+  const out = [];
+  if (c.selo) out.push(c.selo);
+  if (c.major) out.push('major');
+  return out;
+}
+
+function matchesSelo(c) {
+  if (state.selos.size === 0) return true;
+  return _seloTokens(c).some(s => state.selos.has(s));
 }
 
 function matchesDistancia(c) {
@@ -1345,6 +1513,25 @@ function buildCard(c, today, threeDaysAgo) {
     badgeFontes.classList.remove('hidden');
   }
 
+  // Official-label / Major badges on collapsed card (highest WA label + Major)
+  const footer = card.querySelector('.card-footer');
+  if (footer) {
+    if (c.selo) {
+      const b = document.createElement('span');
+      b.className = `badge-selo badge-selo--${c.selo}`;
+      b.textContent = (T.seloNames && T.seloNames[c.selo]) || c.selo;
+      b.title = T.seloLegendTitle;
+      footer.appendChild(b);
+    }
+    if (c.major) {
+      const b = document.createElement('span');
+      b.className = 'badge-selo badge-selo--major';
+      b.textContent = (T.seloNames && T.seloNames.major) || 'Major';
+      b.title = T.seloLegendMajor;
+      footer.appendChild(b);
+    }
+  }
+
   // Expand / collapse
   collapsed.addEventListener('click',  e => toggleCard(card, c, e));
   collapsed.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleCard(card, c, e); } });
@@ -1611,7 +1798,8 @@ function isFiltersActive() {
     state.distMax !== null ||
     state.periodo !== 'past15' ||
     state.estado !== (_geoApplied || 'todos') ||
-    state.fontes.size > 0
+    state.fontes.size > 0 ||
+    state.selos.size > 0
   );
 }
 
@@ -1630,6 +1818,7 @@ function clearFilters() {
   state.dateTo     = null;
   state.estado     = _geoApplied || 'todos';
   state.fontes.clear();
+  state.selos.clear();
 
   searchInput.value   = '';
   periodoSelect.value = 'past15';
@@ -1652,6 +1841,7 @@ function clearFilters() {
   _userChoseLocation = false;
   populateEstadoFilter({ skipGeo: true });
   populateFontesFilter();
+  populateSelosFilter();
   onFilterChange();
 }
 
@@ -1910,6 +2100,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeAllDropdowns() {
     _closeEstadoDropdown();
     _closeFonteDropdown();
+    const sd = document.getElementById('seloFilterDropdown');
+    const sb = document.getElementById('seloFilterBtn');
+    if (sd) sd.classList.add('hidden');
+    if (sb) sb.setAttribute('aria-expanded', 'false');
   }
 
   loadData();

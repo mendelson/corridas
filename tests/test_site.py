@@ -158,7 +158,9 @@ def test_fontes_shows_only_sources_with_events(page_pt, live_server):
     all_source_names = {f["nome"] for c in corridas for f in c.get("fontes", [])}
 
     _open_fonte_dropdown(page_pt)
-    labels = page_pt.query_selector_all("#fonteFilterDropdown .fonte-filter-option")
+    # Exclude the master "Todas as fontes" row — it's a mode toggle, not a source.
+    labels = page_pt.query_selector_all(
+        "#fonteFilterDropdown .fonte-filter-option:not(.fonte-filter-all)")
     assert len(labels) > 0, "Expected at least one fonte option"
     for lbl in labels:
         # Text is the label minus the checkbox value prefix
@@ -169,7 +171,8 @@ def test_fontes_shows_only_sources_with_events(page_pt, live_server):
 def test_fontes_multi_select_filters_events(page_pt, live_server):
     """Selecting a single fonte shows only cards from that fonte."""
     _open_fonte_dropdown(page_pt)
-    labels = page_pt.query_selector_all("#fonteFilterDropdown .fonte-filter-option")
+    labels = page_pt.query_selector_all(
+        "#fonteFilterDropdown .fonte-filter-option:not(.fonte-filter-all)")
     if len(labels) < 1:
         pytest.skip("No fontes available to filter")
 
@@ -195,6 +198,36 @@ def test_fontes_multi_select_filters_events(page_pt, live_server):
         assert fonte_name in card_fontes, (
             f"Corrida with fontes {card_fontes} shown but filter is '{fonte_name}'"
         )
+
+
+def test_fontes_all_option_default_checked_and_resets(page_pt, live_server):
+    """The "Todas as fontes" master row is pre-checked, gets unchecked when a
+    specific source is picked, and re-selecting it resets to all sources."""
+    _open_fonte_dropdown(page_pt)
+
+    all_row = page_pt.query_selector("#fonteFilterDropdown .fonte-filter-all input")
+    assert all_row is not None, "master 'all' row should exist in the fontes dropdown"
+    assert all_row.is_checked(), "'Todas as fontes' must be checked by default (no filter)"
+
+    # Pick a specific source → master must uncheck, selection becomes that source.
+    first = page_pt.query_selector(
+        "#fonteFilterDropdown .fonte-filter-option:not(.fonte-filter-all) input")
+    first.click()
+    page_pt.wait_for_timeout(300)
+    assert not page_pt.query_selector(
+        "#fonteFilterDropdown .fonte-filter-all input").is_checked(), (
+        "'Todas as fontes' must uncheck once a specific source is selected")
+    narrowed = page_pt.evaluate("() => state.fontes.size")
+    assert narrowed == 1, f"expected 1 selected source, got {narrowed}"
+
+    # Click the master row → resets to all (empty selection set, master re-checked).
+    page_pt.query_selector("#fonteFilterDropdown .fonte-filter-all input").click()
+    page_pt.wait_for_timeout(300)
+    assert page_pt.evaluate("() => state.fontes.size") == 0, (
+        "clicking 'Todas as fontes' must clear the source selection")
+    assert page_pt.query_selector(
+        "#fonteFilterDropdown .fonte-filter-all input").is_checked(), (
+        "'Todas as fontes' must be checked again after reset")
 
 
 # ---------------------------------------------------------------------------

@@ -28,15 +28,32 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: pip
 
       - name: Install test dependencies
         run: pip install -r requirements-test.txt
 
-      - name: Install Playwright browsers
-        run: playwright install chromium --with-deps
+      # Cache the downloaded Chromium build (~150 MB). Key on the test reqs file
+      # because pytest-playwright pins the Playwright version there, so a version
+      # bump busts the cache automatically.
+      - name: Cache Playwright browsers
+        id: pw-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('requirements-test.txt') }}
 
+      - name: Install Playwright browsers
+        run: |
+          # apt deps aren't cacheable; the (cached) browser download is the big cost.
+          playwright install-deps chromium
+          playwright install chromium
+
+      # -n auto spreads the Playwright suite across the runner's cores. The
+      # live_server fixture binds an OS-assigned port per worker, so parallel
+      # runs don't collide. Same tests, same coverage — just concurrent.
       - name: Run site tests
-        run: python -m pytest tests/ -v --tb=short --json-report --json-report-file=test-results.json
+        run: python -m pytest tests/ -n auto --tb=short --json-report --json-report-file=test-results.json
 
       - name: Update test log (main only)
         if: github.ref == 'refs/heads/main'

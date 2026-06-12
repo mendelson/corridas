@@ -10,10 +10,19 @@ import sys
 from datetime import date, timedelta
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scraper.main import reconcile
-from scraper.models import Corrida, Distancia, FonteInfo
+# O job de frontend (ci-frontend `test`) instala só requirements-test.txt;
+# importar scraper.main puxa httpx/bs4 etc. O teste roda de verdade no
+# `validate` (ci-scraper), que instala as dependências completas.
+try:
+    from scraper.main import reconcile
+    from scraper.models import Corrida, Distancia, FonteInfo
+except ImportError as exc:  # pragma: no cover
+    pytest.skip(f"dependências do scraper indisponíveis: {exc}",
+                allow_module_level=True)
 
 
 def _ev(id_, fonte_nome, link):

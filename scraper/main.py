@@ -10,7 +10,7 @@ from dataclasses import asdict
 from datetime import date, timedelta
 from pathlib import Path
 
-from .merger import are_duplicates, merge_rodada
+from .merger import are_duplicates, merge_rodada, _merge_pair
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event
 from .http_client import get as http_get
@@ -657,6 +657,14 @@ def reconcile(
             result.append(incoming)
 
     # Handle events not found in current scrape
+    # Index of survivors by (date, state): an unmatched old record that
+    # duplicates one of them is a merger leftover (the same race once stored
+    # under two source ids). Absorb its fontes into the survivor instead of
+    # letting the link-recheck below resurrect the clone forever.
+    by_date_uf: dict[tuple, list[Corrida]] = {}
+    for kept in result:
+        by_date_uf.setdefault((kept.data_evento, kept.estado), []).append(kept)
+
     unmatched_future: list[Corrida] = []
     for cid, existing in estado_anterior.items():
         if cid in matched_ids:
@@ -669,6 +677,15 @@ def reconcile(
         # that were added before the filter existed)
         if not _is_valid(existing):
             print(f"[main] removendo '{existing.titulo}' (falhou _is_valid)")
+            continue
+        twin = next(
+            (kept for kept in by_date_uf.get((existing.data_evento, existing.estado), [])
+             if are_duplicates(existing, kept)),
+            None,
+        )
+        if twin is not None:
+            _merge_pair(twin, existing)
+            print(f"[main] '{existing.titulo}' ({existing.id}) absorvido como duplicata de {twin.id}")
             continue
         unmatched_future.append(existing)
 

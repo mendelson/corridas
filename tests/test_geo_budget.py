@@ -28,6 +28,7 @@ def test_budget_exhausted_skips_network(monkeypatch):
 def test_under_budget_increments_counter(monkeypatch):
     """Below the limit, a miss is allowed through (counter increments); we stub
     the network so the test stays offline."""
+    httpx = pytest.importorskip("httpx")  # only installed in the scraper env
     monkeypatch.setattr(geo, "_MAX_LOOKUPS", 5)
     monkeypatch.setattr(geo, "_lookup_count", 0)
     monkeypatch.setattr(geo.time, "sleep", lambda *a, **k: None)
@@ -37,7 +38,6 @@ def test_under_budget_increments_counter(monkeypatch):
         def json():
             return []  # empty → resolve returns the hint, no cache write
 
-    import httpx
     monkeypatch.setattr(httpx, "get", lambda *a, **k: _Resp())
 
     pais, estado = geo.resolve("Another Uncached Town 44120", "", "US")

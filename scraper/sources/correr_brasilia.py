@@ -34,6 +34,20 @@ def _city_uf_from_street(street: str) -> tuple[str, str]:
     return m.group(1).strip(" ,-"), m.group(2).upper()
 
 
+# EventOn HTML location field ("Beira Rio, Pirenópolis-GO", "Praça X, Formosa - GO"):
+# the trailing "Cidade-UF" segment. Used as fallback when the event's JSON-LD
+# location is null — which happens even when the page shows the venue.
+_LOCLINE_UF_RE = re.compile(r"([A-Za-zÀ-ÿ.'\s]+?)\s*[-–]\s*([A-Z]{2})\s*$")
+
+
+def _city_uf_from_locline(locline: str) -> tuple[str, str]:
+    last = locline.split(",")[-1].strip()
+    m = _LOCLINE_UF_RE.search(last)
+    if not m:
+        return "", ""
+    return m.group(1).strip(" ,-"), m.group(2).upper()
+
+
 _TIME_RE = re.compile(
     r"\b(\d{1,2})[hH:]([0-5]\d)\s*(?:min\s*)?[hH]?\b(?!\s*[kK])"
     r"|\b(\d{1,2})\s*[hH]\b(?!\s*\d)",
@@ -190,6 +204,16 @@ def scrape() -> list[Corrida]:
     today = today_iso()
     now = now_iso()
 
+    # EventOn renders each row's venue in the HTML (em.evcal_location[data-n])
+    # even when the corresponding JSON-LD block has location: null. Map event
+    # URL → location line so _parse_event can fall back to it.
+    html_loc_map: dict[str, str] = {}
+    for em in soup.select("em.evcal_location[data-n]"):
+        loc = (em.get("data-n") or "").strip()
+        a = em.find_parent("a", href=True)
+        if loc and a:
+            html_loc_map[a["href"]] = loc
+
     # First pass: parse all JSON-LD events from the listing page
     candidates: list[dict] = []
     for script in soup.find_all("script", type="application/ld+json"):
@@ -230,7 +254,7 @@ def scrape() -> list[Corrida]:
 
     for data in candidates:
         try:
-            c = _parse_event(data, today, now)
+            c = _parse_event(data, today, now, html_loc_map.get(data.get("url") or "", ""))
         except Exception as e:
             print(f"[{SOURCE_NAME}] erro ao parsear evento: {e}")
             continue
@@ -275,7 +299,7 @@ def _replace_horario(c: "Corrida", horario: str) -> "Corrida":
     return replace(c, horario=horario)
 
 
-def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
+def _parse_event(ev: dict, today: str, now: str, html_loc: str = "") -> Corrida | None:
     titulo_raw = normalize_titulo(ev.get("name") or "")
     if not titulo_raw or len(titulo_raw) < 3:
         return None
@@ -333,6 +357,16 @@ def _parse_event(ev: dict, today: str, now: str) -> Corrida | None:
         geo_query = ", ".join(p for p in [city, place_name, street] if p)
         if geo_query:
             _, estado = _geo.resolve(geo_query, "", "BR")
+
+    # JSON-LD came empty/useless but the page's HTML row names the venue
+    # ("Beira Rio, Pirenópolis-GO") — explicit data beats any default.
+    if (not city or not estado) and html_loc:
+        h_city, h_uf = _city_uf_from_locline(html_loc)
+        if h_uf and _geo.validate_estado("BR", h_uf):
+            if not estado:
+                estado = h_uf
+            if not city and h_city:
+                city = h_city
 
     if not city and not estado:
         # No usable address anywhere → this DF calendar's safe default.

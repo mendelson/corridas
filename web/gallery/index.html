@@ -43,13 +43,14 @@
     .links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     /* Each pill is a brand-logo button. */
     .links a {
+      /* All pills share the exact same footprint; the logo is centered inside. */
       display: inline-flex; align-items: center; justify-content: center;
-      height: 46px; min-width: 84px; padding: 0 1.15rem;
+      width: 132px; height: 48px; padding: 0 14px;
       border: 1px solid #e2e6ea; border-radius: 999px; background: #fff;
       text-decoration: none; transition: box-shadow 0.15s, border-color 0.15s;
     }
     .links a:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.08); border-color: #c1c9d2; }
-    .logo { display: block; width: auto; }
+    .logo { display: block; width: auto; max-width: 100%; }
     .logo-strava { height: 24px; fill: #FC4C02; }
     .logo-garmin { height: 15px; fill: #007CC3; }
     .logo-polar  { height: 16px; }

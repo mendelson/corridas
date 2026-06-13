@@ -970,6 +970,39 @@ function populateEstadoFilter({ skipGeo = false } = {}) {
 // ---------------------------------------------------------------------------
 // Fonte filter (multi-select checkboxes, shows only available sources)
 // ---------------------------------------------------------------------------
+// Master "All" row for the multi-select dropdowns (fontes / selos). It makes the
+// default state self-explanatory: an explicit, pre-checked "Todas as fontes" /
+// "Todos os selos" entry, instead of an empty list that merely *implies* "all".
+// It mirrors the empty-set semantics (empty selection = no filter = all): the row
+// is checked exactly when the selection set is empty. Clicking it resets to all;
+// picking a specific option clears it (handled by _syncAllOption).
+function _buildAllOption(text, isAll, onReset) {
+  const label = document.createElement('label');
+  label.className = 'fonte-filter-option fonte-filter-all' + (isAll ? ' checked' : '');
+  label.setAttribute('role', 'option');
+  label.setAttribute('aria-selected', String(isAll));
+
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.checked = isAll;
+
+  label.appendChild(cb);
+  label.appendChild(document.createTextNode(text));
+  cb.addEventListener('change', onReset);
+  return label;
+}
+
+// Keep the master "All" row in sync after an individual option toggles, without
+// rebuilding the whole dropdown.
+function _syncAllOption(dropdown, isAll) {
+  const row = dropdown && dropdown.querySelector('.fonte-filter-all');
+  if (!row) return;
+  const cb = row.querySelector('input');
+  if (cb) cb.checked = isAll;
+  row.classList.toggle('checked', isAll);
+  row.setAttribute('aria-selected', String(isAll));
+}
+
 function populateFontesFilter() {
   const base = allCorridas.filter(c =>
     matchesPeriodo(c) && matchesEstado(c) && matchesDistancia(c) && matchesSearch(c)
@@ -983,6 +1016,19 @@ function populateFontesFilter() {
   if (stateChanged) saveFilters();
 
   fonteFilterDropdown.innerHTML = '';
+
+  // Pre-checked "Todas as fontes" master row — clicking it resets to all.
+  fonteFilterDropdown.appendChild(_buildAllOption(T.allSources, state.fontes.size === 0, () => {
+    state.fontes.clear();
+    saveFilters();
+    populateEstadoFilter({ skipGeo: true });
+    populateFontesFilter();   // refresh master + individual checkboxes
+    applyFilters();
+    renderCards();
+    updateCount();
+    updateClearButton();
+  }));
+
   for (const nome of [...availableNomes].sort()) {
     const label = document.createElement('label');
     label.className = 'fonte-filter-option' + (state.fontes.has(nome) ? ' checked' : '');
@@ -1000,6 +1046,7 @@ function populateFontesFilter() {
     cb.addEventListener('change', () => {
       if (cb.checked) { state.fontes.add(nome); label.classList.add('checked'); label.setAttribute('aria-selected', 'true'); }
       else { state.fontes.delete(nome); label.classList.remove('checked'); label.setAttribute('aria-selected', 'false'); }
+      _syncAllOption(fonteFilterDropdown, state.fontes.size === 0);
       _updateFonteLabel();
       saveFilters();
       const prevEstado = state.estado;
@@ -1042,6 +1089,13 @@ function populateSelosFilter() {
   const wrap = document.getElementById('seloFilterWrapper');
   if (wrap) wrap.classList.remove('hidden');
 
+  // Pre-checked "Todos os selos" master row — clicking it resets to all.
+  dd.appendChild(_buildAllOption(T.allSelos, state.selos.size === 0, () => {
+    state.selos.clear();
+    populateSelosFilter();   // refresh master + individual checkboxes
+    onFilterChange();
+  }));
+
   for (const s of present) {
     const label = document.createElement('label');
     label.className = 'fonte-filter-option' + (state.selos.has(s) ? ' checked' : '');
@@ -1063,6 +1117,7 @@ function populateSelosFilter() {
     cb.addEventListener('change', () => {
       if (cb.checked) { state.selos.add(s); label.classList.add('checked'); label.setAttribute('aria-selected', 'true'); }
       else { state.selos.delete(s); label.classList.remove('checked'); label.setAttribute('aria-selected', 'false'); }
+      _syncAllOption(dd, state.selos.size === 0);
       _updateSeloLabel();
       onFilterChange();
     });

@@ -5,3 +5,7 @@ https://corridas.pages.dev/*
 
 https://:version.corridas.pages.dev/*
   X-Robots-Tag: noindex
+
+# Personal favorites section — link-only access, not indexed.
+/favorites/*
+  X-Robots-Tag: noindex, nofollow

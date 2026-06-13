@@ -101,7 +101,9 @@ jobs:
     # Hard ceiling: a hung source/Playwright/geocode must fail fast, never ride
     # GitHub's 6h default and pin the runner for hours. The Nominatim per-run
     # budget keeps the geocoding phase bounded so a healthy run fits comfortably.
-    timeout-minutes: 75
+    # 120 min: full-pipeline runs (all sources + reconcile) can exceed 75 min
+    # as the source count grows; 120 gives ample headroom.
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v4

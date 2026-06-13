@@ -1,3 +1,5 @@
-# Personal highlights — renamed from /favorites.
-/favorites /highlights 301
-/favorites/* /highlights/:splat 301
+# Personal gallery — renamed (was /favorites, then /highlights).
+/favorites /gallery 301
+/favorites/* /gallery/:splat 301
+/highlights /gallery 301
+/highlights/* /gallery/:splat 301

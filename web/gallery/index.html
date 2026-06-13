@@ -96,21 +96,24 @@
     // site. Race names stay as-is; only labels + the date format are localized.
     (function () {
       var STR = {
-        pt: { subtitle: "Atividades pessoais — acesso por link direto.",
+        pt: { title: "Galeria", subtitle: "Atividades pessoais — acesso por link direto.",
               dist: { marathon: "Maratona", half: "Meia maratona", "15": "15K", "10": "10K", "5": "5K" }, loc: "pt-BR" },
-        en: { subtitle: "Personal activities — direct-link access.",
+        en: { title: "Gallery", subtitle: "Personal activities — direct-link access.",
               dist: { marathon: "Marathon", half: "Half marathon", "15": "15K", "10": "10K", "5": "5K" }, loc: "en" },
-        es: { subtitle: "Actividades personales — acceso por enlace directo.",
+        es: { title: "Galería", subtitle: "Actividades personales — acceso por enlace directo.",
               dist: { marathon: "Maratón", half: "Media maratón", "15": "15K", "10": "10K", "5": "5K" }, loc: "es" },
-        de: { subtitle: "Persönliche Aktivitäten — Zugang per Direktlink.",
+        de: { title: "Galerie", subtitle: "Persönliche Aktivitäten — Zugang per Direktlink.",
               dist: { marathon: "Marathon", half: "Halbmarathon", "15": "15K", "10": "10K", "5": "5K" }, loc: "de" },
-        fr: { subtitle: "Activités personnelles — accès par lien direct.",
+        fr: { title: "Galerie", subtitle: "Activités personnelles — accès par lien direct.",
               dist: { marathon: "Marathon", half: "Semi-marathon", "15": "15K", "10": "10K", "5": "5K" }, loc: "fr" }
       };
       var lang = (navigator.language || "en").slice(0, 2).toLowerCase();
       if (!STR[lang]) lang = "en";
       var t = STR[lang];
       document.documentElement.lang = lang;
+      document.title = t.title + " — Mateus Mendelson";
+      var h1 = document.querySelector("h1");
+      if (h1) h1.textContent = t.title;
 
       var sub = document.querySelector(".subtitle");
       if (sub) sub.textContent = t.subtitle;

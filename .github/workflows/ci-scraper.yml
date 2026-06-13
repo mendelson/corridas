@@ -185,6 +185,15 @@ jobs:
       - name: Run scraper
         env:
           SCRAPER_SOURCES: ${{ steps.detect.outputs.sources }}
+          # `validate` only needs to prove the pipeline runs end-to-end and the
+          # data tests pass — it does NOT need a full cold catch-up. Tight per-run
+          # budgets keep a cold validate comfortably under the job timeout (the
+          # full-pipeline path here was riding the 120-min ceiling otherwise).
+          # Production (data-pipeline.yml) keeps the generous in-code defaults so
+          # it still resolves locations/images thoroughly.
+          SCRAPE_BUDGET_S: "1200"
+          RECHECK_BUDGET_S: "300"
+          GEO_BUDGET_S: "300"
         run: |
           set -o pipefail
           python -m scraper.main 2>&1 | tee rescrape.log

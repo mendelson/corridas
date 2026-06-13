@@ -10,6 +10,8 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 **App:** [mendelson.github.io/corridas](https://mendelson.github.io/corridas) ·
 **Stack:** Python (httpx + BeautifulSoup4 + Playwright) · JSON · HTML/CSS/JS puro · GitHub Pages
 
+📍 **Mapa do site e rotas:** [`docs/site-map.md`](docs/site-map.md) — domínio, caminhos públicos e assets de `run.mmendelson.com`.
+
 ---
 
 ## Fontes ativas

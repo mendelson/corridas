@@ -99,9 +99,11 @@ jobs:
       )
     runs-on: ubuntu-latest
     # Hard ceiling: a hung source/Playwright/geocode must fail fast, never ride
-    # GitHub's 6h default and pin the runner for hours. The Nominatim per-run
-    # budget keeps the geocoding phase bounded so a healthy run fits comfortably.
-    timeout-minutes: 75
+    # GitHub's 6h default and pin the runner for hours. The reconcile recheck,
+    # geocoding and image-enrichment phases are wall-clock bounded in
+    # scraper/main.py; 120 gives headroom for a cold catch-up run (all per-run
+    # budgets hit back to back) without approaching the 6h default.
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v4

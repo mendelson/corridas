@@ -2,6 +2,7 @@
 from __future__ import annotations
 import difflib
 import json
+import os
 import time
 from pathlib import Path
 
@@ -42,6 +43,18 @@ _load_locations()
 
 _cache: dict[str, dict] | None = None
 _last_nominatim_call: float = 0.0
+
+# Per-run budget for live Nominatim lookups. Cache hits are free; only cache
+# MISSES cost a serial ~1s each (Nominatim's policy forbids parallelism), so a
+# cold/large-delta run could otherwise spend hours here and pin the CI runner.
+# Once the budget is spent, further misses return unresolved ("??","") without
+# hitting the network — those events are dropped this run and resolved on a
+# later run as the persistent cache fills in (the pipeline runs 4×/day, so it
+# converges quickly). Default is generous enough that steady-state runs (almost
+# all cities cached) never hit it; override with GEO_MAX_LOOKUPS.
+_MAX_LOOKUPS: int = int(os.environ.get("GEO_MAX_LOOKUPS", "600"))
+_lookup_count: int = 0
+_budget_warned: bool = False
 
 
 def _load_cache() -> dict[str, dict]:
@@ -101,7 +114,7 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
       2. Base key — accepted only when the cached pais matches pais_hint (or no hint given)
     This prevents same-city-name collisions across countries (e.g. Brighton AU vs GB).
     """
-    global _last_nominatim_call
+    global _last_nominatim_call, _lookup_count, _budget_warned
 
     cache = _load_cache()
     base_key = _cache_key(localizacao, cidade)
@@ -125,6 +138,17 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
     query = ", ".join(p for p in (localizacao, cidade) if p)
     if not query:
         return (pais_hint or "??", "")
+
+    # Per-run budget: once spent, stop hitting the network (each miss is a serial
+    # ~1s call). Leaves the value unresolved so the event is dropped this run and
+    # resolved on a later run as the cache fills. Bounds the geo phase runtime.
+    if _lookup_count >= _MAX_LOOKUPS:
+        if not _budget_warned:
+            print(f"[geo] limite de {_MAX_LOOKUPS} buscas Nominatim/execução atingido — "
+                  f"adiando resoluções restantes para a próxima execução")
+            _budget_warned = True
+        return (pais_hint or "??", "")
+    _lookup_count += 1
 
     # Rate-limit: 1 request per second (Nominatim policy)
     elapsed = time.monotonic() - _last_nominatim_call

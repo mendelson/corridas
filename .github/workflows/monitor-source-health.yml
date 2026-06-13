@@ -199,6 +199,9 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
     runs-on: ubuntu-latest
+    # A single source test is normally ~1-2 min; cap it so one hung source can't
+    # pin a runner for hours.
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4

@@ -22,6 +22,8 @@ jobs:
   test:
     if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-latest
+    # The browser suite runs in ~3-5 min; cap well above that to catch a hang.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 

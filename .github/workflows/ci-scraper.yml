@@ -98,6 +98,10 @@ jobs:
         (!github.event.pull_request.draft && needs.changes.outputs.scraper == 'true')
       )
     runs-on: ubuntu-latest
+    # Hard ceiling: a hung source/Playwright/geocode must fail fast, never ride
+    # GitHub's 6h default and pin the runner for hours. The Nominatim per-run
+    # budget keeps the geocoding phase bounded so a healthy run fits comfortably.
+    timeout-minutes: 75
 
     steps:
       - uses: actions/checkout@v4

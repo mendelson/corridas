@@ -56,6 +56,15 @@ _MAX_LOOKUPS: int = int(os.environ.get("GEO_MAX_LOOKUPS", "600"))
 _lookup_count: int = 0
 _budget_warned: bool = False
 
+# Wall-clock budget on top of the count cap. When Nominatim throttles the shared
+# CI IP, each miss can take the full ~10s HTTP timeout, so even the 600-count cap
+# could run ~100 min and overflow the CI job. This bounds the geocoding phase in
+# time regardless of per-request latency. Counted from the first live lookup;
+# once spent, further misses return unresolved (resolved on a later run as the
+# cache fills). Override with GEO_BUDGET_S. Default 1200s = 20 min.
+_GEO_BUDGET_S: float = float(os.environ.get("GEO_BUDGET_S", "1200"))
+_geo_started: float | None = None
+
 
 def _load_cache() -> dict[str, dict]:
     global _cache
@@ -114,7 +123,7 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
       2. Base key — accepted only when the cached pais matches pais_hint (or no hint given)
     This prevents same-city-name collisions across countries (e.g. Brighton AU vs GB).
     """
-    global _last_nominatim_call, _lookup_count, _budget_warned
+    global _last_nominatim_call, _lookup_count, _budget_warned, _geo_started
 
     cache = _load_cache()
     base_key = _cache_key(localizacao, cidade)
@@ -140,11 +149,19 @@ def resolve(localizacao: str, cidade: str, pais_hint: str | None = None) -> tupl
         return (pais_hint or "??", "")
 
     # Per-run budget: once spent, stop hitting the network (each miss is a serial
-    # ~1s call). Leaves the value unresolved so the event is dropped this run and
-    # resolved on a later run as the cache fills. Bounds the geo phase runtime.
-    if _lookup_count >= _MAX_LOOKUPS:
+    # call, up to the ~10s HTTP timeout when Nominatim throttles). Leaves the
+    # value unresolved so the event is dropped this run and resolved on a later
+    # run as the cache fills. Bounded by BOTH a count cap and a wall-clock cap —
+    # whichever is hit first — so the geo phase can't ride the CI timeout even
+    # when every request is slow.
+    if _geo_started is None:
+        _geo_started = time.monotonic()
+    over_count = _lookup_count >= _MAX_LOOKUPS
+    over_time = (time.monotonic() - _geo_started) >= _GEO_BUDGET_S
+    if over_count or over_time:
         if not _budget_warned:
-            print(f"[geo] limite de {_MAX_LOOKUPS} buscas Nominatim/execução atingido — "
+            reason = "tempo" if over_time and not over_count else f"{_MAX_LOOKUPS} buscas"
+            print(f"[geo] limite de {reason} (Nominatim/execução) atingido — "
                   f"adiando resoluções restantes para a próxima execução")
             _budget_warned = True
         return (pais_hint or "??", "")

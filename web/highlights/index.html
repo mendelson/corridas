@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Highlights — Mateus Mendelson</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 620px;
+      margin: 3rem auto;
+      padding: 0 1.5rem 4rem;
+      color: #1a1a2e;
+      background: #f4f6f8;
+      line-height: 1.5;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.25rem;
+    }
+    .subtitle {
+      color: #6c757d;
+      font-size: 0.875rem;
+      margin: 0 0 2.5rem;
+    }
+
+    /* Vertical timeline: a single rail with one node per event, ordered
+       oldest → newest from top to bottom. */
+    .timeline {
+      position: relative;
+      margin: 0;
+      padding: 0 0 0 1.75rem;
+      list-style: none;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0.4rem;
+      bottom: 0.4rem;
+      left: 5px;
+      width: 2px;
+      background: #d3dae1;
+    }
+    .tl-item {
+      position: relative;
+      padding-bottom: 2.25rem;
+    }
+    .tl-item:last-child { padding-bottom: 0; }
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: -1.75rem;
+      top: 0.35rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #1a1a2e;
+    }
+    .tl-year {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: #6c757d;
+      margin-bottom: 0.5rem;
+    }
+    .tl-card {
+      background: #fff;
+      border: 1px solid #e2e6ea;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+    }
+    .activity-name {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid #e2e6ea;
+      border-radius: 999px;
+      text-decoration: none;
+      color: #1a1a2e;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .links a:hover {
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      border-color: #c1c9d2;
+    }
+    .links a .platform-icon { font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Highlights</h1>
+  <p class="subtitle">Atividades pessoais — acesso por link direto.</p>
+
+  <ol class="timeline">
+    <li class="tl-item">
+      <div class="tl-year">2021</div>
+      <div class="tl-card">
+        <div class="activity-name">Maratona Monumental de Brasília 2021</div>
+        <div class="links">
+          <a href="https://strava.app.link/JjUDDOdiW3b" target="_blank" rel="noopener noreferrer nofollow">
+            <span class="platform-icon">🟠</span> Strava
+          </a>
+          <a href="https://flow.polar.com/shared/7e5a542a0ce582f18569aee920145059" target="_blank" rel="noopener noreferrer nofollow">
+            <span class="platform-icon">🔵</span> Polar
+          </a>
+        </div>
+      </div>
+    </li>
+    <li class="tl-item">
+      <div class="tl-year">2026</div>
+      <div class="tl-card">
+        <div class="activity-name">Maratona do Rio 2026</div>
+        <div class="links">
+          <a href="https://strava.app.link/33AyvX7hW3b" target="_blank" rel="noopener noreferrer nofollow">
+            <span class="platform-icon">🟠</span> Strava
+          </a>
+          <a href="https://connect.garmin.com/modern/activity/23166275648" target="_blank" rel="noopener noreferrer nofollow">
+            <span class="platform-icon">⌚</span> Garmin
+          </a>
+        </div>
+      </div>
+    </li>
+  </ol>
+</body>
+</html>

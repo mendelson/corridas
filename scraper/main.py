@@ -653,6 +653,11 @@ def _find_match(incoming: Corrida, estado_anterior: dict[str, Corrida]) -> Corri
 # timeout. Override with RECHECK_BUDGET_S. Default 900s = 15 min.
 _RECHECK_BUDGET_S: float = float(os.environ.get("RECHECK_BUDGET_S", "900"))
 
+# Wall-clock budget for the whole scraping phase (run_all_scrapers). A healthy
+# full run drains in ~15 min; this bounds a single hung source from pinning the
+# executor for the entire CI job. Override with SCRAPE_BUDGET_S. Default 1800s.
+_SCRAPE_BUDGET_S: float = float(os.environ.get("SCRAPE_BUDGET_S", "1800"))
+
 
 def reconcile(
     estado_anterior: dict[str, Corrida],
@@ -926,15 +931,36 @@ def run_all_scrapers(selective: frozenset[str] = frozenset()) -> list[Corrida]:
     # not a shared rate limit (the Scrapestack 429 that justified keeping this at 8
     # was removed in #208). Raised to 12 to drain the queue behind the few slow
     # Playwright-fallback sources faster.
-    with ThreadPoolExecutor(max_workers=12) as executor:
-        futures = {executor.submit(src.scrape): src.__name__ for src in ordered}
-        for future in as_completed(futures):
+    #
+    # Wall-clock bounded: a single source whose scrape() hangs (a socket read that
+    # never trips httpx's timeout, a Playwright stall, a redirect loop) would
+    # otherwise pin the executor here forever — the `with`-block exit does
+    # shutdown(wait=True) and blocks on the stuck thread until the CI job times
+    # out. (Observed: all sources done ~12 min in, then 100+ min of silence on one
+    # hung source before the kill.) Sources not finished before the deadline are
+    # abandoned this run; their events survive via reconcile (kept as unmatched,
+    # miss_count untouched) and are re-fetched next run. The names are logged so a
+    # repeatedly-hanging source can be diagnosed/disabled.
+    executor = ThreadPoolExecutor(max_workers=12)
+    futures = {executor.submit(src.scrape): src.__name__ for src in ordered}
+    done: set = set()
+    try:
+        for future in as_completed(futures, timeout=_SCRAPE_BUDGET_S):
+            done.add(future)
             source_name = futures[future]
             try:
                 corridas = future.result()
                 all_corridas.extend(corridas)
             except Exception as e:
                 print(f"[main] fonte {source_name} falhou: {e}")
+    except TimeoutError:
+        hung = [futures[f] for f in futures if f not in done]
+        print(f"[main] AVISO: {len(hung)} fonte(s) excederam o limite de "
+              f"{_SCRAPE_BUDGET_S}s e foram abandonadas nesta execução "
+              f"(eventos preservados via reconcile): {', '.join(sorted(hung))}")
+    # Don't block on threads still stuck on a slow socket; each carries its own
+    # httpx timeout and dies on its own shortly after.
+    executor.shutdown(wait=False, cancel_futures=True)
 
     return all_corridas
 

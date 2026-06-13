@@ -1,4 +1,4 @@
-"""Enrich aggregated events with official designations — read dynamically.
+"""Enrich aggregated events with official designations — read dynamically.  # noqa: E501
 
 Two layers, both annotation-only (they never create events, only tag ones we
 already aggregated from other sources):

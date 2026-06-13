@@ -1,4 +1,4 @@
-"""Orchestrator: run all scrapers, merge, persist data/corridas.json"""
+"""Orchestrator: run all scrapers, merge, and persist data/corridas.json."""
 from __future__ import annotations
 import html as _html
 import json

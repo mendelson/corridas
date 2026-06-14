@@ -68,11 +68,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia maratona"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona"} },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half marathon"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon"} },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media maratón"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón"} },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon"} },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi-marathon"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon"} },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"} },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half marathon",race:"Race"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"} },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"} },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
     };
     var lang=(navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;

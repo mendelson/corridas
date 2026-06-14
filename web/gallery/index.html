@@ -212,12 +212,13 @@
       function locStr(r){
         var parts=[r.city];
         if(r.estado) parts.push(r.estado);
+        var s=parts.join(" • "); // "Brasília • DF"
         if(multiCountry && r.pais){
           var ld=LOCDATA[r.pais];
           var cn; try{cn=new Intl.DisplayNames([LOC],{type:"region"}).of(r.pais);}catch(e){cn=(ld&&ld.name)||r.pais;}
-          if(cn) return parts.join(" ") + " · " + cn;
+          if(cn) s += " • " + cn;
         }
-        return parts.join(" ");
+        return s;
       }
       var now=new Date(), curY=now.getFullYear();
       var todayFrac=(now.getMonth()+(now.getDate()-1)/31)/12;

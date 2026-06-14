@@ -12,78 +12,62 @@
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; }
     body {
-      background: #0f1115;
-      color: #fff;
+      background: #0f1115; color: #fff;
       font-family: "Archivo", system-ui, -apple-system, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: 420px; margin: 0 auto; min-height: 100vh; }
-
     header { padding: 38px 28px 18px; }
-    .overline {
-      font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase;
-      color: #6a7080; font-weight: 700;
-    }
-    h1.title {
-      font-family: "Spectral", Georgia, serif; font-weight: 500;
-      font-size: 30px; line-height: 1.05; margin: 10px 0 0;
-      letter-spacing: -.01em; color: #f3efe7;
-    }
-
+    .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
+    h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     .content { position: relative; padding: 12px 28px 26px; border-top: 1px solid #20242c; }
-    /* The spine: left = padding-left (28) + rail axis (16) = 44 from the content box edge. */
-    .spine {
-      position: absolute; left: 44px; top: 8px; bottom: 16px;
-      width: 1.5px; background: linear-gradient(#2c323d, #191c22);
-    }
 
-    /* A year chapter: a fixed-height band (jan top → dec bottom). */
-    .band { position: relative; }
+    /* Each chapter draws its own segment of the rail, so the line is solid over
+       event years and dotted over skipped (event-less) years. */
+    .band, .gap { position: relative; }
+    .bline { position: absolute; left: 16px; top: 0; bottom: 0; width: 1.5px; background: linear-gradient(#2c323d, #191c22); }
+    .gline { position: absolute; left: 16px; top: 0; bottom: 0; width: 1.5px;
+      background-image: repeating-linear-gradient(#3a414e 0 2px, transparent 2px 6px); }
 
-    .railcol { flex: 0 0 34px; position: relative; }
-
-    /* Month ruler */
-    .mrow { position: absolute; left: 0; width: 34px; height: 0; }
-    .tick { position: absolute; left: 12.5px; top: -0.5px; width: 7px; height: 1px; background: #2b313b; }
-    .mlab { position: absolute; left: 0; top: -6px; width: 11px; text-align: right; font-weight: 700; }
-    .mlab.q { font-size: 8.5px; letter-spacing: .08em; color: #565c68; }
+    /* Month labels sit to the LEFT of the rail (never crossing it). January is
+       omitted — the year node marks it. */
+    .mlab { position: absolute; left: 0; width: 13px; text-align: right; font-weight: 700; transform: translateY(-50%); }
+    .mlab.q { font-size: 8.5px; letter-spacing: .06em; color: #565c68; }
     .mlab.s { font-size: 8px; color: #363c46; }
 
-    /* Year marker (january) */
-    .yearmark { position: absolute; top: -6px; left: 0; right: 0; display: flex; gap: 14px; align-items: center; }
-    .ynode {
-      position: absolute; left: 11px; top: 4px; width: 11px; height: 11px;
-      border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115;
-    }
+    /* Year marker — heads its chapter (january). */
+    .yhead { position: absolute; top: -7px; left: 0; right: 0; display: flex; gap: 14px; align-items: center; }
+    .yhead .railcol { flex: 0 0 34px; position: relative; height: 22px; }
+    .ynode { position: absolute; left: 11px; top: 5px; width: 11px; height: 11px; border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115; }
     .ylabel { font-family: "Spectral", Georgia, serif; font-size: 23px; color: #f3efe7; line-height: 1; font-weight: 500; }
 
-    /* A race, positioned by month fraction */
+    /* Discreet markers for skipped years (no months). */
+    .gy { position: absolute; left: 0; right: 0; display: flex; gap: 14px; align-items: center; }
+    .gy .railcol { flex: 0 0 34px; position: relative; height: 14px; }
+    .gnode { position: absolute; left: 13.5px; top: 4px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; }
+    .glabel { font-family: "Spectral", Georgia, serif; font-size: 13px; color: #4a5160; line-height: 1; font-weight: 500; }
+
+    /* A race, positioned by month fraction. */
     .race { position: absolute; left: 0; right: 0; display: flex; gap: 14px; }
-    .rnode {
-      position: absolute; left: 12px; top: 3px; width: 9px; height: 9px;
-      border-radius: 5px; box-shadow: 0 0 0 3.5px #0f1115;
-    }
+    .race .railcol { flex: 0 0 34px; position: relative; }
+    .rnode { position: absolute; left: 12px; top: 3px; width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3.5px #0f1115; }
     .rcontent { flex: 1; min-width: 0; }
     .rmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
     .rdate { font-size: 10px; letter-spacing: .16em; font-weight: 700; text-transform: uppercase; }
     .rtype { font-size: 10px; letter-spacing: .14em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
-    .rname {
-      font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 18px;
-      line-height: 1.2; margin: 4px 0 0; letter-spacing: -.005em; color: #f3efe7;
-    }
+    .rname { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 18px; line-height: 1.2; margin: 4px 0 0; letter-spacing: -.005em; color: #f3efe7; }
     .rloc { font-size: 12.5px; color: #8b91a0; margin-top: 3px; }
 
-    .rlinks { display: flex; gap: 16px; margin-top: 12px; }
-    .rlink {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 12px; font-weight: 600; color: #dad6cd; text-decoration: none;
-      border-bottom: 1px solid #363c47; padding-bottom: 2px;
-      transition: color .15s, border-color .15s;
-    }
-    .rlink:hover { color: #fff; border-color: #4a5260; }
-    .rlink svg { flex: 0 0 auto; }
-    .devmark { color: #aeb4c0; font-weight: 700; letter-spacing: .07em; white-space: nowrap; }
-    .devmark.polar { font-weight: 800; font-style: italic; letter-spacing: .01em; }
+    /* Platform links — real brand logos, vertically aligned. */
+    .rlinks { display: flex; align-items: center; gap: 18px; margin-top: 13px; }
+    .rlink { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; opacity: .96; transition: opacity .15s; }
+    .rlink:hover { opacity: 1; }
+    .rlink .arr { color: #6a7080; flex: 0 0 auto; }
+    .slogo { display: inline-flex; align-items: center; gap: 5px; }
+    .slogo svg { display: block; }
+    .sword { font-weight: 700; font-size: 13.5px; letter-spacing: .01em; color: #FC4C02; }
+    .logo-garmin { display: block; height: 15px; width: auto; fill: #1ca0e3; }
+    .logo-polar { display: block; height: 13px; width: auto; }
   </style>
 </head>
 <body>
@@ -92,16 +76,11 @@
       <div class="overline">Mateus Mendelson</div>
       <h1 class="title" id="title"></h1>
     </header>
-    <div class="content">
-      <div class="spine"></div>
-      <div id="timeline"></div>
-    </div>
+    <div class="content"><div id="timeline"></div></div>
   </div>
 
   <script>
   (function () {
-    // ── Data — the existing gallery events (no new data invented). ──────────
-    // Race names omit the year: the year is the timeline chapter.
     var RACES = [
       { name: "Maratona Monumental de Brasília", km: 42.195, type: "marathon",
         city: "Brasília", uf: "DF", date: "2021-10-10",
@@ -112,14 +91,12 @@
         strava: "https://strava.app.link/33AyvX7hW3b",
         device: "Garmin", deviceUrl: "https://connect.garmin.com/modern/activity/23166275648" },
     ];
-
-    // ── i18n: same 5 locales as the main site, no per-language URL. ─────────
     var STR = {
-      pt: { loc: "pt-BR", title: ["Corridas que", "marcaram o caminho"], type: { marathon: "Maratona", half: "Meia" } },
-      en: { loc: "en",    title: ["Races that", "shaped the journey"],    type: { marathon: "Marathon", half: "Half" } },
-      es: { loc: "es",    title: ["Carreras que", "marcaron el camino"],  type: { marathon: "Maratón", half: "Media" } },
-      de: { loc: "de",    title: ["Läufe, die", "den Weg prägten"],       type: { marathon: "Marathon", half: "Halbmarathon" } },
-      fr: { loc: "fr",    title: ["Des courses qui", "ont marqué la route"], type: { marathon: "Marathon", half: "Semi" } },
+      pt: { loc: "pt-BR", t: ["Corridas que", "marcaram o caminho"], type: { marathon: "Maratona", half: "Meia" } },
+      en: { loc: "en",    t: ["Races that", "shaped the journey"],    type: { marathon: "Marathon", half: "Half" } },
+      es: { loc: "es",    t: ["Carreras que", "marcaron el camino"],  type: { marathon: "Maratón", half: "Media" } },
+      de: { loc: "de",    t: ["Läufe, die", "den Weg prägten"],       type: { marathon: "Marathon", half: "Halbmarathon" } },
+      fr: { loc: "fr",    t: ["Des courses qui", "ont marqué la route"], type: { marathon: "Marathon", half: "Semi" } },
     };
     var lang = (navigator.language || "en").slice(0, 2).toLowerCase();
     if (!STR[lang]) lang = "en";
@@ -127,92 +104,78 @@
     document.documentElement.lang = lang;
     document.title = ({ pt: "Galeria", en: "Gallery", es: "Galería", de: "Galerie", fr: "Galerie" }[lang]) + " — Mateus Mendelson";
 
-    // ── Layout tokens (from the design handoff). ───────────────────────────
-    var PPY = 350, CARD = 84, RX = 16, RAIL = 34;
-
-    function dparts(iso) { var p = iso.split("-"); return { y: +p[0], m: +p[1] - 1, d: +p[2] }; }
-    function fracOfYear(p) { return (p.m + (p.d - 1) / 31) / 12; }
-    function dateKey(p) { return p.y * 400 + p.m * 31 + p.d; }
-    function distColor(t) { return t === "marathon" ? "#E4572E" : t === "half" ? "#3A7CA5" : "#2A9D5C"; }
-
-    var _mShort = [], _mNarrow = [];
-    for (var mi = 0; mi < 12; mi++) {
-      var dd = new Date(2021, mi, 1);
-      _mShort[mi] = new Intl.DateTimeFormat(LOC, { month: "short" }).format(dd).replace(/\./g, "").toUpperCase();
-      _mNarrow[mi] = new Intl.DateTimeFormat(LOC, { month: "narrow" }).format(dd).toUpperCase();
+    var PPY = 350, CARD = 90, RX = 16, GY = 32;
+    function dp(iso) { var p = iso.split("-"); return { y: +p[0], m: +p[1] - 1, d: +p[2] }; }
+    function frac(p) { return (p.m + (p.d - 1) / 31) / 12; }
+    function key(p) { return p.y * 400 + p.m * 31 + p.d; }
+    function color(t) { return t === "marathon" ? "#E4572E" : t === "half" ? "#3A7CA5" : "#2A9D5C"; }
+    var mShort = [], mNarrow = [];
+    for (var i = 0; i < 12; i++) {
+      var dd = new Date(2021, i, 1);
+      mShort[i] = new Intl.DateTimeFormat(LOC, { month: "short" }).format(dd).replace(/\./g, "").toUpperCase();
+      mNarrow[i] = new Intl.DateTimeFormat(LOC, { month: "narrow" }).format(dd).toUpperCase();
     }
-    function fmtKm(km) { return (Math.round(km * 10) / 10).toLocaleString(LOC, { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
-    function pad2(n) { return (n < 10 ? "0" : "") + n; }
-    function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; }); }
+    function km(v) { return (Math.round(v * 10) / 10).toLocaleString(LOC, { minimumFractionDigits: 1, maximumFractionDigits: 1 }); }
+    function p2(n) { return (n < 10 ? "0" : "") + n; }
+    function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
-    var STRAVA_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="#FC4C02" aria-hidden="true"><path d="M11.4 2 5.4 13.9h3.55L11.4 9l2.45 4.9h3.55z"/><path d="M13.85 13.9 11.4 18.8 8.95 13.9H6.05L11.4 24l5.35-10.1z" opacity=".55"/></svg>';
-    var ARROW = '<svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4"/></svg>';
-    function deviceMark(name) {
-      if (name === "Polar") return '<span class="devmark polar">POLAR</span>';
-      return '<span class="devmark">' + esc(name.toUpperCase()) + '</span>';
+    var CHEVRON = '<svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FC4C02" d="M11.4 2 5.4 13.9h3.55L11.4 9l2.45 4.9h3.55z"/><path fill="#FC4C02" opacity=".55" d="M13.85 13.9 11.4 18.8 8.95 13.9H6.05L11.4 24l5.35-10.1z"/></svg>';
+    var ARROW = '<svg class="arr" width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5h4v4"/></svg>';
+    var GARMIN = '<svg class="logo-garmin" viewBox="0 8.75 24 9" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6.265 12.024a.289.289 0 0 0-.236-.146h-.182a.289.289 0 0 0-.234.146l-1.449 3.025c-.041.079.004.138.094.138h.335c.132 0 .193-.061.228-.134.037-.073.116-.234.13-.266.02-.045.083-.071.175-.071h1.559c.089 0 .148.016.175.071.018.035.098.179.136.256a.24.24 0 0 0 .234.142h.486c.089 0 .13-.069.098-.132-.034-.061-1.549-3.029-1.549-3.029zm-.914 2.224c-.089 0-.132-.067-.094-.148l.571-1.222c.039-.081.1-.081.136 0l.555 1.222c.037.081-.006.148-.096.148H5.351zm12.105-2.201v3.001c0 .083.073.138.163.138h.396c.089 0 .163-.057.163-.146v-2.998c0-.089-.059-.163-.148-.163h-.411c-.09-.001-.163.054-.163.168zm-6.631 1.88c-.051-.073-.022-.154.063-.181 0 0 .342-.102.506-.25.165-.146.246-.36.246-.636a1 1 0 0 0-.096-.457.787.787 0 0 0-.27-.303 1.276 1.276 0 0 0-.423-.171c-.165-.035-.386-.047-.386-.047a8.81 8.81 0 0 0-.325-.008H8.495a.164.164 0 0 0-.163.163v2.998c0 .089.073.146.163.146h.388c.089 0 .163-.057.163-.146v-1.193s.002 0 .002-.002l.738-.002c.089 0 .205.061.258.134l.766 1.077c.071.096.138.132.228.132h.508c.089 0 .104-.085.073-.128-.032-.038-.794-1.126-.794-1.126zm-.311-.61a1.57 1.57 0 0 1-.213.028 8.807 8.807 0 0 1-.325.006h-.763a.164.164 0 0 1-.163-.163v-.608c0-.089.073-.163.163-.163h.762c.089 0 .236.004.325.006 0 0 .114.004.213.028a.629.629 0 0 1 .24.098.358.358 0 0 1 .126.148.473.473 0 0 1 0 .374.352.352 0 0 1-.126.148.617.617 0 0 1-.239.098zm11.803-1.439c-.089 0-.163.059-.163.146v1.919c0 .089-.051.11-.114.047l-1.921-1.992a.376.376 0 0 0-.276-.118h-.362c-.114 0-.163.061-.163.122v3.068c0 .061.059.12.148.12h.362c.089 0 .152-.049.152-.132l.002-2.021c0-.089.051-.11.114-.045l2.004 2.082a.36.36 0 0 0 .279.116h.272a.164.164 0 0 0 .163-.163v-2.986a.164.164 0 0 0-.163-.163h-.334zm-7.835 1.87c-.043.079-.116.077-.159 0l-.939-1.724a.262.262 0 0 0-.236-.146h-.51a.164.164 0 0 0-.163.163v2.996c0 .089.059.15.163.15h.317c.089 0 .154-.057.154-.142 0-.041.002-2.179.004-2.179.004 0 1.173 2.177 1.173 2.177a.105.105 0 0 0 .189 0s1.179-2.173 1.181-2.173c.004 0 .002 2.11.002 2.173 0 .087.069.142.159.142h.364c.089 0 .163-.045.163-.163V12.04a.164.164 0 0 0-.163-.163h-.488a.265.265 0 0 0-.244.142l-.967 1.729zM0 13.529c0 1.616 1.653 1.697 1.984 1.697 1.098 0 1.561-.297 1.58-.309a.29.29 0 0 0 .152-.264v-1.116a.186.186 0 0 0-.187-.187H2.151c-.104 0-.171.083-.171.187v.116c0 .104.067.187.171.187h.797a.14.14 0 0 1 .14.14v.52c-.157.065-.874.274-1.451.136-.836-.199-.901-.89-.901-1.096 0-.173.053-1.043 1.079-1.13.831-.071 1.378.264 1.384.268.098.051.199.014.254-.089l.104-.209c.043-.085.028-.175-.077-.246-.006-.004-.59-.319-1.494-.319C.055 11.813 0 13.354 0 13.529zm22.134-2.478h-2.165c-.079 0-.148-.039-.187-.108s-.039-.146 0-.215l1.084-1.874a.21.21 0 0 1 .187-.108.21.21 0 0 1 .187.108l1.084 1.874a.203.203 0 0 1 0 .215.22.22 0 0 1-.19.108zm1.488 3.447c.207 0 .378.169.378.378a.379.379 0 0 1-.378.378.379.379 0 0 1-.378-.378.38.38 0 0 1 .378-.378zm.002.7c.173 0 .305-.14.305-.321s-.13-.321-.305-.321-.307.14-.307.321c0 .18.13.321.307.321zm-.146-.543h.169c.102 0 .152.041.152.124 0 .071-.045.122-.114.122l.126.195h-.077l-.124-.195h-.061v.195h-.073v-.441h.002zm.073.189h.085c.055 0 .091-.012.091-.069 0-.051-.045-.065-.091-.065h-.085v.134z"/></svg>';
+    function deviceLogo(name, url) {
+      var mark = name === "Garmin" ? GARMIN
+        : '<img class="logo-polar" src="polar-logo.png" alt="Polar">';
+      return '<a class="rlink" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer nofollow" aria-label="' + esc(name) + '">' + mark + ARROW + '</a>';
     }
-    function linksHTML(r) {
-      return '<div class="rlinks">' +
-        '<a class="rlink" href="' + esc(r.strava) + '" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava">' + STRAVA_SVG + ' Strava ' + ARROW + '</a>' +
-        '<a class="rlink" href="' + esc(r.deviceUrl) + '" target="_blank" rel="noopener noreferrer nofollow" aria-label="' + esc(r.device) + '">' + deviceMark(r.device) + ' ' + ARROW + '</a>' +
-        '</div>';
+    function stravaLink(url) {
+      return '<a class="rlink" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava">' +
+        '<span class="slogo">' + CHEVRON + '<span class="sword">Strava</span></span>' + ARROW + '</a>';
     }
 
-    // ── Build chronological year chapters. ─────────────────────────────────
-    var asc = RACES.map(function (r) { return { r: r, p: dparts(r.date) }; })
-      .sort(function (a, b) { return dateKey(a.p) - dateKey(b.p); });
+    var asc = RACES.map(function (r) { return { r: r, p: dp(r.date) }; }).sort(function (a, b) { return key(a.p) - key(b.p); });
     var groups = [];
-    asc.forEach(function (x) {
-      var g = groups.find(function (gr) { return gr.y === x.p.y; });
-      if (g) g.items.push(x); else groups.push({ y: x.p.y, items: [x] });
-    });
+    asc.forEach(function (x) { var g = groups.find(function (gr) { return gr.y === x.p.y; }); if (g) g.items.push(x); else groups.push({ y: x.p.y, items: [x] }); });
 
-    var prevOverflow = 0, html = "";
-    groups.forEach(function (g, gi) {
-      var items = g.items.map(function (x) { return { r: x.r, p: x.p, f: fracOfYear(x.p) }; });
-      var lastF = Math.max.apply(null, items.map(function (i) { return i.f; }));
-      var marginTop = gi === 0 ? 2 : Math.max(16, prevOverflow);
-      prevOverflow = Math.max(0, lastF * PPY + CARD - PPY) + 16;
-
-      var band = '<div class="band" style="height:' + PPY + 'px;margin-top:' + marginTop + 'px">';
-      // month ruler
-      for (var mi = 0; mi < 12; mi++) {
-        var top = (mi / 12) * PPY;
-        var isQ = (mi % 3 === 0);
-        var labTxt = isQ ? _mShort[mi] : _mNarrow[mi];
-        band += '<div class="mrow" style="top:' + top + 'px">' +
-          (mi !== 0 ? '<span class="tick"></span>' : '') +
-          '<span class="mlab ' + (isQ ? 'q' : 's') + '">' + esc(labTxt) + '</span></div>';
+    var html = "", prevY = null;
+    groups.forEach(function (g) {
+      if (prevY !== null && g.y > prevY + 1) {
+        // skipped years → discreet dotted block, no months
+        var ys = []; for (var y = prevY + 1; y <= g.y - 1; y++) ys.push(y);
+        var gh = ys.length * GY + 14;
+        var gb = '<div class="gap" style="height:' + gh + 'px"><div class="gline"></div>';
+        ys.forEach(function (y, i) {
+          gb += '<div class="gy" style="top:' + (i * GY + 10) + 'px"><div class="railcol"><span class="gnode"></span></div><span class="glabel">' + y + '</span></div>';
+        });
+        gb += '</div>';
+        html += gb;
       }
-      // year marker
-      band += '<div class="yearmark"><div class="railcol"><span class="ynode"></span></div>' +
-        '<div class="ylabel">' + g.y + '</div></div>';
-      // races
+      var items = g.items.map(function (x) { return { r: x.r, p: x.p, f: frac(x.p) }; });
+      var lastF = Math.max.apply(null, items.map(function (i) { return i.f; }));
+      var bh = PPY + Math.max(0, lastF * PPY + CARD - PPY);
+      var band = '<div class="band" style="height:' + bh + 'px"><div class="bline"></div>';
+      for (var mi = 1; mi < 12; mi++) {
+        var top = (mi / 12) * PPY, isQ = (mi % 3 === 0);
+        band += '<span class="mlab ' + (isQ ? 'q' : 's') + '" style="top:' + top + 'px">' + esc(isQ ? mShort[mi] : mNarrow[mi]) + '</span>';
+      }
+      band += '<div class="yhead"><div class="railcol"><span class="ynode"></span></div><span class="ylabel">' + g.y + '</span></div>';
       items.forEach(function (it) {
-        var c = distColor(it.r.type);
-        var top = it.f * PPY - 6;
-        var typeLabel = T.type[it.r.type] || it.r.type;
-        var dateLine = pad2(it.p.d) + " " + _mShort[it.p.m];
-        band += '<div class="race" style="top:' + top + 'px">' +
-          '<div class="railcol"><span class="rnode" style="background:' + c + '"></span></div>' +
-          '<div class="rcontent">' +
-            '<div class="rmeta">' +
-              '<span class="rdate" style="color:' + c + '">' + esc(dateLine) + '</span>' +
-              '<span class="rtype">' + esc(typeLabel) + ' · ' + esc(fmtKm(it.r.km)) + ' KM</span>' +
-            '</div>' +
-            '<h2 class="rname">' + esc(it.r.name) + '</h2>' +
-            '<div class="rloc">' + esc(it.r.city) + ' · ' + esc(it.r.uf) + '</div>' +
-            linksHTML(it.r) +
+        var c = color(it.r.type), top = it.f * PPY - 6;
+        band += '<div class="race" style="top:' + top + 'px"><div class="railcol"><span class="rnode" style="background:' + c + '"></span></div>' +
+          '<div class="rcontent"><div class="rmeta">' +
+          '<span class="rdate" style="color:' + c + '">' + esc(p2(it.p.d) + " " + mShort[it.p.m]) + '</span>' +
+          '<span class="rtype">' + esc((T.type[it.r.type] || it.r.type) + " · " + km(it.r.km) + " KM") + '</span></div>' +
+          '<h2 class="rname">' + esc(it.r.name) + '</h2>' +
+          '<div class="rloc">' + esc(it.r.city + " · " + it.r.uf) + '</div>' +
+          '<div class="rlinks">' + stravaLink(it.r.strava) + deviceLogo(it.r.device, it.r.deviceUrl) + '</div>' +
           '</div></div>';
       });
       band += '</div>';
       html += band;
+      prevY = g.y;
     });
 
     document.getElementById("timeline").innerHTML = html;
-
-    // header title (two serif lines)
-    document.getElementById("title").innerHTML = esc(T.title[0]) + "<br>" + esc(T.title[1]);
+    document.getElementById("title").innerHTML = esc(T.t[0]) + "<br>" + esc(T.t[1]);
   })();
   </script>
 </body>

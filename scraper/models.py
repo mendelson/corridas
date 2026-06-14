@@ -48,3 +48,10 @@ class Corrida:
     updated_at: str
     pais: str = "BR"
     fotos: list[dict] = field(default_factory=list)
+    # Official designations, set by the enrichment step (never by scrapers):
+    #   selo  — World Athletics road-race label: "platinum"|"gold"|"elite"|"label"
+    #   major — Abbott World Marathon Major
+    # Read dynamically from World Athletics each run; majors matched against a
+    # reference list (the club membership is world reference data, not per-edition).
+    selo: str | None = None
+    major: bool = False

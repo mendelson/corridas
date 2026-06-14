@@ -189,6 +189,17 @@ _INTERVAL_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Start times ("6h25", "6h30", "06:25", "às 6h") — a time-of-day, never a distance.
+# The minutes of a start time ("...às 6h25 e 3km...") otherwise leak into the
+# shared-suffix matcher as a phantom distance ("25 e 3km" → 25 km). Strip these
+# before any distance extraction so a clock value can never be read as a race
+# distance.
+_TIME_OF_DAY_RE = re.compile(
+    r"\b\d{1,2}\s*[hH]\s*\d{2}\b"          # 6h25, 6 h 30
+    r"|\b\d{1,2}\s*:\s*\d{2}\b"            # 06:25
+    r"|\b\d{1,2}\s*[hH](?![a-zA-Z0-9])",   # bare "6h" (not "6ha"/"6h5")
+)
+
 # Canonical distance windows: snap noisy values to the exact standard distance.
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 _MIN_KM = 3.0  # ≥3 km: exclude walks/kids/hydration noise
@@ -289,6 +300,7 @@ def _extract_distances(text: str) -> list[Distancia]:
     """
     # Strip Bubble rich-text markup and noise clauses before matching.
     text = re.sub(r"\[.*?\]", " ", text)
+    text = _TIME_OF_DAY_RE.sub(" ", text)   # start times ("6h25") ≠ distances
     text = _PERCURSO_RE.sub(" ", text)      # age-restriction clauses
     text = _INTERVAL_RE.sub(" ", text)      # hydration/supply interval mentions
 

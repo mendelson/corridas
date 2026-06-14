@@ -18,6 +18,7 @@
        interaction is locked; the chrome fades in only once the intro concludes. */
     body.intro { overflow: hidden; touch-action: none; }
     body.intro header { opacity: 0; visibility: hidden; pointer-events: none; }
+    body.intro .scroller { border-top-color: transparent; } /* no stray divider while centred */
     @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .gactions { display: flex; align-items: center; gap: 8px; }
@@ -32,7 +33,7 @@
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
-    .scroller { overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+    .scroller { overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; transition: transform .7s cubic-bezier(.22,.61,.36,1); }
     .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
     .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 28px; }
     .sec { position: relative; height: 100%; flex: 0 0 auto; }
@@ -336,6 +337,7 @@
     function finishChrome(animate){
       _introActive=false;
       document.body.classList.remove("intro");
+      scroller.style.transform="translateY(0)"; // glide the timeline back to its resting place
       var hdr=document.querySelector("header");
       if(hdr && animate) hdr.classList.add("chrome-in");
     }
@@ -364,6 +366,16 @@
         finishChrome(false); return;
       }
       _introActive=true; // lock all interaction for the whole intro
+      // Centre the timeline vertically in the viewport for the duration of the
+      // intro (applied instantly, no transition); finishChrome() then glides it
+      // back to its resting place below the header as the chrome fades in.
+      var sH=scroller.offsetHeight||track.offsetHeight||470;
+      var natTop=scroller.getBoundingClientRect().top; // resting top (header space reserved)
+      var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
+      scroller.style.transition="none";
+      scroller.style.transform="translateY("+centerY+"px)";
+      void scroller.offsetHeight;   // commit the centred position without animating into it
+      scroller.style.transition=""; // restore the CSS transition for the release glide
       var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
       scroller.scrollLeft=0;
       var trk=track.getBoundingClientRect();

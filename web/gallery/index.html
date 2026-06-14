@@ -20,17 +20,17 @@
     .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
     .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 28px; }
     .sec { position: relative; height: 100%; flex: 0 0 auto; }
-    .rail { position: absolute; left: 0; right: 0; top: 235px; height: 1.5px; background: #2c323d; }
+    .rail { position: absolute; left: 0; right: 0; top: 235px; height: 1.5px; background: #2c323d; z-index: 0; }
     .rail.dotted { background: transparent; background-image: repeating-linear-gradient(90deg, #3a414e 0 2px, transparent 2px 6px); }
-    .ylabel { position: absolute; top: 201px; font-family: "Spectral", Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; }
-    .ynode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115; }
-    .mtick { position: absolute; top: 236px; width: 1px; height: 5px; background: #2b313b; }
-    .mlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; color: #565c68; white-space: nowrap; }
-    .enode { position: absolute; top: 230.5px; width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3.5px #0f1115; }
-    .conn { position: absolute; width: 1.5px; background: #2c323d; }
+    .ylabel { position: absolute; top: 201px; font-family: "Spectral", Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; z-index: 1; pointer-events: none; }
+    .ynode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
+    .mtick { position: absolute; top: 236px; width: 1px; height: 5px; background: #2b313b; z-index: 0; }
+    .mlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; color: #565c68; white-space: nowrap; pointer-events: none; }
+    .enode { position: absolute; top: 230.5px; width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3.5px #0f1115; z-index: 2; }
+    .conn { position: absolute; width: 1.5px; background: #2c323d; z-index: 1; }
     .conn.below { top: 235px; height: 36px; }
     .conn.above { top: 199px; height: 36px; }
-    .card { position: absolute; left: 16px; right: 16px; background: #181b21; border: 1px solid #262b34; border-radius: 14px; padding: 15px 16px 16px; }
+    .card { position: absolute; left: 16px; right: 16px; background: #181b21; border: 1px solid #262b34; border-radius: 14px; padding: 15px 16px 16px; z-index: 3; }
     .card.below { top: 271px; }
     .card.above { bottom: 271px; }
     .cmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
@@ -49,11 +49,11 @@
     .sword { font-weight: 700; font-size: 13px; letter-spacing: .01em; color: #FC4C02; }
     .logo-garmin { display: block; height: 14px; width: auto; fill: #1ca0e3; }
     .logo-polar { display: block; height: 13px; width: auto; }
-    .gylab { position: absolute; top: 244px; transform: translateX(-50%); font-family: "Spectral", Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; }
-    .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; }
+    .gylab { position: absolute; top: 244px; transform: translateX(-50%); font-family: "Spectral", Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; z-index: 1; pointer-events: none; }
+    .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; z-index: 1; }
     /* "today" end marker — the timeline concludes here and grows over time */
-    .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #0f1115; border: 2px solid #E4572E; box-shadow: 0 0 0 4px #0f1115; }
-    .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #E4572E; white-space: nowrap; }
+    .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #0f1115; border: 2px solid #E4572E; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
+    .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #E4572E; white-space: nowrap; z-index: 1; pointer-events: none; }
   </style>
 </head>
 <body>
@@ -68,11 +68,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"} },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half marathon",race:"Race"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"} },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"} },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"} },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"} },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"} },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
     };
     var lang=(navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;
@@ -87,10 +87,13 @@
     function frac(p){return (p.m+(p.d-1)/31)/12;}
     function keyf(p){return p.y*400+p.m*31+p.d;}
     // Medal-honour colour code for the event dots: marathon = gold (the most
-    // honourable), half marathon = silver, shorter races = bronze.
-    var TIER={marathon:"#E8C04A",half:"#C3CAD6",other:"#C0823F"};
-    function color(t){return TIER[t]||TIER.other;}
-    function honorRank(t){return t==="marathon"?0:t==="half"?1:2;}
+    // honourable), half marathon = silver, 10K = copper, shorter races = bronze.
+    var TIER={marathon:"#E8C04A",half:"#C3CAD6",ten:"#D4A574",other:"#C0823F"};
+    function color(r){
+      if(r.type==="ten" || (r.type==="race" && r.km===10)) return TIER.ten;
+      return TIER[r.type]||TIER.other;
+    }
+    function honorRank(t){return t==="marathon"?0:t==="half"?1:t==="ten"?2:3;}
     var mShort=[]; for(var i=0;i<12;i++){mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase();}
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
@@ -106,7 +109,7 @@
       return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava"><span class="slogo">'+CHEVRON+'<span class="sword">Strava</span></span></a>';
     }
     function cardHTML(r,ex,p,side,loc,sw){
-      var c=color(r.type);
+      var c=color(r);
       // Fixed-width card centred on the event, clamped inside the year column so
       // it never spills past the column edges; the connector still meets it.
       var cl=clamp(ex-CARDW/2, 6, Math.max(6, sw-CARDW-6));
@@ -129,14 +132,13 @@
       function nrm(s){return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();}
       function locStr(r){
         var parts=[r.city];
-        var ld=LOCDATA[r.pais];
-        var sub=(ld&&ld.subs)?ld.subs[r.estado]:null;
-        if(sub && nrm(sub)!==nrm(r.city)) parts.push(sub);
+        if(r.estado) parts.push(r.estado);
         if(multiCountry && r.pais){
+          var ld=LOCDATA[r.pais];
           var cn; try{cn=new Intl.DisplayNames([LOC],{type:"region"}).of(r.pais);}catch(e){cn=(ld&&ld.name)||r.pais;}
-          if(cn) parts.push(cn);
+          if(cn) return parts.join(" ") + " · " + cn;
         }
-        return parts.filter(Boolean).join(" · ");
+        return parts.join(" ");
       }
       var now=new Date(), curY=now.getFullYear();
       var todayFrac=(now.getMonth()+(now.getDate()-1)/31)/12;
@@ -181,10 +183,15 @@
         sec+= current ? '<div class="rail" style="right:auto;width:'+tx+'px"></div>' : '<div class="rail"></div>';
         sec+='<span class="ynode" style="left:0px"></span><span class="ylabel" style="left:18px">'+y+'</span>';
         var lastM = current ? now.getMonth() : 11;
+        var lastLx=-999; // track last month label x position to avoid overlaps
         for(var mi=0; mi<=lastM; mi++){
           var mx=(mi/12)*yw;
           sec+='<span class="mtick" style="left:'+mx+'px"></span>';
-          if(!(current && Math.abs(mx - tx) < 26)) sec+='<span class="mlab" style="left:'+mx+'px">'+esc(mShort[mi])+'</span>';
+          // Only show month label if it's far enough from the last one (≥44px) and not too close to "today"
+          if(!(current && Math.abs(mx - tx) < 26) && mx - lastLx >= 44){
+            sec+='<span class="mlab" style="left:'+mx+'px">'+esc(mShort[mi])+'</span>';
+            lastLx=mx;
+          }
         }
         (byYear[y]||[]).forEach(function(x){ var ex=frac(x.p)*yw; var side=(ev%2===0)?"below":"above"; ev++; sec+=cardHTML(x.r,ex,x.p,side,locStr(x.r),yw); });
         if(current){ sec+='<span class="tnode" style="left:'+(tx-5.5)+'px"></span><span class="tlab" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }

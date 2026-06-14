@@ -36,7 +36,10 @@
     .cmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
     .cdate { font-size: 10px; letter-spacing: .16em; font-weight: 700; text-transform: uppercase; }
     .ctype { font-size: 10px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
-    .cbadge { display: inline-block; margin-top: 9px; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+    .cbadge { display: inline-block; margin-top: 9px; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border: 1px solid transparent; }
+    .legend { display: flex; gap: 16px; margin-top: 13px; flex-wrap: wrap; }
+    .legend .li { display: inline-flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #8b91a0; }
+    .legend .dot { width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3px #0f1115; }
     .cname { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 17px; line-height: 1.18; margin: 6px 0 0; letter-spacing: -.005em; color: #f3efe7; }
     .cloc { font-size: 12px; color: #8b91a0; margin-top: 3px; }
     .cbtns { display: flex; gap: 10px; margin-top: 14px; }
@@ -58,17 +61,18 @@
     <div class="overline">Mateus Mendelson</div>
     <h1 class="title" id="title"></h1>
     <div class="hint" id="hint"></div>
+    <div class="legend" id="legend"></div>
   </header>
   <div class="scroller"><div class="track" id="track"></div></div>
 
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona"} },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon"} },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón"} },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia maratona"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona"} },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half marathon"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon"} },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media maratón"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón"} },
       de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon"} },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon"} },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi-marathon"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon"} },
     };
     var lang=(navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;
@@ -82,7 +86,11 @@
     function dp(iso){var p=iso.split("-");return {y:+p[0],m:+p[1]-1,d:+p[2]};}
     function frac(p){return (p.m+(p.d-1)/31)/12;}
     function keyf(p){return p.y*400+p.m*31+p.d;}
-    function color(t){return t==="marathon"?"#E4572E":t==="half"?"#3A7CA5":"#2A9D5C";}
+    // Medal-honour colour code for the event dots: marathon = gold (the most
+    // honourable), half marathon = silver, shorter races = bronze.
+    var TIER={marathon:"#E8C04A",half:"#C3CAD6",other:"#C0823F"};
+    function color(t){return TIER[t]||TIER.other;}
+    function honorRank(t){return t==="marathon"?0:t==="half"?1:2;}
     var mShort=[]; for(var i=0;i<12;i++){mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase();}
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
@@ -110,7 +118,7 @@
         '<span class="ctype">'+esc((T.type[r.type]||r.type)+" · "+km(r.km)+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
         '<div class="cloc">'+esc(loc||r.city)+'</div>'+
-        ((r.milestone && T.ms && T.ms[r.milestone]) ? '<div><span class="cbadge" style="background:'+c+'">'+esc(T.ms[r.milestone])+'</span></div>' : '')+
+        ((r.milestone && T.ms && T.ms[r.milestone]) ? '<div><span class="cbadge" style="color:'+c+';background:'+c+'1f;border-color:'+c+'66">'+esc(T.ms[r.milestone])+'</span></div>' : '')+
         '<div class="cbtns">'+stravaBtn(r.strava)+deviceBtn(r.device,r.deviceUrl)+'</div></div>';
     }
 
@@ -183,6 +191,14 @@
         sec+='</div>'; html+=sec;
       });
       document.getElementById("track").innerHTML=html;
+
+      // Colour-code legend — only the tiers actually present, ordered by honour
+      // (marathon first). Reinforces what each event dot's colour means.
+      var types=Array.from(new Set(RACES.map(function(r){return r.type;}).filter(Boolean)))
+        .sort(function(a,b){return honorRank(a)-honorRank(b);});
+      document.getElementById("legend").innerHTML=types.map(function(t){
+        return '<span class="li"><span class="dot" style="background:'+color(t)+'"></span>'+esc(T.type[t]||t)+'</span>';
+      }).join("");
     }
 
     // --- Timeline motion -----------------------------------------------------

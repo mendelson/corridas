@@ -237,15 +237,12 @@
       }
       if(run.length) cols.push({type:"gap",years:run});
 
-      // Size the ribbon so it overflows the viewport (≥ FILL×) — otherwise there
-      // is nothing to scroll or auto-advance. Only full years widen to fill; the
-      // dotted gaps stay narrow/discreet.
-      var numFull=0, numGapYears=0;
-      cols.forEach(function(c){ if(c.type==="year")numFull++; else numGapYears+=c.years.length; });
-      var clientW=scroller.clientWidth||window.innerWidth||1000, PAD=56;
-      var naturalContent=numFull*BASE_YW+numGapYears*GW;
-      var targetContent=Math.max(naturalContent, clientW*FILL - PAD);
-      var yw = numFull>0 ? Math.max(BASE_YW, (targetContent - numGapYears*GW)/numFull) : BASE_YW;
+      // Each event-year is sized to ~fill the viewport, so the gallery opens
+      // focused on the current year and you scroll back (one year ≈ one screen)
+      // to reveal earlier years — whose reveal then animates as they appear.
+      // The dotted gaps between event-years stay narrow/discreet.
+      var clientW=scroller.clientWidth||window.innerWidth||1000;
+      var yw = Math.max(BASE_YW, clientW - 48);
 
       // Pass 2 — build the markup with the computed year width.
       var html="", ev=0;
@@ -309,7 +306,7 @@
       return {rank:0, dur:340, ease:OUT, kf:[{opacity:0},{opacity:1}]};
     }
 
-    var SWEEP=820; // ms a left→right reveal sweep takes across the viewport width
+    var SWEEP=760; // ms the opening reveal sweep takes across the viewport width
     function onReveal(el, delay){
       var c=revealConfig(el);
       if(c.origin) el.style.transformOrigin=c.origin;
@@ -320,11 +317,11 @@
     var _io=null;
     // Hides every timeline element, then reveals each (once) the first time it
     // enters the scroller's viewport. The animation is driven by what is on
-    // screen, so it plays as the timeline is exhibited (starting at today). The
-    // reveal delay scales with the element's horizontal position in the viewport
-    // (past → present, left → right) for a clean directional draw whose duration
-    // is independent of how many elements are on screen — and so elements that
-    // scroll in at the left edge (drifting back through time) reveal at once.
+    // screen, so it plays as the timeline is exhibited. The opening view is the
+    // current year, revealed today → past (right → left): the reveal delay scales
+    // with each element's distance from the right-most element on screen, so the
+    // present draws first and the cascade flows back in time. As the timeline
+    // drifts back, earlier years animate in as they enter (a gentle stagger).
     // Observation is deferred past the first paint so the entrance is visibly
     // *seen* rather than finishing during page load.
     function setupReveal(){
@@ -338,11 +335,12 @@
       _io=new IntersectionObserver(function(entries){
         var vis=entries.filter(function(e){return e.isIntersecting;});
         if(!vis.length) return;
-        var sr=scroller.getBoundingClientRect(), W=sr.width||1;
+        var W=scroller.clientWidth||1, maxL=-1e9;
+        vis.forEach(function(e){ var l=e.boundingClientRect.left; if(l>maxL) maxL=l; });
+        var span=auto?220:SWEEP; // gentle stagger once drifting; full sweep on open
         vis.forEach(function(e){
-          var f=(e.boundingClientRect.left - sr.left)/W; // 0 at left edge → 1 at right
-          f=f<0?0:(f>1?1:f);
-          onReveal(e.target, f*SWEEP);
+          var d=(maxL - e.boundingClientRect.left)/W*span; // right-most (present) first
+          onReveal(e.target, d<0?0:d);
           _io.unobserve(e.target);
         });
       }, {root:scroller, rootMargin:"0px 60px 0px 60px", threshold:0.01});
@@ -423,17 +421,18 @@
         scroller.scrollLeft=sl; pos=sl;
       }
     }
-    // Scroll offset that parks the "today" marker near the right edge (the
-    // timeline always opens on today). Falls back to max scroll if absent.
+    // Scroll offset that opens on the current year filling the viewport (its
+    // column starts ~24px from the left edge); earlier years sit off-screen left
+    // and are revealed by drifting/scrolling back. Falls back to max if absent.
     function startScroll(){
       var max=scroller.scrollWidth-scroller.clientWidth;
-      var t=document.getElementById("track").querySelector(".tnode");
+      var track=document.getElementById("track");
+      var nodes=track.querySelectorAll(".ynode"); // current year = last column
+      var t=nodes.length ? nodes[nodes.length-1] : null;
       if(t){
-        var trk=document.getElementById("track").getBoundingClientRect();
-        var tr=t.getBoundingClientRect();
-        var todayX=tr.left-trk.left + scroller.scrollLeft; // content offset of today
-        var target=todayX - scroller.clientWidth + 100;    // today ~100px from right
-        return clamp(target, 0, max);
+        var trk=track.getBoundingClientRect();
+        var x=t.getBoundingClientRect().left - trk.left + scroller.scrollLeft; // current-year start
+        return clamp(x - 24, 0, max);
       }
       return max;
     }

@@ -283,11 +283,8 @@
       document.getElementById("legend").innerHTML=types.map(function(t){
         return '<span class="li"><span class="dot" style="background:'+color(t)+'"></span>'+esc(T.type[t]||t)+'</span>';
       }).join("");
-
-      // Premium reveal: each element animates in once, the first time it scrolls
-      // into view (the journey starts at today and drifts back through time, so
-      // each part draws itself as it is exhibited). Set up once, on first render.
-      if(!introPlayed){ introPlayed=true; setupReveal(); }
+      // The first render's cinematic intro is kicked off from draw() (which has
+      // the post-layout measurements it needs).
     }
 
     // Per-element entrance config, keyed off the element's class. The `rank`
@@ -307,49 +304,112 @@
       return {rank:0, dur:340, ease:OUT, kf:[{opacity:0},{opacity:1}]};
     }
 
-    var SWEEP=760; // ms the opening reveal sweep takes across the viewport width
+    // Reveal one element with its entrance animation; returns the Animation so
+    // the cinematic intro can cancel it if the user skips.
     function onReveal(el, delay){
       var c=revealConfig(el);
       if(c.origin) el.style.transformOrigin=c.origin;
       el.classList.remove("rv");
-      el.animate(c.kf, {duration:c.dur, delay:delay + c.rank*22, easing:c.ease, fill:"both"});
+      return el.animate(c.kf, {duration:c.dur, delay:delay + c.rank*22, easing:c.ease, fill:"both"});
     }
 
-    var _io=null;
-    // Hides every timeline element, then reveals each (once) the first time it
-    // enters the scroller's viewport. The animation is driven by what is on
-    // screen, so it plays as the timeline is exhibited. The opening view is the
-    // current year, revealed today → past (right → left): the reveal delay scales
-    // with each element's distance from the right-most element on screen, so the
-    // present draws first and the cascade flows back in time. As the timeline
-    // drifts back, earlier years animate in as they enter (a gentle stagger).
-    // Observation is deferred past the first paint so the entrance is visibly
-    // *seen* rather than finishing during page load.
-    function setupReveal(){
+    // --- Cinematic opening ---------------------------------------------------
+    // A three-act intro plays once on load, then hands off to the standard
+    // auto-advance:
+    //   1. Pulled-back overview — the whole timeline fits on screen and the
+    //      line, years and months draw in, oldest → newest.
+    //   2. Zoom in to the oldest end.
+    //   3. Accelerated pan oldest → today; each event's dot, connector and card
+    //      animate in as the camera passes it.
+    // The camera is a transform on the track; native scrolling is disabled
+    // during the intro and restored at today for the normal drift. Any user
+    // interaction skips straight to the final state.
+    var _camAnims=[], _camRAF=null, _camDone=false, _skipHandlers=null;
+    function endCameraNow(track, todayStart, prevOverflow){
+      if(_camDone) return;
+      _camDone=true;
+      if(_camRAF) cancelAnimationFrame(_camRAF);
+      _camAnims.forEach(function(a){ try{a.cancel();}catch(e){} });
+      if(_skipHandlers){ _skipHandlers(); _skipHandlers=null; }
+      var hidden=track.querySelectorAll(".rv");
+      for(var i=0;i<hidden.length;i++) hidden[i].classList.remove("rv");
+      track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
+      scroller.style.overflowX=prevOverflow||"";
+      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; auto=true;
+    }
+
+    function cameraIntro(){
       var track=document.getElementById("track");
-      var sel=".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab,.enode,.conn,.card";
-      var els=track.querySelectorAll(sel);
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if(reduce || !("animate" in Element.prototype) || !("IntersectionObserver" in window)) return; // leave visible
-      for(var i=0;i<els.length;i++) els[i].classList.add("rv");
-      if(_io) _io.disconnect();
-      _io=new IntersectionObserver(function(entries){
-        var vis=entries.filter(function(e){return e.isIntersecting;});
-        if(!vis.length) return;
-        var W=scroller.clientWidth||1, maxL=-1e9;
-        vis.forEach(function(e){ var l=e.boundingClientRect.left; if(l>maxL) maxL=l; });
-        var span=auto?220:SWEEP; // gentle stagger once drifting; full sweep on open
-        vis.forEach(function(e){
-          var d=(maxL - e.boundingClientRect.left)/W*span; // right-most (present) first
-          onReveal(e.target, d<0?0:d);
-          _io.unobserve(e.target);
+      var todayStart=startScroll();
+      if(reduce || !("animate" in Element.prototype)){
+        _camDone=true;
+        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; auto=true; return;
+      }
+      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
+      scroller.scrollLeft=0;
+      var trk=track.getBoundingClientRect();
+      function cx(el){ return el.getBoundingClientRect().left - trk.left; } // content x (scale 1)
+      var tnode=track.querySelector(".tnode");
+      var todayX=tnode ? cx(tnode) : track.scrollWidth;
+      var extent=todayX+50;                       // oldest → today (ignore empty future)
+      var fit=Math.min(1, (clientW-2*M)/extent);  // scale that fits it all on screen
+
+      var lineEls=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab"));
+      var evEls=Array.prototype.slice.call(track.querySelectorAll(".enode,.conn,.card"));
+      var lineMeta=lineEls.map(function(el){ return {el:el, x:cx(el)}; });
+      var evMeta=evEls.map(function(el){ return {el:el, x:cx(el), done:false}; });
+      lineEls.concat(evEls).forEach(function(el){ el.classList.add("rv"); });
+
+      var prevOverflow=scroller.style.overflowX;
+      scroller.style.overflowX="hidden";
+      track.style.transformOrigin="0 0";
+      track.style.willChange="transform";
+      function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
+      var overview=camT(M, (H-H*fit)/2, fit), oldest=camT(0,0,1);
+      track.style.transform=overview;
+
+      function offSkip(){ ["wheel","pointerdown","touchstart","keydown"].forEach(function(ev){ window.removeEventListener(ev, onSkip); }); }
+      function onSkip(){ endCameraNow(track, todayStart, prevOverflow); }
+      _skipHandlers=offSkip;
+      ["wheel","pointerdown","touchstart","keydown"].forEach(function(ev){ window.addEventListener(ev, onSkip, {passive:true}); });
+
+      var D1=1300, D2=780, D3=2400;
+
+      function phase1(){ // draw line/years/months oldest → newest
+        return new Promise(function(res){
+          lineMeta.forEach(function(m){ _camAnims.push(onReveal(m.el, (extent?m.x/extent:0)*D1)); });
+          setTimeout(res, D1+650);
         });
-      }, {root:scroller, rootMargin:"0px 60px 0px 60px", threshold:0.01});
-      // Defer observation by two frames so the today scroll has applied and the
-      // page has painted; the opening period then visibly draws in.
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){
-        for(var j=0;j<els.length;j++) _io.observe(els[j]);
-      }); });
+      }
+      function phase2(){ // zoom overview → oldest
+        return new Promise(function(res){
+          var a=track.animate([{transform:overview},{transform:oldest}], {duration:D2, easing:"cubic-bezier(.6,.02,.2,1)", fill:"both"});
+          _camAnims.push(a);
+          a.finished.then(function(){ try{a.commitStyles();}catch(e){ track.style.transform=oldest; } try{a.cancel();}catch(e){} res(); }, res);
+        });
+      }
+      function phase3(){ // accelerated pan oldest → today, revealing events en route
+        return new Promise(function(res){
+          var t0=null;
+          function frame(ts){
+            if(t0==null) t0=ts;
+            var p=Math.min((ts-t0)/D3, 1);
+            var e=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; // easeInOutQuad
+            var camLeft=e*todayStart;
+            track.style.transform=camT(-camLeft,0,1);
+            evMeta.forEach(function(m){
+              if(!m.done && camLeft >= m.x - clientW*0.82){ m.done=true; _camAnims.push(onReveal(m.el, 0)); }
+            });
+            if(p<1){ _camRAF=requestAnimationFrame(frame); } else { res(); }
+          }
+          _camRAF=requestAnimationFrame(frame);
+        });
+      }
+
+      phase1().then(function(){ if(!_camDone) return phase2(); })
+              .then(function(){ if(!_camDone) return phase3(); })
+              .then(function(){ if(!_camDone) endCameraNow(track, todayStart, prevOverflow); });
     }
 
     // --- Timeline motion -----------------------------------------------------
@@ -359,7 +419,7 @@
     // short beat, drifts back through time; at either end it reverses,
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 5s.
-    var auto=false, introPlayed=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null;
+    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null;
     function pauseAuto(){
       auto=false;
       if(resumeTimer) clearTimeout(resumeTimer);
@@ -406,6 +466,7 @@
     var _data=null;
     function draw(){
       if(!_data) return;
+      if(firstDrawn && !_camDone) return; // cinematic intro in progress — don't re-render under it
       var first=!firstDrawn;
       // Preserve scroll across re-renders (language switch / resize) so the view
       // doesn't jump back to the start.
@@ -415,9 +476,7 @@
       endPos=startScroll(); // "today" scroll offset (auto-advance upper bound)
       if(first){
         firstDrawn=true;
-        scroller.scrollLeft=endPos; pos=endPos; dir=-1;
-        // Hold on "today" while the opening period draws in, then drift back.
-        setTimeout(function(){ auto=true; }, 1700);
+        cameraIntro(); // cinematic opening; enables auto-advance at today when done
       } else {
         scroller.scrollLeft=sl; pos=sl;
       }

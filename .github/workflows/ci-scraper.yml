@@ -99,9 +99,11 @@ jobs:
       )
     runs-on: ubuntu-latest
     # Hard ceiling: a hung source/Playwright/geocode must fail fast, never ride
-    # GitHub's 6h default and pin the runner for hours. The Nominatim per-run
-    # budget keeps the geocoding phase bounded so a healthy run fits comfortably.
-    timeout-minutes: 75
+    # GitHub's 6h default and pin the runner for hours. The reconcile recheck,
+    # geocoding and image-enrichment phases are wall-clock bounded in
+    # scraper/main.py; 120 gives headroom for a cold catch-up run (all per-run
+    # budgets hit back to back) without approaching the 6h default.
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v4
@@ -183,6 +185,19 @@ jobs:
       - name: Run scraper
         env:
           SCRAPER_SOURCES: ${{ steps.detect.outputs.sources }}
+          # Unbuffered so the streamed log reflects real progress (block-buffered
+          # stdout into `tee` otherwise loses everything after the last flush when
+          # a job is killed, hiding where time actually went).
+          PYTHONUNBUFFERED: "1"
+          # `validate` only needs to prove the pipeline runs end-to-end and the
+          # data tests pass — it does NOT need a full cold catch-up. Tight per-run
+          # budgets keep a cold validate comfortably under the job timeout (the
+          # full-pipeline path here was riding the 120-min ceiling otherwise).
+          # Production (data-pipeline.yml) keeps the generous in-code defaults so
+          # it still resolves locations/images thoroughly.
+          SCRAPE_BUDGET_S: "1200"
+          RECHECK_BUDGET_S: "300"
+          GEO_BUDGET_S: "300"
         run: |
           set -o pipefail
           python -m scraper.main 2>&1 | tee rescrape.log

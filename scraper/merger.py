@@ -311,10 +311,68 @@ def merge_rodada(registros: list[Corrida]) -> list[Corrida]:
         if ri != rj:
             group_id[rj] = ri
 
+    # Candidate generation, then confirm with are_duplicates. A naive all-pairs
+    # loop is O(n^2) and, on a cold run (~15k+ raw events), spends tens of minutes
+    # here in pure CPU with no output — the unbounded phase behind the pipeline
+    # timeouts. are_duplicates can only return True via one of three disjoint
+    # conditions, so we only compare pairs that could possibly match:
+    #   (1) they share a specific (non-generic) inscription link — conclusive,
+    #   (2) same state AND event dates within 31 days (covers every same-state
+    #       title/date path; the relaxed window tops out at 30 days), or
+    #   (3) Brazilian events on the EXACT same date across different states.
+    # Every other pair is guaranteed non-duplicate, so skipping it is exact —
+    # the dedup result is identical to the all-pairs version, just far faster.
+    generic = _GENERIC_LINKS | _RUN_GENERIC_LINKS
+
+    # (1) shared specific inscription link
+    link_idx: dict[str, list[int]] = defaultdict(list)
+    for i, r in enumerate(registros):
+        for nl in {_norm_link(l) for f in r.fontes for l in f.links_inscricao}:
+            if nl and nl not in generic:
+                link_idx[nl].append(i)
+    for idxs in link_idx.values():
+        first = idxs[0]
+        for k in idxs[1:]:
+            if find(first) != find(k) and are_duplicates(registros[first], registros[k]):
+                union(first, k)
+
+    def _pdate(s: str):
+        try:
+            return date.fromisoformat(s[:10])
+        except Exception:
+            return None
+    pdates = [_pdate(r.data_evento) if r.data_evento else None for r in registros]
+
+    # (2) same state, dates within 31 days (sorted sliding window)
+    by_state: dict[str, list[int]] = defaultdict(list)
     for i in range(n):
-        for j in range(i + 1, n):
-            if are_duplicates(registros[i], registros[j]):
-                union(i, j)
+        if pdates[i] is not None:
+            by_state[registros[i].estado].append(i)
+    for idxs in by_state.values():
+        idxs.sort(key=lambda i: pdates[i])
+        for a in range(len(idxs)):
+            ia = idxs[a]
+            for b in range(a + 1, len(idxs)):
+                ib = idxs[b]
+                if (pdates[ib] - pdates[ia]).days > 31:
+                    break
+                if find(ia) != find(ib) and are_duplicates(registros[ia], registros[ib]):
+                    union(ia, ib)
+
+    # (3) Brazilian events on the exact same date, across states
+    by_date_br: dict[str, list[int]] = defaultdict(list)
+    for i in range(n):
+        if pdates[i] is not None and registros[i].pais == "BR":
+            by_date_br[registros[i].data_evento[:10]].append(i)
+    for idxs in by_date_br.values():
+        for a in range(len(idxs)):
+            ia = idxs[a]
+            for b in range(a + 1, len(idxs)):
+                ib = idxs[b]
+                if registros[ia].estado != registros[ib].estado \
+                        and find(ia) != find(ib) \
+                        and are_duplicates(registros[ia], registros[ib]):
+                    union(ia, ib)
 
     # Group by root
     groups: dict[int, list[int]] = {}

@@ -77,7 +77,8 @@
     document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
     document.getElementById("hint").textContent=T.hint;
 
-    var YW=384, GW=58;
+    var BASE_YW=384, GW=58, CARDW=300, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
+    function clamp(v,lo,hi){return v<lo?lo:(v>hi?hi:v);}
     function dp(iso){var p=iso.split("-");return {y:+p[0],m:+p[1]-1,d:+p[2]};}
     function frac(p){return (p.m+(p.d-1)/31)/12;}
     function keyf(p){return p.y*400+p.m*31+p.d;}
@@ -96,11 +97,15 @@
     function stravaBtn(url){
       return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava"><span class="slogo">'+CHEVRON+'<span class="sword">Strava</span></span></a>';
     }
-    function cardHTML(r,ex,p,side,loc){
+    function cardHTML(r,ex,p,side,loc,sw){
       var c=color(r.type);
+      // Fixed-width card centred on the event, clamped inside the year column so
+      // it never spills past the column edges; the connector still meets it.
+      var cl=clamp(ex-CARDW/2, 6, Math.max(6, sw-CARDW-6));
+      if(ex<cl+12) cl=Math.max(0,ex-12); else if(ex>cl+CARDW-12) cl=ex-CARDW+12;
       return '<span class="enode" style="left:'+(ex-4.5)+'px;background:'+c+'"></span>'+
         '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
-        '<div class="card '+side+'">'+
+        '<div class="card '+side+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
         '<span class="ctype">'+esc((T.type[r.type]||r.type)+" · "+km(r.km)+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
@@ -132,51 +137,106 @@
       var minY = asc.length ? asc[0].p.y : curY;
       if(minY>curY) minY=curY;
 
-      var html="", ev=0, gap=[];
-      function flushGap(){
-        if(!gap.length) return;
-        var gw=gap.length*GW;
-        var gs='<div class="sec" style="width:'+gw+'px"><div class="rail dotted"></div>';
-        gap.forEach(function(y,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+y+'</span>'; });
-        gs+='</div>'; html+=gs; gap=[];
-      }
+      // Pass 1 — lay out the columns: event-bearing/current years are full
+      // columns; runs of empty years collapse into one discreet dotted gap.
+      var cols=[], run=[];
       for(var y=minY; y<=curY; y++){
-        var evs=byYear[y]||[], current=(y===curY);
-        if(evs.length===0 && !current){ gap.push(y); continue; }
-        flushGap();
-        // Every year reserves a full-width column so cards stay readable; the
-        // current year only paints its rail/months up to today, and the space
-        // to the right is the year still ahead (the timeline grows into it).
-        var tx = current ? todayFrac*YW : 0;
-        var sec='<div class="sec" style="width:'+YW+'px">';
+        var hasEv=(byYear[y]||[]).length>0, current=(y===curY);
+        if(!hasEv && !current){ run.push(y); continue; }
+        if(run.length){ cols.push({type:"gap",years:run}); run=[]; }
+        cols.push({type:"year",y:y,current:current});
+      }
+      if(run.length) cols.push({type:"gap",years:run});
+
+      // Size the ribbon so it overflows the viewport (≥ FILL×) — otherwise there
+      // is nothing to scroll or auto-advance. Only full years widen to fill; the
+      // dotted gaps stay narrow/discreet.
+      var numFull=0, numGapYears=0;
+      cols.forEach(function(c){ if(c.type==="year")numFull++; else numGapYears+=c.years.length; });
+      var clientW=scroller.clientWidth||window.innerWidth||1000, PAD=56;
+      var naturalContent=numFull*BASE_YW+numGapYears*GW;
+      var targetContent=Math.max(naturalContent, clientW*FILL - PAD);
+      var yw = numFull>0 ? Math.max(BASE_YW, (targetContent - numGapYears*GW)/numFull) : BASE_YW;
+
+      // Pass 2 — build the markup with the computed year width.
+      var html="", ev=0;
+      cols.forEach(function(c){
+        if(c.type==="gap"){
+          var gw=c.years.length*GW;
+          var gs='<div class="sec" style="width:'+gw+'px"><div class="rail dotted"></div>';
+          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+yy+'</span>'; });
+          gs+='</div>'; html+=gs; return;
+        }
+        var y=c.y, current=c.current;
+        var tx = current ? todayFrac*yw : 0;
+        var sec='<div class="sec" style="width:'+yw+'px">';
         sec+= current ? '<div class="rail" style="right:auto;width:'+tx+'px"></div>' : '<div class="rail"></div>';
         sec+='<span class="ynode" style="left:0px"></span><span class="ylabel" style="left:18px">'+y+'</span>';
         var lastM = current ? now.getMonth() : 11;
         for(var mi=0; mi<=lastM; mi++){
-          var mx=(mi/12)*YW;
+          var mx=(mi/12)*yw;
           sec+='<span class="mtick" style="left:'+mx+'px"></span>';
           if(!(current && Math.abs(mx - tx) < 26)) sec+='<span class="mlab" style="left:'+mx+'px">'+esc(mShort[mi])+'</span>';
         }
-        evs.forEach(function(x){ var ex=frac(x.p)*YW; var side=(ev%2===0)?"below":"above"; ev++; sec+=cardHTML(x.r,ex,x.p,side,locStr(x.r)); });
+        (byYear[y]||[]).forEach(function(x){ var ex=frac(x.p)*yw; var side=(ev%2===0)?"below":"above"; ev++; sec+=cardHTML(x.r,ex,x.p,side,locStr(x.r),yw); });
         if(current){ sec+='<span class="tnode" style="left:'+(tx-5.5)+'px"></span><span class="tlab" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }
         sec+='</div>'; html+=sec;
-      }
+      });
       document.getElementById("track").innerHTML=html;
     }
 
-    // Vertical wheel scroll drives the horizontal timeline: down → forward
-    // (right, toward today), up → back (left). Trackpads that already send a
-    // horizontal delta are left untouched so two-finger swipes still work.
+    // --- Timeline motion -----------------------------------------------------
     var scroller=document.querySelector(".scroller");
-    scroller.addEventListener("wheel", function(e){
+
+    // Auto-advance: once loaded the timeline drifts forward on its own; at the
+    // far end it reverses, ping-ponging in a loop. Any genuine user interaction
+    // (wheel, drag, touch, key) pauses it; it resumes after 5s of no interaction.
+    var auto=true, dir=1, resumeTimer=null, lastTs=null, pos=0;
+    function pauseAuto(){
+      auto=false;
+      if(resumeTimer) clearTimeout(resumeTimer);
+      resumeTimer=setTimeout(function(){ auto=true; }, 5000);
+    }
+    function maxScroll(){ return scroller.scrollWidth - scroller.clientWidth; }
+    function tick(ts){
+      if(lastTs==null) lastTs=ts;
+      var dt=Math.min((ts-lastTs)/1000, 0.05); lastTs=ts; // clamp after tab sleep
+      var max=maxScroll();
+      if(auto && max>1){
+        var sp=Math.max(40, max/20); // full traverse ~20s regardless of length
+        pos += dir*sp*dt;
+        if(pos>=max){ pos=max; dir=-1; }
+        else if(pos<=0){ pos=0; dir=1; }
+        scroller.scrollLeft=pos;
+      } else {
+        pos=scroller.scrollLeft; // stay in sync while paused / under manual control
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    // Vertical wheel scroll drives the horizontal timeline: down → forward
+    // (toward today), up → back. Bound to the window so it works wherever the
+    // cursor is, not only over the track. Horizontal trackpad deltas pass through.
+    window.addEventListener("wheel", function(e){
       if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       scroller.scrollLeft += e.deltaY;
+      pos=scroller.scrollLeft;
+      pauseAuto();
       e.preventDefault();
     }, {passive:false});
+    ["pointerdown","mousedown","touchstart","keydown"].forEach(function(evt){
+      window.addEventListener(evt, pauseAuto, {passive:true});
+    });
 
     // Load the races, then the SAME location reference the main site uses
     // (web/locations/{ISO2}.json) for each country present, so state/country
     // names come from one source of truth.
+    var _data=null;
+    function draw(){ if(_data) render(_data.races,_data.loc,_data.paises); }
+    var _rz=null;
+    window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });
+
     fetch("races.json", {cache:"no-cache"}).then(function(r){return r.json();}).then(function(RACES){
       RACES=(RACES||[]).filter(function(r){return r&&r.date;});
       var paises=Array.from(new Set(RACES.map(function(r){return r.pais;}).filter(Boolean)));
@@ -186,7 +246,7 @@
       })).then(function(arr){
         var LOCDATA={};
         arr.forEach(function(x){ if(x.j){ var m={}; (x.j.subdivisions||[]).forEach(function(s){m[s.code]=s.name;}); LOCDATA[x.p]={subs:m,name:x.j.name}; } });
-        render(RACES, LOCDATA, paises);
+        _data={races:RACES,loc:LOCDATA,paises:paises}; draw();
       });
     }).catch(function(e){ console.error("gallery: failed to load data", e); render([], {}, []); });
   })();

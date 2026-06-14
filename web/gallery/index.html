@@ -100,7 +100,7 @@
     function keyf(p){return p.y*400 + p.m*31 + p.d;}
     function color(t){return t==="marathon"?"#E4572E":t==="half"?"#3A7CA5":"#2A9D5C";}
     var mShort=[]; for(var i=0;i<12;i++){mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase();}
-    function km(v){return (Math.round(v*10)/10).toLocaleString(LOC,{minimumFractionDigits:1,maximumFractionDigits:1});}
+    function km(v){return v.toLocaleString(LOC,{maximumFractionDigits:4});}
     function p2(n){return (n<10?"0":"")+n;}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
 
@@ -132,7 +132,7 @@
       for(var mi=0;mi<12;mi++){
         var x=(mi/12)*YW;
         sec+='<span class="mtick" style="left:'+x+'px"></span>';
-        if(mi%3===0) sec+='<span class="mlab" style="left:'+x+'px">'+esc(mShort[mi])+'</span>';
+        sec+='<span class="mlab'+(mi%3===0?' q':'')+'" style="left:'+x+'px">'+esc(mShort[mi])+'</span>';
       }
       // events
       g.items.forEach(function(x){

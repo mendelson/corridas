@@ -16,7 +16,8 @@
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
-    .scroller { overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; }
+    .scroller { overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+    .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
     .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 28px; }
     .sec { position: relative; height: 100%; flex: 0 0 auto; }
     .rail { position: absolute; left: 0; right: 0; top: 235px; height: 1.5px; background: #2c323d; }
@@ -35,6 +36,7 @@
     .cmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
     .cdate { font-size: 10px; letter-spacing: .16em; font-weight: 700; text-transform: uppercase; }
     .ctype { font-size: 10px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
+    .cbadge { display: inline-block; margin-top: 9px; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
     .cname { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 17px; line-height: 1.18; margin: 6px 0 0; letter-spacing: -.005em; color: #f3efe7; }
     .cloc { font-size: 12px; color: #8b91a0; margin-top: 3px; }
     .cbtns { display: flex; gap: 10px; margin-top: 14px; }
@@ -62,11 +64,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para o lado para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia"} },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll sideways to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half"} },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desliza al lado para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media"} },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Seitlich scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon"} },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler latéralement pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi"} },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona"} },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon"} },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón"} },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon"} },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon"} },
     };
     var lang=(navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;
@@ -94,7 +96,7 @@
     function stravaBtn(url){
       return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava"><span class="slogo">'+CHEVRON+'<span class="sword">Strava</span></span></a>';
     }
-    function cardHTML(r,ex,p,side){
+    function cardHTML(r,ex,p,side,loc){
       var c=color(r.type);
       return '<span class="enode" style="left:'+(ex-4.5)+'px;background:'+c+'"></span>'+
         '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
@@ -102,12 +104,27 @@
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
         '<span class="ctype">'+esc((T.type[r.type]||r.type)+" · "+km(r.km)+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
-        '<div class="cloc">'+esc(r.city+" · "+r.uf)+'</div>'+
+        '<div class="cloc">'+esc(loc||r.city)+'</div>'+
+        ((r.milestone && T.ms && T.ms[r.milestone]) ? '<div><span class="cbadge" style="background:'+c+'">'+esc(T.ms[r.milestone])+'</span></div>' : '')+
         '<div class="cbtns">'+stravaBtn(r.strava)+deviceBtn(r.device,r.deviceUrl)+'</div></div>';
     }
 
-    function render(RACES){
+    function render(RACES, LOCDATA, paises){
       RACES=(RACES||[]).filter(function(r){return r&&r.date;});
+      LOCDATA=LOCDATA||{}; paises=paises||[];
+      var multiCountry = paises.length>=2;
+      function nrm(s){return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();}
+      function locStr(r){
+        var parts=[r.city];
+        var ld=LOCDATA[r.pais];
+        var sub=(ld&&ld.subs)?ld.subs[r.estado]:null;
+        if(sub && nrm(sub)!==nrm(r.city)) parts.push(sub);
+        if(multiCountry && r.pais){
+          var cn; try{cn=new Intl.DisplayNames([LOC],{type:"region"}).of(r.pais);}catch(e){cn=(ld&&ld.name)||r.pais;}
+          if(cn) parts.push(cn);
+        }
+        return parts.filter(Boolean).join(" · ");
+      }
       var now=new Date(), curY=now.getFullYear();
       var todayFrac=(now.getMonth()+(now.getDate()-1)/31)/12;
       var asc=RACES.map(function(r){return {r:r,p:dp(r.date)};}).sort(function(a,b){return keyf(a.p)-keyf(b.p);});
@@ -140,15 +157,38 @@
           sec+='<span class="mtick" style="left:'+mx+'px"></span>';
           if(!(current && Math.abs(mx - tx) < 26)) sec+='<span class="mlab" style="left:'+mx+'px">'+esc(mShort[mi])+'</span>';
         }
-        evs.forEach(function(x){ var ex=frac(x.p)*YW; var side=(ev%2===0)?"below":"above"; ev++; sec+=cardHTML(x.r,ex,x.p,side); });
+        evs.forEach(function(x){ var ex=frac(x.p)*YW; var side=(ev%2===0)?"below":"above"; ev++; sec+=cardHTML(x.r,ex,x.p,side,locStr(x.r)); });
         if(current){ sec+='<span class="tnode" style="left:'+(tx-5.5)+'px"></span><span class="tlab" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }
         sec+='</div>'; html+=sec;
       }
       document.getElementById("track").innerHTML=html;
     }
 
-    fetch("races.json", {cache:"no-cache"}).then(function(r){return r.json();}).then(render)
-      .catch(function(e){ console.error("gallery: failed to load races.json", e); render([]); });
+    // Vertical wheel scroll drives the horizontal timeline: down → forward
+    // (right, toward today), up → back (left). Trackpads that already send a
+    // horizontal delta are left untouched so two-finger swipes still work.
+    var scroller=document.querySelector(".scroller");
+    scroller.addEventListener("wheel", function(e){
+      if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      scroller.scrollLeft += e.deltaY;
+      e.preventDefault();
+    }, {passive:false});
+
+    // Load the races, then the SAME location reference the main site uses
+    // (web/locations/{ISO2}.json) for each country present, so state/country
+    // names come from one source of truth.
+    fetch("races.json", {cache:"no-cache"}).then(function(r){return r.json();}).then(function(RACES){
+      RACES=(RACES||[]).filter(function(r){return r&&r.date;});
+      var paises=Array.from(new Set(RACES.map(function(r){return r.pais;}).filter(Boolean)));
+      return Promise.all(paises.map(function(pp){
+        return fetch("../locations/"+pp+".json").then(function(r){return r.ok?r.json():null;})
+          .then(function(j){return {p:pp,j:j};}).catch(function(){return {p:pp,j:null};});
+      })).then(function(arr){
+        var LOCDATA={};
+        arr.forEach(function(x){ if(x.j){ var m={}; (x.j.subdivisions||[]).forEach(function(s){m[s.code]=s.name;}); LOCDATA[x.p]={subs:m,name:x.j.name}; } });
+        render(RACES, LOCDATA, paises);
+      });
+    }).catch(function(e){ console.error("gallery: failed to load data", e); render([], {}, []); });
   })();
   </script>
 </body>

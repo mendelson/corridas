@@ -335,7 +335,8 @@
       for(var i=0;i<hidden.length;i++) hidden[i].classList.remove("rv");
       track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
       scroller.style.overflowX=prevOverflow||"";
-      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; auto=true;
+      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
+      setTimeout(function(){ auto=true; }, 500);
     }
 
     function cameraIntro(){

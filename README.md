@@ -108,6 +108,7 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 | Dublin City Marathon<!--evento_unico/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-06-13 11:11 | ✅ | 2026-06-13 11:11 · 1 ev |
 | Athens Classic Marathon<!--evento_unico/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-06-13 11:11 | ✅ | 2026-06-13 11:11 · 1 ev |
 | Valencia Trinidad Alfonso Marathon<!--evento_unico/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-06-13 11:12 | ✅ | 2026-06-13 11:12 · 1 ev |
+| Comrades Marathon<!--evento_unico/comrades--> |  | ✅ | `comrades.com/race-information` | — | — | — |
 
 ---
 

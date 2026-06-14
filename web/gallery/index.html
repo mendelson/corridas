@@ -12,7 +12,12 @@
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; }
     body { background: #0f1115; color: #fff; font-family: "Archivo", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-    header { padding: 38px 28px 16px; max-width: 1100px; margin: 0 auto; animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
+    header { padding: 38px 28px 16px; max-width: 1100px; margin: 0 auto; }
+    header.chrome-in { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
+    /* During the cinematic intro everything outside the timeline is hidden and
+       interaction is locked; the chrome fades in only once the intro concludes. */
+    body.intro { overflow: hidden; touch-action: none; }
+    body.intro header { opacity: 0; visibility: hidden; pointer-events: none; }
     @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .gactions { display: flex; align-items: center; gap: 8px; }
@@ -73,7 +78,7 @@
     }
   </style>
 </head>
-<body>
+<body class="intro">
   <header>
     <div class="hrow">
       <div class="overline">Mateus Mendelson</div>
@@ -324,7 +329,16 @@
     // The camera is a transform on the track; native scrolling is disabled
     // during the intro and restored at today for the normal drift. Any user
     // interaction skips straight to the final state.
-    var _camAnims=[], _camRAF=null, _camDone=false, _skipHandlers=null;
+    var _camAnims=[], _camRAF=null, _camDone=false, _skipHandlers=null, _introActive=false;
+    // Reveal the page chrome (header / title / legend) that stays hidden through
+    // the intro, then unlock interaction. `animate` plays the fade-in (skipped
+    // under reduced motion / error paths). Idempotent.
+    function finishChrome(animate){
+      _introActive=false;
+      document.body.classList.remove("intro");
+      var hdr=document.querySelector("header");
+      if(hdr && animate) hdr.classList.add("chrome-in");
+    }
     function endCameraNow(track, todayStart, prevOverflow){
       if(_camDone) return;
       _camDone=true;
@@ -336,6 +350,7 @@
       track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
       scroller.style.overflowX=prevOverflow||"";
       scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
+      finishChrome(true); // intro is over → fade the rest of the page in
       setTimeout(function(){ auto=true; }, 500);
     }
 
@@ -345,8 +360,10 @@
       var todayStart=startScroll();
       if(reduce || !("animate" in Element.prototype)){
         _camDone=true;
-        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; auto=true; return;
+        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; auto=true;
+        finishChrome(false); return;
       }
+      _introActive=true; // lock all interaction for the whole intro
       var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
       scroller.scrollLeft=0;
       var trk=track.getBoundingClientRect();
@@ -370,10 +387,8 @@
       var overview=camT(M, (H-H*fit)/2, fit), oldest=camT(0,0,1);
       track.style.transform=overview;
 
-      function offSkip(){ ["wheel","pointerdown","touchstart","keydown"].forEach(function(ev){ window.removeEventListener(ev, onSkip); }); }
-      function onSkip(){ endCameraNow(track, todayStart, prevOverflow); }
-      _skipHandlers=offSkip;
-      ["wheel","pointerdown","touchstart","keydown"].forEach(function(ev){ window.addEventListener(ev, onSkip, {passive:true}); });
+      // The intro is no longer interruptible: interaction is locked until it
+      // finishes (the _introActive guards on the wheel/pointer/touch handlers).
 
       var D1=1300, D2=780, D3=2400;
 
@@ -451,6 +466,7 @@
     // (toward today), up → back. Bound to the window so it works wherever the
     // cursor is, not only over the track. Horizontal trackpad deltas pass through.
     window.addEventListener("wheel", function(e){
+      if(_introActive){ e.preventDefault(); return; } // locked during intro
       if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       scroller.scrollLeft += e.deltaY;
       pos=scroller.scrollLeft;
@@ -458,8 +474,10 @@
       e.preventDefault();
     }, {passive:false});
     ["pointerdown","mousedown","touchstart","keydown"].forEach(function(evt){
-      window.addEventListener(evt, pauseAuto, {passive:true});
+      window.addEventListener(evt, function(){ if(!_introActive) pauseAuto(); }, {passive:true});
     });
+    // Block touch-drag scrolling for the duration of the intro.
+    window.addEventListener("touchmove", function(e){ if(_introActive) e.preventDefault(); }, {passive:false});
 
     // Load the races, then the SAME location reference the main site uses
     // (web/locations/{ISO2}.json) for each country present, so state/country
@@ -511,7 +529,7 @@
         arr.forEach(function(x){ if(x.j){ var m={}; (x.j.subdivisions||[]).forEach(function(s){m[s.code]=s.name;}); LOCDATA[x.p]={subs:m,name:x.j.name}; } });
         _data={races:RACES,loc:LOCDATA,paises:paises}; draw();
       });
-    }).catch(function(e){ console.error("gallery: failed to load data", e); render([], {}, []); });
+    }).catch(function(e){ console.error("gallery: failed to load data", e); render([], {}, []); finishChrome(false); });
   })();
   </script>
 </body>

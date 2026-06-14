@@ -12,7 +12,18 @@
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; }
     body { background: #0f1115; color: #fff; font-family: "Archivo", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-    header { padding: 38px 28px 16px; max-width: 1100px; margin: 0 auto; }
+    header { padding: 38px 28px 16px; max-width: 1100px; margin: 0 auto; animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
+    @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+    .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .gactions { display: flex; align-items: center; gap: 8px; }
+    .gbtn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border: 1px solid #2a2f38; border-radius: 9px; background: #161a20; color: #aeb4c0; font-family: "Archivo", system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-decoration: none; cursor: pointer; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; }
+    .gbtn:hover { color: #f3efe7; border-color: #454c59; background: #1b2027; }
+    .gbtn-icon { font-size: 14px; line-height: 1; }
+    .lang-dd { position: fixed; z-index: 9999; background: #161a20; border: 1px solid #2a2f38; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.5); display: flex; flex-direction: column; min-width: 152px; overflow: hidden; padding: 4px; animation: ddIn .16s ease-out both; }
+    @keyframes ddIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+    .lang-opt { background: none; border: none; border-radius: 7px; padding: 9px 12px; text-align: left; font-family: "Archivo", system-ui, sans-serif; font-size: 13px; color: #cfd4dd; cursor: pointer; transition: background .12s, color .12s; }
+    .lang-opt:hover { background: #1f242c; color: #f3efe7; }
+    .lang-opt.active { color: #E8C04A; font-weight: 700; }
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
@@ -54,11 +65,23 @@
     /* "today" end marker — the timeline concludes here and grows over time */
     .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #0f1115; border: 2px solid #E4572E; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
     .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #E4572E; white-space: nowrap; z-index: 1; pointer-events: none; }
+    @media (max-width: 560px) {
+      header { padding: 26px 18px 14px; }
+      .gbtn-lbl { display: none; }
+      .gbtn { padding: 0 9px; }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="overline">Mateus Mendelson</div>
+    <div class="hrow">
+      <div class="overline">Mateus Mendelson</div>
+      <nav class="gactions">
+        <a class="gbtn" id="navCal" href="#"><span class="gbtn-icon" aria-hidden="true">📅</span><span class="gbtn-lbl" id="navCalLbl"></span></a>
+        <a class="gbtn" id="navApps" href="https://apps.mmendelson.com" target="_blank" rel="noopener"><span class="gbtn-icon" aria-hidden="true">⌚</span><span class="gbtn-lbl">Apps</span></a>
+        <button class="gbtn" id="navLang" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="gbtn-icon" aria-hidden="true">🌐</span><span class="gbtn-lbl" id="navLangLbl"></span></button>
+      </nav>
+    </div>
     <h1 class="title" id="title"></h1>
     <div class="hint" id="hint"></div>
     <div class="legend" id="legend"></div>
@@ -68,18 +91,56 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"} },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"} },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"} },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"} },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"} },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"} },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
     };
-    var lang=(navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
+    // Language has no per-language URL on the gallery; it is selected via a
+    // shareable ?lang= query param, falling back to the browser language.
+    var _urlLang=null; try{_urlLang=new URLSearchParams(location.search).get("lang");}catch(e){}
+    var lang=(_urlLang||navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;
     document.documentElement.lang=lang;
     document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])+" — Mateus Mendelson";
     document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
     document.getElementById("hint").textContent=T.hint;
+
+    // Header navigation: calendar (back to the main worldwide calendar in this
+    // language), apps (Garmin/watch apps), and the language switcher.
+    (function wireNav(){
+      var navCal=document.getElementById("navCal");
+      navCal.setAttribute("href","/"+lang);
+      document.getElementById("navCalLbl").textContent=T.cal;
+      document.getElementById("navLangLbl").textContent=lang.toUpperCase();
+      var navLang=document.getElementById("navLang");
+      var LABELS={pt:"Português",en:"English",es:"Español",de:"Deutsch",fr:"Français"};
+      var dd=null;
+      function close(){ if(dd){ dd.remove(); dd=null; navLang.setAttribute("aria-expanded","false"); } }
+      navLang.addEventListener("click",function(e){
+        e.stopPropagation();
+        if(dd){ close(); return; }
+        dd=document.createElement("div"); dd.className="lang-dd"; dd.setAttribute("role","listbox");
+        var order=[lang].concat(Object.keys(LABELS).filter(function(c){return c!==lang;})
+          .sort(function(a,b){return LABELS[a].localeCompare(LABELS[b]);}));
+        order.forEach(function(code){
+          var b=document.createElement("button");
+          b.type="button"; b.className="lang-opt"+(code===lang?" active":""); b.textContent=LABELS[code];
+          b.addEventListener("click",function(){
+            close();
+            if(code!==lang){ var u=new URL(location.href); u.searchParams.set("lang",code); location.href=u.toString(); }
+          });
+          dd.appendChild(b);
+        });
+        document.body.appendChild(dd);
+        navLang.setAttribute("aria-expanded","true");
+        var r=navLang.getBoundingClientRect();
+        dd.style.top=(r.bottom+6)+"px";
+        dd.style.right=(window.innerWidth-r.right)+"px";
+        setTimeout(function(){ document.addEventListener("click",close,{once:true}); },0);
+      });
+    })();
 
     var BASE_YW=384, GW=58, CARDW=300, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
     function clamp(v,lo,hi){return v<lo?lo:(v>hi?hi:v);}
@@ -89,9 +150,13 @@
     // Medal-honour colour code for the event dots: marathon = gold (the most
     // honourable), half marathon = silver, 10K = copper, shorter races = bronze.
     var TIER={marathon:"#E8C04A",half:"#C3CAD6",ten:"#D4A574",other:"#C0823F"};
+    // Accepts either a race object (card) or a bare type string (legend). A 10K
+    // is its own copper tier, whether tagged type "ten" or a "race" with km 10.
     function color(r){
-      if(r.type==="ten" || (r.type==="race" && r.km===10)) return TIER.ten;
-      return TIER[r.type]||TIER.other;
+      var type=(typeof r==="string")?r:(r&&r.type);
+      var kmv=(r&&typeof r==="object")?r.km:null;
+      if(type==="ten" || (type==="race" && kmv===10)) return TIER.ten;
+      return TIER[type]||TIER.other;
     }
     function honorRank(t){return t==="marathon"?0:t==="half"?1:t==="ten"?2:3;}
     var mShort=[]; for(var i=0;i<12;i++){mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase();}
@@ -206,15 +271,63 @@
       document.getElementById("legend").innerHTML=types.map(function(t){
         return '<span class="li"><span class="dot" style="background:'+color(t)+'"></span>'+esc(T.type[t]||t)+'</span>';
       }).join("");
+
+      // Premium one-time intro: draw the ribbon, then the years, months, event
+      // dots, connector lines and finally the cards — each as its own animated
+      // phase. Auto-advance only begins once the whole sequence has settled.
+      if(!introPlayed){ introPlayed=true; animateIntro(); }
+    }
+
+    // Orchestrates the staggered, sequential entrance of every timeline element.
+    // All animations are created synchronously with absolute delays so each
+    // element stays hidden (backwards-fill) until its phase begins — no flash of
+    // the final layout. When the last one settles, auto-advance is enabled.
+    function animateIntro(){
+      var track=document.getElementById("track");
+      var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(!track || reduce || !("animate" in Element.prototype)){ auto=true; return; }
+
+      var OUT="cubic-bezier(.22,.61,.36,1)", BACK="cubic-bezier(.34,1.45,.5,1)";
+      var anims=[];
+      function reveal(sel, kf, base, dur, stag, ease){
+        var els=track.querySelectorAll(sel);
+        for(var i=0;i<els.length;i++){
+          var el=els[i];
+          var frames=(typeof kf==="function")?kf(el,i):kf;
+          anims.push(el.animate(frames,{duration:dur, delay:base+i*stag, easing:ease, fill:"both"}));
+        }
+      }
+
+      // 1 — the timeline rails draw left → right.
+      reveal(".rail", function(el){ el.style.transformOrigin="left center"; return [{transform:"scaleX(0)"},{transform:"scaleX(1)"}]; }, 0, 560, 120, OUT);
+      // 2 — the years (and gap / today markers): nodes pop, labels rise.
+      reveal(".ynode, .gnode, .tnode", [{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}], 480, 440, 110, BACK);
+      reveal(".ylabel", [{opacity:0,transform:"translateY(9px)"},{opacity:1,transform:"translateY(0)"}], 540, 460, 110, OUT);
+      reveal(".gylab, .tlab", [{opacity:0,transform:"translateX(-50%) translateY(9px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}], 540, 460, 110, OUT);
+      // 3 — the months: ticks grow downward, labels fade up.
+      reveal(".mtick", function(el){ el.style.transformOrigin="center top"; return [{transform:"scaleY(0)"},{transform:"scaleY(1)"}]; }, 940, 300, 18, OUT);
+      reveal(".mlab", [{opacity:0,transform:"translateX(-50%) translateY(5px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}], 1000, 320, 18, OUT);
+      // 4 — the event dots: pop in with a soft overshoot.
+      reveal(".enode", [{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}], 1480, 440, 130, BACK);
+      // 5 — the connector lines: drawn from the rail toward each card.
+      reveal(".conn", function(el){ el.style.transformOrigin=el.classList.contains("above")?"center bottom":"center top"; return [{transform:"scaleY(0)"},{transform:"scaleY(1)"}]; }, 1840, 340, 130, OUT);
+      // 6 — the cards: slide in from their side and settle.
+      reveal(".card", function(el){ var dy=el.classList.contains("above")?-18:18; return [{opacity:0,transform:"translateY("+dy+"px) scale(.97)"},{opacity:1,transform:"translateY(0) scale(1)"}]; }, 2160, 520, 140, OUT);
+
+      if(!anims.length){ auto=true; return; }
+      var pending=anims.length;
+      function step(){ if(--pending<=0) auto=true; }
+      anims.forEach(function(a){ a.finished.then(step, step); });
     }
 
     // --- Timeline motion -----------------------------------------------------
     var scroller=document.querySelector(".scroller");
 
-    // Auto-advance: once loaded the timeline drifts forward on its own; at the
-    // far end it reverses, ping-ponging in a loop. Any genuine user interaction
-    // (wheel, drag, touch, key) pauses it; it resumes after 5s of no interaction.
-    var auto=true, dir=1, resumeTimer=null, lastTs=null, pos=0;
+    // Auto-advance: it starts only after the premium intro animation has drawn
+    // the whole timeline (auto begins false). Then the timeline drifts forward
+    // on its own; at the far end it reverses, ping-ponging in a loop. Any genuine
+    // user interaction (wheel, drag, touch, key) pauses it; it resumes after 5s.
+    var auto=false, introPlayed=false, dir=1, resumeTimer=null, lastTs=null, pos=0;
     function pauseAuto(){
       auto=false;
       if(resumeTimer) clearTimeout(resumeTimer);

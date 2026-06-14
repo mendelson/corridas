@@ -22,7 +22,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | --- | --- | --- | --- | --- | --- | --- |
 | Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-06-14 11:29 | ✅ | 2026-06-14 11:29 · 841 ev |
 | Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-06-14 11:27 | ✅ | 2026-06-14 11:27 · 14 ev |
-| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-06-14 11:28 | ✅ | 2026-06-14 11:28 · 60 ev |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-06-14 12:01 | ✅ | 2026-06-14 12:01 · 60 ev |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-06-14 11:32 | ✅ | 2026-06-14 11:32 · 80 ev |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-06-14 11:27 | ✅ | 2026-06-14 11:27 · 10 ev |
 | Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-06-14 11:27 | ✅ | 2026-06-14 11:27 · 12 ev |
@@ -41,7 +41,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Conta Passos<!--conta_passos--> | ✅ | `contapassos.com.br` | RSC payload da home (Next.js) | 2026-06-14 11:28 | ✅ | 2026-06-14 11:28 · 5 ev |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-06-14 11:29 | ⚠️ 0 eventos (2/3) | 2026-06-13 11:12 · 58 ev |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-06-14 12:03 | ❌ 0 eventos | 2026-06-13 11:12 · 58 ev |
 | Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-06-14 11:27 | ❌ 1/3 eventos sem distâncias | 2026-06-12 12:14 · 3 ev |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-06-14 11:27 | ✅ | 2026-06-14 11:27 · 6 ev |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-06-14 11:26 | ✅ | 2026-06-14 11:26 · 1 ev |

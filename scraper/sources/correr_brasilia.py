@@ -506,6 +506,15 @@ _INTERVAL_RE = re.compile(
     re.IGNORECASE,
 )
 
+# Start times ("6h25", "06:25", "às 6h") — a clock value, never a distance. The
+# minutes of a start time otherwise leak into the shared-suffix matcher as a
+# phantom distance ("...às 6h25 e 3km..." → 25 km). Strip before extraction.
+_TIME_OF_DAY_RE = re.compile(
+    r"\b\d{1,2}\s*[hH]\s*\d{2}\b"
+    r"|\b\d{1,2}\s*:\s*\d{2}\b"
+    r"|\b\d{1,2}\s*[hH](?![a-zA-Z0-9])",
+)
+
 
 def _extract_distances(desc: str) -> list[Distancia]:
     """Extract race distances from the event's dedicated distance enumeration.
@@ -524,6 +533,7 @@ def _extract_distances(desc: str) -> list[Distancia]:
     Numeric values are canonical-snapped so 42 / 42,2 / 42.195 km collapse to a
     single distance (likewise 21 / 21,1 / 21.097).
     """
+    desc = _TIME_OF_DAY_RE.sub(" ", desc)   # start times ("6h25") ≠ distances
     desc = _INTERVAL_RE.sub(" ", desc)
 
     raw: list[float] = []

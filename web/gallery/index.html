@@ -292,27 +292,41 @@
       if(!introPlayed){ introPlayed=true; setupReveal(); }
     }
 
-    // Per-element entrance config, keyed off the element's class. Within a batch
-    // entering together (e.g. the initial "today" view) the rank gives a premium
-    // cascade: rail → year → months → dots → connectors → card.
+    // Per-element entrance config, keyed off the element's class. The `rank`
+    // gives a subtle within-position layering (rail under year under card); the
+    // primary cascade is horizontal (past → present), handled in onReveal().
     function revealConfig(el){
       var cl=el.classList;
-      if(cl.contains("rail"))  return {rank:0, dur:560, ease:OUT,  origin:"left center", kf:[{transform:"scaleX(0)"},{transform:"scaleX(1)"}]};
-      if(cl.contains("ynode")||cl.contains("gnode")||cl.contains("tnode")) return {rank:1, dur:440, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
-      if(cl.contains("ylabel")) return {rank:1, dur:460, ease:OUT, kf:[{opacity:0,transform:"translateY(9px)"},{opacity:1,transform:"translateY(0)"}]};
-      if(cl.contains("gylab")||cl.contains("tlab")) return {rank:1, dur:460, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(9px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
-      if(cl.contains("mtick")) return {rank:2, dur:300, ease:OUT, origin:"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
-      if(cl.contains("mlab"))  return {rank:2, dur:320, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(5px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
-      if(cl.contains("enode")) return {rank:3, dur:440, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
-      if(cl.contains("conn"))  return {rank:4, dur:340, ease:OUT, origin:cl.contains("above")?"center bottom":"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
-      if(cl.contains("card")){ var dy=cl.contains("above")?-18:18; return {rank:5, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateY("+dy+"px) scale(.97)"},{opacity:1,transform:"translateY(0) scale(1)"}]}; }
-      return {rank:0, dur:300, ease:OUT, kf:[{opacity:0},{opacity:1}]};
+      if(cl.contains("rail"))  return {rank:0, dur:680, ease:OUT,  origin:"left center", kf:[{transform:"scaleX(0)"},{transform:"scaleX(1)"}]};
+      if(cl.contains("ynode")||cl.contains("gnode")||cl.contains("tnode")) return {rank:1, dur:500, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
+      if(cl.contains("ylabel")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateY(12px)"},{opacity:1,transform:"translateY(0)"}]};
+      if(cl.contains("gylab")||cl.contains("tlab")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(12px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
+      if(cl.contains("mtick")) return {rank:2, dur:360, ease:OUT, origin:"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
+      if(cl.contains("mlab"))  return {rank:2, dur:380, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(7px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
+      if(cl.contains("enode")) return {rank:3, dur:500, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
+      if(cl.contains("conn"))  return {rank:4, dur:420, ease:OUT, origin:cl.contains("above")?"center bottom":"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
+      if(cl.contains("card")){ var dy=cl.contains("above")?-26:26; return {rank:5, dur:640, ease:OUT, kf:[{opacity:0,transform:"translateY("+dy+"px) scale(.94)"},{opacity:1,transform:"translateY(0) scale(1)"}]}; }
+      return {rank:0, dur:340, ease:OUT, kf:[{opacity:0},{opacity:1}]};
+    }
+
+    var SWEEP=820; // ms a left→right reveal sweep takes across the viewport width
+    function onReveal(el, delay){
+      var c=revealConfig(el);
+      if(c.origin) el.style.transformOrigin=c.origin;
+      el.classList.remove("rv");
+      el.animate(c.kf, {duration:c.dur, delay:delay + c.rank*22, easing:c.ease, fill:"both"});
     }
 
     var _io=null;
-    // Hides every timeline element, then reveals each (once) when it first enters
-    // the scroller's viewport. No timed sequence — the animation is driven by what
-    // is on screen, so it plays as the timeline is exhibited from today onward.
+    // Hides every timeline element, then reveals each (once) the first time it
+    // enters the scroller's viewport. The animation is driven by what is on
+    // screen, so it plays as the timeline is exhibited (starting at today). The
+    // reveal delay scales with the element's horizontal position in the viewport
+    // (past → present, left → right) for a clean directional draw whose duration
+    // is independent of how many elements are on screen — and so elements that
+    // scroll in at the left edge (drifting back through time) reveal at once.
+    // Observation is deferred past the first paint so the entrance is visibly
+    // *seen* rather than finishing during page load.
     function setupReveal(){
       var track=document.getElementById("track");
       var sel=".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab,.enode,.conn,.card";
@@ -322,16 +336,21 @@
       for(var i=0;i<els.length;i++) els[i].classList.add("rv");
       if(_io) _io.disconnect();
       _io=new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          if(!e.isIntersecting) return;
-          var el=e.target, c=revealConfig(el);
-          if(c.origin) el.style.transformOrigin=c.origin;
-          el.classList.remove("rv");
-          el.animate(c.kf, {duration:c.dur, delay:c.rank*70, easing:c.ease, fill:"both"});
-          _io.unobserve(el); // once only
+        var vis=entries.filter(function(e){return e.isIntersecting;});
+        if(!vis.length) return;
+        var sr=scroller.getBoundingClientRect(), W=sr.width||1;
+        vis.forEach(function(e){
+          var f=(e.boundingClientRect.left - sr.left)/W; // 0 at left edge → 1 at right
+          f=f<0?0:(f>1?1:f);
+          onReveal(e.target, f*SWEEP);
+          _io.unobserve(e.target);
         });
-      }, {root:scroller, rootMargin:"0px 120px 0px 120px", threshold:0.01});
-      for(var j=0;j<els.length;j++) _io.observe(els[j]);
+      }, {root:scroller, rootMargin:"0px 60px 0px 60px", threshold:0.01});
+      // Defer observation by two frames so the today scroll has applied and the
+      // page has painted; the opening period then visibly draws in.
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){
+        for(var j=0;j<els.length;j++) _io.observe(els[j]);
+      }); });
     }
 
     // --- Timeline motion -----------------------------------------------------
@@ -398,8 +417,8 @@
       if(first){
         firstDrawn=true;
         scroller.scrollLeft=endPos; pos=endPos; dir=-1;
-        // Brief hold on "today", then let it drift back through time.
-        setTimeout(function(){ auto=true; }, 1300);
+        // Hold on "today" while the opening period draws in, then drift back.
+        setTimeout(function(){ auto=true; }, 1700);
       } else {
         scroller.scrollLeft=sl; pos=sl;
       }

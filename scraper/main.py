@@ -1269,4 +1269,20 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except BaseException:
+        import traceback
+        traceback.print_exc()
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(1)
+    # Hard-exit instead of returning normally. The scraping/recheck/image phases
+    # run in thread pools; if a source stalled in a call without a hard timeout
+    # (e.g. a Playwright navigation), its non-daemon worker thread stays alive and
+    # the interpreter's at-exit join would block on it until the CI job times out
+    # — even though all data is already scraped and saved. os._exit skips that
+    # join. (Phase budgets bound the work; this bounds the shutdown.)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(0)

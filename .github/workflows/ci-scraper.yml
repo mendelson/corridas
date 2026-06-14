@@ -185,6 +185,10 @@ jobs:
       - name: Run scraper
         env:
           SCRAPER_SOURCES: ${{ steps.detect.outputs.sources }}
+          # Unbuffered so the streamed log reflects real progress (block-buffered
+          # stdout into `tee` otherwise loses everything after the last flush when
+          # a job is killed, hiding where time actually went).
+          PYTHONUNBUFFERED: "1"
           # `validate` only needs to prove the pipeline runs end-to-end and the
           # data tests pass — it does NOT need a full cold catch-up. Tight per-run
           # budgets keep a cold validate comfortably under the job timeout (the

@@ -97,23 +97,36 @@
       de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
       fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
     };
-    // Language has no per-language URL on the gallery; it is selected via a
-    // shareable ?lang= query param, falling back to the browser language.
-    var _urlLang=null; try{_urlLang=new URLSearchParams(location.search).get("lang");}catch(e){}
-    var lang=(_urlLang||navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
+    // The gallery has a single URL and never navigates to change language —
+    // the switch happens in place. The choice falls back to the browser
+    // language and is remembered in localStorage (no URL change, no reload).
+    var STORE_KEY="gallery_lang";
+    var _saved=null; try{_saved=localStorage.getItem(STORE_KEY);}catch(e){}
+    var lang=(_saved||navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;
-    document.documentElement.lang=lang;
-    document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])+" — Mateus Mendelson";
-    document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
-    document.getElementById("hint").textContent=T.hint;
+    var mShort=[];
+    function buildMonths(){ for(var i=0;i<12;i++){ mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase(); } }
 
-    // Header navigation: calendar (back to the main worldwide calendar in this
-    // language), apps (Garmin/watch apps), and the language switcher.
-    (function wireNav(){
-      var navCal=document.getElementById("navCal");
-      navCal.setAttribute("href","/"+lang);
+    // Applies a language in place: updates every piece of chrome text and
+    // re-renders the timeline (without replaying the intro). No URL change.
+    function applyLang(nl){
+      if(!STR[nl]) nl="en";
+      lang=nl; T=STR[lang]; LOC=T.loc;
+      try{localStorage.setItem(STORE_KEY, lang);}catch(e){}
+      buildMonths();
+      document.documentElement.lang=lang;
+      document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])+" — Mateus Mendelson";
+      document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
+      document.getElementById("hint").textContent=T.hint;
+      document.getElementById("navCal").setAttribute("href","/"+lang);
       document.getElementById("navCalLbl").textContent=T.cal;
       document.getElementById("navLangLbl").textContent=lang.toUpperCase();
+      draw();
+    }
+
+    // Header navigation: calendar (back to the main worldwide calendar in this
+    // language), apps (Garmin/watch apps), and the in-place language switcher.
+    (function wireNav(){
       var navLang=document.getElementById("navLang");
       var LABELS={pt:"Português",en:"English",es:"Español",de:"Deutsch",fr:"Français"};
       var dd=null;
@@ -127,10 +140,7 @@
         order.forEach(function(code){
           var b=document.createElement("button");
           b.type="button"; b.className="lang-opt"+(code===lang?" active":""); b.textContent=LABELS[code];
-          b.addEventListener("click",function(){
-            close();
-            if(code!==lang){ var u=new URL(location.href); u.searchParams.set("lang",code); location.href=u.toString(); }
-          });
+          b.addEventListener("click",function(){ close(); if(code!==lang) applyLang(code); });
           dd.appendChild(b);
         });
         document.body.appendChild(dd);
@@ -141,6 +151,9 @@
         setTimeout(function(){ document.addEventListener("click",close,{once:true}); },0);
       });
     })();
+
+    // Set the initial language chrome now; draw() no-ops until data has loaded.
+    applyLang(lang);
 
     var BASE_YW=384, GW=58, CARDW=300, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
     function clamp(v,lo,hi){return v<lo?lo:(v>hi?hi:v);}
@@ -159,7 +172,6 @@
       return TIER[type]||TIER.other;
     }
     function honorRank(t){return t==="marathon"?0:t==="half"?1:t==="ten"?2:3;}
-    var mShort=[]; for(var i=0;i<12;i++){mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase();}
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
@@ -369,7 +381,14 @@
     // (web/locations/{ISO2}.json) for each country present, so state/country
     // names come from one source of truth.
     var _data=null;
-    function draw(){ if(_data) render(_data.races,_data.loc,_data.paises); }
+    function draw(){
+      if(!_data) return;
+      // Preserve scroll across re-renders (language switch / resize) so the view
+      // doesn't jump back to the start. On the first render it's 0 anyway.
+      var sl=scroller?scroller.scrollLeft:0;
+      render(_data.races,_data.loc,_data.paises);
+      if(scroller){ scroller.scrollLeft=sl; pos=sl; }
+    }
     var _rz=null;
     window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });
 

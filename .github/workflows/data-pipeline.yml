@@ -20,9 +20,12 @@ jobs:
   scrape:
     runs-on: ubuntu-latest
     # Hard ceiling so a hung source/Playwright/geocode fails fast instead of
-    # riding GitHub's 6h default. A healthy full scrape fits well within this
-    # once the Nominatim per-run budget bounds the geocoding phase.
-    timeout-minutes: 75
+    # riding GitHub's 6h default. The reconcile link-recheck, geocoding and
+    # image-enrichment phases are each wall-clock bounded in scraper/main.py, so
+    # a healthy steady-state run finishes in a fraction of this. The headroom
+    # (120) covers a cold catch-up run after data has gone stale, when every
+    # per-run budget is hit back to back.
+    timeout-minutes: 120
 
     steps:
       - uses: actions/checkout@v4
@@ -39,6 +42,8 @@ jobs:
           playwright install chromium --with-deps
 
       - name: Run scraper
+        env:
+          PYTHONUNBUFFERED: "1"
         run: python -m scraper.main 2>&1 | tee scraper.log
 
       - name: Upload scraper log

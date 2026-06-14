@@ -611,10 +611,15 @@ def _enrich_images(corridas: list[Corrida]) -> None:
                 return c, img
         return c, None
 
+    # Optional, best-effort enrichment — bounded by the same wall-clock budget as
+    # the reconcile recheck so a large backlog of image-less events (or a few
+    # hung fetches) can't pin the runner. Images not found before the deadline
+    # are simply retried next run; a missing image never blocks shipping data.
     found = 0
-    with ThreadPoolExecutor(max_workers=16) as ex:
-        futures = {ex.submit(_try_fetch, c): c for c in missing}
-        for fut in as_completed(futures):
+    ex = ThreadPoolExecutor(max_workers=16)
+    futures = {ex.submit(_try_fetch, c): c for c in missing}
+    try:
+        for fut in as_completed(futures, timeout=_RECHECK_BUDGET_S):
             try:
                 c, img = fut.result()
                 if img:
@@ -622,6 +627,10 @@ def _enrich_images(corridas: list[Corrida]) -> None:
                     found += 1
             except Exception:
                 pass
+    except TimeoutError:
+        print(f"[main] limite de {_RECHECK_BUDGET_S}s para busca de imagens atingido — "
+              f"restantes adiadas para a próxima execução")
+    ex.shutdown(wait=False, cancel_futures=True)
 
     print(f"[main] {found}/{len(missing)} imagens encontradas")
 
@@ -635,6 +644,20 @@ def _find_match(incoming: Corrida, estado_anterior: dict[str, Corrida]) -> Corri
         if are_duplicates(incoming, existing):
             return existing
     return None
+
+
+# Wall-clock budget for the unmatched-event link-recheck phase in reconcile().
+# Cache/network behaviour is variable, so a time bound is more robust than a
+# count. Generous enough that a healthy run (few unmatched events) finishes well
+# inside it; small enough that a pathological run (a high-volume source returning
+# nothing, dumping its whole catalogue into the recheck) can't ride the CI
+# timeout. Override with RECHECK_BUDGET_S. Default 900s = 15 min.
+_RECHECK_BUDGET_S: float = float(os.environ.get("RECHECK_BUDGET_S", "900"))
+
+# Wall-clock budget for the whole scraping phase (run_all_scrapers). A healthy
+# full run drains in ~15 min; this bounds a single hung source from pinning the
+# executor for the entire CI job. Override with SCRAPE_BUDGET_S. Default 1800s.
+_SCRAPE_BUDGET_S: float = float(os.environ.get("SCRAPE_BUDGET_S", "1800"))
 
 
 def reconcile(
@@ -690,29 +713,67 @@ def reconcile(
             continue
         unmatched_future.append(existing)
 
-    # Check inscription links in parallel for unmatched future events
+    # Check inscription links in parallel for unmatched future events.
+    #
+    # This rescues events a source merely failed to return this run (a transient
+    # blip must not drop a still-live race). But each recheck is a network call,
+    # and when a high-volume source returns little or nothing for a run its
+    # entire catalogue lands here at once — tens of thousands of checks. Left
+    # unbounded the executor runs for over an hour, overflowing the CI timeout
+    # and stalling the whole pipeline (the recheck phase, not scraping, was the
+    # cause of the data-pipeline/validate timeouts).
+    #
+    # So the phase is wall-clock bounded, mirroring the Nominatim per-run budget
+    # in geo.py: events not rechecked before the deadline are kept untouched
+    # (miss_count unchanged — they were never actually checked) and revisited
+    # next run, instead of pinning the runner. Only events whose recheck really
+    # ran and failed advance toward the miss_count drop threshold.
     if unmatched_future:
-        print(f"[main] verificando links de {len(unmatched_future)} evento(s) não encontrado(s) no scrape...")
-        with ThreadPoolExecutor(max_workers=16) as executor:
-            futures = {executor.submit(_check_and_refresh_links, ev): ev for ev in unmatched_future}
-            for future in as_completed(futures):
+        print(f"[main] verificando links de {len(unmatched_future)} evento(s) "
+              f"não encontrado(s) no scrape (limite {_RECHECK_BUDGET_S}s)...")
+        executor = ThreadPoolExecutor(max_workers=16)
+        futures = {executor.submit(_check_and_refresh_links, ev): ev for ev in unmatched_future}
+        done: set = set()
+        rescued = dropped = 0
+        try:
+            for future in as_completed(futures, timeout=_RECHECK_BUDGET_S):
                 existing = futures[future]
+                done.add(future)
                 try:
                     link_valid = future.result()
                 except Exception:
                     link_valid = False
 
                 if link_valid:
-                    print(f"[main] '{existing.titulo}' — link válido, miss_count zerado")
                     existing.miss_count = 0
                     existing.updated_at = now_iso()
                     result.append(existing)
+                    rescued += 1
                 else:
                     existing.miss_count += 1
                     if existing.miss_count < 10:
                         result.append(existing)
                     else:
                         print(f"[main] removendo '{existing.titulo}' (miss_count={existing.miss_count})")
+                        dropped += 1
+        except TimeoutError:
+            pass
+
+        # Events not reached before the deadline: keep as-is and defer to the
+        # next run (do NOT touch miss_count — a missed recheck is not a failure).
+        deferred = 0
+        for future, existing in futures.items():
+            if future not in done:
+                result.append(existing)
+                deferred += 1
+
+        # Don't block on threads still stuck on a slow socket: each carries its
+        # own httpx timeout and dies on its own shortly after. Blocking here
+        # (shutdown(wait=True), the implicit `with`-exit behaviour) is exactly
+        # what let one hung request pin the job until the CI timeout.
+        executor.shutdown(wait=False, cancel_futures=True)
+        print(f"[main] recheck de links: {rescued} resgatado(s), {dropped} removido(s), "
+              f"{deferred} adiado(s) para a próxima execução")
 
     return result
 
@@ -871,15 +932,36 @@ def run_all_scrapers(selective: frozenset[str] = frozenset()) -> list[Corrida]:
     # not a shared rate limit (the Scrapestack 429 that justified keeping this at 8
     # was removed in #208). Raised to 12 to drain the queue behind the few slow
     # Playwright-fallback sources faster.
-    with ThreadPoolExecutor(max_workers=12) as executor:
-        futures = {executor.submit(src.scrape): src.__name__ for src in ordered}
-        for future in as_completed(futures):
+    #
+    # Wall-clock bounded: a single source whose scrape() hangs (a socket read that
+    # never trips httpx's timeout, a Playwright stall, a redirect loop) would
+    # otherwise pin the executor here forever — the `with`-block exit does
+    # shutdown(wait=True) and blocks on the stuck thread until the CI job times
+    # out. (Observed: all sources done ~12 min in, then 100+ min of silence on one
+    # hung source before the kill.) Sources not finished before the deadline are
+    # abandoned this run; their events survive via reconcile (kept as unmatched,
+    # miss_count untouched) and are re-fetched next run. The names are logged so a
+    # repeatedly-hanging source can be diagnosed/disabled.
+    executor = ThreadPoolExecutor(max_workers=12)
+    futures = {executor.submit(src.scrape): src.__name__ for src in ordered}
+    done: set = set()
+    try:
+        for future in as_completed(futures, timeout=_SCRAPE_BUDGET_S):
+            done.add(future)
             source_name = futures[future]
             try:
                 corridas = future.result()
                 all_corridas.extend(corridas)
             except Exception as e:
                 print(f"[main] fonte {source_name} falhou: {e}")
+    except TimeoutError:
+        hung = [futures[f] for f in futures if f not in done]
+        print(f"[main] AVISO: {len(hung)} fonte(s) excederam o limite de "
+              f"{_SCRAPE_BUDGET_S}s e foram abandonadas nesta execução "
+              f"(eventos preservados via reconcile): {', '.join(sorted(hung))}")
+    # Don't block on threads still stuck on a slow socket; each carries its own
+    # httpx timeout and dies on its own shortly after.
+    executor.shutdown(wait=False, cancel_futures=True)
 
     return all_corridas
 
@@ -1189,4 +1271,20 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except BaseException:
+        import traceback
+        traceback.print_exc()
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(1)
+    # Hard-exit instead of returning normally. The scraping/recheck/image phases
+    # run in thread pools; if a source stalled in a call without a hard timeout
+    # (e.g. a Playwright navigation), its non-daemon worker thread stays alive and
+    # the interpreter's at-exit join would block on it until the CI job times out
+    # — even though all data is already scraped and saved. os._exit skips that
+    # join. (Phase budgets bound the work; this bounds the shutdown.)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(0)

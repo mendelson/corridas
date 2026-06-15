@@ -54,7 +54,8 @@
     .cmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
     .cdate { font-size: 10px; letter-spacing: .16em; font-weight: 700; text-transform: uppercase; }
     .ctype { font-size: 10px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
-    .cbadge { display: inline-block; margin-top: 9px; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border: 1px solid transparent; }
+    .cbadges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+    .cbadge { display: inline-flex; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border: 1px solid transparent; }
     .legend { display: flex; gap: 16px; margin-top: 13px; flex-wrap: wrap; }
     .legend .li { display: inline-flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #8b91a0; }
     .legend .dot { width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3px #0f1115; }
@@ -206,7 +207,14 @@
         '<span class="ctype">'+esc((T.type[r.type]||r.type)+" · "+km(r.km)+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
         '<div class="cloc">'+esc(loc||r.city)+'</div>'+
-        ((r.milestone && T.ms && T.ms[r.milestone]) ? '<div><span class="cbadge" style="color:'+c+';background:'+c+'1f;border-color:'+c+'66">'+esc(T.ms[r.milestone])+'</span></div>' : '')+
+        (function(){
+          // Accept a `milestones` array (multiple badges) or a single `milestone` (legacy).
+          var ms = r.milestones || (r.milestone ? [r.milestone] : []);
+          var badges = ms.map(function(m){
+            return (T.ms && T.ms[m]) ? '<span class="cbadge" style="color:'+c+';background:'+c+'1f;border-color:'+c+'66">'+esc(T.ms[m])+'</span>' : '';
+          }).join('');
+          return badges ? '<div class="cbadges">'+badges+'</div>' : '';
+        })()+
         '<div class="cbtns">'+stravaBtn(r.strava)+deviceBtn(r.device,r.deviceUrl)+'</div></div>';
     }
 

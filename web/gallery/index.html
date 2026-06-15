@@ -37,7 +37,13 @@
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
-    .scroller { overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; transition: transform .7s cubic-bezier(.22,.61,.36,1); }
+    .scroller { position: relative; z-index: 1; overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; transition: transform .7s cubic-bezier(.22,.61,.36,1); }
+    /* Aging shoe: a fixed ambient element that wears as the timeline scrolls
+       toward today and rejuvenates toward the past. Sits behind the timeline
+       cards (z-index 0 < scroller's 1) and never intercepts pointer events. */
+    .shoe-stage { position: fixed; right: clamp(12px,2.5vw,44px); bottom: clamp(10px,2.4vh,30px); width: clamp(150px,21vw,300px); z-index: 0; pointer-events: none; opacity: .9; transition: opacity .8s ease; filter: drop-shadow(0 12px 22px rgba(0,0,0,.45)); }
+    .shoe-stage svg { width: 100%; height: auto; display: block; }
+    body.intro .shoe-stage { opacity: 0; } /* hidden during the cinematic intro */
     .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
     .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 var(--gutter); }
     .sec { position: relative; height: 100%; flex: 0 0 auto; }
@@ -99,7 +105,9 @@
     <div class="legend" id="legend"></div>
   </header>
   <div class="scroller"><div class="track" id="track"></div></div>
+  <div class="shoe-stage" id="shoeStage" aria-hidden="true"></div>
 
+  <script src="shoe-wear.js"></script>
   <script>
   (function () {
     var STR = {
@@ -455,6 +463,19 @@
     // --- Timeline motion -----------------------------------------------------
     var scroller=document.querySelector(".scroller");
 
+    // Aging shoe: wears (progress 0→1) as the timeline scrolls toward today and
+    // rejuvenates toward the past. Progress = scrollLeft / today-offset, eased
+    // for organic motion. Driven from the tick() loop below.
+    var shoeCtl=null, shoeCur=0;
+    try{ if(window.ShoeWear) shoeCtl=window.ShoeWear.mount(document.getElementById("shoeStage")); }catch(e){}
+    function updateShoe(){
+      if(!shoeCtl) return;
+      var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
+      var target=hiP>0 ? clamp(scroller.scrollLeft/hiP, 0, 1) : 0;
+      shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target
+      shoeCtl.setProgress(shoeCur);
+    }
+
     // Auto-advance: the journey starts parked at today (right end) and, after a
     // short beat, drifts back through time; at either end it reverses,
     // ping-ponging in a loop. Auto begins false (set true once positioned at
@@ -492,6 +513,7 @@
       } else {
         pos=scroller.scrollLeft; // stay in sync while paused / under manual control
       }
+      updateShoe();
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);

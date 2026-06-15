@@ -1069,8 +1069,14 @@ const _SELO_ORDER = ['platinum', 'gold', 'elite', 'label', 'major'];
 function populateSelosFilter() {
   const dd = document.getElementById('seloFilterDropdown');
   if (!dd) return;
+  // Availability/visibility is intentionally decoupled from the location
+  // (estado) filter: the selo facet is a global highlight (World Athletics
+  // labels / Majors). Tying it to estado made the wrapper flash — visible at
+  // first paint (estado "todos"), then hidden once geolocation narrowed to a
+  // state with no labelled races. Scope it by período/distância/busca only so
+  // it stays stable; the selected selo still ANDs with the location filter.
   const base = allCorridas.filter(c =>
-    matchesPeriodo(c) && matchesEstado(c) && matchesDistancia(c) && matchesSearch(c)
+    matchesPeriodo(c) && matchesDistancia(c) && matchesSearch(c)
   );
   const available = new Set(base.flatMap(_seloTokens));
 

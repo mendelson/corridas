@@ -41,15 +41,23 @@
     /* Aging shoe: a fixed ambient element that wears as the timeline scrolls
        toward today and rejuvenates toward the past. Sits behind the timeline
        cards (z-index 0 < scroller's 1) and never intercepts pointer events. */
-    .shoe-stage { position: fixed; right: clamp(8px,2vw,28px); bottom: clamp(8px,2vh,22px); width: clamp(100px, min(19vw,32vh), 200px); z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; filter: drop-shadow(0 12px 22px rgba(0,0,0,.45)); }
-    .shoe-stage.shown { opacity: .9; }
+    /* Progress scrubber: the shoe is the thumb of a thin track at the bottom
+       (oldest → today). It rides the track with scroll and wears toward today,
+       doubling as the timeline's scroll-position indicator. */
+    .shoe-track { position: fixed; left: var(--gutter); right: var(--gutter); bottom: clamp(30px,5.5vh,60px); height: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
+    .shoe-track.shown { opacity: 1; }
+    .shoe-track-line { position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: #262c36; }
+    .shoe-lab { position: absolute; top: 10px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
+    .shoe-lab-start { left: 0; }
+    .shoe-lab-end { right: 0; color: #E4572E; }
+    .shoe-stage { position: absolute; left: 0; bottom: 2px; width: clamp(60px, 8vw, 94px); transform: translateX(0); pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.4)); will-change: left, transform; }
     .shoe-stage svg { width: 100%; height: auto; display: block; overflow: visible; }
     /* Gentle idle float: the shoe rises while its ground shadow shrinks/fades. */
-    @keyframes sw-float  { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-9px); } }
+    @keyframes sw-float  { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
     @keyframes sw-shadow { 0%,100%{ transform: scaleX(1); opacity: 1; } 50%{ transform: scaleX(.88); opacity: .62; } }
     @media (prefers-reduced-motion: no-preference) {
-      .shoe-stage .shoe   { animation: sw-float 3.8s ease-in-out infinite; }
-      .shoe-stage .shadow { transform-box: fill-box; transform-origin: center; animation: sw-shadow 3.8s ease-in-out infinite; }
+      .shoe-stage .shoe   { animation: sw-float 3.4s ease-in-out infinite; }
+      .shoe-stage .shadow { transform-box: fill-box; transform-origin: center; animation: sw-shadow 3.4s ease-in-out infinite; }
     }
     .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
     .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 var(--gutter); }
@@ -112,7 +120,12 @@
     <div class="legend" id="legend"></div>
   </header>
   <div class="scroller"><div class="track" id="track"></div></div>
-  <div class="shoe-stage" id="shoeStage" aria-hidden="true"></div>
+  <div class="shoe-track" id="shoeTrack" aria-hidden="true">
+    <span class="shoe-track-line"></span>
+    <span class="shoe-lab shoe-lab-start" id="shoeLabStart"></span>
+    <span class="shoe-lab shoe-lab-end" id="shoeLabEnd"></span>
+    <div class="shoe-stage" id="shoeStage"></div>
+  </div>
 
   <script src="shoe-wear.js"></script>
   <script>
@@ -365,7 +378,7 @@
       _introActive=false;
       document.body.classList.remove("intro");
       scroller.style.transform="translateY(0)"; // glide the timeline back to its resting place
-      if(shoeEl) shoeEl.classList.add("shown"); // ensure the shoe is visible (reduced-motion / error / safety)
+      showShoe(); // ensure the shoe scrubber is visible (reduced-motion / error / safety)
       var hdr=document.querySelector("header");
       if(hdr && animate) hdr.classList.add("chrome-in");
     }
@@ -438,9 +451,9 @@
           setTimeout(res, D1+650);
         });
       }
-      function phase2(){ // zoom overview → oldest — the shoe fades in here, brand-new
-        if(shoeEl) shoeEl.classList.add("shown");
-        if(shoeCtl){ shoeCur=0; shoeCtl.setProgress(0); }
+      function phase2(){ // zoom overview → oldest — the shoe fades in here, brand-new at the start
+        showShoe();
+        shoeCur=0; applyShoe(0);
         return new Promise(function(res){
           var a=track.animate([{transform:overview},{transform:oldest}], {duration:D2, easing:"cubic-bezier(.6,.02,.2,1)", fill:"both"});
           _camAnims.push(a);
@@ -456,7 +469,7 @@
             var e=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; // easeInOutQuad
             var camLeft=e*todayStart;
             track.style.transform=camT(-camLeft,0,1);
-            if(shoeCtl){ shoeCur=e; shoeCtl.setProgress(e); } // age the shoe as the camera flies to today
+            shoeCur=e; applyShoe(e); // walk the shoe along the track + age it as the camera flies to today
             evMeta.forEach(function(m){
               if(!m.done && camLeft >= m.x - clientW*0.82){ m.done=true; _camAnims.push(onReveal(m.el, 0)); }
             });
@@ -477,14 +490,25 @@
     // Aging shoe: wears (progress 0→1) as the timeline scrolls toward today and
     // rejuvenates toward the past. Progress = scrollLeft / today-offset, eased
     // for organic motion. Driven from the tick() loop below.
-    var shoeEl=document.getElementById("shoeStage"), shoeCtl=null, shoeCur=0;
+    var shoeTrackEl=document.getElementById("shoeTrack"), shoeEl=document.getElementById("shoeStage"), shoeCtl=null, shoeCur=0;
     try{ if(window.ShoeWear) shoeCtl=window.ShoeWear.mount(shoeEl); }catch(e){}
+    // A single progress value drives BOTH the thumb's position along the track
+    // and the shoe's wear, so they always move together.
+    function applyShoe(pv){
+      if(!shoeCtl) return;
+      shoeCtl.setProgress(pv);
+      // left:p% + translateX(-p%) keeps the thumb fully inside the track at the
+      // ends (left-aligned at 0, right-aligned at 1, centred in between).
+      shoeEl.style.left = (pv*100) + "%";
+      shoeEl.style.transform = "translateX(" + (-pv*100) + "%)";
+    }
+    function showShoe(){ if(shoeTrackEl) shoeTrackEl.classList.add("shown"); }
     function updateShoe(){
       if(!shoeCtl || _introActive) return; // during the intro the camera drives the shoe
       var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
       var target=hiP>0 ? clamp(scroller.scrollLeft/hiP, 0, 1) : 0;
       shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target
-      shoeCtl.setProgress(shoeCur);
+      applyShoe(shoeCur);
     }
 
     // Auto-advance: the journey starts parked at today (right end) and, after a
@@ -566,6 +590,11 @@
       var sl=scroller?scroller.scrollLeft:0;
       render(_data.races,_data.loc,_data.paises);
       if(!scroller) return;
+      // Scrubber end labels: oldest year on the left, "today" on the right.
+      var _yrs=_data.races.map(function(r){return +String(r.date||"").slice(0,4);}).filter(Boolean);
+      var _ls=document.getElementById("shoeLabStart"), _le=document.getElementById("shoeLabEnd");
+      if(_ls) _ls.textContent = _yrs.length ? Math.min.apply(null,_yrs) : "";
+      if(_le) _le.textContent = T.today;
       endPos=startScroll(); // "today" scroll offset (auto-advance upper bound)
       if(first){
         firstDrawn=true;

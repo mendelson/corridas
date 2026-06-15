@@ -44,13 +44,13 @@
     /* Progress scrubber: the shoe is the thumb of a thin track at the bottom
        (oldest → today). It rides the track with scroll and wears toward today,
        doubling as the timeline's scroll-position indicator. */
-    .shoe-track { position: fixed; left: var(--gutter); right: var(--gutter); bottom: clamp(30px,5.5vh,60px); height: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
+    .shoe-track { position: fixed; left: var(--gutter); right: var(--gutter); bottom: clamp(16px,3.4vh,38px); height: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
     .shoe-track.shown { opacity: 1; }
     .shoe-track-line { position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: #262c36; }
     .shoe-lab { position: absolute; top: 10px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
     .shoe-lab-start { left: 0; }
     .shoe-lab-end { right: 0; color: #E4572E; }
-    .shoe-stage { position: absolute; left: 0; bottom: 2px; width: clamp(60px, 8vw, 94px); transform: translateX(0); pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.4)); will-change: left, transform; }
+    .shoe-stage { position: absolute; left: 0; bottom: 2px; width: clamp(54px, 6vw, 80px); transform: translateX(0); pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.4)); will-change: left, transform; }
     .shoe-stage svg { width: 100%; height: auto; display: block; overflow: visible; }
     /* Gentle idle float: the shoe rises while its ground shadow shrinks/fades. */
     @keyframes sw-float  { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
@@ -95,6 +95,8 @@
     .logo-polar { display: block; height: 13px; width: auto; }
     .gylab { position: absolute; top: 244px; transform: translateX(-50%); font-family: "Spectral", Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; z-index: 1; pointer-events: none; }
     .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; z-index: 1; }
+    /* Discreet yearly-distance info card — low emphasis vs the race cards. */
+    .ykm { position: absolute; z-index: 1; pointer-events: none; white-space: nowrap; font-size: 10px; font-weight: 600; letter-spacing: .02em; color: #6b7280; background: rgba(20,23,29,.72); border: 1px solid #20242c; border-radius: 7px; padding: 2.5px 7px; }
     /* "today" end marker — the timeline concludes here and grows over time */
     .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #0f1115; border: 2px solid #E4572E; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
     .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #E4572E; white-space: nowrap; z-index: 1; pointer-events: none; }
@@ -195,7 +197,10 @@
     // Set the initial language chrome now; draw() no-ops until data has loaded.
     applyLang(lang);
 
-    var BASE_YW=384, GW=58, CARDW=300, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
+    var BASE_YW=384, GW=104, CARDW=300, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
+    // Total distance run per completed year (personal data, like races.json).
+    var YEAR_KM={2021:1845.2,2022:821.4,2023:1267.6,2024:890.1,2025:1261.9};
+    function kmStr(v){ return v.toLocaleString(LOC,{minimumFractionDigits:1,maximumFractionDigits:1})+" km"; }
     var OUT="cubic-bezier(.22,.61,.36,1)", BACK="cubic-bezier(.34,1.45,.5,1)";
     function clamp(v,lo,hi){return v<lo?lo:(v>hi?hi:v);}
     function dp(iso){var p=iso.split("-");return {y:+p[0],m:+p[1]-1,d:+p[2]};}
@@ -297,7 +302,7 @@
         if(c.type==="gap"){
           var gw=c.years.length*GW;
           var gs='<div class="sec" style="width:'+gw+'px"><div class="rail dotted"></div>';
-          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+yy+'</span>'; });
+          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+yy+'</span>'; if(YEAR_KM[yy]) gs+='<span class="ykm" style="left:'+cx+'px;top:262px;transform:translateX(-50%)">'+esc(kmStr(YEAR_KM[yy]))+'</span>'; });
           gs+='</div>'; html+=gs; return;
         }
         var y=c.y, current=c.current;
@@ -317,6 +322,8 @@
           }
         }
         (byYear[y]||[]).forEach(function(x){ var ex=frac(x.p)*yw; var side=(ev%2===0)?"below":"above"; ev++; sec+=cardHTML(x.r,ex,x.p,side,locStr(x.r),yw); });
+        // Discreet year-total at the end (December) of a completed year column.
+        if(!current && YEAR_KM[y]) sec+='<span class="ykm" style="left:'+(yw-6)+'px;top:262px;transform:translateX(-100%)">'+esc(kmStr(YEAR_KM[y]))+'</span>';
         if(current){ sec+='<span class="tnode" style="left:'+(tx-5.5)+'px"></span><span class="tlab" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }
         sec+='</div>'; html+=sec;
       });
@@ -342,6 +349,7 @@
       if(cl.contains("ynode")||cl.contains("gnode")||cl.contains("tnode")) return {rank:1, dur:500, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
       if(cl.contains("ylabel")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateY(12px)"},{opacity:1,transform:"translateY(0)"}]};
       if(cl.contains("gylab")||cl.contains("tlab")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(12px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
+      if(cl.contains("ykm")) return {rank:3, dur:480, ease:OUT, kf:[{opacity:0},{opacity:1}]}; // opacity-only (keeps its inline transform)
       if(cl.contains("mtick")) return {rank:2, dur:360, ease:OUT, origin:"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
       if(cl.contains("mlab"))  return {rank:2, dur:380, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(7px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
       if(cl.contains("enode")) return {rank:3, dur:500, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
@@ -426,7 +434,7 @@
       var extent=todayX+50;                       // oldest → today (ignore empty future)
       var fit=Math.min(1, (clientW-2*M)/extent);  // scale that fits it all on screen
 
-      var lineEls=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab"));
+      var lineEls=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab,.ykm"));
       var evEls=Array.prototype.slice.call(track.querySelectorAll(".enode,.conn,.card"));
       var lineMeta=lineEls.map(function(el){ return {el:el, x:cx(el)}; });
       var evMeta=evEls.map(function(el){ return {el:el, x:cx(el), done:false}; });

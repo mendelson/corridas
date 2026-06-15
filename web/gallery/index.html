@@ -353,7 +353,7 @@
       scroller.style.overflowX=prevOverflow||"";
       scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
       finishChrome(true); // intro is over → fade the rest of the page in
-      setTimeout(function(){ auto=true; }, 500);
+      setTimeout(function(){ if(!held) auto=true; }, 500);
     }
 
     function cameraIntro(){
@@ -447,12 +447,18 @@
     // short beat, drifts back through time; at either end it reverses,
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 5s.
-    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null;
-    function pauseAuto(){
-      auto=false;
+    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false;
+    // Resume the drift 5s after the user stops interacting (never while held).
+    function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer=setTimeout(function(){ auto=true; }, 5000);
+      resumeTimer=setTimeout(function(){ if(!held) auto=true; }, 5000);
     }
+    // Discrete interactions (wheel / keyboard): pause and start the 5s countdown.
+    function pauseAuto(){ auto=false; scheduleResume(); }
+    // While a pointer/touch is held the timeline stays put and no countdown runs;
+    // the 5s resume timer only starts once contact ends (holdEnd).
+    function holdStart(){ held=true; auto=false; if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; } }
+    function holdEnd(){ held=false; scheduleResume(); }
     function maxScroll(){ return scroller.scrollWidth - scroller.clientWidth; }
     function tick(ts){
       if(lastTs==null) lastTs=ts;
@@ -485,9 +491,16 @@
       pauseAuto();
       e.preventDefault();
     }, {passive:false});
-    ["pointerdown","mousedown","touchstart","keydown"].forEach(function(evt){
-      window.addEventListener(evt, function(){ if(!_introActive) pauseAuto(); }, {passive:true});
+    // Holding the timeline (pointer/touch down) freezes the drift with no
+    // countdown; the 5s resume timer starts only when contact ends.
+    ["pointerdown","mousedown","touchstart"].forEach(function(evt){
+      window.addEventListener(evt, function(){ if(!_introActive) holdStart(); }, {passive:true});
     });
+    ["pointerup","pointercancel","mouseup","touchend","touchcancel"].forEach(function(evt){
+      window.addEventListener(evt, function(){ if(!_introActive) holdEnd(); }, {passive:true});
+    });
+    // Keyboard navigation is discrete, not a hold: pause + 5s countdown.
+    window.addEventListener("keydown", function(){ if(!_introActive) pauseAuto(); }, {passive:true});
     // Block touch-drag scrolling for the duration of the intro.
     window.addEventListener("touchmove", function(e){ if(_introActive) e.preventDefault(); }, {passive:false});
 

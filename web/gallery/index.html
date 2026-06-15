@@ -37,27 +37,31 @@
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
-    .scroller { position: relative; z-index: 1; overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; transition: transform .7s cubic-bezier(.22,.61,.36,1); }
-    /* Aging shoe: a fixed ambient element that wears as the timeline scrolls
-       toward today and rejuvenates toward the past. Sits behind the timeline
-       cards (z-index 0 < scroller's 1) and never intercepts pointer events. */
-    /* Progress scrubber: the shoe is the thumb of a thin track at the bottom
-       (oldest → today). It rides the track with scroll and wears toward today,
-       doubling as the timeline's scroll-position indicator. */
-    .shoe-track { position: fixed; left: var(--gutter); right: var(--gutter); bottom: clamp(16px,3.4vh,38px); height: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
+    /* The stage wraps the timeline + the shoe scrubber so the scrubber is always
+       in-flow BELOW the cards (never overlapping them). The cinematic intro
+       centres the whole stage in the viewport via this transform. */
+    .stage { transition: transform .7s cubic-bezier(.22,.61,.36,1); }
+    .scroller { position: relative; z-index: 1; overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; }
+    /* Progress scrubber: the shoe is the thumb of a thin track below the
+       timeline (oldest → today). It rides the track with scroll and wears
+       toward today, doubling as the timeline's scroll-position indicator. */
+    .shoe-track { position: relative; margin: 14px var(--gutter) 0; height: 58px; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
     .shoe-track.shown { opacity: 1; }
-    .shoe-track-line { position: absolute; left: 0; right: 0; top: 0; height: 1.5px; background: #262c36; }
-    .shoe-lab { position: absolute; top: 10px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
+    .shoe-track-line { position: absolute; left: 0; right: 0; top: 30px; height: 1.5px; background: #262c36; }
+    .shoe-lab { position: absolute; top: 38px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
     .shoe-lab-start { left: 0; }
     .shoe-lab-end { right: 0; color: #E4572E; }
-    .shoe-stage { position: absolute; left: 0; bottom: 2px; width: clamp(54px, 6vw, 80px); transform: translateX(0); pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.4)); will-change: left, transform; }
-    .shoe-stage svg { width: 100%; height: auto; display: block; overflow: visible; }
-    /* Gentle idle float: the shoe rises while its ground shadow shrinks/fades. */
-    @keyframes sw-float  { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-7px); } }
-    @keyframes sw-shadow { 0%,100%{ transform: scaleX(1); opacity: 1; } 50%{ transform: scaleX(.88); opacity: .62; } }
+    .shoe-stage { position: absolute; left: 0; bottom: 28px; width: clamp(54px, 6vw, 80px); transform: translateX(0); pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.4)); will-change: left, transform; }
+    /* The shoe faces the scroll direction: default toe-right; flipped toe-left
+       when scrolling toward the past, with a smooth turn. */
+    .shoe-stage svg { width: 100%; height: auto; display: block; overflow: visible; transform-origin: 50% 50%; transition: transform .4s ease; }
+    .shoe-stage.face-left svg { transform: scaleX(-1); }
+    /* Idle float: the shoe rises (in SVG user units) while its ground shadow shrinks/fades. */
+    @keyframes sw-float  { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-30px); } }
+    @keyframes sw-shadow { 0%,100%{ transform: scaleX(1); opacity: 1; } 50%{ transform: scaleX(.82); opacity: .5; } }
     @media (prefers-reduced-motion: no-preference) {
-      .shoe-stage .shoe   { animation: sw-float 3.4s ease-in-out infinite; }
-      .shoe-stage .shadow { transform-box: fill-box; transform-origin: center; animation: sw-shadow 3.4s ease-in-out infinite; }
+      .shoe-stage .shoe   { animation: sw-float 3.2s ease-in-out infinite; }
+      .shoe-stage .shadow { transform-box: fill-box; transform-origin: center; animation: sw-shadow 3.2s ease-in-out infinite; }
     }
     .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
     .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 var(--gutter); }
@@ -121,12 +125,14 @@
     <div class="hint" id="hint"></div>
     <div class="legend" id="legend"></div>
   </header>
-  <div class="scroller"><div class="track" id="track"></div></div>
-  <div class="shoe-track" id="shoeTrack" aria-hidden="true">
-    <span class="shoe-track-line"></span>
-    <span class="shoe-lab shoe-lab-start" id="shoeLabStart"></span>
-    <span class="shoe-lab shoe-lab-end" id="shoeLabEnd"></span>
-    <div class="shoe-stage" id="shoeStage"></div>
+  <div class="stage" id="stage">
+    <div class="scroller"><div class="track" id="track"></div></div>
+    <div class="shoe-track" id="shoeTrack" aria-hidden="true">
+      <span class="shoe-track-line"></span>
+      <span class="shoe-lab shoe-lab-start" id="shoeLabStart"></span>
+      <span class="shoe-lab shoe-lab-end" id="shoeLabEnd"></span>
+      <div class="shoe-stage" id="shoeStage"></div>
+    </div>
   </div>
 
   <script src="shoe-wear.js"></script>
@@ -385,7 +391,7 @@
     function finishChrome(animate){
       _introActive=false;
       document.body.classList.remove("intro");
-      scroller.style.transform="translateY(0)"; // glide the timeline back to its resting place
+      stageEl.style.transform="translateY(0)"; // glide the stage back to its resting place
       showShoe(); // ensure the shoe scrubber is visible (reduced-motion / error / safety)
       var hdr=document.querySelector("header");
       if(hdr && animate) hdr.classList.add("chrome-in");
@@ -418,13 +424,13 @@
       // Centre the timeline vertically in the viewport for the duration of the
       // intro (applied instantly, no transition); finishChrome() then glides it
       // back to its resting place below the header as the chrome fades in.
-      var sH=scroller.offsetHeight||track.offsetHeight||470;
-      var natTop=scroller.getBoundingClientRect().top; // resting top (header space reserved)
+      var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
+      var natTop=stageEl.getBoundingClientRect().top; // resting top (header space reserved)
       var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
-      scroller.style.transition="none";
-      scroller.style.transform="translateY("+centerY+"px)";
-      void scroller.offsetHeight;   // commit the centred position without animating into it
-      scroller.style.transition=""; // restore the CSS transition for the release glide
+      stageEl.style.transition="none";
+      stageEl.style.transform="translateY("+centerY+"px)";
+      void stageEl.offsetHeight;    // commit the centred position without animating into it
+      stageEl.style.transition="";  // restore the CSS transition for the release glide
       var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
       scroller.scrollLeft=0;
       var trk=track.getBoundingClientRect();
@@ -494,11 +500,14 @@
 
     // --- Timeline motion -----------------------------------------------------
     var scroller=document.querySelector(".scroller");
+    var stageEl=document.getElementById("stage");
 
     // Aging shoe: wears (progress 0→1) as the timeline scrolls toward today and
     // rejuvenates toward the past. Progress = scrollLeft / today-offset, eased
     // for organic motion. Driven from the tick() loop below.
     var shoeTrackEl=document.getElementById("shoeTrack"), shoeEl=document.getElementById("shoeStage"), shoeCtl=null, shoeCur=0;
+    var shoeFace=1, _lastSL=null; // facing: 1 = toe-right (toward today), -1 = toe-left (toward past)
+    function setFace(f){ if(f!==shoeFace){ shoeFace=f; if(shoeEl) shoeEl.classList.toggle("face-left", f===-1); } }
     try{ if(window.ShoeWear) shoeCtl=window.ShoeWear.mount(shoeEl); }catch(e){}
     // A single progress value drives BOTH the thumb's position along the track
     // and the shoe's wear, so they always move together.
@@ -513,8 +522,12 @@
     function showShoe(){ if(shoeTrackEl) shoeTrackEl.classList.add("shown"); }
     function updateShoe(){
       if(!shoeCtl || _introActive) return; // during the intro the camera drives the shoe
+      var sl=scroller.scrollLeft;
+      // Face the scroll direction (deadband avoids jitter); smooth turn via CSS.
+      if(_lastSL!=null){ var d=sl-_lastSL; if(d>0.5) setFace(1); else if(d<-0.5) setFace(-1); }
+      _lastSL=sl;
       var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
-      var target=hiP>0 ? clamp(scroller.scrollLeft/hiP, 0, 1) : 0;
+      var target=hiP>0 ? clamp(sl/hiP, 0, 1) : 0;
       shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target
       applyShoe(shoeCur);
     }

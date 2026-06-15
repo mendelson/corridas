@@ -12,7 +12,11 @@
     *, *::before, *::after { box-sizing: border-box; }
     html, body { margin: 0; }
     body { background: #0f1115; color: #fff; font-family: "Archivo", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-    header { padding: 38px 28px 16px; max-width: 1100px; margin: 0 auto; }
+    /* Shared horizontal gutter so the header and the full-bleed timeline always
+       line up; scales with the viewport so it never glues to the edges on
+       desktop nor looks like a narrow, centred mobile block. */
+    :root { --gutter: clamp(18px, 3vw, 56px); }
+    header { padding: 38px var(--gutter) 16px; }
     header.chrome-in { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
     /* During the cinematic intro everything outside the timeline is hidden and
        interaction is locked; the chrome fades in only once the intro concludes. */
@@ -35,7 +39,7 @@
     .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
     .scroller { overflow-x: auto; overflow-y: hidden; border-top: 1px solid #20242c; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; transition: transform .7s cubic-bezier(.22,.61,.36,1); }
     .scroller::-webkit-scrollbar { width: 0; height: 0; display: none; }
-    .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 28px; }
+    .track { display: flex; align-items: flex-start; height: 470px; width: max-content; padding: 0 var(--gutter); }
     .sec { position: relative; height: 100%; flex: 0 0 auto; }
     .track .rv { opacity: 0; } /* hidden until revealed (animation plays once) */
     .rail { position: absolute; left: 0; right: 0; top: 235px; height: 1.5px; background: #2c323d; z-index: 0; }
@@ -74,7 +78,7 @@
     .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #0f1115; border: 2px solid #E4572E; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
     .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #E4572E; white-space: nowrap; z-index: 1; pointer-events: none; }
     @media (max-width: 560px) {
-      header { padding: 26px 18px 14px; }
+      header { padding-top: 26px; padding-bottom: 14px; } /* gutter via --gutter */
       .gbtn-lbl { display: none; }
       .gbtn { padding: 0 9px; }
     }

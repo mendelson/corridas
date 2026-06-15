@@ -455,7 +455,7 @@
     // short beat, drifts back through time; at either end it reverses,
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 5s.
-    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false;
+    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0;
     // Resume the drift 5s after the user stops interacting (never while held).
     function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
@@ -476,11 +476,15 @@
       // space after today); manual scrolling can still go all the way to max.
       var hi=(endPos!=null && endPos<max) ? endPos : max;
       if(auto && hi>1){
-        var sp=Math.max(40, hi/20); // full traverse ~20s regardless of length
-        pos += dir*sp*dt;
-        if(pos>=hi){ pos=hi; dir=-1; }
-        else if(pos<=0){ pos=0; dir=1; }
-        scroller.scrollLeft=pos;
+        if(ts < reverseUntil){
+          // hold for half a second at each end before reversing direction
+        } else {
+          var sp=Math.max(40, hi/20); // full traverse ~20s regardless of length
+          pos += dir*sp*dt;
+          if(pos>=hi){ pos=hi; dir=-1; reverseUntil=ts+500; }
+          else if(pos<=0){ pos=0; dir=1; reverseUntil=ts+500; }
+          scroller.scrollLeft=pos;
+        }
       } else {
         pos=scroller.scrollLeft; // stay in sync while paused / under manual control
       }

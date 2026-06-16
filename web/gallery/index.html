@@ -92,7 +92,7 @@
     .conn { position: absolute; width: 1.5px; background: #2c323d; z-index: 1; }
     .conn.below { top: 235px; height: 36px; }
     .conn.above { top: 199px; height: 36px; }
-    .card { position: absolute; left: 16px; right: 16px; background: #181b21; border: 1px solid #262b34; border-radius: 14px; padding: 15px 16px 16px; z-index: 3; }
+    .card { position: absolute; left: 16px; right: 16px; background: #181b21; border: 1px solid #262b34; border-radius: 13px; padding: 13px 15px 14px; z-index: 3; }
     .card.below { top: 271px; }
     .card.above { bottom: 271px; }
     .cmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
@@ -100,15 +100,18 @@
     .ctype { font-size: 10px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
     .cbadges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
     .cbadge { display: inline-flex; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border: 1px solid transparent; }
-    .cname { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 17px; line-height: 1.18; margin: 6px 0 0; letter-spacing: -.005em; color: #f3efe7; }
+    .cname { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 16px; line-height: 1.18; margin: 6px 0 0; letter-spacing: -.005em; color: #f3efe7; }
     .cloc { font-size: 12px; color: #8b91a0; margin-top: 3px; }
-    .cbtns { display: flex; gap: 10px; margin-top: 14px; }
-    .btn { flex: 1 1 0; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #2f3540; border-radius: 10px; background: #1c2129; text-decoration: none; transition: border-color .15s, background .15s; }
+    .cbtns { display: flex; gap: 10px; margin-top: 12px; }
+    .btn { flex: 1 1 0; height: 38px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid #2f3540; border-radius: 9px; background: #1c2129; text-decoration: none; transition: border-color .15s, background .15s; }
     .btn:hover { border-color: #465061; background: #20262f; }
     .slogo { display: inline-flex; align-items: center; gap: 5px; } .slogo svg { display: block; }
-    .sword { font-weight: 700; font-size: 13px; letter-spacing: .01em; color: #FC4C02; }
-    .logo-garmin { display: block; height: 14px; width: auto; fill: #1ca0e3; }
-    .logo-polar { display: block; height: 13px; width: auto; }
+    .sword { font-weight: 700; font-size: 12px; letter-spacing: .01em; color: #FC4C02; }
+    /* Standardise the platform marks to one bounded box so none dominates the
+       button. Garmin's condensed wordmark fills the height; Polar's wide one is
+       width-capped (it was ~6:1, so it sprawled at a matched height). */
+    .logo-garmin { display: block; height: 13px; width: auto; max-width: 58px; fill: #1ca0e3; }
+    .logo-polar { display: block; height: auto; width: auto; max-height: 13px; max-width: 54px; }
     .gylab { position: absolute; top: 244px; transform: translateX(-50%); font-family: "Spectral", Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; z-index: 1; pointer-events: none; }
     .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; z-index: 1; }
     /* Discreet yearly-distance info card — low emphasis vs the race cards. */
@@ -214,7 +217,7 @@
     // Set the initial language chrome now; draw() no-ops until data has loaded.
     applyLang(lang);
 
-    var BASE_YW=384, GW=104, CARDW=300, CARDGAP=16, DOTGAP=22, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
+    var BASE_YW=384, GW=104, CARDW=280, CARDGAP=16, DOTGAP=22, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
     // Total distance run per completed year (personal data, like races.json).
     var YEAR_KM={2021:1845.2,2022:821.4,2023:1267.6,2024:890.1,2025:1261.9};
     function kmStr(v){ return v.toLocaleString(LOC,{minimumFractionDigits:1,maximumFractionDigits:1})+" km"; }

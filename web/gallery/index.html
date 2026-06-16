@@ -671,7 +671,11 @@
     var _rz=null;
     window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });
 
-    fetch("races.json", {cache:"no-cache"}).then(function(r){return r.json();}).then(function(RACES){
+    // Cache-bust with a per-load token. `no-cache` only *revalidates*, which a
+    // CDN edge (or an old service worker) can still satisfy from a stale copy —
+    // so races added since the last cached fetch never appeared. A unique URL
+    // forces a real origin fetch every load, so new events show immediately.
+    fetch("races.json?v=" + Date.now(), {cache:"no-cache"}).then(function(r){return r.json();}).then(function(RACES){
       RACES=(RACES||[]).filter(function(r){return r&&r.date;});
       var paises=Array.from(new Set(RACES.map(function(r){return r.pais;}).filter(Boolean)));
       return Promise.all(paises.map(function(pp){

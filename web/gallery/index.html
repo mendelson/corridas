@@ -76,7 +76,14 @@
     .ynode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
     .mtick { position: absolute; top: 236px; width: 1px; height: 5px; background: #2b313b; z-index: 0; }
     .mlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; color: #565c68; white-space: nowrap; pointer-events: none; }
-    .enode { position: absolute; top: 230.5px; width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3.5px #0f1115; z-index: 2; }
+    /* Event markers ranked by significance (see tier()): ordinary races are
+       quiet flat dots, milestone races wear a small silver medal, and marathons
+       — the most honourable — wear the boldest gold medal with a soft glow. The
+       JS sets only `left` (event x − half the marker's width). */
+    .enode { position: absolute; border-radius: 50%; box-shadow: 0 0 0 3.5px #0f1115; z-index: 2; }
+    .enode.ord  { top: 231px;   width: 8px;  height: 8px;  background: #6b7280; }
+    .enode.mile { top: 229px;   width: 12px; height: 12px; background: radial-gradient(circle at 36% 30%, #eef1f6, #C3CAD6 52%, #8f98a7); box-shadow: 0 0 0 3.5px #0f1115, inset 0 0 0 1px rgba(255,255,255,.35); }
+    .enode.mara { top: 227.5px; width: 15px; height: 15px; background: radial-gradient(circle at 36% 30%, #fbeaa9, #E8C04A 50%, #b07f24); box-shadow: 0 0 0 3.5px #0f1115, 0 0 11px 1px rgba(232,192,74,.5), inset 0 0 0 1px rgba(255,255,255,.4); }
     .conn { position: absolute; width: 1.5px; background: #2c323d; z-index: 1; }
     .conn.below { top: 235px; height: 36px; }
     .conn.above { top: 199px; height: 36px; }
@@ -88,9 +95,6 @@
     .ctype { font-size: 10px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
     .cbadges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
     .cbadge { display: inline-flex; padding: 3px 9px; border-radius: 999px; font-size: 9.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; border: 1px solid transparent; }
-    .legend { display: flex; gap: 16px; margin-top: 13px; flex-wrap: wrap; }
-    .legend .li { display: inline-flex; align-items: center; gap: 6px; font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #8b91a0; }
-    .legend .dot { width: 9px; height: 9px; border-radius: 5px; box-shadow: 0 0 0 3px #0f1115; }
     .cname { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 17px; line-height: 1.18; margin: 6px 0 0; letter-spacing: -.005em; color: #f3efe7; }
     .cloc { font-size: 12px; color: #8b91a0; margin-top: 3px; }
     .cbtns { display: flex; gap: 10px; margin-top: 14px; }
@@ -126,7 +130,6 @@
     </div>
     <h1 class="title" id="title"></h1>
     <div class="hint" id="hint"></div>
-    <div class="legend" id="legend"></div>
   </header>
   <div class="stage" id="stage">
     <div class="scroller"><div class="track" id="track"></div></div>
@@ -215,18 +218,18 @@
     function dp(iso){var p=iso.split("-");return {y:+p[0],m:+p[1]-1,d:+p[2]};}
     function frac(p){return (p.m+(p.d-1)/31)/12;}
     function keyf(p){return p.y*400+p.m*31+p.d;}
-    // Medal-honour colour code for the event dots: marathon = gold (the most
-    // honourable), half marathon = silver, 10K = copper, shorter races = bronze.
-    var TIER={marathon:"#E8C04A",half:"#C3CAD6",ten:"#D4A574",other:"#C0823F"};
-    // Accepts either a race object (card) or a bare type string (legend). A 10K
-    // is its own copper tier, whether tagged type "ten" or a "race" with km 10.
-    function color(r){
-      var type=(typeof r==="string")?r:(r&&r.type);
-      var kmv=(r&&typeof r==="object")?r.km:null;
-      if(type==="ten" || (type==="race" && kmv===10)) return TIER.ten;
-      return TIER[type]||TIER.other;
+    // A race's prominence on the timeline is its *significance*, not its
+    // distance. Marathons are the most honourable and always wear the boldest
+    // gold medal; any other race that carried a milestone (a first, a personal
+    // best) wears a quieter silver medal; everything else is a plain, low-key
+    // dot. tier() -> "mara" | "mile" | "ord"; the same colour accents the card.
+    function milestonesOf(r){ return (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || []; }
+    function tier(r){
+      if(r && r.type==="marathon") return "mara";
+      return milestonesOf(r).length ? "mile" : "ord";
     }
-    function honorRank(t){return t==="marathon"?0:t==="half"?1:t==="ten"?2:3;}
+    var TIERC={mara:"#E8C04A", mile:"#C3CAD6", ord:"#8b91a0"};
+    function color(r){ return TIERC[tier(r)]; }
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
@@ -241,12 +244,12 @@
       return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava"><span class="slogo">'+CHEVRON+'<span class="sword">Strava</span></span></a>';
     }
     function cardHTML(r,ex,p,side,loc,sw){
-      var c=color(r);
+      var c=color(r), tc=tier(r), nh=(tc==="mara"?7.5:(tc==="mile"?6:4)); // marker half-width, by tier
       // Fixed-width card centred on the event, clamped inside the year column so
       // it never spills past the column edges; the connector still meets it.
       var cl=clamp(ex-CARDW/2, 6, Math.max(6, sw-CARDW-6));
       if(ex<cl+12) cl=Math.max(0,ex-12); else if(ex>cl+CARDW-12) cl=ex-CARDW+12;
-      return '<span class="enode" style="left:'+(ex-4.5)+'px;background:'+c+'"></span>'+
+      return '<span class="enode '+tc+'" style="left:'+(ex-nh)+'px"></span>'+
         '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
         '<div class="card '+side+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
@@ -254,8 +257,7 @@
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
         '<div class="cloc">'+esc(loc||r.city)+'</div>'+
         (function(){
-          // Accept a `milestones` array (multiple badges) or a single `milestone` (legacy).
-          var ms = r.milestones || (r.milestone ? [r.milestone] : []);
+          var ms = milestonesOf(r); // a `milestones` array (multiple badges) or a single legacy `milestone`
           var badges = ms.map(function(m){
             return (T.ms && T.ms[m]) ? '<span class="cbadge" style="color:'+c+';background:'+c+'1f;border-color:'+c+'66">'+esc(T.ms[m])+'</span>' : '';
           }).join('');
@@ -339,13 +341,6 @@
       document.getElementById("track").innerHTML=html;
       collectStickyYears();
 
-      // Colour-code legend — only the tiers actually present, ordered by honour
-      // (marathon first). Reinforces what each event dot's colour means.
-      var types=Array.from(new Set(RACES.map(function(r){return r.type;}).filter(Boolean)))
-        .sort(function(a,b){return honorRank(a)-honorRank(b);});
-      document.getElementById("legend").innerHTML=types.map(function(t){
-        return '<span class="li"><span class="dot" style="background:'+color(t)+'"></span>'+esc(T.type[t]||t)+'</span>';
-      }).join("");
       // The first render's cinematic intro is kicked off from draw() (which has
       // the post-layout measurements it needs).
     }

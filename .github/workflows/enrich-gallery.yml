@@ -1,0 +1,58 @@
+name: Enrich Gallery Races
+
+# Fills the blank fields in web/gallery/races.json from the Strava + Polar
+# links on each event (name/date/distance/type/location). Runs on a hosted
+# runner because Strava/Polar are unreachable from the dev sandbox. Reusable:
+# add an event with just its links and run this to fill the rest.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'web/gallery/races.json'
+      - 'scripts/enrich_gallery.py'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: enrich-gallery-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  enrich:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Playwright
+        run: |
+          pip install playwright==1.59.0
+          playwright install chromium --with-deps
+
+      - name: Enrich races.json
+        run: python scripts/enrich_gallery.py --dump-dir gallery-debug
+
+      - name: Upload debug HTML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gallery-debug
+          path: gallery-debug
+          if-no-files-found: ignore
+
+      - name: Commit filled data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- web/gallery/races.json; then
+            git add web/gallery/races.json
+            git commit -m "gallery: enrich races.json from Strava/Polar [skip ci]"
+            git push origin HEAD:${GITHUB_REF_NAME}
+          else
+            echo "No changes to races.json."
+          fi

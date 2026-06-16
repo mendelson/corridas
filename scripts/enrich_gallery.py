@@ -47,6 +47,7 @@ _EMOJI = re.compile(
     flags=re.UNICODE,
 )
 _STRAVA_PREFIX = re.compile(r".*\bStrava\s*[:：]\s*", re.IGNORECASE | re.DOTALL)
+_STRAVA_SUFFIX = re.compile(r"\s*[|\-–—·]\s*Strava\s*$", re.IGNORECASE)
 
 
 def clean_title(raw: str) -> str:
@@ -57,6 +58,7 @@ def clean_title(raw: str) -> str:
     m = _STRAVA_PREFIX.match(s)
     if m:
         s = s[m.end():]
+    s = _STRAVA_SUFFIX.sub("", s)        # "<title> | Strava" -> "<title>"
     s = _EMOJI.sub("", s)
     s = s.replace("’", "'").strip()
     s = re.sub(r"\s{2,}", " ", s)
@@ -108,6 +110,12 @@ def parse_km(text: str):
     return best
 
 
+_PT_MONTHS = {"janeiro": "01", "fevereiro": "02", "marco": "03", "abril": "04",
+              "maio": "05", "junho": "06", "julho": "07", "agosto": "08",
+              "setembro": "09", "outubro": "10", "novembro": "11", "dezembro": "12"}
+_PT_DATE = re.compile(r"(\d{1,2})\s+de\s+([a-zç]+)\s+de\s+(\d{4})", re.IGNORECASE)
+
+
 def parse_date(text: str):
     if not text:
         return None
@@ -115,6 +123,11 @@ def parse_date(text: str):
         m = rx.search(text)
         if m:
             return fmt(m)
+    m = _PT_DATE.search(text)
+    if m:
+        mon = _PT_MONTHS.get(_norm(m.group(2)))
+        if mon:
+            return f"{m.group(3)}-{mon}-{int(m.group(1)):02d}"
     return None
 
 
@@ -228,6 +241,13 @@ def main():
     races = json.loads(RACES.read_text(encoding="utf-8"))
     changed = 0
     for i, r in enumerate(races):
+        # always normalise the title (strips any "| Strava" / emojis), even if
+        # already set — fixes earlier runs that kept Strava's suffix.
+        if r.get("name"):
+            c = clean_title(r["name"])
+            if c != r["name"]:
+                print(f"[{i}] name normalized: {r['name']!r} -> {c!r}")
+                r["name"] = c; changed += 1
         # cheap fix first: type can be inferred from an existing km
         if not r.get("type") and r.get("km") not in ("", None):
             r["type"] = infer_type(r["km"]); changed += 1
@@ -250,7 +270,7 @@ def main():
             if nm:
                 r["name"] = nm; changed += 1; print(f"      name <- {nm!r}")
         if r.get("km") in ("", None):
-            km = parse_km(d["polar_text"]) or parse_km(d["strava_desc"])
+            km = parse_km(d["strava_desc"]) or parse_km(d["strava_text"]) or parse_km(d["polar_text"])
             if km:
                 r["km"] = snap_km(km); changed += 1; print(f"      km <- {r['km']}")
         if not r.get("type") and r.get("km") not in ("", None):

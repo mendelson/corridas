@@ -349,7 +349,10 @@
         sec+='<span class="ynode" style="left:0px"></span><span class="ylabel" style="left:18px">'+y+'</span>';
         var lastM = current ? now.getMonth() : 11;
         var lastLx=-999; // track last month label x position to avoid overlaps
-        for(var mi=0; mi<=lastM; mi++){
+        // Start at February: January sits at the column start, where the year
+        // post + year number already mark it — a JAN tick/label there only
+        // collides with the year marker.
+        for(var mi=1; mi<=lastM; mi++){
           var mx=mapX(mi/12);
           sec+='<span class="mtick" style="left:'+mx+'px"></span>';
           // Only show month label if it's far enough from the last one (≥44px) and not too close to "today"
@@ -585,7 +588,7 @@
         if(ts < reverseUntil){
           // hold for half a second at each end before reversing direction
         } else {
-          var sp=Math.max(40, hi/20); // full traverse ~20s regardless of length
+          var sp=Math.max(40, Math.min(hi/40, 80)); // gentle drift, capped so a longer timeline doesn't race past
           pos += dir*sp*dt;
           if(pos>=hi){ pos=hi; dir=-1; reverseUntil=ts+500; }
           else if(pos<=0){ pos=0; dir=1; reverseUntil=ts+500; }

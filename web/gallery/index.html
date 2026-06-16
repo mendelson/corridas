@@ -51,6 +51,11 @@
     .shoe-lab { position: absolute; top: 38px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
     .shoe-lab-start { left: 0; }
     .shoe-lab-end { right: 0; color: #E4572E; }
+    /* Year marks along the scrubber — a small tick + year for each intermediate
+       year (the oldest year and TODAY remain the prominent end labels). */
+    .shoe-years { position: absolute; left: 0; right: 0; top: 0; height: 100%; }
+    .shoe-yr { position: absolute; top: 38px; transform: translateX(-50%); font-size: 8px; font-weight: 700; letter-spacing: .03em; color: #4a5160; white-space: nowrap; }
+    .shoe-yr::before { content: ""; position: absolute; left: 50%; top: -10px; width: 1px; height: 7px; background: #353c48; transform: translateX(-50%); }
     .shoe-stage { position: absolute; left: 0; bottom: 28px; width: clamp(54px, 6vw, 80px); transform: translateX(0); pointer-events: none; filter: drop-shadow(0 8px 14px rgba(0,0,0,.4)); will-change: left, transform; }
     /* The shoe faces the scroll direction: default toe-right; flipped toe-left
        when scrolling toward the past, with a smooth turn. */
@@ -140,6 +145,7 @@
     <div class="scroller"><div class="track" id="track"></div></div>
     <div class="shoe-track" id="shoeTrack" aria-hidden="true">
       <span class="shoe-track-line"></span>
+      <div class="shoe-years" id="shoeYears"></div>
       <span class="shoe-lab shoe-lab-start" id="shoeLabStart"></span>
       <span class="shoe-lab shoe-lab-end" id="shoeLabEnd"></span>
       <div class="shoe-stage" id="shoeStage"></div>
@@ -643,6 +649,7 @@
       if(_ls) _ls.textContent = _yrs.length ? Math.min.apply(null,_yrs) : "";
       if(_le) _le.textContent = T.today;
       endPos=startScroll(); // "today" scroll offset (auto-advance upper bound)
+      buildShoeYears();     // year ticks spaced along the scrubber
       if(first){
         firstDrawn=true;
         cameraIntro(); // cinematic opening; enables auto-advance at today when done
@@ -691,6 +698,24 @@
         var d=(sl+_gutterPx)-s.left; // where the gutter falls inside this column
         s.lab.style.left=(d<lo?lo:(d>hi?hi:d))+"px";
       }
+    }
+    // Year marks along the scrubber: one tick per intermediate event-year, at
+    // the same scroll fraction the shoe uses (offsetLeft → /endPos), so the
+    // ticks line up with where the shoe sits when that year is in view. The
+    // oldest year and TODAY stay as the prominent end labels. A min-gap skip
+    // keeps the small labels from colliding on narrow screens.
+    function buildShoeYears(){
+      var host=document.getElementById("shoeYears"); if(!host || !scroller) return;
+      var track=document.getElementById("track");
+      var cols=track ? Array.prototype.filter.call(track.querySelectorAll(".sec"), function(s){return s.querySelector(".ylabel");}) : [];
+      var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
+      var W=host.offsetWidth||1, minF=34/W, lastF=-1, html="";
+      for(var i=1;i<cols.length-1;i++){
+        var sec=cols[i], f=hiP>0 ? clamp((sec.offsetLeft-24)/hiP, 0, 1) : 0;
+        if(f-lastF<minF) continue; lastF=f;
+        html+='<span class="shoe-yr" style="left:'+(f*100)+'%">'+esc(sec.querySelector(".ylabel").textContent)+'</span>';
+      }
+      host.innerHTML=html;
     }
     var _rz=null;
     window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });

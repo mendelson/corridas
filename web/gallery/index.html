@@ -69,7 +69,10 @@
     .track .rv { opacity: 0; } /* hidden until revealed (animation plays once) */
     .rail { position: absolute; left: 0; right: 0; top: 235px; height: 1.5px; background: #2c323d; z-index: 0; }
     .rail.dotted { background: transparent; background-image: repeating-linear-gradient(90deg, #3a414e 0 2px, transparent 2px 6px); }
-    .ylabel { position: absolute; top: 201px; font-family: "Spectral", Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; z-index: 1; pointer-events: none; }
+    /* The big year number pins to the gutter while its column spans the
+       viewport (driven by updateStickyYears); the halo keeps it legible when it
+       rides over the rail/cards, and the high z-index keeps it on top. */
+    .ylabel { position: absolute; top: 201px; font-family: "Spectral", Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; z-index: 4; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 12px #0f1115, 0 0 7px #0f1115; }
     .ynode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
     .mtick { position: absolute; top: 236px; width: 1px; height: 5px; background: #2b313b; z-index: 0; }
     .mlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; color: #565c68; white-space: nowrap; pointer-events: none; }
@@ -334,6 +337,7 @@
         sec+='</div>'; html+=sec;
       });
       document.getElementById("track").innerHTML=html;
+      collectStickyYears();
 
       // Colour-code legend — only the tiers actually present, ordered by honour
       // (marathon first). Reinforces what each event dot's colour means.
@@ -501,6 +505,8 @@
     // --- Timeline motion -----------------------------------------------------
     var scroller=document.querySelector(".scroller");
     var stageEl=document.getElementById("stage");
+    // Geometry cache for the sticky year labels (one layout read per render).
+    var stickyYears=[], _gutterPx=0;
 
     // Aging shoe: wears (progress 0→1) as the timeline scrolls toward today and
     // rejuvenates toward the past. Progress = scrollLeft / today-offset, eased
@@ -570,6 +576,7 @@
         pos=scroller.scrollLeft; // stay in sync while paused / under manual control
       }
       updateShoe();
+      updateStickyYears();
       requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -638,6 +645,33 @@
         return clamp(x - 24, 0, max);
       }
       return max;
+    }
+    // Sticky year labels: each event-year's big number pins to the left gutter
+    // while that year's column spans the viewport, then is carried out at the
+    // year boundary — in both scroll directions. Geometry is cached here (one
+    // layout read per render) so the per-frame update is pure arithmetic.
+    function collectStickyYears(){
+      var track=document.getElementById("track"); if(!track) return;
+      _gutterPx=parseFloat(getComputedStyle(track).paddingLeft)||0;
+      stickyYears=[];
+      Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(sec){
+        var lab=sec.querySelector(".ylabel"); // event-year/current columns only (gaps have .gylab)
+        if(lab) stickyYears.push({lab:lab, left:sec.offsetLeft, w:sec.offsetWidth, lw:lab.offsetWidth});
+      });
+    }
+    // Reposition each year label for the current scroll offset. Clamping the
+    // gutter's position within the column gives sticky behaviour for free: the
+    // label sits at the column start until the gutter reaches it, pins to the
+    // gutter through the year, then is pushed out by the column's trailing edge.
+    function updateStickyYears(){
+      if(!_camDone || !stickyYears.length) return; // the camera drives positions during the intro
+      var sl=scroller.scrollLeft;
+      for(var i=0;i<stickyYears.length;i++){
+        var s=stickyYears[i];
+        var lo=18, hi=s.w-s.lw-10; if(hi<lo) hi=lo;
+        var d=(sl+_gutterPx)-s.left; // where the gutter falls inside this column
+        s.lab.style.left=(d<lo?lo:(d>hi?hi:d))+"px";
+      }
     }
     var _rz=null;
     window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });

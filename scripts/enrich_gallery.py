@@ -165,8 +165,19 @@ def fetch_pages(strava_url, polar_url, dump_dir=None, tag=""):
         if polar_url:
             try:
                 pg.goto(polar_url, wait_until="domcontentloaded", timeout=45000)
-                pg.wait_for_timeout(4500)
-                out["polar_text"] = pg.evaluate("()=>document.body?document.body.innerText.slice(0,4000):''")
+                # Accept the cookie consent so the SPA renders the activity data.
+                for sel in ("#onetrust-accept-btn-handler",
+                            "button:has-text('Allow all')", "button:has-text('Accept all')",
+                            "button:has-text('Accept')", "button:has-text('Aceitar')",
+                            "button:has-text('Permitir')", "button:has-text('Concordo')"):
+                    try:
+                        b = pg.query_selector(sel)
+                        if b and b.is_visible():
+                            b.click(); pg.wait_for_timeout(800); break
+                    except Exception:
+                        pass
+                pg.wait_for_timeout(5000)
+                out["polar_text"] = pg.evaluate("()=>document.body?document.body.innerText.slice(0,6000):''")
                 if dump_dir:
                     Path(dump_dir, f"polar_{tag}.html").write_text(pg.content(), encoding="utf-8")
             except Exception as e:

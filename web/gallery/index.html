@@ -73,7 +73,9 @@
        viewport (driven by updateStickyYears); the halo keeps it legible when it
        rides over the rail/cards, and the high z-index keeps it on top. */
     .ylabel { position: absolute; top: 201px; font-family: "Spectral", Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; z-index: 4; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 12px #0f1115, 0 0 7px #0f1115; }
-    .ynode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #f3efe7; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
+    /* Year boundary: a slim vertical post (not a dot) so it can't be mistaken
+       for an event marker. It straddles the rail at the start of each year. */
+    .ynode { position: absolute; top: 222px; width: 2.5px; height: 26px; border-radius: 1.5px; background: #f3efe7; box-shadow: 0 0 0 3px #0f1115; z-index: 2; }
     .mtick { position: absolute; top: 236px; width: 1px; height: 5px; background: #2b313b; z-index: 0; }
     .mlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; color: #565c68; white-space: nowrap; pointer-events: none; }
     /* Event markers ranked by significance (see tier()): ordinary races are
@@ -84,10 +86,12 @@
     .enode.ord  { top: 231px;   width: 8px;  height: 8px;  background: #6b7280; }
     .enode.mile { top: 229px;   width: 12px; height: 12px; background: radial-gradient(circle at 36% 30%, #eef1f6, #C3CAD6 52%, #8f98a7); box-shadow: 0 0 0 3.5px #0f1115, inset 0 0 0 1px rgba(255,255,255,.35); }
     .enode.mara { top: 227.5px; width: 15px; height: 15px; background: radial-gradient(circle at 36% 30%, #fbeaa9, #E8C04A 50%, #b07f24); box-shadow: 0 0 0 3.5px #0f1115, 0 0 11px 1px rgba(232,192,74,.5), inset 0 0 0 1px rgba(255,255,255,.4); }
-    /* Diagonal leader line from a date dot to its card. Width and rotation are
-       set in JS (a card can be nudged sideways to dodge its neighbours), pivoting
-       at the dot via transform-origin. */
-    .conn { position: absolute; height: 1.5px; background: #2c323d; z-index: 1; transform-origin: 0 50%; }
+    /* Straight vertical leader line from a date dot to its card. Cards are laid
+       out so each one sits directly over/under its dot (the timeline stretches
+       in busy stretches to make room), so the connector is always vertical. */
+    .conn { position: absolute; width: 1.5px; background: #2c323d; z-index: 1; }
+    .conn.below { top: 235px; height: 36px; }
+    .conn.above { top: 199px; height: 36px; }
     .card { position: absolute; left: 16px; right: 16px; background: #181b21; border: 1px solid #262b34; border-radius: 14px; padding: 15px 16px 16px; z-index: 3; }
     .card.below { top: 271px; }
     .card.above { bottom: 271px; }
@@ -210,7 +214,7 @@
     // Set the initial language chrome now; draw() no-ops until data has loaded.
     applyLang(lang);
 
-    var BASE_YW=384, GW=104, CARDW=300, CARDGAP=16, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
+    var BASE_YW=384, GW=104, CARDW=300, CARDGAP=16, DOTGAP=22, FILL=1.5; // ribbon ≥ FILL× viewport so it scrolls
     // Total distance run per completed year (personal data, like races.json).
     var YEAR_KM={2021:1845.2,2022:821.4,2023:1267.6,2024:890.1,2025:1261.9};
     function kmStr(v){ return v.toLocaleString(LOC,{minimumFractionDigits:1,maximumFractionDigits:1})+" km"; }
@@ -246,13 +250,10 @@
     }
     function cardHTML(r,ex,p,side,loc,cl){
       var c=color(r), tc=tier(r), nh=(tc==="mara"?7.5:(tc==="mile"?6:4)); // marker half-width, by tier
-      // Diagonal leader line from the date dot (ex, on the rail) to the card —
-      // the card may have been nudged sideways to avoid overlapping a neighbour,
-      // so the connector slants to keep it tied to its true date.
-      var cx=cl+CARDW/2, dx=cx-ex, dy=(side==="below")?36:-36;
-      var len=Math.sqrt(dx*dx+dy*dy), ang=Math.atan2(dy,dx)*180/Math.PI;
+      // The card is centred on its dot (or clamped to the column edge), so the
+      // connector is a straight vertical drop from the dot to the card.
       return '<span class="enode '+tc+'" style="left:'+(ex-nh)+'px"></span>'+
-        '<span class="conn" style="left:'+ex+'px;top:235px;width:'+len+'px;transform:rotate('+ang+'deg)"></span>'+
+        '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
         '<div class="card '+side+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
         '<span class="ctype">'+esc((T.type[r.type]||r.type)+" · "+km(r.km)+" KM")+'</span></div>'+
@@ -315,36 +316,41 @@
         if(c.type==="gap"){
           var gw=c.years.length*GW;
           var gs='<div class="sec" style="width:'+gw+'px"><div class="rail dotted"></div>';
-          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+yy+'</span>'; if(YEAR_KM[yy]) gs+='<span class="ykm" style="left:'+cx+'px;top:262px;transform:translateX(-50%)">'+esc(kmStr(YEAR_KM[yy]))+'</span>'; });
+          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+yy+'</span>'; });
           gs+='</div>'; html+=gs; return;
         }
         var y=c.y, current=c.current;
-        var tx = current ? todayFrac*yw : 0;
-        // Dots sit at their true date on the base axis (frac*yw); the cards are
-        // then de-collided per side (cards alternate above/below the rail) by a
-        // greedy left→right pass with a minimum CARDGAP, so none overlap. A busy
-        // stretch can push the last card past the base width, so the column
-        // grows (ywY) to contain them and the connector slants from dot to card.
         var evY=byYear[y]||[];
-        var laid=evY.map(function(x){ var side=(ev%2===0)?"below":"above"; ev++; return {x:x, ex:frac(x.p)*yw, side:side}; });
-        var ywY=yw;
-        ["below","above"].forEach(function(sd){
-          var lastR=-1e9;
-          laid.filter(function(e){return e.side===sd;}).sort(function(a,b){return a.ex-b.ex;}).forEach(function(e){
-            var left=e.ex-CARDW/2;
-            if(left<lastR+CARDGAP) left=lastR+CARDGAP;
-            if(left<6) left=6;
-            e.cl=left; lastR=left+CARDW;
-            if(lastR+6>ywY) ywY=lastR+6;
-          });
+        // Lay the year out for STRAIGHT VERTICAL connectors: walk the events
+        // left→right and stretch dense stretches so two cards on the same side
+        // never overlap (≥ CARDGAP between their real edges) and adjacent dots
+        // keep a gap (DOTGAP). Each card is centred on its dot (or clamped to
+        // the left edge), so its connector is a plain vertical drop.
+        var laid=evY.map(function(rp){ var side=(ev%2===0)?"below":"above"; ev++; return {rp:rp, f:frac(rp.p), side:side}; });
+        var lastR={below:-1e9, above:-1e9}, prevX=-1e9, maxR=yw;
+        laid.forEach(function(e){
+          var x=Math.max(e.f*yw, prevX+DOTGAP, lastR[e.side]+CARDGAP+CARDW/2);
+          e.px=x; e.cl=Math.max(6, x-CARDW/2);
+          lastR[e.side]=e.cl+CARDW; prevX=x;
+          if(e.cl+CARDW+6>maxR) maxR=e.cl+CARDW+6;
         });
+        // Date→x map (piecewise-linear through the dots) so the month ticks and
+        // the "today" marker follow the same stretch the dots do.
+        var anchors=[{f:0,x:0}];
+        laid.forEach(function(e){ anchors.push({f:e.f, x:e.px}); });
+        var lastE=laid.length?laid[laid.length-1]:null;
+        var endX=lastE?lastE.px+(1-lastE.f)*yw:yw;
+        anchors.push({f:1, x:endX});
+        var mapX=function(f){ for(var i=1;i<anchors.length;i++){ if(f<=anchors[i].f){ var a=anchors[i-1],b=anchors[i],t=(b.f===a.f)?0:(f-a.f)/(b.f-a.f); return a.x+t*(b.x-a.x); } } return endX; };
+        var tx = current ? mapX(todayFrac) : 0;
+        var ywY = Math.max(maxR, current ? tx+6 : endX);
         var sec='<div class="sec" style="width:'+ywY+'px">';
         sec+= current ? '<div class="rail" style="right:auto;width:'+tx+'px"></div>' : '<div class="rail"></div>';
         sec+='<span class="ynode" style="left:0px"></span><span class="ylabel" style="left:18px">'+y+'</span>';
         var lastM = current ? now.getMonth() : 11;
         var lastLx=-999; // track last month label x position to avoid overlaps
         for(var mi=0; mi<=lastM; mi++){
-          var mx=(mi/12)*yw;
+          var mx=mapX(mi/12);
           sec+='<span class="mtick" style="left:'+mx+'px"></span>';
           // Only show month label if it's far enough from the last one (≥44px) and not too close to "today"
           if(!(current && Math.abs(mx - tx) < 26) && mx - lastLx >= 44){
@@ -352,9 +358,7 @@
             lastLx=mx;
           }
         }
-        laid.forEach(function(e){ sec+=cardHTML(e.x.r,e.ex,e.x.p,e.side,locStr(e.x.r),e.cl); });
-        // Discreet year-total at the end (December) of a completed year column.
-        if(!current && YEAR_KM[y]) sec+='<span class="ykm" style="left:'+(yw-6)+'px;top:262px;transform:translateX(-100%)">'+esc(kmStr(YEAR_KM[y]))+'</span>';
+        laid.forEach(function(e){ sec+=cardHTML(e.rp.r, e.px, e.rp.p, e.side, locStr(e.rp.r), e.cl); });
         if(current){ sec+='<span class="tnode" style="left:'+(tx-5.5)+'px"></span><span class="tlab" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }
         sec+='</div>'; html+=sec;
       });
@@ -378,7 +382,7 @@
       if(cl.contains("mtick")) return {rank:2, dur:360, ease:OUT, origin:"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
       if(cl.contains("mlab"))  return {rank:2, dur:380, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(7px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
       if(cl.contains("enode")) return {rank:3, dur:500, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
-      if(cl.contains("conn"))  return {rank:4, dur:420, ease:OUT, kf:[{opacity:0},{opacity:1}]}; // fade — keeps the inline rotate
+      if(cl.contains("conn"))  return {rank:4, dur:420, ease:OUT, origin:cl.contains("above")?"center bottom":"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};
       if(cl.contains("card")){ var dy=cl.contains("above")?-26:26; return {rank:5, dur:640, ease:OUT, kf:[{opacity:0,transform:"translateY("+dy+"px) scale(.94)"},{opacity:1,transform:"translateY(0) scale(1)"}]}; }
       return {rank:0, dur:340, ease:OUT, kf:[{opacity:0},{opacity:1}]};
     }

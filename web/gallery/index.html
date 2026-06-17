@@ -150,7 +150,7 @@
       <nav class="gactions">
         <a class="gbtn" id="navCal" href="#"><span class="gbtn-icon" aria-hidden="true">📅</span><span class="gbtn-lbl" id="navCalLbl"></span></a>
         <a class="gbtn" id="navApps" href="https://apps.mmendelson.com" target="_blank" rel="noopener"><span class="gbtn-icon" aria-hidden="true">⌚</span><span class="gbtn-lbl">Apps</span></a>
-        <button class="gbtn" id="navZoom" type="button" aria-label="Overview" title="Overview"><span class="gbtn-icon" aria-hidden="true">🗺️</span></button>
+        <button class="gbtn" id="navZoom" type="button" aria-label="Reset view" title="Reset zoom &amp; scroll"><span class="gbtn-icon" aria-hidden="true">↺</span></button>
         <button class="gbtn" id="navLang" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="gbtn-icon" aria-hidden="true">🌐</span><span class="gbtn-lbl" id="navLangLbl"></span></button>
       </nav>
     </div>
@@ -672,7 +672,12 @@
     // (toward today), up → back. Bound to the window so it works wherever the
     // cursor is, not only over the track. Horizontal trackpad deltas pass through.
     window.addEventListener("wheel", function(e){
-      if(_introActive || _overview){ e.preventDefault(); return; } // locked during intro / overview
+      if(_introActive){ e.preventDefault(); return; } // locked during intro
+      if(e.ctrlKey || e.metaKey){ // trackpad pinch / ⌘-wheel → zoom about the cursor
+        if(_camDone){ if(!_overview) enterZoom(); zoomAt(e.clientX, e.clientY, _zoom*Math.exp(-e.deltaY*0.0025)); }
+        e.preventDefault(); return;
+      }
+      if(_overview){ e.preventDefault(); return; } // zoom mode: plain wheel is inert
       if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       scroller.scrollLeft += e.deltaY;
       pos=scroller.scrollLeft;
@@ -687,38 +692,100 @@
     ["pointerup","pointercancel","mouseup","touchend","touchcancel"].forEach(function(evt){
       window.addEventListener(evt, function(){ if(!_introActive && !_overview) holdEnd(); }, {passive:true});
     });
-    // Zoom-out / overview: a header toggle scales the whole timeline to fit on
-    // screen (reusing the intro's overview maths). Gated behind the button and
-    // _camDone, so the normal scroll/auto path is untouched. Any re-render
-    // (draw) drops the overview transform first.
-    function enterOverview(){
+    // Pinch-to-zoom. Two fingers (or ⌘/ctrl + wheel on desktop) scale the whole
+    // track about the focal point; one finger then pans. This is a
+    // transform-driven mode (_overview) where native scroll / auto-drift are
+    // suspended — the same gating the old overview used, so the intro and the
+    // normal scroll path stay untouched. The reset button (navZoom) glides back
+    // to today at scale 1 and resumes the auto-drift; any re-render (draw) drops
+    // the transform first. _zoom is clamped between a fit-the-whole-timeline
+    // minimum and a modest zoom-in maximum.
+    var _zoom=1, _panX=0, _panY=0, _trkL=0, _trkT=0, _zMin=1; var Z_MAX=3;
+    function _trk(){ return document.getElementById("track"); }
+    function applyZoom(){ _trk().style.transform="translate("+_panX+"px,"+_panY+"px) scale("+_zoom+")"; }
+    function clampPan(){
+      var t=_trk(), cw=scroller.clientWidth||1, ch=scroller.clientHeight||1;
+      var contentW=(t.scrollWidth||cw)*_zoom, contentH=(t.offsetHeight||ch)*_zoom;
+      if(_panX > cw-80) _panX = cw-80;
+      if(_panX < 80-contentW) _panX = 80-contentW;
+      if(contentH<=ch) _panY=(ch-contentH)/2;
+      else { if(_panY>0) _panY=0; if(_panY < ch-contentH) _panY = ch-contentH; }
+    }
+    function enterZoom(){
       if(!_camDone || _overview) return;
-      var track=document.getElementById("track");
-      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=20;
-      var trk=track.getBoundingClientRect();
-      var tnode=track.querySelector(".tnode");
-      var todayX=tnode ? (tnode.getBoundingClientRect().left - trk.left + scroller.scrollLeft) : track.scrollWidth;
-      var fit=Math.min(1, (clientW-2*M)/(todayX+40));
-      track.style.transformOrigin="0 0";
-      track.style.transition="transform .55s cubic-bezier(.22,.61,.36,1)";
-      // translateX compensates the current scrollLeft, so the fitted timeline is
-      // anchored to the viewport left however far you'd scrolled. Without it the
-      // scaled-down track sat off-screen and the overview looked blank/broken.
-      track.style.transform="translateX("+(M+scroller.scrollLeft)+"px) translateY("+((H-H*fit)/2)+"px) scale("+fit+")";
-      scroller.style.overflowX="hidden"; _overview=true; auto=false;
+      var t=_trk(), sl=scroller.scrollLeft;
+      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
+      var r=t.getBoundingClientRect(); _trkL=r.left; _trkT=r.top;
+      var clientW=scroller.clientWidth||1, tn=t.querySelector(".tnode");
+      var todayX=tn ? (tn.getBoundingClientRect().left - r.left) : (t.scrollWidth||clientW);
+      _zMin=Math.max(0.12, Math.min(1, (clientW-40)/(todayX+40)));
+      _zoom=1; _panX=-sl; _panY=0;
+      t.style.transformOrigin="0 0"; t.style.transition=""; t.style.willChange="transform";
+      _overview=true; auto=false; held=false;
+      applyZoom();
       var b=document.getElementById("navZoom"); if(b) b.classList.add("active");
     }
-    function exitOverview(immediate){
-      var track=document.getElementById("track");
-      _overview=false;
-      var b=document.getElementById("navZoom"); if(b) b.classList.remove("active");
-      if(immediate){ track.style.transition=""; track.style.transform="none"; scroller.style.overflowX=""; return; }
-      track.style.transition="transform .5s cubic-bezier(.22,.61,.36,1)";
-      track.style.transform="none"; scroller.style.overflowX="";
-      setTimeout(function(){ if(!_overview) track.style.transition=""; }, 520);
-      scheduleResume();
+    function zoomAt(fx,fy,nz){
+      nz=Math.max(_zMin, Math.min(Z_MAX, nz));
+      var cx=(fx-_trkL-_panX)/_zoom, cy=(fy-_trkT-_panY)/_zoom; // content point under the focal
+      _zoom=nz; _panX=fx-_trkL-cx*nz; _panY=fy-_trkT-cy*nz;    // keep that point fixed on screen
+      clampPan(); applyZoom();
     }
-    (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", function(){ if(_overview) exitOverview(false); else enterOverview(); }); })();
+    function _dropZoom(){ // hard reset used by draw() when the track is replaced
+      var t=_trk(); _overview=false; _zoom=1; _panX=0; _panY=0;
+      t.style.transition=""; t.style.transform="none"; t.style.willChange="";
+      scroller.style.overflowX="";
+      var b=document.getElementById("navZoom"); if(b) b.classList.remove("active");
+    }
+    function resetView(){
+      var t=_trk();
+      if(_overview){
+        var target=startScroll();
+        t.style.transition="transform .5s cubic-bezier(.22,.61,.36,1)";
+        _zoom=1; _panX=-target; _panY=0; applyZoom(); // glide to today @ scale 1
+        var b=document.getElementById("navZoom"); if(b) b.classList.remove("active");
+        setTimeout(function(){
+          if(_overview && Math.abs(_zoom-1)<0.001){ // still settled at default — hand off to native scroll
+            t.style.transition=""; t.style.transform="none"; t.style.willChange="";
+            scroller.style.overflowX=""; _overview=false;
+            scroller.scrollLeft=target; pos=target; held=false; auto=true;
+          }
+        }, 520);
+      } else {
+        var s=startScroll(); scroller.scrollLeft=s; pos=s; held=false; auto=true;
+      }
+    }
+    (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
+    // Touch gestures: two fingers pinch-zoom, one finger pans while zoomed.
+    function _tdist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }
+    function _tmid(t){ return {x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2}; }
+    var _pinchD0=0, _pinchZ0=1, _pan1x=0, _pan1y=0, _panning=false;
+    scroller.addEventListener("touchstart", function(e){
+      if(_introActive) return;
+      if(e.touches.length===2){
+        if(!_camDone) return;
+        if(!_overview) enterZoom();
+        _pinchD0=_tdist(e.touches)||1; _pinchZ0=_zoom; _panning=false;
+        e.preventDefault();
+      } else if(e.touches.length===1 && _overview){
+        _panning=true; _pan1x=e.touches[0].clientX; _pan1y=e.touches[0].clientY;
+      }
+    }, {passive:false});
+    scroller.addEventListener("touchmove", function(e){
+      if(_introActive) return;
+      if(e.touches.length>=2 && _overview){
+        var m=_tmid(e.touches); zoomAt(m.x, m.y, _pinchZ0*(_tdist(e.touches)/_pinchD0));
+        e.preventDefault();
+      } else if(e.touches.length===1 && _overview && _panning){
+        var x=e.touches[0].clientX, y=e.touches[0].clientY;
+        _panX+=x-_pan1x; _panY+=y-_pan1y; _pan1x=x; _pan1y=y; clampPan(); applyZoom();
+        e.preventDefault();
+      }
+    }, {passive:false});
+    scroller.addEventListener("touchend", function(e){
+      if(e.touches.length<2) _pinchD0=0;
+      if(e.touches.length===0){ _panning=false; if(_overview && Math.abs(_zoom-1)<0.05) resetView(); }
+    }, {passive:false});
     // Keyboard navigation is discrete, not a hold: pause + 3s countdown.
     window.addEventListener("keydown", function(){ if(!_introActive) pauseAuto(); }, {passive:true});
     // Block touch-drag scrolling for the duration of the intro.
@@ -731,7 +798,7 @@
     function draw(){
       if(!_data) return;
       if(firstDrawn && !_camDone) return; // cinematic intro in progress — don't re-render under it
-      if(_overview) exitOverview(true); // a re-render replaces the track; drop the overview transform
+      if(_overview) _dropZoom(); // a re-render replaces the track; drop the zoom transform
       var first=!firstDrawn;
       // Preserve scroll across re-renders (language switch / resize) so the view
       // doesn't jump back to the start.

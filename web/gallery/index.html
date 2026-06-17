@@ -475,8 +475,14 @@
       function cx(el){ return el.getBoundingClientRect().left - trk.left; } // content x (scale 1)
       var tnode=track.querySelector(".tnode");
       var todayX=tnode ? cx(tnode) : track.scrollWidth;
-      var extent=todayX+50;                       // oldest → today (ignore empty future)
-      var fit=Math.min(1, (clientW-2*M)/extent);  // scale that fits it all on screen
+      // Bound the intro to the last five years + the current one, so the draw /
+      // zoom / pan stays large and legible. The auto-advance afterwards still
+      // covers every year. startX = the content-x of that window's first year
+      // column (0 if there's less history than that).
+      var winY=new Date().getFullYear()-5, startX=0, _ys=track.querySelectorAll(".sec");
+      for(var _i=0;_i<_ys.length;_i++){ var _l=_ys[_i].querySelector(".ylabel"); if(_l && +_l.textContent===winY){ startX=cx(_ys[_i]); break; } }
+      var extent=(todayX-startX)+50;              // the window: startX → today
+      var fit=Math.min(1, (clientW-2*M)/extent);  // scale that fits the window on screen
 
       var lineEls=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab,.ykm"));
       var evEls=Array.prototype.slice.call(track.querySelectorAll(".enode,.conn,.card"));
@@ -489,17 +495,17 @@
       track.style.transformOrigin="0 0";
       track.style.willChange="transform";
       function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
-      var overview=camT(M, (H-H*fit)/2, fit), oldest=camT(0,0,1);
+      var overview=camT(M-startX*fit, (H-H*fit)/2, fit), oldest=camT(-startX,0,1);
       track.style.transform=overview;
 
       // The intro is no longer interruptible: interaction is locked until it
       // finishes (the _introActive guards on the wheel/pointer/touch handlers).
 
-      var D1=1300, D2=780, D3=2400;
+      var D1=1800, D2=1000, D3=5000; // slower so the line draws and the cards animate in visibly
 
       function phase1(){ // draw line/years/months oldest → newest
         return new Promise(function(res){
-          lineMeta.forEach(function(m){ _camAnims.push(onReveal(m.el, (extent?m.x/extent:0)*D1)); });
+          lineMeta.forEach(function(m){ var f=extent?(m.x-startX)/extent:0; if(f<0)f=0; if(f>1)f=1; _camAnims.push(onReveal(m.el, f*D1)); });
           setTimeout(res, D1+650);
         });
       }
@@ -519,7 +525,7 @@
             if(t0==null) t0=ts;
             var p=Math.min((ts-t0)/D3, 1);
             var e=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; // easeInOutQuad
-            var camLeft=e*todayStart;
+            var camLeft=startX+e*(todayStart-startX);
             track.style.transform=camT(-camLeft,0,1);
             shoeCur=e; applyShoe(e); // walk the shoe along the track + age it as the camera flies to today
             evMeta.forEach(function(m){
@@ -666,19 +672,22 @@
         scroller.scrollLeft=sl; pos=sl;
       }
     }
-    // Scroll offset that opens on the current year filling the viewport (its
-    // column starts ~24px from the left edge); earlier years sit off-screen left
-    // and are revealed by drifting/scrolling back. Falls back to max if absent.
+    // Rest position / auto-advance upper bound: the scroll that brings TODAY
+    // into view near the right of the viewport, so the journey visibly arrives
+    // at today (not at the start of the current-year column). Falls back to the
+    // current-year start, then max, if the today marker is absent.
     function startScroll(){
       var max=scroller.scrollWidth-scroller.clientWidth;
       var track=document.getElementById("track");
-      var nodes=track.querySelectorAll(".ynode"); // current year = last column
-      var t=nodes.length ? nodes[nodes.length-1] : null;
+      var trk=track.getBoundingClientRect();
+      var t=track.querySelector(".tnode"); // the "today" marker
       if(t){
-        var trk=track.getBoundingClientRect();
-        var x=t.getBoundingClientRect().left - trk.left + scroller.scrollLeft; // current-year start
-        return clamp(x - 24, 0, max);
+        var x=t.getBoundingClientRect().left - trk.left + scroller.scrollLeft; // today's content x
+        return clamp(x - scroller.clientWidth*0.62, 0, max); // today sits ~62% from the left
       }
+      var nodes=track.querySelectorAll(".ynode");
+      var n=nodes.length ? nodes[nodes.length-1] : null;
+      if(n){ var nx=n.getBoundingClientRect().left - trk.left + scroller.scrollLeft; return clamp(nx-24,0,max); }
       return max;
     }
     // Sticky year labels: each event-year's big number pins to the left gutter

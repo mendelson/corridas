@@ -498,6 +498,38 @@ just redirects to other aggregators we already scrape directly. Even if it
 starts returning 200 again, do not re-add it. The user explicitly forbids
 reactivation.
 
+### LIVE! Experience (appliveexperience.com.br / liverun.com.br) — API found, WAF-blocked from CI (researched 2026-06-17)
+
+Events like **Live 42K Brasília** (a.k.a. "Maratona Live Run") are published on
+the LIVE! Experience platform. Investigated whether the per-distance schedule
+(different days/times per distance) is scrapable. **Final status: not reachable
+from CI** — same wall as TF Sports' app API.
+
+**Approaches tried (probe workflow):**
+1. `liverun.com.br/etapa/live42k-brasilia` → **403** (WAF).
+2. `appliveexperience.com.br/evento/<slug>` → 200 but a **client-side Expo/React
+   SPA**: HTML carries no event data (`No __NEXT_DATA__`, `No embedded JSON`).
+3. Fetched the SPA's Expo bundle (`/_expo/static/js/web/entry-*.js`, ~2.4 MB) and
+   grepped it → it calls a **public REST API**:
+   `https://api.appliveexperience.com.br/app/events?page=N&limit=50&finished=false`
+   (also `/app/events`, `/app/classes`, `/app/trainers`). The axios interceptor
+   only adds `Authorization: Bearer <t>` **when a user token exists**, so the
+   events list is **anonymous** (the SPA shows events to logged-out users).
+4. Probed that API (with `Accept`, `expo-platform: web`, `Origin`, `Referer`)
+   → **HTTP 403 from `awselb/2.0`** — a generic load-balancer 403, i.e. an **AWS
+   ELB/WAF rule rejecting datacenter IPs** (GitHub Actions) before the request
+   reaches the app. Not an auth error.
+
+**Learnings / why it's closed:** the API is technically public and anonymous,
+but the AWS WAF blocks cloud/datacenter IP ranges. The scraper runs from the
+same GitHub Actions IPs, so it would be blocked identically. The Playwright
+fallback uses the same IPs, so it is not expected to help (AWS WAF IP-reputation
+blocking is IP-based, not fingerprint-based) — this matches the TF Sports
+mobile-API finding. **Do not** add a `live_experience` scraper expecting it to
+work from CI. Live 42K stays sourced via `bora_correr` (coarse: date + distance
+hints, no per-distance schedule). The documented endpoint would work from a
+residential IP / proxy if that capability is ever added.
+
 
 ## Autonomy: CI and iteration
 

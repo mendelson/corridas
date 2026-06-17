@@ -51,8 +51,11 @@
     /* The ground the shoe walks on — a faint lit surface that footprints fade on. */
     .shoe-track-line { position: absolute; left: 0; right: 0; top: 30px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #262d38, #3a4250 18%, #3a4250 82%, #262d38); box-shadow: 0 4px 12px -5px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.04); }
     .shoe-prints { position: absolute; left: 0; right: 0; top: 28px; height: 10px; pointer-events: none; }
-    .footprint { position: absolute; width: 6px; height: 8px; border-radius: 50% 50% 45% 45%; background: #5a6477; animation: fp 1.8s ease-out forwards; }
-    @keyframes fp { 0%{ opacity: .7; } 100%{ opacity: 0; transform: scale(.7); } }
+    .footprint { position: absolute; width: 16px; height: 6px; border-radius: 55% 45% 45% 55% / 50%; background: #5a6477; animation: fp 2s ease-out forwards; }
+    @keyframes fp { 0%{ opacity: .7; } 100%{ opacity: 0; transform: scaleY(.85); } }
+    /* Dust puff kicked up around the shoe each time it lands. */
+    .dust { position: absolute; top: 1px; width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle, rgba(150,162,184,.55), rgba(150,162,184,0) 70%); animation: dust .6s ease-out forwards; }
+    @keyframes dust { 0%{ transform: translate(0,0) scale(.4); opacity: .7; } 100%{ transform: translate(var(--dx,0), -7px) scale(1.5); opacity: 0; } }
     .shoe-lab { position: absolute; top: 38px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
     .shoe-lab-start { left: 0; }
     .shoe-lab-end { right: 0; color: #E4572E; }
@@ -567,6 +570,20 @@
     var shoeFace=1, _lastSL=null; // facing: 1 = toe-right (toward today), -1 = toe-left (toward past)
     function setFace(f){ if(f!==shoeFace){ shoeFace=f; if(shoeEl) shoeEl.classList.toggle("face-left", f===-1); } }
     try{ if(window.ShoeWear) shoeCtl=window.ShoeWear.mount(shoeEl); }catch(e){}
+    // A footprint + a dust puff land each time the shoe's float touches the
+    // ground (one bounce = one animationiteration), but only while it's actually
+    // walking — so a standing shoe doesn't stamp prints in place.
+    (function(){
+      var inner=shoeEl ? shoeEl.querySelector(".shoe") : null;
+      if(!inner) return;
+      inner.addEventListener("animationiteration", function(){
+        if(!shoePrintsEl || _introActive || _overview || !shoeTrackEl.classList.contains("shown")) return;
+        var W=shoePrintsEl.offsetWidth||1, fx=shoeCur*W;
+        if(_lastPrintX==null){ _lastPrintX=fx; return; }
+        if(Math.abs(fx-_lastPrintX) < 7) return; // standing still — no print/dust
+        _lastPrintX=fx; spawnFootprint(fx); spawnDust(fx);
+      });
+    })();
     // A single progress value drives BOTH the thumb's position along the track
     // and the shoe's wear, so they always move together.
     function applyShoe(pv){
@@ -576,23 +593,25 @@
       // ends (left-aligned at 0, right-aligned at 1, centred in between).
       shoeEl.style.left = (pv*100) + "%";
       shoeEl.style.transform = "translateX(" + (-pv*100) + "%)";
-      // Footprints: drop one every ~16px the shoe walks — runs during the intro
-      // walk AND the drift, so a fading trail always follows the shoe.
-      if(shoePrintsEl && shoeTrackEl && shoeTrackEl.classList.contains("shown")){
-        var W=shoePrintsEl.offsetWidth||1, fx=pv*W, g=0;
-        if(_lastPrintX==null) _lastPrintX=fx;
-        while(Math.abs(fx-_lastPrintX)>=16 && g++<8){ _lastPrintX += (fx>_lastPrintX?16:-16); spawnFootprint(_lastPrintX); }
-      }
     }
     function showShoe(){ if(shoeTrackEl) shoeTrackEl.classList.add("shown"); }
     // Drop a footprint on the ground; it fades and removes itself.
     function spawnFootprint(x){
       if(!shoePrintsEl) return;
       var fp=document.createElement("span"); fp.className="footprint";
-      fp.style.left=(x-3)+"px"; fp.style.top=(_printSide>0?0:3)+"px"; // alternate the two feet
+      fp.style.left=(x-8)+"px"; fp.style.top=(_printSide>0?0:4)+"px"; // sole-shaped; alternate the two feet
       _printSide=-_printSide;
       shoePrintsEl.appendChild(fp);
       fp.addEventListener("animationend", function(){ if(fp.parentNode) fp.parentNode.removeChild(fp); });
+    }
+    function spawnDust(x){
+      if(!shoePrintsEl) return;
+      for(var k=0;k<4;k++){
+        var d=document.createElement("span"); d.className="dust";
+        d.style.left=(x-3)+"px"; d.style.setProperty("--dx", ((k-1.5)*8).toFixed(0)+"px"); d.style.animationDelay=(k*25)+"ms";
+        shoePrintsEl.appendChild(d);
+        (function(el){ el.addEventListener("animationend", function(){ if(el.parentNode) el.parentNode.removeChild(el); }); })(d);
+      }
     }
     function updateShoe(){
       if(!shoeCtl || _introActive || _overview) return; // intro camera / overview drive positions
@@ -609,17 +628,17 @@
     // Auto-advance: the journey starts parked at today (right end) and, after a
     // short beat, drifts back through time; at either end it reverses,
     // ping-ponging in a loop. Auto begins false (set true once positioned at
-    // today). Any genuine user interaction pauses it; it resumes after 5s.
+    // today). Any genuine user interaction pauses it; it resumes after 3s.
     var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0, _overview=false;
-    // Resume the drift 5s after the user stops interacting (never while held).
+    // Resume the drift 3s after the user stops interacting (never while held).
     function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer=setTimeout(function(){ if(!held) auto=true; }, 5000);
+      resumeTimer=setTimeout(function(){ if(!held) auto=true; }, 3000);
     }
-    // Discrete interactions (wheel / keyboard): pause and start the 5s countdown.
+    // Discrete interactions (wheel / keyboard): pause and start the 3s countdown.
     function pauseAuto(){ auto=false; scheduleResume(); }
     // While a pointer/touch is held the timeline stays put and no countdown runs;
-    // the 5s resume timer only starts once contact ends (holdEnd).
+    // the 3s resume timer only starts once contact ends (holdEnd).
     function holdStart(){ held=true; auto=false; if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; } }
     function holdEnd(){ held=false; scheduleResume(); }
     function maxScroll(){ return scroller.scrollWidth - scroller.clientWidth; }
@@ -661,7 +680,7 @@
       e.preventDefault();
     }, {passive:false});
     // Holding the timeline (pointer/touch down) freezes the drift with no
-    // countdown; the 5s resume timer starts only when contact ends.
+    // countdown; the 3s resume timer starts only when contact ends.
     ["pointerdown","mousedown","touchstart"].forEach(function(evt){
       window.addEventListener(evt, function(){ if(!_introActive && !_overview) holdStart(); }, {passive:true});
     });
@@ -697,7 +716,7 @@
       scheduleResume();
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", function(){ if(_overview) exitOverview(false); else enterOverview(); }); })();
-    // Keyboard navigation is discrete, not a hold: pause + 5s countdown.
+    // Keyboard navigation is discrete, not a hold: pause + 3s countdown.
     window.addEventListener("keydown", function(){ if(!_introActive) pauseAuto(); }, {passive:true});
     // Block touch-drag scrolling for the duration of the intro.
     window.addEventListener("touchmove", function(e){ if(_introActive) e.preventDefault(); }, {passive:false});

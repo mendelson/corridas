@@ -25,7 +25,7 @@ const LANG_URLS = { pt: '/pt', en: '/en', es: '/es', de: '/de', fr: '/fr' };
 const STRINGS = {
   pt: {
     siteTitle: 'Próxima Corrida',
-    headerTitle: '🏃 Próxima Corrida',
+    headerTitle: '👟 Próxima Corrida',
     searchPlaceholder: 'Buscar corrida...',
     searchAriaLabel: 'Buscar corrida',
     modeSelect: 'Selecionar',
@@ -90,7 +90,7 @@ const STRINGS = {
   },
   en: {
     siteTitle: 'Next Race',
-    headerTitle: '🏃 Next Race',
+    headerTitle: '👟 Next Race',
     searchPlaceholder: 'Search race...',
     searchAriaLabel: 'Search race',
     modeSelect: 'Select',
@@ -155,7 +155,7 @@ const STRINGS = {
   },
   es: {
     siteTitle: 'Próxima Carrera',
-    headerTitle: '🏃 Próxima Carrera',
+    headerTitle: '👟 Próxima Carrera',
     searchPlaceholder: 'Buscar carrera...',
     searchAriaLabel: 'Buscar carrera',
     modeSelect: 'Seleccionar',
@@ -220,7 +220,7 @@ const STRINGS = {
   },
   de: {
     siteTitle: 'Nächstes Rennen',
-    headerTitle: '🏃 Nächstes Rennen',
+    headerTitle: '👟 Nächstes Rennen',
     searchPlaceholder: 'Rennen suchen...',
     searchAriaLabel: 'Rennen suchen',
     modeSelect: 'Auswählen',
@@ -285,7 +285,7 @@ const STRINGS = {
   },
   fr: {
     siteTitle: 'Prochaine Course',
-    headerTitle: '🏃 Prochaine Course',
+    headerTitle: '👟 Prochaine Course',
     searchPlaceholder: 'Rechercher une course...',
     searchAriaLabel: 'Rechercher une course',
     modeSelect: 'Sélectionner',
@@ -1177,9 +1177,14 @@ function _buildSeloWidget() {
   const dd = wrap.querySelector('#seloFilterDropdown');
   btn.addEventListener('click', e => {
     e.stopPropagation();
-    const open = !dd.classList.contains('hidden');
-    closeAllDropdowns();
-    if (!open) { dd.classList.remove('hidden'); btn.setAttribute('aria-expanded', 'true'); }
+    const willOpen = dd.classList.contains('hidden');
+    // closeAllDropdowns lives in the DOMContentLoaded scope and isn't visible
+    // from this module-level builder — referencing it bare threw a
+    // ReferenceError on every click, which is why the selos menu wouldn't open.
+    // Guard with typeof, then self-toggle.
+    if (typeof closeAllDropdowns === 'function') closeAllDropdowns();
+    dd.classList.toggle('hidden', !willOpen);
+    btn.setAttribute('aria-expanded', String(willOpen));
   });
   dd.addEventListener('click', e => e.stopPropagation());
 

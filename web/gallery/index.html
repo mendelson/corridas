@@ -239,7 +239,10 @@
     // dot. tier() -> "mara" | "mile" | "ord"; the same colour accents the card.
     function milestonesOf(r){ return (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || []; }
     function tier(r){
-      if(r && r.type==="marathon") return "mara";
+      // Marathon detected by distance (~42.2 km) so the tier survives dropping
+      // the now-redundant `type` field; a legacy type==="marathon" still counts.
+      var kmv = r && (typeof r.km === "number" ? r.km : parseFloat(r.km));
+      if(r && (r.type === "marathon" || (kmv >= 42 && kmv <= 43))) return "mara";
       return milestonesOf(r).length ? "mile" : "ord";
     }
     var TIERC={mara:"#E8C04A", mile:"#C3CAD6", ord:"#8b91a0"};
@@ -265,7 +268,7 @@
         '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
         '<div class="card '+side+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
-        '<span class="ctype">'+esc((T.type[r.type]||r.type)+" · "+km(r.km)+" KM")+'</span></div>'+
+        '<span class="ctype">'+esc(km(r.km)+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
         '<div class="cloc">'+esc(loc||r.city)+'</div>'+
         (function(){

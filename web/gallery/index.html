@@ -96,10 +96,14 @@
        in busy stretches to make room), so the connector is always vertical. */
     .conn { position: absolute; width: 1.5px; background: #2c323d; z-index: 1; }
     .conn.below { top: 235px; height: 36px; }
-    .conn.above { top: 199px; height: 36px; }
+    .conn.above { top: 187px; height: 48px; }
     .card { position: absolute; left: 16px; right: 16px; background: #181b21; border: 1px solid #262b34; border-radius: 13px; padding: 13px 15px 14px; z-index: 3; }
     .card.below { top: 271px; }
-    .card.above { bottom: 271px; }
+    .card.above { bottom: 283px; }
+    /* Premium treatment for prestigious races: marathons wear a warm gold frame
+       + glow, milestone races a cooler silver one; ordinary cards stay plain. */
+    .card.mara { border-color: rgba(232,192,74,.5); background: linear-gradient(180deg, #211f18, #181b21 44%); box-shadow: 0 0 0 1px rgba(232,192,74,.22), 0 12px 30px -10px rgba(232,192,74,.32); }
+    .card.mile { border-color: rgba(195,202,214,.42); background: linear-gradient(180deg, #1d2027, #181b21 44%); box-shadow: 0 0 0 1px rgba(195,202,214,.15), 0 12px 28px -12px rgba(195,202,214,.2); }
     .cmeta { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
     .cdate { font-size: 10px; letter-spacing: .16em; font-weight: 700; text-transform: uppercase; }
     .ctype { font-size: 10px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; }
@@ -266,7 +270,7 @@
       // connector is a straight vertical drop from the dot to the card.
       return '<span class="enode '+tc+'" style="left:'+(ex-nh)+'px"></span>'+
         '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
-        '<div class="card '+side+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
+        '<div class="card '+side+' '+tc+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
         '<span class="ctype">'+esc(km(r.km)+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+

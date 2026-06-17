@@ -49,10 +49,10 @@
     .shoe-track { position: relative; margin: 14px var(--gutter) 0; height: 58px; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s ease; }
     .shoe-track.shown { opacity: 1; }
     /* The ground the shoe walks on — a faint lit surface that footprints fade on. */
-    .shoe-track-line { position: absolute; left: 0; right: 0; top: 30px; height: 1.5px; background: #2d3440; box-shadow: 0 3px 9px -4px rgba(0,0,0,.55); }
-    .shoe-prints { position: absolute; left: 0; right: 0; top: 29px; height: 9px; pointer-events: none; }
-    .footprint { position: absolute; width: 5px; height: 7px; border-radius: 50% 50% 45% 45%; background: #3a4252; animation: fp 1.5s ease-out forwards; }
-    @keyframes fp { 0%{ opacity: .5; } 100%{ opacity: 0; transform: scale(.78); } }
+    .shoe-track-line { position: absolute; left: 0; right: 0; top: 30px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, #262d38, #3a4250 18%, #3a4250 82%, #262d38); box-shadow: 0 4px 12px -5px rgba(0,0,0,.6), 0 1px 0 rgba(255,255,255,.04); }
+    .shoe-prints { position: absolute; left: 0; right: 0; top: 28px; height: 10px; pointer-events: none; }
+    .footprint { position: absolute; width: 6px; height: 8px; border-radius: 50% 50% 45% 45%; background: #5a6477; animation: fp 1.8s ease-out forwards; }
+    @keyframes fp { 0%{ opacity: .7; } 100%{ opacity: 0; transform: scale(.7); } }
     .shoe-lab { position: absolute; top: 38px; font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #565c68; white-space: nowrap; }
     .shoe-lab-start { left: 0; }
     .shoe-lab-end { right: 0; color: #E4572E; }
@@ -576,13 +576,20 @@
       // ends (left-aligned at 0, right-aligned at 1, centred in between).
       shoeEl.style.left = (pv*100) + "%";
       shoeEl.style.transform = "translateX(" + (-pv*100) + "%)";
+      // Footprints: drop one every ~16px the shoe walks — runs during the intro
+      // walk AND the drift, so a fading trail always follows the shoe.
+      if(shoePrintsEl && shoeTrackEl && shoeTrackEl.classList.contains("shown")){
+        var W=shoePrintsEl.offsetWidth||1, fx=pv*W, g=0;
+        if(_lastPrintX==null) _lastPrintX=fx;
+        while(Math.abs(fx-_lastPrintX)>=16 && g++<8){ _lastPrintX += (fx>_lastPrintX?16:-16); spawnFootprint(_lastPrintX); }
+      }
     }
     function showShoe(){ if(shoeTrackEl) shoeTrackEl.classList.add("shown"); }
     // Drop a footprint on the ground; it fades and removes itself.
     function spawnFootprint(x){
       if(!shoePrintsEl) return;
       var fp=document.createElement("span"); fp.className="footprint";
-      fp.style.left=(x-2.5)+"px"; fp.style.top=(_printSide>0?0:4)+"px"; // alternate the two feet
+      fp.style.left=(x-3)+"px"; fp.style.top=(_printSide>0?0:3)+"px"; // alternate the two feet
       _printSide=-_printSide;
       shoePrintsEl.appendChild(fp);
       fp.addEventListener("animationend", function(){ if(fp.parentNode) fp.parentNode.removeChild(fp); });
@@ -596,13 +603,7 @@
       var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
       var target=hiP>0 ? clamp(sl/hiP, 0, 1) : 0;
       shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target
-      applyShoe(shoeCur);
-      // Footprints: drop one every ~22px the shoe walks, so a trail forms and fades.
-      if(shoePrintsEl && shoeTrackEl.classList.contains("shown")){
-        var W=shoePrintsEl.offsetWidth||1, footX=shoeCur*W, g=0;
-        if(_lastPrintX==null) _lastPrintX=footX;
-        while(Math.abs(footX-_lastPrintX)>=22 && g++<6){ _lastPrintX += (footX>_lastPrintX?22:-22); spawnFootprint(_lastPrintX); }
-      }
+      applyShoe(shoeCur); // applyShoe lays down the footprints
     }
 
     // Auto-advance: the journey starts parked at today (right end) and, after a
@@ -783,14 +784,11 @@
       var host=document.getElementById("shoeYears"); if(!host || !scroller) return;
       var track=document.getElementById("track");
       var cols=track ? Array.prototype.filter.call(track.querySelectorAll(".sec"), function(s){return s.querySelector(".ylabel");}) : [];
-      var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
-      var W=host.offsetWidth||1, minF=30/W, lastLabF=-1, html="";
-      for(var i=1;i<cols.length-1;i++){
-        var sec=cols[i], f=hiP>0 ? clamp((sec.offsetLeft-24)/hiP, 0, 1) : 0;
-        // every intermediate year gets a tick; the year label shows only where
-        // there's room — so no year (e.g. 2023) is silently dropped.
-        var lab=(f-lastLabF>=minF); if(lab) lastLabF=f;
-        html+='<span class="shoe-yr" style="left:'+(f*100)+'%">'+(lab?esc(sec.querySelector(".ylabel").textContent):'')+'</span>';
+      var n=cols.length, html="";
+      // Even-spaced so every intermediate year is written out and none overlap
+      // (the oldest year and TODAY stay as the prominent end labels).
+      for(var i=1;i<n-1;i++){
+        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+esc(cols[i].querySelector(".ylabel").textContent)+'</span>';
       }
       host.innerHTML=html;
     }

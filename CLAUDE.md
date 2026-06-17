@@ -509,15 +509,22 @@ Every code change must go through a PR before merging into main.
 
 **Each PR must treat exactly one subject.** A PR that adds a new scraper must not also fix another scraper. A PR that fixes location errors must not also add a test. When in doubt: one task, one PR. This makes CI failures easier to diagnose and rollbacks safer.
 
-1. **Create a feature branch** — use a descriptive name.
-2. **Open a draft PR** using `mcp__github__create_pull_request` with `draft: true`. CI does not run on draft PRs — tests only trigger when the PR is marked ready.
-3. **Develop freely** — push commits to the branch without CI interference.
-4. **Mark ready** with `mcp__github__update_pull_request` setting `draft: false`. This triggers CI (`ci-frontend.yml` runs on `ready_for_review`).
-5. **Poll CI** — use `mcp__github__pull_request_read` to check check runs. **Never merge with pending or failing checks.** Wait until all checks complete with `conclusion: success`. For UI changes, also run the `/verify` skill to confirm rendered behaviour before merging.
-6. **Merge** via `mcp__github__merge_pull_request` — only after all tests pass.
-7. **Scrape triggers automatically** on merge via `data-pipeline.yml` (`pull_request: types: [closed]` + merged guard).
+**Every branch gets a draft PR the moment it exists.** Open the draft PR as soon as the branch is created (before, or immediately after, the first commit) — never develop on a branch that has no PR. This lets any other agent pick the work up at any time, even if this session abandons it mid-way. The **only** exception is a purely throwaway branch (a diagnostic probe, a spike) that will *never* be eligible to merge — those need no PR.
 
-**A PR may only be merged when ALL CI test actions pass.** This is a hard requirement — never bypass it.
+**The draft PR body is a hand-off document.** Write it so a fresh agent could finish the work without context. It must state, in plain terms:
+- **Objective** — what the change is and why.
+- **Definition of done** — the concrete end state (what must be true to call it finished).
+- **Merge requirements** — exactly what must pass/hold before it can merge (CI green, specific behaviour verified via `/verify`, etc.).
+
+**Prefer GitHub native auto-merge over a manual merge.** When you mark a PR ready, also enable auto-merge so the PR lands itself the instant its required checks pass — even if this session ends first. Do **not** sit polling and then merge by hand; that's why PRs stopped auto-merging. The repo has auto-merge enabled (the data/CI bot PRs depend on it), so a PR only fails to auto-merge if you forgot to enable it.
+
+1. **Create a feature branch** (descriptive name) and **immediately open a draft PR** (`mcp__github__create_pull_request`, `draft: true`) carrying the objective / definition-of-done / merge-requirements body above. CI does not run on draft PRs.
+2. **Develop freely** — push commits without CI interference; keep the PR body current as the plan firms up.
+3. **Mark ready** (`mcp__github__update_pull_request`, `draft: false`) — this triggers CI — **and enable auto-merge** (`mcp__github__enable_pr_auto_merge`, `mergeMethod: SQUASH`) in the same step. For UI changes, run `/verify` before marking ready.
+4. **Let it land.** Watch via `subscribe_pr_activity`; if a required check **fails**, diagnose, fix, and push — auto-merge re-arms and fires when green. Only fall back to a manual `mcp__github__merge_pull_request` if auto-merge is unavailable for that PR.
+5. **Scrape triggers automatically** on merge via `data-pipeline.yml` (`pull_request: types: [closed]` + merged guard).
+
+**A PR may only be merged when ALL CI test actions pass.** This is a hard requirement — auto-merge enforces it; never bypass it with a manual merge over pending/failing checks.
 
 ### Every PR must reach a conclusion
 

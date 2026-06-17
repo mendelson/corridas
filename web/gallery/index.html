@@ -124,6 +124,17 @@
     .btn:hover { border-color: #465061; background: #20262f; }
     .slogo { display: inline-flex; align-items: center; gap: 5px; } .slogo svg { display: block; }
     .sword { font-weight: 700; font-size: 12px; letter-spacing: .01em; color: #FC4C02; }
+    /* Relay events: one card, a stacked per-leg list (each leg keeps its own
+       identification + its own links). No "relay" wording — the legs simply read
+       as the day's efforts. */
+    .legs { margin-top: 11px; display: flex; flex-direction: column; gap: 9px; }
+    .legrow { border-top: 1px solid #23272f; padding-top: 9px; }
+    .legrow:first-child { border-top: none; padding-top: 0; }
+    .leghead { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+    .legid { font-size: 11.5px; font-weight: 700; color: #aeb4c0; letter-spacing: .02em; }
+    .legkm { font-size: 9.5px; letter-spacing: .12em; color: #5e6472; font-weight: 600; text-transform: uppercase; white-space: nowrap; }
+    .legbtns { display: flex; gap: 8px; }
+    .legbtns .btn { height: 32px; }
     /* Standardise the platform marks to one bounded box so none dominates the
        button. Garmin's condensed wordmark fills the height; Polar's wide one is
        width-capped (it was ~6:1, so it sprawled at a matched height). */
@@ -256,7 +267,8 @@
       // Marathon detected by distance (~42.2 km) so the tier survives dropping
       // the now-redundant `type` field; a legacy type==="marathon" still counts.
       var kmv = r && (typeof r.km === "number" ? r.km : parseFloat(r.km));
-      if(r && (r.type === "marathon" || (kmv >= 42 && kmv <= 43))) return "mara";
+      // A relay (legs) is never auto-promoted to marathon by its summed distance.
+      if(r && !legsOf(r) && (r.type === "marathon" || (kmv >= 42 && kmv <= 43))) return "mara";
       return milestonesOf(r).length ? "mile" : "ord";
     }
     var TIERC={mara:"#E8C04A", mile:"#C3CAD6", ord:"#8b91a0"};
@@ -274,6 +286,31 @@
     function stravaBtn(url){
       return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava"><span class="slogo">'+CHEVRON+'<span class="sword">Strava</span></span></a>';
     }
+    // Relay support: an event may carry a `legs` array (each leg = its own
+    // identification + km + links). headlineKm sums the legs unless an explicit
+    // top-level km overrides it; legsHTML renders the per-leg list.
+    function legsOf(r){ return (r && Array.isArray(r.legs) && r.legs.length) ? r.legs : null; }
+    function linkBtns(o){
+      return (o && o.strava ? stravaBtn(o.strava) : '') + (o && o.device && o.deviceUrl ? deviceBtn(o.device, o.deviceUrl) : '');
+    }
+    function headlineKm(r){
+      if(r && r.km != null && r.km !== "") return r.km;          // explicit override wins
+      var ls = legsOf(r);
+      if(ls){
+        var nums = ls.map(function(L){ return typeof L.km === "number" ? L.km : parseFloat(L.km); });
+        if(nums.length && nums.every(function(n){ return !isNaN(n); }))
+          return nums.reduce(function(a,b){ return a + b; }, 0);
+      }
+      return r ? r.km : undefined;
+    }
+    function legsHTML(ls){
+      return '<div class="legs">' + ls.map(function(L){
+        return '<div class="legrow"><div class="leghead">'+
+          '<span class="legid">'+esc(L.id||"")+'</span>'+
+          '<span class="legkm">'+esc(km(L.km)+" KM")+'</span></div>'+
+          '<div class="legbtns">'+linkBtns(L)+'</div></div>';
+      }).join('') + '</div>';
+    }
     function cardHTML(r,ex,p,side,loc,cl){
       var c=color(r), tc=tier(r), nh=(tc==="mara"?7.5:(tc==="mile"?6:4)); // marker half-width, by tier
       // The card is centred on its dot (or clamped to the column edge), so the
@@ -282,7 +319,7 @@
         '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
         '<div class="card '+side+' '+tc+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
-        '<span class="ctype">'+esc(km(r.km)+" KM")+'</span></div>'+
+        '<span class="ctype">'+esc(km(headlineKm(r))+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
         '<div class="cloc">'+esc(loc||r.city)+'</div>'+
         (function(){
@@ -292,7 +329,7 @@
           }).join('');
           return badges ? '<div class="cbadges">'+badges+'</div>' : '';
         })()+
-        '<div class="cbtns">'+stravaBtn(r.strava)+deviceBtn(r.device,r.deviceUrl)+'</div></div>';
+        (legsOf(r) ? legsHTML(legsOf(r)) : '<div class="cbtns">'+linkBtns(r)+'</div>')+'</div>';
     }
 
     function render(RACES, LOCDATA, paises){

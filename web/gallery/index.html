@@ -682,7 +682,10 @@
       var fit=Math.min(1, (clientW-2*M)/(todayX+40));
       track.style.transformOrigin="0 0";
       track.style.transition="transform .55s cubic-bezier(.22,.61,.36,1)";
-      track.style.transform="translateX("+M+"px) translateY("+((H-H*fit)/2)+"px) scale("+fit+")";
+      // translateX compensates the current scrollLeft, so the fitted timeline is
+      // anchored to the viewport left however far you'd scrolled. Without it the
+      // scaled-down track sat off-screen and the overview looked blank/broken.
+      track.style.transform="translateX("+(M+scroller.scrollLeft)+"px) translateY("+((H-H*fit)/2)+"px) scale("+fit+")";
       scroller.style.overflowX="hidden"; _overview=true; auto=false;
       var b=document.getElementById("navZoom"); if(b) b.classList.add("active");
     }

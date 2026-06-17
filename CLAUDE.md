@@ -565,6 +565,8 @@ Every code change must go through a PR before merging into main.
 1. **Merged** — CI is green and the change is accepted into `main`.
 2. **Closed (without merge)** — the change is abandoned, superseded, or no longer needed. Always leave a closing comment explaining why (e.g. "superseded by #N", "approach changed, see #M", "no longer needed because …").
 
+**Act on a PR's terminal state the moment it's reached — never let a PR sit.** The instant a PR is no longer needed, close it (with a one-line reason). The instant a PR is mergeable (required checks green), merge it — via auto-merge so it lands itself, or with a manual `mcp__github__merge_pull_request` the moment you notice it's green if auto-merge didn't fire. Promptness is the rule in both directions: a PR that *could* be closed or merged but is left open is itself the problem — it accrues merge conflicts, blocks the data pipeline from landing fixes, and burns CI minutes on every later push. Do not batch this for "later" or wait for the user to confirm; close the unneeded and merge the ready as soon as the state is clear.
+
 Open PRs without an active task driving them are a maintenance debt: they accumulate merge conflicts, confuse reviewers, and obscure what's actually in flight. When picking up work, audit any open PRs you (or a previous session) authored:
 
 - If still relevant → finish the work, get CI green, merge.

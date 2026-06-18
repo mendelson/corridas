@@ -14,7 +14,7 @@ from .merger import are_duplicates, merge_rodada, _merge_pair
 from .enrichment_selos import enrich as _enrich_selos
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event
-from .http_client import get as http_get
+from .http_client import get as http_get, get_direct as http_get_direct
 from . import geo as _geo
 
 # ---------------------------------------------------------------------------
@@ -567,29 +567,50 @@ def _og_image_from_url(url: str) -> str | None:
     return None
 
 
+# Statuses that mean "the page exists but is bot-protected" (Cloudflare / WAF
+# challenge). A human visiting still sees the event, so these must NOT count as a
+# miss — only a hard not-found (404/410) or a connection failure means the page
+# is actually gone.
+_ALIVE_WAF_STATUS = {403, 406, 429, 503}
+
+
 def _check_and_refresh_links(existing: Corrida) -> bool:
-    """Check if any inscription link is still live (HTTP 200).
-    If yes, opportunistically refresh og:image from the page.
-    Returns True if at least one link is reachable."""
+    """True if the event still has a live page.
+
+    Checks the event page AND every inscription link: once registration closes,
+    an inscription URL may 404/redirect while the event page stays up, so both
+    must be considered. Uses get_direct (which does NOT raise on a WAF status) so
+    a bot-protected-but-live page (e.g. Ticket Sports behind Cloudflare with
+    registration closed) counts as alive rather than as a miss. Refreshes
+    og:image opportunistically.
+    """
     from bs4 import BeautifulSoup
-    links = [l for fonte in existing.fontes for l in fonte.links_inscricao]
+    links: list[str] = []
+    for fonte in existing.fontes:
+        if fonte.link_evento:
+            links.append(fonte.link_evento)
+        links.extend(fonte.links_inscricao)
+    links = list(dict.fromkeys(l for l in links if l))  # dedup, drop empties
     if not links:
         return False
     for link in links:
         try:
-            resp = http_get(link, timeout=15)
-            if resp.status_code != 200:
-                continue
-            if not existing.imagem_url:
-                soup = BeautifulSoup(resp.text, "lxml")
-                tag = soup.find("meta", property="og:image")
-                if tag:
-                    content = tag.get("content", "")
-                    if content and not _is_generic_image(content):
-                        existing.imagem_url = validate_image_url(content, source_domain=link)
-            return True
+            resp = http_get_direct(link, timeout=15)
         except Exception:
-            pass
+            continue  # connection error / timeout — try the next link
+        sc = resp.status_code
+        if sc in _ALIVE_WAF_STATUS:
+            return True  # page exists, just bot-protected — keep the event
+        if sc != 200:
+            continue  # 404/410/etc. — this link is dead, try the next
+        if not existing.imagem_url:
+            soup = BeautifulSoup(resp.text, "lxml")
+            tag = soup.find("meta", property="og:image")
+            if tag:
+                content = tag.get("content", "")
+                if content and not _is_generic_image(content):
+                    existing.imagem_url = validate_image_url(content, source_domain=link)
+        return True
     return False
 
 

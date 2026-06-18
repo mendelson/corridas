@@ -1,5 +1,19 @@
 'use strict';
 
+// The running-shoe mark — the same cobalt shoe drawn on the personal timeline
+// (web/gallery/shoe-wear.js), clean (no wear layers). Used as the header logo.
+const SHOE_LOGO = '<svg class="shoe-logo" viewBox="48 88 348 188" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
+  + '<path d="M58 210 C54 224 54 244 66 252 C120 262 320 262 374 250 C388 244 392 226 384 212 C380 206 372 208 360 210 C300 220 130 220 80 210 C70 208 62 206 58 210 Z" fill="#eee8de"/>'
+  + '<path d="M56 232 C62 248 120 258 222 258 C320 258 372 250 384 236 C382 248 372 256 360 258 C300 264 130 264 80 258 C68 256 58 246 56 232 Z" fill="#d7cdbe"/>'
+  + '<path d="M62 214 C150 224 300 224 380 212 C384 216 382 222 376 224 C300 234 130 234 70 224 C64 222 60 218 62 214 Z" fill="#f5f0e8"/>'
+  + '<path d="M70 252 C98 262 150 263 184 262 C150 256 108 254 84 248 C76 248 70 250 70 252 Z M256 262 C300 262 344 257 366 248 C346 260 308 263 270 263 C262 263 256 262 256 262 Z" fill="#2b2724"/>'
+  + '<path d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C108 96 130 92 150 100 C156 116 158 128 160 138 C195 142 248 150 300 162 C342 172 366 188 376 210 C372 214 364 214 354 214 C250 218 130 218 92 214 C86 214 81 213 78 210 Z" fill="#3b6ea3"/>'
+  + '<path d="M160 138 C195 142 248 150 300 162 C300 178 296 196 286 210 C220 212 170 210 150 206 C150 184 154 158 160 138 Z" fill="#284f78" opacity="0.32"/>'
+  + '<path d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C94 138 92 172 98 200 C96 210 88 213 78 210 Z" fill="#284f78"/>'
+  + '<path d="M306 164 C338 174 360 190 376 210 C372 214 364 214 354 214 C318 216 300 216 292 214 C288 196 294 176 306 164 Z" fill="#284f78"/>'
+  + '<path d="M64 230 C150 240 300 238 382 222" fill="none" stroke="#b8552e" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>'
+  + '</svg>';
+
 // ---------------------------------------------------------------------------
 // Language detection — runs before anything else
 // ---------------------------------------------------------------------------
@@ -25,7 +39,7 @@ const LANG_URLS = { pt: '/pt', en: '/en', es: '/es', de: '/de', fr: '/fr' };
 const STRINGS = {
   pt: {
     siteTitle: 'Próxima Corrida',
-    headerTitle: '👟 Próxima Corrida',
+    headerTitle: 'Próxima Corrida',
     searchPlaceholder: 'Buscar corrida...',
     searchAriaLabel: 'Buscar corrida',
     modeSelect: 'Selecionar',
@@ -90,7 +104,7 @@ const STRINGS = {
   },
   en: {
     siteTitle: 'Next Race',
-    headerTitle: '👟 Next Race',
+    headerTitle: 'Next Race',
     searchPlaceholder: 'Search race...',
     searchAriaLabel: 'Search race',
     modeSelect: 'Select',
@@ -155,7 +169,7 @@ const STRINGS = {
   },
   es: {
     siteTitle: 'Próxima Carrera',
-    headerTitle: '👟 Próxima Carrera',
+    headerTitle: 'Próxima Carrera',
     searchPlaceholder: 'Buscar carrera...',
     searchAriaLabel: 'Buscar carrera',
     modeSelect: 'Seleccionar',
@@ -220,7 +234,7 @@ const STRINGS = {
   },
   de: {
     siteTitle: 'Nächstes Rennen',
-    headerTitle: '👟 Nächstes Rennen',
+    headerTitle: 'Nächstes Rennen',
     searchPlaceholder: 'Rennen suchen...',
     searchAriaLabel: 'Rennen suchen',
     modeSelect: 'Auswählen',
@@ -285,7 +299,7 @@ const STRINGS = {
   },
   fr: {
     siteTitle: 'Prochaine Course',
-    headerTitle: '👟 Prochaine Course',
+    headerTitle: 'Prochaine Course',
     searchPlaceholder: 'Rechercher une course...',
     searchAriaLabel: 'Rechercher une course',
     modeSelect: 'Sélectionner',
@@ -1952,7 +1966,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // i18n static labels
   document.title = T.siteTitle;
   const headerTitle = document.querySelector('.app-title');
-  if (headerTitle) headerTitle.textContent = T.headerTitle;
+  if (headerTitle) headerTitle.innerHTML = SHOE_LOGO + '<span class="app-title-txt"></span>';
+  if (headerTitle) headerTitle.querySelector('.app-title-txt').textContent = T.headerTitle;
   searchInput.placeholder = T.searchPlaceholder;
   searchInput.setAttribute('aria-label', T.searchAriaLabel);
   modeSelect.textContent   = T.modeSelect;

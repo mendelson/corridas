@@ -68,6 +68,15 @@ input { font-family: inherit; }
   color: var(--color-accent);
   letter-spacing: -0.02em;
   margin: 0; /* .app-title is an <h1>: kill the UA heading margins */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.app-title .shoe-logo {
+  height: 1.25em;
+  width: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
 .site-footer {

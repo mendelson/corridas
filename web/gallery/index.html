@@ -670,7 +670,7 @@
       var inner=shoeEl ? shoeEl.querySelector(".shoe") : null;
       if(!inner) return;
       inner.addEventListener("animationiteration", function(){
-        if(!shoePrintsEl || _introActive || _overview || !shoeTrackEl.classList.contains("shown")) return;
+        if(!shoePrintsEl || _introActive || !shoeTrackEl.classList.contains("shown")) return;
         var W=shoePrintsEl.offsetWidth||1, fx=shoeCur*W;
         if(_lastPrintX==null){ _lastPrintX=fx; return; }
         if(Math.abs(fx-_lastPrintX) < 7) return; // standing still — no print/dust
@@ -707,7 +707,7 @@
       }
     }
     function updateShoe(){
-      if(!shoeCtl || _introActive || _overview) return; // intro camera / overview drive positions
+      if(!shoeCtl || _introActive) return; // intro camera drives the shoe; otherwise scrollLeft does (zoom included)
       var sl=scroller.scrollLeft;
       // Face the scroll direction (deadband avoids jitter); smooth turn via CSS.
       if(_lastSL!=null){ var d=sl-_lastSL; if(d>0.5) setFace(1); else if(d<-0.5) setFace(-1); }
@@ -722,7 +722,7 @@
     // short beat, drifts back through time; at either end it reverses,
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 3s.
-    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0, _overview=false;
+    var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0;
     // Resume the drift 3s after the user stops interacting (never while held).
     function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
@@ -767,10 +767,9 @@
     window.addEventListener("wheel", function(e){
       if(_introActive){ e.preventDefault(); return; } // locked during intro
       if(e.ctrlKey || e.metaKey){ // trackpad pinch / ⌘-wheel → zoom about the cursor
-        if(_camDone){ if(!_overview) enterZoom(); zoomAt(e.clientX, e.clientY, _zoom*Math.exp(-e.deltaY*0.0025)); }
+        if(_camDone) zoomAt(e.clientX, e.clientY, _zoom*Math.exp(-e.deltaY*0.0025));
         e.preventDefault(); return;
       }
-      if(_overview){ e.preventDefault(); return; } // zoom mode: plain wheel is inert
       if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
       scroller.scrollLeft += e.deltaY;
       pos=scroller.scrollLeft;
@@ -780,105 +779,91 @@
     // Holding the timeline (pointer/touch down) freezes the drift with no
     // countdown; the 3s resume timer starts only when contact ends.
     ["pointerdown","mousedown","touchstart"].forEach(function(evt){
-      window.addEventListener(evt, function(){ if(!_introActive && !_overview) holdStart(); }, {passive:true});
+      window.addEventListener(evt, function(){ if(!_introActive) holdStart(); }, {passive:true});
     });
     ["pointerup","pointercancel","mouseup","touchend","touchcancel"].forEach(function(evt){
-      window.addEventListener(evt, function(){ if(!_introActive && !_overview) holdEnd(); }, {passive:true});
+      window.addEventListener(evt, function(){ if(!_introActive) holdEnd(); }, {passive:true});
     });
-    // Pinch-to-zoom. Two fingers (or ⌘/ctrl + wheel on desktop) scale the whole
-    // track about the focal point; one finger then pans. This is a
-    // transform-driven mode (_overview) where native scroll / auto-drift are
-    // suspended — the same gating the old overview used, so the intro and the
-    // normal scroll path stay untouched. The reset button (navZoom) glides back
-    // to today at scale 1 and resumes the auto-drift; any re-render (draw) drops
-    // the transform first. _zoom is clamped between a fit-the-whole-timeline
-    // minimum and a modest zoom-in maximum.
-    var _zoom=1, _panX=0, _panY=0, _trkL=0, _trkT=0, _zMin=1; var Z_MAX=3;
+    // Pinch-to-zoom WITHOUT a separate mode. Two fingers (or ⌘/ctrl + wheel on
+    // desktop) scale the track about the rail; a spacer extends the scroller's
+    // scrollWidth to baseWidth×zoom so NATIVE scroll, the auto-drift in tick()
+    // and the shoe scrubber all keep operating on the zoomed timeline exactly as
+    // at 1× — one finger is left entirely to native scroll. The reset button
+    // (navZoom) returns to today at scale 1 and resumes the auto-drift; any
+    // re-render (draw) drops the transform first. _zoom is clamped between a
+    // fit-the-whole-timeline minimum and a modest zoom-in maximum.
+    // Scale about the rail (the track's vertical centre at 235px of 470px), so a
+    // zoom-in clips card edges symmetrically while the centre band — rail, nodes,
+    // year labels — always stays in view. Cap the zoom-in modestly so card
+    // content near the rail stays readable; zoom-out fits the whole timeline.
+    var _zoom=1, _zMin=0.12; var Z_MAX=2;
+    var _zoomBaseW=0, _railY=235, _zoomSpacer=null;
     function _trk(){ return document.getElementById("track"); }
-    function applyZoom(){ _trk().style.transform="translate("+_panX+"px,"+_panY+"px) scale("+_zoom+")"; }
-    function clampPan(){
-      var t=_trk(), cw=scroller.clientWidth||1, ch=scroller.clientHeight||1;
-      var contentW=(t.scrollWidth||cw)*_zoom, contentH=(t.offsetHeight||ch)*_zoom;
-      if(_panX > cw-80) _panX = cw-80;
-      if(_panX < 80-contentW) _panX = 80-contentW;
-      if(contentH<=ch) _panY=(ch-contentH)/2;
-      else { if(_panY>0) _panY=0; if(_panY < ch-contentH) _panY = ch-contentH; }
+    function _ensureZoomSetup(){
+      var t=_trk(); if(!t) return;
+      _zoomBaseW = (t.scrollWidth||1) / (_zoom||1);          // base (1×) content width
+      var rail=t.querySelector(".rail"); _railY = rail ? rail.offsetTop : 235;
+      if(!_zoomSpacer){
+        _zoomSpacer=document.createElement("div");
+        _zoomSpacer.style.cssText="flex:0 0 auto;height:1px;pointer-events:none;";
+        t.parentNode.appendChild(_zoomSpacer);              // sibling after the track in the scroller
+      }
     }
-    function enterZoom(){
-      if(!_camDone || _overview) return;
-      var t=_trk(), sl=scroller.scrollLeft;
-      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
-      var r=t.getBoundingClientRect(); _trkL=r.left; _trkT=r.top;
+    function applyZoom(){
+      var t=_trk(); if(!t) return;
+      t.style.transformOrigin="0 "+_railY+"px";
+      t.style.transform = _zoom===1 ? "" : "scale("+_zoom+")";
+      if(_zoomSpacer) _zoomSpacer.style.width = Math.max(0,_zoomBaseW*(_zoom-1))+"px";
+    }
+    function _zMinFor(){
+      var t=_trk(); if(!t) return 0.12;
       var clientW=scroller.clientWidth||1, tn=t.querySelector(".tnode");
-      var todayX=tn ? (tn.getBoundingClientRect().left - r.left) : (t.scrollWidth||clientW);
-      _zMin=Math.max(0.12, Math.min(1, (clientW-40)/(todayX+40)));
-      _zoom=1; _panX=-sl; _panY=0;
-      t.style.transformOrigin="0 0"; t.style.transition=""; t.style.willChange="transform";
-      _overview=true; auto=false; held=false;
-      applyZoom();
-      var b=document.getElementById("navZoom"); if(b) b.classList.add("active");
+      var todayX=tn ? tn.offsetLeft : (_zoomBaseW||t.scrollWidth||clientW);
+      return Math.max(0.12, Math.min(1, (clientW-40)/((todayX||1)+40)));
     }
+    // Scale the track about the rail and extend the scroller's scrollWidth with a
+    // spacer to baseWidth*zoom, keeping the focal point fixed — native scroll, the
+    // auto-drift and the shoe scrubber then operate on the zoomed timeline exactly
+    // as at 1×. No separate "zoom mode".
     function zoomAt(fx,fy,nz){
-      nz=Math.max(_zMin, Math.min(Z_MAX, nz));
-      var cx=(fx-_trkL-_panX)/_zoom, cy=(fy-_trkT-_panY)/_zoom; // content point under the focal
-      _zoom=nz; _panX=fx-_trkL-cx*nz; _panY=fy-_trkT-cy*nz;    // keep that point fixed on screen
-      clampPan(); applyZoom();
+      if(!_zoomBaseW) _ensureZoomSetup();
+      nz=Math.max(_zMinFor(), Math.min(Z_MAX, nz));
+      var sLeft=scroller.getBoundingClientRect().left;
+      var baseX=(scroller.scrollLeft + (fx-sLeft)) / _zoom;  // 1× content-x under the focal
+      _zoom=nz; applyZoom();
+      scroller.scrollLeft = baseX*nz - (fx-sLeft);           // keep the focal point fixed on screen
+      pos=scroller.scrollLeft; endPos=startScroll();         // recompute the "today" drift bound
+      var b=document.getElementById("navZoom"); if(b) b.classList.toggle("active", _zoom!==1);
+      pauseAuto();                                           // the drift resumes 3s after the gesture
     }
     function _dropZoom(){ // hard reset used by draw() when the track is replaced
-      var t=_trk(); _overview=false; _zoom=1; _panX=0; _panY=0;
-      t.style.transition=""; t.style.transform="none"; t.style.willChange="";
-      scroller.style.overflowX="";
+      var t=_trk(); _zoom=1; _zoomBaseW=0;
+      if(_zoomSpacer && _zoomSpacer.parentNode){ _zoomSpacer.parentNode.removeChild(_zoomSpacer); _zoomSpacer=null; }
+      if(t){ t.style.transform=""; t.style.transformOrigin=""; }
       var b=document.getElementById("navZoom"); if(b) b.classList.remove("active");
     }
-    function resetView(){
-      var t=_trk();
-      if(_overview){
-        var target=startScroll();
-        t.style.transition="transform .5s cubic-bezier(.22,.61,.36,1)";
-        _zoom=1; _panX=-target; _panY=0; applyZoom(); // glide to today @ scale 1
-        var b=document.getElementById("navZoom"); if(b) b.classList.remove("active");
-        setTimeout(function(){
-          if(_overview && Math.abs(_zoom-1)<0.001){ // still settled at default — hand off to native scroll
-            t.style.transition=""; t.style.transform="none"; t.style.willChange="";
-            scroller.style.overflowX=""; _overview=false;
-            scroller.scrollLeft=target; pos=target; held=false; auto=true;
-          }
-        }, 520);
-      } else {
-        var s=startScroll(); scroller.scrollLeft=s; pos=s; held=false; auto=true;
-      }
+    function resetView(){ // back to 1× at today, drift resumes
+      _dropZoom(); // full teardown: scale→1, remove spacer, clear transform & re-measure next zoom
+      var s=startScroll(); scroller.scrollLeft=s; pos=s; endPos=startScroll();
+      held=false; auto=true;
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
-    // Touch gestures: two fingers pinch-zoom, one finger pans while zoomed.
+    // Touch: two fingers pinch-zoom; one finger is left to native scroll.
     function _tdist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }
     function _tmid(t){ return {x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2}; }
-    var _pinchD0=0, _pinchZ0=1, _pan1x=0, _pan1y=0, _panning=false;
+    var _pinchD0=0, _pinchZ0=1;
     scroller.addEventListener("touchstart", function(e){
-      if(_introActive) return;
-      if(e.touches.length===2){
-        if(!_camDone) return;
-        if(!_overview) enterZoom();
-        _pinchD0=_tdist(e.touches)||1; _pinchZ0=_zoom; _panning=false;
-        e.preventDefault();
-      } else if(e.touches.length===1 && _overview){
-        _panning=true; _pan1x=e.touches[0].clientX; _pan1y=e.touches[0].clientY;
-      }
+      if(_introActive || !_camDone) return;
+      if(e.touches.length===2){ _pinchD0=_tdist(e.touches)||1; _pinchZ0=_zoom; e.preventDefault(); }
     }, {passive:false});
     scroller.addEventListener("touchmove", function(e){
       if(_introActive) return;
-      if(e.touches.length>=2 && _overview){
+      if(e.touches.length>=2 && _pinchD0){
         var m=_tmid(e.touches); zoomAt(m.x, m.y, _pinchZ0*(_tdist(e.touches)/_pinchD0));
-        e.preventDefault();
-      } else if(e.touches.length===1 && _overview && _panning){
-        var x=e.touches[0].clientX, y=e.touches[0].clientY;
-        _panX+=x-_pan1x; _panY+=y-_pan1y; _pan1x=x; _pan1y=y; clampPan(); applyZoom();
         e.preventDefault();
       }
     }, {passive:false});
-    scroller.addEventListener("touchend", function(e){
-      if(e.touches.length<2) _pinchD0=0;
-      if(e.touches.length===0){ _panning=false; if(_overview && Math.abs(_zoom-1)<0.05) resetView(); }
-    }, {passive:false});
+    scroller.addEventListener("touchend", function(e){ if(e.touches.length<2) _pinchD0=0; }, {passive:false});
     // Keyboard navigation is discrete, not a hold: pause + 3s countdown.
     window.addEventListener("keydown", function(){ if(!_introActive) pauseAuto(); }, {passive:true});
     // Block touch-drag scrolling for the duration of the intro.
@@ -891,11 +876,12 @@
     function draw(){
       if(!_data) return;
       if(firstDrawn && !_camDone) return; // cinematic intro in progress — don't re-render under it
-      if(_overview) _dropZoom(); // a re-render replaces the track; drop the zoom transform
       var first=!firstDrawn;
       // Preserve scroll across re-renders (language switch / resize) so the view
-      // doesn't jump back to the start.
+      // doesn't jump back to the start. If a re-render lands mid-zoom, convert the
+      // scaled offset back to 1× space before dropping the transform.
       var sl=scroller?scroller.scrollLeft:0;
+      if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); } // a re-render replaces the track; drop the zoom transform
       render(_data.races,_data.loc,_data.paises);
       if(!scroller) return;
       // Scrubber end labels: oldest year on the left, "today" on the right.
@@ -948,7 +934,7 @@
     // label sits at the column start until the gutter reaches it, pins to the
     // gutter through the year, then is pushed out by the column's trailing edge.
     function updateStickyYears(){
-      if(!_camDone || _overview || !stickyYears.length) return; // camera / overview drive positions
+      if(!_camDone || _zoom!==1 || !stickyYears.length) return; // cached geometry is 1× only; rest at column start while zoomed
       var sl=scroller.scrollLeft;
       for(var i=0;i<stickyYears.length;i++){
         var s=stickyYears[i];

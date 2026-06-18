@@ -18,6 +18,7 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, timedelta
+from pathlib import Path
 
 from bs4 import BeautifulSoup
 
@@ -37,6 +38,32 @@ _START_TIME_RE = re.compile(r'"(?:local_)?start_time"\s*:\s*"(\d{1,2}):(\d{2})"'
 _DISTANCE_RE = re.compile(r'"distance"\s*:\s*(\d+(?:\.\d+)?)')
 _SLUG_RE = re.compile(r"/marathon/([a-z0-9][a-z0-9\-]*)/?$", re.IGNORECASE)
 
+# The sitemap lists ~7000 marathons but each page is heavy, so only _MAX_EVENTS
+# are fetched per run. Fetching a fixed prefix would forever miss everything
+# past the first few hundred (alphabetically) — including the World Marathon
+# Majors (London, Tokyo, NYC…). Instead a persisted cursor advances the window
+# each run so the whole catalogue is covered over successive runs; reconcile (+
+# the live-page recheck) keeps events already seen. The cursor is
+# machine-maintained state, like data/geo_cache.json — never hand-authored.
+_CURSOR_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "worldsmarathons_cursor.json"
+
+
+def _rotation_window(urls: list[str]) -> list[str]:
+    n = len(urls)
+    if n <= _MAX_EVENTS:
+        return urls
+    try:
+        start = int(json.loads(_CURSOR_PATH.read_text(encoding="utf-8")).get("offset", 0)) % n
+    except Exception:
+        start = 0
+    end = start + _MAX_EVENTS
+    window = urls[start:end] + (urls[:end - n] if end > n else [])  # wrap around
+    try:
+        _CURSOR_PATH.write_text(json.dumps({"offset": end % n}) + "\n", encoding="utf-8")
+    except Exception:
+        pass
+    return window
+
 
 # ---------------------------------------------------------------------------
 def scrape() -> list[Corrida]:
@@ -47,11 +74,12 @@ def scrape() -> list[Corrida]:
     if not urls:
         print(f"[{SOURCE_NAME}] nenhuma URL de evento no sitemap")
         return []
-    print(f"[{SOURCE_NAME}] {len(urls)} eventos no sitemap; buscando até {_MAX_EVENTS}")
+    window = _rotation_window(urls)
+    print(f"[{SOURCE_NAME}] {len(urls)} eventos no sitemap; buscando {len(window)} (janela rotativa)")
 
     corridas: list[Corrida] = []
     with ThreadPoolExecutor(max_workers=8) as pool:
-        futures = {pool.submit(_fetch_event, u, today, end_date): u for u in urls[:_MAX_EVENTS]}
+        futures = {pool.submit(_fetch_event, u, today, end_date): u for u in window}
         for fut in as_completed(futures):
             try:
                 c = fut.result()

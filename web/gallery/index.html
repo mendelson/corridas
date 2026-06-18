@@ -442,7 +442,7 @@
       var cl=el.classList;
       if(cl.contains("rail"))  return {rank:0, dur:680, ease:OUT,  origin:"left center", kf:[{transform:"scaleX(0)"},{transform:"scaleX(1)"}]};
       if(cl.contains("ynode")||cl.contains("gnode")||cl.contains("tnode")) return {rank:1, dur:500, ease:BACK, kf:[{transform:"scale(0)",opacity:0},{transform:"scale(1)",opacity:1}]};
-      if(cl.contains("ylabel")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateY(12px)"},{opacity:1,transform:"translateY(0)"}]};
+      if(cl.contains("ylabel")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0},{opacity:1}]}; // opacity-only — must keep its inline overview-morph transform (a translateY here would override the even-spacing counter-scale and squish the year)
       if(cl.contains("gylab")||cl.contains("tlab")) return {rank:1, dur:520, ease:OUT, kf:[{opacity:0,transform:"translateX(-50%) translateY(12px)"},{opacity:1,transform:"translateX(-50%) translateY(0)"}]};
       if(cl.contains("ykm")) return {rank:3, dur:480, ease:OUT, kf:[{opacity:0},{opacity:1}]}; // opacity-only (keeps its inline transform)
       if(cl.contains("mtick")) return {rank:2, dur:360, ease:OUT, origin:"center top", kf:[{transform:"scaleY(0)"},{transform:"scaleY(1)"}]};

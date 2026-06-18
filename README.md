@@ -52,7 +52,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | --- | --- | --- | --- | --- | --- |
 | Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-06-17 21:07 | ⚠️ 1/1 eventos sem horário publicado (1/3) | 2026-06-17 12:47 · 1 ev |
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-06-17 16:20 | ✅ | 2026-06-17 16:20 · 1 ev |
-| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-06-17 12:48 | ✅ | 2026-06-17 12:48 · 1 ev |
+| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-06-18 02:00 | ✅ | 2026-06-18 02:00 · 1 ev |
 | São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-06-17 12:49 | ✅ | 2026-06-17 12:49 · 0 ev |
 | Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-06-17 12:52 | ⚠️ 0 eventos (1/3) | 2026-06-16 13:26 · 1 ev |
 

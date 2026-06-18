@@ -643,6 +643,19 @@ _DATE_PATTERNS = [
 
 def _collect_date_candidates(soup) -> list[str]:
     candidates: list[str] = []
+    # schema.org Event JSON-LD: startDate is the authoritative race date and the
+    # most reliable source on organizer sites (World Marathon Majors, EventOn,
+    # etc.). The generic tag scan below skips <script> JSON (too long), so pull
+    # startDate out explicitly first.
+    for script in soup.find_all("script", attrs={"type": "application/ld+json"}):
+        raw = script.string or script.get_text() or ""
+        for m in re.finditer(r'"startDate"\s*:\s*"(\d{4}-\d{2}-\d{2})', raw):
+            iso = m.group(1)
+            try:
+                if 2025 <= int(iso[:4]) <= 2030:
+                    candidates.append(iso)
+            except ValueError:
+                pass
     for tag in soup.find_all(True, limit=300):
         for text in [tag.get_text(' ', strip=True), tag.get('content', ''), tag.get('datetime', '')]:
             if not text or len(text) > 200:

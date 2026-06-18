@@ -1,0 +1,13 @@
+[World's Marathons] 7039 eventos no sitemap; buscando todos
+[geo] limite de 600 buscas (Nominatim/execução) atingido — adiando resoluções restantes para a próxima execução
+[World's Marathons] 364 corridas encontradas
+EVENT_COUNT:364
+✅  worldsmarathons: 364 evento(s)
+    {"titulo": "Haspa Marathon Hamburg", "data": "2027-04-25", "estado": "HH", "km": "21.097, 42.195"}
+    {"titulo": "Great Birmingham Run", "data": "2027-05-02", "estado": "ENG", "km": "10.0, 21.097"}
+    {"titulo": "Zurich Marathon", "data": "2027-04-11", "estado": "ZH", "km": "10.0, 21.097, 42.195"}
+    {"titulo": "Asics Gold Coast Marathon", "data": "2026-07-05", "estado": "ENG", "km": "5.0, 10.0, 21.097, 42.195"}
+    {"titulo": "Tcs Toronto Waterfront Marathon", "data": "2026-10-18", "estado": "ON", "km": "5.0, 21.097, 42.195"}
+    ... e mais 359
+❌  worldsmarathons: 176/364 eventos sem horário publicado
+FAILURE_NOTE:176/364 eventos sem horário publicado

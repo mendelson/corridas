@@ -474,13 +474,13 @@
     "consecutive_failures": 0
   },
   "worldsmarathons": {
-    "tested_at": "2026-06-18T18:57:29Z",
+    "tested_at": "2026-06-18T23:00:10Z",
     "status": "fail",
-    "failure_note": null,
-    "event_count": 0,
+    "failure_note": "176/364 eventos sem horário publicado",
+    "event_count": 364,
     "last_success": "2026-06-18T12:21:39Z",
     "last_success_count": 13,
-    "consecutive_failures": 2
+    "consecutive_failures": 3
   },
   "usroadrunning": {
     "tested_at": "2026-06-18T14:46:31Z",

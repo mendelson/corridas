@@ -34,7 +34,6 @@ SITEMAP_URL = f"{SITE_BASE}/event-pages-sitemap.xml"
 
 # Tunables — keep proxy budget bounded.
 _LASTMOD_LOOKBACK_DAYS = 270   # ~9 months
-_MAX_EVENTS_PER_RUN    = 120
 _FETCH_WORKERS         = 6
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
@@ -98,7 +97,7 @@ def _list_recent_event_urls() -> list[str]:
     cutoff = (date.today() - timedelta(days=_LASTMOD_LOOKBACK_DAYS)).isoformat()
     recent = [(u, lm) for (u, lm) in entries if lm[:10] >= cutoff]
     recent.sort(key=lambda p: p[1], reverse=True)
-    return [u for (u, _) in recent[:_MAX_EVENTS_PER_RUN]]
+    return [u for (u, _) in recent]
 
 
 def _fetch_event(url: str, today: str, now: str) -> Corrida | None:

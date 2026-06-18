@@ -1,12 +1,12 @@
-"""Scraper for usroadrunning.com — US Road Running themed race series.
+"""Scraper for usroadrunning.com â US Road Running themed race series.
 
 US Road Running is a US race organizer that runs themed events (Medal Madness,
-Haunted, Eagle, Ninja …) as 5K / 10K / Half-Marathon races across dozens of US
+Haunted, Eagle, Ninja â¦) as 5K / 10K / Half-Marathon races across dozens of US
 cities. Registration is handled on RunSignup (each event's `offers.url` points
 there), but this organizer site is the source of record and exposes clean,
 complete schema.org data.
 
-Ingestion — the per-state search listing embeds, inline, a full
+Ingestion â the per-state search listing embeds, inline, a full
 `@type: ["Event","SportsEvent"]` JSON-LD block for each of the next ~20 upcoming
 events, so no per-event detail fetch is needed:
 
@@ -19,8 +19,8 @@ setting `start_date` to the day after the last event seen, until a page returns
 no new upcoming events.
 
 Distances come from the structured `keywords`/`description` fields (e.g.
-"… 5K, 10K, Half Marathon, running race …"), parsed via the shared
-extract_distances_from_text helper — never from the title.
+"â¦ 5K, 10K, Half Marathon, running race â¦"), parsed via the shared
+extract_distances_from_text helper â never from the title.
 """
 from __future__ import annotations
 import json
@@ -38,7 +38,6 @@ SOURCE_NAME = "US Road Running"
 BASE = "https://usroadrunning.com"
 _SEARCH = f"{BASE}/Races/NearMe/RaceSearch.php"
 _LOOKAHEAD_DAYS = 365
-_MAX_PAGES_PER_STATE = 18  # safety cap on the start_date pagination loop
 
 _US_STATES: frozenset[str] = frozenset({
     "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID",
@@ -67,7 +66,9 @@ def scrape() -> list[Corrida]:
 
 def _scrape_state(st: str, today: str, end_date: str, seen: dict[str, Corrida]) -> None:
     start_date: str | None = None
-    for _page in range(_MAX_PAGES_PER_STATE):
+    _page = -1
+    while True:  # no cap — paginate until exhausted (breaks below)
+        _page += 1
         params = {"event_type": "running_race", "state": st}
         if start_date:
             params["start_date"] = start_date
@@ -91,7 +92,7 @@ def _scrape_state(st: str, today: str, end_date: str, seen: dict[str, Corrida]) 
         if new == 0 or not max_date or max_date >= end_date:
             break
         nxt = (datetime.strptime(max_date, "%Y-%m-%d").date() + timedelta(days=1)).isoformat()
-        if nxt == start_date:  # no forward progress — stop
+        if nxt == start_date:  # no forward progress â stop
             break
         start_date = nxt
 
@@ -207,10 +208,10 @@ def _parse_distances(blk: dict) -> list[Distancia]:
     """Parse distances from the event's structured fields, not its title.
 
     Prefer the `keywords` tag list (e.g. "US Road Running, 5K, 10K, Half
-    Marathon, running race, …"), falling back to the `description`. Both are
+    Marathon, running race, â¦"), falling back to the `description`. Both are
     dedicated text fields that enumerate the distances explicitly; titles are
     not a reliable distance source. Parsing goes through the shared
-    `extract_distances_from_text` helper (5K→5, 10K→10, "Half Marathon"→21.097)."""
+    `extract_distances_from_text` helper (5Kâ5, 10Kâ10, "Half Marathon"â21.097)."""
     kw = blk.get("keywords")
     if isinstance(kw, (list, tuple)):
         kw = ", ".join(str(x) for x in kw)

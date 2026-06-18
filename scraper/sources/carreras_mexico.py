@@ -1,10 +1,10 @@
-"""Scraper for carrerasmexico.com — uses the Tiempometa public widget API.
+"""Scraper for carrerasmexico.com â uses the Tiempometa public widget API.
 
 The carrerasmexico.com homepage embeds a Tiempometa widget. We bypass the
 widget and call its API directly. The API returns JavaScript that wraps
 HTML content in a jQuery `.html(...)` call:
 
-    $("#tiempometa_event_list_div").html('<div id="tm_js_container">…</div>');
+    $("#tiempometa_event_list_div").html('<div id="tm_js_container">â¦</div>');
 
 We strip the wrapper and parse the inner HTML.
 
@@ -15,7 +15,7 @@ Endpoint that works (HTTP 200):
     &page_size=<N>
     &target_url=https://carrerasmexico.com/
 
-`/api3/js_site/event_search` returns 500 — broken upstream; don't use it.
+`/api3/js_site/event_search` returns 500 â broken upstream; don't use it.
 """
 from __future__ import annotations
 import html as _html_mod
@@ -31,7 +31,7 @@ from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_titulo, slugify, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
-SOURCE_NAME = "Carreras México"
+SOURCE_NAME = "Carreras MÃ©xico"
 BASE = "https://carrerasmexico.com"
 API = "https://www.tiempometa.com/api3/js_site/events"
 # Event-detail widget. The 2025 convocatoria.php redesign dropped the
@@ -42,7 +42,6 @@ API = "https://www.tiempometa.com/api3/js_site/events"
 CALLING_API = "https://www.tiempometa.com/api3/js_site/calling"
 API_KEY = "48513987f33edea8"
 PAGE_SIZE = 50
-MAX_PAGES = 20  # 1000 events upper bound — far more than carrerasmexico ever has
 
 _CANON_KM = {21: 21.097, 42: 42.195}
 
@@ -51,15 +50,15 @@ _CANON_KM = {21: 21.097, 42: 42.195}
 # listed is validated against MX.json (and geo-resolved) downstream, so an unknown
 # code never reaches the data as an invalid subdivision.
 _NORMALIZE_UF = {
-    "DIF": "CMX", "CDMX": "CMX",           # Ciudad de México (ISO CMX)
+    "DIF": "CMX", "CDMX": "CMX",           # Ciudad de MÃ©xico (ISO CMX)
     "TLX": "TLA", "TLAX": "TLA",           # Tlaxcala (ISO TLA)
     "AGS": "AGU",                          # Aguascalientes (ISO AGU)
     "DGO": "DUR",                          # Durango (ISO DUR)
     "GTO": "GUA",                          # Guanajuato (ISO GUA)
     "HGO": "HID",                          # Hidalgo (ISO HID)
-    "QRO": "QUE",                          # Querétaro (ISO QUE)
+    "QRO": "QUE",                          # QuerÃ©taro (ISO QUE)
     "QROO": "ROO",                         # Quintana Roo (ISO ROO)
-    "NL": "NLE", "NVL": "NLE",             # Nuevo León (ISO NLE)
+    "NL": "NLE", "NVL": "NLE",             # Nuevo LeÃ³n (ISO NLE)
     "BC": "BCN",                           # Baja California (ISO BCN)
     "MICH": "MIC", "CHIS": "CHP", "CHIH": "CHH",
     "COAH": "COA", "TAMPS": "TAM", "EDOMEX": "MEX",
@@ -71,7 +70,9 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: dict[str, Corrida] = {}
 
-    for page in range(0, MAX_PAGES):  # Tiempometa pages are 0-indexed
+    page = -1
+    while True:  # no cap — paginate until the last page (breaks below)
+        page += 1  # Tiempometa: 0-indexed
         params = {
             "api_key": API_KEY,
             "page": page,
@@ -113,7 +114,7 @@ def scrape() -> list[Corrida]:
     result = list(corridas.values())
     _enrich_locations(result)
     before = len(result)
-    # Emit only events with every hard-required field. Horário and a valid MX
+    # Emit only events with every hard-required field. HorÃ¡rio and a valid MX
     # subdivision come from the convocatoria page (behind a JS anti-bot challenge,
     # fetched via Playwright); events where they couldn't be recovered are dropped
     # rather than stored invalid.
@@ -123,18 +124,18 @@ def scrape() -> list[Corrida]:
     ]
     dropped = before - len(result)
     if dropped:
-        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horário/cidade/UF/distância válida")
+        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horÃ¡rio/cidade/UF/distÃ¢ncia vÃ¡lida")
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
 
 
 def _enrich_locations(corridas: list[Corrida]) -> None:
-    """Fetch convocatoria.php in parallel to populate cidade/estado AND horário
+    """Fetch convocatoria.php in parallel to populate cidade/estado AND horÃ¡rio
     from the per-event JSON-LD SportsEvent schema.
 
-    This runs in test_source CI too: horário is a hard-required field and is
+    This runs in test_source CI too: horÃ¡rio is a hard-required field and is
     only available on the convocatoria page (the Tiempometa widget list carries
-    no start time). The fetch is cheap — carrerasmexico never lists more than a
+    no start time). The fetch is cheap â carrerasmexico never lists more than a
     few dozen events, each response is streamed with a 30 KB cap, 3 in parallel."""
     needs_fetch = [c for c in corridas if not c.cidade or not c.horario or not c.distancias]
     if not needs_fetch:
@@ -157,8 +158,8 @@ def _enrich_locations(corridas: list[Corrida]) -> None:
             if cidade:
                 c.cidade = cidade
                 c.estado = estado
-                c.localizacao = f"{cidade}, {estado or 'México'}"
-                print(f"[{SOURCE_NAME}] localização: {c.titulo[:30]} → {c.localizacao}")
+                c.localizacao = f"{cidade}, {estado or 'MÃ©xico'}"
+                print(f"[{SOURCE_NAME}] localizaÃ§Ã£o: {c.titulo[:30]} â {c.localizacao}")
             if horario and not c.horario:
                 c.horario = horario
             if distancias and not c.distancias:
@@ -169,10 +170,10 @@ def _extract_html(payload: str) -> Optional[str]:
     """Strip the jQuery wrapper to get the inner HTML payload.
 
     Tiempometa returns:
-        $("#tiempometa_event_list_div").html('<div…>…</div>');
+        $("#tiempometa_event_list_div").html('<divâ¦>â¦</div>');
 
     The payload has two layers of escaping:
-      1. JS string escapes (\\', \\", \\/) — Tiempometa uses \\/ for closing tags
+      1. JS string escapes (\\', \\", \\/) â Tiempometa uses \\/ for closing tags
       2. Some tags are entity-encoded (&lt;\\/a&gt; instead of </a>)
     Both must be undone for BeautifulSoup to parse correctly.
     """
@@ -190,7 +191,7 @@ def _extract_html(payload: str) -> Optional[str]:
            .replace("\\/", "/")
            .replace("\\n", "\n")
            .replace("\\t", "\t"))
-    # Decode HTML entities — two passes handle double-encoded &amp;lt; → &lt; → <
+    # Decode HTML entities â two passes handle double-encoded &amp;lt; â &lt; â <
     raw = re.sub(r"\\u([0-9a-fA-F]{4})", lambda m: chr(int(m.group(1), 16)), raw)
     raw = _html_mod.unescape(raw)
     raw = _html_mod.unescape(raw)
@@ -199,7 +200,7 @@ def _extract_html(payload: str) -> Optional[str]:
 
 def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     """Parse a .tm_event_list_item div into a Corrida."""
-    # Title: <div class="tm_event_list_title">…</div>
+    # Title: <div class="tm_event_list_title">â¦</div>
     title_div = el.find(class_="tm_event_list_title")
     titulo_raw = title_div.get_text(" ", strip=True) if title_div else ""
     titulo = normalize_titulo(titulo_raw)
@@ -245,8 +246,8 @@ def _parse_event(el, today: str, now: str) -> Optional[Corrida]:
     link = external_link or cm_link
 
     # Location AND distances are populated later in _enrich_locations from the
-    # convocatoria detail page (parallel fetch) — never parsed from the title.
-    cidade, estado, localizacao = "", "", "México"
+    # convocatoria detail page (parallel fetch) â never parsed from the title.
+    cidade, estado, localizacao = "", "", "MÃ©xico"
     distancias: list[Distancia] = []
 
     event_id = event_id_param or slugify(titulo)
@@ -329,7 +330,7 @@ def _extract_date(el, text: str) -> Optional[str]:
     for s in candidates:
         # "15 de marzo de 2026" / "15 marzo 2026"
         m = re.search(
-            r"(\d{1,2})\s+(?:de\s+)?([a-záéíóú]+)\s+(?:de\s+)?(\d{4})",
+            r"(\d{1,2})\s+(?:de\s+)?([a-zÃ¡Ã©Ã­Ã³Ãº]+)\s+(?:de\s+)?(\d{4})",
             s, re.IGNORECASE,
         )
         if m:
@@ -352,8 +353,8 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
     (cidade, estado, horario) from the rendered convocatoria prose.
 
     The convocatoria.php redesign (2025) dropped the SportsEvent JSON-LD and now
-    injects the event data client-side from /api3/js_site/calling — a JSONP
-    `$("#…").html('…')` payload. Inside it, `<div class="tiempometa_calling">`
+    injects the event data client-side from /api3/js_site/calling â a JSONP
+    `$("#â¦").html('â¦')` payload. Inside it, `<div class="tiempometa_calling">`
     holds the organizer's full convocatoria text, already rendered: FECHA (with
     the start time), SALIDA/SEDE (the Mexican state), and the route distances.
     The static convocatoria.php HTML only has empty placeholders, which is why
@@ -391,11 +392,11 @@ def _fetch_location_from_convocatoria(event_id: str) -> tuple[str, str, str | No
 
 
 def _build_horario(h_str: str, m_str: str, suffix: str | None) -> str | None:
-    """Build a 24-hour "HH:MM" (04:00–23:59) from a parsed time + optional suffix.
+    """Build a 24-hour "HH:MM" (04:00â23:59) from a parsed time + optional suffix.
 
-    A 12-hour clock suffix is honoured: "7:00 p.m." → 19:00, "12:00 a.m." → 00:00,
+    A 12-hour clock suffix is honoured: "7:00 p.m." â 19:00, "12:00 a.m." â 00:00,
     "12:30 p.m." stays 12:30. A "hrs"/"horas" (or no) suffix is treated as already
-    24-hour. Times outside 04:00–23:59 after conversion are rejected as noise."""
+    24-hour. Times outside 04:00â23:59 after conversion are rejected as noise."""
     h, mi = int(h_str), int(m_str)
     suf = re.sub(r"[\s.]", "", (suffix or "").lower())
     if suf == "pm" and h < 12:
@@ -408,14 +409,14 @@ def _build_horario(h_str: str, m_str: str, suffix: str | None) -> str | None:
 
 
 def _horario_from_prose(text: str) -> str | None:
-    """Extract a plausible start time (HH:MM, 04:00–23:59) from convocatoria prose.
+    """Extract a plausible start time (HH:MM, 04:00â23:59) from convocatoria prose.
 
     Convocatorias state it as e.g. "FECHA: 7 de junio de 2026, 9:30 hrs." or
     "Hora de salida: 7:00 p.m.". Prefer a keyword-anchored match, then fall back
     to any HH:MM carrying an explicit hrs/am/pm suffix (bare numbers like a
     distance "10:00" without a unit are ignored). 12-hour times are converted to
     24-hour via the am/pm suffix (see _build_horario)."""
-    # 1. Keyword-anchored (fecha/hora/salida/inicio/arranque/largada → HH[:.]MM)
+    # 1. Keyword-anchored (fecha/hora/salida/inicio/arranque/largada â HH[:.]MM)
     mt = re.search(
         r"(?:fecha|hora(?:rio)?(?:\s*de\s*(?:salida|inicio|arranque|largada))?|"
         r"salida|inicio|arranque|largada)[^\d]{0,40}?"
@@ -459,7 +460,7 @@ def _location_from_prose(text: str) -> tuple[str, str]:
         # Prefer an explicit "<City>, <State>" pair appearing just before the name
         cidade = ""
         m = re.search(
-            r"([A-ZÁÉÍÓÚÑ][\wÁÉÍÓÚÑáéíóúñ.\-]+(?:\s+[A-ZÁÉÍÓÚÑa-zñáéíóú.\-]+){0,2})"
+            r"([A-ZÃÃÃÃÃÃ][\wÃÃÃÃÃÃÃ¡Ã©Ã­Ã³ÃºÃ±.\-]+(?:\s+[A-ZÃÃÃÃÃÃa-zÃ±Ã¡Ã©Ã­Ã³Ãº.\-]+){0,2})"
             r"\s*,\s*" + re.escape(text[idx:idx + len(name)]),
             text,
         )
@@ -475,7 +476,7 @@ def _location_from_prose(text: str) -> tuple[str, str]:
 
 
 def _extract_location(el, text: str) -> tuple[str, str]:
-    """Return (cidade, estado_code). estado_code is a Tiempometa UF (DIF, MEX, NLE, …)."""
+    """Return (cidade, estado_code). estado_code is a Tiempometa UF (DIF, MEX, NLE, â¦)."""
     # Try classes that signal location (including Tiempometa tm_* prefix variants)
     loc_el = el.find(class_=re.compile(
         r"tm_(event_)?(city|state|location|place|ciudad|lugar)|event_(city|state|location|place)|ciudad|lugar",
@@ -484,7 +485,7 @@ def _extract_location(el, text: str) -> tuple[str, str]:
     if loc_el:
         loc_text = loc_el.get_text(" ", strip=True)
         # Often "City, State" or "City - State"
-        parts = re.split(r"[,\-–]\s*", loc_text)
+        parts = re.split(r"[,\-â]\s*", loc_text)
         cidade = parts[0].strip() if parts else ""
         estado = parts[1].strip() if len(parts) > 1 else ""
         return cidade, _state_to_code(estado)
@@ -495,17 +496,17 @@ _STATE_NAME_TO_CODE = {
     "aguascalientes": "AGU", "baja california": "BCN", "baja california sur": "BCS",
     "campeche": "CAM", "chiapas": "CHP", "chihuahua": "CHH",
     "coahuila": "COA", "colima": "COL",
-    "cdmx": "CMX", "ciudad de méxico": "CMX", "ciudad de mexico": "CMX",
+    "cdmx": "CMX", "ciudad de mÃ©xico": "CMX", "ciudad de mexico": "CMX",
     "distrito federal": "CMX",
     "durango": "DUR", "guanajuato": "GUA", "guerrero": "GRO", "hidalgo": "HID",
-    "jalisco": "JAL", "estado de méxico": "MEX", "estado de mexico": "MEX",
-    "méxico": "MEX",
-    "michoacán": "MIC", "michoacan": "MIC", "morelos": "MOR",
-    "nayarit": "NAY", "nuevo león": "NLE", "nuevo leon": "NLE",
-    "oaxaca": "OAX", "puebla": "PUE", "querétaro": "QUE", "queretaro": "QUE",
-    "quintana roo": "ROO", "san luis potosí": "SLP", "san luis potosi": "SLP",
+    "jalisco": "JAL", "estado de mÃ©xico": "MEX", "estado de mexico": "MEX",
+    "mÃ©xico": "MEX",
+    "michoacÃ¡n": "MIC", "michoacan": "MIC", "morelos": "MOR",
+    "nayarit": "NAY", "nuevo leÃ³n": "NLE", "nuevo leon": "NLE",
+    "oaxaca": "OAX", "puebla": "PUE", "querÃ©taro": "QUE", "queretaro": "QUE",
+    "quintana roo": "ROO", "san luis potosÃ­": "SLP", "san luis potosi": "SLP",
     "sinaloa": "SIN", "sonora": "SON", "tabasco": "TAB", "tamaulipas": "TAM",
-    "tlaxcala": "TLA", "veracruz": "VER", "yucatán": "YUC", "yucatan": "YUC",
+    "tlaxcala": "TLA", "veracruz": "VER", "yucatÃ¡n": "YUC", "yucatan": "YUC",
     "zacatecas": "ZAC",
 }
 
@@ -524,7 +525,7 @@ def _state_to_code(raw: str) -> str:
 def _extract_distances(text: str) -> list[Distancia]:
     seen: set[float] = set()
     result: list[Distancia] = []
-    # Shared-suffix + Spanish-"y"-connector aware ("5, 10 y 21 km" → [5,10,21.097]);
+    # Shared-suffix + Spanish-"y"-connector aware ("5, 10 y 21 km" â [5,10,21.097]);
     # named distances are handled by the keyword fallback below (allow_named=False).
     for canon in extract_distances_from_text(text, min_km=3.0, allow_named=False):
         if canon not in seen:
@@ -532,9 +533,9 @@ def _extract_distances(text: str) -> list[Distancia]:
             result.append(Distancia(km=canon, data=None, horario=None))
     if not result:
         # No numeric distance: fall back to a named distance found in the prose.
-        # The helper correctly maps "medio maratón" → 21.097 and a standalone
-        # "maratón" → 42.195 (the previous regex checked "media", missing the
-        # Mexican "medio maratón" and mislabelling it as a full marathon).
+        # The helper correctly maps "medio maratÃ³n" â 21.097 and a standalone
+        # "maratÃ³n" â 42.195 (the previous regex checked "media", missing the
+        # Mexican "medio maratÃ³n" and mislabelling it as a full marathon).
         for canon in extract_distances_from_text(text, min_km=3.0, named_in_prose=True):
             if canon not in seen:
                 seen.add(canon)

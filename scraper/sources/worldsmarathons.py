@@ -109,14 +109,17 @@ def _parse_event(html: str, url: str, today: str, end_date: str) -> Corrida | No
     if data_evento < today or data_evento > end_date:
         return None
 
-    # horario from the structured start-time field
+    # horario from the structured start-time field — OPTIONAL. Many events,
+    # including several Abbott World Marathon Majors (Berlin, Tokyo, Chicago…),
+    # publish no start time on worldsmarathons. horario is not a required field,
+    # so a missing start time must NOT drop the event — requiring it here is what
+    # silently hid the majors (only 13 of ~7000 pages carry a start_time).
+    horario = None
     mt = _START_TIME_RE.search(html)
-    if not mt:
-        return None
-    h, mi = int(mt.group(1)), int(mt.group(2))
-    if not (0 <= h <= 23 and 0 <= mi <= 59):
-        return None
-    horario = f"{h:02d}:{mi:02d}"
+    if mt:
+        h, mi = int(mt.group(1)), int(mt.group(2))
+        if 0 <= h <= 23 and 0 <= mi <= 59:
+            horario = f"{h:02d}:{mi:02d}"
 
     loc = ev.get("location") or {}
     addr = (loc.get("address") or {}) if isinstance(loc, dict) else {}

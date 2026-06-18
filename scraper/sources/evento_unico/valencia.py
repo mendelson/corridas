@@ -1,5 +1,5 @@
 """Valencia Trinidad Alfonso Marathon scraper (valenciaciudaddelrunning.com)"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Valencia Marathon"
 URL         = "https://valenciaciudaddelrunning.com/en/marathon/"
@@ -13,7 +13,7 @@ _CLOSED = ["registration closed", "sold out", "inscripción cerrada", "agotado"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Valencia Trinidad Alfonso Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

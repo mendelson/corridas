@@ -1,6 +1,6 @@
 """Edinburgh Marathon Festival scraper (edinburghmarathon.com)
 Known dates are deliberately minimal — only add officially announced editions."""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Edinburgh Marathon Festival"
 URL         = "https://www.edinburghmarathon.com/"
@@ -13,7 +13,7 @@ _CLOSED = ["registration closed", "sold out", "entries closed"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Edinburgh Marathon Festival",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

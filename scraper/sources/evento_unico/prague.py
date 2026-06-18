@@ -4,7 +4,7 @@ Edição 2026: 10 de maio (já realizada). Retorna 0 eventos até que a data
 2027 seja anunciada oficialmente no site — o scraper vai encontrá-la
 automaticamente via extract_all_future_dates quando disponível.
 """
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Prague Marathon"
 URL         = "https://www.runczech.com/en/races/volkswagen-prague-marathon"
@@ -17,7 +17,7 @@ _CLOSED = ["registration closed", "sold out", "entry closed", "entries closed"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Volkswagen Prague Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

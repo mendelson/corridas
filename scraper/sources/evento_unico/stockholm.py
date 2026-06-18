@@ -1,5 +1,5 @@
 """Asics Stockholm Marathon scraper (stockholmmarathon.se)"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Stockholm Marathon"
 URL         = "https://www.stockholmmarathon.se/eng/"
@@ -12,7 +12,7 @@ _CLOSED = ["anmälan stängd", "sold out", "registration closed"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Asics Stockholm Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

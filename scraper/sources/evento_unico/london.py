@@ -1,5 +1,5 @@
 """TCS London Marathon scraper"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "TCS London Marathon"
 URL = "https://www.tcslondonmarathon.com/"
@@ -12,7 +12,7 @@ _CLOSED = ["ballot closed", "entry closed", "entries closed", "sold out"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="TCS London Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

@@ -1,5 +1,5 @@
 """Dublin City Marathon scraper (dublincitymarathon.ie)"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Dublin City Marathon"
 URL         = "https://www.irishlifedublinmarathon.ie/"
@@ -12,7 +12,7 @@ _CLOSED = ["registration closed", "sold out", "entry closed", "entries closed"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Dublin City Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

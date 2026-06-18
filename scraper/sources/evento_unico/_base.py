@@ -1,4 +1,9 @@
-"""Shared helpers for World Marathon Majors scrapers."""
+"""Shared scaffold for single-event international race scrapers.
+
+Used by every event under evento_unico/ — only a handful (Tokyo, Boston,
+London, Berlin, Chicago, NYC, Sydney) are Abbott World Marathon Majors; the rest
+are ordinary single-edition international races. The Major badge is applied
+separately and dynamically (scraper/enrichment_selos.py, from Wikidata), never here."""
 from __future__ import annotations
 import re
 from urllib.parse import urlparse
@@ -43,7 +48,7 @@ def _resolve_dates(known_dates: list[str], today: str) -> list[str]:
     return sorted(d for d in known_dates if d >= today)
 
 
-def scrape_major(
+def scrape_single_event(
     *,
     source_name: str,
     titulo: str,
@@ -67,7 +72,7 @@ def scrape_major(
         soup = BeautifulSoup(resp.text, "lxml")
     except Exception as e:
         if ssl_verify:
-            print(f"[{source_name}] erro ao buscar página: {e}")
+            print(f"[{source_name}] erro ao buscar pÃ¡gina: {e}")
 
     today = today_iso()
     all_known = sorted(set(known_dates or []) | {known_date})
@@ -106,7 +111,7 @@ def scrape_major(
     city_only = cidade.split(",")[0].strip()
     _, resolved_estado = _geo.resolve(city_only, "", pais)
 
-    # Keep only earliest date per year — multi-day festivals share the same event id
+    # Keep only earliest date per year â multi-day festivals share the same event id
     dates_by_year: dict[str, str] = {}
     for d in dates_to_use:
         yr = d[:4]
@@ -137,9 +142,9 @@ def scrape_major(
         ))
 
     if not results:
-        print(f"[{source_name}] nenhuma edição futura identificada")
+        print(f"[{source_name}] nenhuma ediÃ§Ã£o futura identificada")
 
-    # Safety dedup — year-dedup above handles the common case; this catches
+    # Safety dedup â year-dedup above handles the common case; this catches
     # any edge where two ISO-formatted dates resolve to the same year key.
     seen_ids: set[str] = set()
     unique: list[Corrida] = []

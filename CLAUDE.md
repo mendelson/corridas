@@ -313,6 +313,29 @@ value is currently correct, because it will silently go stale or wrong when the
 source changes, and it hides breakage (the scraper looks healthy while serving a
 frozen value).
 
+**Corollary — total self-sufficiency (no human, no AI in the loop).** The site
+must keep itself current with **zero** human *and* zero AI intervention. Updating
+any information — dates, new editions, new events, images, prices, status — must
+happen automatically, by reading a live, machine-readable source on every run.
+Concretely:
+- **No human-maintained constants.** A value a person has to edit when the next
+  edition is announced is forbidden *even while it is correct* — it is a
+  maintenance dependency, which is exactly what this rule bans. `KNOWN_DATE`,
+  hand-updated fallbacks, "remember to bump this" comments: all forbidden.
+- **No AI-in-the-loop either.** "An agent will refresh it next run" is **not** a
+  substitute for an automatic source. The pipeline must resolve every field from
+  data it fetches — never from anything a model or a person supplies.
+- **The only acceptable fix for a value the live source doesn't expose is a
+  better live source** (another machine-readable feed — an API, structured data,
+  or a public dataset such as Wikidata read dynamically) **or emitting nothing**
+  for that field. If no machine-readable source for a required field exists
+  anywhere, the event is dropped — never propped up by a maintained constant.
+
+Machine-maintained caches of a live source (e.g. `data/geo_cache.json`,
+`data/majors_cache.json` — written by the pipeline from Wikidata, never by hand)
+are allowed: they mirror a live source and refresh themselves automatically. A
+hand-authored constant is not.
+
 Concretely forbidden:
 - `KNOWN_DATE = "2026-09-27"` style fallbacks that get emitted when live
   extraction fails;

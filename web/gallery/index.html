@@ -465,11 +465,13 @@
     // --- Cinematic opening ---------------------------------------------------
     // A three-act intro plays once on load, then hands off to the standard
     // auto-advance:
-    //   1. Pulled-back overview — the whole timeline fits on screen and the
-    //      line, years and months draw in, oldest → newest.
-    //   2. Zoom in to the oldest end.
-    //   3. Accelerated pan oldest → today; each event's dot, connector and card
-    //      animate in as the camera passes it.
+    //   1. Even-spaced overview — every year gets an equal, compact slot so the
+    //      whole span reads legibly; the year axis (rails + year dots/labels)
+    //      draws in oldest → newest.
+    //   2. Morph even → real (columns expand to their proportional spacing)
+    //      while the camera zooms in to the oldest year.
+    //   3. Accelerated pan oldest → today; month ticks and each event's dot,
+    //      connector and card animate in as the camera passes it.
     // The camera is a transform on the track; native scrolling is disabled
     // during the intro and restored at today for the normal drift. Any user
     // interaction skips straight to the final state.
@@ -494,6 +496,8 @@
       var hidden=track.querySelectorAll(".rv");
       for(var i=0;i<hidden.length;i++) hidden[i].classList.remove("rv");
       track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
+      // Drop any leftover per-column overview-morph transforms.
+      Array.prototype.forEach.call(track.querySelectorAll(".sec,.ylabel,.gylab"), function(el){ el.style.transform=""; el.style.transformOrigin=""; });
       scroller.style.overflowX=prevOverflow||"";
       scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
       finishChrome(true); // intro is over → fade the rest of the page in
@@ -535,41 +539,90 @@
       var extent=(todayX-startX)+50;              // the window: startX → today
       var fit=Math.min(1, (clientW-2*M)/extent);  // scale that fits the window on screen
 
-      var lineEls=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.tnode,.ylabel,.gylab,.tlab,.mtick,.mlab,.ykm"));
-      var evEls=Array.prototype.slice.call(track.querySelectorAll(".enode,.conn,.card"));
-      var lineMeta=lineEls.map(function(el){ return {el:el, x:cx(el)}; });
-      var evMeta=evEls.map(function(el){ return {el:el, x:cx(el), done:false}; });
-      lineEls.concat(evEls).forEach(function(el){ el.classList.add("rv"); });
+      // The line splits in two: the YEAR axis (rails + year dots/labels) is shown
+      // compact and EVEN-SPACED in the far view so the whole span reads legibly;
+      // the finer marks — month ticks, today, the event dots/cards — stay hidden
+      // and only reveal later, as the camera pans through at real (proportional)
+      // scale.
+      var yearLineEls=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.ylabel,.gylab"));
+      var lateEls=Array.prototype.slice.call(track.querySelectorAll(".tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card"));
+      var yearLineMeta=yearLineEls.map(function(el){ return {el:el, x:cx(el)}; });
+      var evMeta=lateEls.map(function(el){ return {el:el, x:cx(el), done:false}; });
+      yearLineEls.concat(lateEls).forEach(function(el){ el.classList.add("rv"); });
 
       var prevOverflow=scroller.style.overflowX;
       scroller.style.overflowX="hidden";
       track.style.transformOrigin="0 0";
       track.style.willChange="transform";
       function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
-      var overview=camT(M-startX*fit, (H-H*fit)/2, fit), oldest=camT(-startX,0,1);
-      track.style.transform=overview;
+      var oldest=camT(-startX,0,1);
 
-      // The intro is no longer interruptible: interaction is locked until it
-      // finishes (the _introActive guards on the wheel/pointer/touch handlers).
+      // Even-spaced overview: every windowed column gets an equal, compact slot
+      // (in content coords, the even layout sits at [startX, startX+evenExtent]),
+      // and a per-column morph expands them back to the real proportional spacing
+      // as the camera zooms in. Year labels are counter-scaled so they never
+      // squish. Non-windowed (older) columns keep their real positions off-screen.
+      var EW=Math.max(120, clientW*0.34);                       // even column slot
+      var ex=0, secMeta=[];
+      Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
+        if(s.offsetLeft < startX-2) return;                     // intro window only
+        var isYear=!!s.querySelector(".ylabel");
+        var slot=isYear?EW:Math.max(56,EW*0.42);                // gaps get a narrow slot
+        secMeta.push({el:s, x:s.offsetLeft, w:s.offsetWidth||1, evenX:ex, evenW:slot,
+                      lab:s.querySelector(".ylabel")||s.querySelector(".gylab")});
+        ex+=slot;
+      });
+      var evenExtent=ex||extent;
+      var fitEven=Math.min(0.62, (clientW-2*M)/(evenExtent+40)); // pulled-back but legible
 
-      var D1=1800, D2=1000, D3=5000; // slower so the line draws and the cards animate in visibly
+      function applyMorph(m){ // m: 0 = even/compact, 1 = real/proportional
+        for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i];
+          var sx=sm.evenW/sm.w, k=sx+m*(1-sx);
+          var tx=((startX+sm.evenX)-sm.x)*(1-m);
+          sm.el.style.transformOrigin="0 0";
+          sm.el.style.transform="translateX("+tx+"px) scaleX("+k+")";
+          if(sm.lab){ sm.lab.style.transformOrigin="left center"; sm.lab.style.transform="scaleX("+(1/k)+")"; }
+        }
+      }
+      function clearMorph(){
+        for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i];
+          sm.el.style.transform=""; sm.el.style.transformOrigin="";
+          if(sm.lab){ sm.lab.style.transform=""; sm.lab.style.transformOrigin=""; }
+        }
+      }
+      // Camera that frames the compact even layout (content x=startX → screen M).
+      var camOvTX=M-startX*fitEven, camOvTY=(H-H*fitEven)/2;
+      applyMorph(0);
+      track.style.transform=camT(camOvTX, camOvTY, fitEven);
 
-      function phase1(){ // draw line/years/months oldest → newest
+      var D1=1700, D2=1500, D3=4200; // axis draw / even→real zoom / pan to today
+
+      function phase1(){ // draw the even-spaced year axis, oldest → newest
         return new Promise(function(res){
-          lineMeta.forEach(function(m){ var f=extent?(m.x-startX)/extent:0; if(f<0)f=0; if(f>1)f=1; _camAnims.push(onReveal(m.el, f*D1)); });
+          yearLineMeta.forEach(function(m){ var f=extent?(m.x-startX)/extent:0; if(f<0)f=0; if(f>1)f=1; _camAnims.push(onReveal(m.el, f*D1)); });
           setTimeout(res, D1+650);
         });
       }
-      function phase2(){ // zoom overview → oldest — the shoe fades in here, brand-new at the start
+      function phase2(){ // morph even → real while zooming in to the oldest year
         showShoe();
         shoeCur=0; applyShoe(0);
         return new Promise(function(res){
-          var a=track.animate([{transform:overview},{transform:oldest}], {duration:D2, easing:"cubic-bezier(.6,.02,.2,1)", fill:"both"});
-          _camAnims.push(a);
-          a.finished.then(function(){ try{a.commitStyles();}catch(e){ track.style.transform=oldest; } try{a.cancel();}catch(e){} res(); }, res);
+          var t0=null;
+          function frame(ts){
+            if(t0==null) t0=ts;
+            var p=Math.min((ts-t0)/D2, 1);
+            var e=p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; // easeInOutQuad
+            applyMorph(e);
+            var s=fitEven+e*(1-fitEven);
+            var tx=camOvTX+e*((-startX)-camOvTX);
+            var ty=camOvTY*(1-e);
+            track.style.transform=camT(tx,ty,s);
+            if(p<1){ _camRAF=requestAnimationFrame(frame); } else { clearMorph(); track.style.transform=oldest; res(); }
+          }
+          _camRAF=requestAnimationFrame(frame);
         });
       }
-      function phase3(){ // accelerated pan oldest → today, revealing events en route
+      function phase3(){ // accelerated pan oldest → today, revealing months + events
         return new Promise(function(res){
           var t0=null;
           function frame(ts){

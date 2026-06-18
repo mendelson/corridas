@@ -19,8 +19,6 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, timedelta
 
-from bs4 import BeautifulSoup
-
 from ..http_client import get
 from .. import geo as _geo
 from ..models import Corrida, Distancia, FonteInfo
@@ -35,6 +33,14 @@ _CANONICAL = [(42.195, 41.0, 43.0), (21.097, 20.5, 21.5)]
 _START_TIME_RE = re.compile(r'"(?:local_)?start_time"\s*:\s*"(\d{1,2}):(\d{2})"')
 _DISTANCE_RE = re.compile(r'"distance"\s*:\s*(\d+(?:\.\d+)?)')
 _SLUG_RE = re.compile(r"/marathon/([a-z0-9][a-z0-9\-]*)/?$", re.IGNORECASE)
+# JSON-LD <script> blocks, pulled out by regex rather than parsing the whole
+# ~800 KB DOM with lxml. Each marathon page embeds a large catalogue of other
+# races, so a full BeautifulSoup parse per page dominated the run time across
+# ~7000 pages. JSON-LD payloads never contain a literal "</script>", so the
+# non-greedy capture is safe; json.loads then validates each block.
+_LDJSON_RE = re.compile(
+    r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+    re.DOTALL | re.IGNORECASE)
 
 
 # ---------------------------------------------------------------------------
@@ -51,7 +57,12 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] {len(urls)} eventos no sitemap; buscando todos")
 
     corridas: list[Corrida] = []
-    with ThreadPoolExecutor(max_workers=16) as pool:
+    # More parallelism (not a cap): all ~7000 pages are still fetched, just
+    # faster, so the full scan finishes well inside main.py's _SCRAPE_BUDGET_S
+    # (30 min). At 16 workers the heavy (~800 KB) pages pushed the run to the
+    # budget edge, so it was being cancelled mid-scan and the marquee majors
+    # (fetched late) were dropped from the results.
+    with ThreadPoolExecutor(max_workers=32) as pool:
         futures = {pool.submit(_fetch_event, u, today, end_date): u for u in urls}
         for fut in as_completed(futures):
             try:
@@ -174,10 +185,9 @@ def _parse_event(html: str, url: str, today: str, end_date: str) -> Corrida | No
 
 
 def _jsonld_event(html: str) -> dict | None:
-    soup = BeautifulSoup(html, "lxml")
-    for script in soup.find_all("script", type="application/ld+json"):
+    for m in _LDJSON_RE.finditer(html):
         try:
-            data = json.loads(script.string or "")
+            data = json.loads(m.group(1).strip())
         except Exception:
             continue
         for blk in (data if isinstance(data, list) else [data]):

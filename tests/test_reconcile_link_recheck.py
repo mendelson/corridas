@@ -7,6 +7,10 @@ a hard 404/410 or a connection failure means the page is actually gone.
 """
 from __future__ import annotations
 
+import pytest
+
+pytest.importorskip("httpx")  # scraper deps (httpx) are only installed in the scraper env
+
 import scraper.main as main
 from scraper.models import Corrida, FonteInfo
 

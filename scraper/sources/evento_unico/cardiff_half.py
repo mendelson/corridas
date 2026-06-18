@@ -1,5 +1,5 @@
 """Cardiff Half Marathon scraper (cardiffhalfmarathon.co.uk)"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Cardiff Half Marathon"
 URL         = "https://www.cardiffhalfmarathon.co.uk/"
@@ -12,7 +12,7 @@ _CLOSED = ["registration closed", "sold out", "entries closed"]
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Cardiff Half Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

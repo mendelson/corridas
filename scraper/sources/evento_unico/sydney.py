@@ -1,5 +1,5 @@
 """TCS Sydney Marathon scraper"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "TCS Sydney Marathon"
 URL = "https://www.tcssydneymarathon.com/"
@@ -13,7 +13,7 @@ _CLOSED = ["entries closed", "entry closed", "sold out", "registration closed"]
 
 def scrape():
     # Site has SSL issues — disable verification
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="TCS Sydney Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

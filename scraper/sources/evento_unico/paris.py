@@ -2,7 +2,7 @@
 
 Edição 2026: 5 de abril (já realizada). Known date ajustado para 2027.
 """
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Paris Marathon"
 URL         = "https://www.schneiderelectricparismarathon.com/en/"
@@ -16,7 +16,7 @@ _CLOSED = ["registration closed", "sold out", "inscriptions fermées", "complet"
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Schneider Electric Paris Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

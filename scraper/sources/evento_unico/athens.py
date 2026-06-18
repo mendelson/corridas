@@ -1,5 +1,5 @@
 """Athens Classic Marathon — The Authentic (athensclassicmarathon.gr)"""
-from ._base import scrape_major
+from ._base import scrape_single_event
 
 SOURCE_NAME = "Athens Classic Marathon"
 URL         = "https://www.athensauthenticmarathon.gr/en/"
@@ -12,7 +12,7 @@ _CLOSED = ["registration closed", "sold out", "εγγραφές έκλεισαν
 
 
 def scrape():
-    return scrape_major(
+    return scrape_single_event(
         source_name=SOURCE_NAME, titulo="Athens Classic Marathon",
         url=URL, known_date=KNOWN_DATE,
         known_dates=[KNOWN_DATE], horario=HORARIO,

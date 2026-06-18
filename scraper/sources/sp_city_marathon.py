@@ -1,121 +1,168 @@
-"""Scraper for SP City Marathon (Nike / Iguana Sports)
+"""Scraper for SP City Marathon — fully dynamic from the Iguana Sports calendar.
 
-Data e link de inscrição buscados dinamicamente via Shopify JSON API
-(iguanasports.com.br/products/sp-city-marathon-{year}.json).
-Distâncias fixas (21K + 42K); horário do regulamento mais recente como
-referência enquanto o novo regulamento não é publicado.
+No hardcoded event data. The Iguana "Calendário" blog
+(``/blogs/calendario-corridas-de-rua``) lists each event as an article. The SP
+City Marathon article (handle ``sp-city-marathon-<year>``) carries a structured
+header — ``<Event> DD Mon YYYY HH:MM City | UF | País`` — plus the offered
+distances in its body. This scraper discovers the article by its stable
+``sp-city-marathon`` handle (so it auto-rolls to each next edition), reads the
+date / start time / location / distances live, and links to the Iguana product
+for registration. Emits nothing if the article isn't found or the edition has
+already happened — never a stored/past value.
+
+Note: the Shopify product handle is an opaque code (e.g. ``etnk26``) with no
+date, which is why a ``products/sp-city-marathon-<year>.json`` guess fails; the
+calendar article is the authoritative, human-readable source.
 """
 from __future__ import annotations
 import re
-from datetime import date
 
 from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_date, now_iso, today_iso
+from ..utils import normalize_titulo, now_iso, today_iso
 from .. import geo as _geo
 
-BASE_URL    = "https://iguanasports.com.br"
-BLOG_BASE   = f"{BASE_URL}/blogs/calendario-corridas-de-rua"
+BASE        = "https://iguanasports.com.br"
+BLOG_INDEX  = f"{BASE}/blogs/calendario-corridas-de-rua"
 SOURCE_NAME = "SP City Marathon"
 
-_REF_HORARIO = "05:15"  # referência do regulamento 2026
-_DISTANCES   = [21.097, 42.195]
-
-# Fallback: última edição conhecida
-_FALLBACK_YEAR = 2026
-_FALLBACK_DATA = "2026-07-26"
-_FALLBACK_INSC = f"{BASE_URL}/products/sp-city-marathon-2026"
-_FALLBACK_BLOG = f"{BLOG_BASE}/sp-city-marathon-2026"
-
-
-def _target_year() -> int:
-    today = date.today()
-    # Evento tipicamente em julho; após setembro busca o próximo ano
-    if today < date(today.year, 9, 1):
-        return today.year
-    return today.year + 1
+_HANDLE_RE = re.compile(r'/blogs/calendario-corridas-de-rua/(sp-city-marathon-\d{4})', re.I)
+_MON = {'jan': 1, 'fev': 2, 'mar': 3, 'abr': 4, 'mai': 5, 'jun': 6,
+        'jul': 7, 'ago': 8, 'set': 9, 'out': 10, 'nov': 11, 'dez': 12}
+# Structured event header: "26 Jul 2026 05:15 São Paulo | SP | Brasil"
+_HEADER_RE = re.compile(
+    r'(\d{1,2})\s+(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)\w*\s+(20\d{2})'
+    r'\s+(\d{1,2}):(\d{2})\s+([^|]+?)\s*\|\s*([A-Za-zÀ-ú]{2})\s*\|',
+    re.IGNORECASE,
+)
+_NNK_RE = re.compile(r'(\d{1,3})[.,](\d)\s?K\b')
+_CANON = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
 
-def _fetch_shopify(year: int) -> dict | None:
-    try:
-        resp = get(f"{BASE_URL}/products/sp-city-marathon-{year}.json")
-        if resp.status_code == 200:
-            return resp.json().get("product")
-    except Exception:
-        pass
-    return None
+def _find_article_handles(soup: BeautifulSoup) -> list[str]:
+    handles: list[str] = []
+    for a in soup.find_all("a", href=True):
+        m = _HANDLE_RE.search(a["href"])
+        if m and m.group(1) not in handles:
+            handles.append(m.group(1))
+    return handles
 
 
-def _extract_date(body_html: str) -> str | None:
-    text = BeautifulSoup(body_html, "lxml").get_text(" ")
-    m = re.search(r'\d{1,2}\s+de\s+\w+\s+de\s+\d{4}', text, re.IGNORECASE)
-    if m:
-        return normalize_date(m.group(0))
-    m = re.search(r'\d{1,2}/\d{1,2}/\d{4}', text)
-    if m:
-        return normalize_date(m.group(0))
-    return None
+def _distances(html: str, text: str) -> list[float]:
+    kms: set[float] = set()
+    for a, b in _NNK_RE.findall(html):
+        v = float(f"{a}.{b}")
+        for canon, lo, hi in _CANON:
+            if lo <= v <= hi:
+                v = canon
+                break
+        if 3 <= v <= 200:
+            kms.add(v)
+    if not kms:  # keyword fallback
+        tl = text.lower()
+        if re.search(r'meia[\s-]?maratona', tl):
+            kms.add(21.097)
+        if re.search(r'(?<!meia.)\bmaratona\b', tl):
+            kms.add(42.195)
+    return sorted(kms)
 
 
-def _fetch_og_image(urls: list[str]) -> str | None:
-    for url in urls:
-        try:
-            resp = get(url)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "lxml")
-                tag = soup.find("meta", property="og:image")
-                if tag and tag.get("content"):
-                    return tag["content"]
-        except Exception:
-            pass
-    return None
+def _og_image(soup: BeautifulSoup) -> str | None:
+    tag = soup.find("meta", property="og:image")
+    return tag["content"] if tag and tag.get("content") else None
 
 
-def scrape() -> list[Corrida]:
-    year = _target_year()
-    product = _fetch_shopify(year)
+def _registration_link(soup: BeautifulSoup, fallback: str) -> str:
+    for a in soup.find_all("a", href=True):
+        if "/products/" in a["href"]:
+            return a["href"] if a["href"].startswith("http") else BASE + a["href"]
+    return fallback
 
-    if product:
-        data_evento = _extract_date(product.get("body_html", "")) or _FALLBACK_DATA
-        inscricao_url = f"{BASE_URL}/products/sp-city-marathon-{year}"
-        blog_url = f"{BLOG_BASE}/sp-city-marathon-{year}"
-        titulo = product.get("title") or f"SP City Marathon {year}"
-        inscricoes_abertas: bool | None = True
-    else:
-        data_evento = _FALLBACK_DATA
-        inscricao_url = _FALLBACK_INSC
-        blog_url = _FALLBACK_BLOG
-        titulo = f"SP City Marathon {year}"
-        inscricoes_abertas = None
 
-    imagem_url = _fetch_og_image([blog_url, inscricao_url])
-    distancias = [Distancia(km=km, data=data_evento, horario=_REF_HORARIO) for km in _DISTANCES]
+def _parse_article(html: str, url: str, today: str) -> Corrida | None:
+    soup = BeautifulSoup(html, "lxml")
+    text = soup.get_text(" ")
 
+    m = _HEADER_RE.search(text)
+    if not m:
+        return None
+    d, mon, y, hh, mm, city, uf = m.groups()
+    mo = _MON.get(mon.lower()[:3])
+    if not mo:
+        return None
+    data_evento = f"{y}-{mo:02d}-{int(d):02d}"
+    if data_evento < today:
+        return None
+    horario = f"{int(hh):02d}:{mm}"
+    cidade, uf = city.strip(), uf.upper()
+
+    distancias_km = _distances(html, text)
+    if not distancias_km:
+        return None
+
+    title_tag = soup.find("title")
+    raw_title = (title_tag.get_text() if title_tag else "")
+    raw_title = re.split(r'[–\-|]', raw_title)[0].strip()  # drop "– Iguana Sports"
+    titulo = normalize_titulo(raw_title) or SOURCE_NAME
+
+    pais, estado = _geo.resolve(f"{cidade}, {uf}", cidade, "BR")
+    estado = estado or uf
     now = now_iso()
-    estado = _geo.resolve("São Paulo, SP", "São Paulo", "BR")[1] or "SP"
     fonte = FonteInfo(
         nome=SOURCE_NAME,
-        link_evento=blog_url,
-        links_inscricao=[inscricao_url],
+        link_evento=url,
+        links_inscricao=[_registration_link(soup, url)],
         tipo="organizador",
     )
-    return [Corrida(
-        id=f"sp-city-marathon-sp-{year}",
+    return Corrida(
+        id=f"sp-city-marathon-sp-{y}",
         titulo=titulo,
         data_evento=data_evento,
-        horario=_REF_HORARIO,
-        localizacao="São Paulo, SP",
-        cidade="São Paulo",
+        horario=horario,
+        localizacao=f"{cidade}, {uf}",
+        cidade=cidade,
         estado=estado,
-        pais="BR",
-        distancias=distancias,
-        imagem_url=imagem_url,
-        inscricoes_abertas=inscricoes_abertas,
+        pais=pais or "BR",
+        distancias=[Distancia(km=k, data=None, horario=horario) for k in distancias_km],
+        imagem_url=_og_image(soup),
+        inscricoes_abertas=None,
         periodo_inscricao=None,
         fontes=[fonte],
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
-    )]
+    )
+
+
+def scrape() -> list[Corrida]:
+    try:
+        resp = get(BLOG_INDEX)
+        resp.raise_for_status()
+        index = BeautifulSoup(resp.text, "lxml")
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] índice do calendário inacessível: {e}")
+        return []
+
+    handles = _find_article_handles(index)
+    if not handles:
+        print(f"[{SOURCE_NAME}] artigo SP City não encontrado no calendário")
+        return []
+
+    today = today_iso()
+    out: list[Corrida] = []
+    for h in handles:
+        url = f"{BLOG_INDEX}/{h}"
+        try:
+            r = get(url)
+            r.raise_for_status()
+        except Exception as e:
+            print(f"[{SOURCE_NAME}] artigo {h} falhou: {e}")
+            continue
+        c = _parse_article(r.text, url, today)
+        if c:
+            out.append(c)
+
+    print(f"[{SOURCE_NAME}] {len(out)} corrida(s) encontrada(s)")
+    return out

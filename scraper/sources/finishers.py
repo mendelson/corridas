@@ -1,11 +1,11 @@
-"""Scraper for finishers.com — Typesense `races` list + per-event start time.
+"""Scraper for finishers.com â Typesense `races` list + per-event start time.
 
-finishers.com is a Next.js/Vercel site (no WAF — the old README "blocked like
+finishers.com is a Next.js/Vercel site (no WAF â the old README "blocked like
 Ahotu" note was never tested and is false). Two structured data sources:
 
 1. A hosted **Typesense** cluster (search-only host+key in the public JS bundle)
    backs the race search. The `races` collection holds every race with its
-   discipline, distance, date, location, slug — everything EXCEPT the start
+   discipline, distance, date, location, slug â everything EXCEPT the start
    time. Worldwide; we keep `raceDiscipline:=road` (street running).
 
 2. The **event page data route** `/_next/data/{buildId}/en/event/{slug}.json`
@@ -20,8 +20,8 @@ a per-run cap bounds the very first cold run. Events still without a published
 time are skipped (re-tried on later runs until a time appears).
 
 Each Typesense doc is one race of an event; grouped by `eventId` into one
-Corrida (eventName→titulo, editionStartDate→data, raceDistance→distancias,
-city+countryCode→location via geo._match_subdiv, /course/{slug}→link).
+Corrida (eventNameâtitulo, editionStartDateâdata, raceDistanceâdistancias,
+city+countryCodeâlocation via geo._match_subdiv, /course/{slug}âlink).
 """
 from __future__ import annotations
 
@@ -50,8 +50,6 @@ _TS_HOST_FALLBACK = "vn2qtcjsbg0ea481p-1.a1.typesense.net"
 _TS_KEY_FALLBACK = "G1BPjGr3KDU7n6yylcfOREpRVGUBpKYW"
 
 _PER_PAGE = 250
-_MAX_PAGES = 80              # safety bound on the Typesense scan (~20k docs)
-_MAX_NEW_FETCHES = 1500      # cap event-page time fetches per run (cache fills over runs)
 _FETCH_WORKERS = 10
 
 _CACHE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "finishers_horarios.json"
@@ -64,7 +62,7 @@ _CHUNK_RE = re.compile(r'/_next/static/chunks/[0-9]+-[a-f0-9]+\.js')
 _BUILDID_RE = re.compile(r'"buildId":"([A-Za-z0-9_-]+)"')
 
 _REGION_PREFIX_RE = re.compile(
-    r"^(?:state of|estado de|estado do|état de|etat de|région|regione|provincia|"
+    r"^(?:state of|estado de|estado do|Ã©tat de|etat de|rÃ©gion|regione|provincia|"
     r"province|bundesland|land)\s+", re.IGNORECASE)
 
 _CANONICAL = [(42.195, 41.0, 43.0), (21.097, 20.5, 21.5)]
@@ -102,7 +100,7 @@ def _get_build_id() -> str | None:
 
 
 # ---------------------------------------------------------------------------
-# Stage 1 — Typesense road race list
+# Stage 1 â Typesense road race list
 # ---------------------------------------------------------------------------
 
 def _search(host: str, key: str, page: int, now_unix: int) -> dict:
@@ -121,7 +119,7 @@ def _search(host: str, key: str, page: int, now_unix: int) -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Stage 2 — per-event start time (cached)
+# Stage 2 â per-event start time (cached)
 # ---------------------------------------------------------------------------
 
 def _load_cache() -> dict[str, str]:
@@ -138,7 +136,7 @@ def _save_cache(cache: dict[str, str]) -> None:
             json.dumps(cache, ensure_ascii=False, sort_keys=True, indent=0),
             encoding="utf-8")
     except Exception as e:
-        print(f"[{SOURCE_NAME}] não consegui salvar o cache de horários: {e}")
+        print(f"[{SOURCE_NAME}] nÃ£o consegui salvar o cache de horÃ¡rios: {e}")
 
 
 def _fetch_time(slug: str, build_id: str | None) -> str | None:
@@ -227,11 +225,13 @@ def scrape() -> list[Corrida]:
 
     by_event: dict[str, list[dict]] = defaultdict(list)
     seen = 0
-    for page in range(1, _MAX_PAGES + 1):
+    page = 0
+    while True:  # no cap — paginate until the scan is exhausted (breaks below)
+        page += 1
         try:
             res = _search(host, key, page, now_unix)
         except Exception as e:
-            print(f"[{SOURCE_NAME}] erro na página {page}: {e}")
+            print(f"[{SOURCE_NAME}] erro na pÃ¡gina {page}: {e}")
             break
         hits = res.get("hits") or []
         if not hits:
@@ -249,10 +249,10 @@ def scrape() -> list[Corrida]:
     cache = _load_cache()
     ordered = sorted(by_event.items(), key=lambda kv: _event_date(kv[1]) or "9999")
     todo = [(eid, docs[0].get("eventSlug")) for eid, docs in ordered
-            if eid not in cache and docs[0].get("eventSlug")][:_MAX_NEW_FETCHES]
+            if eid not in cache and docs[0].get("eventSlug")]
     if todo:
         build_id = _get_build_id()
-        print(f"[{SOURCE_NAME}] buscando horário de {len(todo)} eventos novos (buildId={build_id})")
+        print(f"[{SOURCE_NAME}] buscando horÃ¡rio de {len(todo)} eventos novos (buildId={build_id})")
         with ThreadPoolExecutor(max_workers=_FETCH_WORKERS) as ex:
             futs = {ex.submit(_fetch_time, slug, build_id): eid for eid, slug in todo}
             for fut in as_completed(futs):
@@ -269,7 +269,7 @@ def scrape() -> list[Corrida]:
     for eid, docs in by_event.items():
         horario = cache.get(eid) or ""
         if not horario:
-            continue  # no published start time → skip (project requirement)
+            continue  # no published start time â skip (project requirement)
 
         head = docs[0]
         titulo = normalize_titulo(head.get("eventName") or "")
@@ -313,5 +313,5 @@ def scrape() -> list[Corrida]:
             miss_count=0, first_seen_at=now, updated_at=now,
         ))
 
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas com horário publicado")
+    print(f"[{SOURCE_NAME}] {len(corridas)} corridas com horÃ¡rio publicado")
     return corridas

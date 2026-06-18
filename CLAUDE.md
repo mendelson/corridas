@@ -358,6 +358,34 @@ if a required field is missing) — never substitute a stored value. A source th
 returns `[]` because its page changed is the system working correctly: the
 health monitor flags it and we fix the parser, instead of shipping a lie.
 
+## No result caps — check every result a source returns
+
+**A source must fetch and check EVERY result it can reach — never keep only the
+first N and drop the rest, and never defer the rest to a later run.** Quality
+always wins over speed. If a source's sitemap/API exposes 7000 events, all 7000
+are fetched and checked each run; if it exposes 3000, all 3000. Capping to "the
+first 500" silently hides everything past the cut — that is how the World
+Marathon Majors were missing from `worldsmarathons` (only the first 400 of ~7000
+sitemap entries, alphabetically, were ever fetched).
+
+Concretely forbidden:
+- a result-cap constant (`_MAX_EVENTS`, `_MAX_PAGES`, `_MAX_RESULTS`,
+  `_MAX_NEW_FETCHES`, `…_PER_RUN`, …) that limits how many events/pages are fetched;
+- slicing a result list to a fixed count (`urls[:500]`, `events[:_MAX_EVENTS]`);
+- a "rotating window" / cursor that fetches a different slice each run — that is
+  still capping, just spread over time.
+
+Paginate until the source is exhausted (loop with a break on the last/empty
+page), not up to a fixed page count. The only acceptable bounds are **not**
+result caps: a paginated request's page *size* (`per_page`), and bounds on
+parsing a single heavy document (e.g. a regulation PDF's page count). When a run
+is slow because a source is large, the answer is more parallelism or a lighter
+endpoint — never dropping results.
+
+**This is enforced** by `tests/test_no_result_caps.py`, which fails the build —
+and the PR — on any cap signature, so neither a human nor an agent can
+reintroduce one. There is no allowlist.
+
 ## Never infer event data from opaque IDs
 
 Event information (dates, location, title) must be obtained **explicitly** from page content, API response fields, or structured data — never inferred from ID strings, URL slugs, or opaque identifiers. Platform IDs like `02605131942` in a URL are opaque: they encode nothing meaningful and must never be decoded as a date, location, or any other value. If explicit data is not available from a page or API field, leave the field empty or unset — do not guess.

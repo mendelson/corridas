@@ -431,7 +431,7 @@ def _collect_event_dicts(obj: object, depth: int = 0) -> list[dict]:
             for v in obj.values():
                 results.extend(_collect_event_dicts(v, depth + 1))
     elif isinstance(obj, list):
-        for item in obj[:500]:
+        for item in obj:
             results.extend(_collect_event_dicts(item, depth + 1))
     return results
 

@@ -30,7 +30,6 @@ SOURCE_NAME = "World's Marathons"
 BASE = "https://worldsmarathons.com"
 _SITEMAP = f"{BASE}/marathons-sitemap-en.xml"
 _LOOKAHEAD_DAYS = 540
-_MAX_EVENTS = 400          # per-event pages are ~865 KB; cap fetches per run
 _CANONICAL = [(42.195, 41.0, 43.0), (21.097, 20.5, 21.5)]
 
 _START_TIME_RE = re.compile(r'"(?:local_)?start_time"\s*:\s*"(\d{1,2}):(\d{2})"')
@@ -47,11 +46,13 @@ def scrape() -> list[Corrida]:
     if not urls:
         print(f"[{SOURCE_NAME}] nenhuma URL de evento no sitemap")
         return []
-    print(f"[{SOURCE_NAME}] {len(urls)} eventos no sitemap; buscando até {_MAX_EVENTS}")
+    # No cap: EVERY event in the sitemap is fetched and checked, never a prefix
+    # or a rotating window — discarding results is forbidden. Quality over speed.
+    print(f"[{SOURCE_NAME}] {len(urls)} eventos no sitemap; buscando todos")
 
     corridas: list[Corrida] = []
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        futures = {pool.submit(_fetch_event, u, today, end_date): u for u in urls[:_MAX_EVENTS]}
+    with ThreadPoolExecutor(max_workers=16) as pool:
+        futures = {pool.submit(_fetch_event, u, today, end_date): u for u in urls}
         for fut in as_completed(futures):
             try:
                 c = fut.result()

@@ -54,12 +54,12 @@
     "consecutive_failures": 0
   },
   "carreras_mexico": {
-    "tested_at": "2026-06-18T12:19:46Z",
+    "tested_at": "2026-06-18T14:48:49Z",
     "status": "ok",
     "failure_note": null,
-    "event_count": 13,
-    "last_success": "2026-06-18T12:19:46Z",
-    "last_success_count": 13,
+    "event_count": 7,
+    "last_success": "2026-06-18T14:48:49Z",
+    "last_success_count": 7,
     "consecutive_failures": 0
   },
   "central_da_corrida": {
@@ -117,11 +117,11 @@
     "consecutive_failures": 0
   },
   "largada_esportiva": {
-    "tested_at": "2026-06-18T12:22:28Z",
+    "tested_at": "2026-06-18T14:43:05Z",
     "status": "ok",
     "failure_note": null,
     "event_count": 1,
-    "last_success": "2026-06-18T12:22:28Z",
+    "last_success": "2026-06-18T14:43:05Z",
     "last_success_count": 1,
     "consecutive_failures": 0
   },
@@ -360,12 +360,12 @@
     "consecutive_failures": 0
   },
   "portal_das_corridas": {
-    "tested_at": "2026-06-18T12:20:38Z",
+    "tested_at": "2026-06-18T14:43:21Z",
     "status": "ok",
     "failure_note": null,
-    "event_count": 56,
-    "last_success": "2026-06-18T12:20:38Z",
-    "last_success_count": 56,
+    "event_count": 58,
+    "last_success": "2026-06-18T14:43:21Z",
+    "last_success_count": 58,
     "consecutive_failures": 0
   },
   "raceroster": {
@@ -474,29 +474,29 @@
     "consecutive_failures": 0
   },
   "worldsmarathons": {
-    "tested_at": "2026-06-18T12:21:39Z",
-    "status": "ok",
+    "tested_at": "2026-06-18T14:56:59Z",
+    "status": "fail",
     "failure_note": null,
-    "event_count": 13,
+    "event_count": 0,
     "last_success": "2026-06-18T12:21:39Z",
     "last_success_count": 13,
-    "consecutive_failures": 0
+    "consecutive_failures": 1
   },
   "usroadrunning": {
-    "tested_at": "2026-06-18T12:21:06Z",
+    "tested_at": "2026-06-18T14:46:31Z",
     "status": "ok",
     "failure_note": null,
     "event_count": 351,
-    "last_success": "2026-06-18T12:21:06Z",
+    "last_success": "2026-06-18T14:46:31Z",
     "last_success_count": 351,
     "consecutive_failures": 0
   },
   "finishers": {
-    "tested_at": "2026-06-18T12:20:39Z",
+    "tested_at": "2026-06-18T14:43:06Z",
     "status": "ok",
     "failure_note": null,
     "event_count": 164,
-    "last_success": "2026-06-18T12:20:39Z",
+    "last_success": "2026-06-18T14:43:06Z",
     "last_success_count": 164,
     "consecutive_failures": 0
   },

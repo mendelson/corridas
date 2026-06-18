@@ -33,8 +33,8 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-06-18 12:34 | ⚠️  (1/3) | 2026-06-18 02:36 · 973 ev |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 17 ev |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-06-18 12:20 | ❌ 0 eventos | 2026-06-14 11:26 · 1 ev |
-| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-06-18 12:22 | ✅ | 2026-06-18 12:22 · 1 ev |
-| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 56 ev |
+| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-06-18 14:43 | ✅ | 2026-06-18 14:43 · 1 ev |
+| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-06-18 14:43 | ✅ | 2026-06-18 14:43 · 58 ev |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
@@ -70,7 +70,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-06-18 12:23 | ✅ | 2026-06-18 12:23 · 10954 ev |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-06-05 12:00 | ⚠️ 0 eventos (0/3) | 2026-05-30 03:27 |
 | Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 681 ev |
-| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 164 ev |
+| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-06-18 14:43 | ✅ | 2026-06-18 14:43 · 164 ev |
 
 ---
 

@@ -86,28 +86,28 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 
 | Evento | ⭐ WMM | Em uso | URL oficial | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tokyo Marathon<!--evento_unico/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 1 ev |
-| Boston Marathon<!--evento_unico/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 1 ev |
-| TCS London Marathon<!--evento_unico/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-06-18 12:22 | ✅ | 2026-06-18 12:22 · 1 ev |
-| BMW Berlin Marathon<!--evento_unico/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-06-18 12:22 | ✅ | 2026-06-18 12:22 · 1 ev |
-| Bank of America Chicago Marathon<!--evento_unico/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 1 ev |
-| TCS New York City Marathon<!--evento_unico/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-06-18 12:19 | ✅ | 2026-06-18 12:19 · 1 ev |
-| TCS Sydney Marathon<!--evento_unico/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 1 ev |
-| Schneider Electric Paris Marathon<!--evento_unico/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 1 ev |
-| Brighton Marathon<!--evento_unico/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-06-18 12:34 | ✅ | 2026-06-18 12:34 · 1 ev |
-| Volkswagen Prague Marathon<!--evento_unico/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 0 ev |
-| Copenhagen Marathon<!--evento_unico/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-06-18 12:19 | ✅ | 2026-06-18 12:19 · 1 ev |
-| Edinburgh Marathon Festival<!--evento_unico/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-06-18 12:22 | ✅ | 2026-06-18 12:22 · 1 ev |
-| Stockholm Marathon<!--evento_unico/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 0 ev |
-| Manchester Marathon<!--evento_unico/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 2 ev |
-| Great North Run<!--evento_unico/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-06-18 12:21 | ✅ | 2026-06-18 12:21 · 1 ev |
-| Cardiff Half Marathon<!--evento_unico/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-06-18 12:32 | ✅ | 2026-06-18 12:32 · 1 ev |
-| Manchester Half Marathon<!--evento_unico/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-06-18 12:22 | ✅ | 2026-06-18 12:22 · 2 ev |
-| TCS Amsterdam Marathon<!--evento_unico/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-06-18 12:19 | ✅ | 2026-06-18 12:19 · 1 ev |
+| Tokyo Marathon<!--evento_unico/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Boston Marathon<!--evento_unico/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| TCS London Marathon<!--evento_unico/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-06-18 13:35 | ✅ | 2026-06-18 13:35 · 1 ev |
+| BMW Berlin Marathon<!--evento_unico/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Bank of America Chicago Marathon<!--evento_unico/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| TCS New York City Marathon<!--evento_unico/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-06-18 13:37 | ⚠️  (1/3) | 2026-06-18 12:19 · 1 ev |
+| TCS Sydney Marathon<!--evento_unico/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Schneider Electric Paris Marathon<!--evento_unico/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Brighton Marathon<!--evento_unico/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Volkswagen Prague Marathon<!--evento_unico/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 0 ev |
+| Copenhagen Marathon<!--evento_unico/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Edinburgh Marathon Festival<!--evento_unico/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Stockholm Marathon<!--evento_unico/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 0 ev |
+| Manchester Marathon<!--evento_unico/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 2 ev |
+| Great North Run<!--evento_unico/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Cardiff Half Marathon<!--evento_unico/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-06-18 13:23 | ✅ | 2026-06-18 13:23 · 1 ev |
+| Manchester Half Marathon<!--evento_unico/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 2 ev |
+| TCS Amsterdam Marathon<!--evento_unico/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
 | Venice Marathon<!--evento_unico/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-06-18 12:19 | ✅ | 2026-06-18 12:19 · 1 ev |
-| Dublin City Marathon<!--evento_unico/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-06-18 12:19 | ✅ | 2026-06-18 12:19 · 1 ev |
-| Athens Classic Marathon<!--evento_unico/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-06-18 12:22 | ✅ | 2026-06-18 12:22 · 1 ev |
-| Valencia Trinidad Alfonso Marathon<!--evento_unico/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-06-18 12:20 | ✅ | 2026-06-18 12:20 · 1 ev |
+| Dublin City Marathon<!--evento_unico/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Athens Classic Marathon<!--evento_unico/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-06-18 13:22 | ✅ | 2026-06-18 13:22 · 1 ev |
+| Valencia Trinidad Alfonso Marathon<!--evento_unico/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-06-18 13:36 | ⚠️  (1/3) | 2026-06-18 12:20 · 1 ev |
 | Comrades Marathon<!--evento_unico/comrades--> |  | ✅ | `comrades.com/race-information` | 2026-06-18 12:19 | ✅ | 2026-06-18 12:19 · 0 ev |
 
 ---

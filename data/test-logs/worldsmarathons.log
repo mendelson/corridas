@@ -1,0 +1,13 @@
+[World's Marathons] 7039 eventos no sitemap; buscando todos
+[geo] limite de 600 buscas (Nominatim/execução) atingido — adiando resoluções restantes para a próxima execução
+[World's Marathons] 80 corridas encontradas
+EVENT_COUNT:80
+✅  worldsmarathons: 80 evento(s)
+    {"titulo": "Tcs Toronto Waterfront Marathon", "data": "2026-10-18", "estado": "ON", "km": "5.0, 21.097, 42.195"}
+    {"titulo": "Great Birmingham Run", "data": "2027-05-02", "estado": "ENG", "km": "10.0, 21.097"}
+    {"titulo": "Mcdonald’S Townsville Running Festival", "data": "2026-08-02", "estado": "QLD", "km": "2.5, 5.0, 10.0, 21.097, 42.195"}
+    {"titulo": "Servus Edmonton Marathon", "data": "2026-08-16", "estado": "AB", "km": "5.0, 10.0, 21.097, 42.195"}
+    {"titulo": "Asics Gold Coast Marathon", "data": "2026-07-05", "estado": "ENG", "km": "5.0, 10.0, 21.097, 42.195"}
+    ... e mais 75
+❌  worldsmarathons: 67/80 eventos sem horário publicado
+FAILURE_NOTE:67/80 eventos sem horário publicado

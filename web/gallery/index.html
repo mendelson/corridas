@@ -495,6 +495,14 @@
       el.classList.remove("rv");
       return el.animate(c.kf, {duration:c.dur, delay:delay + c.rank*22, easing:c.ease, fill:"both"});
     }
+    // The exact reverse of onReveal — the element animates OUT along its entrance
+    // keyframes (the highlights-toggle replay uses it so content disappears like
+    // the intro played backwards).
+    function onHide(el, delay){
+      var c=revealConfig(el);
+      if(c.origin) el.style.transformOrigin=c.origin;
+      return el.animate(c.kf, {duration:Math.min(c.dur,420), delay:delay||0, easing:c.ease, direction:"reverse", fill:"both"});
+    }
 
     // --- Cinematic opening ---------------------------------------------------
     // A three-act intro plays once on load, then hands off to the standard
@@ -948,6 +956,14 @@
       function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
       var ovTX=(clientW-fullExtent*fit)/2, ovTY=(H-H*fit)/2; // overview: whole span, centred
       var tdTX=-todayStart;                                  // today, scale 1
+      // The content elements the intro animates — read their content-x now (before
+      // the camera transform) so the hide/reveal can stagger by position, exactly
+      // like the intro played in reverse then forward.
+      var _em=Array.prototype.slice.call(track.querySelectorAll(".rail,.ynode,.gnode,.ylabel,.gylab,.tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card"))
+        .map(function(el){ return {el:el, x:el.getBoundingClientRect().left-trk.left}; });
+      var _xs=_em.map(function(m){return m.x;});
+      var _minX=_xs.length?Math.min.apply(null,_xs):0, _maxX=_xs.length?Math.max.apply(null,_xs):1, _span=(_maxX-_minX)||1;
+      _em.forEach(function(m){ try{ m.el.getAnimations().forEach(function(a){a.cancel();}); }catch(e){} }); // clear leftover reveal/hide anims
       function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
       var DOUT=820, HOLD=220, DIN=1700, shoeFrom=shoeCur;
       track.style.transform=camT(tdTX,0,1); // start exactly where the user is (today)
@@ -964,10 +980,14 @@
         held=false;
         setTimeout(function(){ if(!held) auto=true; }, 400);
       }
+      // disappear: reverse-reveal every element (present → past) as the zoom-out begins
+      _em.forEach(function(m){ onHide(m.el, ((_maxX-m.x)/_span)*260); });
       beat(DOUT, function(e){ // zoom OUT: today → whole-timeline overview
         track.style.transform=camT(tdTX+e*(ovTX-tdTX), e*ovTY, 1+e*(fit-1));
       }, function(){ setTimeout(function(){
         if(_hdr){ _hdr.classList.remove("chrome-out"); _hdr.classList.add("chrome-in"); } // header returns (slides down + fades in) with the zoom-in
+        // reappear: reveal every element (past → present) as the zoom-in begins — identical to the intro
+        _em.forEach(function(m){ onReveal(m.el, ((m.x-_minX)/_span)*820); });
         beat(DIN, function(e){ // zoom IN: overview → today; the shoe walks to today
           track.style.transform=camT(ovTX+e*(tdTX-ovTX), ovTY*(1-e), fit+e*(1-fit));
           shoeCur=shoeFrom+e*(1-shoeFrom); applyShoe(shoeCur);

@@ -63,6 +63,13 @@ jobs:
 
       - name: Commit test log via PR (main only)
         if: github.ref == 'refs/heads/main'
+        # Pure housekeeping: committing the test log must never fail the `test`
+        # required check. The tests already passed by this point; a transient
+        # GitHub API error here (e.g. "API rate limit already exceeded" from
+        # `gh pr create`/`gh pr merge`) would otherwise turn main red despite
+        # green tests. A retry is pointless (the rate limit resets hourly), and
+        # the log update simply retries on the next run.
+        continue-on-error: true
         env:
           # PAT do mantenedor: PRs criadas com o github.token não disparam
           # workflows, então os required checks nunca reportariam.

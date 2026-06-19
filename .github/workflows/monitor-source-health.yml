@@ -308,6 +308,13 @@ jobs:
         # read-only validation runs). A main exige checks obrigatórios
         # (ruleset): o status é entregue via PR com auto-merge.
         if: github.ref == 'refs/heads/main'
+        # Housekeeping: entregar o status no README não pode derrubar o run. Um
+        # erro transitório da API do GitHub aqui (ex.: "API rate limit already
+        # exceeded" em `gh pr create`/`gh pr merge`) marcaria o run como falho
+        # mesmo com todas as fontes testadas, e mascararia o gate real ("Enforce
+        # health policy"). Retry é inútil (o limite reseta por hora) e o status
+        # é reenviado no próximo run.
+        continue-on-error: true
         env:
           # PAT do mantenedor: PRs criadas com o github.token não disparam
           # workflows, então os required checks nunca reportariam.

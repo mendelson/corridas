@@ -164,6 +164,7 @@
       <nav class="gactions">
         <a class="gbtn" id="navCal" href="#"><span class="gbtn-icon" aria-hidden="true">📅</span><span class="gbtn-lbl" id="navCalLbl"></span></a>
         <a class="gbtn" id="navApps" href="https://apps.mmendelson.com" target="_blank" rel="noopener"><span class="gbtn-icon" aria-hidden="true">⌚</span><span class="gbtn-lbl">Apps</span></a>
+        <button class="gbtn" id="navView" type="button" aria-pressed="false"><span class="gbtn-icon" aria-hidden="true">★</span><span class="gbtn-lbl" id="navViewLbl"></span></button>
         <button class="gbtn" id="navZoom" type="button" aria-label="Reset view" title="Reset zoom &amp; scroll"><span class="gbtn-icon" aria-hidden="true">↺</span></button>
         <button class="gbtn" id="navLang" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="gbtn-icon" aria-hidden="true">🌐</span><span class="gbtn-lbl" id="navLangLbl"></span></button>
       </nav>
@@ -187,11 +188,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"} },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"} },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"} },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"} },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"} },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos" },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones" },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos" },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen" },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons" },
     };
     // The gallery has a single URL and never navigates to change language —
     // the switch happens in place. The choice falls back to the browser
@@ -200,6 +201,10 @@
     var _saved=null; try{_saved=localStorage.getItem(STORE_KEY);}catch(e){}
     var lang=(_saved||navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
     var T=STR[lang], LOC=T.loc;
+    // View mode: "all" (full timeline) or "highlights" (only marathons + milestone
+    // races). Persisted; the timeline re-renders and collapses/extends to fit.
+    var VIEW_KEY="gallery_view", viewMode="all";
+    try{ if(localStorage.getItem(VIEW_KEY)==="highlights") viewMode="highlights"; }catch(e){}
     var mShort=[];
     function buildMonths(){ for(var i=0;i<12;i++){ mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase(); } }
 
@@ -217,6 +222,13 @@
       document.getElementById("navCal").setAttribute("href","/"+lang);
       document.getElementById("navCalLbl").textContent=T.cal;
       document.getElementById("navLangLbl").textContent=lang.toUpperCase();
+      var _nv=document.getElementById("navView");
+      if(_nv){
+        var _nvl=document.getElementById("navViewLbl"); if(_nvl) _nvl.textContent=T.hl;
+        _nv.title=T.hlT; _nv.setAttribute("aria-label",T.hlT);
+        _nv.classList.toggle("active", viewMode==="highlights");
+        _nv.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+      }
       draw();
     }
 
@@ -276,6 +288,10 @@
     }
     var TIERC={mara:"#E8C04A", mile:"#C3CAD6", ord:"#8b91a0"};
     function color(r){ return TIERC[tier(r)]; }
+    // A "highlight" is a marathon or a race carrying a milestone — anything the
+    // timeline already marks with a medal (tier !== "ord"). Drives the
+    // complete-vs-highlights view toggle.
+    function isHighlight(r){ return tier(r) !== "ord"; }
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
@@ -723,6 +739,7 @@
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 3s.
     var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0;
+    var _postDrawFrac=null; // when set, draw() restores this scroll fraction (used by the view toggle)
     // Resume the drift 3s after the user stops interacting (never while held).
     function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
@@ -848,6 +865,21 @@
       held=false; auto=true;
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
+    // Complete ⇄ highlights toggle. Re-renders with the filtered set; render()
+    // collapses empty years into gaps and narrows sparse ones, so the timeline
+    // extends/collapses automatically. The temporal position is preserved across
+    // the change (via _postDrawFrac in draw()).
+    (function(){
+      var b=document.getElementById("navView"); if(!b) return;
+      b.addEventListener("click", function(){
+        _postDrawFrac = (maxScroll()>0) ? clamp(scroller.scrollLeft/maxScroll(),0,1) : 1;
+        viewMode = (viewMode==="highlights") ? "all" : "highlights";
+        try{ localStorage.setItem(VIEW_KEY, viewMode); }catch(e){}
+        b.classList.toggle("active", viewMode==="highlights");
+        b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+        draw();
+      });
+    })();
     // Touch: two fingers pinch-zoom; one finger is left to native scroll.
     function _tdist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }
     function _tmid(t){ return {x:(t[0].clientX+t[1].clientX)/2, y:(t[0].clientY+t[1].clientY)/2}; }
@@ -882,10 +914,13 @@
       // scaled offset back to 1× space before dropping the transform.
       var sl=scroller?scroller.scrollLeft:0;
       if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); } // a re-render replaces the track; drop the zoom transform
-      render(_data.races,_data.loc,_data.paises);
+      // Highlights view feeds render() only the medal-worthy races; render's
+      // empty-year gap-collapse + density-based widths then shrink the timeline.
+      var races=(viewMode==="highlights") ? _data.races.filter(isHighlight) : _data.races;
+      render(races,_data.loc,_data.paises);
       if(!scroller) return;
-      // Scrubber end labels: oldest year on the left, "today" on the right.
-      var _yrs=_data.races.map(function(r){return +String(r.date||"").slice(0,4);}).filter(Boolean);
+      // Scrubber end labels: oldest (rendered) year on the left, "today" on the right.
+      var _yrs=races.map(function(r){return +String(r.date||"").slice(0,4);}).filter(Boolean);
       var _ls=document.getElementById("shoeLabStart"), _le=document.getElementById("shoeLabEnd");
       if(_ls) _ls.textContent = _yrs.length ? Math.min.apply(null,_yrs) : "";
       if(_le) _le.textContent = T.today;
@@ -894,6 +929,11 @@
       if(first){
         firstDrawn=true;
         cameraIntro(); // cinematic opening; enables auto-advance at today when done
+      } else if(_postDrawFrac!=null){
+        // A view toggle changed the timeline length: keep roughly the same point
+        // in time by restoring the scroll fraction (clamped to the new extent).
+        var _m=maxScroll(), _t=clamp(_postDrawFrac*_m,0,_m); _postDrawFrac=null;
+        scroller.scrollLeft=_t; pos=_t;
       } else {
         scroller.scrollLeft=sl; pos=sl;
       }

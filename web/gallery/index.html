@@ -994,20 +994,23 @@
         s.lab.style.left=(d<lo?lo:(d>hi?hi:d))+"px";
       }
     }
-    // Year marks along the scrubber: one tick per intermediate event-year, at
-    // the same scroll fraction the shoe uses (offsetLeft → /endPos), so the
-    // ticks line up with where the shoe sits when that year is in view. The
-    // oldest year and TODAY stay as the prominent end labels. A min-gap skip
-    // keeps the small labels from colliding on narrow screens.
+    // Year marks along the scrubber: every intermediate year between the oldest
+    // (shoeLabStart) and TODAY (shoeLabEnd) gets an even-spaced tick — INCLUDING
+    // years collapsed into dotted gaps (e.g. years with no highlight in the
+    // highlights view), so the scrubber stays a continuous year axis. Read from
+    // both event-year (.ylabel) and gap (.gylab) labels.
     function buildShoeYears(){
       var host=document.getElementById("shoeYears"); if(!host || !scroller) return;
       var track=document.getElementById("track");
-      var cols=track ? Array.prototype.filter.call(track.querySelectorAll(".sec"), function(s){return s.querySelector(".ylabel");}) : [];
-      var n=cols.length, html="";
-      // Even-spaced so every intermediate year is written out and none overlap
-      // (the oldest year and TODAY stay as the prominent end labels).
+      var years=[];
+      if(track) Array.prototype.forEach.call(track.querySelectorAll(".ylabel,.gylab"), function(el){
+        var y=parseInt(el.textContent,10); if(!isNaN(y)) years.push(y);
+      });
+      years.sort(function(a,b){return a-b;});
+      years=years.filter(function(y,i){return i===0 || y!==years[i-1];}); // de-dup
+      var n=years.length, html="";
       for(var i=1;i<n-1;i++){
-        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+esc(cols[i].querySelector(".ylabel").textContent)+'</span>';
+        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+years[i]+'</span>';
       }
       host.innerHTML=html;
     }

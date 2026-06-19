@@ -19,12 +19,12 @@
        line up; scales with the viewport so it never glues to the edges on
        desktop nor looks like a narrow, centred mobile block. */
     :root { --gutter: clamp(18px, 3vw, 56px); }
-    header { padding: 38px var(--gutter) 16px; }
+    header { padding: 38px var(--gutter) 16px; transition: opacity .3s ease; }
     header.chrome-in { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
     /* During the cinematic intro everything outside the timeline is hidden and
        interaction is locked; the chrome fades in only once the intro concludes. */
     body.intro { overflow: hidden; touch-action: none; }
-    body.intro header { opacity: 0; visibility: hidden; pointer-events: none; }
+    body.intro header { opacity: 0; pointer-events: none; } /* opacity (not visibility) so it fades out smoothly when a replay starts */
     body.intro .scroller { border-top-color: transparent; } /* no stray divider while centred */
     @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
@@ -188,11 +188,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos" },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones" },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos" },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen" },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons" },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos" },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones" },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos" },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen" },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons" },
     };
     // The gallery has a single URL and never navigates to change language —
     // the switch happens in place. The choice falls back to the browser
@@ -277,21 +277,32 @@
     // gold medal; any other race that carried a milestone (a first, a personal
     // best) wears a quieter silver medal; everything else is a plain, low-key
     // dot. tier() -> "mara" | "mile" | "ord"; the same colour accents the card.
-    function milestonesOf(r){ return (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || []; }
-    function tier(r){
-      // Marathon detected by distance (~42.2 km) so the tier survives dropping
-      // the now-redundant `type` field; a legacy type==="marathon" still counts.
+    // True for a marathon — by distance (~42.2 km, so it survives dropping the
+    // redundant `type`) or a legacy type==="marathon". A relay (legs) is never
+    // auto-promoted to marathon by its summed distance.
+    function isMarathon(r){
       var kmv = r && (typeof r.km === "number" ? r.km : parseFloat(r.km));
-      // A relay (legs) is never auto-promoted to marathon by its summed distance.
-      if(r && !legsOf(r) && (r.type === "marathon" || (kmv >= 42 && kmv <= 43))) return "mara";
+      return !!(r && !legsOf(r) && (r.type === "marathon" || (kmv >= 42 && kmv <= 43)));
+    }
+    function milestonesOf(r){
+      var ms = (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || [];
+      // Every marathon automatically carries the "marathon" milestone — computed,
+      // so it holds for every marathon now and in the future with no data edits.
+      // "firstMarathon" already implies it, so don't double the badge up.
+      if(isMarathon(r) && ms.indexOf("marathon") < 0 && ms.indexOf("firstMarathon") < 0)
+        ms = ["marathon"].concat(ms);
+      return ms;
+    }
+    function tier(r){
+      if(isMarathon(r)) return "mara"; // marathons are the most honourable → gold
       return milestonesOf(r).length ? "mile" : "ord";
     }
     var TIERC={mara:"#E8C04A", mile:"#C3CAD6", ord:"#8b91a0"};
     function color(r){ return TIERC[tier(r)]; }
-    // A "highlight" is a marathon or a race carrying a milestone — anything the
-    // timeline already marks with a medal (tier !== "ord"). Drives the
-    // complete-vs-highlights view toggle.
-    function isHighlight(r){ return tier(r) !== "ord"; }
+    // Highlights = every event that carries a milestone. Marathons always do (a
+    // "marathon" milestone is injected above), so this captures all marathons plus
+    // every milestone race. Drives the complete-vs-highlights view toggle.
+    function isHighlight(r){ return milestonesOf(r).length > 0; }
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
@@ -739,7 +750,7 @@
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 3s.
     var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0;
-    var _postDrawFrac=null; // when set, draw() restores this scroll fraction (used by the view toggle)
+    var _replay=false; // when true, the next draw() plays the zoom-out replay (view toggle)
     // Resume the drift 3s after the user stops interacting (never while held).
     function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
@@ -865,18 +876,19 @@
       held=false; auto=true;
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
-    // Complete ⇄ highlights toggle. Re-renders with the filtered set; render()
+    // Complete ⇄ highlights toggle. Re-renders with the filtered set, then replays
+    // the cinematic zoom-out transition (replayIntro) over the new events; render()
     // collapses empty years into gaps and narrows sparse ones, so the timeline
-    // extends/collapses automatically. The temporal position is preserved across
-    // the change (via _postDrawFrac in draw()).
+    // extends/collapses automatically.
     (function(){
       var b=document.getElementById("navView"); if(!b) return;
       b.addEventListener("click", function(){
-        _postDrawFrac = (maxScroll()>0) ? clamp(scroller.scrollLeft/maxScroll(),0,1) : 1;
+        if(_introActive) return; // ignore while a transition / intro is playing
         viewMode = (viewMode==="highlights") ? "all" : "highlights";
         try{ localStorage.setItem(VIEW_KEY, viewMode); }catch(e){}
         b.classList.toggle("active", viewMode==="highlights");
         b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+        _replay=true; // re-render the new set, then play the zoom-out replay
         draw();
       });
     })();
@@ -901,13 +913,70 @@
     // Block touch-drag scrolling for the duration of the intro.
     window.addEventListener("touchmove", function(e){ if(_introActive) e.preventDefault(); }, {passive:false});
 
+    // Replay-on-toggle: a smooth cinematic transition over the events currently
+    // shown. The camera (a transform on the track) zooms OUT to frame the whole
+    // timeline, holds a beat, then zooms back IN to today — so switching
+    // full ⇄ highlights reads as "pull back to see the new set, then return".
+    // Content stays visible (no pop-in), interaction is locked, the shoe walks to
+    // today, and native scroll is restored at today when it ends.
+    function replayIntro(){
+      var track=document.getElementById("track");
+      var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      var todayStart=startScroll();
+      if(reduce || !("animate" in Element.prototype) || !track){
+        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; held=false; auto=true; return;
+      }
+      _introActive=true; auto=false;
+      document.body.classList.add("intro"); // hide the header + lock interaction during the transition
+      var _hdr=document.querySelector("header"); if(_hdr) _hdr.classList.remove("chrome-in"); // let the fade-in replay at the end
+      if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
+      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
+      var prevOverflow=scroller.style.overflowX;
+      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
+      var trk=track.getBoundingClientRect();
+      var tnodeEl=track.querySelector(".tnode");
+      var todayX=tnodeEl ? (tnodeEl.getBoundingClientRect().left-trk.left) : (track.scrollWidth||clientW);
+      var fullExtent=todayX+50;
+      // Frame the whole timeline, always pulling back a little so the zoom-out
+      // reads even when a collapsed (highlights) timeline already fits the screen.
+      var fit=Math.min(0.82, (clientW-2*M)/Math.max(fullExtent,1));
+      track.style.transformOrigin="0 0"; track.style.willChange="transform";
+      function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
+      var ovTX=(clientW-fullExtent*fit)/2, ovTY=(H-H*fit)/2; // overview: whole span, centred
+      var tdTX=-todayStart;                                  // today, scale 1
+      function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
+      var DOUT=820, HOLD=220, DIN=1700, shoeFrom=shoeCur;
+      track.style.transform=camT(tdTX,0,1); // start exactly where the user is (today)
+      function beat(dur, apply, next){
+        var t0=null;
+        function step(ts){ if(t0==null) t0=ts; var p=Math.min((ts-t0)/dur,1); apply(ease(p)); if(p<1) requestAnimationFrame(step); else next(); }
+        requestAnimationFrame(step);
+      }
+      function finish(){
+        track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
+        scroller.style.overflowX=prevOverflow||"";
+        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
+        finishChrome(true); // _introActive=false; un-hide the header (chrome-in fade-in); show shoe
+        held=false;
+        setTimeout(function(){ if(!held) auto=true; }, 400);
+      }
+      beat(DOUT, function(e){ // zoom OUT: today → whole-timeline overview
+        track.style.transform=camT(tdTX+e*(ovTX-tdTX), e*ovTY, 1+e*(fit-1));
+      }, function(){ setTimeout(function(){
+        beat(DIN, function(e){ // zoom IN: overview → today; the shoe walks to today
+          track.style.transform=camT(ovTX+e*(tdTX-ovTX), ovTY*(1-e), fit+e*(1-fit));
+          shoeCur=shoeFrom+e*(1-shoeFrom); applyShoe(shoeCur);
+        }, finish);
+      }, HOLD); });
+    }
+
     // Load the races, then the SAME location reference the main site uses
     // (web/locations/{ISO2}.json) for each country present, so state/country
     // names come from one source of truth.
     var _data=null;
     function draw(){
       if(!_data) return;
-      if(firstDrawn && !_camDone) return; // cinematic intro in progress — don't re-render under it
+      if((firstDrawn && !_camDone) || _introActive) return; // intro / replay transition playing — don't re-render under it
       var first=!firstDrawn;
       // Preserve scroll across re-renders (language switch / resize) so the view
       // doesn't jump back to the start. If a re-render lands mid-zoom, convert the
@@ -929,11 +998,9 @@
       if(first){
         firstDrawn=true;
         cameraIntro(); // cinematic opening; enables auto-advance at today when done
-      } else if(_postDrawFrac!=null){
-        // A view toggle changed the timeline length: keep roughly the same point
-        // in time by restoring the scroll fraction (clamped to the new extent).
-        var _m=maxScroll(), _t=clamp(_postDrawFrac*_m,0,_m); _postDrawFrac=null;
-        scroller.scrollLeft=_t; pos=_t;
+      } else if(_replay){
+        _replay=false;
+        replayIntro(); // smooth zoom-out → back-to-today over the newly filtered set
       } else {
         scroller.scrollLeft=sl; pos=sl;
       }
@@ -974,7 +1041,7 @@
     // label sits at the column start until the gutter reaches it, pins to the
     // gutter through the year, then is pushed out by the column's trailing edge.
     function updateStickyYears(){
-      if(!_camDone || _zoom!==1 || !stickyYears.length) return; // cached geometry is 1× only; rest at column start while zoomed
+      if(!_camDone || _introActive || _zoom!==1 || !stickyYears.length) return; // cached geometry is 1× only; suspend while zoomed or during a replay transition
       var sl=scroller.scrollLeft;
       for(var i=0;i<stickyYears.length;i++){
         var s=stickyYears[i];
@@ -983,20 +1050,23 @@
         s.lab.style.left=(d<lo?lo:(d>hi?hi:d))+"px";
       }
     }
-    // Year marks along the scrubber: one tick per intermediate event-year, at
-    // the same scroll fraction the shoe uses (offsetLeft → /endPos), so the
-    // ticks line up with where the shoe sits when that year is in view. The
-    // oldest year and TODAY stay as the prominent end labels. A min-gap skip
-    // keeps the small labels from colliding on narrow screens.
+    // Year marks along the scrubber: every intermediate year between the oldest
+    // (shoeLabStart) and TODAY (shoeLabEnd) gets an even-spaced tick — INCLUDING
+    // years collapsed into dotted gaps (e.g. years with no highlight in the
+    // highlights view), so the scrubber stays a continuous year axis. Read from
+    // both event-year (.ylabel) and gap (.gylab) labels.
     function buildShoeYears(){
       var host=document.getElementById("shoeYears"); if(!host || !scroller) return;
       var track=document.getElementById("track");
-      var cols=track ? Array.prototype.filter.call(track.querySelectorAll(".sec"), function(s){return s.querySelector(".ylabel");}) : [];
-      var n=cols.length, html="";
-      // Even-spaced so every intermediate year is written out and none overlap
-      // (the oldest year and TODAY stay as the prominent end labels).
+      var years=[];
+      if(track) Array.prototype.forEach.call(track.querySelectorAll(".ylabel,.gylab"), function(el){
+        var y=parseInt(el.textContent,10); if(!isNaN(y)) years.push(y);
+      });
+      years.sort(function(a,b){return a-b;});
+      years=years.filter(function(y,i){return i===0 || y!==years[i-1];}); // de-dup
+      var n=years.length, html="";
       for(var i=1;i<n-1;i++){
-        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+esc(cols[i].querySelector(".ylabel").textContent)+'</span>';
+        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+years[i]+'</span>';
       }
       host.innerHTML=html;
     }

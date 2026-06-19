@@ -188,11 +188,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos" },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones" },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos" },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen" },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons" },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos" },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones" },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos" },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen" },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons" },
     };
     // The gallery has a single URL and never navigates to change language —
     // the switch happens in place. The choice falls back to the browser
@@ -277,21 +277,32 @@
     // gold medal; any other race that carried a milestone (a first, a personal
     // best) wears a quieter silver medal; everything else is a plain, low-key
     // dot. tier() -> "mara" | "mile" | "ord"; the same colour accents the card.
-    function milestonesOf(r){ return (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || []; }
-    function tier(r){
-      // Marathon detected by distance (~42.2 km) so the tier survives dropping
-      // the now-redundant `type` field; a legacy type==="marathon" still counts.
+    // True for a marathon — by distance (~42.2 km, so it survives dropping the
+    // redundant `type`) or a legacy type==="marathon". A relay (legs) is never
+    // auto-promoted to marathon by its summed distance.
+    function isMarathon(r){
       var kmv = r && (typeof r.km === "number" ? r.km : parseFloat(r.km));
-      // A relay (legs) is never auto-promoted to marathon by its summed distance.
-      if(r && !legsOf(r) && (r.type === "marathon" || (kmv >= 42 && kmv <= 43))) return "mara";
+      return !!(r && !legsOf(r) && (r.type === "marathon" || (kmv >= 42 && kmv <= 43)));
+    }
+    function milestonesOf(r){
+      var ms = (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || [];
+      // Every marathon automatically carries the "marathon" milestone — computed,
+      // so it holds for every marathon now and in the future with no data edits.
+      // "firstMarathon" already implies it, so don't double the badge up.
+      if(isMarathon(r) && ms.indexOf("marathon") < 0 && ms.indexOf("firstMarathon") < 0)
+        ms = ["marathon"].concat(ms);
+      return ms;
+    }
+    function tier(r){
+      if(isMarathon(r)) return "mara"; // marathons are the most honourable → gold
       return milestonesOf(r).length ? "mile" : "ord";
     }
     var TIERC={mara:"#E8C04A", mile:"#C3CAD6", ord:"#8b91a0"};
     function color(r){ return TIERC[tier(r)]; }
-    // A "highlight" is a marathon or a race carrying a milestone — anything the
-    // timeline already marks with a medal (tier !== "ord"). Drives the
-    // complete-vs-highlights view toggle.
-    function isHighlight(r){ return tier(r) !== "ord"; }
+    // Highlights = every event that carries a milestone. Marathons always do (a
+    // "marathon" milestone is injected above), so this captures all marathons plus
+    // every milestone race. Drives the complete-vs-highlights view toggle.
+    function isHighlight(r){ return milestonesOf(r).length > 0; }
     function km(v){return (typeof v==="number")?v.toLocaleString(LOC,{maximumFractionDigits:4}):v;}
     function p2(n){return (n<10?"0":"")+n;}
     function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}

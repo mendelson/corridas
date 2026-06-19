@@ -19,12 +19,16 @@
        line up; scales with the viewport so it never glues to the edges on
        desktop nor looks like a narrow, centred mobile block. */
     :root { --gutter: clamp(18px, 3vw, 56px); }
-    header { padding: 38px var(--gutter) 16px; transition: opacity .3s ease; }
-    header.chrome-in { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
+    header { padding: 38px var(--gutter) 16px; }
+    /* The chrome reveal (hdrIn) and its exact reverse (chrome-out): the header
+       slides down + fades in when an intro/transition ends, and slides up + fades
+       out when one starts. */
+    header.chrome-in  { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
+    header.chrome-out { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) reverse both; }
     /* During the cinematic intro everything outside the timeline is hidden and
        interaction is locked; the chrome fades in only once the intro concludes. */
     body.intro { overflow: hidden; touch-action: none; }
-    body.intro header { opacity: 0; pointer-events: none; } /* opacity (not visibility) so it fades out smoothly when a replay starts */
+    body.intro header { opacity: 0; pointer-events: none; } /* first-load intro hides it statically; a replay animates it via chrome-out */
     body.intro .scroller { border-top-color: transparent; } /* no stray divider while centred */
     @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
@@ -515,7 +519,7 @@
       stageEl.style.transform="translateY(0)"; // glide the stage back to its resting place
       showShoe(); // ensure the shoe scrubber is visible (reduced-motion / error / safety)
       var hdr=document.querySelector("header");
-      if(hdr && animate) hdr.classList.add("chrome-in");
+      if(hdr){ hdr.classList.remove("chrome-out"); if(animate) hdr.classList.add("chrome-in"); }
     }
     function endCameraNow(track, todayStart, prevOverflow){
       if(_camDone) return;
@@ -928,7 +932,7 @@
       }
       _introActive=true; auto=false;
       document.body.classList.add("intro"); // hide the header + lock interaction during the transition
-      var _hdr=document.querySelector("header"); if(_hdr) _hdr.classList.remove("chrome-in"); // let the fade-in replay at the end
+      var _hdr=document.querySelector("header"); if(_hdr){ _hdr.classList.remove("chrome-in"); _hdr.classList.add("chrome-out"); } // header slides up + fades out (reverse reveal) on click
       if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
       var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
       var prevOverflow=scroller.style.overflowX;
@@ -963,6 +967,7 @@
       beat(DOUT, function(e){ // zoom OUT: today → whole-timeline overview
         track.style.transform=camT(tdTX+e*(ovTX-tdTX), e*ovTY, 1+e*(fit-1));
       }, function(){ setTimeout(function(){
+        if(_hdr){ _hdr.classList.remove("chrome-out"); _hdr.classList.add("chrome-in"); } // header returns (slides down + fades in) with the zoom-in
         beat(DIN, function(e){ // zoom IN: overview → today; the shoe walks to today
           track.style.transform=camT(ovTX+e*(tdTX-ovTX), ovTY*(1-e), fit+e*(1-fit));
           shoeCur=shoeFrom+e*(1-shoeFrom); applyShoe(shoeCur);

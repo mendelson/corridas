@@ -19,12 +19,12 @@
        line up; scales with the viewport so it never glues to the edges on
        desktop nor looks like a narrow, centred mobile block. */
     :root { --gutter: clamp(18px, 3vw, 56px); }
-    header { padding: 38px var(--gutter) 16px; }
+    header { padding: 38px var(--gutter) 16px; transition: opacity .3s ease; }
     header.chrome-in { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
     /* During the cinematic intro everything outside the timeline is hidden and
        interaction is locked; the chrome fades in only once the intro concludes. */
     body.intro { overflow: hidden; touch-action: none; }
-    body.intro header { opacity: 0; visibility: hidden; pointer-events: none; }
+    body.intro header { opacity: 0; pointer-events: none; } /* opacity (not visibility) so it fades out smoothly when a replay starts */
     body.intro .scroller { border-top-color: transparent; } /* no stray divider while centred */
     @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
@@ -927,6 +927,8 @@
         scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; held=false; auto=true; return;
       }
       _introActive=true; auto=false;
+      document.body.classList.add("intro"); // hide the header + lock interaction during the transition
+      var _hdr=document.querySelector("header"); if(_hdr) _hdr.classList.remove("chrome-in"); // let the fade-in replay at the end
       if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
       var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
       var prevOverflow=scroller.style.overflowX;
@@ -954,7 +956,8 @@
         track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
         scroller.style.overflowX=prevOverflow||"";
         scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
-        _introActive=false; held=false;
+        finishChrome(true); // _introActive=false; un-hide the header (chrome-in fade-in); show shoe
+        held=false;
         setTimeout(function(){ if(!held) auto=true; }, 400);
       }
       beat(DOUT, function(e){ // zoom OUT: today → whole-timeline overview

@@ -881,20 +881,16 @@
       held=false; auto=true;
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
-    // Complete ⇄ highlights toggle. Re-renders with the filtered set, then replays
-    // the cinematic zoom-out transition (replayIntro) over the new events; render()
-    // collapses empty years into gaps and narrows sparse ones, so the timeline
-    // extends/collapses automatically.
+    // Highlights button — step 1 of the rebuilt transition. Clicking it plays the
+    // intro's closing moment in REVERSE (header out, stage glides up to centre,
+    // camera zooms out) and parks at that recessed overview. The view swap
+    // (all ⇄ highlights) + forward replay are wired in a later step, so for now
+    // the click neither toggles viewMode nor re-renders.
     (function(){
       var b=document.getElementById("navView"); if(!b) return;
       b.addEventListener("click", function(){
         if(_introActive) return; // ignore while a transition / intro is playing
-        viewMode = (viewMode==="highlights") ? "all" : "highlights";
-        try{ localStorage.setItem(VIEW_KEY, viewMode); }catch(e){}
-        b.classList.toggle("active", viewMode==="highlights");
-        b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
-        _replay=true; // re-render the new set, then play the zoom-out replay
-        draw();
+        reverseIntro();
       });
     })();
     // Touch: two fingers pinch-zoom; one finger is left to native scroll.
@@ -918,12 +914,74 @@
     // Block touch-drag scrolling for the duration of the intro.
     window.addEventListener("touchmove", function(e){ if(_introActive) e.preventDefault(); }, {passive:false});
 
+    // The intro's closing moment, played in REVERSE — used as the highlights
+    // button's opening gesture (step 1 of the rebuilt transition). It mirrors
+    // finishChrome + the intro zoom, backwards and all at once:
+    //   • the header slides UP + fades OUT (chrome-out, reverse of hdrIn);
+    //   • the stage glides back UP to the vertically-centred position (reverse of
+    //     the finishChrome glide-down);
+    //   • the camera (a transform on the track) zooms OUT to frame the whole span.
+    // It then PARKS at that recessed overview with interaction locked — the view
+    // swap + forward replay continue from here in a later step.
+    function reverseIntro(){
+      var track=document.getElementById("track");
+      if(!track) return;
+      var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      _introActive=true; auto=false;
+      if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
+      document.body.classList.add("intro"); // lock interaction + reveal-state for the chrome
+      var hdr=document.querySelector("header");
+      if(hdr){ hdr.classList.remove("chrome-in"); hdr.classList.add("chrome-out"); } // header slides up + fades out
+      // Collapse any active pinch-zoom back to 1× native scroll first, so the
+      // camera math below runs in base (1×) content space.
+      var sl=scroller.scrollLeft;
+      if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); scroller.scrollLeft=sl; }
+      // Stage glide UP to centre (reverse of finishChrome's translateY(0)) —
+      // animated by the .stage CSS transform transition (.7s, same easing).
+      var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
+      var natTop=stageEl.getBoundingClientRect().top; // resting top (header space reserved)
+      var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
+      // Camera zoom-OUT: from where the user is now (scale 1) → the whole-span
+      // overview, framed exactly like the intro's pulled-back view.
+      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
+      var startScrollNow=scroller.scrollLeft;
+      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
+      var trk=track.getBoundingClientRect();
+      var tnodeEl=track.querySelector(".tnode");
+      var todayX=tnodeEl ? (tnodeEl.getBoundingClientRect().left-trk.left) : (track.scrollWidth||clientW);
+      var fullExtent=todayX+50;
+      var fit=Math.min(0.82, (clientW-2*M)/Math.max(fullExtent,1));
+      track.style.transformOrigin="0 0"; track.style.willChange="transform";
+      function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
+      var ovTX=(clientW-fullExtent*fit)/2, ovTY=(H-H*fit)/2; // overview: whole span, centred
+      var startTX=-startScrollNow;                            // current view, scale 1
+      function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
+      var DUR=700;
+      if(reduce || !("animate" in Element.prototype)){ // no animation — snap to the parked overview
+        stageEl.style.transform="translateY("+centerY+"px)";
+        track.style.transform=camT(ovTX,ovTY,fit);
+        return;
+      }
+      stageEl.style.transform="translateY("+centerY+"px)"; // CSS .7s glide up
+      track.style.transform=camT(startTX,0,1);             // start exactly where the user is
+      var t0=null;
+      function step(ts){
+        if(t0==null) t0=ts;
+        var p=Math.min((ts-t0)/DUR,1), e=ease(p);
+        track.style.transform=camT(startTX+e*(ovTX-startTX), e*ovTY, 1+e*(fit-1));
+        if(p<1) requestAnimationFrame(step); // parks at the overview; the next step continues from here
+      }
+      requestAnimationFrame(step);
+    }
+
     // Replay-on-toggle: a smooth cinematic transition over the events currently
     // shown. The camera (a transform on the track) zooms OUT to frame the whole
     // timeline, holds a beat, then zooms back IN to today — so switching
     // full ⇄ highlights reads as "pull back to see the new set, then return".
     // Content stays visible (no pop-in), interaction is locked, the shoe walks to
     // today, and native scroll is restored at today when it ends.
+    // NOTE: superseded as the button's handler by reverseIntro() above (step 1 of
+    // the rebuilt transition); kept here to be reused for the forward half later.
     function replayIntro(){
       var track=document.getElementById("track");
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;

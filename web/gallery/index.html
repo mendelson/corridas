@@ -24,18 +24,14 @@
        slides down + fades in when an intro/transition ends, and slides up + fades
        out when one starts. */
     header.chrome-in  { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
-    header.chrome-out { animation: hdrOut .7s cubic-bezier(.22,.61,.36,1) both; }
+    header.chrome-out { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) reverse both; }
     /* During the cinematic intro everything outside the timeline is hidden and
        interaction is locked; the chrome fades in only once the intro concludes. */
     body.intro { overflow: hidden; touch-action: none; }
     header.hide { opacity: 0; pointer-events: none; } /* first-load intro: header starts hidden (static, no animation) */
     body.intro header { pointer-events: none; } /* locked while an intro/transition runs — opacity is driven only by chrome-in/out, so the animation never fights a static opacity:0 */
     body.intro .scroller { border-top-color: transparent; } /* no stray divider while centred */
-    @keyframes hdrIn  { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
-    /* Distinct name (not `hdrIn reverse`) so toggling chrome-in ⇄ chrome-out
-       changes animation-name and actually RESTARTS the animation — same name
-       would be matched as "the same animation" and never replay. */
-    @keyframes hdrOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-10px); } }
+    @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .gactions { display: flex; align-items: center; gap: 8px; }
     .gbtn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border: 1px solid #2a2f38; border-radius: 9px; background: #161a20; color: #aeb4c0; font-family: "Archivo", system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-decoration: none; cursor: pointer; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; }
@@ -212,8 +208,10 @@
     var T=STR[lang], LOC=T.loc;
     // View mode: "all" (full timeline) or "highlights" (only marathons + milestone
     // races). Persisted; the timeline re-renders and collapses/extends to fit.
-    var VIEW_KEY="gallery_view", viewMode="all";
-    try{ if(localStorage.getItem(VIEW_KEY)==="highlights") viewMode="highlights"; }catch(e){}
+    // The gallery always opens showing ONLY the highlights; the full set is
+    // revealed by pressing the highlights button (with the expand transition).
+    // The choice is intentionally NOT persisted — every load starts at highlights.
+    var viewMode="highlights";
     var mShort=[];
     function buildMonths(){ for(var i=0;i<12;i++){ mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase(); } }
 
@@ -543,7 +541,11 @@
       setTimeout(function(){ if(!held) auto=true; }, 500);
     }
 
-    function cameraIntro(){
+    function cameraIntro(opts){
+      opts=opts||{};
+      // Re-runnable: the highlights-button transition calls this again for the
+      // forward replay, so clear the done-flag / pending frames on each entry.
+      _camDone=false; _camAnims=[]; if(_camRAF){ cancelAnimationFrame(_camRAF); _camRAF=null; }
       var track=document.getElementById("track");
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       var todayStart=startScroll();
@@ -556,10 +558,11 @@
       // Centre the timeline vertically in the viewport for the duration of the
       // intro (applied instantly, no transition); finishChrome() then glides it
       // back to its resting place below the header as the chrome fades in.
+      stageEl.style.transition="none";
+      stageEl.style.transform="";   // clear any prior glide (e.g. reverseIntro's) so the resting top reads true
       var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
       var natTop=stageEl.getBoundingClientRect().top; // resting top (header space reserved)
       var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
-      stageEl.style.transition="none";
       stageEl.style.transform="translateY("+centerY+"px)";
       void stageEl.offsetHeight;    // commit the centred position without animating into it
       stageEl.style.transition="";  // restore the CSS transition for the release glide
@@ -587,7 +590,9 @@
       var lateEls=Array.prototype.slice.call(track.querySelectorAll(".tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card"));
       var yearLineMeta=yearLineEls.map(function(el){ return {el:el, x:cx(el)}; });
       var evMeta=lateEls.map(function(el){ return {el:el, x:cx(el), done:false}; });
-      yearLineEls.concat(lateEls).forEach(function(el){ el.classList.add("rv"); });
+      // First load hides the year axis too and draws it in via phase1; the
+      // toggle-expand (skipPhase1) keeps the axis visible so it simply expands.
+      (opts.skipPhase1 ? lateEls : yearLineEls.concat(lateEls)).forEach(function(el){ el.classList.add("rv"); });
 
       var prevOverflow=scroller.style.overflowX;
       scroller.style.overflowX="hidden";
@@ -680,9 +685,16 @@
         });
       }
 
-      phase1().then(function(){ if(!_camDone) return phase2(); })
-              .then(function(){ if(!_camDone) return phase3(); })
-              .then(function(){ if(!_camDone) endCameraNow(track, todayStart, prevOverflow); });
+      if(opts.skipPhase1){
+        // Axis already on screen (handed over from reverseIntro) — go straight to
+        // expanding it, then the accelerated pan-and-reveal to today.
+        phase2().then(function(){ if(!_camDone) return phase3(); })
+                .then(function(){ if(!_camDone) endCameraNow(track, todayStart, prevOverflow); });
+      } else {
+        phase1().then(function(){ if(!_camDone) return phase2(); })
+                .then(function(){ if(!_camDone) return phase3(); })
+                .then(function(){ if(!_camDone) endCameraNow(track, todayStart, prevOverflow); });
+      }
     }
 
     // --- Timeline motion -----------------------------------------------------
@@ -759,7 +771,6 @@
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 3s.
     var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0;
-    var _replay=false; // when true, the next draw() plays the zoom-out replay (view toggle)
     // Resume the drift 3s after the user stops interacting (never while held).
     function scheduleResume(){
       if(resumeTimer) clearTimeout(resumeTimer);
@@ -885,16 +896,26 @@
       held=false; auto=true;
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
-    // Highlights button — step 1 of the rebuilt transition. Clicking it plays the
-    // intro's closing moment in REVERSE (header out, stage glides up to centre,
-    // camera zooms out) and parks at that recessed overview. The view swap
-    // (all ⇄ highlights) + forward replay are wired in a later step, so for now
-    // the click neither toggles viewMode nor re-renders.
+    // Highlights button — full transition. A click plays the intro's closing
+    // moment in REVERSE (header out, stage up to centre, camera zoom-out), then on
+    // arrival swaps the event set (highlights ⇄ all), re-renders, and replays the
+    // intro FORWARD over the new set: expand the timeline → zoom-in revealing the
+    // cards → land at today with the chrome restored.
     (function(){
       var b=document.getElementById("navView"); if(!b) return;
       b.addEventListener("click", function(){
-        if(_introActive) return; // ignore while a transition / intro is playing
-        reverseIntro();
+        if(_introActive || !_data) return; // ignore while a transition / intro is playing
+        reverseIntro(function(){
+          // Arrived at the recessed overview — swap the set and reopen forward.
+          viewMode = (viewMode==="highlights") ? "all" : "highlights";
+          b.classList.toggle("active", viewMode==="highlights");
+          b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+          scroller.style.overflowX="";                       // reverseIntro left it hidden
+          var tr=document.getElementById("track");
+          if(tr){ tr.style.transform=""; tr.style.transformOrigin=""; } // drop the reverse-overview transform before re-render
+          renderView();                                      // render the new set (+ scrubber labels / bounds)
+          cameraIntro({skipPhase1:true});                    // expand → zoom-in + cards → today
+        });
       });
     })();
     // Touch: two fingers pinch-zoom; one finger is left to native scroll.
@@ -925,11 +946,11 @@
     //   • the stage glides back UP to the vertically-centred position (reverse of
     //     the finishChrome glide-down);
     //   • the camera (a transform on the track) zooms OUT to frame the whole span.
-    // It then PARKS at that recessed overview with interaction locked — the view
-    // swap + forward replay continue from here in a later step.
-    function reverseIntro(){
+    // It hands the recessed overview off to onArrived() once the zoom-out lands,
+    // so the caller can swap the set and replay the intro FORWARD from there.
+    function reverseIntro(onArrived){
       var track=document.getElementById("track");
-      if(!track) return;
+      if(!track){ if(onArrived) onArrived(); return; }
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       _introActive=true; auto=false;
       if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
@@ -940,6 +961,9 @@
       // camera math below runs in base (1×) content space.
       var sl=scroller.scrollLeft;
       if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); scroller.scrollLeft=sl; }
+      // Reduced motion / no Web Animations: skip the rewind and hand off at once —
+      // the forward step then lands at today without animating either.
+      if(reduce || !("animate" in Element.prototype)){ if(onArrived) onArrived(); return; }
       // Stage glide UP to centre (reverse of finishChrome's translateY(0)) —
       // animated by the .stage CSS transform transition (.7s, same easing).
       var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
@@ -961,11 +985,6 @@
       var startTX=-startScrollNow;                            // current view, scale 1
       function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
       var DUR=700;
-      if(reduce || !("animate" in Element.prototype)){ // no animation — snap to the parked overview
-        stageEl.style.transform="translateY("+centerY+"px)";
-        track.style.transform=camT(ovTX,ovTY,fit);
-        return;
-      }
       stageEl.style.transform="translateY("+centerY+"px)"; // CSS .7s glide up
       track.style.transform=camT(startTX,0,1);             // start exactly where the user is
       var t0=null;
@@ -973,89 +992,24 @@
         if(t0==null) t0=ts;
         var p=Math.min((ts-t0)/DUR,1), e=ease(p);
         track.style.transform=camT(startTX+e*(ovTX-startTX), e*ovTY, 1+e*(fit-1));
-        if(p<1) requestAnimationFrame(step); // parks at the overview; the next step continues from here
+        if(p<1) requestAnimationFrame(step);
+        else if(onArrived) onArrived(); // arrived at the overview → hand off to the forward step
       }
       requestAnimationFrame(step);
-    }
-
-    // Replay-on-toggle: a smooth cinematic transition over the events currently
-    // shown. The camera (a transform on the track) zooms OUT to frame the whole
-    // timeline, holds a beat, then zooms back IN to today — so switching
-    // full ⇄ highlights reads as "pull back to see the new set, then return".
-    // Content stays visible (no pop-in), interaction is locked, the shoe walks to
-    // today, and native scroll is restored at today when it ends.
-    // NOTE: superseded as the button's handler by reverseIntro() above (step 1 of
-    // the rebuilt transition); kept here to be reused for the forward half later.
-    function replayIntro(){
-      var track=document.getElementById("track");
-      var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      var todayStart=startScroll();
-      if(reduce || !("animate" in Element.prototype) || !track){
-        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; held=false; auto=true; return;
-      }
-      _introActive=true; auto=false;
-      document.body.classList.add("intro"); // hide the header + lock interaction during the transition
-      var _hdr=document.querySelector("header"); if(_hdr){ _hdr.classList.remove("chrome-in"); _hdr.classList.add("chrome-out"); } // header slides up + fades out (reverse reveal) on click
-      if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
-      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
-      var prevOverflow=scroller.style.overflowX;
-      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
-      var trk=track.getBoundingClientRect();
-      var tnodeEl=track.querySelector(".tnode");
-      var todayX=tnodeEl ? (tnodeEl.getBoundingClientRect().left-trk.left) : (track.scrollWidth||clientW);
-      var fullExtent=todayX+50;
-      // Frame the whole timeline, always pulling back a little so the zoom-out
-      // reads even when a collapsed (highlights) timeline already fits the screen.
-      var fit=Math.min(0.82, (clientW-2*M)/Math.max(fullExtent,1));
-      track.style.transformOrigin="0 0"; track.style.willChange="transform";
-      function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
-      var ovTX=(clientW-fullExtent*fit)/2, ovTY=(H-H*fit)/2; // overview: whole span, centred
-      var tdTX=-todayStart;                                  // today, scale 1
-      function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
-      var DOUT=820, HOLD=220, DIN=1700, shoeFrom=shoeCur;
-      track.style.transform=camT(tdTX,0,1); // start exactly where the user is (today)
-      function beat(dur, apply, next){
-        var t0=null;
-        function step(ts){ if(t0==null) t0=ts; var p=Math.min((ts-t0)/dur,1); apply(ease(p)); if(p<1) requestAnimationFrame(step); else next(); }
-        requestAnimationFrame(step);
-      }
-      function finish(){
-        track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
-        scroller.style.overflowX=prevOverflow||"";
-        scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
-        finishChrome(true); // _introActive=false; un-hide the header (chrome-in fade-in); show shoe
-        held=false;
-        setTimeout(function(){ if(!held) auto=true; }, 400);
-      }
-      beat(DOUT, function(e){ // zoom OUT: today → whole-timeline overview
-        track.style.transform=camT(tdTX+e*(ovTX-tdTX), e*ovTY, 1+e*(fit-1));
-      }, function(){ setTimeout(function(){
-        if(_hdr){ _hdr.classList.remove("chrome-out"); _hdr.classList.add("chrome-in"); } // header returns (slides down + fades in) with the zoom-in
-        beat(DIN, function(e){ // zoom IN: overview → today; the shoe walks to today
-          track.style.transform=camT(ovTX+e*(tdTX-ovTX), ovTY*(1-e), fit+e*(1-fit));
-          shoeCur=shoeFrom+e*(1-shoeFrom); applyShoe(shoeCur);
-        }, finish);
-      }, HOLD); });
     }
 
     // Load the races, then the SAME location reference the main site uses
     // (web/locations/{ISO2}.json) for each country present, so state/country
     // names come from one source of truth.
     var _data=null;
-    function draw(){
-      if(!_data) return;
-      if((firstDrawn && !_camDone) || _introActive) return; // intro / replay transition playing — don't re-render under it
-      var first=!firstDrawn;
-      // Preserve scroll across re-renders (language switch / resize) so the view
-      // doesn't jump back to the start. If a re-render lands mid-zoom, convert the
-      // scaled offset back to 1× space before dropping the transform.
-      var sl=scroller?scroller.scrollLeft:0;
-      if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); } // a re-render replaces the track; drop the zoom transform
+    // Render the current view (filtered by viewMode) + refresh the scrubber labels
+    // and bounds. Pure DOM build with no camera/intro side effects, so both draw()
+    // and the highlights-button transition reuse it.
+    function renderView(){
       // Highlights view feeds render() only the medal-worthy races; render's
       // empty-year gap-collapse + density-based widths then shrink the timeline.
       var races=(viewMode==="highlights") ? _data.races.filter(isHighlight) : _data.races;
       render(races,_data.loc,_data.paises);
-      if(!scroller) return;
       // Scrubber end labels: oldest (rendered) year on the left, "today" on the right.
       var _yrs=races.map(function(r){return +String(r.date||"").slice(0,4);}).filter(Boolean);
       var _ls=document.getElementById("shoeLabStart"), _le=document.getElementById("shoeLabEnd");
@@ -1063,14 +1017,22 @@
       if(_le) _le.textContent = T.today;
       endPos=startScroll(); // "today" scroll offset (auto-advance upper bound)
       buildShoeYears();     // year ticks spaced along the scrubber
+    }
+    function draw(){
+      if(!_data) return;
+      if((firstDrawn && !_camDone) || _introActive) return; // intro / transition playing — don't re-render under it
+      var first=!firstDrawn;
+      // Preserve scroll across re-renders (language switch / resize) so the view
+      // doesn't jump back to the start. If a re-render lands mid-zoom, convert the
+      // scaled offset back to 1× space before dropping the transform.
+      var sl=scroller?scroller.scrollLeft:0;
+      if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); } // a re-render replaces the track; drop the zoom transform
+      renderView();
       if(first){
         firstDrawn=true;
         cameraIntro(); // cinematic opening; enables auto-advance at today when done
-      } else if(_replay){
-        _replay=false;
-        replayIntro(); // smooth zoom-out → back-to-today over the newly filtered set
       } else {
-        scroller.scrollLeft=sl; pos=sl;
+        scroller.scrollLeft=sl; pos=sl; // language switch / resize — keep position
       }
     }
     // Rest position / auto-advance upper bound: the scroll that brings TODAY

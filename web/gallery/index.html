@@ -275,6 +275,10 @@
     var YEAR_KM={2021:1845.2,2022:821.4,2023:1267.6,2024:890.1,2025:1261.9};
     function kmStr(v){ return v.toLocaleString(LOC,{minimumFractionDigits:1,maximumFractionDigits:1})+" km"; }
     var OUT="cubic-bezier(.22,.61,.36,1)", BACK="cubic-bezier(.34,1.45,.5,1)";
+    // Shared intro beat durations, reused by the highlights-toggle transition so
+    // each segment lasts exactly as long as the matching segment of the intro
+    // (D2 = expand/morph, D3 = pan-to-today). The chrome glide is the CSS .7s.
+    var INTRO_D1=1700, INTRO_D2=1500, INTRO_D3=4200;
     function clamp(v,lo,hi){return v<lo?lo:(v>hi?hi:v);}
     function dp(iso){var p=iso.split("-");return {y:+p[0],m:+p[1]-1,d:+p[2]};}
     function frac(p){return (p.m+(p.d-1)/31)/12;}
@@ -639,7 +643,7 @@
       applyMorph(0);
       track.style.transform=camT(camOvTX, camOvTY, fitEven);
 
-      var D1=1700, D2=1500, D3=4200; // axis draw / even→real zoom / pan to today
+      var D1=INTRO_D1, D2=INTRO_D2, D3=INTRO_D3; // axis draw / even→real zoom / pan to today
 
       function phase1(){ // draw the even-spaced year axis, oldest → newest
         return new Promise(function(res){
@@ -1058,7 +1062,7 @@
         track.style.transform=camT(ovS.tx, ovS.ty, ovS.s);   // == REWIND end -> seamless
 
         // 3. EXPAND / CONTRACT — morph the bare axis, camera follows the extent.
-        beat(1100, function(e){
+        beat(INTRO_D2, function(e){
           applyMorph(e);
           track.style.transform=camT(ovS.tx+e*(ovT.tx-ovS.tx), ovS.ty+e*(ovT.ty-ovS.ty), ovS.s+e*(ovT.s-ovS.s));
         }, function(){
@@ -1066,8 +1070,8 @@
           track.style.transform=camT(ovT.tx, ovT.ty, ovT.s);
           // 4. PAN to today, cascade-reveal the cards, shoe walks forward.
           setFace(1);
-          evMeta.forEach(function(mm){ var f=tgtExtent?clamp(mm.x/tgtExtent,0,1):0; onReveal(mm.el, f*1500); });
-          beat(2200, function(e){
+          evMeta.forEach(function(mm){ var f=tgtExtent?clamp(mm.x/tgtExtent,0,1):0; onReveal(mm.el, f*(INTRO_D3-700)); });
+          beat(INTRO_D3, function(e){
             track.style.transform=camT(ovT.tx+e*((-tgtTodayStart)-ovT.tx), ovT.ty*(1-e), ovT.s+e*(1-ovT.s));
             shoeCur=e; applyShoe(e);
           }, function(){

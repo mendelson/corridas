@@ -1,13 +1,13 @@
-[World's Marathons] 7039 eventos no sitemap; buscando todos
+[World's Marathons] 7041 eventos no sitemap; buscando todos
 [geo] limite de 600 buscas (Nominatim/execução) atingido — adiando resoluções restantes para a próxima execução
-[World's Marathons] 52 corridas encontradas
-EVENT_COUNT:52
-✅  worldsmarathons: 52 evento(s)
-    {"titulo": "Asics Gold Coast Marathon", "data": "2026-07-05", "estado": "ENG", "km": "5.0, 10.0, 21.097, 42.195"}
-    {"titulo": "Tcs Toronto Waterfront Marathon", "data": "2026-10-18", "estado": "ON", "km": "5.0, 21.097, 42.195"}
-    {"titulo": "The Milton Keynes Marathon Weekend", "data": "2027-05-03", "estado": "ENG", "km": "1.609, 5.0, 21.097, 42.195"}
-    {"titulo": "Great Birmingham Run", "data": "2027-05-02", "estado": "ENG", "km": "10.0, 21.097"}
+[World's Marathons] 119 corridas encontradas
+EVENT_COUNT:119
+✅  worldsmarathons: 119 evento(s)
     {"titulo": "Zurich Marathon", "data": "2027-04-11", "estado": "ZH", "km": "10.0, 21.097, 42.195"}
-    ... e mais 47
-❌  worldsmarathons: 41/52 eventos sem horário publicado
-FAILURE_NOTE:41/52 eventos sem horário publicado
+    {"titulo": "Tcs Toronto Waterfront Marathon", "data": "2026-10-18", "estado": "ON", "km": "5.0, 21.097, 42.195"}
+    {"titulo": "Asics Gold Coast Marathon", "data": "2026-07-05", "estado": "ENG", "km": "5.0, 10.0, 21.097, 42.195"}
+    {"titulo": "Great Birmingham Run", "data": "2027-05-02", "estado": "ENG", "km": "10.0, 21.097"}
+    {"titulo": "The Milton Keynes Marathon Weekend", "data": "2027-05-03", "estado": "ENG", "km": "1.609, 5.0, 21.097, 42.195"}
+    ... e mais 114
+❌  worldsmarathons: 92/119 eventos sem horário publicado
+FAILURE_NOTE:92/119 eventos sem horário publicado

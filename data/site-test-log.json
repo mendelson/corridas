@@ -1,631 +1,5 @@
 [
   {
-    "timestamp": "2026-06-16T23:24:38.051879+00:00",
-    "commit": "c513fd8bddd4642697a56d5105ba3fce8c781a7d",
-    "commit_short": "c513fd8b",
-    "branch": "main",
-    "passed": 101,
-    "failed": 0,
-    "skipped": 1,
-    "total": 102,
-    "clean": true,
-    "duration_s": 127.62,
-    "results": [
-      {
-        "name": "web/locations/ is the only copy — the legacy top-level locations/ is gone.",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "lot price table yields distances not prices",
-        "status": "passed",
-        "duration_ms": 0.4,
-        "message": null
-      },
-      {
-        "name": "required country present[DE]",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "Each country JSON parses and has a name + well-formed subdivisions list.",
-        "status": "passed",
-        "duration_ms": 15.6,
-        "message": null
-      },
-      {
-        "name": "required country present[FR]",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "locations populated",
-        "status": "passed",
-        "duration_ms": 3.0,
-        "message": null
-      },
-      {
-        "name": "standalone price does not become distance",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "two decimal money format rejected in shared suffix",
-        "status": "passed",
-        "duration_ms": 0.4,
-        "message": null
-      },
-      {
-        "name": "legit lists and decimals still work",
-        "status": "passed",
-        "duration_ms": 0.9,
-        "message": null
-      },
-      {
-        "name": "required country present[BR]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "required country present[US]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "required country present[MX]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "required country present[ES]",
-        "status": "passed",
-        "duration_ms": 0.5,
-        "message": null
-      },
-      {
-        "name": "required country present[IT]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "required country present[BM]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "budget exhausted skips network",
-        "status": "passed",
-        "duration_ms": 3.8,
-        "message": null
-      },
-      {
-        "name": "required country present[HK]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "root redirect page has canonical hreflang and noscript",
-        "status": "passed",
-        "duration_ms": 1.1,
-        "message": null
-      },
-      {
-        "name": "Below the limit, a miss is allowed through (counter increments); we stub",
-        "status": "skipped",
-        "duration_ms": 0.6,
-        "message": null
-      },
-      {
-        "name": "required country present[GB]",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "Each page must point to *all* language alternates + x-default, with the",
-        "status": "passed",
-        "duration_ms": 0.5,
-        "message": null
-      },
-      {
-        "name": "'Corrida da Copa' and 'Copa Run' both reduce to 'copa' but are in different",
-        "status": "passed",
-        "duration_ms": 0.4,
-        "message": null
-      },
-      {
-        "name": "Generic identical titles across languages waste the SERP snippet; each",
-        "status": "passed",
-        "duration_ms": 7.1,
-        "message": null
-      },
-      {
-        "name": "Every file is named like an ISO-3166-1 alpha-2 code: two uppercase letters.",
-        "status": "passed",
-        "duration_ms": 3.7,
-        "message": null
-      },
-      {
-        "name": "lastmod present and iso dated",
-        "status": "passed",
-        "duration_ms": 0.4,
-        "message": null
-      },
-      {
-        "name": "same token same state different city does not merge",
-        "status": "passed",
-        "duration_ms": 1.1,
-        "message": null
-      },
-      {
-        "name": "scraper/geo.py points its index at web/locations/ (the canonical copy).",
-        "status": "passed",
-        "duration_ms": 0.4,
-        "message": null
-      },
-      {
-        "name": "'Corrida POUPEX 2026' normalizes to the single token 'poupex'; same city,",
-        "status": "passed",
-        "duration_ms": 0.5,
-        "message": null
-      },
-      {
-        "name": "venice single token merges",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "Each shell carries pre-rendered cards using the real card markup —",
-        "status": "passed",
-        "duration_ms": 14.5,
-        "message": null
-      },
-      {
-        "name": "The single-token rule requires the EXACT same date.",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "Same brand/city/date but fully disjoint distances → different editions.",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "Two genuinely different races on the same day in the same city.",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "committed sitemap is wellformed and matches generator",
-        "status": "passed",
-        "duration_ms": 0.6,
-        "message": null
-      },
-      {
-        "name": "robots allows crawling and advertises sitemap",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "every language page has exactly one correct canonical",
-        "status": "passed",
-        "duration_ms": 4.7,
-        "message": null
-      },
-      {
-        "name": "generator emits exactly the five localized homes",
-        "status": "passed",
-        "duration_ms": 0.5,
-        "message": null
-      },
-      {
-        "name": "Atletis reports only 21k, Corridas Brasil reports 5/10/21 — they overlap.",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "jsonld itemlist valid and consistent",
-        "status": "passed",
-        "duration_ms": 27.6,
-        "message": null
-      },
-      {
-        "name": "Each page must carry the SAME full alternate cluster (all languages +",
-        "status": "passed",
-        "duration_ms": 6.0,
-        "message": null
-      },
-      {
-        "name": "Selection is per-language: targeted countries lead each shell's block,",
-        "status": "passed",
-        "duration_ms": 334.6,
-        "message": null
-      },
-      {
-        "name": "og:title/url must mirror the page's own title/canonical — divergence",
-        "status": "passed",
-        "duration_ms": 11.8,
-        "message": null
-      },
-      {
-        "name": "every home has exactly one h1 with site name",
-        "status": "passed",
-        "duration_ms": 5.5,
-        "message": null
-      },
-      {
-        "name": "footer has localized intro and crawlable language links",
-        "status": "passed",
-        "duration_ms": 4.6,
-        "message": null
-      },
-      {
-        "name": "pages dev mirrors are noindexed",
-        "status": "passed",
-        "duration_ms": 0.2,
-        "message": null
-      },
-      {
-        "name": "prerender titles exist in corridas json",
-        "status": "passed",
-        "duration_ms": 293.0,
-        "message": null
-      },
-      {
-        "name": "Card dates on English page must contain an English month name.",
-        "status": "passed",
-        "duration_ms": 1022.8,
-        "message": null
-      },
-      {
-        "name": "Selecting a single fonte shows only cards from that fonte.",
-        "status": "passed",
-        "duration_ms": 1199.7,
-        "message": null
-      },
-      {
-        "name": "In pt locale the lang dropdown must start with Português; rest alphabetical.",
-        "status": "passed",
-        "duration_ms": 350.9,
-        "message": null
-      },
-      {
-        "name": "Expanded card: Time column only shown when distances have differing horarios.",
-        "status": "passed",
-        "duration_ms": 14325.9,
-        "message": null
-      },
-      {
-        "name": "All 5 language labels must appear in the dropdown.",
-        "status": "passed",
-        "duration_ms": 268.1,
-        "message": null
-      },
-      {
-        "name": "A card whose corrida.first_seen_at is within 7 days must show a visible badge-novo.",
-        "status": "passed",
-        "duration_ms": 2353.2,
-        "message": null
-      },
-      {
-        "name": "The \"Todas as fontes\" master row is pre-checked, gets unchecked when a",
-        "status": "passed",
-        "duration_ms": 1788.3,
-        "message": null
-      },
-      {
-        "name": "Opening location filter and clicking Brasil group header expands its body.",
-        "status": "passed",
-        "duration_ms": 415.6,
-        "message": null
-      },
-      {
-        "name": "A month section that contains a new event must show .badge-novo in its header.",
-        "status": "passed",
-        "duration_ms": 333.0,
-        "message": null
-      },
-      {
-        "name": "Every visible card must have at least one .btn-inscricao element.",
-        "status": "passed",
-        "duration_ms": 102472.8,
-        "message": null
-      },
-      {
-        "name": "Expanding a second accordion group collapses the previously open one.",
-        "status": "passed",
-        "duration_ms": 942.7,
-        "message": null
-      },
-      {
-        "name": "Expanded card: Date column only shown when distances have differing dates.",
-        "status": "passed",
-        "duration_ms": 13686.9,
-        "message": null
-      },
-      {
-        "name": "Hovering a closed month separator must not make it transparent.",
-        "status": "passed",
-        "duration_ms": 383.5,
-        "message": null
-      },
-      {
-        "name": "Each checkbox label in the fontes filter must match a real source in the data.",
-        "status": "passed",
-        "duration_ms": 414.7,
-        "message": null
-      },
-      {
-        "name": "Hovering the sticky (open) month separator must not make it transparent.",
-        "status": "passed",
-        "duration_ms": 130.9,
-        "message": null
-      },
-      {
-        "name": "Every .btn-inscricao must have a non-empty href pointing to a URL.",
-        "status": "passed",
-        "duration_ms": 3305.3,
-        "message": null
-      },
-      {
-        "name": "Hovering a different month separator while one is already open must be opaque.",
-        "status": "passed",
-        "duration_ms": 673.2,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 4236.5,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 4609.1,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 5495.8,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 4295.6,
-        "message": null
-      },
-      {
-        "name": "Clicking #btnHome resets the location state toward geo (or 'todos').",
-        "status": "passed",
-        "duration_ms": 6214.1,
-        "message": null
-      },
-      {
-        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
-        "status": "passed",
-        "duration_ms": 4251.0,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 4415.6,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 4149.8,
-        "message": null
-      },
-      {
-        "name": "Fresh browser context with no storage must load the page correctly.",
-        "status": "passed",
-        "duration_ms": 5737.2,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 4677.8,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 4490.9,
-        "message": null
-      },
-      {
-        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
-        "status": "passed",
-        "duration_ms": 4431.4,
-        "message": null
-      },
-      {
-        "name": "A context with an unmapped browser locale loads the English strings.",
-        "status": "passed",
-        "duration_ms": 5297.4,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 5109.5,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 5071.8,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 4965.1,
-        "message": null
-      },
-      {
-        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
-        "status": "passed",
-        "duration_ms": 5050.1,
-        "message": null
-      },
-      {
-        "name": "On load the current (open) month sits at the top of the scroll — the",
-        "status": "passed",
-        "duration_ms": 5.8,
-        "message": null
-      },
-      {
-        "name": "All 5 locales in STRINGS must define exactly the same set of keys.",
-        "status": "passed",
-        "duration_ms": 6.0,
-        "message": null
-      },
-      {
-        "name": "Every item in distancias must be a Distancia shape (has 'km', no FonteInfo fields).",
-        "status": "passed",
-        "duration_ms": 350.6,
-        "message": null
-      },
-      {
-        "name": "No event in web/corridas.json should have distancias entries that lack 'km'.",
-        "status": "passed",
-        "duration_ms": 262.5,
-        "message": null
-      },
-      {
-        "name": "A single inscription URL should not appear in 3+ distinct records.",
-        "status": "passed",
-        "duration_ms": 385.8,
-        "message": null
-      },
-      {
-        "name": "No event title/cidade/localizacao may contain unescaped HTML entities.",
-        "status": "passed",
-        "duration_ms": 341.8,
-        "message": null
-      },
-      {
-        "name": "Inject a labelled + a Major event, re-render, and verify: the selo",
-        "status": "passed",
-        "duration_ms": 21.6,
-        "message": null
-      },
-      {
-        "name": "Every event in corridas.json must satisfy all location and data requirements.",
-        "status": "passed",
-        "duration_ms": 341.0,
-        "message": null
-      },
-      {
-        "name": "roman numerals uppercased",
-        "status": "passed",
-        "duration_ms": 0.9,
-        "message": null
-      },
-      {
-        "name": "existing abbreviations preserved",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "same events same order",
-        "status": "passed",
-        "duration_ms": 878.7,
-        "message": null
-      },
-      {
-        "name": "roman lookalike words untouched",
-        "status": "passed",
-        "duration_ms": 0.6,
-        "message": null
-      },
-      {
-        "name": "every event keeps a link and fonte tipo",
-        "status": "passed",
-        "duration_ms": 273.3,
-        "message": null
-      },
-      {
-        "name": "projection meaningfully smaller",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "committed web copy matches generator",
-        "status": "passed",
-        "duration_ms": 1333.6,
-        "message": null
-      },
-      {
-        "name": "only frontend fields present",
-        "status": "passed",
-        "duration_ms": 243.4,
-        "message": null
-      },
-      {
-        "name": "boot shard is exact subset of web copy",
-        "status": "passed",
-        "duration_ms": 367.5,
-        "message": null
-      },
-      {
-        "name": "boot shard meaningfully smaller than web copy",
-        "status": "passed",
-        "duration_ms": 0.3,
-        "message": null
-      },
-      {
-        "name": "boot shard window and flag",
-        "status": "passed",
-        "duration_ms": 98.7,
-        "message": null
-      },
-      {
-        "name": "The (?) legend toggles a panel explaining the hierarchy (Platinum>…>Label).",
-        "status": "passed",
-        "duration_ms": 5.8,
-        "message": null
-      },
-      {
-        "name": "No single merged event should accumulate more than 4 distinct fontes.",
-        "status": "passed",
-        "duration_ms": 193.4,
-        "message": null
-      },
-      {
-        "name": "Card dates in PT must contain a word from the Portuguese month list, not DD/MM/YYYY.",
-        "status": "passed",
-        "duration_ms": 398.4,
-        "message": null
-      }
-    ]
-  },
-  {
     "timestamp": "2026-06-16T23:43:26.933810+00:00",
     "commit": "beab17f92c32548debb0aaee1023dae96306040e",
     "commit_short": "beab17f9",
@@ -18979,6 +18353,650 @@
         "name": "Card dates on English page must contain an English month name.",
         "status": "passed",
         "duration_ms": 509.4,
+        "message": null
+      }
+    ]
+  },
+  {
+    "timestamp": "2026-06-20T00:22:27.298006+00:00",
+    "commit": "52dbf7faa18bcc97f527e058b698c52a7eb98383",
+    "commit_short": "52dbf7fa",
+    "branch": "main",
+    "passed": 104,
+    "failed": 0,
+    "skipped": 1,
+    "total": 105,
+    "clean": true,
+    "duration_s": 137.41,
+    "results": [
+      {
+        "name": "lot price table yields distances not prices",
+        "status": "passed",
+        "duration_ms": 0.4,
+        "message": null
+      },
+      {
+        "name": "web/locations/ is the only copy — the legacy top-level locations/ is gone.",
+        "status": "passed",
+        "duration_ms": 0.5,
+        "message": null
+      },
+      {
+        "name": "Each country JSON parses and has a name + well-formed subdivisions list.",
+        "status": "passed",
+        "duration_ms": 17.6,
+        "message": null
+      },
+      {
+        "name": "required country present[DE]",
+        "status": "passed",
+        "duration_ms": 0.4,
+        "message": null
+      },
+      {
+        "name": "standalone price does not become distance",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "locations populated",
+        "status": "passed",
+        "duration_ms": 3.6,
+        "message": null
+      },
+      {
+        "name": "two decimal money format rejected in shared suffix",
+        "status": "passed",
+        "duration_ms": 0.5,
+        "message": null
+      },
+      {
+        "name": "legit lists and decimals still work",
+        "status": "passed",
+        "duration_ms": 1.0,
+        "message": null
+      },
+      {
+        "name": "required country present[BR]",
+        "status": "passed",
+        "duration_ms": 0.9,
+        "message": null
+      },
+      {
+        "name": "required country present[FR]",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "required country present[US]",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "required country present[MX]",
+        "status": "passed",
+        "duration_ms": 0.2,
+        "message": null
+      },
+      {
+        "name": "budget exhausted skips network",
+        "status": "passed",
+        "duration_ms": 0.4,
+        "message": null
+      },
+      {
+        "name": "Below the limit, a miss is allowed through (counter increments); we stub",
+        "status": "skipped",
+        "duration_ms": 0.6,
+        "message": null
+      },
+      {
+        "name": "'Corrida da Copa' and 'Copa Run' both reduce to 'copa' but are in different",
+        "status": "passed",
+        "duration_ms": 0.5,
+        "message": null
+      },
+      {
+        "name": "required country present[ES]",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "required country present[IT]",
+        "status": "passed",
+        "duration_ms": 0.2,
+        "message": null
+      },
+      {
+        "name": "required country present[BM]",
+        "status": "passed",
+        "duration_ms": 0.2,
+        "message": null
+      },
+      {
+        "name": "same token same state different city does not merge",
+        "status": "passed",
+        "duration_ms": 7.2,
+        "message": null
+      },
+      {
+        "name": "required country present[GB]",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "Every file is named like an ISO-3166-1 alpha-2 code: two uppercase letters.",
+        "status": "passed",
+        "duration_ms": 6.4,
+        "message": null
+      },
+      {
+        "name": "required country present[HK]",
+        "status": "passed",
+        "duration_ms": 0.2,
+        "message": null
+      },
+      {
+        "name": "Every allowlisted file must (a) still exist and (b) still actually carry a",
+        "status": "passed",
+        "duration_ms": 3.7,
+        "message": null
+      },
+      {
+        "name": "robots allows crawling and advertises sitemap",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "every language page has exactly one correct canonical",
+        "status": "passed",
+        "duration_ms": 3.7,
+        "message": null
+      },
+      {
+        "name": "no result caps",
+        "status": "passed",
+        "duration_ms": 66.2,
+        "message": null
+      },
+      {
+        "name": "The single-token rule requires the EXACT same date.",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "scraper/geo.py points its index at web/locations/ (the canonical copy).",
+        "status": "passed",
+        "duration_ms": 0.4,
+        "message": null
+      },
+      {
+        "name": "Each page must carry the SAME full alternate cluster (all languages +",
+        "status": "passed",
+        "duration_ms": 4.8,
+        "message": null
+      },
+      {
+        "name": "Same brand/city/date but fully disjoint distances → different editions.",
+        "status": "passed",
+        "duration_ms": 0.2,
+        "message": null
+      },
+      {
+        "name": "'Corrida POUPEX 2026' normalizes to the single token 'poupex'; same city,",
+        "status": "passed",
+        "duration_ms": 1.5,
+        "message": null
+      },
+      {
+        "name": "Two genuinely different races on the same day in the same city.",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "no hardcoded event data",
+        "status": "passed",
+        "duration_ms": 97.5,
+        "message": null
+      },
+      {
+        "name": "venice single token merges",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "root redirect page has canonical hreflang and noscript",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "Atletis reports only 21k, Corridas Brasil reports 5/10/21 — they overlap.",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "Generic identical titles across languages waste the SERP snippet; each",
+        "status": "passed",
+        "duration_ms": 4.9,
+        "message": null
+      },
+      {
+        "name": "every home has exactly one h1 with site name",
+        "status": "passed",
+        "duration_ms": 8.0,
+        "message": null
+      },
+      {
+        "name": "footer has localized intro and crawlable language links",
+        "status": "passed",
+        "duration_ms": 4.4,
+        "message": null
+      },
+      {
+        "name": "pages dev mirrors are noindexed",
+        "status": "passed",
+        "duration_ms": 0.2,
+        "message": null
+      },
+      {
+        "name": "generator emits exactly the five localized homes",
+        "status": "passed",
+        "duration_ms": 0.5,
+        "message": null
+      },
+      {
+        "name": "Each page must point to *all* language alternates + x-default, with the",
+        "status": "passed",
+        "duration_ms": 0.4,
+        "message": null
+      },
+      {
+        "name": "lastmod present and iso dated",
+        "status": "passed",
+        "duration_ms": 0.5,
+        "message": null
+      },
+      {
+        "name": "committed sitemap is wellformed and matches generator",
+        "status": "passed",
+        "duration_ms": 0.6,
+        "message": null
+      },
+      {
+        "name": "Each shell carries pre-rendered cards using the real card markup —",
+        "status": "passed",
+        "duration_ms": 13.8,
+        "message": null
+      },
+      {
+        "name": "Selection is per-language: targeted countries lead each shell's block,",
+        "status": "passed",
+        "duration_ms": 389.6,
+        "message": null
+      },
+      {
+        "name": "prerender titles exist in corridas json",
+        "status": "passed",
+        "duration_ms": 331.2,
+        "message": null
+      },
+      {
+        "name": "jsonld itemlist valid and consistent",
+        "status": "passed",
+        "duration_ms": 23.9,
+        "message": null
+      },
+      {
+        "name": "og:title/url must mirror the page's own title/canonical — divergence",
+        "status": "passed",
+        "duration_ms": 18.7,
+        "message": null
+      },
+      {
+        "name": "A card whose corrida.first_seen_at is within 7 days must show a visible badge-novo.",
+        "status": "passed",
+        "duration_ms": 4671.8,
+        "message": null
+      },
+      {
+        "name": "In pt locale the lang dropdown must start with Português; rest alphabetical.",
+        "status": "passed",
+        "duration_ms": 492.8,
+        "message": null
+      },
+      {
+        "name": "Opening location filter and clicking Brasil group header expands its body.",
+        "status": "passed",
+        "duration_ms": 601.8,
+        "message": null
+      },
+      {
+        "name": "Hovering a closed month separator must not make it transparent.",
+        "status": "passed",
+        "duration_ms": 562.3,
+        "message": null
+      },
+      {
+        "name": "All 5 language labels must appear in the dropdown.",
+        "status": "passed",
+        "duration_ms": 439.6,
+        "message": null
+      },
+      {
+        "name": "Expanding a second accordion group collapses the previously open one.",
+        "status": "passed",
+        "duration_ms": 1132.4,
+        "message": null
+      },
+      {
+        "name": "Hovering the sticky (open) month separator must not make it transparent.",
+        "status": "passed",
+        "duration_ms": 176.8,
+        "message": null
+      },
+      {
+        "name": "A month section that contains a new event must show .badge-novo in its header.",
+        "status": "passed",
+        "duration_ms": 403.6,
+        "message": null
+      },
+      {
+        "name": "The \"Todas as fontes\" master row is pre-checked, gets unchecked when a",
+        "status": "passed",
+        "duration_ms": 1828.1,
+        "message": null
+      },
+      {
+        "name": "Each checkbox label in the fontes filter must match a real source in the data.",
+        "status": "passed",
+        "duration_ms": 735.9,
+        "message": null
+      },
+      {
+        "name": "Hovering a different month separator while one is already open must be opaque.",
+        "status": "passed",
+        "duration_ms": 946.5,
+        "message": null
+      },
+      {
+        "name": "Expanded card: Date column only shown when distances have differing dates.",
+        "status": "passed",
+        "duration_ms": 15915.1,
+        "message": null
+      },
+      {
+        "name": "Every visible card must have at least one .btn-inscricao element.",
+        "status": "passed",
+        "duration_ms": 103876.9,
+        "message": null
+      },
+      {
+        "name": "Clicking #btnHome resets the location state toward geo (or 'todos').",
+        "status": "passed",
+        "duration_ms": 6470.7,
+        "message": null
+      },
+      {
+        "name": "Selecting a single fonte shows only cards from that fonte.",
+        "status": "passed",
+        "duration_ms": 1206.5,
+        "message": null
+      },
+      {
+        "name": "Fresh browser context with no storage must load the page correctly.",
+        "status": "passed",
+        "duration_ms": 4640.3,
+        "message": null
+      },
+      {
+        "name": "A context with an unmapped browser locale loads the English strings.",
+        "status": "passed",
+        "duration_ms": 5177.1,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 4413.1,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 4696.3,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 4522.1,
+        "message": null
+      },
+      {
+        "name": "Every .btn-inscricao must have a non-empty href pointing to a URL.",
+        "status": "passed",
+        "duration_ms": 3398.2,
+        "message": null
+      },
+      {
+        "name": "Expanded card: Time column only shown when distances have differing horarios.",
+        "status": "passed",
+        "duration_ms": 13151.3,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 4796.8,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 4569.7,
+        "message": null
+      },
+      {
+        "name": "_localizeCountryByIso2(iso2) must return the country name in the active language.",
+        "status": "passed",
+        "duration_ms": 4596.6,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 4361.0,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 4729.9,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 5117.2,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 5029.0,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 5191.0,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 5011.9,
+        "message": null
+      },
+      {
+        "name": "_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.",
+        "status": "passed",
+        "duration_ms": 4853.3,
+        "message": null
+      },
+      {
+        "name": "Non-English pages must not show the English country name 'Brazil' in any card location.",
+        "status": "passed",
+        "duration_ms": 5055.0,
+        "message": null
+      },
+      {
+        "name": "On load the current (open) month sits at the top of the scroll — the",
+        "status": "passed",
+        "duration_ms": 12.1,
+        "message": null
+      },
+      {
+        "name": "All 5 locales in STRINGS must define exactly the same set of keys.",
+        "status": "passed",
+        "duration_ms": 9.0,
+        "message": null
+      },
+      {
+        "name": "Every item in distancias must be a Distancia shape (has 'km', no FonteInfo fields).",
+        "status": "passed",
+        "duration_ms": 374.6,
+        "message": null
+      },
+      {
+        "name": "No event in web/corridas.json should have distancias entries that lack 'km'.",
+        "status": "passed",
+        "duration_ms": 308.0,
+        "message": null
+      },
+      {
+        "name": "A single inscription URL should not appear in 3+ distinct records.",
+        "status": "passed",
+        "duration_ms": 369.8,
+        "message": null
+      },
+      {
+        "name": "Inject a labelled + a Major event, re-render, and verify: the selo",
+        "status": "passed",
+        "duration_ms": 22.4,
+        "message": null
+      },
+      {
+        "name": "Every event in corridas.json must satisfy all location and data requirements.",
+        "status": "passed",
+        "duration_ms": 370.1,
+        "message": null
+      },
+      {
+        "name": "No event title/cidade/localizacao may contain unescaped HTML entities.",
+        "status": "passed",
+        "duration_ms": 295.1,
+        "message": null
+      },
+      {
+        "name": "roman numerals uppercased",
+        "status": "passed",
+        "duration_ms": 0.8,
+        "message": null
+      },
+      {
+        "name": "existing abbreviations preserved",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "same events same order",
+        "status": "passed",
+        "duration_ms": 860.1,
+        "message": null
+      },
+      {
+        "name": "roman lookalike words untouched",
+        "status": "passed",
+        "duration_ms": 0.8,
+        "message": null
+      },
+      {
+        "name": "every event keeps a link and fonte tipo",
+        "status": "passed",
+        "duration_ms": 341.2,
+        "message": null
+      },
+      {
+        "name": "projection meaningfully smaller",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "committed web copy matches generator",
+        "status": "passed",
+        "duration_ms": 1277.9,
+        "message": null
+      },
+      {
+        "name": "only frontend fields present",
+        "status": "passed",
+        "duration_ms": 290.4,
+        "message": null
+      },
+      {
+        "name": "boot shard is exact subset of web copy",
+        "status": "passed",
+        "duration_ms": 452.4,
+        "message": null
+      },
+      {
+        "name": "boot shard meaningfully smaller than web copy",
+        "status": "passed",
+        "duration_ms": 0.3,
+        "message": null
+      },
+      {
+        "name": "boot shard window and flag",
+        "status": "passed",
+        "duration_ms": 126.0,
+        "message": null
+      },
+      {
+        "name": "The (?) legend toggles a panel explaining the hierarchy (Platinum>…>Label).",
+        "status": "passed",
+        "duration_ms": 3.9,
+        "message": null
+      },
+      {
+        "name": "No single merged event should accumulate more than 4 distinct fontes.",
+        "status": "passed",
+        "duration_ms": 179.6,
+        "message": null
+      },
+      {
+        "name": "Card dates in PT must contain a word from the Portuguese month list, not DD/MM/YYYY.",
+        "status": "passed",
+        "duration_ms": 432.4,
+        "message": null
+      },
+      {
+        "name": "Card dates on English page must contain an English month name.",
+        "status": "passed",
+        "duration_ms": 441.8,
         "message": null
       }
     ]

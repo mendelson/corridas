@@ -24,14 +24,18 @@
        slides down + fades in when an intro/transition ends, and slides up + fades
        out when one starts. */
     header.chrome-in  { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) both; }
-    header.chrome-out { animation: hdrIn .7s cubic-bezier(.22,.61,.36,1) reverse both; }
+    header.chrome-out { animation: hdrOut .7s cubic-bezier(.22,.61,.36,1) both; }
     /* During the cinematic intro everything outside the timeline is hidden and
        interaction is locked; the chrome fades in only once the intro concludes. */
     body.intro { overflow: hidden; touch-action: none; }
     header.hide { opacity: 0; pointer-events: none; } /* first-load intro: header starts hidden (static, no animation) */
     body.intro header { pointer-events: none; } /* locked while an intro/transition runs — opacity is driven only by chrome-in/out, so the animation never fights a static opacity:0 */
     body.intro .scroller { border-top-color: transparent; } /* no stray divider while centred */
-    @keyframes hdrIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+    @keyframes hdrIn  { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+    /* Distinct name (not `hdrIn reverse`) so toggling chrome-in ⇄ chrome-out
+       changes animation-name and actually RESTARTS the animation — same name
+       would be matched as "the same animation" and never replay. */
+    @keyframes hdrOut { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-10px); } }
     .hrow { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
     .gactions { display: flex; align-items: center; gap: 8px; }
     .gbtn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border: 1px solid #2a2f38; border-radius: 9px; background: #161a20; color: #aeb4c0; font-family: "Archivo", system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .02em; text-decoration: none; cursor: pointer; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; }

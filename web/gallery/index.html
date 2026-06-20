@@ -905,17 +905,12 @@
       var b=document.getElementById("navView"); if(!b) return;
       b.addEventListener("click", function(){
         if(_introActive || !_data) return; // ignore while a transition / intro is playing
-        reverseIntro(function(){
-          // Arrived at the recessed overview — swap the set and reopen forward.
-          viewMode = (viewMode==="highlights") ? "all" : "highlights";
-          b.classList.toggle("active", viewMode==="highlights");
-          b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
-          scroller.style.overflowX="";                       // reverseIntro left it hidden
-          var tr=document.getElementById("track");
-          if(tr){ tr.style.transform=""; tr.style.transformOrigin=""; } // drop the reverse-overview transform before re-render
-          renderView();                                      // render the new set (+ scrubber labels / bounds)
-          cameraIntro({skipPhase1:true});                    // expand → zoom-in + cards → today
-        });
+        if(_zoom!==1) _dropZoom();          // measure the line at 1x (ignore any pinch-zoom)
+        var src=measureGeom(document.getElementById("track")); // current line geometry, before the swap
+        viewMode = (viewMode==="highlights") ? "all" : "highlights";
+        b.classList.toggle("active", viewMode==="highlights");
+        b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+        toggleTransition(src);              // smooth morph between the two line shapes
       });
     })();
     // Touch: two fingers pinch-zoom; one finger is left to native scroll.
@@ -939,63 +934,152 @@
     // Block touch-drag scrolling for the duration of the intro.
     window.addEventListener("touchmove", function(e){ if(_introActive) e.preventDefault(); }, {passive:false});
 
-    // The intro's closing moment, played in REVERSE — used as the highlights
-    // button's opening gesture (step 1 of the rebuilt transition). It mirrors
-    // finishChrome + the intro zoom, backwards and all at once:
-    //   • the header slides UP + fades OUT (chrome-out, reverse of hdrIn);
-    //   • the stage glides back UP to the vertically-centred position (reverse of
-    //     the finishChrome glide-down);
-    //   • the camera (a transform on the track) zooms OUT to frame the whole span.
-    // It hands the recessed overview off to onArrived() once the zoom-out lands,
-    // so the caller can swap the set and replay the intro FORWARD from there.
-    function reverseIntro(onArrived){
+    // --- Highlights-button transition: smooth expand / contract -----------------
+    // The highlights line is always a subset of the full line (<= length), so the
+    // toggle is a continuous MORPH of one line into the other — no DOM swap is ever
+    // visible. Choreography (symmetric in both directions):
+    //   1. REWIND  — header slides out, stage glides up to centre, the camera zooms
+    //                out to the CURRENT line's overview, the detail (cards/dots/…)
+    //                fades out leaving the bare axis, and the shoe walks back.
+    //   2. SWAP    — render the target set and place its sections at the SOURCE
+    //                shape under the SAME camera, so the picture is identical.
+    //   3. EXPAND  — morph the bare axis source shape -> target shape (columns grow
+    //                in / collapse to slivers); the camera follows the new extent.
+    //   4. PAN     — zoom in to today, revealing the cards in a left->right cascade,
+    //                the shoe walks forward; land at today with the chrome restored.
+
+    // Measure a rendered layout's per-year slot (content-x left + width, relative to
+    // the track) plus the today-marker x — the morph SOURCE for the next render.
+    function measureGeom(track){
+      var trk=track.getBoundingClientRect();
+      function cx(el){ return el.getBoundingClientRect().left - trk.left; }
+      function cw(el){ return el.getBoundingClientRect().width||1; }
+      var slot={}, minY=Infinity, maxY=-Infinity;
+      Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
+        var yl=s.querySelector(".ylabel");
+        if(yl){
+          var Y=parseInt(yl.textContent,10);
+          if(!isNaN(Y)){ slot[Y]={left:cx(s), w:cw(s)}; if(Y<minY)minY=Y; if(Y>maxY)maxY=Y; }
+        } else {
+          var gn=s.querySelectorAll(".gnode"), gl=s.querySelectorAll(".gylab");
+          for(var i=0;i<gl.length;i++){
+            var Y2=parseInt(gl[i].textContent,10); if(isNaN(Y2)) continue;
+            var c=gn[i]?(cx(gn[i])+cw(gn[i])/2):cx(gl[i]);
+            slot[Y2]={left:c-GW/2, w:GW}; if(Y2<minY)minY=Y2; if(Y2>maxY)maxY=Y2;
+          }
+        }
+      });
+      var t=track.querySelector(".tnode");
+      var todayX=t?cx(t):(trk.width||1);
+      return {slot:slot, minY:minY, maxY:maxY, todayX:todayX, extent:todayX+50};
+    }
+
+    function toggleTransition(src){
       var track=document.getElementById("track");
-      if(!track){ if(onArrived) onArrived(); return; }
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if(!track || reduce || !("animate" in Element.prototype)){
+        renderView();
+        var ts0=startScroll(); scroller.scrollLeft=ts0; pos=ts0; dir=-1; held=false; auto=true;
+        finishChrome(false); return;
+      }
       _introActive=true; auto=false;
       if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
-      document.body.classList.add("intro"); // lock interaction + reveal-state for the chrome
+      document.body.classList.add("intro");
       var hdr=document.querySelector("header");
-      if(hdr){ hdr.classList.remove("chrome-in"); hdr.classList.add("chrome-out"); } // header slides up + fades out
-      // Collapse any active pinch-zoom back to 1× native scroll first, so the
-      // camera math below runs in base (1×) content space.
-      var sl=scroller.scrollLeft;
-      if(_zoom!==1){ sl=sl/_zoom; _dropZoom(); scroller.scrollLeft=sl; }
-      // Reduced motion / no Web Animations: skip the rewind and hand off at once —
-      // the forward step then lands at today without animating either.
-      if(reduce || !("animate" in Element.prototype)){ if(onArrived) onArrived(); return; }
-      // Stage glide UP to centre (reverse of finishChrome's translateY(0)) —
-      // animated by the .stage CSS transform transition (.7s, same easing).
-      var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
-      var natTop=stageEl.getBoundingClientRect().top; // resting top (header space reserved)
-      var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
-      // Camera zoom-OUT: from where the user is now (scale 1) → the whole-span
-      // overview, framed exactly like the intro's pulled-back view.
-      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
-      var startScrollNow=scroller.scrollLeft;
-      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
-      var trk=track.getBoundingClientRect();
-      var tnodeEl=track.querySelector(".tnode");
-      var todayX=tnodeEl ? (tnodeEl.getBoundingClientRect().left-trk.left) : (track.scrollWidth||clientW);
-      var fullExtent=todayX+50;
-      var fit=Math.min(0.82, (clientW-2*M)/Math.max(fullExtent,1));
-      track.style.transformOrigin="0 0"; track.style.willChange="transform";
+      if(hdr){ hdr.classList.remove("chrome-in"); hdr.classList.add("chrome-out"); } // header out
+      showShoe();
+      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34, _rafId=null;
       function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
-      var ovTX=(clientW-fullExtent*fit)/2, ovTY=(H-H*fit)/2; // overview: whole span, centred
-      var startTX=-startScrollNow;                            // current view, scale 1
+      function ovCam(extent){ var f=Math.min(0.82,(clientW-2*M)/Math.max(extent,1)); return {tx:(clientW-extent*f)/2, ty:(H-H*f)/2, s:f}; }
       function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
-      var DUR=700;
-      stageEl.style.transform="translateY("+centerY+"px)"; // CSS .7s glide up
-      track.style.transform=camT(startTX,0,1);             // start exactly where the user is
-      var t0=null;
-      function step(ts){
-        if(t0==null) t0=ts;
-        var p=Math.min((ts-t0)/DUR,1), e=ease(p);
-        track.style.transform=camT(startTX+e*(ovTX-startTX), e*ovTY, 1+e*(fit-1));
-        if(p<1) requestAnimationFrame(step);
-        else if(onArrived) onArrived(); // arrived at the overview → hand off to the forward step
-      }
-      requestAnimationFrame(step);
+      function beat(dur, apply, next){ var t0=null; function st(ts){ if(t0==null)t0=ts; var p=Math.min((ts-t0)/dur,1); apply(ease(p)); if(p<1) _rafId=requestAnimationFrame(st); else next(); } _rafId=requestAnimationFrame(st); }
+      // Stage glide UP to centre (resting top measured with the transform cleared).
+      stageEl.style.transition="none"; stageEl.style.transform="";
+      var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
+      var natTop=stageEl.getBoundingClientRect().top;
+      var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
+      void stageEl.offsetHeight; stageEl.style.transition="";
+      stageEl.style.transform="translateY("+centerY+"px)";
+      // Freeze the current scroll into a scale-1 camera (no visible jump).
+      var sl=scroller.scrollLeft;
+      var prevOverflow=scroller.style.overflowX;
+      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
+      track.style.transformOrigin="0 0"; track.style.willChange="transform";
+      track.style.transform=camT(-sl,0,1);
+      var ovS=ovCam(src.extent);
+      var detail=track.querySelectorAll(".tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card");
+      setFace(-1); var shoeFrom=shoeCur;
+
+      // 1. REWIND — zoom the current line to its overview, fade detail, shoe back.
+      beat(700, function(e){
+        track.style.transform=camT(-sl+e*(ovS.tx+sl), e*ovS.ty, 1+e*(ovS.s-1));
+        for(var i=0;i<detail.length;i++) detail[i].style.opacity=String(1-e);
+        shoeCur=shoeFrom*(1-e); applyShoe(shoeCur);
+      }, function(){
+        // 2. SWAP — render target, place its sections at the SOURCE shape under the
+        // SAME camera, so nothing pops.
+        renderView();
+        track.style.transform="none";              // measure layout with no camera
+        var tgtTodayStart=startScroll();
+        var trk2=track.getBoundingClientRect();
+        function cx2(el){ return el.getBoundingClientRect().left - trk2.left; }
+        function cw2(el){ return el.getBoundingClientRect().width||1; }
+        var secMeta=[];
+        Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
+          var yl=s.querySelector(".ylabel"), lab=yl||s.querySelector(".gylab"), years=[];
+          if(yl){ var Y=parseInt(yl.textContent,10); if(!isNaN(Y)) years=[Y]; }
+          else Array.prototype.forEach.call(s.querySelectorAll(".gylab"), function(g){ var Y2=parseInt(g.textContent,10); if(!isNaN(Y2)) years.push(Y2); });
+          var present=years.filter(function(Y){ return src.slot[Y]; }), sx, sw;
+          if(present.length){
+            var ls=present.map(function(Y){return src.slot[Y].left;});
+            var rs=present.map(function(Y){return src.slot[Y].left+src.slot[Y].w;});
+            sx=Math.min.apply(null,ls); sw=Math.max.apply(null,rs)-sx;
+          } else { sx=(years[0]<=src.minY)?0:src.extent; sw=0; } // absent in src -> grow from a sliver at the matching edge
+          if(sw<0) sw=0;
+          secMeta.push({el:s, x:cx2(s), w:cw2(s), sx:sx, sw:sw, lab:lab});
+        });
+        function applyMorph(m){
+          for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i];
+            var ratio=sm.w?(sm.sw/sm.w):0, k=ratio+m*(1-ratio); if(k<0.0001) k=0.0001;
+            var t=(sm.sx - sm.x)*(1-m);
+            sm.el.style.transformOrigin="0 0";
+            sm.el.style.transform="translateX("+t+"px) scaleX("+k+")";
+            if(sm.lab){ sm.lab.style.transformOrigin="left center"; sm.lab.style.transform="scaleX("+(1/k)+")"; }
+          }
+        }
+        function clearMorph(){ for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i]; sm.el.style.transform=""; sm.el.style.transformOrigin=""; if(sm.lab){ sm.lab.style.transform=""; sm.lab.style.transformOrigin=""; } } }
+        var lateEls=Array.prototype.slice.call(track.querySelectorAll(".tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card"));
+        lateEls.forEach(function(el){ el.classList.add("rv"); });
+        var evMeta=lateEls.map(function(el){ return {el:el, x:cx2(el)}; });
+        var tn=track.querySelector(".tnode");
+        var tgtExtent=(tn?cx2(tn):track.scrollWidth)+50;
+        var ovT=ovCam(tgtExtent);
+        applyMorph(0);
+        track.style.transform=camT(ovS.tx, ovS.ty, ovS.s);   // == REWIND end -> seamless
+
+        // 3. EXPAND / CONTRACT — morph the bare axis, camera follows the extent.
+        beat(1100, function(e){
+          applyMorph(e);
+          track.style.transform=camT(ovS.tx+e*(ovT.tx-ovS.tx), ovS.ty+e*(ovT.ty-ovS.ty), ovS.s+e*(ovT.s-ovS.s));
+        }, function(){
+          clearMorph();
+          track.style.transform=camT(ovT.tx, ovT.ty, ovT.s);
+          // 4. PAN to today, cascade-reveal the cards, shoe walks forward.
+          setFace(1);
+          evMeta.forEach(function(mm){ var f=tgtExtent?clamp(mm.x/tgtExtent,0,1):0; onReveal(mm.el, f*1500); });
+          beat(2200, function(e){
+            track.style.transform=camT(ovT.tx+e*((-tgtTodayStart)-ovT.tx), ovT.ty*(1-e), ovT.s+e*(1-ovT.s));
+            shoeCur=e; applyShoe(e);
+          }, function(){
+            track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
+            scroller.style.overflowX=prevOverflow||"";
+            scroller.scrollLeft=tgtTodayStart; pos=tgtTodayStart; dir=-1;
+            shoeCur=1; applyShoe(1);
+            finishChrome(true); held=false;
+            setTimeout(function(){ if(!held) auto=true; }, 400);
+          });
+        });
+      });
     }
 
     // Load the races, then the SAME location reference the main site uses

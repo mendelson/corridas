@@ -148,7 +148,7 @@
        width-capped (it was ~6:1, so it sprawled at a matched height). */
     .logo-garmin { display: block; height: 13px; width: auto; max-width: 58px; fill: #1ca0e3; }
     .logo-polar { display: block; height: auto; width: auto; max-height: 13px; max-width: 54px; }
-    .gylab { position: absolute; top: 244px; transform: translateX(-50%); font-family: "Spectral", Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; z-index: 1; pointer-events: none; }
+    .gylab { position: absolute; top: 244px; transform: translateX(-50%); white-space: nowrap; font-family: "Spectral", Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; z-index: 1; pointer-events: none; }
     .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; z-index: 1; }
     /* Discreet yearly-distance info card — low emphasis vs the race cards. */
     .ykm { position: absolute; z-index: 1; pointer-events: none; white-space: nowrap; font-size: 10px; font-weight: 600; letter-spacing: .02em; color: #6b7280; background: rgba(20,23,29,.72); border: 1px solid #20242c; border-radius: 7px; padding: 2.5px 7px; }
@@ -427,13 +427,16 @@
           // the intro overview compresses the gap, and never fit on narrow screens).
           // A lone empty year keeps its own number. The full year list is stashed in
           // data-years so buildShoeYears() can still place every collapsed year on
-          // the scrubber's continuous axis. Width stays proportional (GW per year).
-          var ys=c.years, gw=ys.length*GW;
+          // the scrubber's continuous axis. The collapsed gap is ALWAYS one column
+          // wide (GW) regardless of how many years it spans — a short, discreet
+          // dotted stretch, "as if it were a single year".
+          var ys=c.years, gw=GW;
           var gs='<div class="sec" data-years="'+ys.join(",")+'" style="width:'+gw+'px"><div class="rail dotted"></div>';
+          var cxm=gw/2;
           if(ys.length===1){
-            var cx=GW/2; gs+='<span class="gnode" data-k="gn:'+ys[0]+'" style="left:'+(cx-3)+'px"></span><span class="gylab" data-k="gy:'+ys[0]+'" style="left:'+cx+'px">'+ys[0]+'</span>';
+            gs+='<span class="gnode" data-k="gn:'+ys[0]+'" style="left:'+(cxm-3)+'px"></span><span class="gylab" data-k="gy:'+ys[0]+'" style="left:'+cxm+'px">'+ys[0]+'</span>';
           } else {
-            var cxm=gw/2, rk=ys[0]+"-"+ys[ys.length-1], rlab=ys[0]+"–"+ys[ys.length-1]; // en-dash range
+            var rk=ys[0]+"-"+ys[ys.length-1], rlab=ys[0]+"–"+ys[ys.length-1]; // en-dash range
             gs+='<span class="gnode" data-k="gn:'+rk+'" style="left:'+(cxm-3)+'px"></span><span class="gylab" data-k="gy:'+rk+'" style="left:'+cxm+'px">'+esc(rlab)+'</span>';
           }
           gs+='</div>'; html+=gs; return;
@@ -630,8 +633,14 @@
       Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
         if(s.offsetLeft < startX-2) return;                     // intro window only
         var isYear=!!s.querySelector(".ylabel");
-        var slot=isYear?EW:Math.max(56,EW*0.42);                // gaps get a narrow slot
-        secMeta.push({el:s, x:s.offsetLeft, w:s.offsetWidth||1, evenX:ex, evenW:slot,
+        var w=s.offsetWidth||1;
+        // Years get an equal compact slot (scaled down from their real width, then
+        // morphed back). Collapsed gaps are already a single short column (GW), so
+        // they keep their real width as their slot (evenW===w → scaleX 1, no morph):
+        // scaling a gap down would horizontally squish its range label, and the
+        // reveal animation clobbers the counter-scale that would otherwise undo it.
+        var slot=isYear?EW:w;
+        secMeta.push({el:s, x:s.offsetLeft, w:w, evenX:ex, evenW:slot,
                       lab:s.querySelector(".ylabel")||s.querySelector(".gylab")});
         ex+=slot;
       });

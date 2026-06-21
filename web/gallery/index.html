@@ -421,9 +421,21 @@
       var html="", ev=0;
       cols.forEach(function(c){
         if(c.type==="gap"){
-          var gw=c.years.length*GW;
-          var gs='<div class="sec" style="width:'+gw+'px"><div class="rail dotted"></div>';
-          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" data-k="gn:'+yy+'" style="left:'+(cx-3)+'px"></span><span class="gylab" data-k="gy:'+yy+'" style="left:'+cx+'px">'+yy+'</span>'; });
+          // Empty-year runs collapse into one discreet dotted gap. A run of TWO OR
+          // MORE years shows a single centred "first–last" range label + one anchor
+          // dot (never a row of per-year numbers — those would squish/overlap once
+          // the intro overview compresses the gap, and never fit on narrow screens).
+          // A lone empty year keeps its own number. The full year list is stashed in
+          // data-years so buildShoeYears() can still place every collapsed year on
+          // the scrubber's continuous axis. Width stays proportional (GW per year).
+          var ys=c.years, gw=ys.length*GW;
+          var gs='<div class="sec" data-years="'+ys.join(",")+'" style="width:'+gw+'px"><div class="rail dotted"></div>';
+          if(ys.length===1){
+            var cx=GW/2; gs+='<span class="gnode" data-k="gn:'+ys[0]+'" style="left:'+(cx-3)+'px"></span><span class="gylab" data-k="gy:'+ys[0]+'" style="left:'+cx+'px">'+ys[0]+'</span>';
+          } else {
+            var cxm=gw/2, rk=ys[0]+"-"+ys[ys.length-1], rlab=ys[0]+"–"+ys[ys.length-1]; // en-dash range
+            gs+='<span class="gnode" data-k="gn:'+rk+'" style="left:'+(cxm-3)+'px"></span><span class="gylab" data-k="gy:'+rk+'" style="left:'+cxm+'px">'+esc(rlab)+'</span>';
+          }
           gs+='</div>'; html+=gs; return;
         }
         var y=c.y, current=c.current;
@@ -1192,8 +1204,13 @@
       var host=document.getElementById("shoeYears"); if(!host || !scroller) return;
       var track=document.getElementById("track");
       var years=[];
-      if(track) Array.prototype.forEach.call(track.querySelectorAll(".ylabel,.gylab"), function(el){
-        var y=parseInt(el.textContent,10); if(!isNaN(y)) years.push(y);
+      if(track) Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
+        var yl=s.querySelector(".ylabel");
+        if(yl){ var y=parseInt(yl.textContent,10); if(!isNaN(y)) years.push(y); return; }
+        // Gap section: read every collapsed year from data-years (the visible label
+        // may be a single "first–last" range, so its text can't be parsed per-year).
+        var dy=s.getAttribute("data-years");
+        if(dy) dy.split(",").forEach(function(t){ var y=parseInt(t,10); if(!isNaN(y)) years.push(y); });
       });
       years.sort(function(a,b){return a-b;});
       years=years.filter(function(y,i){return i===0 || y!==years[i-1];}); // de-dup

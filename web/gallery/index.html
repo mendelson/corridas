@@ -645,7 +645,18 @@
         ex+=slot;
       });
       var evenExtent=ex||extent;
-      var fitEven=Math.min(0.62, (clientW-2*M)/(evenExtent+40)); // pulled-back but legible
+      // The current year's even slot is a full column even though its real content
+      // only runs to "today" (mid-year) — so frame on the VISIBLE span (oldest →
+      // today), not the padded slot extent, or the overview drifts left with dead
+      // space on the right.
+      var visExtent=evenExtent;
+      for(var _vi=0;_vi<secMeta.length;_vi++){ var _sm=secMeta[_vi];
+        if(tnode && todayX>=_sm.x-1 && todayX<=_sm.x+_sm.w+1){ visExtent=_sm.evenX+(todayX-_sm.x)/_sm.w*_sm.evenW; break; }
+      }
+      // Scale the even-spaced overview to FILL the available width (so the whole
+      // timeline spans the viewport instead of hugging the left third). The cap
+      // only guards the degenerate few-column case from blowing the labels up.
+      var fitEven=Math.min(1.25, (clientW-2*M)/(visExtent+40));
 
       function applyMorph(m){ // m: 0 = even/compact, 1 = real/proportional
         for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i];
@@ -662,8 +673,9 @@
           if(sm.lab){ sm.lab.style.transform=""; sm.lab.style.transformOrigin=""; }
         }
       }
-      // Camera that frames the compact even layout (content x=startX → screen M).
-      var camOvTX=M-startX*fitEven, camOvTY=(H-H*fitEven)/2;
+      // Camera that frames the visible timeline CENTRED in the viewport (the band
+      // spans content x [startX, startX+visExtent]; centre that band on screen).
+      var camOvTX=(clientW-visExtent*fitEven)/2-startX*fitEven, camOvTY=(H-H*fitEven)/2;
       applyMorph(0);
       track.style.transform=camT(camOvTX, camOvTY, fitEven);
 

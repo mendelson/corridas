@@ -575,7 +575,7 @@
       // Drop any leftover per-column overview-morph transforms.
       Array.prototype.forEach.call(track.querySelectorAll(".sec,.ylabel,.gylab"), function(el){ el.style.transform=""; el.style.transformOrigin=""; });
       scroller.style.overflowX=prevOverflow||"";
-      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
+      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; setFace(-1); // arrived at today → turn around to drift back through time
       finishChrome(true); // intro is over → fade the rest of the page in
       setTimeout(function(){ if(!held) auto=true; }, 500);
     }
@@ -874,10 +874,13 @@
     // ping-ponging in a loop. Auto begins false (set true once positioned at
     // today). Any genuine user interaction pauses it; it resumes after 3s.
     var auto=false, firstDrawn=false, dir=-1, resumeTimer=null, lastTs=null, pos=0, endPos=null, held=false, reverseUntil=0;
-    // Resume the drift 3s after the user stops interacting (never while held).
-    function scheduleResume(){
+    // Resume the drift after the user stops interacting (never while held). It
+    // always restarts in the direction the shoe is FACING (dir=shoeFace), so the
+    // shoe never moonwalks (drifts one way while pointing the other). Delay is the
+    // idle wait before resuming — 3s by default, shorter for specific triggers.
+    function scheduleResume(delay){
       if(resumeTimer) clearTimeout(resumeTimer);
-      resumeTimer=setTimeout(function(){ if(!held) auto=true; }, 3000);
+      resumeTimer=setTimeout(function(){ if(!held){ dir=shoeFace; auto=true; } }, delay||3000);
     }
     // Discrete interactions (wheel / keyboard): pause and start the 3s countdown.
     function pauseAuto(){ auto=false; scheduleResume(); }
@@ -1088,7 +1091,7 @@
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if(!track || reduce || !("animate" in Element.prototype)){
         renderView();
-        var ts0=startScroll(); scroller.scrollLeft=ts0; pos=ts0; endPos=startScroll(); dir=-1; held=false; auto=true;
+        var ts0=startScroll(); scroller.scrollLeft=ts0; pos=ts0; endPos=startScroll(); dir=-1; setFace(-1); held=false; auto=true;
         showShoe(); return;
       }
       var DUR=720, EXIT=320, ENTER=480, EASE="cubic-bezier(.22,.61,.36,1)";
@@ -1193,7 +1196,7 @@
       // then eases the shoe to its scroll-derived position (today ≈ fully worn).
       setTimeout(function(){
         _introActive=false; held=false; setFace(-1);
-        scheduleResume();
+        scheduleResume(1000); // after a view toggle, resume the drift quickly (1s), not the usual 3s
       }, Math.max(DUR, ENTER+maxDelay)+80);
     }
 

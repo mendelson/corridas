@@ -354,11 +354,14 @@
     }
     function cardHTML(r,ex,p,side,loc,cl){
       var c=color(r), tc=tier(r), nh=(tc==="mara"?7.5:(tc==="mile"?6:4)); // marker half-width, by tier
+      // Stable per-event key so the highlights toggle can FLIP each event between
+      // the two views (translate from old position to new) instead of re-drawing.
+      var dk=esc((r.date||"")+"~"+(r.name||""));
       // The card is centred on its dot (or clamped to the column edge), so the
       // connector is a straight vertical drop from the dot to the card.
-      return '<span class="enode '+tc+'" style="left:'+(ex-nh)+'px"></span>'+
-        '<span class="conn '+side+'" style="left:'+ex+'px"></span>'+
-        '<div class="card '+side+' '+tc+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
+      return '<span class="enode '+tc+'" data-k="e:'+dk+'" style="left:'+(ex-nh)+'px"></span>'+
+        '<span class="conn '+side+'" data-k="o:'+dk+'" style="left:'+ex+'px"></span>'+
+        '<div class="card '+side+' '+tc+'" data-k="c:'+dk+'" style="left:'+cl+'px;width:'+CARDW+'px;right:auto">'+
         '<div class="cmeta"><span class="cdate" style="color:'+c+'">'+esc(p2(p.d)+" "+mShort[p.m])+'</span>'+
         '<span class="ctype">'+esc(km(headlineKm(r))+" KM")+'</span></div>'+
         '<h2 class="cname">'+esc(r.name)+'</h2>'+
@@ -420,7 +423,7 @@
         if(c.type==="gap"){
           var gw=c.years.length*GW;
           var gs='<div class="sec" style="width:'+gw+'px"><div class="rail dotted"></div>';
-          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" style="left:'+(cx-3)+'px"></span><span class="gylab" style="left:'+cx+'px">'+yy+'</span>'; });
+          c.years.forEach(function(yy,i){ var cx=i*GW+GW/2; gs+='<span class="gnode" data-k="gn:'+yy+'" style="left:'+(cx-3)+'px"></span><span class="gylab" data-k="gy:'+yy+'" style="left:'+cx+'px">'+yy+'</span>'; });
           gs+='</div>'; html+=gs; return;
         }
         var y=c.y, current=c.current;
@@ -449,8 +452,8 @@
         var tx = current ? mapX(todayFrac) : 0;
         var ywY = Math.max(maxR, current ? tx+6 : endX);
         var sec='<div class="sec" style="width:'+ywY+'px">';
-        sec+= current ? '<div class="rail" style="right:auto;width:'+tx+'px"></div>' : '<div class="rail"></div>';
-        sec+='<span class="ynode" style="left:0px"></span><span class="ylabel" style="left:18px">'+y+'</span>';
+        sec+= current ? '<div class="rail" data-k="rail:'+y+'" style="right:auto;width:'+tx+'px"></div>' : '<div class="rail" data-k="rail:'+y+'"></div>';
+        sec+='<span class="ynode" data-k="yn:'+y+'" style="left:0px"></span><span class="ylabel" data-k="yl:'+y+'" style="left:18px">'+y+'</span>';
         var lastM = current ? now.getMonth() : 11;
         var lastLx=-999; // track last month label x position to avoid overlaps
         // Start at February: January sits at the column start, where the year
@@ -458,15 +461,15 @@
         // collides with the year marker.
         for(var mi=1; mi<=lastM; mi++){
           var mx=mapX(mi/12);
-          sec+='<span class="mtick" style="left:'+mx+'px"></span>';
+          sec+='<span class="mtick" data-k="mt:'+y+':'+mi+'" style="left:'+mx+'px"></span>';
           // Only show month label if it's far enough from the last one (≥44px) and not too close to "today"
           if(!(current && Math.abs(mx - tx) < 26) && mx - lastLx >= 44){
-            sec+='<span class="mlab" style="left:'+mx+'px">'+esc(mShort[mi])+'</span>';
+            sec+='<span class="mlab" data-k="ml:'+y+':'+mi+'" style="left:'+mx+'px">'+esc(mShort[mi])+'</span>';
             lastLx=mx;
           }
         }
         laid.forEach(function(e){ sec+=cardHTML(e.rp.r, e.px, e.rp.p, e.side, locStr(e.rp.r), e.cl); });
-        if(current){ sec+='<span class="tnode" style="left:'+(tx-5.5)+'px"></span><span class="tlab" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }
+        if(current){ sec+='<span class="tnode" data-k="tn" style="left:'+(tx-5.5)+'px"></span><span class="tlab" data-k="tl" style="left:'+tx+'px">'+esc(T.today)+'</span>'; }
         sec+='</div>'; html+=sec;
       });
       document.getElementById("track").innerHTML=html;
@@ -910,11 +913,10 @@
       b.addEventListener("click", function(){
         if(_introActive || !_data) return; // ignore while a transition / intro is playing
         if(_zoom!==1) _dropZoom();          // measure the line at 1x (ignore any pinch-zoom)
-        var src=measureGeom(document.getElementById("track")); // current line geometry, before the swap
         viewMode = (viewMode==="highlights") ? "all" : "highlights";
         b.classList.toggle("active", viewMode==="highlights");
         b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
-        toggleTransition(src);              // smooth morph between the two line shapes
+        toggleTransition();                 // in-place FLIP morph between the two views
       });
     })();
     // Touch: two fingers pinch-zoom; one finger is left to native scroll.
@@ -978,112 +980,125 @@
       return {slot:slot, minY:minY, maxY:maxY, todayX:todayX, extent:todayX+50};
     }
 
-    function toggleTransition(src){
+    // Highlights toggle — an in-place FLIP morph. Highlights is a strict SUBSET of
+    // "all", so toggling is a continuous reflow, not a re-draw: every shared card /
+    // dot / tick glides by real translation from its old spot to its new spot
+    // (continuous by construction — no scaleX rubber-banding), rails interpolate
+    // their width, the camera stays put (today is pinned so history concertinas
+    // toward / away from it), removed cards fade out on an overlay, and entering
+    // cards ripple in, staggered outward from today.
+    function toggleTransition(){
       var track=document.getElementById("track");
       var reduce=window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       if(!track || reduce || !("animate" in Element.prototype)){
         renderView();
-        var ts0=startScroll(); scroller.scrollLeft=ts0; pos=ts0; dir=-1; held=false; auto=true;
-        finishChrome(false); return;
+        var ts0=startScroll(); scroller.scrollLeft=ts0; pos=ts0; endPos=startScroll(); dir=-1; held=false; auto=true;
+        showShoe(); return;
       }
-      _introActive=true; auto=false;
+      var DUR=720, EXIT=320, ENTER=480, EASE="cubic-bezier(.22,.61,.36,1)";
+      _introActive=true; auto=false;            // freeze drift + lock input for the morph (chrome stays visible)
       if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
-      document.body.classList.add("intro");
-      var hdr=document.querySelector("header");
-      if(hdr){ hdr.classList.remove("chrome-in"); hdr.classList.add("chrome-out"); } // header out
       showShoe();
-      var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34, _rafId=null;
-      function camT(tx,ty,s){ return "translateX("+tx+"px) translateY("+ty+"px) scale("+s+")"; }
-      function ovCam(extent){ var f=Math.min(0.82,(clientW-2*M)/Math.max(extent,1)); return {tx:(clientW-extent*f)/2, ty:(H-H*f)/2, s:f}; }
-      function ease(p){ return p<0.5 ? 2*p*p : 1-Math.pow(-2*p+2,2)/2; } // easeInOutQuad
-      function beat(dur, apply, next){ var t0=null; function st(ts){ if(t0==null)t0=ts; var p=Math.min((ts-t0)/dur,1); apply(ease(p)); if(p<1) _rafId=requestAnimationFrame(st); else next(); } _rafId=requestAnimationFrame(st); }
-      // Stage glide UP to centre (resting top measured with the transform cleared).
-      stageEl.style.transition="none"; stageEl.style.transform="";
-      var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
-      var natTop=stageEl.getBoundingClientRect().top;
-      var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
-      void stageEl.offsetHeight; stageEl.style.transition="";
-      stageEl.style.transform="translateY("+centerY+"px)";
-      // Freeze the current scroll into a scale-1 camera (no visible jump).
-      var sl=scroller.scrollLeft;
-      var prevOverflow=scroller.style.overflowX;
-      scroller.style.overflowX="hidden"; scroller.scrollLeft=0;
-      track.style.transformOrigin="0 0"; track.style.willChange="transform";
-      track.style.transform=camT(-sl,0,1);
-      var ovS=ovCam(src.extent);
-      var detail=track.querySelectorAll(".tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card");
-      setFace(-1); var shoeFrom=shoeCur;
 
-      // 1. REWIND — zoom the current line to its overview, fade detail, shoe back.
-      beat(700, function(e){
-        track.style.transform=camT(-sl+e*(ovS.tx+sl), e*ovS.ty, 1+e*(ovS.s-1));
-        for(var i=0;i<detail.length;i++) detail[i].style.opacity=String(1-e);
-        shoeCur=shoeFrom*(1-e); applyShoe(shoeCur);
-      }, function(){
-        // 2. SWAP — render target, place its sections at the SOURCE shape under the
-        // SAME camera, so nothing pops.
-        renderView();
-        track.style.transform="none";              // measure layout with no camera
-        var tgtTodayStart=startScroll();
-        var trk2=track.getBoundingClientRect();
-        function cx2(el){ return el.getBoundingClientRect().left - trk2.left; }
-        function cw2(el){ return el.getBoundingClientRect().width||1; }
-        var secMeta=[];
-        Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
-          var yl=s.querySelector(".ylabel"), lab=yl||s.querySelector(".gylab"), years=[];
-          if(yl){ var Y=parseInt(yl.textContent,10); if(!isNaN(Y)) years=[Y]; }
-          else Array.prototype.forEach.call(s.querySelectorAll(".gylab"), function(g){ var Y2=parseInt(g.textContent,10); if(!isNaN(Y2)) years.push(Y2); });
-          var present=years.filter(function(Y){ return src.slot[Y]; }), sx, sw;
-          if(present.length){
-            var ls=present.map(function(Y){return src.slot[Y].left;});
-            var rs=present.map(function(Y){return src.slot[Y].left+src.slot[Y].w;});
-            sx=Math.min.apply(null,ls); sw=Math.max.apply(null,rs)-sx;
-          } else { sx=(years[0]<=src.minY)?0:src.extent; sw=0; } // absent in src -> grow from a sliver at the matching edge
-          if(sw<0) sw=0;
-          secMeta.push({el:s, x:cx2(s), w:cw2(s), sx:sx, sw:sw, lab:lab});
-        });
-        function applyMorph(m){
-          for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i];
-            var ratio=sm.w?(sm.sw/sm.w):0, k=ratio+m*(1-ratio); if(k<0.0001) k=0.0001;
-            var t=(sm.sx - sm.x)*(1-m);
-            sm.el.style.transformOrigin="0 0";
-            sm.el.style.transform="translateX("+t+"px) scaleX("+k+")";
-            if(sm.lab){ sm.lab.style.transformOrigin="left center"; sm.lab.style.transform="scaleX("+(1/k)+")"; }
-          }
+      var srect=scroller.getBoundingClientRect(), vL=srect.left-80, vR=srect.right+80;
+
+      // FIRST — screen rect of every keyed element, plus a stashed fixed-position
+      // clone of each on-screen one (only used if it turns out to be exiting).
+      var first={}, stash={};
+      Array.prototype.forEach.call(track.querySelectorAll("[data-k]"), function(el){
+        var k=el.getAttribute("data-k"), r=el.getBoundingClientRect();
+        first[k]=r;
+        if(r.width>0 && r.right>=vL && r.left<=vR){
+          var c=el.cloneNode(true);
+          c.style.position="fixed"; c.style.margin="0"; c.style.pointerEvents="none";
+          c.style.left=r.left+"px"; c.style.top=r.top+"px"; c.style.right="auto"; c.style.bottom="auto";
+          c.style.width=r.width+"px"; c.style.height=r.height+"px";
+          stash[k]=c;
         }
-        function clearMorph(){ for(var i=0;i<secMeta.length;i++){ var sm=secMeta[i]; sm.el.style.transform=""; sm.el.style.transformOrigin=""; if(sm.lab){ sm.lab.style.transform=""; sm.lab.style.transformOrigin=""; } } }
-        var lateEls=Array.prototype.slice.call(track.querySelectorAll(".tnode,.tlab,.mtick,.mlab,.ykm,.enode,.conn,.card"));
-        lateEls.forEach(function(el){ el.classList.add("rv"); });
-        var evMeta=lateEls.map(function(el){ return {el:el, x:cx2(el)}; });
-        var tn=track.querySelector(".tnode");
-        var tgtExtent=(tn?cx2(tn):track.scrollWidth)+50;
-        var ovT=ovCam(tgtExtent);
-        applyMorph(0);
-        track.style.transform=camT(ovS.tx, ovS.ty, ovS.s);   // == REWIND end -> seamless
-
-        // 3. EXPAND / CONTRACT — morph the bare axis, camera follows the extent.
-        beat(INTRO_D2, function(e){
-          applyMorph(e);
-          track.style.transform=camT(ovS.tx+e*(ovT.tx-ovS.tx), ovS.ty+e*(ovT.ty-ovS.ty), ovS.s+e*(ovT.s-ovS.s));
-        }, function(){
-          clearMorph();
-          track.style.transform=camT(ovT.tx, ovT.ty, ovT.s);
-          // 4. PAN to today, cascade-reveal the cards, shoe walks forward.
-          setFace(1);
-          evMeta.forEach(function(mm){ var f=tgtExtent?clamp(mm.x/tgtExtent,0,1):0; onReveal(mm.el, f*(INTRO_D3-700)); });
-          beat(INTRO_D3, function(e){
-            track.style.transform=camT(ovT.tx+e*((-tgtTodayStart)-ovT.tx), ovT.ty*(1-e), ovT.s+e*(1-ovT.s));
-            shoeCur=e; applyShoe(e);
-          }, function(){
-            track.style.transform="none"; track.style.transformOrigin=""; track.style.willChange="";
-            scroller.style.overflowX=prevOverflow||"";
-            scroller.scrollLeft=tgtTodayStart; pos=tgtTodayStart; dir=-1;
-            shoeCur=1; applyShoe(1);
-            finishChrome(true); held=false;
-            setTimeout(function(){ if(!held) auto=true; }, 400);
-          });
-        });
       });
+      var tnode0=track.querySelector(".tnode");
+      var todayX0=tnode0 ? tnode0.getBoundingClientRect().left : srect.right;
+
+      // SWAP — render the target set in place (fresh layout, no transforms).
+      renderView();
+
+      // ANCHOR — pin today's screen-x so the viewport never jumps; the rest of the
+      // timeline reflows relative to it.
+      var tnode1=track.querySelector(".tnode");
+      if(tnode1){ scroller.scrollLeft = clamp(scroller.scrollLeft + (tnode1.getBoundingClientRect().left - todayX0), 0, maxScroll()); }
+      pos=scroller.scrollLeft; endPos=startScroll();
+
+      // LAST — screen rect of every keyed element after the swap.
+      var last={};
+      Array.prototype.forEach.call(track.querySelectorAll("[data-k]"), function(el){
+        last[el.getAttribute("data-k")]={el:el, r:el.getBoundingClientRect()};
+      });
+
+      // Overlay that hosts the fixed-position fade-outs: both removed elements and
+      // the OLD position of any survivor that travels too far to slide gracefully.
+      var overlay=document.createElement("div");
+      overlay.style.cssText="position:fixed;inset:0;pointer-events:none;z-index:7;overflow:hidden;";
+      document.body.appendChild(overlay);
+      function fadeOutClone(k){
+        var c=stash[k]; if(!c) return;
+        overlay.appendChild(c);
+        c.animate([{opacity:1, transform:"scale(1)"},{opacity:0, transform:"translateY(6px) scale(.96)"}],
+                  {duration:EXIT, easing:EASE, fill:"forwards"});
+      }
+      setTimeout(function(){ if(overlay.parentNode) overlay.parentNode.removeChild(overlay); }, EXIT+90);
+
+      var clientW=scroller.clientWidth||srect.width||1, FAR=clientW*1.1; // travel beyond this → cross-fade, not slide
+      function onScreen(r){ return r.right>=srect.left-24 && r.left<=srect.right+24; }
+      var maxDelay=0;
+      function rippleIn(el, r){
+        var dist=Math.abs(r.left - todayX0), delay=Math.min(260, dist*0.14);
+        if(delay>maxDelay) maxDelay=delay;
+        var up=el.classList.contains("above"), dyIn=el.classList.contains("card")?(up?-16:16):6;
+        // Animate the independent `translate`/`scale` properties (NOT `transform`),
+        // so each element keeps its CSS `transform` baseline (e.g. labels centred
+        // with translateX(-50%)) instead of being knocked off-centre at the end.
+        el.animate([{opacity:0, translate:"0 "+dyIn+"px", scale:"0.97"},{opacity:1, translate:"0 0", scale:"1"}],
+                   {duration:ENTER, delay:delay, easing:EASE, fill:"both"});
+      }
+
+      // EXIT — elements absent from the target fade out where they stood.
+      Object.keys(stash).forEach(function(k){ if(!last[k]) fadeOutClone(k); });
+
+      // MOVE — survivors near the anchor FLIP (real translation, + width-scale for
+      // rails) so they glide continuously; survivors that would streak across the
+      // viewport (the line expands/contracts a lot) CROSS-FADE instead — old spot
+      // fades out, new spot fades in — so nothing flies a long distance. Brand-new
+      // elements ripple in, staggered outward from today.
+      Object.keys(last).forEach(function(k){
+        var L=last[k], el=L.el, lr=L.r, F=first[k];
+        if(F){
+          var dx=F.left-lr.left, dy=F.top-lr.top, isRail=el.classList.contains("rail");
+          if(Math.abs(dx)>FAR){                 // too far to slide → cross-fade
+            fadeOutClone(k);
+            if(onScreen(lr)) rippleIn(el, lr);  // only animate-in the ones that land in view
+            return;
+          }
+          var sx=(isRail && lr.width>2 && Math.abs(F.width-lr.width)>1) ? (F.width/lr.width) : 1;
+          if(Math.abs(dx)<0.5 && Math.abs(dy)<0.5 && Math.abs(sx-1)<0.002) return; // unchanged
+          el.style.transformOrigin = isRail ? "left center" : "center center";
+          // Use the independent `translate`/`scale` properties so a centred
+          // element's `transform: translateX(-50%)` baseline is preserved.
+          el.animate(
+            isRail
+              ? [{translate:dx+"px "+dy+"px", scale:sx+" 1"},{translate:"0px 0px", scale:"1 1"}]
+              : [{translate:dx+"px "+dy+"px"},{translate:"0px 0px"}],
+            {duration:DUR, easing:EASE, fill:"both"});
+        } else if(onScreen(lr)){
+          rippleIn(el, lr);
+        }
+      });
+
+      // SETTLE — unlock; the auto-drift resumes after the usual idle delay. updateShoe
+      // then eases the shoe to its scroll-derived position (today ≈ fully worn).
+      setTimeout(function(){
+        _introActive=false; held=false; setFace(-1);
+        scheduleResume();
+      }, Math.max(DUR, ENTER+maxDelay)+80);
     }
 
     // Load the races, then the SAME location reference the main site uses

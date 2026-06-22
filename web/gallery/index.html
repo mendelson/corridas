@@ -565,7 +565,7 @@
     function endCameraNow(track, todayStart, prevOverflow){
       if(_camDone) return;
       _camDone=true;
-      if(shoeEl){ shoeEl.classList.remove("walking"); } _stepLastX=null;
+      if(shoeEl){ shoeEl.classList.remove("walking"); } _stepLastP=null;
       if(_camRAF) cancelAnimationFrame(_camRAF);
       _camAnims.forEach(function(a){ try{a.cancel();}catch(e){} });
       if(_skipHandlers){ _skipHandlers(); _skipHandlers=null; }
@@ -767,7 +767,7 @@
     // for organic motion. Driven from the tick() loop below.
     var shoeTrackEl=document.getElementById("shoeTrack"), shoeEl=document.getElementById("shoeStage"), shoeCtl=null, shoeCur=0;
     var shoePrintsEl=document.getElementById("shoePrints");
-    var _stepLastX=null, _walkTimer=null;   // gait: stamp one footfall per step touchdown while moving
+    var _stepLastP=null, _stepLastT=0, _STEP_MS=700, _walkTimer=null;   // footprints on a steady cadence, gated by real movement
     // The footprint reuses a running-sole silhouette so prints match the shoe's
     // width + shape; it is mirrored to the heading when stamped.
     var SOLE='<svg viewBox="0 0 120 42" xmlns="http://www.w3.org/2000/svg">'
@@ -784,20 +784,20 @@
       var sr=shoeEl.getBoundingClientRect(), pr=shoePrintsEl.getBoundingClientRect();
       return { x: sr.left - pr.left + sr.width/2, w: sr.width };
     }
-    // One footfall per step touchdown (the walking bob's animationiteration) while
-    // the shoe is actually moving — a standing shoe leaves nothing on the ground.
-    (function(){
-      var inner=shoeEl ? shoeEl.querySelector(".shoe") : null;
-      if(!inner) return;
-      inner.addEventListener("animationiteration", function(){
-        if(!shoeTrackEl.classList.contains("shown")) return;   // also stamps during the intro pan
-        if(!shoeEl.classList.contains("walking")) return;        // only while walking
-        var m=shoeMetrics();
-        if(_stepLastX!=null && Math.abs(m.x-_stepLastX) < 3){ _stepLastX=m.x; return; }
-        _stepLastX=m.x;
-        spawnFootprint(m); spawnDust(m);
-      });
-    })();
+    // Footprints land on a STEADY TIME CADENCE (own timer in tick → layStep),
+    // gated by "did the shoe actually move", instead of firing on the step
+    // animation's iteration. The CSS gait restarts whenever the `walking` class
+    // flickers off→on (reverse pauses, the highlights-toggle re-settle, a zoom),
+    // which used to desync the footfalls and make them intermittent; a timer is
+    // immune to that. A standing shoe doesn't move, so it leaves nothing.
+    function layStep(ts){
+      if(!shoePrintsEl || !shoeTrackEl.classList.contains("shown")) return;
+      if(_stepLastP==null || _stepLastT===0){ _stepLastP=shoeCur; _stepLastT=ts; return; }
+      if(ts-_stepLastT < _STEP_MS) return;                 // steady footfall cadence (timer, not the CSS animation)
+      var d=Math.abs(shoeCur-_stepLastP); _stepLastP=shoeCur; _stepLastT=ts;
+      if(d < 0.002 || d > 0.5) return;                     // not really walking / teleport → no print
+      var m=shoeMetrics(); spawnFootprint(m); spawnDust(m);
+    }
     // A single progress value drives BOTH the thumb's position along the track
     // and the shoe's wear, so they always move together.
     function applyShoe(pv){
@@ -865,7 +865,7 @@
       if(moving && shoeEl){
         shoeEl.classList.add("walking");
         if(_walkTimer) clearTimeout(_walkTimer);
-        _walkTimer=setTimeout(function(){ if(shoeEl) shoeEl.classList.remove("walking"); _stepLastX=null; }, 320);
+        _walkTimer=setTimeout(function(){ if(shoeEl) shoeEl.classList.remove("walking"); }, 320);
       }
     }
 
@@ -910,6 +910,7 @@
         pos=scroller.scrollLeft; // stay in sync while paused / under manual control
       }
       updateShoe();
+      layStep(ts); // steady-cadence footprints (consistent during drift, reverses, toggle, zoom)
       updateStickyYears();
       requestAnimationFrame(tick);
     }

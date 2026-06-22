@@ -989,6 +989,8 @@
     function zoomAt(fx,fy,nz){
       if(!_zoomBaseW) _ensureZoomSetup();
       nz=Math.max(_zMinFor(), Math.min(Z_MAX, nz));
+      if(nz>0.9 && nz<1.1) nz=1;   // deadzone: incidental tiny pinches don't leave the view slightly zoomed
+      if(nz===_zoom) return;        // no real change — skip the scroll re-anchor / state churn
       var sLeft=scroller.getBoundingClientRect().left;
       var baseX=(scroller.scrollLeft + (fx-sLeft)) / _zoom;  // 1× content-x under the focal
       _zoom=nz; applyZoom();

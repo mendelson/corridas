@@ -760,7 +760,7 @@
     var scroller=document.querySelector(".scroller");
     var stageEl=document.getElementById("stage");
     // Geometry cache for the sticky year labels (one layout read per render).
-    var stickyYears=[], _gutterPx=0;
+    var stickyYears=[], _gutterPx=0, _yearAxis=[]; // _yearAxis: per-year content ranges → maps scroll to the even year axis
 
     // Aging shoe: wears (progress 0→1) as the timeline scrolls toward today and
     // rejuvenates toward the past. Progress = scrollLeft / today-offset, eased
@@ -859,8 +859,11 @@
       // Face the scroll direction (deadband avoids jitter); smooth turn via CSS.
       if(_lastSL!=null){ var d=sl-_lastSL; if(d>0.5) setFace(1); else if(d<-0.5) setFace(-1); }
       _lastSL=sl;
-      var hiP=(endPos!=null && endPos>0) ? endPos : (scroller.scrollWidth-scroller.clientWidth);
-      var target=hiP>0 ? clamp(sl/hiP, 0, 1) : 0;
+      // Position the thumb by which YEAR is in view (even year axis), not raw
+      // scroll — so it stays in sync with the main timeline and the year ticks.
+      var focus=(sl + scroller.clientWidth*0.62) / (_zoom||1); // 1× content-x at the viewport focus
+      var target=_yearAxis.length>=2 ? yearAxisFrac(focus)
+                 : ((endPos!=null && endPos>0) ? clamp(sl/endPos, 0, 1) : 0);
       var moving=Math.abs(target-shoeCur) > 0.0006;
       shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target
       applyShoe(shoeCur);
@@ -1294,22 +1297,41 @@
     function buildShoeYears(){
       var host=document.getElementById("shoeYears"); if(!host || !scroller) return;
       var track=document.getElementById("track");
-      var years=[];
+      // Build contiguous per-year content ranges (1× layout space), so the shoe
+      // thumb can be placed on the SAME even year axis as the ticks below — the
+      // thumb tracks which YEAR is in view, not raw scroll (a wide current-year
+      // column would otherwise drag the thumb far from the year shown).
+      var axis=[];
       if(track) Array.prototype.forEach.call(track.querySelectorAll(".sec"), function(s){
         var yl=s.querySelector(".ylabel");
-        if(yl){ var y=parseInt(yl.textContent,10); if(!isNaN(y)) years.push(y); return; }
-        // Gap section: read every collapsed year from data-years (the visible label
-        // may be a single "first–last" range, so its text can't be parsed per-year).
-        var dy=s.getAttribute("data-years");
-        if(dy) dy.split(",").forEach(function(t){ var y=parseInt(t,10); if(!isNaN(y)) years.push(y); });
+        if(yl){ var y=parseInt(yl.textContent,10); if(!isNaN(y)) axis.push({y:y, x0:s.offsetLeft, x1:s.offsetLeft+s.offsetWidth}); return; }
+        var dy=s.getAttribute("data-years"); // gap: split its width across its collapsed years
+        if(dy){ var ys=dy.split(",").map(function(t){return parseInt(t,10);}).filter(function(v){return !isNaN(v);});
+          ys.forEach(function(y,i){ var w=s.offsetWidth/ys.length; axis.push({y:y, x0:s.offsetLeft+i*w, x1:s.offsetLeft+(i+1)*w}); }); }
       });
-      years.sort(function(a,b){return a-b;});
-      years=years.filter(function(y,i){return i===0 || y!==years[i-1];}); // de-dup
-      var n=years.length, html="";
+      axis.sort(function(a,b){return a.y-b.y;});
+      axis=axis.filter(function(m,i){return i===0 || m.y!==axis[i-1].y;}); // de-dup
+      _yearAxis=axis;
+      var n=axis.length, html="";
       for(var i=1;i<n-1;i++){
-        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+years[i]+'</span>';
+        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+axis[i].y+'</span>';
       }
       host.innerHTML=html;
+    }
+    // Map a 1× content-x to a position on the even year axis (0 = oldest year,
+    // 1 = today), so the shoe thumb lines up with the year ticks regardless of
+    // how wide each year's column is.
+    function yearAxisFrac(x){
+      var A=_yearAxis, N=A.length; if(N<2) return 0;
+      for(var i=0;i<N;i++){
+        if(x < A[i].x1 || i===N-1){
+          var span=Math.max(1, A[i].x1-A[i].x0), f=(x-A[i].x0)/span;
+          f=f<0?0:(f>1?1:f);
+          var fr=(i+f)/(N-1);
+          return fr<0?0:(fr>1?1:fr);
+        }
+      }
+      return 1;
     }
     var _rz=null;
     window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });

@@ -864,16 +864,13 @@
       var focus=(sl + scroller.clientWidth*0.62) / (_zoom||1); // 1× content-x at the viewport focus
       var target=_yearAxis.length>=2 ? yearAxisFrac(focus)
                  : ((endPos!=null && endPos>0) ? clamp(sl/endPos, 0, 1) : 0);
-      var moving=Math.abs(target-shoeCur) > 0.0006;
       shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target
       applyShoe(shoeCur);
-      // Switch to the walking gait (step bob → footprints + dust) while moving;
-      // fall back to the calm idle hover shortly after it stops.
-      if(moving && shoeEl){
-        shoeEl.classList.add("walking");
-        if(_walkTimer) clearTimeout(_walkTimer);
-        _walkTimer=setTimeout(function(){ if(shoeEl) shoeEl.classList.remove("walking"); _stepLastX=null; }, 900); // hold past the 500ms reverse pause so sw-step doesn't restart/desync
-      }
+      // The shoe is ALWAYS in its walking gait — it never settles into an idle
+      // hover, so it keeps bouncing (and stamping prints + dust as it travels) the
+      // whole time, including across the wide current-year column. Always-on also
+      // means sw-step never restarts, so the footfall cadence stays in phase.
+      if(shoeEl) shoeEl.classList.add("walking");
     }
 
     // Auto-advance: the journey starts parked at today (right end) and, after a
@@ -1314,22 +1311,25 @@
       axis.sort(function(a,b){return a.y-b.y;});
       axis=axis.filter(function(m,i){return i===0 || m.y!==axis[i-1].y;}); // de-dup
       _yearAxis=axis;
+      // Each year gets an even slot of width 1/N; TODAY sits one slot past the most
+      // recent year (so e.g. 2026 has its own tick and HOJE is spaced after it).
       var n=axis.length, html="";
-      for(var i=1;i<n-1;i++){
-        html+='<span class="shoe-yr" style="left:'+(i/(n-1)*100)+'%">'+axis[i].y+'</span>';
+      for(var i=1;i<n;i++){ // include the most recent year (e.g. 2026); HOJE is the end label
+        html+='<span class="shoe-yr" style="left:'+(i/n*100)+'%">'+axis[i].y+'</span>';
       }
       host.innerHTML=html;
     }
-    // Map a 1× content-x to a position on the even year axis (0 = oldest year,
-    // 1 = today), so the shoe thumb lines up with the year ticks regardless of
-    // how wide each year's column is.
+    // Map a 1× content-x to a position on the even year axis. Each year owns a
+    // 1/N slot; the most recent year runs from its tick toward TODAY (=1) as the
+    // view crosses its column, so the thumb keeps moving across it (never freezes)
+    // and reaches HOJE only at today.
     function yearAxisFrac(x){
       var A=_yearAxis, N=A.length; if(N<2) return 0;
       for(var i=0;i<N;i++){
         if(x < A[i].x1 || i===N-1){
           var span=Math.max(1, A[i].x1-A[i].x0), f=(x-A[i].x0)/span;
           f=f<0?0:(f>1?1:f);
-          var fr=(i+f)/(N-1);
+          var fr=(i+f)/N;
           return fr<0?0:(fr>1?1:fr);
         }
       }

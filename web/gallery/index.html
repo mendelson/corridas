@@ -767,7 +767,7 @@
     // for organic motion. Driven from the tick() loop below.
     var shoeTrackEl=document.getElementById("shoeTrack"), shoeEl=document.getElementById("shoeStage"), shoeCtl=null, shoeCur=0;
     var shoePrintsEl=document.getElementById("shoePrints");
-    var _stepLastX=null, _walkTimer=null;   // footprints fire on the step touchdown, gated by real movement
+    var _stepLastX=null, _walkTimer=null;   // (legacy) — footprints now fire on EVERY step touchdown, no gate
     // The footprint reuses a running-sole silhouette so prints match the shoe's
     // width + shape; it is mirrored to the heading when stamped.
     var SOLE='<svg viewBox="0 0 120 42" xmlns="http://www.w3.org/2000/svg">'
@@ -786,19 +786,16 @@
     }
     // One footfall per step touchdown — sw-step's animationiteration fires at the
     // bottom of the bounce (0%/100% = translateY(0)), so prints land exactly when
-    // the shoe meets the ground (in phase with the bob). Only stamp while actually
-    // moving (a paused shoe doesn't advance ≥3px between footfalls) so it never
-    // stamps in place. The `walking` class is held past the reverse pause (see the
-    // gait debounce) so sw-step doesn't keep restarting and desyncing the cadence.
+    // the shoe meets the ground (in phase with the bob). The shoe is always
+    // walking, so a print + dust drop on EVERY touchdown — no movement gate, so
+    // they never vanish when the thumb crawls through a wide current-year column
+    // (which is what made prints disappear after toggling to the full view).
     (function(){
       var inner=shoeEl ? shoeEl.querySelector(".shoe") : null;
       if(!inner) return;
       inner.addEventListener("animationiteration", function(){
         if(!shoeTrackEl.classList.contains("shown")) return;
-        if(!shoeEl.classList.contains("walking")) return;
         var m=shoeMetrics();
-        if(_stepLastX!=null && Math.abs(m.x-_stepLastX) < 3){ _stepLastX=m.x; return; }
-        _stepLastX=m.x;
         spawnFootprint(m); spawnDust(m);
       });
     })();

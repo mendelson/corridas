@@ -1,7 +1,7 @@
 """Scraper for minhasinscricoes.com.br — Brazilian race registration platform.
 
-The calendar page (/pt-br/calendario?url=corrida-de-rua) server-renders every
-event as a <div class="thumbnail card-default"> card containing:
+The calendar (/pt-br/calendario?url=<modality>) server-renders every event as a
+<div class="thumbnail card-default"> card containing:
 
     .titulo-destaque               → event title
     <p><i.fa-calendar-alt> DD/MM/YYYY → event date
@@ -11,9 +11,19 @@ event as a <div class="thumbnail card-default"> card containing:
 The card itself has no distances, so we follow the redirect (which serves the
 full event page) and parse distances from the registration prose. The redirect
 page also exposes the canonical event URL via og:url.
+
+The calendar is split by modality (the "Tipo de Evento" filter). We scrape every
+*running* modality (road, trail, ultra) — a road-running-only calendar misses
+trail/ultra events entirely (e.g. the UAI Ultramaratona dos Anjos, a trail run).
+Each modality is paginated: page 1 is the calendar page, pages 2..N come from the
+AJAX `Calendario/Filtro` endpoint (identical card markup). We paginate until a
+page returns no new events — never a fixed page cap (CLAUDE.md: check every
+result a source returns).
 """
 from __future__ import annotations
 import re
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import date
 from bs4 import BeautifulSoup
 
 from ..http_client import get
@@ -21,9 +31,18 @@ from ..models import Corrida, Distancia, FonteInfo
 from ..utils import normalize_date, normalize_time, normalize_titulo, now_iso, today_iso, extract_distances_from_text
 from .. import geo as _geo
 
-URL = "https://minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua"
 BASE = "https://minhasinscricoes.com.br"
+CALENDARIO_URL = f"{BASE}/pt-br/calendario"
+FILTRO_URL = f"{BASE}/pt-br/Calendario/Filtro"
 SOURCE_NAME = "Minhas Inscrições"
+
+# Running modalities on the platform's "Tipo de Evento" filter, addressed by the
+# friendly ?url=<slug> shortcut (which pre-checks a single Tipo). Scraping per
+# running modality means we only follow detail-page redirects for running events
+# instead of every cycling/triathlon/swimming card. This is classification (which
+# categories count as running), not event data — analogous to the inclusion
+# keyword lists other sources use.
+_RUNNING_MODALITIES = ("corrida-de-rua", "trail-run", "ultramaratona")
 
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 # Drop hydration/abastecimento mentions that aren't race distances
@@ -34,32 +53,127 @@ _INTERVAL = re.compile(
 )
 
 
-def scrape() -> list[Corrida]:
+def _card_key(card) -> str:
+    el = card.find(attrs={"data-evento-key": True})
+    return el["data-evento-key"] if el else ""
+
+
+def _iter_modality_cards(slug: str):
+    """Yield every event card for one modality, across all calendar pages.
+
+    Page 1 is the server-rendered calendar; pages 2..N come from the AJAX
+    `Calendario/Filtro` fragment (same `.thumbnail.card-default` markup). Stops
+    when a page contributes no new event keys — this terminates both on a truly
+    empty page and on paginators that clamp an out-of-range page to the last one
+    (so there is no fixed page cap, and no infinite loop either).
+    """
+    seen: set[str] = set()
+
+    def _emit(cards):
+        new = []
+        for c in cards:
+            key = _card_key(c)
+            if key and key in seen:
+                continue
+            if key:
+                seen.add(key)
+            new.append(c)
+        return new
+
+    # Page 1 — the calendar page itself.
     try:
-        resp = get(URL)
+        resp = get(f"{CALENDARIO_URL}?url={slug}")
         resp.raise_for_status()
     except Exception as e:
-        print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
-        return []
+        print(f"[{SOURCE_NAME}] erro ao buscar modalidade {slug}: {e}")
+        return
+    cards = BeautifulSoup(resp.text, "lxml").select(".thumbnail.card-default")
+    new = _emit(cards)
+    yield from new
+    if not new:
+        return
 
-    soup = BeautifulSoup(resp.text, "lxml")
-    cards = soup.select(".thumbnail.card-default")
-    print(f"[{SOURCE_NAME}] {len(cards)} cards no calendário")
-
-    corridas: list[Corrida] = []
-    for card in cards:
+    # Pages 2..N — the Filtro fragment endpoint (GET works despite the form's
+    # data-ajax-method="POST"; the page/filter state lives in the query string).
+    hoje = date.today().strftime("%d/%m/%Y")
+    pagina = 2
+    while True:
+        params = {
+            "pagina": pagina,
+            "Valor": "0,500",
+            "PesquisaDataInicio": hoje,
+            "PesquisaDataFim": "31/12/9999",
+            "url": slug,
+            "exclusivo": "False",
+            "internacional": "False",
+            "qtipos": "1",
+        }
         try:
-            corrida = _parse_card(card)
-            if corrida:
-                corridas.append(corrida)
+            resp = get(FILTRO_URL, params=params)
+            resp.raise_for_status()
         except Exception as e:
-            print(f"[{SOURCE_NAME}] erro: {e}")
+            print(f"[{SOURCE_NAME}] erro na página {pagina} de {slug}: {e}")
+            break
+        cards = BeautifulSoup(resp.text, "lxml").select(".thumbnail.card-default")
+        new = _emit(cards)
+        if not new:
+            break
+        yield from new
+        pagina += 1
+
+
+def scrape() -> list[Corrida]:
+    # Collect candidate cards across every running modality (network-light: a
+    # handful of listing pages), deduped by key. Then fetch the per-event detail
+    # pages — the expensive part, one request each — in parallel. Hundreds of
+    # detail fetches done sequentially would dominate the run; the thread pool
+    # keeps the whole source well inside the pipeline's per-source budget without
+    # dropping any event (CLAUDE.md: large source → more parallelism, never caps).
+    metas: list[dict] = []
+    seen_keys: set[str] = set()
+    for slug in _RUNNING_MODALITIES:
+        count = 0
+        for card in _iter_modality_cards(slug):
+            # An event listed under several modalities (e.g. a trail ultra) is
+            # fetched/parsed once — dedup by key before the detail-page fetch.
+            key = _card_key(card)
+            if key and key in seen_keys:
+                continue
+            if key:
+                seen_keys.add(key)
+            try:
+                meta = _parse_card_meta(card)
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] erro: {e}")
+                continue
+            if meta:
+                metas.append(meta)
+                count += 1
+        print(f"[{SOURCE_NAME}] modalidade {slug}: {count} candidato(s)")
+
+    print(f"[{SOURCE_NAME}] {len(metas)} candidato(s); buscando páginas de detalhe...")
+    corridas: list[Corrida] = []
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        futures = {ex.submit(_build_corrida, m): m for m in metas}
+        for fut in as_completed(futures):
+            try:
+                corrida = fut.result()
+                if corrida:
+                    corridas.append(corrida)
+            except Exception as e:
+                print(f"[{SOURCE_NAME}] erro: {e}")
 
     print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas
 
 
-def _parse_card(card) -> Corrida | None:
+def _parse_card_meta(card) -> dict | None:
+    """Network-free parse of a calendar card → metadata dict, or None to skip.
+
+    Everything cheap (title, date, location, redirect URL) is read here so the
+    only per-event network call left is the detail-page fetch in _build_corrida,
+    which runs in parallel.
+    """
     cap = card.select_one(".caption-evento")
     if not cap:
         return None
@@ -83,22 +197,30 @@ def _parse_card(card) -> Corrida | None:
         return None
 
     # Redirect link via data-evento-key
-    key_el = card.find(attrs={"data-evento-key": True})
-    keycode = key_el["data-evento-key"] if key_el else ""
+    keycode = _card_key(card)
     redirect_url = (
         f"{BASE}/pt-br/ClickEventos/Redirecionar?origem=1&keycode={keycode}"
-        if keycode else URL
+        if keycode else f"{CALENDARIO_URL}?url=corrida-de-rua"
     )
+    return {
+        "titulo": titulo, "data": data, "localizacao": localizacao,
+        "cidade": cidade, "estado": estado, "keycode": keycode,
+        "redirect_url": redirect_url,
+    }
 
+
+def _build_corrida(meta: dict) -> Corrida | None:
+    """Fetch the event detail page and assemble a Corrida (runs in a worker)."""
     # Fetch the event page for distances, canonical URL, and start time
-    link_evento, distancias, horario = _fetch_event_page(redirect_url)
+    link_evento, distancias, horario = _fetch_event_page(meta["redirect_url"])
     if not distancias:
         return None
-    if not link_evento:
-        link_evento = redirect_url
     if horario is None:
         return None  # start time not yet published — skip until it is
+    if not link_evento:
+        link_evento = meta["redirect_url"]
 
+    keycode, data, cidade = meta["keycode"], meta["data"], meta["cidade"]
     ev_id = f"mi_{keycode}" if keycode else f"mi_{data}_{cidade.lower().replace(' ', '')}"
 
     now = now_iso()
@@ -110,12 +232,12 @@ def _parse_card(card) -> Corrida | None:
     )
     return Corrida(
         id=ev_id,
-        titulo=titulo,
+        titulo=meta["titulo"],
         data_evento=data,
         horario=horario,
-        localizacao=localizacao,
+        localizacao=meta["localizacao"],
         cidade=cidade,
-        estado=estado,
+        estado=meta["estado"],
         pais="BR",
         distancias=distancias,
         imagem_url=None,

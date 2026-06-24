@@ -14,7 +14,7 @@ from .merger import are_duplicates, merge_rodada, _merge_pair
 from .enrichment_selos import enrich as _enrich_selos
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
 from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event
-from .http_client import get as http_get, get_direct as http_get_direct
+from .http_client import get_direct as http_get_direct
 from . import geo as _geo
 
 # ---------------------------------------------------------------------------
@@ -307,46 +307,6 @@ def load_existing() -> dict[str, Corrida]:
     return result
 
 
-def _find_all_photos(corridas: list[Corrida]) -> None:
-    """Search photo platforms for events that occurred in the last 30 days.
-
-    Events older than 30 days keep whatever fotos were stored previously but
-    are never re-queried. Events in the active window are re-queried every
-    scraping run so newly published photos are picked up promptly.
-    """
-    from datetime import date as _d, timedelta as _td
-    from .fotos import find_event_photos
-
-    today_str = _d.today().isoformat()
-    cutoff_str = (_d.today() - _td(days=30)).isoformat()
-
-    to_check = [
-        c for c in corridas
-        if c.data_evento and cutoff_str <= c.data_evento <= today_str
-    ]
-    if not to_check:
-        return
-
-    print(f"[main] buscando fotos em plataformas para {len(to_check)} evento(s)...")
-
-    def _check(c: Corrida) -> tuple[Corrida, list[dict]]:
-        return c, find_event_photos({"titulo": c.titulo, "data_evento": c.data_evento})
-
-    found = 0
-    with ThreadPoolExecutor(max_workers=5) as ex:
-        futs = {ex.submit(_check, c): c for c in to_check}
-        for fut in as_completed(futs):
-            try:
-                c, fotos = fut.result()
-                if fotos:
-                    c.fotos = fotos
-                    found += 1
-            except Exception:
-                pass
-
-    print(f"[main] fotos encontradas para {found}/{len(to_check)} evento(s)")
-
-
 def _normalize_all_locations(corridas: list[Corrida]) -> None:
     """Normalize cidade/localizacao in-place (accents, HTML entities, casing)."""
     for c in corridas:
@@ -537,36 +497,6 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
     return existing
 
 
-_GENERIC_IMAGE_PATTERNS = [
-    "logo", "favicon", "placeholder", "default", "banner",
-    "LargeRectangle", "No_Empty_Space", "no-image", "sem-imagem",
-]
-
-
-def _is_generic_image(url: str) -> bool:
-    url_lower = url.lower()
-    if url_lower.endswith(".gif"):
-        return True
-    return any(p.lower() in url_lower for p in _GENERIC_IMAGE_PATTERNS)
-
-
-def _og_image_from_url(url: str) -> str | None:
-    from bs4 import BeautifulSoup
-    try:
-        resp = http_get(url, timeout=15)
-        if resp.status_code != 200:
-            return None
-        soup = BeautifulSoup(resp.text, "lxml")
-        tag = soup.find("meta", property="og:image")
-        if tag:
-            content = tag.get("content", "")
-            if content and not _is_generic_image(content):
-                return validate_image_url(content, source_domain=url)
-    except Exception:
-        pass
-    return None
-
-
 # Statuses that mean "the page exists but is bot-protected" (Cloudflare / WAF
 # challenge). A human visiting still sees the event, so these must NOT count as a
 # miss — only a hard not-found (404/410) or a connection failure means the page
@@ -581,10 +511,8 @@ def _check_and_refresh_links(existing: Corrida) -> bool:
     an inscription URL may 404/redirect while the event page stays up, so both
     must be considered. Uses get_direct (which does NOT raise on a WAF status) so
     a bot-protected-but-live page (e.g. Ticket Sports behind Cloudflare with
-    registration closed) counts as alive rather than as a miss. Refreshes
-    og:image opportunistically.
+    registration closed) counts as alive rather than as a miss.
     """
-    from bs4 import BeautifulSoup
     links: list[str] = []
     for fonte in existing.fontes:
         if fonte.link_evento:
@@ -603,59 +531,8 @@ def _check_and_refresh_links(existing: Corrida) -> bool:
             return True  # page exists, just bot-protected — keep the event
         if sc != 200:
             continue  # 404/410/etc. — this link is dead, try the next
-        if not existing.imagem_url:
-            soup = BeautifulSoup(resp.text, "lxml")
-            tag = soup.find("meta", property="og:image")
-            if tag:
-                content = tag.get("content", "")
-                if content and not _is_generic_image(content):
-                    existing.imagem_url = validate_image_url(content, source_domain=link)
         return True
     return False
-
-
-def _enrich_images(corridas: list[Corrida]) -> None:
-    """For events without an image, try to fetch og:image from their event pages."""
-    missing = [c for c in corridas if not c.imagem_url]
-    if not missing:
-        return
-    print(f"[main] buscando imagens para {len(missing)} evento(s) sem foto...")
-
-    def _try_fetch(c: Corrida) -> tuple[Corrida, str | None]:
-        # Try link_evento and links_inscricao for each fonte
-        candidates: list[str] = []
-        for fonte in c.fontes:
-            if fonte.link_evento:
-                candidates.append(fonte.link_evento)
-            candidates.extend(fonte.links_inscricao)
-        for url in dict.fromkeys(candidates):  # deduplicate preserving order
-            img = _og_image_from_url(url)
-            if img:
-                return c, img
-        return c, None
-
-    # Optional, best-effort enrichment — bounded by the same wall-clock budget as
-    # the reconcile recheck so a large backlog of image-less events (or a few
-    # hung fetches) can't pin the runner. Images not found before the deadline
-    # are simply retried next run; a missing image never blocks shipping data.
-    found = 0
-    ex = ThreadPoolExecutor(max_workers=16)
-    futures = {ex.submit(_try_fetch, c): c for c in missing}
-    try:
-        for fut in as_completed(futures, timeout=_RECHECK_BUDGET_S):
-            try:
-                c, img = fut.result()
-                if img:
-                    c.imagem_url = img
-                    found += 1
-            except Exception:
-                pass
-    except TimeoutError:
-        print(f"[main] limite de {_RECHECK_BUDGET_S}s para busca de imagens atingido — "
-              f"restantes adiadas para a próxima execução")
-    ex.shutdown(wait=False, cancel_futures=True)
-
-    print(f"[main] {found}/{len(missing)} imagens encontradas")
 
 
 def _find_match(incoming: Corrida, estado_anterior: dict[str, Corrida]) -> Corrida | None:
@@ -1215,32 +1092,6 @@ def _dedupe_by_id(corridas: list[Corrida]) -> list[Corrida]:
     return [best[i] for i in order]
 
 
-def _sanitize_images(corridas: list[Corrida]) -> None:
-    """Validate imagem_url for all events.
-
-    Non-BR events: image must come from the same registered domain as the event
-    source OR a known trusted CDN.
-    BR events: only reject images with suspicious host keywords.
-    """
-    cleared = 0
-    for c in corridas:
-        if not c.imagem_url:
-            continue
-        if c.pais != 'BR':
-            source_domains = [f.link_evento for f in c.fontes if f.link_evento]
-            valid = any(validate_image_url(c.imagem_url, source_domain=d) for d in source_domains) \
-                    if source_domains else bool(validate_image_url(c.imagem_url))
-        else:
-            # BR events: only check for suspicious keywords, CDNs/image hosts are trusted
-            valid = bool(validate_image_url(c.imagem_url))
-        if not valid:
-            print(f"[main] removendo imagem inválida de '{c.titulo}': {c.imagem_url[:60]}")
-            c.imagem_url = None
-            cleared += 1
-    if cleared:
-        print(f"[main] {cleared} imagem(ns) inválida(s) removida(s)")
-
-
 def main() -> None:
     selective = _SELECTIVE_SOURCES
     if selective:
@@ -1287,9 +1138,6 @@ def main() -> None:
     final = _drop_kids_events(final)
     final = _drop_events_without_horario(final)
     final = _dedupe_by_id(final)
-    # _find_all_photos(final)
-    _enrich_images(final)
-    _sanitize_images(final)
     save(final)
 
 
@@ -1302,7 +1150,7 @@ if __name__ == "__main__":
         sys.stdout.flush()
         sys.stderr.flush()
         os._exit(1)
-    # Hard-exit instead of returning normally. The scraping/recheck/image phases
+    # Hard-exit instead of returning normally. The scraping/recheck phases
     # run in thread pools; if a source stalled in a call without a hard timeout
     # (e.g. a Playwright navigation), its non-daemon worker thread stays alive and
     # the interpreter's at-exit join would block on it until the CI job times out

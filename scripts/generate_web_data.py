@@ -39,7 +39,7 @@ BOOT_FUTURE_DAYS = 60
 # Top-level event fields the frontend reads (see app.js: c.<field>).
 KEEP = (
     "titulo", "data_evento", "horario", "localizacao", "cidade", "estado",
-    "pais", "distancias", "imagem_url", "fotos", "first_seen_at", "fontes",
+    "pais", "distancias", "first_seen_at", "fontes",
     "selo", "major",
 )
 # Required fields are always kept even when empty, so the data-quality tests

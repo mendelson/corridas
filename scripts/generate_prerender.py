@@ -139,7 +139,6 @@ def build_html(events: list[dict], lang: str) -> str:
         parts.append(
             '<article class="card prerender" role="listitem">'
             '<div class="card-collapsed">'
-            '<div class="card-img-wrap"><div class="card-img-placeholder" aria-hidden="true"></div></div>'
             '<div class="card-body">'
             f'<div class="card-top"><h2 class="card-title">{title_html}</h2></div>'
             '<div class="card-meta">'
@@ -181,8 +180,6 @@ def build_jsonld(events: list[dict]) -> str:
                 "url": link,
                 "availability": "https://schema.org/InStock",
             }
-        if ev.get("imagem_url"):
-            item["image"] = ev["imagem_url"]
         # Multi-day events: per-distance dates differ → endDate = last day.
         dist_dates = {d.get("data") for d in (ev.get("distancias") or []) if d.get("data")}
         dist_dates.add(ev.get("data_evento") or "")

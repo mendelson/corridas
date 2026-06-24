@@ -95,7 +95,6 @@ const STRINGS = {
     timeColHeader: 'Horário',
     sourcesHeader: 'Fontes',
     registerBtn: 'Inscreva-se →',
-    noImage: 'Sem imagem',
     labelDateFrom: 'De',
     labelDateTo: 'Até',
     labelDistFrom: 'De',
@@ -160,7 +159,6 @@ const STRINGS = {
     timeColHeader: 'Time',
     sourcesHeader: 'Sources',
     registerBtn: 'Register →',
-    noImage: 'No image',
     labelDateFrom: 'From',
     labelDateTo: 'To',
     labelDistFrom: 'From',
@@ -225,7 +223,6 @@ const STRINGS = {
     timeColHeader: 'Hora',
     sourcesHeader: 'Fuentes',
     registerBtn: 'Inscribirse →',
-    noImage: 'Sin imagen',
     labelDateFrom: 'Desde',
     labelDateTo: 'Hasta',
     labelDistFrom: 'Desde',
@@ -290,7 +287,6 @@ const STRINGS = {
     timeColHeader: 'Zeit',
     sourcesHeader: 'Quellen',
     registerBtn: 'Anmelden →',
-    noImage: 'Kein Bild',
     labelDateFrom: 'Von',
     labelDateTo: 'Bis',
     labelDistFrom: 'Von',
@@ -355,7 +351,6 @@ const STRINGS = {
     timeColHeader: 'Heure',
     sourcesHeader: 'Sources',
     registerBtn: "S'inscrire →",
-    noImage: 'Sans image',
     labelDateFrom: 'De',
     labelDateTo: 'À',
     labelDistFrom: 'De',
@@ -1533,47 +1528,6 @@ function buildCard(c, today, threeDaysAgo) {
   // Collapsed section
   const collapsed = card.querySelector('.card-collapsed');
 
-  const img = card.querySelector('.card-img');
-  const placeholder = card.querySelector('.card-img-placeholder');
-  // Per-state tint for the branded fallback graphic (CSS layers the runner
-  // glyph + gradient on top of it). Set on the variable, not `background`,
-  // so the gradient/glyph survive.
-  placeholder.style.setProperty('--ph-tint', stateColor(c.estado));
-  // Treat known generic/placeholder source images as "no image" so they show
-  // the branded fallback instead of a non-photo that looks like a failure.
-  if (c.imagem_url && !isPlaceholderImage(c.imagem_url)) {
-    const showPlaceholder = () => {
-      img.style.display = 'none';
-      placeholder.style.display = '';
-    };
-    // Attach handlers BEFORE assigning src so no early `error` is missed (a URL
-    // cached as a failure re-fires `error` when src is reassigned, covering the
-    // re-render case too).
-    img.addEventListener('error', showPlaceholder);
-    // A 200 that fails to decode fires `load` with zero intrinsic size.
-    img.addEventListener('load', () => { if (img.naturalWidth === 0) showPlaceholder(); });
-    // Omit the Referer: correrbrasilia.com.br (and similar WordPress hosts) run
-    // referer-based hotlink protection that returns HTTP 200 with a stock
-    // "no photo" substitute (red slashed camera) for foreign referers — an
-    // image that loads successfully, so error/load fallbacks can't catch it.
-    // With no referer the host serves the real event art (verified by probing
-    // the same URL with and without Referer). Hotlink configs universally
-    // allow empty referers (direct navigation would break otherwise).
-    img.referrerPolicy = 'no-referrer';
-    img.alt = c.titulo;
-    img.style.display = '';
-    placeholder.style.display = 'none';
-    img.src = c.imagem_url;
-    // NB: no synchronous `img.complete && naturalWidth === 0` check here. Setting
-    // `src` only QUEUES the load (a microtask); synchronously a freshly-cloned
-    // <img> still reports complete===true with naturalWidth===0, so that check
-    // fired for every valid image and forced the placeholder across the whole
-    // list. Rely on the async error/load events instead.
-  } else {
-    img.style.display = 'none';
-    placeholder.style.display = '';
-  }
-
   card.querySelector('.card-title').textContent    = c.titulo;
   card.querySelector('.card-date').textContent     = formatDate(c.data_evento, c.horario, c.distancias);
   card.querySelector('.card-location').textContent = _buildCardLocation(c);
@@ -1696,7 +1650,6 @@ function buildExpanded(card, c) {
   const expTitle  = card.querySelector('.expanded-title');
   const expDist   = card.querySelector('.expanded-distances');
   const expFontes = card.querySelector('.expanded-fontes');
-  const expFotos  = card.querySelector('.expanded-fotos');
 
   expTitle.textContent = c.titulo;
   expTitle.classList.remove('hidden');
@@ -1757,18 +1710,6 @@ function buildExpanded(card, c) {
       expFontes.appendChild(div);
     }
   }
-
-  // fotos rendering out of scope for now
-  // if (c.fotos && c.fotos.length > 0) {
-  //   for (const foto of c.fotos) {
-  //     const img = document.createElement('img');
-  //     img.src       = foto.url;
-  //     img.alt       = foto.plataforma || '';
-  //     img.loading   = 'lazy';
-  //     img.className = 'expanded-photo';
-  //     expFotos.appendChild(img);
-  //   }
-  // }
 }
 
 // ---------------------------------------------------------------------------
@@ -1835,34 +1776,6 @@ function formatKm(km) {
   return km + 'K';
 }
 
-
-// Known generic/placeholder image URLs served by source platforms in place of a
-// real event photo (generic sport clipart, social-share cards, stock heroes).
-// These read as broken/non-photos, so we treat them as "no image" and show the
-// branded fallback instead. Substring match, case-insensitive.
-const _PLACEHOLDER_IMG_PATTERNS = [
-  '/img/logos/genericwebsitelogos/',  // RunSignup generic sport clipart (running-shoe, ultra, bike…)
-  '/img/socialshare',                  // RunSignup generic social-share card
-  '/uploads/generic/genericimage-websitelogo',  // RunSignup auto-assigned generic logo (no real event photo)
-  'halfmarathons.net/wp-content/uploads/2024/09/half-marathon-guide-hero-image',  // generic guide hero
-  'youmovin.com.br/imagens/social-media',  // YouMovin generic social image
-  'quedasadventure.com.br/public/img/thumb',  // Quedas Adventure generic thumb
-];
-
-function isPlaceholderImage(url) {
-  if (!url) return false;
-  const u = url.toLowerCase();
-  return _PLACEHOLDER_IMG_PATTERNS.some(p => u.includes(p));
-}
-
-function stateColor(estado) {
-  const map = {
-    DF: '#1a3a4a', SP: '#3a1a1a', RJ: '#1a3a1a', MG: '#2a1a3a',
-    RS: '#1a2a3a', PR: '#2a3a1a', SC: '#3a2a1a', CE: '#3a3a1a',
-    BA: '#3a1a2a', PE: '#1a3a3a', AM: '#1a3a2a', GO: '#2a2a3a',
-  };
-  return map[estado] || '#2a2a2a';
-}
 
 function todayStr() {
   return new Date().toISOString().slice(0, 10);

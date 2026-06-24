@@ -31,7 +31,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-06-24 11:41 | ✅ | 2026-06-24 11:41 · 4 ev |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-06-24 11:41 | ✅ | 2026-06-24 11:41 · 1 ev |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-06-24 11:57 | ⚠️  (1/3) | 2026-06-23 12:07 · 979 ev |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-24 11:42 | ✅ | 2026-06-24 11:42 · 16 ev |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-24 14:03 | ✅ | 2026-06-24 14:03 · 147 ev |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-06-24 11:43 | ❌ 0 eventos | 2026-06-14 11:26 · 1 ev |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-06-24 11:43 | ✅ | 2026-06-24 11:43 · 1 ev |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-06-24 11:44 | ✅ | 2026-06-24 11:44 · 58 ev |

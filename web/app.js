@@ -478,6 +478,9 @@ async function loadData() {
     console.error('loadData error', e);
   } finally {
     if (btnRefresh) btnRefresh.classList.remove('spinning');
+    // Data is fully loaded (or failed) — lift the loading screen. It runs its
+    // zoom-in-on-the-worn-shoe transition and reveals the now-stable card list.
+    if (window.Loading) window.Loading.done();
   }
 }
 

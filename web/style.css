@@ -1003,3 +1003,128 @@ input { font-family: inherit; }
 .selo-legend li { display: flex; align-items: center; padding: 3px 0; font-weight: 600; }
 .selo-legend-major { display: flex; align-items: flex-start; gap: 0; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--color-border); }
 .selo-legend-major .selo-dot { margin-top: 3px; }
+
+/* =====================================================================
+   Loading screen — the gallery shoe crosses the screen (ground + footprints
+   + dust + progressive wear) while data loads, then zooms into the worn shoe
+   and reveals the site. Shown by default (no flash of changing content);
+   loading.js removes it once the data is fully loaded.
+   ===================================================================== */
+#loadingScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  overflow: hidden;
+  transition: opacity 0.6s ease;
+  /* Failsafe: if loading.js never runs, don't trap the user behind the overlay. */
+  animation: loadFailsafe 1ms linear 18s forwards;
+}
+#loadingScreen.hidden { opacity: 0; pointer-events: none; }
+@keyframes loadFailsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+
+.load-scene {
+  position: relative;
+  width: min(680px, 86vw);
+  height: 200px;
+}
+
+/* The ground the shoe runs on — a real dirt surface footprints press into. */
+.load-terrain {
+  position: absolute;
+  left: 0; right: 0; bottom: 44px;
+  height: 22px;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: #4a3724;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='52'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5 0.55' numOctaves='3' seed='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='52' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 80% at 30% 0%, rgba(120,90,58,.5), transparent 60%),
+    linear-gradient(180deg,#5c4630 0%, #3d2d1c 64%, #2b1f12 100%);
+  background-size: 180px 52px, 100% 100%, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-blend-mode: overlay, normal, normal;
+  box-shadow: inset 0 1px 0 rgba(255,224,180,.06), inset 0 -5px 9px -4px rgba(0,0,0,.6), 0 7px 18px -8px rgba(0,0,0,.75);
+}
+.load-terrain::before {
+  content: ""; position: absolute; inset: 0; opacity: .6;
+  background-image:
+    radial-gradient(circle at 14% 60%, rgba(0,0,0,.45) 0 1.6px, transparent 2.2px),
+    radial-gradient(circle at 33% 32%, rgba(255,230,190,.16) 0 1.2px, transparent 1.8px),
+    radial-gradient(circle at 52% 70%, rgba(0,0,0,.4) 0 1.8px, transparent 2.4px),
+    radial-gradient(circle at 71% 40%, rgba(255,230,190,.13) 0 1.1px, transparent 1.7px),
+    radial-gradient(circle at 88% 64%, rgba(0,0,0,.4) 0 1.5px, transparent 2.1px);
+  background-size: 96px 18px; background-repeat: repeat-x;
+}
+.load-terrain::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(214,176,120,.3) 12%, rgba(214,176,120,.3) 88%, transparent);
+}
+
+/* Footprints + dust live here, lined up over the terrain. */
+.load-prints {
+  position: absolute;
+  left: 0; right: 0; bottom: 44px;
+  height: 26px;
+  pointer-events: none;
+}
+.load-footprint {
+  position: absolute;
+  pointer-events: none;
+  animation: loadFpFade 3.4s ease-out forwards;
+}
+.load-footprint svg { display: block; width: 100%; height: 100%; }
+@keyframes loadFpFade { 0% { opacity: 0; } 8% { opacity: .9; } 55% { opacity: .55; } 100% { opacity: 0; } }
+
+.load-dust { position: absolute; bottom: 0; height: 26px; pointer-events: none; }
+.load-puff {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(206,176,128,.82), rgba(206,176,128,0) 72%);
+  animation: loadPuff var(--d,1s) ease-out forwards;
+}
+@keyframes loadPuff {
+  0%   { transform: translate(0,4px) scale(.3); opacity: 0; }
+  18%  { opacity: var(--o,.6); }
+  100% { transform: translate(var(--dx,0), var(--dy,-34px)) scale(var(--s,2.6)); opacity: 0; }
+}
+
+/* The shoe itself — positioned along the track by loading.js (left + translateX).
+   left:p% + translateX(-p%) keeps it fully inside the scene at both ends. */
+.load-shoe-stage {
+  position: absolute;
+  left: 0;
+  bottom: 54px;
+  width: clamp(84px, 15vw, 150px);
+  transform: translateX(0);
+  will-change: left, transform;
+  pointer-events: none;
+}
+.load-shoe-stage svg {
+  width: 100%; height: auto; display: block; overflow: visible;
+  transform-origin: 50% 50%;
+}
+/* Contact shadow under the shoe. */
+.load-shoe-stage::after {
+  content: ""; position: absolute;
+  left: 6%; right: 6%; bottom: -3px; height: 8px;
+  border-radius: 50%; z-index: -1;
+  background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.5), rgba(0,0,0,0) 70%);
+}
+@keyframes loadSwFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes loadSwStep  { 0%,100% { transform: translateY(0); } 44% { transform: translateY(-16px); } }
+@keyframes loadShadowStep { 0%,100% { transform: scaleX(1); opacity: .5; } 44% { transform: scaleX(.6); opacity: .24; } }
+.load-shoe-stage .shoe { animation: loadSwFloat 3.4s ease-in-out infinite; }
+.load-shoe-stage.walking .shoe { animation: loadSwStep .7s ease-in-out infinite; }
+.load-shoe-stage.walking::after { animation: loadShadowStep .7s ease-in-out infinite; }
+
+/* Finish: the worn shoe zooms toward the viewer while the ground fades; then the
+   whole overlay fades out (.hidden) to reveal the loaded site behind it. */
+#loadingScreen.zooming .load-terrain,
+#loadingScreen.zooming .load-prints { opacity: 0; transition: opacity .4s ease; }
+/* The zoom transform itself is applied inline by loading.js (so it interpolates
+   from the shoe's current track position); here we only freeze its gait. */
+#loadingScreen.zooming .load-shoe-stage .shoe { animation: none; }

@@ -39,6 +39,13 @@
   <link rel="stylesheet" href="../style.css" />
 </head>
 <body>
+  <div id="loadingScreen" aria-hidden="true">
+    <div class="load-scene">
+      <span class="load-terrain"></span>
+      <div class="load-prints"></div>
+      <div class="load-shoe-stage"></div>
+    </div>
+  </div>
   <header class="app-header">
     <h1 class="app-title">Nächstes Rennen</h1>
     <div class="header-actions">
@@ -300,6 +307,8 @@
     </article>
   </template>
 
+  <script src="../gallery/shoe-wear.js"></script>
+  <script src="../loading.js"></script>
   <script src="../app.js"></script>
 </body>
 </html>

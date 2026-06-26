@@ -58,23 +58,41 @@
     stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
   }
 
-  // Track position at progress p (scale 1): shoe walks the ground line L→R,
-  // staying fully inside the viewport at both ends.
-  // The shoe ALWAYS stands on the ground line — at any scale, its box bottom
-  // sits just into the dirt, so it never floats. (8px sink hides the sliver of
-  // empty SVG below the sole.)
-  function bottomY(s) { return groundY() - H() * s + 8; }
+  // Where the SOLE sits inside the stage box, as a fraction of the box height
+  // (the SVG leaves a sliver of empty space below the outsole). Measured from
+  // the real outsole element so the shoe is grounded by its sole, not by the
+  // box bottom — otherwise that empty sliver scales up under the hero zoom and
+  // the shoe visibly floats. Measured once at scale 1 (no transform yet).
+  var soleFrac = 0.93;
+  (function () {
+    try {
+      var sole = stage.querySelector('.outsole') || stage.querySelector('.sole-wrap');
+      var sb = stage.getBoundingClientRect();
+      if (sole && sb.height) {
+        soleFrac = (sole.getBoundingClientRect().bottom - sb.top) / sb.height;
+      }
+    } catch (e) {}
+  })();
 
+  // Stage-top y that puts the SOLE on the ground line (a hair into the dirt),
+  // for ANY scale — so the shoe stands on the ground whether tiny (track) or
+  // huge (hero), never floating.
+  var SINK = 3;
+  function topForSole(s) { return groundY() - soleFrac * H() * s + SINK; }
+
+  // Track: the shoe walks the ground line L→R, fully inside the viewport.
   function applyTrack(p) {
-    setShoe(p * (vw() - W()), bottomY(1), 1);
+    setShoe(p * (vw() - W()), topForSole(1), 1);
   }
 
-  // Hero: as large as fits — wide enough for margins, short enough to stand
-  // above the ground line — and never cropped. Bottom stays on the ground.
-  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - 28) / H()); }
+  // Hero: as large as fits — wide enough for side margins, short enough to
+  // stand above the ground line — never cropped, sole on the ground.
+  function heroScale() {
+    return Math.min(0.82 * vw() / W(), (groundY() - 24) / (soleFrac * H()));
+  }
   function applyHero() {
     var s = heroScale();
-    setShoe((vw() - W() * s) / 2, bottomY(s), s);
+    setShoe((vw() - W() * s) / 2, topForSole(s), s);
   }
 
   // ---- footprint + dust (reused from the gallery) --------------------------

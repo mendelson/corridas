@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Galeria — Mateus Mendelson</title>
+  <title>Galeria</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="any" href="../logomendi-favicon.png" />
   <link rel="apple-touch-icon" href="../logomendi-favicon.png" />
@@ -239,7 +239,7 @@
       try{localStorage.setItem(STORE_KEY, lang);}catch(e){}
       buildMonths();
       document.documentElement.lang=lang;
-      document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])+" — Mateus Mendelson";
+      document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])||"Gallery";
       document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
       document.getElementById("hint").textContent=T.hint;
       document.getElementById("navCal").setAttribute("href","/"+lang);
@@ -575,7 +575,13 @@
       // Drop any leftover per-column overview-morph transforms.
       Array.prototype.forEach.call(track.querySelectorAll(".sec,.ylabel,.gylab"), function(el){ el.style.transform=""; el.style.transformOrigin=""; });
       scroller.style.overflowX=prevOverflow||"";
-      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1; setFace(-1); // arrived at today → turn around to drift back through time
+      scroller.scrollLeft=todayStart; pos=todayStart; dir=-1;
+      // The intro walked the shoe to the extremity (HOJE). Pin it there and sync
+      // the face-tracking baseline to this scroll, so the first post-intro frame
+      // can't read the intro's scroll jump (0 → today) as forward motion and flip
+      // the shoe toe-right — which made it moonwalk backward off the end. It rests
+      // at HOJE facing back through time, then the auto-drift below carries it there.
+      _lastSL=todayStart; shoeCur=1; if(shoeCtl) applyShoe(1); setFace(-1);
       finishChrome(true); // intro is over → fade the rest of the page in
       setTimeout(function(){ if(!held) auto=true; }, 500);
     }
@@ -859,6 +865,18 @@
       // Position the thumb by which YEAR is in view (even year axis), not raw
       // scroll — so it stays in sync with the main timeline and the year ticks.
       var focus=(sl + scroller.clientWidth*0.62) / (_zoom||1); // 1× content-x at the viewport focus
+      // The current year reserves a FULL column, but its content only runs to today.
+      // Clamp that last segment's end to today's focus-x so the thumb reaches HOJE
+      // (frac 1, the right extremity) exactly at the today bound — instead of resting
+      // mid-column (~0.91) and lurching backward off the end when the intro hands
+      // over to the auto-drift. Done here, not in buildShoeYears, because the today
+      // marker / endPos aren't laid out yet when the axis is first built. The even
+      // year ticks (at i/N) stay put, so the thumb still aligns with the year in view.
+      if(_yearAxis.length>=2 && endPos!=null && endPos>0){
+        var _last=_yearAxis[_yearAxis.length-1];
+        var _tx=(endPos + scroller.clientWidth*0.62)/(_zoom||1);
+        if(_tx>_last.x0+1) _last.x1=_tx;
+      }
       var target=_yearAxis.length>=2 ? yearAxisFrac(focus)
                  : ((endPos!=null && endPos>0) ? clamp(sl/endPos, 0, 1) : 0);
       shoeCur += (target - shoeCur) * 0.12; // easing toward the scroll-derived target

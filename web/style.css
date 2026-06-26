@@ -1028,18 +1028,18 @@ input { font-family: inherit; }
 @keyframes loadFailsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
 
 .load-scene {
-  position: relative;
-  width: min(680px, 86vw);
-  height: 200px;
+  position: absolute;
+  inset: 0;
 }
 
 /* The ground the shoe runs on — a real dirt surface footprints press into. */
 .load-terrain {
   position: absolute;
-  left: 0; right: 0; bottom: 44px;
+  left: 0; right: 0; top: 62vh;
   height: 22px;
   border-radius: 2px;
   overflow: hidden;
+  transition: opacity .45s ease;
   background-color: #4a3724;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='52'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5 0.55' numOctaves='3' seed='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='52' filter='url(%23n)'/%3E%3C/svg%3E"),
@@ -1068,10 +1068,15 @@ input { font-family: inherit; }
 /* Footprints + dust live here, lined up over the terrain. */
 .load-prints {
   position: absolute;
-  left: 0; right: 0; bottom: 44px;
-  height: 26px;
+  left: 0; right: 0; top: 62vh;
+  height: 30px;
   pointer-events: none;
+  transition: opacity .45s ease;
 }
+
+/* Ground belongs only to the crossing — hidden under the hero framings. */
+#loadingScreen.intro .load-terrain,
+#loadingScreen.intro .load-prints { opacity: 0; }
 .load-footprint {
   position: absolute;
   pointer-events: none;
@@ -1092,26 +1097,27 @@ input { font-family: inherit; }
   100% { transform: translate(var(--dx,0), var(--dy,-34px)) scale(var(--s,2.6)); opacity: 0; }
 }
 
-/* The shoe itself — positioned along the track by loading.js (left + translateX).
-   left:p% + translateX(-p%) keeps it fully inside the scene at both ends. */
+/* The shoe — loading.js drives a translate(px,px)+scale transform from the
+   top-left origin, so the same element expresses both the hero (centred, sized
+   to fit) and the track positions, transitioning smoothly between them. */
 .load-shoe-stage {
   position: absolute;
-  left: 0;
-  bottom: 54px;
+  left: 0; top: 0;
   width: clamp(84px, 15vw, 150px);
-  transform: translateX(0);
-  will-change: left, transform;
+  transform-origin: 0 0;
+  will-change: transform;
   pointer-events: none;
 }
 .load-shoe-stage svg {
   width: 100%; height: auto; display: block; overflow: visible;
   transform-origin: 50% 50%;
 }
-/* Contact shadow under the shoe. */
+/* Contact shadow — only while the shoe is on the ground (walking), never under
+   the centred hero shoe. */
 .load-shoe-stage::after {
   content: ""; position: absolute;
   left: 6%; right: 6%; bottom: -3px; height: 8px;
-  border-radius: 50%; z-index: -1;
+  border-radius: 50%; z-index: -1; opacity: 0;
   background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.5), rgba(0,0,0,0) 70%);
 }
 @keyframes loadSwFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
@@ -1121,10 +1127,9 @@ input { font-family: inherit; }
 .load-shoe-stage.walking .shoe { animation: loadSwStep .7s ease-in-out infinite; }
 .load-shoe-stage.walking::after { animation: loadShadowStep .7s ease-in-out infinite; }
 
-/* Finish: the worn shoe zooms toward the viewer while the ground fades; then the
-   whole overlay fades out (.hidden) to reveal the loaded site behind it. */
+/* Outro: the worn shoe lifts off the ground back to the centred hero framing
+   while the ground + footprints fade; then the overlay fades out (.hidden) to
+   reveal the loaded site. The hero transform is applied by loading.js. */
 #loadingScreen.zooming .load-terrain,
 #loadingScreen.zooming .load-prints { opacity: 0; transition: opacity .4s ease; }
-/* The zoom transform itself is applied inline by loading.js (so it interpolates
-   from the shoe's current track position); here we only freeze its gait. */
 #loadingScreen.zooming .load-shoe-stage .shoe { animation: none; }

@@ -1,10 +1,16 @@
 /*!
- * loading.js — Tela de carregamento: o tênis da galeria cruza a tela deixando
- * chão, pegadas, desgaste e poeira; a posição = progresso do carregamento.
- * Quando os dados terminam de carregar (sem mais re-render que troque a lista),
- * dá um zoom-in no tênis já desgastado e revela o site.
+ * loading.js — Tela de carregamento com o tênis da galeria.
  *
- * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen no HTML.
+ * Sequência:
+ *   1. abre com o tênis NOVO (limpo), grande e centralizado (cabendo na tela),
+ *      parado por 0,8s;
+ *   2. o tênis desce e encolhe até o início da pista e CRUZA a tela — chão,
+ *      pegadas, poeira e desgaste progressivo (posição = progresso do load);
+ *   3. quando os dados terminam, o tênis (agora DESGASTADO) volta ao centro,
+ *      grande (cabendo na tela), e fica parado por 0,8s;
+ *   4. o overlay some, revelando o site.
+ *
+ * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen.
  * app.js chama window.Loading.done() quando body.dataset.fullDataReady = '1'.
  */
 (function () {
@@ -14,8 +20,8 @@
   if (!overlay) return;
 
   // Automated browsers (Playwright/Selenium) skip the loader entirely so its
-  // overlay never intercepts test interactions — it is a pure UX flourish and
-  // changes nothing about the app's behaviour or data.
+  // overlay never intercepts test interactions — pure UX flourish, no behaviour
+  // or data change.
   if (navigator.webdriver) {
     if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
     return;
@@ -28,12 +34,46 @@
   var reduce = false;
   try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
 
-  // Mount the aging shoe SVG. Without it there is nothing to show — bail to the site.
   var ctl = null;
   try { if (window.ShoeWear) ctl = window.ShoeWear.mount(stage); } catch (e) {}
   if (!ctl) { dismissNow(); return; }
 
-  // ---- footprint (sole silhouette, same as the gallery) --------------------
+  // ---- timing ----
+  var HOLD_MS = 800;     // hero hold (new shoe at the start, worn shoe at the end)
+  var INTRO_T = 600;     // hero → track-start transition
+  var OUTRO_T = 720;     // track-end → hero transition
+  var MIN_CROSS_MS = 1600;// minimum visible crossing (≈2 footfalls + dust), even on a cached load
+  var GROUND_FRAC = 0.62;// ground line as a fraction of viewport height
+
+  // Natural (untransformed) shoe-stage box — offset* ignores transforms.
+  function W() { return stage.offsetWidth; }
+  function H() { return stage.offsetHeight; }
+  function vw() { return window.innerWidth; }
+  function vh() { return window.innerHeight; }
+  function groundY() { return vh() * GROUND_FRAC; }
+
+  // transform-origin is 0 0 (see CSS), so a translate(px,px)+scale places the
+  // box top-left exactly and scales from there — easy, predictable geometry.
+  function setShoe(x, y, s) {
+    stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+  }
+
+  // Track position at progress p (scale 1): shoe walks the ground line L→R,
+  // staying fully inside the viewport at both ends.
+  function applyTrack(p) {
+    var x = p * (vw() - W());
+    var y = groundY() - H() + 8;   // sole sits just into the dirt
+    setShoe(x, y, 1);
+  }
+
+  // Hero: as large as fits the viewport with margin — never cropped.
+  function heroScale() { return Math.min(0.78 * vw() / W(), 0.62 * vh() / H()); }
+  function applyHero() {
+    var s = heroScale();
+    setShoe((vw() - W() * s) / 2, (vh() - H() * s) / 2, s);
+  }
+
+  // ---- footprint + dust (reused from the gallery) --------------------------
   var SOLE = '<svg viewBox="0 0 120 42" xmlns="http://www.w3.org/2000/svg">'
     + '<path d="M18 21 C18 12 26 9 36 9 C46 9 52 12 56 15 C60 12 70 9 82 9 C100 9 112 13 114 21 C112 29 100 33 82 33 C70 33 60 30 56 27 C52 30 46 33 36 33 C26 33 18 30 18 21 Z" fill="#241a0d"/>'
     + '<path d="M18 21 C18 12 26 9 36 9 C46 9 52 12 56 15 C60 12 70 9 82 9 C100 9 112 13 114 21 C112 29 100 33 82 33 C70 33 60 30 56 27 C52 30 46 33 36 33 C26 33 18 30 18 21 Z" fill="none" stroke="#6e5536" stroke-width="1.6" opacity="0.4"/>'
@@ -67,8 +107,8 @@
     cloud.style.width = w + 'px';
     var N = Math.max(14, Math.round(w / 3.4));
     for (var i = 0; i < N; i++) {
-      var t = (N > 1) ? i / (N - 1) : 0.5;     // 0..1 across the shoe width
-      var edge = (t - 0.5) * 2;                // -1 (heel) .. 1 (toe)
+      var t = (N > 1) ? i / (N - 1) : 0.5;
+      var edge = (t - 0.5) * 2;
       var size = 10 + Math.random() * 16;
       var p = document.createElement('span');
       p.className = 'load-puff';
@@ -88,89 +128,112 @@
     setTimeout(function () { if (cloud.parentNode) cloud.parentNode.removeChild(cloud); }, 1700);
   }
 
-  // A print + dust drop on every footfall (the bottom of each step bounce).
-  if (!reduce) {
-    var inner = stage.querySelector('.shoe');
-    if (inner) {
-      inner.addEventListener('animationiteration', function () {
-        if (finished) return;
-        var m = metrics();
-        spawnFootprint(m);
-        spawnDust(m);
-      });
-    }
-    stage.classList.add('walking');
+  // A print + dust drop on every footfall (bottom of each step bounce), but only
+  // while actually crossing the track.
+  var inner = stage.querySelector('.shoe');
+  if (inner) {
+    inner.addEventListener('animationiteration', function () {
+      if (!crossing) return;
+      var m = metrics();
+      spawnFootprint(m);
+      spawnDust(m);
+    });
   }
 
-  // ---- progress: shoe position + wear both driven by one value -------------
-  function apply(p) {
-    ctl.setProgress(p);
-    stage.style.left = (p * 100) + '%';
-    stage.style.transform = 'translateX(' + (-p * 100) + '%)';
-  }
-  apply(0);
-
-  var prog = 0, target = 0, done = false, finished = false;
-  var raf = null, startT = (window.performance && performance.now) ? performance.now() : Date.now();
-  var MIN_MS = 1600;   // always show enough of the crossing, even on a cached load
+  // ---- state machine -------------------------------------------------------
+  var done = false, crossing = false, finished = false;
+  var prog = 0, raf = null, crossStart = 0;
 
   function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
 
+  // Reduced motion: no running gait/dust. Just hold the new shoe, age it in
+  // place, hold the worn shoe, reveal — keeping the new→worn bookends.
+  // The ground only belongs to the crossing — hide it under the hero framings.
+  overlay.classList.add('intro');
+
+  if (reduce) {
+    ctl.setProgress(0);
+    applyHero();
+    setTimeout(function () {
+      ctl.setProgress(1);
+      overlay.classList.add('zooming');
+      setTimeout(function () {
+        overlay.classList.add('hidden');
+        setTimeout(dismissNow, 600);
+      }, HOLD_MS);
+    }, HOLD_MS);
+  } else {
+    // PHASE 1 — new shoe, hero, held.
+    ctl.setProgress(0);
+    applyHero();
+    setTimeout(introTransition, HOLD_MS);
+  }
+
+  // PHASE 2a — hero → track start (still clean).
+  function introTransition() {
+    stage.style.transition = 'transform ' + INTRO_T + 'ms cubic-bezier(.5,0,.4,1)';
+    requestAnimationFrame(function () { applyTrack(0); });
+    setTimeout(startCrossing, INTRO_T + 20);
+  }
+
+  // PHASE 2b — cross the track, aging, leaving prints + dust.
+  function startCrossing() {
+    stage.style.transition = '';      // rAF owns the transform now
+    overlay.classList.remove('intro');// fade the ground in for the run
+    stage.classList.add('walking');
+    crossing = true;
+    crossStart = now();
+    raf = requestAnimationFrame(tick);
+  }
+
   function tick() {
-    var elapsed = (now() - startT) / 1000;
-    // Until the data is ready, ease toward 0.9 (asymptotic — the shoe keeps
-    // advancing but never "arrives" before the site actually does). Once ready,
-    // let it complete the crossing.
-    target = done ? 1 : Math.min(0.9, 1 - Math.exp(-elapsed / 2.6));
+    var elapsed = (now() - crossStart) / 1000;
+    // Asymptote toward 0.9 until the data is ready, then complete the crossing.
+    var target = done ? 1 : Math.min(0.9, 1 - Math.exp(-elapsed / 2.4));
     prog += (target - prog) * 0.07;
-    apply(Math.min(prog, 1));
-    if (done && prog > 0.992 && (now() - startT) >= MIN_MS) {
-      apply(1);
-      finish();
+    var p = Math.min(prog, 1);
+    ctl.setProgress(p);
+    applyTrack(p);
+    if (done && prog > 0.992 && (now() - crossStart) >= MIN_CROSS_MS) {
+      ctl.setProgress(1);
+      applyTrack(1);
+      outro();
       return;
     }
     raf = requestAnimationFrame(tick);
   }
-  raf = requestAnimationFrame(tick);
 
-  // ---- finish: zoom into the worn shoe, then reveal the site ---------------
-  function finish() {
+  // PHASE 3 — worn shoe returns to centre (hero), held, then reveal.
+  function outro() {
     if (finished) return;
     finished = true;
+    crossing = false;
     if (raf) cancelAnimationFrame(raf);
-    apply(1);                          // fully worn, parked at the end of the track
     stage.classList.remove('walking');
-    overlay.classList.add('zooming');  // fades the ground + footprints away
-
-    if (reduce) {                      // no motion: just reveal the site
-      overlay.classList.add('hidden');
-      setTimeout(dismissNow, 600);
-      return;
-    }
-
-    // Zoom into the worn shoe: transition from its current (inline) end-of-track
-    // position to centre + scaled-up. Setting the target on the next frame makes
-    // the transition interpolate from the current position (no jump).
-    stage.style.transition = 'left .82s ease, transform .82s cubic-bezier(.45,0,.6,1)';
-    requestAnimationFrame(function () {
-      stage.style.left = '50%';
-      stage.style.transform = 'translate(-50%, -22%) scale(8)';
-    });
+    ctl.setProgress(1);                 // fully worn
+    overlay.classList.add('zooming');   // fade the ground + footprints away
+    stage.style.transition = 'transform ' + OUTRO_T + 'ms cubic-bezier(.4,0,.3,1)';
+    requestAnimationFrame(applyHero);   // track-end → hero centre
     setTimeout(function () {
-      overlay.classList.add('hidden');   // fade the overlay → reveal the site
-      setTimeout(dismissNow, 650);
-    }, 820);
+      setTimeout(function () {          // hold the worn shoe HOLD_MS
+        overlay.classList.add('hidden');
+        setTimeout(dismissNow, 600);
+      }, HOLD_MS);
+    }, OUTRO_T);
   }
 
   function dismissNow() {
-    document.documentElement.classList.remove('loading');
     if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
   }
 
-  // Public API for app.js to signal the data is fully loaded.
+  // Keep the hero framing correct if the viewport changes before the crossing.
+  window.addEventListener('resize', function () {
+    if (!crossing && !finished) applyHero();
+  });
+
+  // app.js signals the data is fully loaded.
   window.Loading = { done: function () { done = true; } };
 
-  // Safety net: never trap the user behind the loader if the data load hangs
-  // or stalls (slow geo lookup, failed fetch). Force completion after 14s.
+  // Safety net: never trap the user if the load hangs (slow geo, failed fetch).
   setTimeout(function () { done = true; }, 14000);
 })();

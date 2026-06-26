@@ -60,17 +60,21 @@
 
   // Track position at progress p (scale 1): shoe walks the ground line L→R,
   // staying fully inside the viewport at both ends.
+  // The shoe ALWAYS stands on the ground line — at any scale, its box bottom
+  // sits just into the dirt, so it never floats. (8px sink hides the sliver of
+  // empty SVG below the sole.)
+  function bottomY(s) { return groundY() - H() * s + 8; }
+
   function applyTrack(p) {
-    var x = p * (vw() - W());
-    var y = groundY() - H() + 8;   // sole sits just into the dirt
-    setShoe(x, y, 1);
+    setShoe(p * (vw() - W()), bottomY(1), 1);
   }
 
-  // Hero: as large as fits the viewport with margin — never cropped.
-  function heroScale() { return Math.min(0.78 * vw() / W(), 0.62 * vh() / H()); }
+  // Hero: as large as fits — wide enough for margins, short enough to stand
+  // above the ground line — and never cropped. Bottom stays on the ground.
+  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - 28) / H()); }
   function applyHero() {
     var s = heroScale();
-    setShoe((vw() - W() * s) / 2, (vh() - H() * s) / 2, s);
+    setShoe((vw() - W() * s) / 2, bottomY(s), s);
   }
 
   // ---- footprint + dust (reused from the gallery) --------------------------
@@ -148,15 +152,11 @@
 
   // Reduced motion: no running gait/dust. Just hold the new shoe, age it in
   // place, hold the worn shoe, reveal — keeping the new→worn bookends.
-  // The ground only belongs to the crossing — hide it under the hero framings.
-  overlay.classList.add('intro');
-
   if (reduce) {
     ctl.setProgress(0);
     applyHero();
     setTimeout(function () {
       ctl.setProgress(1);
-      overlay.classList.add('zooming');
       setTimeout(function () {
         overlay.classList.add('hidden');
         setTimeout(dismissNow, 600);
@@ -179,7 +179,6 @@
   // PHASE 2b — cross the track, aging, leaving prints + dust.
   function startCrossing() {
     stage.style.transition = '';      // rAF owns the transform now
-    overlay.classList.remove('intro');// fade the ground in for the run
     stage.classList.add('walking');
     crossing = true;
     crossStart = now();
@@ -211,7 +210,6 @@
     if (raf) cancelAnimationFrame(raf);
     stage.classList.remove('walking');
     ctl.setProgress(1);                 // fully worn
-    overlay.classList.add('zooming');   // fade the ground + footprints away
     stage.style.transition = 'transform ' + OUTRO_T + 'ms cubic-bezier(.4,0,.3,1)';
     requestAnimationFrame(applyHero);   // track-end → hero centre
     setTimeout(function () {

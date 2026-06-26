@@ -168,10 +168,40 @@ def _matches(corrida: Corrida, wa: dict) -> bool:
     return False
 
 
+def _is_marathon(corrida: Corrida) -> bool:
+    """True if the event offers a full-marathon distance (~42.195 km / 26.2 mi).
+
+    A Major is by definition a marathon, so this drops the same-city 5K / 10K /
+    half / fun-run / swim listings that merely share the city's name (read from
+    the event's own distances, not hardcoded)."""
+    for d in (corrida.distancias or []):
+        km = d.km
+        if isinstance(km, (int, float)):
+            if 42.0 <= km <= 43.0:
+                return True
+        elif isinstance(km, str):
+            if km.strip().lower().replace(" ", "") in ("26.2mi", "26mi", "26.1mi", "26.3mi"):
+                return True
+    return False
+
+
 def _apply_majors(corrida: Corrida, majors: list[dict]) -> None:
+    # The Major membership token is just a city name (e.g. {"boston"}), so a bare
+    # "country + token in title" test mislabels EVERY same-city race — a Chicago
+    # 5K, an open-water swim, a "Bound for Boston Marathon – Seattle" qualifier.
+    # Require instead, all of:
+    #   * country matches,
+    #   * the event is a full marathon (not a 5K/10K/half in that city),
+    #   * the city tokens appear in BOTH the title AND the event's own city — so a
+    #     Boston qualifier held in Seattle (city = Seattle) and a non-major
+    #     marathon merely held in the city (city in `cidade`, not the title) are
+    #     both rejected. This favours precision: a miss just means no badge.
+    if not _is_marathon(corrida):
+        return
     ct = set(normalize_titulo_merge(corrida.titulo).split())
+    cc = set(normalize_titulo_merge(corrida.cidade or "").split())
     for mj in majors:
-        if corrida.pais == mj["iso2"] and mj["tokens"] <= ct:
+        if corrida.pais == mj["iso2"] and mj["tokens"] <= ct and mj["tokens"] <= cc:
             corrida.major = True
             return
 

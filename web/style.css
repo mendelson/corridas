@@ -1039,7 +1039,6 @@ input { font-family: inherit; }
   height: 22px;
   border-radius: 2px;
   overflow: hidden;
-  transition: opacity .45s ease;
   background-color: #4a3724;
   background-image:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='52'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5 0.55' numOctaves='3' seed='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='52' filter='url(%23n)'/%3E%3C/svg%3E"),
@@ -1071,12 +1070,7 @@ input { font-family: inherit; }
   left: 0; right: 0; top: 62vh;
   height: 30px;
   pointer-events: none;
-  transition: opacity .45s ease;
 }
-
-/* Ground belongs only to the crossing — hidden under the hero framings. */
-#loadingScreen.intro .load-terrain,
-#loadingScreen.intro .load-prints { opacity: 0; }
 .load-footprint {
   position: absolute;
   pointer-events: none;
@@ -1120,16 +1114,12 @@ input { font-family: inherit; }
   border-radius: 50%; z-index: -1; opacity: 0;
   background: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.5), rgba(0,0,0,0) 70%);
 }
-@keyframes loadSwFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+/* The shoe only animates (steps + ground shadow) while crossing; at rest — both
+   hero framings — it is perfectly still on the ground, never floating/bobbing. */
 @keyframes loadSwStep  { 0%,100% { transform: translateY(0); } 44% { transform: translateY(-16px); } }
 @keyframes loadShadowStep { 0%,100% { transform: scaleX(1); opacity: .5; } 44% { transform: scaleX(.6); opacity: .24; } }
-.load-shoe-stage .shoe { animation: loadSwFloat 3.4s ease-in-out infinite; }
 .load-shoe-stage.walking .shoe { animation: loadSwStep .7s ease-in-out infinite; }
 .load-shoe-stage.walking::after { animation: loadShadowStep .7s ease-in-out infinite; }
 
-/* Outro: the worn shoe lifts off the ground back to the centred hero framing
-   while the ground + footprints fade; then the overlay fades out (.hidden) to
-   reveal the loaded site. The hero transform is applied by loading.js. */
-#loadingScreen.zooming .load-terrain,
-#loadingScreen.zooming .load-prints { opacity: 0; transition: opacity .4s ease; }
-#loadingScreen.zooming .load-shoe-stage .shoe { animation: none; }
+/* Reveal: the whole overlay (worn shoe still standing on the ground) fades out
+   via .hidden to show the loaded site. */

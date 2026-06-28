@@ -304,12 +304,11 @@
     // gold medal; any other race that carried a milestone (a first, a personal
     // best) wears a quieter silver medal; everything else is a plain, low-key
     // dot. tier() -> "mara" | "mile" | "ord"; the same colour accents the card.
-    // True for a marathon — by distance (~42.2 km, so it survives dropping the
-    // redundant `type`) or a legacy type==="marathon". A relay (legs) is never
-    // auto-promoted to marathon by its summed distance.
+    // True for a marathon — detected purely by distance (~42.2 km). A relay
+    // (legs) is never auto-promoted to marathon by its summed distance.
     function isMarathon(r){
       var kmv = r && (typeof r.km === "number" ? r.km : parseFloat(r.km));
-      return !!(r && !legsOf(r) && (r.type === "marathon" || (kmv >= 42 && kmv <= 43)));
+      return !!(r && !legsOf(r) && kmv >= 42 && kmv <= 43);
     }
     function milestonesOf(r){
       var ms = (r && (r.milestones || (r.milestone ? [r.milestone] : []))) || [];

@@ -43,6 +43,7 @@ from .sources import (
     portal_das_corridas,
     sesc_df,
     runner_brasil,
+    teniscerto_provas,
     brasil_corrida,
     circuito_das_estacoes,
     largada_esportiva,
@@ -100,6 +101,7 @@ SOURCES = [
     corridas_brasil,
     minhas_inscricoes,
     runner_brasil,
+    teniscerto_provas,
     brasil_corrida,
     portal_das_corridas,
     # DF-specific sources

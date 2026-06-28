@@ -10,6 +10,7 @@ from . import (
     corridas_brasil,
     brasil_corrida,
     runner_brasil,
+    teniscerto_provas,
     tf_sports,
     tf_sports_app,
     sesc_df,

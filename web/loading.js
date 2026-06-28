@@ -140,7 +140,12 @@
   // cycle boundary via the wheel animation's iteration event — always at least
   // one complete year, and only once the data is ready.
   if (!reduce) {
-    wheel.addEventListener('animationiteration', function () { if (done) reveal(); });
+    wheel.addEventListener('animationiteration', function (e) {
+      // animationiteration BUBBLES — ignore events from children (rain drops,
+      // emblem counter-rotation, sun rays). Only the wheel's own full revolution
+      // counts, so the intro always runs at least one complete cycle.
+      if (e.target === wheel && e.animationName === 'loadWheelSpin' && done) reveal();
+    });
   }
 
   raf = requestAnimationFrame(tick);

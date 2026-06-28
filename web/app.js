@@ -1780,14 +1780,22 @@ function formatKm(km) {
 }
 
 
+function _ymd(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
 function todayStr() {
-  return new Date().toISOString().slice(0, 10);
+  // LOCAL calendar date — never toISOString(), which returns the UTC date and,
+  // at negative-UTC offsets (e.g. BRT, UTC-3), rolls over to the next day in the
+  // evening — labelling tomorrow's events as "today" and shifting the period
+  // filters by a day. Local Y-M-D components match the user's actual date.
+  return _ymd(new Date());
 }
 
 function addDays(isoDate, days) {
-  const d = new Date(isoDate + 'T12:00:00');
-  d.setDate(d.getDate() + days);
-  return d.toISOString().slice(0, 10);
+  // Pure local-date arithmetic (no UTC round-trip): parse Y-M-D, add days.
+  const [y, m, d] = isoDate.split('-').map(Number);
+  return _ymd(new Date(y, m - 1, d + days));
 }
 
 function updateCount() {

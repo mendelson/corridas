@@ -665,8 +665,9 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 6. **`data_evento`** — non-empty date string (`YYYY-MM-DD`).
 7. **At least one valid link** — at least one `FonteInfo` in `fontes` must have a non-empty `link_evento` or `links_inscricao[0]`.
 8. **`FonteInfo.tipo`** — every `FonteInfo` must have a valid `tipo` value (`"inscricao"`, `"organizador"`, or `"calendario"`). Missing or invalid `tipo` is a hard test failure.
+9. **`horario`** — required (zero-tolerance) for every event **within the next 3 months** (and past/imminent ones). Events **3+ months in the future** may omit it — organisers often haven't announced a start time that far ahead — and the pipeline keeps them, re-checking each run so the horário is filled in as the event approaches the 3-month window. Enforced by `scraper.utils.horario_required()` (used by `main.py`'s drop filter, `test_source.py`, and `test_site.py`). Events within 3 months that still lack a horário are dropped by the pipeline (`_drop_events_without_horario`) and fail the tests.
 
-`horario` is not required (many events don't announce start time in advance).
+**All fields above are mandatory with zero tolerance — there are no percentage/ratio thresholds anywhere.** A single non-compliant event fails the test (the only exception is the horário 3-month window described in item 9, which is a date-based rule, not a tolerance).
 
 ### Location fix policy
 
@@ -687,10 +688,10 @@ Every event in `data/corridas.json` (and `web/corridas.json`) must satisfy **all
 
 ### Source test requirements
 
-`scraper/test_source.py` validates each source in isolation. In addition to the existing checks:
-- Events with no `distancias` are flagged as info (>30% is a warning, >70% is a failure).
+`scraper/test_source.py` validates each source in isolation. Every check is **zero-tolerance — no percentage/ratio thresholds**; a single non-compliant event fails the source:
+- Events with no `distancias` are a **hard failure** (any event without distâncias fails — no thresholds).
 - Events with no link in `fontes` are a **hard failure**.
-- Missing `horario` is reported informally (informational only, not a failure).
+- Missing `horario` is a **hard failure for events within the next 3 months** (via `horario_required()`); events 3+ months out may omit it.
 
 ### Data correction on next scrape
 

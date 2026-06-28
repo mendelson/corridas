@@ -54,7 +54,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-06-28 19:28 | ✅ | 2026-06-28 19:28 · 1 ev |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-06-28 19:29 | ✅ | 2026-06-28 19:29 · 1 ev |
 | São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-06-28 19:28 | ✅ | 2026-06-28 19:28 · 0 ev |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-06-28 19:33 | ❌ 0 eventos | 2026-06-27 10:56 · 1 ev |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-06-28 23:51 | ✅ | 2026-06-28 23:51 · 1 ev |
 
 ### Fontes mexicanas
 

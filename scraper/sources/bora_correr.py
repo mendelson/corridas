@@ -159,6 +159,11 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
         stable_id = f"boracorrer_{data_evento}_{titulo[:40].lower().replace(' ', '-')}"
 
     distancias = _extract_distances(dist_hint)
+    # Distância é obrigatória (zero-tolerância). Provas por tempo (ex.: uma
+    # "5H Night Run" de 5 horas) ou sem distância divulgada não têm km
+    # parseável — não as emitimos em vez de publicar um evento incompleto.
+    if not distancias:
+        return None
 
     return Corrida(
         id=stable_id,

@@ -42,7 +42,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | --- | --- | --- | --- | --- | --- | --- |
 | Conta Passos<!--conta_passos--> | ✅ | `contapassos.com.br` | RSC payload da home (Next.js) | 2026-06-28 14:56 | ✅ | 2026-06-28 14:56 · 5 ev |
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-06-28 14:57 | ✅ | 2026-06-28 14:57 · 64 ev |
-| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-06-28 14:57 | ✅ | 2026-06-28 14:57 · 4 ev |
+| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-06-28 18:53 | ✅ | 2026-06-28 18:53 · 6 ev |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-06-28 14:57 | ✅ | 2026-06-28 14:57 · 5 ev |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-06-28 14:57 | ✅ | 2026-06-28 14:57 · 1 ev |
 

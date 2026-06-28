@@ -67,16 +67,19 @@ def clean_title(raw: str) -> str:
     return s.strip(" -–—·|").strip()
 
 
-# --- distance / type -------------------------------------------------------
+# --- distance --------------------------------------------------------------
 def snap_km(km: float):
+    # Only snap to the two *official* race distances (a half is 21.0975 km, a
+    # marathon 42.195) where GPS routinely reads a bit off. Everything else —
+    # 10K-ish runs, relay legs, training distances — keeps its real measured
+    # value; assuming "~10 km == a 10K" fabricated wrong distances (e.g. a
+    # 9.68 km relay leg shown as 10.0).
     if km is None:
         return ""
     if 20.4 <= km <= 21.7:
         return 21.097
     if 41.4 <= km <= 42.7:
         return 42.195
-    if 9.6 <= km <= 10.4:
-        return 10.0
     return round(km, 1)
 
 

@@ -148,6 +148,7 @@
     .btn:hover { border-color: #465061; background: #20262f; }
     .slogo { display: inline-flex; align-items: center; gap: 5px; } .slogo svg { display: block; }
     .sword { font-weight: 700; font-size: 12px; letter-spacing: .01em; color: #FC4C02; }
+    .cword { font-weight: 700; font-size: 12px; letter-spacing: .01em; color: #d8c473; }
     /* Relay events: one card, a stacked per-leg list (each leg keeps its own
        identification + its own links). No "relay" wording — the legs simply read
        as the day's efforts. */
@@ -209,11 +210,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos" },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones" },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos" },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen" },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons" },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos", cert:"Certificado" },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones", cert:"Certificate" },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos", cert:"Certificado" },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen", cert:"Zertifikat" },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons", cert:"Certificat" },
     };
     // The gallery has a single URL and never navigates to change language —
     // the switch happens in place. The choice falls back to the browser
@@ -342,12 +343,18 @@
     function stravaBtn(url){
       return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="Strava"><span class="slogo">'+CHEVRON+'<span class="sword">Strava</span></span></a>';
     }
+    // An award/seal mark for the optional finisher certificate (an event may carry
+    // a `certificate` path; the button opens the PDF). Label localised via T.cert.
+    var CERTICON='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#d8c473" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"/></svg>';
+    function certBtn(url){
+      return '<a class="btn" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer nofollow" aria-label="'+esc(T.cert)+'"><span class="slogo">'+CERTICON+'<span class="cword">'+esc(T.cert)+'</span></span></a>';
+    }
     // Relay support: an event may carry a `legs` array (each leg = its own
     // identification + km + links). headlineKm sums the legs unless an explicit
     // top-level km overrides it; legsHTML renders the per-leg list.
     function legsOf(r){ return (r && Array.isArray(r.legs) && r.legs.length) ? r.legs : null; }
     function linkBtns(o){
-      return (o && o.strava ? stravaBtn(o.strava) : '') + (o && o.device && o.deviceUrl ? deviceBtn(o.device, o.deviceUrl) : '');
+      return (o && o.strava ? stravaBtn(o.strava) : '') + (o && o.device && o.deviceUrl ? deviceBtn(o.device, o.deviceUrl) : '') + (o && o.certificate ? certBtn(o.certificate) : '');
     }
     function headlineKm(r){
       if(r && r.km != null && r.km !== "") return r.km;          // explicit override wins
@@ -388,7 +395,9 @@
           }).join('');
           return badges ? '<div class="cbadges">'+badges+'</div>' : '';
         })()+
-        (legsOf(r) ? legsHTML(legsOf(r)) : '<div class="cbtns">'+linkBtns(r)+'</div>')+'</div>';
+        (legsOf(r)
+          ? legsHTML(legsOf(r)) + (r.certificate ? '<div class="cbtns">'+certBtn(r.certificate)+'</div>' : '')
+          : '<div class="cbtns">'+linkBtns(r)+'</div>')+'</div>';
     }
 
     function render(RACES, LOCDATA, paises){

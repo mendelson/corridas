@@ -49,6 +49,9 @@ _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 _DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
 _UUID_RE = re.compile(r"obterDadosReport\('([0-9a-f-]+)'", re.I)
 _KM_RE   = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
+# Time-based runs ("5h", "6 horas", "12hrs") — endurance events with no fixed
+# distance. The trailing (?![:0-9]) excludes a start time of day ("07h30").
+_TIME_DIST_RE = re.compile(r"(?<![\d:])(\d{1,2})\s*(?:horas?|hrs?|h)\b(?![:0-9])", re.IGNORECASE)
 
 # Orienteering and other non-running event keywords — skip silently
 _NON_RUNNING_RE = re.compile(
@@ -252,7 +255,10 @@ def _normalize_dist_text(text: str) -> str:
 
 
 def _extract_distances(text: str) -> list[Distancia]:
-    """Parse distance hints like '(10/5km)' or '(5 e 10 km)' or '(5km e 10km)'."""
+    """Parse distance hints like '(10/5km)' or '(5 e 10 km)' — and time-based
+    runs ('(5h)', '6 horas'), which are legitimate races with no fixed distance.
+    Time-based events are kept as a verbatim 'Nh' label (km is polymorphic: the
+    frontend passes non-numeric strings through, like the 'N mi' convention)."""
     if not text:
         return []
     text = _normalize_dist_text(text)
@@ -272,8 +278,20 @@ def _extract_distances(text: str) -> list[Distancia]:
         if any(abs(km - s) < 0.5 for s in seen):
             continue
         seen.append(km)
-    return sorted(
-        [Distancia(km=k, data=None, horario=None) for k in seen],
-        key=lambda d: float(d.km),
-    )
+    timed: list[str] = []
+    for m in _TIME_DIST_RE.finditer(text):
+        label = f"{int(m.group(1))}h"
+        if label not in timed:
+            timed.append(label)
+    dists = [Distancia(km=k, data=None, horario=None) for k in seen]
+    dists += [Distancia(km=t, data=None, horario=None) for t in timed]
+    return sorted(dists, key=_dist_sort_key)
+
+
+def _dist_sort_key(d: Distancia) -> float:
+    """Numeric km ascending; time-based labels ('5h') sort last."""
+    try:
+        return float(d.km)
+    except (TypeError, ValueError):
+        return 9e9
 

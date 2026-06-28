@@ -445,7 +445,7 @@
     "deviceUrl": "https://flow.polar.com/shared/7ea6880b40faa3826289107387bbea05"
   },
   {
-    "name": "Volta do Lago - Trecho 12",
+    "name": "Volta ao Lago - Trecho 12",
     "type": "ten",
     "km": 10.0,
     "milestone": "",
@@ -458,29 +458,28 @@
     "deviceUrl": "https://connect.garmin.com/app/activity/19651659524"
   },
   {
-    "name": "Volta ao Lago - Trecho 2",
-    "type": "race",
-    "km": 7.02,
+    "name": "Volta ao Lago",
+    "type": "",
     "milestone": "",
     "city": "Brasília",
     "pais": "BR",
     "estado": "DF",
     "date": "2024-12-15",
-    "strava": "https://strava.app.link/ule5Do1rk4b",
-    "device": "Garmin",
-    "deviceUrl": "https://connect.garmin.com/app/activity/17763153195"
-  },
-  {
-    "name": "Volta ao Lago - Trecho 10",
-    "type": "race",
-    "km": 10.56,
-    "milestone": "",
-    "city": "Brasília",
-    "pais": "BR",
-    "estado": "DF",
-    "date": "2024-12-15",
-    "strava": "https://strava.app.link/rTpF3hmsk4b",
-    "device": "Garmin",
-    "deviceUrl": "https://connect.garmin.com/app/activity/17766446967"
+    "legs": [
+      {
+        "id": "Trecho 2",
+        "km": 7.02,
+        "strava": "https://strava.app.link/ule5Do1rk4b",
+        "device": "Garmin",
+        "deviceUrl": "https://connect.garmin.com/app/activity/17763153195"
+      },
+      {
+        "id": "Trecho 10",
+        "km": 10.56,
+        "strava": "https://strava.app.link/rTpF3hmsk4b",
+        "device": "Garmin",
+        "deviceUrl": "https://connect.garmin.com/app/activity/17766446967"
+      }
+    ]
   }
 ]

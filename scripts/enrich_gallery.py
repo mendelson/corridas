@@ -238,8 +238,38 @@ def parse_location(text):
 
 # --- main ------------------------------------------------------------------
 def needs_enrich(r):
+    # Relay events carry per-leg links/km in a `legs` array; the top-level km is
+    # the frontend-computed sum, so it is never "missing". Such an event is
+    # complete once every leg has its km.
+    if r.get("legs"):
+        return (not r.get("name") or not r.get("date")
+                or any(L.get("km") in ("", None) for L in r["legs"]))
     return (not r.get("name") or not r.get("date") or r.get("km") in ("", None)
             or not r.get("type"))
+
+
+def enrich_legs(r, idx, dump_dir=None):
+    """Fill blank `km` on each leg from that leg's own Strava/Polar links.
+
+    Mirrors the single-record km logic but scoped to each leg; the frontend
+    sums the legs for the headline distance, so no top-level km is written.
+    """
+    changed = 0
+    for j, leg in enumerate(r.get("legs", [])):
+        if leg.get("km") not in ("", None):
+            continue
+        strava, polar = leg.get("strava", ""), leg.get("deviceUrl", "")
+        if "polar.com" not in polar:
+            polar = ""
+        if not strava and not polar:
+            continue
+        print(f"[{idx}] leg {leg.get('id','?')} fetching: strava={strava} polar={polar}")
+        d = fetch_pages(strava, polar, dump_dir, tag=f"{idx}_leg{j}")
+        km = parse_km(d["strava_desc"]) or parse_km(d["strava_text"]) or parse_km(d["polar_text"])
+        if km:
+            leg["km"] = snap_km(km); changed += 1
+            print(f"      leg {leg.get('id','?')} km <- {leg['km']}")
+    return changed
 
 
 def main():
@@ -259,6 +289,12 @@ def main():
             if c != r["name"]:
                 print(f"[{i}] name normalized: {r['name']!r} -> {c!r}")
                 r["name"] = c; changed += 1
+        # relay events: enrich each leg's km from its own links; the frontend
+        # sums the legs, so there is no top-level km/type to fill here.
+        if r.get("legs"):
+            changed += enrich_legs(r, i, args.dump_dir)
+            continue
+
         # cheap fix first: type can be inferred from an existing km
         if not r.get("type") and r.get("km") not in ("", None):
             r["type"] = infer_type(r["km"]); changed += 1

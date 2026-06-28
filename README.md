@@ -32,7 +32,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-06-28 14:58 | ✅ | 2026-06-28 14:58 · 1 ev |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-06-28 15:11 | ⚠️  (1/3) | 2026-06-28 11:14 · 965 ev |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-06-28 15:00 | ✅ | 2026-06-28 15:00 · 148 ev |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-06-28 14:57 | ❌ 0 eventos | 2026-06-14 11:26 · 1 ev |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-06-28 18:55 | ✅ | 2026-06-28 18:55 · 2 ev |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-06-28 14:59 | ✅ | 2026-06-28 14:59 · 1 ev |
 | Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-06-28 14:58 | ✅ | 2026-06-28 14:58 · 58 ev |
 

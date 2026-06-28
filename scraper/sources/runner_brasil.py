@@ -13,7 +13,8 @@ the detail page, which exposes structured spans:
 Start time is NOT always on the detail page itself — many events only list the
 time on the linked external inscription platform (Ticket Sports, Atletis, etc.)
 or on the race's own website.  We follow those links to find the time.
-Events without a published start time are skipped.
+Events within the next 3 months without a published start time are skipped;
+further-out events are kept (horário is filled in as they approach).
 """
 from __future__ import annotations
 import re
@@ -25,7 +26,7 @@ from bs4 import BeautifulSoup
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
-    normalize_date, normalize_titulo, now_iso, today_iso,
+    normalize_date, normalize_titulo, now_iso, today_iso, horario_required,
 )
 from .. import geo as _geo
 
@@ -151,8 +152,11 @@ def _scrape_detail(url: str) -> Corrida | None:
     if horario is None and site_url:
         horario = _fetch_horario_from_url(site_url)
 
-    if horario is None:
-        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+    # Horário is mandatory only for events within the next 3 months; events
+    # further out may not have a start time published yet, so keep them (the
+    # pipeline re-checks each run and fills the horário as they approach).
+    if horario is None and horario_required(data):
+        print(f"[{SOURCE_NAME}] sem horário (prova em até 3 meses), pulando: {titulo!r}")
         return None
 
     local_raw = _label_text(soup, "Main_label_Local")

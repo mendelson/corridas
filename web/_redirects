@@ -3,3 +3,16 @@
 /favorites/* /gallery/:splat 301
 /highlights /gallery 301
 /highlights/* /gallery/:splat 301
+
+# Per-language gallery endpoints — every locale's /gallery routes to the single
+# (language-agnostic) gallery, so /pt/gallery, /en/gallery, … all work.
+/pt/gallery /gallery 301
+/pt/gallery/* /gallery/:splat 301
+/en/gallery /gallery 301
+/en/gallery/* /gallery/:splat 301
+/es/gallery /gallery 301
+/es/gallery/* /gallery/:splat 301
+/de/gallery /gallery 301
+/de/gallery/* /gallery/:splat 301
+/fr/gallery /gallery 301
+/fr/gallery/* /gallery/:splat 301

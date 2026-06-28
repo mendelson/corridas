@@ -8,10 +8,13 @@
  * para a esquerda, o sol sobe pela direita...) — e o tênis envelhece de NOVO a
  * GASTO. A intenção é de tempo passando e desgastando o tênis.
  *
+ * A roda e o céu são animados por CSS (Motion Path + keyframes), ou seja, rodam
+ * no COMPOSITOR — não travam quando a main thread fica ocupada lendo o JSON dos
+ * dados. Só o envelhecimento do tênis (SVG) é via JS, e é suave/sutil.
+ *
  * A introdução SEMPRE roda pelo menos um ciclo inteiro. Se os dados ainda não
- * terminaram ao fim do ciclo, ela roda outro ciclo (o tênis permanece gasto) até
- * os dados chegarem; então, ao fim do ciclo, o overlay some e revela o site já
- * carregado.
+ * terminaram ao fim do ciclo, ela gira outro (o tênis permanece gasto) até os
+ * dados chegarem; então, ao fim do ciclo, o overlay some e revela o site.
  *
  * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen.
  * app.js chama window.Loading.done() quando os dados terminam de carregar.
@@ -22,9 +25,8 @@
   var overlay = document.getElementById('loadingScreen');
   if (!overlay) return;
 
-  // Automated browsers (Playwright/Selenium) skip the loader entirely so its
-  // overlay never intercepts test interactions — pure UX flourish, no behaviour
-  // or data change.
+  // Automated browsers skip the loader entirely so its overlay never intercepts
+  // test interactions — pure UX flourish, no behaviour or data change.
   if (navigator.webdriver) {
     if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
     return;
@@ -42,9 +44,9 @@
   if (!ctl) { dismissNow(); return; }
 
   // ---- timing --------------------------------------------------------------
-  var CYCLE_MS = 4000;     // one full year (4 seasons); the shoe ages over it
+  var CYCLE_MS = 6000;     // one full year (4 seasons); the shoe ages over it
   var GROUND_FRAC = 0.62;  // ground line as a fraction of viewport height
-  var SEASONS = ['spring', 'summer', 'autumn', 'winter'];
+  overlay.style.setProperty('--cyc', CYCLE_MS + 'ms');
 
   function W() { return stage.offsetWidth; }
   function H() { return stage.offsetHeight; }
@@ -56,26 +58,19 @@
     stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
   }
 
-  // Where the SOLE sits inside the stage box (the SVG leaves a sliver below the
-  // outsole). Measured once at scale 1 so the shoe is grounded by its sole.
+  // Where the SOLE sits inside the stage box. Measured once at scale 1 so the
+  // shoe is grounded by its sole, not the box bottom.
   var soleFrac = 0.93;
   (function () {
     try {
       var sole = stage.querySelector('.outsole') || stage.querySelector('.sole-wrap');
       var sb = stage.getBoundingClientRect();
-      if (sole && sb.height) {
-        soleFrac = (sole.getBoundingClientRect().bottom - sb.top) / sb.height;
-      }
+      if (sole && sb.height) soleFrac = (sole.getBoundingClientRect().bottom - sb.top) / sb.height;
     } catch (e) {}
   })();
 
   function topForSole(s) { return groundY() - soleFrac * H() * s + 3; }
-
-  // Hero: as large as fits — wide enough for side margins, short enough to stand
-  // above the ground line — centred, sole on the ground. Held the whole time.
-  function heroScale() {
-    return Math.min(0.82 * vw() / W(), (groundY() - 24) / (soleFrac * H()));
-  }
+  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - 24) / (soleFrac * H())); }
   function applyHero() {
     var s = heroScale();
     setShoe((vw() - W() * s) / 2, topForSole(s), s);
@@ -88,9 +83,7 @@
 
   var arc = document.createElement('div');
   arc.className = 'load-arc';
-  // Behind the shoe (which is the focus) but above the sky tint, so seasons rise
-  // and set behind the aging shoe.
-  scene.insertBefore(arc, stage);
+  scene.insertBefore(arc, stage); // behind the shoe (the focus), above the sky
 
   function emblem(season, build) {
     var e = document.createElement('div');
@@ -99,15 +92,15 @@
     arc.appendChild(e);
     return e;
   }
-  // Order MUST match SEASONS: index 0 sits at the top at rotation 0, then each
-  // rises from the right as the wheel turns.
+  // Order MUST match the seasons (spring, summer, autumn, winter): index 0 is at
+  // the top at t=0, then each rises from the right a quarter-cycle apart.
   var emblems = [
     emblem('spring', function (e) {
       var c = document.createElement('div'); c.className = 'cloud'; e.appendChild(c);
       [22, 44, 66].forEach(function (x, i) {
         var r = document.createElement('span'); r.className = 'rd';
         r.style.left = x + 'px';
-        r.style.animationDelay = (i * 0.28).toFixed(2) + 's';
+        r.style.animationDelay = (i * 0.32).toFixed(2) + 's';
         e.appendChild(r);
       });
     }),
@@ -124,77 +117,57 @@
     })
   ];
 
-  var curSeason = -1;
-  function setSeason(i) {
-    if (i === curSeason) return;
-    curSeason = i;
-    sky.className = 'load-sky ' + SEASONS[i];
-  }
-
-  // Place every emblem on the arc for a given rotation (φ in degrees). Each
-  // emblem k starts 90° apart; θ measured from the top, +to the right. As φ
-  // grows the emblems' θ shrinks → they rise on the right, peak at the top, set
-  // on the left. Below the horizon (cos θ < 0) they fade out and are clipped.
-  function placeWheel(phi) {
+  // The orbit is a circle through the top/horizon, centred on the horizon. The
+  // CSS animation drives offset-distance; each emblem is phased a quarter apart
+  // so they rise on the right and set on the left. Recomputed on resize.
+  function layout() {
     var cx = vw() / 2, cy = groundY(), R = 0.46 * vh();
+    // CCW circle from the top: top -> left -> bottom -> right -> top.
+    var p = "path('M " + cx + "," + (cy - R) +
+            " A " + R + "," + R + " 0 1,0 " + cx + "," + (cy + R) +
+            " A " + R + "," + R + " 0 1,0 " + cx + "," + (cy - R) + "')";
     for (var k = 0; k < 4; k++) {
-      var th = (k * 90 - phi) * Math.PI / 180;
-      var x = cx + R * Math.sin(th);
-      var y = cy - R * Math.cos(th);
-      var op = Math.max(0, Math.min(1, Math.cos(th) * 1.3));
       var e = emblems[k];
-      e.style.left = x + 'px';
-      e.style.top = y + 'px';
-      e.style.opacity = op.toFixed(3);
+      e.style.offsetPath = p;
+      if (!reduce) e.style.animationDelay = (-(((4 - k) % 4) / 4) * CYCLE_MS) + 'ms';
     }
+    applyHero();
   }
-  // Reduced motion: no spinning wheel — just hold the active season's emblem at
-  // the top and hide the rest; the season still advances over the cycle.
-  function placeStatic(seasonIdx) {
-    var cx = vw() / 2, cy = groundY(), R = 0.46 * vh();
-    for (var k = 0; k < 4; k++) {
-      var e = emblems[k], on = (k === seasonIdx);
-      e.style.left = cx + 'px';
-      e.style.top = (cy - R) + 'px';
-      e.style.opacity = on ? '1' : '0';
-    }
-  }
+  layout();
 
   function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
   // ---- state machine -------------------------------------------------------
-  var done = false, finished = false, raf = null, anim = 0, last = 0, lastCyc = 0;
+  var done = false, finished = false, raf = null, start = 0, cur = 0, lastCyc = 0;
 
   function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
 
   ctl.setProgress(0);
-  applyHero();
-  last = now();
+  start = now();
+
+  // Non-reduced: the wheel + sky run on the compositor (CSS). Reveal at a full
+  // cycle boundary via the sky animation's iteration event, so we always show at
+  // least one complete year and only then hand off to the loaded site.
+  if (!reduce) {
+    sky.addEventListener('animationiteration', function () { if (done) reveal(); });
+  }
+
   raf = requestAnimationFrame(tick);
-
   function tick() {
-    var t = now(), dt = t - last; last = t;
-    // Clamp large gaps so a main-thread stall (the one-off MBs corridas.json
-    // parse in app.js freezes rAF) PAUSES the wheel instead of skipping seasons.
-    if (dt > 80) dt = 80;
-    anim += dt;
+    var el = now() - start;
+    // Age the shoe new -> worn across the first cycle, eased so a one-off
+    // main-thread stall (the data parse) catches up smoothly instead of jumping.
+    var target = easeInOut(Math.min(1, el / CYCLE_MS));
+    cur += (target - cur) * 0.12;
+    ctl.setProgress(cur);
 
-    // The shoe ages new -> worn across the FIRST cycle, then stays worn.
-    ctl.setProgress(easeInOut(Math.min(1, anim / CYCLE_MS)));
-
-    var frac = anim / CYCLE_MS;              // cycles elapsed (can exceed 1)
-    // Tint the sky for whichever emblem is currently HIGHEST (round, not floor,
-    // so the tint peaks with the emblem at the top — not when it starts rising).
-    var s4 = Math.round(frac * 4) % 4;
-    setSeason(s4);
-    if (reduce) placeStatic(s4);
-    else placeWheel((frac * 360) % 360);
-
-    // A full cycle just completed?
-    var cyc = Math.floor(frac);
-    if (cyc > lastCyc) {
-      lastCyc = cyc;
-      if (done) { reveal(); return; }       // ran >= 1 full cycle AND data ready
+    if (reduce) {
+      // No spinning wheel: hold the active season's emblem at the top, hide the
+      // rest, and reveal at a full-cycle boundary once data is ready.
+      var s = Math.floor((el / CYCLE_MS) * 4) % 4;
+      for (var k = 0; k < 4; k++) emblems[k].style.offsetDistance = (k === s) ? '0%' : '50%';
+      var cyc = Math.floor(el / CYCLE_MS);
+      if (cyc > lastCyc) { lastCyc = cyc; if (done) { reveal(); return; } }
     }
     raf = requestAnimationFrame(tick);
   }
@@ -212,9 +185,7 @@
     if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
   }
 
-  // Keep the hero framing correct if the viewport changes (the shoe never moves
-  // otherwise, so re-applying only on resize is enough — no per-frame thrash).
-  window.addEventListener('resize', function () { if (!finished) applyHero(); });
+  window.addEventListener('resize', function () { if (!finished) layout(); });
 
   // app.js signals the data is fully loaded.
   window.Loading = { done: function () { done = true; } };

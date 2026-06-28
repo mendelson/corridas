@@ -1064,36 +1064,42 @@ input { font-family: inherit; }
   background: linear-gradient(90deg, transparent, rgba(214,176,120,.3) 12%, rgba(214,176,120,.3) 88%, transparent);
 }
 
-/* Seasons backdrop — a translucent tint that crossfades through the year as the
-   shoe ages: spring -> summer -> autumn -> winter (time passing). */
+/* Seasons backdrop — the tint cycles through the year (spring -> summer -> autumn
+   -> winter) as a CSS keyframe, so it keeps animating with NO per-frame JS — it
+   can't stutter when the main thread is busy parsing the data. */
 .load-sky {
-  position: absolute; inset: 0;
-  z-index: 0;
-  background-color: transparent;
-  transition: background-color 0.9s ease;
+  position: absolute; inset: 0; z-index: 0;
+  background-color: rgba(74,122,86,0.20);
+  animation: loadSky var(--cyc, 6000ms) linear infinite;
 }
-.load-sky.spring { background-color: rgba(74,122,86,0.20); }
-.load-sky.summer { background-color: rgba(255,201,110,0.15); }
-.load-sky.autumn { background-color: rgba(190,108,48,0.20); }
-.load-sky.winter { background-color: rgba(150,180,220,0.18); }
+@keyframes loadSky {
+  0%, 100% { background-color: rgba(74,122,86,0.20); }  /* spring */
+  25%      { background-color: rgba(255,201,110,0.15); } /* summer */
+  50%      { background-color: rgba(190,108,48,0.20); }  /* autumn */
+  75%      { background-color: rgba(150,180,220,0.18); } /* winter */
+}
 
-/* The seasons ride a slow CELESTIAL WHEEL: each season's emblem rises from the
-   right horizon, arcs over the top and sets on the left as the next one rises
-   (rain sets left while the sun climbs the right). loading.js places each emblem
-   on the arc every frame; the layer is clipped at the horizon (the ground line). */
+/* The seasons ride a slow CELESTIAL WHEEL: each emblem rises from the right
+   horizon, arcs over the top and sets on the left as the next rises (rain sets
+   left while the sun climbs the right). Driven by CSS Motion Path — loading.js
+   sets each emblem's offset-path (a circle) + phase, and offset-distance is
+   animated here, so the whole orbit runs on the COMPOSITOR and stays smooth even
+   while app.js parses the data on the main thread. Clipped at the horizon. */
 .load-arc {
   position: absolute; left: 0; right: 0; top: 0; height: 62vh;
   overflow: hidden; pointer-events: none; z-index: 1;
 }
 .load-emblem {
   position: absolute; left: 0; top: 0;
-  width: 92px; height: 92px; margin: -46px 0 0 -46px; /* left/top = emblem centre */
-  will-change: left, top, opacity;
+  offset-rotate: 0deg; offset-anchor: 50% 50%; offset-distance: 0%;
+  animation: loadOrbit var(--cyc, 6000ms) linear infinite;
+  will-change: offset-distance;
 }
+@keyframes loadOrbit { from { offset-distance: 0%; } to { offset-distance: 100%; } }
 
 /* Summer — sun: glowing disc + slow rays. */
 .e-summer {
-  border-radius: 50%;
+  width: 92px; height: 92px; border-radius: 50%;
   background: radial-gradient(circle at 50% 50%, #fff3cb 0%, #ffd25e 46%, rgba(255,196,74,0) 72%);
   box-shadow: 0 0 60px 22px rgba(255,205,96,0.45);
 }
@@ -1102,14 +1108,14 @@ input { font-family: inherit; }
   background: repeating-conic-gradient(rgba(255,214,110,0.24) 0deg 5deg, rgba(255,214,110,0) 5deg 30deg);
   -webkit-mask: radial-gradient(circle, transparent 33%, #000 37%, transparent 78%);
           mask: radial-gradient(circle, transparent 33%, #000 37%, transparent 78%);
-  animation: loadSunSpin 22s linear infinite;
+  animation: loadSunSpin 26s linear infinite;
 }
 @keyframes loadSunSpin { to { transform: rotate(360deg); } }
 
 /* Spring — rain cloud (two puffs + falling drops). */
-.e-spring { width: 92px; height: 56px; margin-top: -10px; }
+.e-spring { width: 92px; height: 64px; }
 .e-spring .cloud {
-  position: absolute; left: 6px; right: 6px; bottom: 18px; height: 30px;
+  position: absolute; left: 6px; right: 6px; bottom: 22px; height: 30px;
   border-radius: 16px; background: linear-gradient(#eef2f8, #c5cfdc);
   box-shadow: 0 5px 12px rgba(0,0,0,0.25);
 }
@@ -1121,7 +1127,7 @@ input { font-family: inherit; }
 .e-spring .rd {
   position: absolute; bottom: 0; width: 2px; height: 10px; border-radius: 1px;
   background: rgba(150,180,220,0.95);
-  animation: loadCloudRain 0.85s linear infinite;
+  animation: loadCloudRain 1s linear infinite;
 }
 @keyframes loadCloudRain {
   0% { transform: translateY(-2px); opacity: 0; }
@@ -1130,7 +1136,7 @@ input { font-family: inherit; }
 }
 
 /* Autumn — a single leaf. */
-.e-autumn { width: 64px; height: 64px; margin: -32px 0 0 -32px; }
+.e-autumn { width: 64px; height: 64px; }
 .e-autumn .leaf {
   position: absolute; inset: 10px;
   background: linear-gradient(135deg, #e29544, #a8511f);
@@ -1143,7 +1149,7 @@ input { font-family: inherit; }
 }
 
 /* Winter — a snowflake (three crossed spokes). */
-.e-winter { width: 72px; height: 72px; margin: -36px 0 0 -36px; }
+.e-winter { width: 72px; height: 72px; }
 .e-winter .spoke {
   position: absolute; left: 50%; top: 50%;
   width: 4px; height: 64px; margin: -32px 0 0 -2px; border-radius: 2px;
@@ -1151,8 +1157,7 @@ input { font-family: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .e-summer::before { animation: none; }
-  .e-spring .rd { animation: none; opacity: 0.9; }
+  .load-sky, .load-emblem, .e-summer::before, .e-spring .rd { animation: none; }
 }
 
 /* The shoe — loading.js drives a translate(px,px)+scale transform from the

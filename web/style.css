@@ -1081,21 +1081,36 @@ input { font-family: inherit; }
 
 /* The seasons ride a slow CELESTIAL WHEEL: each emblem rises from the right
    horizon, arcs over the top and sets on the left as the next rises (rain sets
-   left while the sun climbs the right). Driven by CSS Motion Path — loading.js
-   sets each emblem's offset-path (a circle) + phase, and offset-distance is
-   animated here, so the whole orbit runs on the COMPOSITOR and stays smooth even
-   while app.js parses the data on the main thread. Clipped at the horizon. */
+   left while the sun climbs the right). The wheel is a `transform: rotate`
+   animation and each emblem counter-rotates by the same amount to stay upright —
+   BOTH are `transform`-only, so the whole orbit runs on the COMPOSITOR and can't
+   stutter when app.js blocks the main thread parsing the data. Clipped at the
+   horizon (the ground line). The wheel is centred on the horizon. */
 .load-arc {
   position: absolute; left: 0; right: 0; top: 0; height: 62vh;
   overflow: hidden; pointer-events: none; z-index: 1;
 }
-.load-emblem {
-  position: absolute; left: 0; top: 0;
-  offset-rotate: 0deg; offset-anchor: 50% 50%; offset-distance: 0%;
-  animation: loadOrbit var(--cyc, 6000ms) linear infinite;
-  will-change: offset-distance;
+.load-wheel {
+  position: absolute; left: 50%; top: 62vh;
+  width: 92vh; height: 92vh; margin: -46vh 0 0 -46vh;   /* centre at (50%, horizon) */
+  transform-origin: 50% 50%;
+  animation: loadWheelSpin var(--cyc, 6000ms) linear infinite;
 }
-@keyframes loadOrbit { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+@keyframes loadWheelSpin { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
+/* Emblems sit at the wheel's four cardinal points and counter-rotate (+360°,
+   opposite the wheel's -360°) so they orbit while staying upright. */
+.load-emblem {
+  position: absolute;
+  animation: loadEmblemUp var(--cyc, 6000ms) linear infinite;
+}
+@keyframes loadEmblemUp {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.e-spring { left: 50%;  top: 0; }     /* top at t=0 */
+.e-summer { left: 100%; top: 50%; }   /* right (rises to the top next) */
+.e-autumn { left: 50%;  top: 100%; }  /* bottom (hidden) */
+.e-winter { left: 0;    top: 50%; }   /* left (setting) */
 
 /* Summer — sun: glowing disc + slow rays. */
 .e-summer {
@@ -1157,7 +1172,8 @@ input { font-family: inherit; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .load-sky, .load-emblem, .e-summer::before, .e-spring .rd { animation: none; }
+  .load-sky, .load-wheel, .load-emblem, .e-summer::before, .e-spring .rd { animation: none; }
+  .load-emblem { transform: translate(-50%, -50%); } /* keep centred/upright when not animating */
 }
 
 /* The shoe — loading.js drives a translate(px,px)+scale transform from the

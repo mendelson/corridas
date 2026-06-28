@@ -23,6 +23,28 @@ _DATE_PTBR = re.compile(
 )
 
 
+def horario_required(data_evento: str | None, today: date | None = None) -> bool:
+    """Whether a published start time (horário) is mandatory for this event.
+
+    Rule: horário is required for events within the next 3 months (and for past /
+    imminent ones); events 3+ months in the future may still lack it, because
+    organisers often haven't announced the start time that far ahead. The
+    pipeline keeps those far-future events and re-checks every run, so a horário
+    is filled in automatically as the event approaches the 3-month window.
+
+    Returns False when there's no date (the missing-date check handles that).
+    """
+    if not data_evento:
+        return False
+    import calendar
+    t = today or date.today()
+    m = t.month - 1 + 3
+    y = t.year + m // 12
+    mo = m % 12 + 1
+    cutoff = date(y, mo, min(t.day, calendar.monthrange(y, mo)[1]))
+    return data_evento[:10] < cutoff.isoformat()
+
+
 def normalize_date(raw: str | None) -> str | None:
     """Return ISO 8601 date string (YYYY-MM-DD) or None."""
     if not raw:

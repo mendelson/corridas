@@ -12,6 +12,22 @@ from pathlib import Path
 import pytest
 
 
+def _horario_required(data_evento) -> bool:
+    """Horário is mandatory for events within the next 3 months (and past/imminent
+    ones); events 3+ months out may still lack a published start time. Mirrors
+    scraper.utils.horario_required (kept inline so this test has no scraper dep)."""
+    if not data_evento:
+        return False
+    import calendar
+    from datetime import date
+    t = date.today()
+    m = t.month - 1 + 3
+    y = t.year + m // 12
+    mo = m % 12 + 1
+    cutoff = date(y, mo, min(t.day, calendar.monthrange(y, mo)[1]))
+    return str(data_evento)[:10] < cutoff.isoformat()
+
+
 def _isolate_context(ctx):
     """Mock geo APIs and abort all third-party requests so networkidle settles.
 
@@ -823,11 +839,8 @@ def test_all_events_have_required_fields():
     - pais: ISO-3166-1 alpha-2 code that exists as web/locations/{pais}.json
     - estado: non-empty subdivision code listed in that country's JSON file
     - at least one valid link in fontes
-
-    horario: tracked but not a hard failure here — corridas.json is the committed
-    scrape snapshot and lags behind scraper fixes. The hard check lives in
-    test_source.py (which tests live scraper output). Once corridas.json catches
-    up via a post-merge scrape, this check will be tightened.
+    - horario: required (zero-tolerance) for events within the next 3 months;
+      events 3+ months in the future may still omit it (see _horario_required).
     """
     corridas = _load_corridas()
     assert corridas, "corridas.json is empty"
@@ -885,7 +898,7 @@ def test_all_events_have_required_fields():
         if not has_link:
             missing_link.append((cid, title))
 
-        if not c.get("horario"):
+        if not c.get("horario") and _horario_required(c.get("data_evento")):
             missing_hora.append(title)
 
     def _source_hint(items: list) -> str:
@@ -929,7 +942,7 @@ def test_all_events_have_required_fields():
         f"{len(missing_link)}/{n} events missing all links. First 5: {missing_link[:5]}"
     )
     assert not missing_hora, (
-        f"{len(missing_hora)}/{n} events missing horario. "
+        f"{len(missing_hora)}/{n} events (within the next 3 months) missing horario. "
         f"{_source_hint([(t,) for t in missing_hora])}"
     )
 

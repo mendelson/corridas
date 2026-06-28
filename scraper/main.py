@@ -13,7 +13,7 @@ from pathlib import Path
 from .merger import are_duplicates, merge_rodada, _merge_pair
 from .enrichment_selos import enrich as _enrich_selos
 from .models import Corrida, Distancia, FonteInfo, PeriodoInscricao
-from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event
+from .utils import now_iso, today_iso, normalize_cidade, validate_image_url, is_kids_event, horario_required
 from .http_client import get_direct as http_get_direct
 from . import geo as _geo
 
@@ -1012,18 +1012,19 @@ def _drop_kids_events(corridas: list[Corrida]) -> list[Corrida]:
 
 
 def _drop_events_without_horario(corridas: list[Corrida]) -> list[Corrida]:
-    """Drop events that have no published start time.
+    """Drop events within the next 3 months that have no published start time.
 
-    Horário is a hard requirement: users rely on it to plan participation.
-    Events without it are either incomplete data or events whose organisers
-    haven't published a start time yet — in both cases they should not reach
-    the frontend until the information is available.
+    Horário is a hard requirement for imminent events: users rely on it to plan
+    participation. But events 3+ months out often have no start time announced
+    yet — dropping those would hide them needlessly. So keep far-future events
+    without a horário (they're re-checked each run and the time is filled in as
+    they approach the 3-month window) and only drop near-term ones still missing it.
     """
     ok, dropped = [], []
     for c in corridas:
-        (ok if c.horario else dropped).append(c)
+        (ok if (c.horario or not horario_required(c.data_evento)) else dropped).append(c)
     if dropped:
-        print(f"[main] {len(dropped)} evento(s) sem horário publicado removido(s):")
+        print(f"[main] {len(dropped)} evento(s) (próximos 3 meses) sem horário publicado removido(s):")
         for c in dropped[:20]:
             print(f"  • {c.id} ({c.titulo!r}) [{c.data_evento}]")
     return ok

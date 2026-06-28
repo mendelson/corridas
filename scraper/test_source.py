@@ -6,6 +6,8 @@ import os
 import sys
 from datetime import date, timedelta
 
+from .utils import horario_required
+
 # Signal scrapers to skip expensive per-event enrichment steps (e.g. fetching
 # individual event pages for location data) that are not needed for source health checks.
 os.environ.setdefault("SCRAPER_TEST", "1")
@@ -139,8 +141,10 @@ def _validate(source: str, results: list) -> list[str]:
                 missing_tipo += 1
                 break
 
-        # Hard: sem horário publicado
-        if not r.horario:
+        # Hard: sem horário publicado — obrigatório apenas para eventos nos
+        # próximos 3 meses (eventos a 3+ meses no futuro ainda podem não ter
+        # horário divulgado; serão cobrados quando se aproximarem).
+        if not r.horario and horario_required(r.data_evento):
             missing_horario += 1
 
     n = len(results)
@@ -179,7 +183,7 @@ def _validate(source: str, results: list) -> list[str]:
     if missing_distancias:
         failures.append(f"{missing_distancias}/{n} eventos sem distâncias")
     if missing_horario:
-        failures.append(f"{missing_horario}/{n} eventos sem horário publicado")
+        failures.append(f"{missing_horario}/{n} eventos (nos próximos 3 meses) sem horário publicado")
 
     return failures
 

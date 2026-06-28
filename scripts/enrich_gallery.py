@@ -10,8 +10,10 @@ field blank. This script fills the blanks by reading those public pages:
   * date  -> the activity date (Polar share page, falling back to Strava).
   * km    -> the distance (Polar, falling back to Strava), snapped to the
              canonical 21.097 / 42.195 when close.
-  * type  -> inferred from km (marathon / half / ten / race).
   * city/estado/pais -> best-effort from the Strava location line.
+
+The frontend derives everything else from km (a marathon is detected by its
+~42 km distance), so there is no `type` field to maintain.
 
 It only ever *fills blank* fields — values already present are left untouched —
 so it is safe to re-run and is the reusable mechanism for future additions.
@@ -76,20 +78,6 @@ def snap_km(km: float):
     if 9.6 <= km <= 10.4:
         return 10.0
     return round(km, 1)
-
-
-def infer_type(km) -> str:
-    try:
-        v = float(km)
-    except (TypeError, ValueError):
-        return ""
-    if v >= 41.4:
-        return "marathon"
-    if 20.4 <= v <= 21.7:
-        return "half"
-    if 9.6 <= v <= 10.4:
-        return "ten"
-    return "race"
 
 
 _KM_RE = re.compile(r"(\d{1,3}[.,]\d{1,3})\s*km", re.IGNORECASE)
@@ -244,8 +232,7 @@ def needs_enrich(r):
     if r.get("legs"):
         return (not r.get("name") or not r.get("date")
                 or any(L.get("km") in ("", None) for L in r["legs"]))
-    return (not r.get("name") or not r.get("date") or r.get("km") in ("", None)
-            or not r.get("type"))
+    return (not r.get("name") or not r.get("date") or r.get("km") in ("", None))
 
 
 def enrich_legs(r, idx, dump_dir=None):
@@ -290,15 +277,10 @@ def main():
                 print(f"[{i}] name normalized: {r['name']!r} -> {c!r}")
                 r["name"] = c; changed += 1
         # relay events: enrich each leg's km from its own links; the frontend
-        # sums the legs, so there is no top-level km/type to fill here.
+        # sums the legs, so there is no top-level km to fill here.
         if r.get("legs"):
             changed += enrich_legs(r, i, args.dump_dir)
             continue
-
-        # cheap fix first: type can be inferred from an existing km
-        if not r.get("type") and r.get("km") not in ("", None):
-            r["type"] = infer_type(r["km"]); changed += 1
-            print(f"[{i}] type <- {r['type']} (from km {r['km']})")
 
         if not (not r.get("name") or not r.get("date") or r.get("km") in ("", None)):
             continue
@@ -320,8 +302,6 @@ def main():
             km = parse_km(d["strava_desc"]) or parse_km(d["strava_text"]) or parse_km(d["polar_text"])
             if km:
                 r["km"] = snap_km(km); changed += 1; print(f"      km <- {r['km']}")
-        if not r.get("type") and r.get("km") not in ("", None):
-            r["type"] = infer_type(r["km"]); print(f"      type <- {r['type']}")
         if not r.get("date"):
             dt = parse_date(d["polar_text"]) or parse_date(d["strava_text"]) or parse_date(d["strava_desc"])
             if dt:
@@ -338,7 +318,7 @@ def main():
     RACES.write_text(json.dumps(races, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"\nDone. fields changed: {changed}")
     # report still-missing
-    miss = [(i, [k for k in ("name", "date", "km", "type", "city", "pais", "estado") if r.get(k) in ("", None)])
+    miss = [(i, [k for k in ("name", "date", "km", "city", "pais", "estado") if r.get(k) in ("", None)])
             for i, r in enumerate(races) if needs_enrich(r) or not r.get("city")]
     if miss:
         print("Still missing:")

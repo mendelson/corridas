@@ -1,17 +1,20 @@
 /*!
  * loading.js — Tela de carregamento com o tênis da galeria.
  *
- * Sequência:
- *   1. abre com o tênis NOVO (limpo), grande e centralizado (cabendo na tela),
- *      parado por 0,8s;
- *   2. o tênis desce e encolhe até o início da pista e CRUZA a tela — chão,
- *      pegadas, poeira e desgaste progressivo (posição = progresso do load);
- *   3. quando os dados terminam, o tênis (agora DESGASTADO) volta ao centro,
- *      grande (cabendo na tela), e fica parado por 0,8s;
- *   4. o overlay some, revelando o site.
+ * O tênis fica SEMPRE grande e centralizado (o mesmo enquadramento "zoom" do
+ * início/fim da galeria — ele nunca cruza a tela). Enquanto isso, passa UM ANO:
+ * as estações giram numa roda celeste — cada estação NASCE pela direita, cruza o
+ * topo e SE PÕE pela esquerda enquanto a próxima sobe (acaba a chuva, tudo gira
+ * para a esquerda, o sol sobe pela direita...) — e o tênis envelhece de NOVO a
+ * GASTO. A intenção é de tempo passando e desgastando o tênis.
+ *
+ * A introdução SEMPRE roda pelo menos um ciclo inteiro. Se os dados ainda não
+ * terminaram ao fim do ciclo, ela roda outro ciclo (o tênis permanece gasto) até
+ * os dados chegarem; então, ao fim do ciclo, o overlay some e revela o site já
+ * carregado.
  *
  * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen.
- * app.js chama window.Loading.done() quando body.dataset.fullDataReady = '1'.
+ * app.js chama window.Loading.done() quando os dados terminam de carregar.
  */
 (function () {
   'use strict';
@@ -27,9 +30,9 @@
     return;
   }
 
-  var stage  = overlay.querySelector('.load-shoe-stage');
-  var prints = overlay.querySelector('.load-prints');
-  if (!stage || !prints) { dismissNow(); return; }
+  var scene = overlay.querySelector('.load-scene') || overlay;
+  var stage = overlay.querySelector('.load-shoe-stage');
+  if (!stage) { dismissNow(); return; }
 
   var reduce = false;
   try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
@@ -38,31 +41,23 @@
   try { if (window.ShoeWear) ctl = window.ShoeWear.mount(stage); } catch (e) {}
   if (!ctl) { dismissNow(); return; }
 
-  // ---- timing ----
-  var HOLD_MS = 800;     // hero hold (new shoe at the start, worn shoe at the end)
-  var INTRO_T = 600;     // hero → track-start transition
-  var OUTRO_T = 720;     // track-end → hero transition
-  var MIN_CROSS_MS = 1600;// minimum visible crossing (≈2 footfalls + dust), even on a cached load
-  var GROUND_FRAC = 0.62;// ground line as a fraction of viewport height
+  // ---- timing --------------------------------------------------------------
+  var CYCLE_MS = 4000;     // one full year (4 seasons); the shoe ages over it
+  var GROUND_FRAC = 0.62;  // ground line as a fraction of viewport height
+  var SEASONS = ['spring', 'summer', 'autumn', 'winter'];
 
-  // Natural (untransformed) shoe-stage box — offset* ignores transforms.
   function W() { return stage.offsetWidth; }
   function H() { return stage.offsetHeight; }
   function vw() { return window.innerWidth; }
   function vh() { return window.innerHeight; }
   function groundY() { return vh() * GROUND_FRAC; }
 
-  // transform-origin is 0 0 (see CSS), so a translate(px,px)+scale places the
-  // box top-left exactly and scales from there — easy, predictable geometry.
   function setShoe(x, y, s) {
     stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
   }
 
-  // Where the SOLE sits inside the stage box, as a fraction of the box height
-  // (the SVG leaves a sliver of empty space below the outsole). Measured from
-  // the real outsole element so the shoe is grounded by its sole, not by the
-  // box bottom — otherwise that empty sliver scales up under the hero zoom and
-  // the shoe visibly floats. Measured once at scale 1 (no transform yet).
+  // Where the SOLE sits inside the stage box (the SVG leaves a sliver below the
+  // outsole). Measured once at scale 1 so the shoe is grounded by its sole.
   var soleFrac = 0.93;
   (function () {
     try {
@@ -74,19 +69,10 @@
     } catch (e) {}
   })();
 
-  // Stage-top y that puts the SOLE on the ground line (a hair into the dirt),
-  // for ANY scale — so the shoe stands on the ground whether tiny (track) or
-  // huge (hero), never floating.
-  var SINK = 3;
-  function topForSole(s) { return groundY() - soleFrac * H() * s + SINK; }
+  function topForSole(s) { return groundY() - soleFrac * H() * s + 3; }
 
-  // Track: the shoe walks the ground line L→R, fully inside the viewport.
-  function applyTrack(p) {
-    setShoe(p * (vw() - W()), topForSole(1), 1);
-  }
-
-  // Hero: as large as fits — wide enough for side margins, short enough to
-  // stand above the ground line — never cropped, sole on the ground.
+  // Hero: as large as fits — wide enough for side margins, short enough to stand
+  // above the ground line — centred, sole on the ground. Held the whole time.
   function heroScale() {
     return Math.min(0.82 * vw() / W(), (groundY() - 24) / (soleFrac * H()));
   }
@@ -95,157 +81,140 @@
     setShoe((vw() - W() * s) / 2, topForSole(s), s);
   }
 
-  // ---- footprint + dust (reused from the gallery) --------------------------
-  var SOLE = '<svg viewBox="0 0 120 42" xmlns="http://www.w3.org/2000/svg">'
-    + '<path d="M18 21 C18 12 26 9 36 9 C46 9 52 12 56 15 C60 12 70 9 82 9 C100 9 112 13 114 21 C112 29 100 33 82 33 C70 33 60 30 56 27 C52 30 46 33 36 33 C26 33 18 30 18 21 Z" fill="#241a0d"/>'
-    + '<path d="M18 21 C18 12 26 9 36 9 C46 9 52 12 56 15 C60 12 70 9 82 9 C100 9 112 13 114 21 C112 29 100 33 82 33 C70 33 60 30 56 27 C52 30 46 33 36 33 C26 33 18 30 18 21 Z" fill="none" stroke="#6e5536" stroke-width="1.6" opacity="0.4"/>'
-    + '<g stroke="#120c04" stroke-width="2.4" stroke-linecap="round" opacity="0.42"><path d="M70 14 L70 28"/><path d="M82 13 L82 29"/><path d="M94 15 L94 27"/><path d="M30 15 L30 27"/></g>'
-    + '</svg>';
+  // ---- scene: sky tint + celestial wheel (built here so the shells stay clean) -
+  var sky = document.createElement('div');
+  sky.className = 'load-sky';
+  scene.insertBefore(sky, scene.firstChild);
 
-  function metrics() {
-    var sr = stage.getBoundingClientRect(), pr = prints.getBoundingClientRect();
-    return { x: sr.left - pr.left + sr.width / 2, w: sr.width };
+  var arc = document.createElement('div');
+  arc.className = 'load-arc';
+  // Behind the shoe (which is the focus) but above the sky tint, so seasons rise
+  // and set behind the aging shoe.
+  scene.insertBefore(arc, stage);
+
+  function emblem(season, build) {
+    var e = document.createElement('div');
+    e.className = 'load-emblem e-' + season;
+    if (build) build(e);
+    arc.appendChild(e);
+    return e;
+  }
+  // Order MUST match SEASONS: index 0 sits at the top at rotation 0, then each
+  // rises from the right as the wheel turns.
+  var emblems = [
+    emblem('spring', function (e) {
+      var c = document.createElement('div'); c.className = 'cloud'; e.appendChild(c);
+      [22, 44, 66].forEach(function (x, i) {
+        var r = document.createElement('span'); r.className = 'rd';
+        r.style.left = x + 'px';
+        r.style.animationDelay = (i * 0.28).toFixed(2) + 's';
+        e.appendChild(r);
+      });
+    }),
+    emblem('summer', null),
+    emblem('autumn', function (e) {
+      var l = document.createElement('div'); l.className = 'leaf'; e.appendChild(l);
+    }),
+    emblem('winter', function (e) {
+      [0, 60, 120].forEach(function (deg) {
+        var s = document.createElement('span'); s.className = 'spoke';
+        s.style.transform = 'rotate(' + deg + 'deg)';
+        e.appendChild(s);
+      });
+    })
+  ];
+
+  var curSeason = -1;
+  function setSeason(i) {
+    if (i === curSeason) return;
+    curSeason = i;
+    sky.className = 'load-sky ' + SEASONS[i];
   }
 
-  function spawnFootprint(m) {
-    var w = m.w * 0.96, h = w * 0.26;
-    var fp = document.createElement('div');
-    fp.className = 'load-footprint';
-    fp.style.left = (m.x - w / 2) + 'px';
-    fp.style.width = w + 'px';
-    fp.style.height = h + 'px';
-    fp.style.top = (2 + Math.random() * 2) + 'px';
-    fp.style.transform = 'rotate(' + (Math.random() * 4 - 2).toFixed(1) + 'deg)';
-    fp.innerHTML = SOLE;
-    prints.appendChild(fp);
-    fp.addEventListener('animationend', function () { if (fp.parentNode) fp.parentNode.removeChild(fp); });
-  }
-
-  function spawnDust(m) {
-    var w = m.w;
-    var cloud = document.createElement('div');
-    cloud.className = 'load-dust';
-    cloud.style.left = (m.x - w / 2) + 'px';
-    cloud.style.width = w + 'px';
-    var N = Math.max(14, Math.round(w / 3.4));
-    for (var i = 0; i < N; i++) {
-      var t = (N > 1) ? i / (N - 1) : 0.5;
-      var edge = (t - 0.5) * 2;
-      var size = 10 + Math.random() * 16;
-      var p = document.createElement('span');
-      p.className = 'load-puff';
-      p.style.width = size + 'px';
-      p.style.height = size + 'px';
-      p.style.left = (t * w - size / 2 + (Math.random() * 8 - 4)) + 'px';
-      p.style.top = (2 + Math.random() * 4) + 'px';
-      p.style.setProperty('--dx', (edge * w * 0.42 + (Math.random() * 12 - 6)).toFixed(1) + 'px');
-      p.style.setProperty('--dy', (-(26 + Math.random() * 22) - (1 - Math.abs(edge)) * 12).toFixed(1) + 'px');
-      p.style.setProperty('--s', (2.2 + Math.random() * 1.4).toFixed(2));
-      p.style.setProperty('--o', (0.45 + Math.random() * 0.3).toFixed(2));
-      p.style.setProperty('--d', (0.8 + Math.random() * 0.5).toFixed(2) + 's');
-      p.style.animationDelay = (Math.random() * 110).toFixed(0) + 'ms';
-      cloud.appendChild(p);
+  // Place every emblem on the arc for a given rotation (φ in degrees). Each
+  // emblem k starts 90° apart; θ measured from the top, +to the right. As φ
+  // grows the emblems' θ shrinks → they rise on the right, peak at the top, set
+  // on the left. Below the horizon (cos θ < 0) they fade out and are clipped.
+  function placeWheel(phi) {
+    var cx = vw() / 2, cy = groundY(), R = 0.46 * vh();
+    for (var k = 0; k < 4; k++) {
+      var th = (k * 90 - phi) * Math.PI / 180;
+      var x = cx + R * Math.sin(th);
+      var y = cy - R * Math.cos(th);
+      var op = Math.max(0, Math.min(1, Math.cos(th) * 1.3));
+      var e = emblems[k];
+      e.style.left = x + 'px';
+      e.style.top = y + 'px';
+      e.style.opacity = op.toFixed(3);
     }
-    prints.appendChild(cloud);
-    setTimeout(function () { if (cloud.parentNode) cloud.parentNode.removeChild(cloud); }, 1700);
+  }
+  // Reduced motion: no spinning wheel — just hold the active season's emblem at
+  // the top and hide the rest; the season still advances over the cycle.
+  function placeStatic(seasonIdx) {
+    var cx = vw() / 2, cy = groundY(), R = 0.46 * vh();
+    for (var k = 0; k < 4; k++) {
+      var e = emblems[k], on = (k === seasonIdx);
+      e.style.left = cx + 'px';
+      e.style.top = (cy - R) + 'px';
+      e.style.opacity = on ? '1' : '0';
+    }
   }
 
-  // A print + dust drop on every footfall (bottom of each step bounce), but only
-  // while actually crossing the track.
-  var inner = stage.querySelector('.shoe');
-  if (inner) {
-    inner.addEventListener('animationiteration', function () {
-      if (!crossing) return;
-      var m = metrics();
-      spawnFootprint(m);
-      spawnDust(m);
-    });
-  }
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
   // ---- state machine -------------------------------------------------------
-  var done = false, crossing = false, finished = false;
-  var prog = 0, raf = null, crossStart = 0;
+  var done = false, finished = false, raf = null, anim = 0, last = 0, lastCyc = 0;
 
   function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
 
-  // Reduced motion: no running gait/dust. Just hold the new shoe, age it in
-  // place, hold the worn shoe, reveal — keeping the new→worn bookends.
-  if (reduce) {
-    ctl.setProgress(0);
-    applyHero();
-    setTimeout(function () {
-      ctl.setProgress(1);
-      setTimeout(function () {
-        overlay.classList.add('hidden');
-        setTimeout(dismissNow, 600);
-      }, HOLD_MS);
-    }, HOLD_MS);
-  } else {
-    // PHASE 1 — new shoe, hero, held.
-    ctl.setProgress(0);
-    applyHero();
-    setTimeout(introTransition, HOLD_MS);
-  }
-
-  // PHASE 2a — hero → track start (still clean).
-  function introTransition() {
-    stage.style.transition = 'transform ' + INTRO_T + 'ms cubic-bezier(.5,0,.4,1)';
-    requestAnimationFrame(function () { applyTrack(0); });
-    setTimeout(startCrossing, INTRO_T + 20);
-  }
-
-  // PHASE 2b — cross the track, aging, leaving prints + dust.
-  function startCrossing() {
-    stage.style.transition = '';      // rAF owns the transform now
-    stage.classList.add('walking');
-    crossing = true;
-    crossStart = now();
-    raf = requestAnimationFrame(tick);
-  }
+  ctl.setProgress(0);
+  applyHero();
+  last = now();
+  raf = requestAnimationFrame(tick);
 
   function tick() {
-    var elapsed = (now() - crossStart) / 1000;
-    // Asymptote toward 0.9 until the data is ready, then complete the crossing.
-    var target = done ? 1 : Math.min(0.9, 1 - Math.exp(-elapsed / 2.4));
-    prog += (target - prog) * 0.07;
-    var p = Math.min(prog, 1);
-    ctl.setProgress(p);
-    applyTrack(p);
-    if (done && prog > 0.992 && (now() - crossStart) >= MIN_CROSS_MS) {
-      ctl.setProgress(1);
-      applyTrack(1);
-      outro();
-      return;
+    var t = now(), dt = t - last; last = t;
+    // Clamp large gaps so a main-thread stall (the one-off MBs corridas.json
+    // parse in app.js freezes rAF) PAUSES the wheel instead of skipping seasons.
+    if (dt > 80) dt = 80;
+    anim += dt;
+
+    // The shoe ages new -> worn across the FIRST cycle, then stays worn.
+    ctl.setProgress(easeInOut(Math.min(1, anim / CYCLE_MS)));
+
+    var frac = anim / CYCLE_MS;              // cycles elapsed (can exceed 1)
+    // Tint the sky for whichever emblem is currently HIGHEST (round, not floor,
+    // so the tint peaks with the emblem at the top — not when it starts rising).
+    var s4 = Math.round(frac * 4) % 4;
+    setSeason(s4);
+    if (reduce) placeStatic(s4);
+    else placeWheel((frac * 360) % 360);
+
+    // A full cycle just completed?
+    var cyc = Math.floor(frac);
+    if (cyc > lastCyc) {
+      lastCyc = cyc;
+      if (done) { reveal(); return; }       // ran >= 1 full cycle AND data ready
     }
     raf = requestAnimationFrame(tick);
   }
 
-  // PHASE 3 — worn shoe returns to centre (hero), held, then reveal.
-  function outro() {
+  function reveal() {
     if (finished) return;
     finished = true;
-    crossing = false;
     if (raf) cancelAnimationFrame(raf);
-    stage.classList.remove('walking');
-    ctl.setProgress(1);                 // fully worn
-    stage.style.transition = 'transform ' + OUTRO_T + 'ms cubic-bezier(.4,0,.3,1)';
-    requestAnimationFrame(applyHero);   // track-end → hero centre
-    setTimeout(function () {
-      setTimeout(function () {          // hold the worn shoe HOLD_MS
-        overlay.classList.add('hidden');
-        setTimeout(dismissNow, 600);
-      }, HOLD_MS);
-    }, OUTRO_T);
+    ctl.setProgress(1);
+    overlay.classList.add('hidden');
+    setTimeout(dismissNow, 650);
   }
 
   function dismissNow() {
     if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
   }
 
-  // Keep the hero framing correct if the viewport changes before the crossing.
-  window.addEventListener('resize', function () {
-    if (!crossing && !finished) applyHero();
-  });
+  // Keep the hero framing correct if the viewport changes (the shoe never moves
+  // otherwise, so re-applying only on resize is enough — no per-frame thrash).
+  window.addEventListener('resize', function () { if (!finished) applyHero(); });
 
   // app.js signals the data is fully loaded.
   window.Loading = { done: function () { done = true; } };

@@ -22,7 +22,7 @@ from datetime import date, timedelta
 from ..http_client import get
 from .. import geo as _geo
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, now_iso, today_iso
+from ..utils import normalize_titulo, now_iso, today_iso, horario_required
 
 SOURCE_NAME = "World's Marathons"
 BASE = "https://worldsmarathons.com"
@@ -120,17 +120,20 @@ def _parse_event(html: str, url: str, today: str, end_date: str) -> Corrida | No
     if data_evento < today or data_evento > end_date:
         return None
 
-    # horario from the structured start-time field — OPTIONAL. Many events,
-    # including several Abbott World Marathon Majors (Berlin, Tokyo, Chicago…),
-    # publish no start time on worldsmarathons. horario is not a required field,
-    # so a missing start time must NOT drop the event — requiring it here is what
-    # silently hid the majors (only 13 of ~7000 pages carry a start_time).
+    # horario from the structured start-time field. Many worldsmarathons pages
+    # publish none, so we keep FAR-FUTURE events without it (they re-check each
+    # run and the time fills in as they approach). But within the next 3 months
+    # horário is mandatory, so near-term events still lacking one are dropped —
+    # the big majors that fall in that window (e.g. Berlin) are covered with a
+    # start time by their dedicated evento_unico source anyway.
     horario = None
     mt = _START_TIME_RE.search(html)
     if mt:
         h, mi = int(mt.group(1)), int(mt.group(2))
         if 0 <= h <= 23 and 0 <= mi <= 59:
             horario = f"{h:02d}:{mi:02d}"
+    if horario is None and horario_required(data_evento):
+        return None
 
     loc = ev.get("location") or {}
     addr = (loc.get("address") or {}) if isinstance(loc, dict) else {}

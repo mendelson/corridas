@@ -50,10 +50,13 @@
       if (sole && sb.height) soleFrac = (sole.getBoundingClientRect().bottom - sb.top) / sb.height;
     } catch (e) {}
   })();
-  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - 24) / (soleFrac * H())); }
+  // Leave ~14vh of sky above the shoe so it reads as a shoe standing on a floor
+  // (not jammed to the top edge), and keep it within the width.
+  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - vh() * 0.14) / (soleFrac * H())); }
   function applyHero() {
     var s = heroScale();
-    setShoe((vw() - W() * s) / 2, groundY() - soleFrac * H() * s + 3, s);
+    // Sink the sole a few px into the ground so the shoe plainly rests on it.
+    setShoe((vw() - W() * s) / 2, groundY() - soleFrac * H() * s + 6, s);
   }
 
   // ---- build the weather layers (no markup change in the shells) -----------

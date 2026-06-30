@@ -113,11 +113,11 @@
   function smooth(t) { t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
 
   var SEASONS = ['s-spring', 's-summer', 's-autumn', 's-winter'];
-  var DURATION = 4800;            // full new → worn arc across the 4 seasons
+  var DURATION = 8000;            // 4 seasons × 2s each
   // Debug aid (e.g. ?loaderMs=16000) to slow the arc down for inspection/QA;
   // no effect in normal use.
   try { var _m = +(new URLSearchParams(location.search).get('loaderMs')); if (_m > 0) DURATION = _m; } catch (e) {}
-  var SEG = DURATION / 4;         // 1.2s per season — long enough to read each
+  var SEG = DURATION / 4;         // 2s per season
   var MIN_MS = DURATION;          // loader stays for the whole cycle
   var startT = now(), done = false, finished = false, season = -1, raf = null, lastSplash = 0;
 

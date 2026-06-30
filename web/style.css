@@ -1084,18 +1084,20 @@ input { font-family: inherit; }
 /* ---- Sky: four washes (one per season) that crossfade and sweep in from the
    right, so the weather passes horizontally through the year. ---------------- */
 .load-sky { position: absolute; inset: 0; z-index: 0; }
+/* Each season's sky is a full-cover layer that simply CROSSFADES — no transform
+   sweep (a translated layer would expose a bare strip of the dark overlay on
+   the side, reading as a black bar). */
 .load-sky > div {
-  position: absolute; inset: 0; opacity: 0; transform: translateX(22%);
-  transition: opacity .7s ease, transform .9s cubic-bezier(.2,.7,.3,1);
+  position: absolute; inset: 0; opacity: 0; transition: opacity .6s ease;
 }
-.sky-spring { background: linear-gradient(180deg, #2f5a3e 0%, #1b2a24 46%, var(--color-bg) 82%); }
-.sky-summer { background: linear-gradient(180deg, #2f5f8c 0%, #1d3650 42%, var(--color-bg) 82%); }
-.sky-autumn { background: linear-gradient(180deg, #5e3a1c 0%, #2e2013 44%, var(--color-bg) 82%); }
-.sky-winter { background: linear-gradient(180deg, #46566f 0%, #1d2735 44%, var(--color-bg) 84%); }
+.sky-spring { background: linear-gradient(180deg, #3a6b49 0%, #20302a 46%, var(--color-bg) 82%); }
+.sky-summer { background: linear-gradient(180deg, #3a78ad 0%, #214064 42%, var(--color-bg) 82%); }
+.sky-autumn { background: linear-gradient(180deg, #6e441f 0%, #342414 44%, var(--color-bg) 82%); }
+.sky-winter { background: linear-gradient(180deg, #93a6bd 0%, #3a4a60 40%, var(--color-bg) 86%); }
 #loadingScreen.s-spring .sky-spring,
 #loadingScreen.s-summer .sky-summer,
 #loadingScreen.s-autumn .sky-autumn,
-#loadingScreen.s-winter .sky-winter { opacity: 1; transform: translateX(0); }
+#loadingScreen.s-winter .sky-winter { opacity: 1; }
 
 /* Each season's particles show only during that season (crossfaded). --------- */
 .load-rain, .load-petals, .load-leaves, .load-snow {
@@ -1206,6 +1208,17 @@ input { font-family: inherit; }
   50%  { transform: translate(16px, 52vh); }
   100% { transform: translate(-8px, 116vh); }
 }
+
+/* Winter — snow settled on the ground, so winter reads clearly even at a glance. */
+.load-frost {
+  position: absolute; left: 0; right: 0; top: calc(62vh - 7px);
+  height: 15px; z-index: 2; pointer-events: none;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: linear-gradient(180deg, #eef4fc 0%, #d2e0f1 55%, rgba(210,224,241,0) 100%);
+  filter: blur(0.4px);
+  opacity: 0; transition: opacity .6s ease;
+}
+#loadingScreen.s-winter .load-frost { opacity: .95; }
 
 @media (prefers-reduced-motion: reduce) {
   .load-drop, .load-petal, .load-leaf, .load-flake, .load-sun::before { animation: none; }

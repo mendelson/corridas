@@ -76,10 +76,10 @@
       + 'vh;animation-duration:' + rnd(0.55, 1.0).toFixed(2) + 's;animation-delay:' + (-rnd(0, 1.2)).toFixed(2)
       + 's;opacity:' + rnd(0.3, 0.65).toFixed(2) + '"></span>';
   });
-  var PETALS = ['#f3b6cf', '#f7c9d8', '#eaa6c6', '#f4cfa8'];
-  field('load-petals', 16, function (i) {
+  var PETALS = ['#f3b6cf', '#f7c9d8', '#eaa6c6', '#f4a9c4'];
+  field('load-petals', 28, function (i) {
     return '<span class="load-petal" style="left:' + rnd(-4, 100).toFixed(2) + '%;--c:' + PETALS[i % PETALS.length]
-      + ';width:' + rnd(8, 14).toFixed(0) + 'px;animation-duration:' + rnd(3.0, 5.0).toFixed(2)
+      + ';width:' + rnd(11, 19).toFixed(0) + 'px;animation-duration:' + rnd(3.0, 5.0).toFixed(2)
       + 's;animation-delay:' + (-rnd(0, 4)).toFixed(2) + 's"></span>';
   });
   var splashes = layer('load-splashes');   // rain hitting the ground + the shoe (spring)
@@ -93,10 +93,10 @@
     + '<path d="M12 3 L12 21" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/>'
     + '<path d="M12 9 L8 7 M12 9 L16 7 M12 13 L8 11 M12 13 L16 11" stroke="rgba(0,0,0,.18)" stroke-width="0.8" fill="none"/></svg>';
   var LCOL = ['#c0612a', '#d98b3a', '#8a9a3b', '#b5482a', '#caa24a', '#9c5a25'];
-  field('load-leaves', 9, function (i) {
+  field('load-leaves', 14, function (i) {
     return '<span class="load-leaf" style="--y0:' + rnd(4, 50).toFixed(1) + 'vh;color:' + LCOL[i % LCOL.length]
-      + ';width:' + rnd(13, 28).toFixed(0) + 'px;animation-duration:' + rnd(2.0, 3.8).toFixed(2)
-      + 's;animation-delay:' + rnd(0, 2.2).toFixed(2) + 's">' + LEAF + '</span>';
+      + ';width:' + rnd(13, 28).toFixed(0) + 'px;animation-duration:' + rnd(2.2, 4.0).toFixed(2)
+      + 's;animation-delay:' + rnd(0, 2.4).toFixed(2) + 's">' + LEAF + '</span>';
   });
 
   // Winter: snow.
@@ -106,18 +106,19 @@
       + 'px;animation-duration:' + rnd(2.6, 5.0).toFixed(2) + 's;animation-delay:' + (-rnd(0, 5)).toFixed(2)
       + 's;opacity:' + rnd(0.55, 1).toFixed(2) + '"></span>';
   });
+  layer('load-frost');   // snow settled on the ground (winter only)
 
   // ---- run: age the shoe + march through the four seasons ------------------
   function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
   function smooth(t) { t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
 
   var SEASONS = ['s-spring', 's-summer', 's-autumn', 's-winter'];
-  var DURATION = 2800;            // full new → worn arc across the 4 seasons
+  var DURATION = 4800;            // full new → worn arc across the 4 seasons
   // Debug aid (e.g. ?loaderMs=16000) to slow the arc down for inspection/QA;
   // no effect in normal use.
   try { var _m = +(new URLSearchParams(location.search).get('loaderMs')); if (_m > 0) DURATION = _m; } catch (e) {}
-  var SEG = DURATION / 4;         // 700ms per season
-  var MIN_MS = DURATION;          // loader stays for the whole cycle (≥2s)
+  var SEG = DURATION / 4;         // 1.2s per season — long enough to read each
+  var MIN_MS = DURATION;          // loader stays for the whole cycle
   var startT = now(), done = false, finished = false, season = -1, raf = null, lastSplash = 0;
 
   function setSeason(i) {

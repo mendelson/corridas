@@ -1,15 +1,24 @@
 /*!
- * loading.js — Tela de carregamento: o tênis da galeria fica centrado (no zoom,
- * pisando no chão) e envelhece de novo → desgastado enquanto o clima passa pelas
- * QUATRO ESTAÇÕES, na horizontal:
- *   primavera (céu verde, chuva leve + pétalas, respingos no tênis)
- *   → verão  (céu azul, sol forte)
- *   → outono (céu âmbar, folhas ao vento)
- *   → inverno(céu frio, neve caindo)
- * Quando os dados estão prontos e o ciclo terminou (≥~2,8s), revela o site.
+ * loading.js — Tela de carregamento com o tênis da galeria.
+ *
+ * O tênis fica SEMPRE grande e centralizado (o mesmo enquadramento "zoom" do
+ * início/fim da galeria — ele nunca cruza a tela). Enquanto isso, passa UM ANO:
+ * as estações giram numa roda celeste — cada estação NASCE pela direita, cruza o
+ * topo e SE PÕE pela esquerda enquanto a próxima sobe — e o tênis envelhece de
+ * NOVO a GASTO. A intenção é de tempo passando e desgastando o tênis.
+ *
+ * Suavidade: a roda é uma animação de `transform: rotate` e cada emblema
+ * contra-gira para ficar em pé — TUDO com `transform`, ou seja, roda no
+ * COMPOSITOR e não trava quando a main thread fica ocupada lendo o JSON. O
+ * filtro de deformação (caro) do tênis é desligado nesta tela (ele aparece
+ * enorme aqui), restando o envelhecimento por opacidade, atualizado com
+ * parcimônia (~12 fps) para não disputar a main thread.
+ *
+ * A introdução SEMPRE roda pelo menos um ciclo inteiro: revela só na virada de
+ * um ciclo, e somente quando os dados já chegaram.
  *
  * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen.
- * app.js chama window.Loading.done() quando body.dataset.fullDataReady = '1'.
+ * app.js chama window.Loading.done() quando os dados terminam de carregar.
  */
 (function () {
   'use strict';
@@ -17,14 +26,14 @@
   var overlay = document.getElementById('loadingScreen');
   if (!overlay) return;
 
-  if (navigator.webdriver) {                 // automated browsers skip the loader
+  if (navigator.webdriver) {
     if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
     return;
   }
 
-  var scene = overlay.querySelector('.load-scene');
+  var scene = overlay.querySelector('.load-scene') || overlay;
   var stage = overlay.querySelector('.load-shoe-stage');
-  if (!scene || !stage) { dismissNow(); return; }
+  if (!stage) { dismissNow(); return; }
 
   var reduce = false;
   try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
@@ -33,142 +42,141 @@
   try { if (window.ShoeWear) ctl = window.ShoeWear.mount(stage); } catch (e) {}
   if (!ctl) { dismissNow(); return; }
 
-  // ---- geometry: shoe centred, fit-to-screen, sole on the ground -----------
+  // The SVG crumple (feDisplacementMap) is gorgeous but re-rasters the WHOLE
+  // shoe every time progress changes — and here the shoe is huge (hero), so it
+  // hammers the main thread and causes the hitching. Drop it for the loader; the
+  // shoe still ages via the (cheap) opacity wear layers.
+  try {
+    var sole = stage.querySelector('.sole-wrap'); if (sole) sole.style.filter = 'none';
+    var upper = stage.querySelector('.upper-wrap'); if (upper) upper.style.filter = 'none';
+  } catch (e) {}
+
+  // ---- timing --------------------------------------------------------------
+  var CYCLE_MS = 6000;     // one full year (4 seasons); the shoe ages over it
+  var WEAR_MS = 80;        // throttle the shoe-aging repaint to ~12 fps
   var GROUND_FRAC = 0.62;
+  overlay.style.setProperty('--cyc', CYCLE_MS + 'ms');
+
   function W() { return stage.offsetWidth; }
   function H() { return stage.offsetHeight; }
   function vw() { return window.innerWidth; }
   function vh() { return window.innerHeight; }
   function groundY() { return vh() * GROUND_FRAC; }
-  function setShoe(x, y, s) { stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')'; }
 
-  var soleFrac = 0.93;
+  function setShoe(x, y, s) {
+    stage.style.transform = 'translate(' + x + 'px,' + y + 'px) scale(' + s + ')';
+  }
+
+  // Ground on the VISIBLE sole (the white midsole), not the dark outsole tread:
+  // the tread is nearly invisible on the dark backdrop, so grounding it left the
+  // white sole floating ~20px above the dirt. Now the midsole rests on the
+  // surface and the tread sinks slightly into it (natural).
+  var soleFrac = 0.88;
   (function () {
     try {
-      var sole = stage.querySelector('.outsole') || stage.querySelector('.sole-wrap');
+      var sw = stage.querySelector('.midsole') || stage.querySelector('.sole-wrap');
       var sb = stage.getBoundingClientRect();
-      if (sole && sb.height) soleFrac = (sole.getBoundingClientRect().bottom - sb.top) / sb.height;
+      if (sw && sb.height) soleFrac = (sw.getBoundingClientRect().bottom - sb.top) / sb.height;
     } catch (e) {}
   })();
-  // Leave ~14vh of sky above the shoe so it reads as a shoe standing on a floor
-  // (not jammed to the top edge), and keep it within the width.
-  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - vh() * 0.14) / (soleFrac * H())); }
+
+  function topForSole(s) { return groundY() - soleFrac * H() * s + 3; }
+  function heroScale() { return Math.min(0.82 * vw() / W(), (groundY() - 24) / (soleFrac * H())); }
   function applyHero() {
     var s = heroScale();
-    // Sink the sole a few px into the ground so the shoe plainly rests on it.
-    setShoe((vw() - W() * s) / 2, groundY() - soleFrac * H() * s + 6, s);
+    setShoe((vw() - W() * s) / 2, topForSole(s), s);
   }
+  applyHero();
 
-  // ---- build the weather layers (no markup change in the shells) -----------
-  function rnd(a, b) { return a + Math.random() * (b - a); }
-  function layer(cls) { var d = document.createElement('div'); d.className = cls; scene.appendChild(d); return d; }
-  function field(cls, n, gen) {
-    var c = layer(cls);
-    if (reduce) return c;
-    var h = ''; for (var i = 0; i < n; i++) h += gen(i); c.innerHTML = h; return c;
+  // ---- scene: sky tint + celestial wheel (built here so the shells stay clean) -
+  var sky = document.createElement('div');
+  sky.className = 'load-sky';
+  scene.insertBefore(sky, scene.firstChild);
+
+  var arc = document.createElement('div');
+  arc.className = 'load-arc';
+  scene.insertBefore(arc, stage); // behind the shoe (the focus), above the sky
+
+  var wheel = document.createElement('div');
+  wheel.className = 'load-wheel';
+  arc.appendChild(wheel);
+
+  function emblem(season, build) {
+    var e = document.createElement('div');
+    e.className = 'load-emblem e-' + season;
+    if (build) build(e);
+    wheel.appendChild(e);            // a child of the wheel → orbits as it spins
+    return e;
   }
-
-  // Four crossfading sky washes (sweep in from the right) — one per season.
-  var sky = layer('load-sky');
-  sky.innerHTML = '<div class="sky-spring"></div><div class="sky-summer"></div>'
-                + '<div class="sky-autumn"></div><div class="sky-winter"></div>';
-
-  // Spring: light slanted rain + drifting blossom petals.
-  field('load-rain', Math.max(28, Math.min(70, Math.round(vw() / 22))), function () {
-    return '<span class="load-drop" style="left:' + rnd(0, 100).toFixed(2) + '%;height:' + rnd(6, 13).toFixed(1)
-      + 'vh;animation-duration:' + rnd(0.55, 1.0).toFixed(2) + 's;animation-delay:' + (-rnd(0, 1.2)).toFixed(2)
-      + 's;opacity:' + rnd(0.3, 0.65).toFixed(2) + '"></span>';
+  emblem('spring', function (e) {
+    var c = document.createElement('div'); c.className = 'cloud'; e.appendChild(c);
+    [22, 44, 66].forEach(function (x, i) {
+      var r = document.createElement('span'); r.className = 'rd';
+      r.style.left = x + 'px';
+      r.style.animationDelay = (i * 0.32).toFixed(2) + 's';
+      e.appendChild(r);
+    });
   });
-  var PETALS = ['#f3b6cf', '#f7c9d8', '#eaa6c6', '#f4a9c4'];
-  field('load-petals', 28, function (i) {
-    return '<span class="load-petal" style="left:' + rnd(-4, 100).toFixed(2) + '%;--c:' + PETALS[i % PETALS.length]
-      + ';width:' + rnd(11, 19).toFixed(0) + 'px;animation-duration:' + rnd(3.0, 5.0).toFixed(2)
-      + 's;animation-delay:' + (-rnd(0, 4)).toFixed(2) + 's"></span>';
+  emblem('summer', null);
+  emblem('autumn', function (e) {
+    var l = document.createElement('div'); l.className = 'leaf'; e.appendChild(l);
   });
-  var splashes = layer('load-splashes');   // rain hitting the ground + the shoe (spring)
-
-  // Summer: the sun.
-  layer('load-sun');
-
-  // Autumn: leaves blown across by the wind.
-  var LEAF = '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">'
-    + '<path d="M12 1 C19 6 21 15 12 23 C3 15 5 6 12 1 Z" fill="currentColor"/>'
-    + '<path d="M12 3 L12 21" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/>'
-    + '<path d="M12 9 L8 7 M12 9 L16 7 M12 13 L8 11 M12 13 L16 11" stroke="rgba(0,0,0,.18)" stroke-width="0.8" fill="none"/></svg>';
-  var LCOL = ['#c0612a', '#d98b3a', '#8a9a3b', '#b5482a', '#caa24a', '#9c5a25'];
-  field('load-leaves', 14, function (i) {
-    return '<span class="load-leaf" style="--y0:' + rnd(4, 50).toFixed(1) + 'vh;color:' + LCOL[i % LCOL.length]
-      + ';width:' + rnd(13, 28).toFixed(0) + 'px;animation-duration:' + rnd(2.2, 4.0).toFixed(2)
-      + 's;animation-delay:' + rnd(0, 2.4).toFixed(2) + 's">' + LEAF + '</span>';
+  emblem('winter', function (e) {
+    [0, 60, 120].forEach(function (deg) {
+      var s = document.createElement('span'); s.className = 'spoke';
+      s.style.transform = 'rotate(' + deg + 'deg)';
+      e.appendChild(s);
+    });
   });
 
-  // Winter: snow.
-  field('load-snow', Math.max(34, Math.min(80, Math.round(vw() / 18))), function () {
-    var sz = rnd(3, 7).toFixed(1);
-    return '<span class="load-flake" style="left:' + rnd(0, 100).toFixed(2) + '%;width:' + sz + 'px;height:' + sz
-      + 'px;animation-duration:' + rnd(2.6, 5.0).toFixed(2) + 's;animation-delay:' + (-rnd(0, 5)).toFixed(2)
-      + 's;opacity:' + rnd(0.55, 1).toFixed(2) + '"></span>';
-  });
-  layer('load-frost');   // snow settled on the ground (winter only)
+  function easeInOut(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
 
-  // ---- run: age the shoe + march through the four seasons ------------------
+  // ---- state machine -------------------------------------------------------
+  var done = false, finished = false, raf = null, start = 0, cur = 0, lastWear = 0, lastCyc = 0;
+
   function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
-  function smooth(t) { t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
-
-  var SEASONS = ['s-spring', 's-summer', 's-autumn', 's-winter'];
-  var DURATION = 8000;            // 4 seasons × 2s each
-  // Debug aid (e.g. ?loaderMs=16000) to slow the arc down for inspection/QA;
-  // no effect in normal use.
-  try { var _m = +(new URLSearchParams(location.search).get('loaderMs')); if (_m > 0) DURATION = _m; } catch (e) {}
-  var SEG = DURATION / 4;         // 2s per season
-  var MIN_MS = DURATION;          // loader stays for the whole cycle
-  var startT = now(), done = false, finished = false, season = -1, raf = null, lastSplash = 0;
-
-  function setSeason(i) {
-    if (i === season) return;
-    season = i;
-    for (var j = 0; j < SEASONS.length; j++) overlay.classList.toggle(SEASONS[j], j === i);
-  }
-
-  function spawnSplash() {
-    var shoe = stage.getBoundingClientRect(), onShoe = Math.random() < 0.5, s = document.createElement('span');
-    if (onShoe) {
-      s.className = 'load-spat';
-      s.style.left = (shoe.left + shoe.width * rnd(0.22, 0.78)) + 'px';
-      s.style.top = (shoe.top + shoe.height * rnd(0.12, 0.52)) + 'px';
-    } else {
-      s.className = 'load-ripple';
-      var w = rnd(10, 32);
-      s.style.left = (Math.random() * vw()) + 'px';
-      s.style.top = (groundY() + rnd(0, 8)) + 'px';
-      s.style.width = w + 'px'; s.style.height = (w * 0.4) + 'px';
-    }
-    splashes.appendChild(s);
-    s.addEventListener('animationend', function () { if (s.parentNode) s.parentNode.removeChild(s); });
-  }
 
   ctl.setProgress(0);
-  applyHero();
-  setSeason(0);
+  start = now();
+  lastWear = start;
 
+  // Non-reduced: the wheel + sky run on the compositor (CSS). Reveal at a full
+  // cycle boundary via the wheel animation's iteration event — always at least
+  // one complete year, and only once the data is ready.
+  if (!reduce) {
+    wheel.addEventListener('animationiteration', function (e) {
+      // animationiteration BUBBLES — ignore events from children (rain drops,
+      // emblem counter-rotation, sun rays). Only the wheel's own full revolution
+      // counts, so the intro always runs at least one complete cycle.
+      if (e.target === wheel && e.animationName === 'loadWheelSpin' && done) reveal();
+    });
+  }
+
+  raf = requestAnimationFrame(tick);
   function tick() {
-    var t = now() - startT;
-    ctl.setProgress(smooth(t / DURATION));                 // progressive wear → final
-    setSeason(Math.min(SEASONS.length - 1, Math.floor(t / SEG)));
-    if (!reduce && season === 0 && t - lastSplash >= 90) { lastSplash = t; spawnSplash(); spawnSplash(); }
-    if (t >= MIN_MS && done) { finish(); return; }
+    var t = now(), el = t - start;
+    // Age the shoe new -> worn over the first cycle, throttled + eased so it
+    // never jumps after a one-off main-thread stall and never spams repaints.
+    if (t - lastWear >= WEAR_MS) {
+      lastWear = t;
+      var target = easeInOut(Math.min(1, el / CYCLE_MS));
+      cur += (target - cur) * 0.3;
+      ctl.setProgress(cur);
+    }
+    if (reduce) {
+      var cyc = Math.floor(el / CYCLE_MS);
+      if (cyc > lastCyc) { lastCyc = cyc; if (done) { reveal(); return; } }
+    }
     raf = requestAnimationFrame(tick);
   }
-  raf = requestAnimationFrame(tick);
 
-  function finish() {
+  function reveal() {
     if (finished) return;
     finished = true;
     if (raf) cancelAnimationFrame(raf);
     ctl.setProgress(1);
-    setSeason(SEASONS.length - 1);
     overlay.classList.add('hidden');
-    setTimeout(dismissNow, 600);
+    setTimeout(dismissNow, 650);
   }
 
   function dismissNow() {
@@ -176,6 +184,10 @@
   }
 
   window.addEventListener('resize', function () { if (!finished) applyHero(); });
+
+  // app.js signals the data is fully loaded.
   window.Loading = { done: function () { done = true; } };
-  setTimeout(function () { done = true; }, 14000);   // safety net
+
+  // Safety net: never trap the user if the load hangs (slow geo, failed fetch).
+  setTimeout(function () { done = true; }, 14000);
 })();

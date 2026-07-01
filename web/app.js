@@ -533,20 +533,27 @@ async function initFilters() {
   updateCount();
   _anchorOpenMonth();
 
-  const geo = await detectGeoEstado();
-  // Respect any location the user picked while geo was in flight.
-  if (geo && _estadoAvailableValues.has(geo) && state.estado === estadoAtFirstPaint) {
-    state.estado = geo;
-    _geoApplied  = geo;
-    _updateEstadoLabel();
-    populateEstadoFilter({ skipGeo: true });
-    populateFontesFilter();
-    applyFilters();
-    renderCards();
-    updateCount();
-    // The list above the current month changed — re-anchor (still load-time).
-    _anchorOpenMonth();
-  }
+  // Geolocation must NOT hold the card list — nor the full-dataset load —
+  // hostage. It runs fire-and-forget (the IP lookups can be slow or blocked by
+  // ad/privacy blockers); the estado filter is applied in a later render when
+  // (and if) it resolves. Crucially, NOT awaiting it here lets loadData proceed
+  // to _applyFullData immediately, so far-future events (beyond the boot-shard
+  // window) appear as soon as the full payload arrives instead of waiting on geo.
+  detectGeoEstado().then(geo => {
+    // Respect any location the user picked while geo was in flight.
+    if (geo && _estadoAvailableValues.has(geo) && state.estado === estadoAtFirstPaint) {
+      state.estado = geo;
+      _geoApplied  = geo;
+      _updateEstadoLabel();
+      populateEstadoFilter({ skipGeo: true });
+      populateFontesFilter();
+      applyFilters();
+      renderCards();
+      updateCount();
+      // The list above the current month changed — re-anchor (still load-time).
+      _anchorOpenMonth();
+    }
+  });
 }
 
 // ---------------------------------------------------------------------------

@@ -1020,10 +1020,18 @@ input { font-family: inherit; }
   justify-content: center;
   opacity: 1;
   overflow: hidden;
+  /* Swallow touch gestures so they can't scroll the document behind the overlay. */
+  touch-action: none;
+  overscroll-behavior: contain;
   transition: opacity 0.6s ease;
   /* Failsafe: if loading.js never runs, don't trap the user behind the overlay. */
   animation: loadFailsafe 1ms linear 18s forwards;
 }
+/* While the loader is up, the page behind it must not scroll (wheel, keyboard,
+   scrollbar). loading.js adds/removes this class on <html>; every dismiss path
+   (finish, early bail-outs, safety net) removes it. */
+html.load-lock,
+html.load-lock body { overflow: hidden; }
 #loadingScreen.hidden { opacity: 0; pointer-events: none; }
 @keyframes loadFailsafe { to { opacity: 0; visibility: hidden; pointer-events: none; } }
 

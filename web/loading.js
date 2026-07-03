@@ -22,6 +22,11 @@
     return;
   }
 
+  // No page scroll while the loader is up (wheel, keyboard, touch). Unlocked on
+  // every dismiss path; the pre-lock scroll state is irrelevant (fresh page load).
+  document.documentElement.classList.add('load-lock');
+  function unlock() { document.documentElement.classList.remove('load-lock'); }
+
   var scene = overlay.querySelector('.load-scene');
   var stage = overlay.querySelector('.load-shoe-stage');
   if (!scene || !stage) { dismissNow(); return; }
@@ -171,15 +176,18 @@
     if (raf) cancelAnimationFrame(raf);
     ctl.setProgress(1);
     setSeason(SEASONS.length - 1);
+    unlock();                        // scroll back as soon as the fade-out starts
     overlay.classList.add('hidden');
     setTimeout(dismissNow, 600);
   }
 
   function dismissNow() {
+    unlock();
     if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
   }
 
   window.addEventListener('resize', function () { if (!finished) applyHero(); });
   window.Loading = { done: function () { done = true; } };
   setTimeout(function () { done = true; }, 14000);   // safety net
+  setTimeout(unlock, 18500);   // mirrors the CSS loadFailsafe: never trap scroll
 })();

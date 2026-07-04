@@ -176,7 +176,10 @@ def _parse_card(card, today: str, now: str) -> Corrida | None:
 
 
 _BC_API = "https://brasilcorrida.com.br/api/src/Site/EventoDetalhe.php"
-_BC_SLUG_RE = re.compile(r"brasilcorrida\.com\.br/#/evento/([^?&#]+)")
+# O SESC publica links do Brasil Corrida com query de tracking entre o domínio
+# e o hash (ex.: brasilcorrida.com.br/?fbclid=…#/evento/slug) — o [^#]* absorve
+# qualquer coisa antes do fragmento.
+_BC_SLUG_RE = re.compile(r"brasilcorrida\.com\.br/[^#]*#/evento/([^?&#]+)")
 
 
 def _fetch_horario(url: str) -> str | None:

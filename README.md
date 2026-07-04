@@ -44,7 +44,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-07-04 10:54 | ⚠️ 0 eventos (1/3) | 2026-07-03 11:28 · 60 ev |
 | Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-07-04 10:51 | ✅ | 2026-07-04 10:51 · 8 ev |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-07-04 10:54 | ✅ | 2026-07-04 10:54 · 4 ev |
-| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-07-04 10:52 | ❌ 0 eventos | 2026-06-28 19:30 · 1 ev |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-07-04 15:17 | ✅ | 2026-07-04 15:17 · 1 ev |
 
 ### Fontes brasileiras — eventos específicos
 

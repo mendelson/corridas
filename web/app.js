@@ -1,26 +1,16 @@
 'use strict';
 
-// The running-shoe mark — the same cobalt shoe drawn on the personal timeline
-// (web/gallery/shoe-wear.js), clean (no wear layers). Used as the header logo.
-const SHOE_LOGO = '<svg class="shoe-logo" viewBox="48 86 350 186" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'
-  + '<path d="M58 210 C54 224 54 244 66 252 C120 262 320 262 374 250 C388 244 392 226 384 212 C380 206 372 208 360 210 C300 220 130 220 80 210 C70 208 62 206 58 210 Z" fill="#eee8de"/>'
-  + '<path d="M56 232 C62 248 120 258 222 258 C320 258 372 250 384 236 C382 248 372 256 360 258 C300 264 130 264 80 258 C68 256 58 246 56 232 Z" fill="#d7cdbe"/>'
-  + '<path d="M62 214 C150 224 300 224 380 212 C384 216 382 222 376 224 C300 234 130 234 70 224 C64 222 60 218 62 214 Z" fill="#f5f0e8"/>'
-  + '<path d="M64 230 C150 240 300 238 382 222" fill="none" stroke="#b8552e" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>'
-  + '<path d="M70 252 C98 262 150 263 184 262 C150 256 108 254 84 248 C76 248 70 250 70 252 Z M256 262 C300 262 344 257 366 248 C346 260 308 263 270 263 C262 263 256 262 256 262 Z" fill="#2b2724"/>'
-  + '<path d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C108 96 130 92 150 100 C156 116 158 128 160 138 C195 142 248 150 300 162 C342 172 366 188 376 210 C372 214 364 214 354 214 C250 218 130 218 92 214 C86 214 81 213 78 210 Z" fill="#3b6ea3"/>'
-  + '<path d="M160 138 C195 142 248 150 300 162 C300 178 296 196 286 210 C220 212 170 210 150 206 C150 184 154 158 160 138 Z" fill="#284f78" opacity="0.32"/>'
-  + '<path d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C94 138 92 172 98 200 C96 210 88 213 78 210 Z" fill="#284f78"/>'
-  + '<path d="M158 132 C176 136 198 140 218 146 C214 168 210 192 206 206 C190 204 174 200 162 196 C158 174 156 152 158 132 Z" fill="#284f78" opacity="0.55"/>'
-  + '<path d="M306 164 C338 174 360 190 376 210 C372 214 364 214 354 214 C318 216 300 216 292 214 C288 196 294 176 306 164 Z" fill="#284f78"/>'
-  + '<path d="M100 116 C108 96 130 92 150 100 C170 110 168 132 150 142 C128 148 106 138 100 116 Z" fill="#1c2935"/>'
-  + '<path d="M100 116 C108 96 130 92 150 100 C170 110 168 132 150 142" fill="none" stroke="#284f78" stroke-width="7" stroke-linecap="round"/>'
-  + '<path d="M150 112 C152 92 170 88 180 96 C184 110 182 126 178 140 C166 134 154 124 150 112 Z" fill="#f5f0e8"/>'
-  + '<g stroke="#f3efe9" stroke-width="5" stroke-linecap="round"><path d="M170 120 l30 6"/><path d="M172 134 l32 7"/><path d="M176 150 l32 7"/><path d="M180 166 l30 7"/></g>'
-  + '<g fill="#f3efe9"><circle cx="170" cy="120" r="2.8"/><circle cx="200" cy="126" r="2.8"/><circle cx="172" cy="134" r="2.8"/><circle cx="204" cy="141" r="2.8"/><circle cx="176" cy="150" r="2.8"/><circle cx="208" cy="157" r="2.8"/><circle cx="180" cy="166" r="2.8"/><circle cx="210" cy="173" r="2.8"/></g>'
-  + '<path d="M306 182 C254 192 206 188 176 176 C206 200 262 202 312 192 C312 188 310 185 306 182 Z" fill="#cf7a3e"/>'
-  + '<path d="M74 126 C68 116 76 108 86 112 C86 120 82 126 74 126 Z" fill="#cf7a3e"/>'
-  + '</svg>';
+// Header logo: the SAME shoe artwork as the loader/gallery, taken straight from
+// ShoeWear (single source of truth — no separate copy to drift out of sync).
+// The wear layers stay invisible (opacity 0; the static logo never calls
+// setProgress), so it renders the clean shoe. Re-cropped + tagged for the header.
+const SHOE_LOGO = (function () {
+  const m = (typeof window !== 'undefined' && window.ShoeWear && window.ShoeWear.SVG_MARKUP) || '';
+  return m
+    ? m.replace('class="shoe-wear"', 'class="shoe-logo shoe-wear" aria-hidden="true"')
+        .replace('viewBox="40 80 360 196"', 'viewBox="54 98 330 166"')
+    : '';
+})();
 
 // ---------------------------------------------------------------------------
 // Language detection — runs before anything else

@@ -2,17 +2,15 @@
  * shoe-wear.js — Tênis de corrida que envelhece conforme um progresso 0→1.
  * Sem dependências. Framework-agnostic.
  *
- * USO:
+ * v2 — Redesign do modelo: geometria de tênis de corrida de verdade.
+ *   • Solado "rocker": bisel no calcanhar + toe spring (bico levanta do chão)
+ *   • Entressola de espuma alta, com drop calcanhar→bico visível
+ *   • Borracha do solado com travas (lugs) seguindo a curvatura
+ *   • Cabedal baixo tipo mesh, colarinho acolchoado, aba no calcanhar
+ *
+ * USO (inalterado):
  *   const shoe = ShoeWear.mount(document.getElementById('shoe'));
  *   shoe.setProgress(0.0);   // 0 = zero km (limpo)   1 = veterano (rodado)
- *
- * Ligue setProgress() ao SEU progresso de scroll já existente (0→1).
- * Reversível: passar valores menores "rejuvenesce" o tênis.
- *
- * Dica de suavidade (opcional): se o seu progresso for "duro", interpole:
- *   let cur = 0;
- *   function tick(){ cur += (target - cur) * 0.12; shoe.setProgress(cur);
- *                    if (Math.abs(target-cur) > 0.001) requestAnimationFrame(tick); }
  */
 (function (global) {
   'use strict';
@@ -26,79 +24,86 @@
         '<radialGradient id="sw-updentG"><stop offset="0" stop-color="#16314a" stop-opacity="0.7"/><stop offset="1" stop-color="#16314a" stop-opacity="0"/></radialGradient>',
         '<radialGradient id="sw-abrG"><stop offset="0" stop-color="#7e93a6" stop-opacity="0.85"/><stop offset="1" stop-color="#7e93a6" stop-opacity="0"/></radialGradient>',
         '<linearGradient id="sw-patG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c79a55"/><stop offset="1" stop-color="#8f6a39"/></linearGradient>',
-        // Crumple/deform: turbulence-driven displacement warps the whole shoe
-        // SILHOUETTE; a second, stronger field crumples just the UPPER (cabedal).
-        // Both start at scale 0 (clean) and ramp up with wear (set from JS).
         '<filter id="sw-crumple" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.009 0.022" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>',
         '<filter id="sw-crumple-up" x="-35%" y="-35%" width="170%" height="170%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.015 0.04" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="0" xChannelSelector="R" yChannelSelector="G"/></filter>',
       '</defs>',
-      '<g class="w-dust" opacity="0"><ellipse cx="170" cy="262" rx="100" ry="12" fill="#a8946e" opacity="0.55"/><ellipse cx="320" cy="258" rx="76" ry="10" fill="#a8946e" opacity="0.5"/></g>',
+      '<g class="w-dust" opacity="0"><ellipse cx="180" cy="261" rx="100" ry="8" fill="#a8946e" opacity="0.55"/><ellipse cx="320" cy="254" rx="70" ry="7" fill="#a8946e" opacity="0.5"/></g>',
       '<g class="shoe">',
         '<g class="sole-wrap">',
-        // midsole / foam
-        '<path class="midsole" d="M58 210 C54 224 54 244 66 252 C120 262 320 262 374 250 C388 244 392 226 384 212 C380 206 372 208 360 210 C300 220 130 220 80 210 C70 208 62 206 58 210 Z" fill="#eee8de"/>',
-        '<path d="M56 232 C62 248 120 258 222 258 C320 258 372 250 384 236 C382 248 372 256 360 258 C300 264 130 264 80 258 C68 256 58 246 56 232 Z" fill="#d7cdbe"/>',
-        '<path d="M62 214 C150 224 300 224 380 212 C384 216 382 222 376 224 C300 234 130 234 70 224 C64 222 60 218 62 214 Z" fill="#f5f0e8"/>',
-        // foam wear
-        '<path class="w-grime" d="M58 224 C150 238 300 236 384 218 C390 232 388 248 374 253 C320 263 120 263 66 253 C56 247 54 234 58 224 Z" fill="url(#sw-grimeG)" opacity="0" style="mix-blend-mode:multiply"/>',
-        '<g class="w-dent" opacity="0"><ellipse cx="105" cy="232" rx="24" ry="13" fill="url(#sw-dentG)"/><ellipse cx="200" cy="240" rx="30" ry="11" fill="url(#sw-dentG)"/><ellipse cx="300" cy="233" rx="22" ry="12" fill="url(#sw-dentG)"/><ellipse cx="150" cy="236" rx="18" ry="9" fill="url(#sw-dentG)"/></g>',
+        // ---- ENTRESSOLA (espuma): rocker — bisel no calcanhar, toe spring no bico ----
+        '<path class="midsole" d="M70 208 C62 218 62 232 72 242 C80 250 96 255 116 256 C170 259 240 258 282 255 C316 252 340 244 354 233 C363 227 365 218 355 215 C330 218 300 219 268 219 C224 219 176 214 140 209 C112 204 86 204 70 208 Z" fill="#eee8de"/>',
+        // crista superior clara da espuma
+        '<path d="M76 212 C150 219 260 223 352 217 C354 220 352 223 347 224 C280 229 160 226 90 219 C82 218 77 215 76 212 Z" fill="#f5f0e8"/>',
+        // linha de segunda densidade
+        '<path d="M74 236 C86 248 108 253 144 255 C196 258 246 257 284 251 C310 247 328 241 344 232 L346 236 C330 245 310 251 284 255 C246 261 194 262 142 259 C106 257 82 248 74 236 Z" fill="#d7cdbe"/>',
+        // desgaste da espuma
+        '<path class="w-grime" d="M74 230 C160 246 280 244 350 226 C354 234 350 242 340 246 C295 254 160 258 100 253 C82 249 68 240 74 230 Z" fill="url(#sw-grimeG)" opacity="0" style="mix-blend-mode:multiply"/>',
+        '<g class="w-dent" opacity="0"><ellipse cx="110" cy="230" rx="24" ry="12" fill="url(#sw-dentG)"/><ellipse cx="200" cy="237" rx="30" ry="11" fill="url(#sw-dentG)"/><ellipse cx="296" cy="229" rx="22" ry="11" fill="url(#sw-dentG)"/><ellipse cx="152" cy="234" rx="18" ry="9" fill="url(#sw-dentG)"/></g>',
         '<g class="w-crease" stroke="#8a795c" stroke-width="2.4" fill="none" stroke-linecap="round" opacity="0">',
-          '<path d="M82 222 C98 230 116 230 132 224"/><path d="M80 236 C98 244 118 244 134 238"/>',
-          '<path d="M262 222 C286 230 312 228 332 220"/><path d="M260 236 C286 244 312 242 332 234"/>',
-          '<path d="M165 230 C190 237 218 236 242 229"/>',
+          '<path d="M84 220 C100 228 118 228 134 222"/><path d="M82 234 C100 242 120 242 136 236"/>',
+          '<path d="M258 223 C282 230 308 227 328 218"/><path d="M256 237 C282 243 306 239 326 230"/>',
+          '<path d="M164 229 C190 236 218 235 242 228"/>',
         '</g>',
-        '<path class="midline" d="M64 230 C150 240 300 238 382 222" fill="none" stroke="#b8552e" stroke-width="3.5" stroke-linecap="round" opacity="0.7"/>',
-        '<path class="outsole" d="M70 252 C98 262 150 263 184 262 C150 256 108 254 84 248 C76 248 70 250 70 252 Z M256 262 C300 262 344 257 366 248 C346 260 308 263 270 263 C262 263 256 262 256 262 Z" fill="#2b2724"/>',
-        '<g class="w-dirt" fill="#5f4a2c" opacity="0"><circle cx="120" cy="250" r="3.4"/><circle cx="150" cy="254" r="2.6"/><circle cx="186" cy="256" r="3.6"/><circle cx="225" cy="255" r="2.4"/><circle cx="262" cy="253" r="3"/><circle cx="300" cy="250" r="2.8"/><circle cx="335" cy="252" r="2.4"/><circle cx="100" cy="246" r="2.2"/></g>',
+        // costura da entressola
+        '<path class="midline" d="M78 217 C170 226 290 226 352 219" fill="none" stroke="#b8552e" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>',
+        // ---- BORRACHA do solado com travas, seguindo a curvatura (rocker) ----
+        '<path class="outsole" d="M86 244 C98 251 122 254 158 255 C204 256 244 255 272 250 C300 246 322 240 340 230" fill="none" stroke="#2b2724" stroke-width="6" stroke-linecap="butt" stroke-dasharray="20 6"/>',
+        '<g class="w-dirt" fill="#5f4a2c" opacity="0"><circle cx="120" cy="250" r="3.4"/><circle cx="152" cy="253" r="2.6"/><circle cx="188" cy="254" r="3.6"/><circle cx="226" cy="253" r="2.4"/><circle cx="262" cy="249" r="3"/><circle cx="298" cy="243" r="2.8"/><circle cx="330" cy="232" r="2.4"/><circle cx="98" cy="244" r="2.2"/></g>',
         '</g>',
-        '<g class="upper-wrap">',
-        // upper
-        '<path class="upper" d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C108 96 130 92 150 100 C156 116 158 128 160 138 C195 142 248 150 300 162 C342 172 366 188 376 210 C372 214 364 214 354 214 C250 218 130 218 92 214 C86 214 81 213 78 210 Z" fill="#3b6ea3"/>',
-        '<path d="M160 138 C195 142 248 150 300 162 C300 178 296 196 286 210 C220 212 170 210 150 206 C150 184 154 158 160 138 Z" fill="#284f78" opacity="0.32"/>',
-        '<path class="heel" d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C94 138 92 172 98 200 C96 210 88 213 78 210 Z" fill="#284f78"/>',
-        '<path d="M158 132 C176 136 198 140 218 146 C214 168 210 192 206 206 C190 204 174 200 162 196 C158 174 156 152 158 132 Z" fill="#284f78" opacity="0.55"/>',
-        '<path class="toecap" d="M306 164 C338 174 360 190 376 210 C372 214 364 214 354 214 C318 216 300 216 292 214 C288 196 294 176 306 164 Z" fill="#284f78"/>',
-        // upper wear
-        '<g class="w-updent" opacity="0"><ellipse cx="220" cy="180" rx="34" ry="20" fill="url(#sw-updentG)"/><ellipse cx="130" cy="170" rx="22" ry="24" fill="url(#sw-updentG)"/><ellipse cx="300" cy="190" rx="20" ry="16" fill="url(#sw-updentG)"/></g>',
+        '<g class="upper-wrap" transform="translate(0,4)">',
+        // ---- CABEDAL: perfil baixo, colarinho acolchoado, bico afilado ----
+        '<path class="upper" d="M70 202 C62 178 63 146 78 128 C84 119 93 116 100 121 C108 104 128 99 145 107 C152 117 155 126 158 135 C210 142 264 154 306 169 C330 178 348 188 354 198 C358 206 354 213 344 214 C306 216 230 217 160 208 C120 202 88 200 70 202 Z" fill="#3b6ea3"/>',
+        // sombra do vamp
+        '<path d="M158 135 C210 142 264 154 306 169 C304 182 298 197 289 209 C226 211 178 207 158 203 C155 182 156 156 158 135 Z" fill="#284f78" opacity="0.22"/>',
+        // contraforte do calcanhar
+        '<path class="heel" d="M70 202 C62 178 63 146 78 128 C84 119 93 116 100 121 C95 142 93 172 99 197 C90 202 78 203 70 202 Z" fill="#284f78"/>',
+        // painel do meio
+        '<path d="M158 130 C176 134 198 139 218 145 C214 165 209 188 205 202 C190 200 175 196 164 192 C159 172 156 150 158 130 Z" fill="#284f78" opacity="0.4"/>',
+        // bico reforçado
+        '<path class="toecap" d="M310 172 C332 181 348 190 354 198 C358 206 354 213 344 214 C326 215 311 215 301 213 C298 199 302 184 310 172 Z" fill="#284f78"/>',
+        // textura de mesh (sutil)
+        '<g stroke="#284f78" stroke-width="1.2" fill="none" opacity="0.25"><path d="M202 140 C198 158 196 180 198 204"/><path d="M228 145 C224 162 223 182 225 205"/><path d="M254 150 C251 166 250 184 252 206"/><path d="M280 157 C278 171 278 187 280 208"/></g>',
+        // desgaste do cabedal
+        '<g class="w-updent" opacity="0"><ellipse cx="220" cy="176" rx="34" ry="20" fill="url(#sw-updentG)"/><ellipse cx="128" cy="164" rx="20" ry="22" fill="url(#sw-updentG)"/><ellipse cx="298" cy="188" rx="20" ry="15" fill="url(#sw-updentG)"/></g>',
         '<g class="w-upcrease" stroke="#1d3f5e" stroke-width="2" fill="none" stroke-linecap="round" opacity="0">',
-          '<path d="M150 150 C190 162 240 170 292 178"/><path d="M120 138 C100 158 96 182 104 202"/>',
-          '<path d="M250 158 C246 176 244 194 248 208"/><path d="M180 200 C176 184 178 168 186 154"/><path d="M320 176 C330 188 334 200 332 210"/>',
+          '<path d="M150 148 C190 158 240 166 292 176"/><path d="M116 136 C100 156 96 178 104 198"/>',
+          '<path d="M250 156 C246 172 244 190 248 206"/><path d="M180 198 C176 182 178 168 186 154"/><path d="M320 176 C328 186 332 198 330 208"/>',
         '</g>',
-        '<path class="w-patina" d="M78 210 C68 192 66 160 72 134 C78 112 92 106 100 116 C108 96 130 92 150 100 C156 116 158 128 160 138 C195 142 248 150 300 162 C342 172 366 188 376 210 C372 214 364 214 354 214 C250 218 130 218 92 214 C86 214 81 213 78 210 Z" fill="url(#sw-patG)" opacity="0" style="mix-blend-mode:overlay"/>',
-        '<g class="w-abrasion" opacity="0"><ellipse cx="84" cy="150" rx="14" ry="22" fill="url(#sw-abrG)"/><ellipse cx="350" cy="198" rx="18" ry="14" fill="url(#sw-abrG)"/><ellipse cx="100" cy="120" rx="10" ry="9" fill="url(#sw-abrG)"/></g>',
-        '<g class="w-updirt" fill="#5a4126" opacity="0"><circle cx="110" cy="195" r="2.6"/><circle cx="140" cy="200" r="2"/><circle cx="175" cy="196" r="3"/><circle cx="215" cy="202" r="2.4"/><circle cx="250" cy="198" r="2.8"/><circle cx="285" cy="200" r="2.2"/><circle cx="320" cy="200" r="2.6"/><circle cx="95" cy="170" r="1.8"/><circle cx="200" cy="172" r="1.8"/><circle cx="270" cy="180" r="2"/></g>',
-        '<g class="w-toecr" stroke="#16314a" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0"><path d="M300 168 C306 180 308 194 306 206"/><path d="M314 172 C320 184 322 196 320 207"/><path d="M328 180 C334 190 336 200 334 208"/></g>',
-        '<path class="w-scuff" d="M338 194 C356 198 370 205 376 212 C362 217 344 215 334 209 C334 202 336 197 338 194 Z" fill="#6e5236" opacity="0"/>',
+        '<path class="w-patina" d="M70 202 C62 178 63 146 78 128 C84 119 93 116 100 121 C108 104 128 99 145 107 C152 117 155 126 158 135 C210 142 264 154 306 169 C330 178 348 188 354 198 C358 206 354 213 344 214 C306 216 230 217 160 208 C120 202 88 200 70 202 Z" fill="url(#sw-patG)" opacity="0" style="mix-blend-mode:overlay"/>',
+        '<g class="w-abrasion" opacity="0"><ellipse cx="82" cy="155" rx="12" ry="20" fill="url(#sw-abrG)"/><ellipse cx="346" cy="198" rx="16" ry="12" fill="url(#sw-abrG)"/><ellipse cx="96" cy="127" rx="9" ry="8" fill="url(#sw-abrG)"/></g>',
+        '<g class="w-updirt" fill="#5a4126" opacity="0"><circle cx="112" cy="192" r="2.6"/><circle cx="140" cy="198" r="2"/><circle cx="175" cy="194" r="3"/><circle cx="215" cy="200" r="2.4"/><circle cx="250" cy="196" r="2.8"/><circle cx="285" cy="196" r="2.2"/><circle cx="318" cy="198" r="2.6"/><circle cx="96" cy="168" r="1.8"/><circle cx="200" cy="172" r="1.8"/><circle cx="270" cy="180" r="2"/></g>',
+        '<g class="w-toecr" stroke="#16314a" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0"><path d="M302 174 C308 186 310 196 308 206"/><path d="M316 178 C322 188 324 198 322 208"/><path d="M330 186 C336 194 338 202 336 209"/></g>',
+        '<path class="w-scuff" d="M330 194 C344 198 352 203 355 208 C346 213 333 211 325 205 C325 199 327 196 330 194 Z" fill="#6e5236" opacity="0"/>',
         // peito do pé (instep): compressão + vincos profundos onde o pé flexiona
         '<g class="w-instep" opacity="0">',
-          '<ellipse cx="234" cy="178" rx="48" ry="23" fill="url(#sw-updentG)"/>',
+          '<ellipse cx="234" cy="176" rx="48" ry="22" fill="url(#sw-updentG)"/>',
           '<g stroke="#16314a" stroke-width="2.6" fill="none" stroke-linecap="round">',
-            '<path d="M194 160 C220 176 252 183 288 185"/>',
-            '<path d="M196 173 C222 189 254 194 288 194"/>',
-            '<path d="M202 186 C226 198 256 202 286 202"/>',
-            '<path d="M206 150 C214 168 218 188 216 206"/>',
-            '<path d="M250 154 C245 174 245 194 250 208"/>',
+            '<path d="M194 158 C220 174 252 181 288 183"/>',
+            '<path d="M196 171 C222 187 254 192 288 192"/>',
+            '<path d="M202 184 C226 196 256 200 286 200"/>',
+            '<path d="M206 148 C214 166 218 186 216 204"/>',
+            '<path d="M250 152 C245 172 245 192 250 206"/>',
           '</g>',
         '</g>',
-        // rasgada no bico (dedão) — desgaste clássico de tênis rodado: abertura
-        // escura com beirada desfiada e fios soltos. Aparece no fim da vida útil.
+        // rasgada no bico (dedão) — abertura escura com beirada desfiada
         '<g class="w-toetear" opacity="0">',
-          '<path d="M328 181 L342 184 L351 191 L345 197 L333 196 L326 189 Z" fill="#0b1016"/>',
-          '<g stroke="#13283c" stroke-width="1" opacity="0.85"><path d="M330 184 L347 191"/><path d="M329 188 L344 194"/></g>',
-          '<path d="M327 180 C334 181 343 184 351 190" fill="none" stroke="#5f8ab6" stroke-width="2.1" stroke-linecap="round"/>',
-          '<path d="M326 190 C332 193 339 195 346 196" fill="none" stroke="#274b72" stroke-width="2.1" stroke-linecap="round"/>',
-          '<g stroke="#a8c0db" stroke-width="0.9" stroke-linecap="round" opacity="0.85"><path d="M338 184 l3 -4"/><path d="M345 189 l4 -3"/><path d="M333 187 l-3 -3"/><path d="M341 195 l2 4"/></g>',
+          '<path d="M324 187 L338 190 L347 197 L341 203 L329 202 L322 195 Z" fill="#0b1016"/>',
+          '<g stroke="#13283c" stroke-width="1" opacity="0.85"><path d="M326 190 L343 197"/><path d="M325 194 L340 200"/></g>',
+          '<path d="M323 186 C330 187 339 190 347 196" fill="none" stroke="#5f8ab6" stroke-width="2.1" stroke-linecap="round"/>',
+          '<path d="M322 196 C328 199 335 201 342 202" fill="none" stroke="#274b72" stroke-width="2.1" stroke-linecap="round"/>',
+          '<g stroke="#a8c0db" stroke-width="0.9" stroke-linecap="round" opacity="0.85"><path d="M334 190 l3 -4"/><path d="M341 195 l4 -3"/><path d="M329 193 l-3 -3"/><path d="M337 201 l2 4"/></g>',
         '</g>',
-        // collar / tongue / laces / accents
-        '<path class="collar" d="M100 116 C108 96 130 92 150 100 C170 110 168 132 150 142 C128 148 106 138 100 116 Z" fill="#1c2935"/>',
-        '<path class="collar2" d="M100 116 C108 96 130 92 150 100 C170 110 168 132 150 142" fill="none" stroke="#284f78" stroke-width="7" stroke-linecap="round"/>',
-        '<path class="tongue" d="M150 112 C152 92 170 88 180 96 C184 110 182 126 178 140 C166 134 154 124 150 112 Z" fill="#f5f0e8"/>',
-        '<g class="laces" stroke="#f3efe9" stroke-width="5" stroke-linecap="round"><path d="M170 120 l30 6"/><path d="M172 134 l32 7"/><path d="M176 150 l32 7"/><path d="M180 166 l30 7"/></g>',
-        // cadêrço encardindo (sutil) — suja menos que o resto, mas suja
-        '<g class="w-lacedirt" stroke="#6b5b3f" stroke-width="4.2" stroke-linecap="round" opacity="0" style="mix-blend-mode:multiply"><path d="M170 120 l30 6"/><path d="M172 134 l32 7"/><path d="M176 150 l32 7"/><path d="M180 166 l30 7"/></g>',
-        '<g class="eyelets" fill="#f3efe9"><circle cx="170" cy="120" r="2.8"/><circle cx="200" cy="126" r="2.8"/><circle cx="172" cy="134" r="2.8"/><circle cx="204" cy="141" r="2.8"/><circle cx="176" cy="150" r="2.8"/><circle cx="208" cy="157" r="2.8"/><circle cx="180" cy="166" r="2.8"/><circle cx="210" cy="173" r="2.8"/></g>',
-        '<path class="accent" d="M306 182 C254 192 206 188 176 176 C206 200 262 202 312 192 C312 188 310 185 306 182 Z" fill="#cf7a3e"/>',
-        '<path class="heeltab" d="M74 126 C68 116 76 108 86 112 C86 120 82 126 74 126 Z" fill="#cf7a3e"/>',
+        // colarinho / língua / cadarço / detalhes
+        '<path class="collar" d="M100 121 C108 104 128 99 145 107 C158 116 156 132 142 141 C122 146 105 139 100 121 Z" fill="#1c2935"/>',
+        '<path class="collar2" d="M100 121 C108 104 128 99 145 107 C158 116 156 132 142 141" fill="none" stroke="#284f78" stroke-width="7" stroke-linecap="round"/>',
+        '<path class="tongue" d="M144 116 C146 100 161 96 170 103 C174 116 172 130 168 143 C157 137 148 128 144 116 Z" fill="#f5f0e8"/>',
+        '<g class="laces" stroke="#f3efe9" stroke-width="5" stroke-linecap="round"><path d="M160 124 l28 6"/><path d="M164 138 l30 7"/><path d="M168 152 l30 7"/><path d="M173 166 l28 7"/></g>',
+        '<g class="w-lacedirt" stroke="#6b5b3f" stroke-width="4.2" stroke-linecap="round" opacity="0" style="mix-blend-mode:multiply"><path d="M160 124 l28 6"/><path d="M164 138 l30 7"/><path d="M168 152 l30 7"/><path d="M173 166 l28 7"/></g>',
+        '<g class="eyelets" fill="#f3efe9"><circle cx="160" cy="124" r="2.8"/><circle cx="188" cy="130" r="2.8"/><circle cx="164" cy="138" r="2.8"/><circle cx="194" cy="145" r="2.8"/><circle cx="168" cy="152" r="2.8"/><circle cx="198" cy="159" r="2.8"/><circle cx="173" cy="166" r="2.8"/><circle cx="201" cy="173" r="2.8"/></g>',
+        // faixa de velocidade (acento laranja no meio do pé)
+        '<path class="accent" d="M172 182 C220 194 274 198 324 192 L326 198 C276 206 218 202 170 189 Z" fill="#cf7a3e"/>',
+        // aba do calcanhar
+        '<path class="heeltab" d="M75 130 C68 122 73 113 82 116 C83 124 80 130 75 130 Z" fill="#cf7a3e"/>',
         '</g>',
       '</g>',
     '</svg>'
@@ -138,8 +143,6 @@
     var upperWrap = q('.upper-wrap');
     var dispSole  = svg.querySelector('#sw-crumple feDisplacementMap');
     var dispUp    = svg.querySelector('#sw-crumple-up feDisplacementMap');
-    // The displacement filters are referenced from CSS so they compose with the
-    // saturate/brightness grade; the SVG `scale` (set per-progress) does the work.
     if (soleWrap)  soleWrap.style.filter  = 'url(#sw-crumple)';
     if (upperWrap) upperWrap.style.filter = 'url(#sw-crumple-up)';
     if (L.toetear) { L.toetear.style.transformBox = 'fill-box'; L.toetear.style.transformOrigin = 'center'; }
@@ -161,19 +164,14 @@
       setO(L.toecr,    seg(p, 0.26, 0.80) * 0.75);  // vincos de flexão no bico
       setO(L.scuff,    seg(p, 0.30, 0.85));         // scuff no bico
       setO(L.instep,   seg(p, 0.16, 0.85));         // amassado/vincos no peito do pé
-      setO(L.lacedirt, seg(p, 0.22, 0.95) * 0.6);   // cadêrço encardindo (menos intenso)
-      // rasgada no bico: surge no fim da vida útil e "abre" crescendo
+      setO(L.lacedirt, seg(p, 0.22, 0.95) * 0.6);   // cadarço encardindo (menos intenso)
       var tear = seg(p, 0.5, 0.95);
       setO(L.toetear,  tear);
       if (L.toetear) L.toetear.style.transform = 'scale(' + lerp(0.45, 1, tear).toFixed(3) + ')';
-      // Amassamento da silhueta: a sola deforma de leve e o cabedal bem mais
-      // forte — a silhueta inteira "murcha"/enruga conforme o tênis roda. Escalas
-      // altas porque na galeria o tênis aparece pequeno (~70px).
       var crumple = seg(p, 0.10, 1);
       crumple = crumple * crumple * (3 - 2 * crumple);   // smoothstep p/ início suave
       if (dispSole) dispSole.setAttribute('scale', (crumple * 15).toFixed(2));
       if (dispUp)   dispUp.setAttribute('scale',  (crumple * 20).toFixed(2));
-      // encardido geral + leve dessaturação ("cara de rodado")
       var warm = seg(p, 0.05, 1);
       if (shoeGroup) shoeGroup.style.filter = 'saturate(' + lerp(1, 0.86, warm) + ') brightness(' + lerp(1, 0.95, warm) + ')';
     }

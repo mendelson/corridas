@@ -1189,6 +1189,7 @@
       }
       var DUR=720, EXIT=320, ENTER=480, EASE="cubic-bezier(.22,.61,.36,1)";
       _introActive=true; auto=false;            // freeze drift + lock input for the morph (chrome stays visible)
+      var preFace=shoeFace;                     // drift direction to KEEP across the toggle (never invert on a view switch)
       if(resumeTimer){ clearTimeout(resumeTimer); resumeTimer=null; }
       showShoe();
 
@@ -1295,7 +1296,13 @@
       // SETTLE — unlock; the auto-drift resumes after the usual idle delay. updateShoe
       // then eases the shoe to its scroll-derived position (today ≈ fully worn).
       setTimeout(function(){
-        _introActive=false; held=false; setFace(-1);
+        _introActive=false; held=false;
+        // The swap re-anchored the scroll (today pinned) — sync the face-tracking
+        // baseline so that jump is never read as motion, and restore the
+        // PRE-TOGGLE facing: the drift resumes in the direction it was going,
+        // a view switch never inverts it (scheduleResume sets dir=shoeFace).
+        _lastSL=scroller.scrollLeft;
+        setFace(preFace);
         scheduleResume(1000); // after a view toggle, resume the drift quickly (1s), not the usual 3s
       }, Math.max(DUR, ENTER+maxDelay)+80);
     }

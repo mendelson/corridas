@@ -52,11 +52,15 @@
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
     /* View selector (sits where the scroll hint used to be): a segmented
-       control choosing between the highlights-only and the complete timeline. */
-    .viewseg { display: inline-flex; gap: 2px; margin-top: 12px; padding: 3px; border: 1px solid #2a2f38; border-radius: 9px; background: #161a20; }
-    .seg-opt { border: none; border-radius: 7px; background: none; padding: 6px 13px; font-family: "Archivo", system-ui, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #8b91a0; cursor: pointer; transition: color .15s, background .15s; }
+       control choosing between the highlights-only and the complete timeline.
+       The highlighted pill is a single sliding thumb (like a toggle switch):
+       syncSeg() moves/resizes it to the active option and CSS glides it there. */
+    .viewseg { position: relative; display: inline-flex; gap: 2px; margin-top: 12px; padding: 3px; border: 1px solid #2a2f38; border-radius: 9px; background: #161a20; }
+    .seg-thumb { position: absolute; top: 3px; bottom: 3px; left: 0; width: 0; border-radius: 7px; background: #1f242c; transition: left .3s cubic-bezier(.22,.61,.36,1), width .3s cubic-bezier(.22,.61,.36,1); }
+    .seg-opt { position: relative; z-index: 1; border: none; border-radius: 7px; background: none; padding: 6px 13px; font-family: "Archivo", system-ui, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #8b91a0; cursor: pointer; transition: color .3s; }
     .seg-opt:hover { color: #f3efe7; }
-    .seg-opt.active { color: #E8C04A; background: #1f242c; }
+    .seg-opt.active { color: #E8C04A; }
+    @media (prefers-reduced-motion: reduce) { .seg-thumb, .seg-opt { transition: none; } }
     /* The stage wraps the timeline + the shoe scrubber so the scrubber is always
        in-flow BELOW the cards (never overlapping them). The cinematic intro
        centres the whole stage in the viewport via this transform. */
@@ -204,6 +208,7 @@
     </div>
     <h1 class="title" id="title"></h1>
     <div class="viewseg" id="viewSeg" role="group">
+      <span class="seg-thumb" id="segThumb" aria-hidden="true"></span>
       <button class="seg-opt active" id="segHl" type="button" aria-pressed="true"></button>
       <button class="seg-opt" id="segAll" type="button" aria-pressed="false"></button>
     </div>
@@ -244,7 +249,9 @@
     // revealed by pressing the highlights button (with the expand transition).
     // The choice is intentionally NOT persisted — every load starts at highlights.
     var viewMode="highlights";
-    // Reflect viewMode on the header's segmented view selector (pill + ARIA).
+    // Reflect viewMode on the header's segmented view selector (pill + ARIA),
+    // sliding the thumb to the active option (its width follows the label —
+    // labels differ per option and per language).
     function syncSeg(){
       var hl=document.getElementById("segHl"), all=document.getElementById("segAll");
       if(!hl||!all) return;
@@ -252,7 +259,12 @@
       all.classList.toggle("active", viewMode!=="highlights");
       hl.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
       all.setAttribute("aria-pressed", viewMode!=="highlights"?"true":"false");
+      var t=document.getElementById("segThumb"), a=(viewMode==="highlights")?hl:all;
+      if(t){ t.style.left=a.offsetLeft+"px"; t.style.width=a.offsetWidth+"px"; }
     }
+    // Fonts settling can change the option widths after first paint — re-seat
+    // the thumb (no user-visible slide: same option, just a width correction).
+    window.addEventListener("load", function(){ syncSeg(); });
     var mShort=[];
     function buildMonths(){ for(var i=0;i<12;i++){ mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase(); } }
 

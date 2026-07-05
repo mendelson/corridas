@@ -13,8 +13,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Spectral:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; }
+    /* The gallery is a single fixed screen: it always fits the viewport (both
+       axes) and the page itself never scrolls — no vertical or horizontal
+       scrollbars, ever. When the natural layout is taller than the viewport,
+       #fit is scaled down uniformly (see fitPage()), with its layout width
+       widened by the same factor so the scaled result still fills the screen. */
+    html, body { margin: 0; height: 100%; overflow: hidden; }
     body { background: #0f1115; color: #fff; font-family: "Archivo", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    #fit { transform-origin: 0 0; }
     /* Shared horizontal gutter so the header and the full-bleed timeline always
        line up; scales with the viewport so it never glues to the edges on
        desktop nor looks like a narrow, centred mobile block. */
@@ -180,6 +186,7 @@
   </style>
 </head>
 <body class="intro">
+  <div id="fit">
   <header class="hide">
     <div class="hrow">
       <div class="overline">Mateus Mendelson</div>
@@ -204,6 +211,7 @@
       <span class="shoe-lab shoe-lab-end" id="shoeLabEnd"></span>
       <div class="shoe-stage" id="shoeStage"></div>
     </div>
+  </div>
   </div>
 
   <script src="shoe-wear.js"></script>
@@ -614,15 +622,17 @@
       stageEl.style.transition="none";
       stageEl.style.transform="";   // clear any prior glide (e.g. reverseIntro's) so the resting top reads true
       var sH=stageEl.offsetHeight||scroller.offsetHeight||470;
-      var natTop=stageEl.getBoundingClientRect().top; // resting top (header space reserved)
-      var centerY=Math.round((window.innerHeight - sH)/2 - natTop);
+      // Work in LAYOUT px: screen-space reads (rect top, viewport height) are
+      // divided by the fit scale so the translateY (layout px) centres truly.
+      var natTop=stageEl.getBoundingClientRect().top/_fitScale; // resting top (header space reserved)
+      var centerY=Math.round((window.innerHeight/_fitScale - sH)/2 - natTop);
       stageEl.style.transform="translateY("+centerY+"px)";
       void stageEl.offsetHeight;    // commit the centred position without animating into it
       stageEl.style.transition="";  // restore the CSS transition for the release glide
       var clientW=scroller.clientWidth||1, H=track.offsetHeight||470, M=34;
       scroller.scrollLeft=0;
       var trk=track.getBoundingClientRect();
-      function cx(el){ return el.getBoundingClientRect().left - trk.left; } // content x (scale 1)
+      function cx(el){ return (el.getBoundingClientRect().left - trk.left)/_fitScale; } // content x (scale 1, layout px)
       var tnode=track.querySelector(".tnode");
       var todayX=tnode ? cx(tnode) : track.scrollWidth;
       // Bound the intro to the last five years + the current one, so the draw /
@@ -773,6 +783,31 @@
     // --- Timeline motion -----------------------------------------------------
     var scroller=document.querySelector(".scroller");
     var stageEl=document.getElementById("stage");
+
+    // --- Fit-to-viewport ------------------------------------------------------
+    // The gallery always fits the screen on BOTH axes with no page scrollbars
+    // (html/body are overflow:hidden). The layout's natural height is fixed
+    // (header + 470px track + shoe scrubber); when the viewport is shorter than
+    // that, the whole page (#fit) is scaled down uniformly, with its layout
+    // width widened by 1/scale so the scaled result still fills the screen.
+    // _fitScale converts between screen px (getBoundingClientRect) and layout
+    // px (offsetLeft/scrollLeft) — every mixed-space computation divides by it.
+    var fitEl=document.getElementById("fit"), _fitScale=1;
+    function fitPage(){
+      if(!fitEl) return;
+      // Widening the layout can re-wrap the header and change the natural
+      // height, so iterate to a fixed point (converges in 1–2 passes).
+      for(var i=0;i<3;i++){
+        var h=fitEl.scrollHeight||1;
+        var s=Math.min(1, (window.innerHeight||h)/h);
+        if(i>0 && Math.abs(s-_fitScale)<0.002) break;
+        _fitScale=s;
+        fitEl.style.width = s<1 ? (100/s)+"%" : "";
+        fitEl.style.transform = s<1 ? "scale("+s+")" : "";
+      }
+    }
+    fitPage();
+    window.addEventListener("load", fitPage); // re-fit once webfonts/late layout settle
     // Geometry cache for the sticky year labels (one layout read per render).
     var stickyYears=[], _gutterPx=0, _yearAxis=[]; // _yearAxis: per-year content ranges → maps scroll to the even year axis
 
@@ -796,7 +831,7 @@
     // footprint and dust cloud line up with the shoe exactly (transform included).
     function shoeMetrics(){
       var sr=shoeEl.getBoundingClientRect(), pr=shoePrintsEl.getBoundingClientRect();
-      return { x: sr.left - pr.left + sr.width/2, w: sr.width };
+      return { x: (sr.left - pr.left + sr.width/2)/_fitScale, w: sr.width/_fitScale };
     }
     // One footfall per step touchdown — sw-step's animationiteration fires at the
     // bottom of the bounce (0%/100% = translateY(0)), so prints land exactly when
@@ -952,7 +987,7 @@
         e.preventDefault(); return;
       }
       if(Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      scroller.scrollLeft += e.deltaY;
+      scroller.scrollLeft += e.deltaY/_fitScale;
       pos=scroller.scrollLeft;
       pauseAuto();
       e.preventDefault();
@@ -1011,10 +1046,10 @@
       nz=Math.max(_zMinFor(), Math.min(Z_MAX, nz));
       if(nz>0.9 && nz<1.1) nz=1;   // deadzone: incidental tiny pinches don't leave the view slightly zoomed
       if(nz===_zoom) return;        // no real change — skip the scroll re-anchor / state churn
-      var sLeft=scroller.getBoundingClientRect().left;
-      var baseX=(scroller.scrollLeft + (fx-sLeft)) / _zoom;  // 1× content-x under the focal
+      var fo=(fx-scroller.getBoundingClientRect().left)/_fitScale; // focal offset in layout px
+      var baseX=(scroller.scrollLeft + fo) / _zoom;          // 1× content-x under the focal
       _zoom=nz; applyZoom();
-      scroller.scrollLeft = baseX*nz - (fx-sLeft);           // keep the focal point fixed on screen
+      scroller.scrollLeft = baseX*nz - fo;                   // keep the focal point fixed on screen
       pos=scroller.scrollLeft; endPos=startScroll();         // recompute the "today" drift bound
       var b=document.getElementById("navZoom"); if(b) b.classList.toggle("active", _zoom!==1);
       pauseAuto();                                           // the drift resumes 3s after the gesture
@@ -1137,10 +1172,14 @@
         var k=el.getAttribute("data-k"), r=el.getBoundingClientRect();
         first[k]=r;
         if(r.width>0 && r.right>=vL && r.left<=vR){
+          // The clone is hosted on a body-level fixed overlay, OUTSIDE the
+          // scaled #fit wrapper — so it gets the fit scale baked in (layout
+          // size + scale transform) to match the original on screen exactly.
           var c=el.cloneNode(true);
           c.style.position="fixed"; c.style.margin="0"; c.style.pointerEvents="none";
           c.style.left=r.left+"px"; c.style.top=r.top+"px"; c.style.right="auto"; c.style.bottom="auto";
-          c.style.width=r.width+"px"; c.style.height=r.height+"px";
+          c.style.width=(r.width/_fitScale)+"px"; c.style.height=(r.height/_fitScale)+"px";
+          c.style.transformOrigin="0 0";
           stash[k]=c;
         }
       });
@@ -1153,7 +1192,7 @@
       // ANCHOR — pin today's screen-x so the viewport never jumps; the rest of the
       // timeline reflows relative to it.
       var tnode1=track.querySelector(".tnode");
-      if(tnode1){ scroller.scrollLeft = clamp(scroller.scrollLeft + (tnode1.getBoundingClientRect().left - todayX0), 0, maxScroll()); }
+      if(tnode1){ scroller.scrollLeft = clamp(scroller.scrollLeft + (tnode1.getBoundingClientRect().left - todayX0)/_fitScale, 0, maxScroll()); }
       pos=scroller.scrollLeft; endPos=startScroll();
 
       // LAST — screen rect of every keyed element after the swap.
@@ -1170,7 +1209,8 @@
       function fadeOutClone(k){
         var c=stash[k]; if(!c) return;
         overlay.appendChild(c);
-        c.animate([{opacity:1, transform:"scale(1)"},{opacity:0, transform:"translateY(6px) scale(.96)"}],
+        var fz=_fitScale; // clone keyframes carry the fit scale (overlay is outside #fit)
+        c.animate([{opacity:1, transform:"scale("+fz+")"},{opacity:0, transform:"translateY(6px) scale("+(fz*0.96)+")"}],
                   {duration:EXIT, easing:EASE, fill:"forwards"});
       }
       setTimeout(function(){ if(overlay.parentNode) overlay.parentNode.removeChild(overlay); }, EXIT+90);
@@ -1200,7 +1240,9 @@
       Object.keys(last).forEach(function(k){
         var L=last[k], el=L.el, lr=L.r, F=first[k];
         if(F){
-          var dx=F.left-lr.left, dy=F.top-lr.top, isRail=el.classList.contains("rail");
+          // Rect deltas are screen px; the FLIP translate applies in layout px
+          // inside the scaled wrapper — convert so the glide lands exactly.
+          var dx=(F.left-lr.left)/_fitScale, dy=(F.top-lr.top)/_fitScale, isRail=el.classList.contains("rail");
           if(Math.abs(dx)>FAR){                 // too far to slide → cross-fade
             fadeOutClone(k);
             if(onScreen(lr)) rippleIn(el, lr);  // only animate-in the ones that land in view
@@ -1250,6 +1292,7 @@
       buildShoeYears();     // year ticks spaced along the scrubber
     }
     function draw(){
+      fitPage(); // header text may have changed (language switch) → re-fit before measuring
       if(!_data) return;
       if((firstDrawn && !_camDone) || _introActive) return; // intro / transition playing — don't re-render under it
       var first=!firstDrawn;
@@ -1276,12 +1319,12 @@
       var trk=track.getBoundingClientRect();
       var t=track.querySelector(".tnode"); // the "today" marker
       if(t){
-        var x=t.getBoundingClientRect().left - trk.left + scroller.scrollLeft; // today's content x
+        var x=(t.getBoundingClientRect().left - trk.left)/_fitScale + scroller.scrollLeft; // today's content x
         return clamp(x - scroller.clientWidth*0.62, 0, max); // today sits ~62% from the left
       }
       var nodes=track.querySelectorAll(".ynode");
       var n=nodes.length ? nodes[nodes.length-1] : null;
-      if(n){ var nx=n.getBoundingClientRect().left - trk.left + scroller.scrollLeft; return clamp(nx-24,0,max); }
+      if(n){ var nx=(n.getBoundingClientRect().left - trk.left)/_fitScale + scroller.scrollLeft; return clamp(nx-24,0,max); }
       return max;
     }
     // Sticky year labels: each event-year's big number pins to the left gutter
@@ -1359,7 +1402,7 @@
       return 1;
     }
     var _rz=null;
-    window.addEventListener("resize", function(){ if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });
+    window.addEventListener("resize", function(){ fitPage(); if(_rz) clearTimeout(_rz); _rz=setTimeout(draw,150); });
 
     // Cache-bust with a per-load token. `no-cache` only *revalidates*, which a
     // CDN edge (or an old service worker) can still satisfy from a stale copy —

@@ -51,7 +51,12 @@
     .lang-opt.active { color: #E8C04A; font-weight: 700; }
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
     h1.title { font-family: "Spectral", Georgia, serif; font-weight: 500; font-size: 30px; line-height: 1.05; margin: 10px 0 0; letter-spacing: -.01em; color: #f3efe7; }
-    .hint { font-size: 11px; color: #4a5160; margin-top: 10px; letter-spacing: .02em; }
+    /* View selector (sits where the scroll hint used to be): a segmented
+       control choosing between the highlights-only and the complete timeline. */
+    .viewseg { display: inline-flex; gap: 2px; margin-top: 12px; padding: 3px; border: 1px solid #2a2f38; border-radius: 9px; background: #161a20; }
+    .seg-opt { border: none; border-radius: 7px; background: none; padding: 6px 13px; font-family: "Archivo", system-ui, sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #8b91a0; cursor: pointer; transition: color .15s, background .15s; }
+    .seg-opt:hover { color: #f3efe7; }
+    .seg-opt.active { color: #E8C04A; background: #1f242c; }
     /* The stage wraps the timeline + the shoe scrubber so the scrubber is always
        in-flow BELOW the cards (never overlapping them). The cinematic intro
        centres the whole stage in the viewport via this transform. */
@@ -193,13 +198,15 @@
       <nav class="gactions">
         <a class="gbtn" id="navCal" href="#"><span class="gbtn-icon" aria-hidden="true">📅</span><span class="gbtn-lbl" id="navCalLbl"></span></a>
         <a class="gbtn" id="navApps" href="https://apps.mmendelson.com" target="_blank" rel="noopener"><span class="gbtn-icon" aria-hidden="true">⌚</span><span class="gbtn-lbl">Apps</span></a>
-        <button class="gbtn" id="navView" type="button" aria-pressed="false"><span class="gbtn-icon" aria-hidden="true">★</span><span class="gbtn-lbl" id="navViewLbl"></span></button>
         <button class="gbtn" id="navZoom" type="button" aria-label="Reset view" title="Reset zoom &amp; scroll"><span class="gbtn-icon" aria-hidden="true">↺</span></button>
         <button class="gbtn" id="navLang" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="gbtn-icon" aria-hidden="true">🌐</span><span class="gbtn-lbl" id="navLangLbl"></span></button>
       </nav>
     </div>
     <h1 class="title" id="title"></h1>
-    <div class="hint" id="hint"></div>
+    <div class="viewseg" id="viewSeg" role="group">
+      <button class="seg-opt active" id="segHl" type="button" aria-pressed="true"></button>
+      <button class="seg-opt" id="segAll" type="button" aria-pressed="false"></button>
+    </div>
   </header>
   <div class="stage" id="stage">
     <div class="scroller"><div class="track" id="track"></div></div>
@@ -218,11 +225,11 @@
   <script>
   (function () {
     var STR = {
-      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], hint:"Role para percorrer os anos →", today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", hlT:"Mostrar só maratonas e marcos", cert:"Certificado" },
-      en: { loc:"en",    t:["Races that","shaped the journey"],    hint:"Scroll to move through the years →", today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", hlT:"Show only marathons & milestones", cert:"Certificate" },
-      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  hint:"Desplázate para recorrer los años →", today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", hlT:"Mostrar solo maratones e hitos", cert:"Certificado" },
-      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       hint:"Scrollen, um durch die Jahre zu gehen →", today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", hlT:"Nur Marathons & Meilensteine zeigen", cert:"Zertifikat" },
-      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], hint:"Faites défiler pour parcourir les années →", today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", hlT:"Afficher seulement marathons et jalons", cert:"Certificat" },
+      pt: { loc:"pt-BR", t:["Corridas que","marcaram o caminho"], today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1ª meia maratona",firstMarathon:"1ª maratona",pb:"Recorde pessoal"}, hl:"Destaques", all:"Todas", cert:"Certificado" },
+      en: { loc:"en",    t:["Races that","shaped the journey"],    today:"TODAY", cal:"Calendar", type:{marathon:"Marathon",half:"Half marathon",race:"Race",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"First half marathon",firstMarathon:"First marathon",pb:"Personal best"}, hl:"Highlights", all:"All", cert:"Certificate" },
+      es: { loc:"es",    t:["Carreras que","marcaron el camino"],  today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal"}, hl:"Destacados", all:"Todas", cert:"Certificado" },
+      de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit"}, hl:"Höhepunkte", all:"Alle", cert:"Zertifikat" },
+      fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel"}, hl:"Temps forts", all:"Toutes", cert:"Certificat" },
     };
     // The gallery has a single URL and never navigates to change language —
     // the switch happens in place. The choice falls back to the browser
@@ -237,6 +244,15 @@
     // revealed by pressing the highlights button (with the expand transition).
     // The choice is intentionally NOT persisted — every load starts at highlights.
     var viewMode="highlights";
+    // Reflect viewMode on the header's segmented view selector (pill + ARIA).
+    function syncSeg(){
+      var hl=document.getElementById("segHl"), all=document.getElementById("segAll");
+      if(!hl||!all) return;
+      hl.classList.toggle("active", viewMode==="highlights");
+      all.classList.toggle("active", viewMode!=="highlights");
+      hl.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+      all.setAttribute("aria-pressed", viewMode!=="highlights"?"true":"false");
+    }
     var mShort=[];
     function buildMonths(){ for(var i=0;i<12;i++){ mShort[i]=new Intl.DateTimeFormat(LOC,{month:"short"}).format(new Date(2021,i,1)).replace(/\./g,"").toUpperCase(); } }
 
@@ -250,17 +266,13 @@
       document.documentElement.lang=lang;
       document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])||"Gallery";
       document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
-      document.getElementById("hint").textContent=T.hint;
       document.getElementById("navCal").setAttribute("href","/"+lang);
       document.getElementById("navCalLbl").textContent=T.cal;
       document.getElementById("navLangLbl").textContent=lang.toUpperCase();
-      var _nv=document.getElementById("navView");
-      if(_nv){
-        var _nvl=document.getElementById("navViewLbl"); if(_nvl) _nvl.textContent=T.hl;
-        _nv.title=T.hlT; _nv.setAttribute("aria-label",T.hlT);
-        _nv.classList.toggle("active", viewMode==="highlights");
-        _nv.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
-      }
+      var _sh=document.getElementById("segHl"), _sa=document.getElementById("segAll");
+      if(_sh) _sh.textContent=T.hl;
+      if(_sa) _sa.textContent=T.all;
+      syncSeg();
       draw();
     }
 
@@ -1066,21 +1078,20 @@
       held=false; auto=true;
     }
     (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
-    // Highlights button — full transition. A click plays the intro's closing
-    // moment in REVERSE (header out, stage up to centre, camera zoom-out), then on
-    // arrival swaps the event set (highlights ⇄ all), re-renders, and replays the
-    // intro FORWARD over the new set: expand the timeline → zoom-in revealing the
-    // cards → land at today with the chrome restored.
+    // View selector (Destaques | Todas) — picking the other segment swaps the
+    // event set (highlights ⇄ all) with the in-place FLIP morph between views.
     (function(){
-      var b=document.getElementById("navView"); if(!b) return;
-      b.addEventListener("click", function(){
-        if(_introActive || !_data) return; // ignore while a transition / intro is playing
+      var hl=document.getElementById("segHl"), all=document.getElementById("segAll");
+      if(!hl || !all) return;
+      function pick(mode){
+        if(_introActive || !_data || viewMode===mode) return; // ignore while a transition / intro is playing
         if(_zoom!==1) _dropZoom();          // measure the line at 1x (ignore any pinch-zoom)
-        viewMode = (viewMode==="highlights") ? "all" : "highlights";
-        b.classList.toggle("active", viewMode==="highlights");
-        b.setAttribute("aria-pressed", viewMode==="highlights"?"true":"false");
+        viewMode=mode;
+        syncSeg();
         toggleTransition();                 // in-place FLIP morph between the two views
-      });
+      }
+      hl.addEventListener("click", function(){ pick("highlights"); });
+      all.addEventListener("click", function(){ pick("all"); });
     })();
     // Touch: two fingers pinch-zoom; one finger is left to native scroll.
     function _tdist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }

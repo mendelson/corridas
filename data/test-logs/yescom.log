@@ -1,10 +1,14 @@
-[Yescom] 13 corridas encontradas
-✅  yescom: 13 evento(s)
+[Yescom] sem distâncias, pulando: '23ª Corrida Garotada'
+[Yescom] sem distâncias, pulando: '5ª Cachorrida Garoto'
+[Yescom] sem horário, pulando: '3ª Hello Kitty And Friends Fun Run'
+[Yescom] 7 corridas encontradas
+EVENT_COUNT:7
+✅  yescom: 7 evento(s)
+    {"titulo": "20ª Meia Maratona Internacional De São Paulo 2027", "data": "2027-01-24", "estado": "SP", "km": "5.0, 10.0, 21.097"}
     {"titulo": "63ª Corrida Contra O Câncer De Mama Etapa Rio De Janeiro 2026", "data": "2026-08-23", "estado": "RJ", "km": "5.0, 10.0"}
+    {"titulo": "31ª Maratona Internacional De São Paulo 2027", "data": "2027-04-03", "estado": "SP", "km": "7.0, 14.0, 21.097, 42.195"}
     {"titulo": "64ª Corrida Contra O Câncer De Mama Etapa São Paulo 2026", "data": "2026-10-11", "estado": "SP", "km": "5.0, 10.0"}
-    {"titulo": "23ª Corrida Garotada", "data": "2026-09-26", "estado": "SP"}
-    {"titulo": "Supergirl & Superman Run 2026", "data": "2026-06-28", "estado": "SP", "km": "5.0, 10.0, 15.0"}
-    {"titulo": "3ª Hello Kitty And Friends Fun Run", "data": "2026-08-02", "estado": "SP", "km": "3.0, 5.0, 10.0"}
-    ... e mais 8
-❌  yescom: 3/13 eventos sem distâncias
-FAILURE_NOTE:3/13 eventos sem distâncias
+    {"titulo": "27ª Volta Int'L Da Pampulha", "data": "", "estado": "MG", "km": "18.0"}
+    ... e mais 2
+❌  yescom: 2/7 eventos sem data_evento
+FAILURE_NOTE:2/7 eventos sem data_evento

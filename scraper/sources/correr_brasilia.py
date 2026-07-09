@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 
 from ..http_client import get
 from ..models import Corrida, Distancia, FonteInfo
-from ..utils import normalize_titulo, slugify, now_iso, today_iso
+from ..utils import normalize_titulo, slugify, now_iso, today_iso, is_cancelled
 from .. import geo as _geo
 
 URL = "https://correrbrasilia.com.br/calendario/"
@@ -381,6 +381,10 @@ def _parse_event(ev: dict, today: str, now: str, html_loc: str = "") -> Corrida 
     desc = ev.get("description") or ""
     distancias = _extract_distances(desc)
 
+    # schema.org eventStatus is the standard machine-readable cancellation flag
+    # (EventOn emits it in the JSON-LD when an organiser marks the event off).
+    cancelado = is_cancelled(ev.get("eventStatus"))
+
     return Corrida(
         id=stable_id,
         titulo=titulo,
@@ -392,7 +396,7 @@ def _parse_event(ev: dict, today: str, now: str, html_loc: str = "") -> Corrida 
         pais="BR",
         distancias=distancias,
         imagem_url=image,
-        inscricoes_abertas=None,
+        inscricoes_abertas=False if cancelado else None,
         periodo_inscricao=None,
         fontes=[FonteInfo(
             nome=SOURCE_NAME,
@@ -403,6 +407,7 @@ def _parse_event(ev: dict, today: str, now: str, html_loc: str = "") -> Corrida 
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
+        cancelado=cancelado,
     )
 
 

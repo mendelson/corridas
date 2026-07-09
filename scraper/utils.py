@@ -7,6 +7,35 @@ from dateutil import parser as dateutil_parser
 from unidecode import unidecode
 
 # ---------------------------------------------------------------------------
+# Cancellation signal
+# ---------------------------------------------------------------------------
+# Structured cancellation markers, in the languages the sources actually emit.
+# Matched only against STRUCTURED status fields (a platform `status` value, a
+# schema.org eventStatus URL) — never against free-text descriptions, whose
+# "política de cancelamento" boilerplate would false-positive.
+_CANCEL_RE = re.compile(
+    r"cancelad|cancell?ed|\bannul|abgesagt|annullat|geannuleerd|odwołan",
+    re.IGNORECASE,
+)
+
+
+def is_cancelled(*signals: object) -> bool:
+    """True if any structured signal marks the event as officially cancelled.
+
+    Accepts a platform status string (e.g. "Cancelado") and/or a schema.org
+    ``eventStatus`` value (``https://schema.org/EventCancelled``). Pass only
+    structured fields here, not descriptions/titles.
+    """
+    for s in signals:
+        if not s:
+            continue
+        text = str(s)
+        if "EventCancelled" in text or _CANCEL_RE.search(text):
+            return True
+    return False
+
+
+# ---------------------------------------------------------------------------
 # Date normalization
 # ---------------------------------------------------------------------------
 

@@ -790,6 +790,20 @@ input { font-family: inherit; }
   white-space: nowrap;
 }
 
+/* Officially cancelled edition — a loud, unmistakable tag (distinct from the
+   accent-coloured "novo"/selo badges) so it reads at a glance. */
+.badge-cancelado {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: #d93025;
+  border-radius: 10px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
 /* =====================================================================
    Expanded section
    ===================================================================== */

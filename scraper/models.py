@@ -55,3 +55,9 @@ class Corrida:
     # reference list (the club membership is world reference data, not per-edition).
     selo: str | None = None
     major: bool = False
+    # Officially cancelled edition. Set by scrapers from a live, structured signal
+    # (a platform status field like "Cancelado", or schema.org
+    # eventStatus=EventCancelled) — never hand-authored. A cancelled event stays in
+    # the calendar (already-announced editions people still look up); the frontend
+    # tags the card. See scraper.utils.is_cancelled().
+    cancelado: bool = False

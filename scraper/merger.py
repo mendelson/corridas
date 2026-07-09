@@ -274,6 +274,10 @@ def _absorb_fonte(champion: Corrida, fonte: FonteInfo) -> None:
 def _merge_pair(champion: Corrida, extra: Corrida) -> Corrida:
     if not champion.imagem_url and extra.imagem_url:
         champion.imagem_url = extra.imagem_url
+    # If ANY source that found this event flags it cancelled, the merged record is
+    # cancelled — one source may still expose the status after another drops it.
+    if extra.cancelado:
+        champion.cancelado = True
     champion.distancias = _merge_distancias(champion.distancias, extra.distancias)
     if champion.inscricoes_abertas is None and extra.inscricoes_abertas is not None:
         champion.inscricoes_abertas = extra.inscricoes_abertas

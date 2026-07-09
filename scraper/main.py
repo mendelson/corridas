@@ -272,6 +272,7 @@ def _dict_to_corrida(d: dict) -> Corrida:
         first_seen_at=d.get("first_seen_at", now_iso()),
         updated_at=d.get("updated_at", now_iso()),
         fotos=d.get("fotos", []),
+        cancelado=d.get("cancelado", False),
     )
 
 
@@ -493,6 +494,10 @@ def _update_from(existing: Corrida, incoming: Corrida) -> Corrida:
         existing.inscricoes_abertas = incoming.inscricoes_abertas
     if incoming.periodo_inscricao is not None:
         existing.periodo_inscricao = incoming.periodo_inscricao
+    # Cancellation is sticky: once a live source has flagged the edition off, a
+    # later scrape that no longer carries the signal (e.g. a source that dropped
+    # the event) must not silently un-cancel it.
+    existing.cancelado = existing.cancelado or incoming.cancelado
     existing.fontes = incoming.fontes
     existing.miss_count = 0
     existing.updated_at = now_iso()

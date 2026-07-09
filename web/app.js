@@ -67,6 +67,7 @@ const STRINGS = {
     seloLegendMajor: 'Major: uma das 7 Abbott World Marathon Majors — as maratonas mais prestigiadas do planeta.',
     seloLegendAria: 'O que significam os selos',
     badgeNovo: 'novo',
+    badgeCancelado: 'cancelado',
     loading: 'Carregando...',
     loadError: 'Erro ao carregar dados.',
     clearFilters: 'Limpar filtros',
@@ -131,6 +132,7 @@ const STRINGS = {
     seloLegendMajor: 'Major: one of the 7 Abbott World Marathon Majors — the most prestigious marathons on earth.',
     seloLegendAria: 'What the labels mean',
     badgeNovo: 'new',
+    badgeCancelado: 'canceled',
     loading: 'Loading...',
     loadError: 'Error loading data.',
     clearFilters: 'Clear filters',
@@ -195,6 +197,7 @@ const STRINGS = {
     seloLegendMajor: 'Major: una de las 7 Abbott World Marathon Majors — las maratones más prestigiosas del planeta.',
     seloLegendAria: 'Qué significan los sellos',
     badgeNovo: 'nuevo',
+    badgeCancelado: 'cancelado',
     loading: 'Cargando...',
     loadError: 'Error al cargar datos.',
     clearFilters: 'Limpiar filtros',
@@ -259,6 +262,7 @@ const STRINGS = {
     seloLegendMajor: 'Major: einer der 7 Abbott World Marathon Majors — die renommiertesten Marathons der Welt.',
     seloLegendAria: 'Was die Labels bedeuten',
     badgeNovo: 'neu',
+    badgeCancelado: 'abgesagt',
     loading: 'Laden...',
     loadError: 'Fehler beim Laden der Daten.',
     clearFilters: 'Filter löschen',
@@ -323,6 +327,7 @@ const STRINGS = {
     seloLegendMajor: 'Major : l\'une des 7 Abbott World Marathon Majors — les marathons les plus prestigieux de la planète.',
     seloLegendAria: 'Ce que signifient les labels',
     badgeNovo: 'nouveau',
+    badgeCancelado: 'annulé',
     loading: 'Chargement...',
     loadError: 'Erreur lors du chargement des données.',
     clearFilters: 'Effacer les filtres',
@@ -1546,6 +1551,18 @@ function buildCard(c, today, threeDaysAgo) {
     const isNew = c.first_seen_at && c.first_seen_at >= threeDaysAgo;
     badgeNovo.textContent = T.badgeNovo;
     badgeNovo.classList.toggle('hidden', !isNew);
+  }
+
+  // "Cancelado" tag — the edition was officially called off. The pipeline sets
+  // c.cancelado from a live source signal; the card stays, just flagged.
+  if (c.cancelado) {
+    const footer = card.querySelector('.card-footer');
+    if (footer) {
+      const b = document.createElement('span');
+      b.className = 'badge-cancelado';
+      b.textContent = T.badgeCancelado;
+      footer.insertBefore(b, footer.firstChild);
+    }
   }
 
   // Fontes badge on collapsed card

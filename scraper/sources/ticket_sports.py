@@ -11,7 +11,7 @@ from ..http_client import get, get_direct
 from ..models import Corrida, Distancia, FonteInfo
 from ..utils import (
     normalize_titulo, slugify, infer_estado, now_iso, today_iso,
-    extract_distances_from_text,
+    extract_distances_from_text, is_cancelled,
 )
 from .. import geo as _geo
 
@@ -212,6 +212,11 @@ def _fetch_detail_distances(corrida: Corrida) -> None:
         print(f"[{SOURCE_NAME}] detalhe '{corrida.titulo}' falhou: {e}")
         return
 
+    # The detail API also carries the cancellation status (sticky — a listing
+    # that momentarily omits it must not un-cancel the event).
+    if is_cancelled(detail.get("status")):
+        corrida.cancelado = True
+
     texts_nl: list[str] = []
     texts_sp: list[str] = []
     for item in detail.get("eventContents") or []:
@@ -371,7 +376,10 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         return None
 
     status_raw = (ev.get("status") or "").lower()
-    if ev.get("isSoldOut"):
+    # The listing API keeps cancelled editions with status "Cancelado" (also
+    # exposed via the detail API and the event page's schema.org eventStatus).
+    cancelado = is_cancelled(ev.get("status"))
+    if cancelado or ev.get("isSoldOut"):
         inscricoes_abertas: bool | None = False
     elif any(kw in status_raw for kw in ("encerrado", "esgotado", "fechado", "sold")):
         inscricoes_abertas = False
@@ -409,6 +417,7 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
         miss_count=0,
         first_seen_at=now,
         updated_at=now,
+        cancelado=cancelado,
     )
 
 

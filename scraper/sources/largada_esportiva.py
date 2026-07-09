@@ -30,6 +30,12 @@ from .. import geo as _geo
 BASE        = "https://largadaesportiva.com.br"
 SOURCE_NAME = "Largada Esportiva"
 
+# The platform is effectively dormant: its API now returns only stale 2019 test
+# records (all "Volta do Lago" editions), so between real editions this scraper
+# correctly returns nothing current. Treated like the single-event sources —
+# an empty result is expected downtime, not a health failure (test_source).
+SINGLE_EVENT = True
+
 # Ordered by likelihood of containing the events listing
 _CANDIDATE_URLS = [
     f"{BASE}/eventos",

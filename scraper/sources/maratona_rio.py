@@ -26,6 +26,11 @@ SITE_URL    = "https://www.maratonadorio.com.br/"
 SITE_EN_URL = "https://www.maratonadorio.com.br/en"
 SOURCE_NAME = "Maratona do Rio"
 
+# One recurring annual event: after each edition and before the next is announced
+# this scraper correctly returns nothing. test_source treats that empty result as
+# expected downtime, not a health failure. See scraper/test_source.py.
+SINGLE_EVENT = True
+
 # Canonical metric distances for the named races
 _CANON = {5: 5.0, 10: 10.0, 21: 21.097, 42: 42.195}
 

@@ -33,6 +33,11 @@ from .. import geo as _geo
 
 SITE_URL    = "https://maratonadeportoalegre.com.br/"
 SOURCE_NAME = "Maratona de Porto Alegre"
+
+# One recurring annual event: after each edition and before the next is announced
+# this scraper correctly returns nothing. test_source treats that empty result as
+# expected downtime, not a health failure. See scraper/test_source.py.
+SINGLE_EVENT = True
 DETAIL_URL  = "https://www.ticketsports.app/api/events/detail"
 
 # Last "-<digits>" of a ticketsports.com.br/e/<slug>-<id> URL is the event id.

@@ -51,7 +51,13 @@ def run(source: str) -> int:
     # this line and persists it into data/source-status.json).
     print(f"EVENT_COUNT:{n}")
     if n == 0:
-        if source.startswith("evento_unico/"):
+        # Single-event sources (evento_unico/*, or any module that declares
+        # SINGLE_EVENT = True) cover ONE recurring event: between editions — after
+        # this year's race, before the next is announced — they correctly return
+        # nothing. That is expected downtime, not a broken scraper, so it must not
+        # count as a health failure (it would otherwise trip the source-health
+        # policy every year during the gap).
+        if source.startswith("evento_unico/") or getattr(mod, "SINGLE_EVENT", False):
             print(f"ℹ️   {source}: 0 eventos (sem edição futura anunciada — comportamento esperado entre edições)")
             return 0
         print(f"⚠️   {source}: 0 eventos retornados")

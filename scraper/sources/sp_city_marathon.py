@@ -28,6 +28,11 @@ BASE        = "https://iguanasports.com.br"
 BLOG_INDEX  = f"{BASE}/blogs/calendario-corridas-de-rua"
 SOURCE_NAME = "SP City Marathon"
 
+# One recurring annual event: after each edition and before the next is announced
+# this scraper correctly returns nothing. test_source treats that empty result as
+# expected downtime, not a health failure. See scraper/test_source.py.
+SINGLE_EVENT = True
+
 _HANDLE_RE = re.compile(r'/blogs/calendario-corridas-de-rua/(sp-city-marathon-\d{4})', re.I)
 _MON = {'jan': 1, 'fev': 2, 'mar': 3, 'abr': 4, 'mai': 5, 'jun': 6,
         'jul': 7, 'ago': 8, 'set': 9, 'out': 10, 'nov': 11, 'dez': 12}

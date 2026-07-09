@@ -19,6 +19,11 @@ from .. import geo as _geo
 
 SOURCE_NAME = "Volta do Lago"
 
+# One recurring annual event: after each edition and before the next is announced
+# this scraper correctly returns nothing. test_source treats that empty result as
+# expected downtime, not a health failure. See scraper/test_source.py.
+SINGLE_EVENT = True
+
 _CB_CALENDAR = "https://correrbrasilia.com.br/calendario/"
 
 _LE_API  = "https://largadaesportiva.com.br/api/Events"

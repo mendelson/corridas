@@ -20,31 +20,31 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 839 ev |
-| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-07-11 10:13 | ✅ | 2026-07-11 10:13 · 8 ev |
-| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-07-11 10:10 | ✅ | 2026-07-11 10:10 · 55 ev |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-07-11 10:17 | ✅ | 2026-07-11 10:17 · 70 ev |
-| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-07-11 10:11 | ✅ | 2026-07-11 10:11 · 7 ev |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 842 ev |
+| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 59 ev |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 55 ev |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-07-11 13:44 | ✅ | 2026-07-11 13:44 · 102 ev |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 7 ev |
 | Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-07-11 10:11 | ✅ | 2026-07-11 10:11 · 18 ev |
-| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-07-11 10:11 | ✅ | 2026-07-11 10:11 · 13 ev |
-| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-07-11 10:10 | ✅ | 2026-07-11 10:10 · 4 ev |
-| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-07-11 10:11 | ✅ | 2026-07-11 10:11 · 4 ev |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 1 ev |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-07-11 10:23 | ✅ | 2026-07-11 10:23 · 1010 ev |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-07-11 10:14 | ✅ | 2026-07-11 10:14 · 145 ev |
+| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 13 ev |
+| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 4 ev |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 6 ev |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-07-11 13:39 | ⚠️ 1/3 eventos sem distâncias (1/3) | 2026-07-11 10:12 · 1 ev |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-07-11 13:54 | ⚠️  (1/3) | 2026-07-11 10:23 · 1010 ev |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-07-11 13:41 | ✅ | 2026-07-11 13:41 · 184 ev |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-07-11 10:11 | ✅ | 2026-07-11 10:11 · 15 ev |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 0 ev |
-| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-07-11 10:13 | ✅ | 2026-07-11 10:13 · 55 ev |
+| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 57 ev |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | Conta Passos<!--conta_passos--> | ✅ | `contapassos.com.br` | RSC payload da home (Next.js) | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 5 ev |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 65 ev |
-| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 7 ev |
-| Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-07-11 10:10 | ⚠️ 0 eventos (2/3) | 2026-07-10 11:46 · 4 ev |
-| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 1 ev |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 65 ev |
+| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 45 ev |
+| Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-07-11 13:39 | ❌ 0 eventos | 2026-07-10 11:46 · 4 ev |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 1 ev |
 
 ### Fontes brasileiras — eventos específicos
 
@@ -53,24 +53,24 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-07-11 10:13 | ✅ | 2026-07-11 10:13 · 1 ev |
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-07-11 10:11 | ✅ | 2026-07-11 10:11 · 1 ev |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 1 ev |
-| São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-07-11 10:10 | ✅ | 2026-07-11 10:10 · 0 ev |
+| São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-07-11 13:39 | ✅ | 2026-07-11 13:39 · 1 ev |
 | Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 0 ev |
 
 ### Fontes mexicanas
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-07-11 10:12 | ✅ | 2026-07-11 10:12 · 29 ev |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 30 ev |
 
 ### Fontes internacionais — plataformas agregadoras
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-07-11 10:13 | ✅ | 2026-07-11 10:13 · 1879 ev |
+| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-07-11 13:42 | ✅ | 2026-07-11 13:42 · 1897 ev |
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-07-11 10:14 | ✅ | 2026-07-11 10:14 · 10959 ev |
-| World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-06-05 12:00 | ⚠️ 0 eventos (0/3) | 2026-05-30 03:27 |
+| World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 100 ev |
 | Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-07-11 10:13 | ✅ | 2026-07-11 10:13 · 629 ev |
-| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-07-11 10:13 | ✅ | 2026-07-11 10:13 · 167 ev |
+| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-07-11 13:41 | ✅ | 2026-07-11 13:41 · 4558 ev |
 
 ---
 

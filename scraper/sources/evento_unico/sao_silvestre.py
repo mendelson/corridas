@@ -52,12 +52,18 @@ _RACE_TIME_RE = re.compile(
 
 
 def _fetch_page_data() -> tuple[str | None, str | None]:
-    """Fetch the official site once; return (inscricao_url, horario)."""
+    """Fetch the official site once; return (inscricao_url, horario).
+
+    Retries once when no horário was found, but always returns the last
+    attempt's inscricao_url — since events without a published start time are
+    now kept (policy 2026-07-11), the real inscription link must not be lost
+    just because the horário is missing."""
+    result: tuple[str | None, str | None] = (None, None)
     for _attempt in range(2):
         result = _try_fetch_page()
         if result[1] is not None:
             return result
-    return None, None
+    return result
 
 
 def _try_fetch_page() -> tuple[str | None, str | None]:

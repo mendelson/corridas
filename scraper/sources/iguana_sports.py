@@ -87,9 +87,10 @@ def scrape() -> list[Corrida]:
             link_evento = f"{CALENDAR_URL}/{card['slug']}"
 
             horario = card["horario"] or detail_horario
-            if not horario:
-                print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
-                continue
+            # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+            # if not horario:
+            #     print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+            #     continue
 
             distancias = card["distancias"] or detail_dists
             if not distancias:

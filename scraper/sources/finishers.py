@@ -12,12 +12,13 @@ Ahotu" note was never tested and is false). Two structured data sources:
    carries `pageProps.races[].time` (the start time, e.g. "08:30:00"), which
    the search index omits.
 
-The project requires a published start time per event, so we enrich each event
-with its time from (2). Because that's one fetch per event, a persistent cache
+Each event is enriched with its start time from (2) — horário is extracted
+with maximum effort, though since 2026-07-11 it is no longer mandatory (events
+without a published time are kept). Because that's one fetch per event, a persistent cache
 (data/finishers_horarios.json, like data/geo_cache.json) means each event's
 time is fetched once and reused; only new events are fetched on later runs, and
 a per-run cap bounds the very first cold run. Events still without a published
-time are skipped (re-tried on later runs until a time appears).
+time are kept and re-tried on later runs until a time appears.
 
 Each Typesense doc is one race of an event; grouped by `eventId` into one
 Corrida (eventNameâtitulo, editionStartDateâdata, raceDistanceâdistancias,
@@ -267,9 +268,10 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: list[Corrida] = []
     for eid, docs in by_event.items():
-        horario = cache.get(eid) or ""
-        if not horario:
-            continue  # no published start time â skip (project requirement)
+        horario = cache.get(eid) or None
+        # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+        # if not horario:
+        #     continue  # no published start time â skip (project requirement)
 
         head = docs[0]
         titulo = normalize_titulo(head.get("eventName") or "")
@@ -313,5 +315,5 @@ def scrape() -> list[Corrida]:
             miss_count=0, first_seen_at=now, updated_at=now,
         ))
 
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas com horÃ¡rio publicado")
+    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

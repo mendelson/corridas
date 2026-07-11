@@ -516,9 +516,10 @@ def _parse_competition(comp: dict, today: str, end_date: str) -> Corrida | None:
 
     now = now_iso()
     horario = _horario_inline or _fetch_horario(link)
-    if horario is None:
-        print(f"[{SOURCE_NAME}] sem horário para {titulo!r} ({link}) — ignorado")
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     print(f"[{SOURCE_NAME}] sem horário para {titulo!r} ({link}) — ignorado")
+    #     return None
 
     return Corrida(
         id=f"worldathletics_{comp_id}_{year}",

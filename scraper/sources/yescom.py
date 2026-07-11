@@ -174,9 +174,10 @@ def _parse_event_page(url: str) -> Corrida | None:
         return None
 
     horario = _extract_horario(full_text)
-    if not horario:
-        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if not horario:
+    #     print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+    #     return None
 
     insc_link = _find_inscription_link(soup)
     today = today_iso()

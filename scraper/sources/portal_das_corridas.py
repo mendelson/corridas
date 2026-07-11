@@ -127,8 +127,9 @@ def _parse_event(html: str, url: str, today: str, now: str) -> Corrida | None:
 
     raw_time = start_iso[11:16] if len(start_iso) >= 16 and start_iso[10] == "T" else None
     horario = raw_time if (raw_time and int(raw_time[:2]) >= 4) else None
-    if not horario:
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if not horario:
+    #     return None
     image   = (ld.get("image") or {}).get("url") if isinstance(ld.get("image"), dict) else None
 
     pais, estado, cidade = _extract_location(html, ld)

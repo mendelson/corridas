@@ -188,8 +188,9 @@ def _build_corrida(
     # Look up published start time from the pages data
     horario_html = horario_map.get((loc_slug, stage_slug), "")
     horario = _parse_horario_html(horario_html)
-    if horario is None:
-        return None  # start time not yet published — skip until it is
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     return None  # start time not yet published — skip until it is
 
     per_dist = _parse_per_dist_horarios(horario_html)
 

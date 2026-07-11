@@ -136,8 +136,9 @@ def _parse_card(card, today: str, now: str) -> Corrida | None:
 
     # Horario: must fetch detail page
     horario = _fetch_horario(link) if link != URL else None
-    if horario is None:
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     return None
 
     # Distances from card description text
     desc_el = card.find(class_=lambda c: c and "card-text" in c)

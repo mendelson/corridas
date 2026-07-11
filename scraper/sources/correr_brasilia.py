@@ -277,9 +277,10 @@ def scrape() -> list[Corrida]:
         if not c.distancias:
             print(f"[{SOURCE_NAME}] sem distâncias, pulando: {c.titulo!r}")
             continue
-        if not c.horario:
-            print(f"[{SOURCE_NAME}] sem horário, pulando: {c.titulo!r}")
-            continue
+        # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+        # if not c.horario:
+        #     print(f"[{SOURCE_NAME}] sem horário, pulando: {c.titulo!r}")
+        #     continue
 
         if c.id not in seen_ids:
             seen_ids.add(c.id)

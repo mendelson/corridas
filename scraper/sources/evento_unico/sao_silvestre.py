@@ -118,9 +118,13 @@ def scrape() -> list[Corrida]:
     year = _target_year()
     data_evento = f"{year}-12-31"
     inscricao_url, horario = _fetch_page_data()
+    # Horário no longer mandatory (policy 2026-07-11): the event is included even
+    # while the official site hasn't published a start time (re-checked each run).
+    # if horario is None:
+    #     print(f"[{SOURCE_NAME}] sem horário publicado no site oficial — evento não incluído")
+    #     return []
     if horario is None:
-        print(f"[{SOURCE_NAME}] sem horário publicado no site oficial — evento não incluído")
-        return []
+        print(f"[{SOURCE_NAME}] sem horário publicado no site oficial — evento incluído sem horário")
     imagem_url = _fetch_og_image()
     return [_build(year, data_evento, inscricao_url, imagem_url, horario)]
 

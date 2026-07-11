@@ -686,9 +686,10 @@ def _events_to_corridas(
 
             horarios_dist = [d.horario for d in distancias if d.horario]
             horario_evento = min(horarios_dist) if horarios_dist else horario_from_date or horario_detail
-            if horario_evento is None:
-                print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
-                continue
+            # Horário não é mais obrigatório (política 2026-07-11): evento mantido sem ele.
+            # if horario_evento is None:
+            #     print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
+            #     continue
             inscricoes_abertas = None if is_closed is None else (not is_closed)
 
             fonte = FonteInfo(

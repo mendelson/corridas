@@ -199,8 +199,9 @@ def _fetch_horario_from_url(url: str) -> str | None:
 
 def _build_corrida(ev: dict) -> Corrida | None:
     horario = ev.get("horario")
-    if not horario:
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if not horario:
+    #     return None
 
     cidade = ev["cidade"]
     estado = ev.get("estado") or ""

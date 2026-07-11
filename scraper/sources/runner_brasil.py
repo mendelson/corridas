@@ -152,9 +152,11 @@ def _scrape_detail(url: str) -> Corrida | None:
     if horario is None and site_url:
         horario = _fetch_horario_from_url(site_url)
 
-    # Horário is mandatory only for events within the next 3 months; events
-    # further out may not have a start time published yet, so keep them (the
-    # pipeline re-checks each run and fills the horário as they approach).
+    # Horário is no longer mandatory (policy change 2026-07-11 —
+    # horario_required() always returns False): events without a published
+    # start time are kept. The deep-fetch extraction above still runs at full
+    # effort, and the guard stays here so the strict 3-month policy can be
+    # restored via utils.horario_required().
     if horario is None and horario_required(data):
         print(f"[{SOURCE_NAME}] sem horário (prova em até 3 meses), pulando: {titulo!r}")
         return None

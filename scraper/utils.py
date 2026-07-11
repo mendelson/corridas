@@ -55,23 +55,29 @@ _DATE_PTBR = re.compile(
 def horario_required(data_evento: str | None, today: date | None = None) -> bool:
     """Whether a published start time (horário) is mandatory for this event.
 
-    Rule: horário is required for events within the next 3 months (and for past /
-    imminent ones); events 3+ months in the future may still lack it, because
-    organisers often haven't announced the start time that far ahead. The
-    pipeline keeps those far-future events and re-checks every run, so a horário
-    is filled in automatically as the event approaches the 3-month window.
+    Policy change 2026-07-11: horário is never mandatory. Events whose start
+    time cannot be found anywhere are kept (previously, events within the next
+    3 months without a horário were dropped by the pipeline and failed the
+    tests). Scrapers must still search and extract the horário with maximum
+    effort — deep-fetching detail pages, inscription platforms and race sites
+    exactly as before — and the pipeline re-checks every run so the time fills
+    in as soon as any source publishes it. The value is simply no longer a
+    reason to discard an event when it is genuinely unavailable.
 
-    Returns False when there's no date (the missing-date check handles that).
+    The original 3-month-window rule is preserved below (commented out) in
+    case the strict policy ever needs to be restored.
     """
-    if not data_evento:
-        return False
-    import calendar
-    t = today or date.today()
-    m = t.month - 1 + 3
-    y = t.year + m // 12
-    mo = m % 12 + 1
-    cutoff = date(y, mo, min(t.day, calendar.monthrange(y, mo)[1]))
-    return data_evento[:10] < cutoff.isoformat()
+    return False
+    # --- original 3-month rule (disabled 2026-07-11, kept for reference) ---
+    # if not data_evento:
+    #     return False
+    # import calendar
+    # t = today or date.today()
+    # m = t.month - 1 + 3
+    # y = t.year + m // 12
+    # mo = m % 12 + 1
+    # cutoff = date(y, mo, min(t.day, calendar.monthrange(y, mo)[1]))
+    # return data_evento[:10] < cutoff.isoformat()
 
 
 def normalize_date(raw: str | None) -> str | None:

@@ -121,11 +121,11 @@ def _parse_event(html: str, url: str, today: str, end_date: str) -> Corrida | No
         return None
 
     # horario from the structured start-time field. Many worldsmarathons pages
-    # publish none, so we keep FAR-FUTURE events without it (they re-check each
-    # run and the time fills in as they approach). But within the next 3 months
-    # horário is mandatory, so near-term events still lacking one are dropped —
-    # the big majors that fall in that window (e.g. Berlin) are covered with a
-    # start time by their dedicated evento_unico source anyway.
+    # publish none. Since 2026-07-11 horário is never mandatory
+    # (horario_required() always returns False), so events without one are
+    # kept regardless of how close the date is; the guard below stays in
+    # place so the previous strict 3-month policy can be restored via
+    # utils.horario_required().
     horario = None
     mt = _START_TIME_RE.search(html)
     if mt:

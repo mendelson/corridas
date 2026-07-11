@@ -13,19 +13,24 @@ import pytest
 
 
 def _horario_required(data_evento) -> bool:
-    """Horário is mandatory for events within the next 3 months (and past/imminent
-    ones); events 3+ months out may still lack a published start time. Mirrors
-    scraper.utils.horario_required (kept inline so this test has no scraper dep)."""
-    if not data_evento:
-        return False
-    import calendar
-    from datetime import date
-    t = date.today()
-    m = t.month - 1 + 3
-    y = t.year + m // 12
-    mo = m % 12 + 1
-    cutoff = date(y, mo, min(t.day, calendar.monthrange(y, mo)[1]))
-    return str(data_evento)[:10] < cutoff.isoformat()
+    """Horário is never mandatory (policy change 2026-07-11): events without a
+    published start time are accepted. Scrapers still extract it with maximum
+    effort; it just no longer fails the test when unavailable. Mirrors
+    scraper.utils.horario_required (kept inline so this test has no scraper dep).
+    The original 3-month rule is preserved below in case the strict policy
+    ever needs to be restored."""
+    return False
+    # --- original 3-month rule (disabled 2026-07-11, kept for reference) ---
+    # if not data_evento:
+    #     return False
+    # import calendar
+    # from datetime import date
+    # t = date.today()
+    # m = t.month - 1 + 3
+    # y = t.year + m // 12
+    # mo = m % 12 + 1
+    # cutoff = date(y, mo, min(t.day, calendar.monthrange(y, mo)[1]))
+    # return str(data_evento)[:10] < cutoff.isoformat()
 
 
 def _isolate_context(ctx):
@@ -839,8 +844,8 @@ def test_all_events_have_required_fields():
     - pais: ISO-3166-1 alpha-2 code that exists as web/locations/{pais}.json
     - estado: non-empty subdivision code listed in that country's JSON file
     - at least one valid link in fontes
-    - horario: required (zero-tolerance) for events within the next 3 months;
-      events 3+ months in the future may still omit it (see _horario_required).
+    - horario: not required (policy change 2026-07-11 — _horario_required
+      always returns False); events without a published start time are kept.
     """
     corridas = _load_corridas()
     assert corridas, "corridas.json is empty"

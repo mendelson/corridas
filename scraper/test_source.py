@@ -147,9 +147,10 @@ def _validate(source: str, results: list) -> list[str]:
                 missing_tipo += 1
                 break
 
-        # Hard: sem horário publicado — obrigatório apenas para eventos nos
-        # próximos 3 meses (eventos a 3+ meses no futuro ainda podem não ter
-        # horário divulgado; serão cobrados quando se aproximarem).
+        # Horário: desde 2026-07-11 nunca é obrigatório (horario_required()
+        # sempre retorna False) — eventos sem horário publicado são aceitos.
+        # A checagem permanece no lugar para reativação fácil da política
+        # estrita (janela de 3 meses) via utils.horario_required().
         if not r.horario and horario_required(r.data_evento):
             missing_horario += 1
 

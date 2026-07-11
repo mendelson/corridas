@@ -227,9 +227,10 @@ def _parse_event(ev: dict, today: str) -> Corrida | None:
     if not distancias:
         print(f"[{SOURCE_NAME}] sem distâncias estruturadas, pulando: {titulo!r}")
         return None
-    if not horario:
-        print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if not horario:
+    #     print(f"[{SOURCE_NAME}] sem horário, pulando: {titulo!r}")
+    #     return None
 
     imagem = ev.get("imgEventDesktop") or ev.get("imgEvent") or None
 

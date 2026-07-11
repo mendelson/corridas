@@ -204,8 +204,9 @@ def _parse_widget(widget, today: str, now: str) -> Corrida | None:
 
     # Fetch the external event page to get the start time.
     horario = _fetch_horario_from_link(link_evento) if link_evento != URL else None
-    if horario is None:
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     return None
 
     return Corrida(
         id=stable_id,

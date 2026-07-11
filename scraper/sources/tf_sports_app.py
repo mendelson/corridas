@@ -490,9 +490,10 @@ def _parse_strapi_event(event: dict, now: str) -> Corrida | None:
     horario = horario or horario_from_date
     if horario is None:
         horario = _horario_from_event_page(slug)
-    if horario is None:
-        print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
-        return None
+    # Horário não é mais obrigatório (política 2026-07-11): evento mantido sem ele.
+    # if horario is None:
+    #     print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem horário publicado)")
+    #     return None
 
     imagem_url = None
     cover = ev.get("coverImage") or {}

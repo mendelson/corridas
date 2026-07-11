@@ -12,12 +12,13 @@ Ahotu" note was never tested and is false). Two structured data sources:
    carries `pageProps.races[].time` (the start time, e.g. "08:30:00"), which
    the search index omits.
 
-The project requires a published start time per event, so we enrich each event
-with its time from (2). Because that's one fetch per event, a persistent cache
-(data/finishers_horarios.json, like data/geo_cache.json) means each event's
-time is fetched once and reused; only new events are fetched on later runs, and
-a per-run cap bounds the very first cold run. Events still without a published
-time are skipped (re-tried on later runs until a time appears).
+Each event is enriched with its start time from (2) — horário is extracted
+with maximum effort, though since 2026-07-11 it is no longer mandatory (events
+without a published time are kept). Because that's one fetch per event, a persistent cache
+(data/finishers_horarios.json, like data/geo_cache.json) means an event with a
+known time is fetched once and reused; new events and cached misses (no time
+published yet) are (re-)fetched each run. Events still without a published
+time are kept and re-tried on later runs until a time appears.
 
 Each Typesense doc is one race of an event; grouped by `eventId` into one
 Corrida (eventNameâtitulo, editionStartDateâdata, raceDistanceâdistancias,
@@ -248,11 +249,15 @@ def scrape() -> list[Corrida]:
     # Stage 2: fill missing start times (cached), soonest events first, capped.
     cache = _load_cache()
     ordered = sorted(by_event.items(), key=lambda kv: _event_date(kv[1]) or "9999")
+    # Retry cached misses ("") too: events are now emitted without a horário
+    # (policy 2026-07-11), so a previously-missing start time must be re-fetched
+    # each run until Finishers publishes it — otherwise it would stay empty
+    # forever. Only events with a cached non-empty time skip the fetch.
     todo = [(eid, docs[0].get("eventSlug")) for eid, docs in ordered
-            if eid not in cache and docs[0].get("eventSlug")]
+            if not cache.get(eid) and docs[0].get("eventSlug")]
     if todo:
         build_id = _get_build_id()
-        print(f"[{SOURCE_NAME}] buscando horÃ¡rio de {len(todo)} eventos novos (buildId={build_id})")
+        print(f"[{SOURCE_NAME}] buscando horário de {len(todo)} eventos novos ou sem horário em cache (buildId={build_id})")
         with ThreadPoolExecutor(max_workers=_FETCH_WORKERS) as ex:
             futs = {ex.submit(_fetch_time, slug, build_id): eid for eid, slug in todo}
             for fut in as_completed(futs):
@@ -267,9 +272,10 @@ def scrape() -> list[Corrida]:
     now = now_iso()
     corridas: list[Corrida] = []
     for eid, docs in by_event.items():
-        horario = cache.get(eid) or ""
-        if not horario:
-            continue  # no published start time â skip (project requirement)
+        horario = cache.get(eid) or None
+        # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+        # if not horario:
+        #     continue  # no published start time â skip (project requirement)
 
         head = docs[0]
         titulo = normalize_titulo(head.get("eventName") or "")
@@ -313,5 +319,5 @@ def scrape() -> list[Corrida]:
             miss_count=0, first_seen_at=now, updated_at=now,
         ))
 
-    print(f"[{SOURCE_NAME}] {len(corridas)} corridas com horÃ¡rio publicado")
+    print(f"[{SOURCE_NAME}] {len(corridas)} corridas encontradas")
     return corridas

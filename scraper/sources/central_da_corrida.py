@@ -78,8 +78,12 @@ def _parse_event(event: dict, today: str) -> Corrida | None:
     localizacao = f"{cidade}, {estado}" if cidade else estado
 
     data_evento, horario = _parse_datetime(event.get("Data_evento") or "")
-    if not data_evento or horario is None:
-        return None  # Data_evento null or unparseable — start time not published
+    # Horário no longer mandatory (policy 2026-07-11): only a missing DATE skips
+    # the event now; a missing start time is kept.
+    # if not data_evento or horario is None:
+    #     return None  # Data_evento null or unparseable — start time not published
+    if not data_evento:
+        return None  # Data_evento null or unparseable
 
     imagem_url = _parse_image(event.get("imagem"))
 

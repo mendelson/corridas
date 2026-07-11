@@ -215,8 +215,9 @@ def _build_corrida(meta: dict) -> Corrida | None:
     link_evento, distancias, horario = _fetch_event_page(meta["redirect_url"])
     if not distancias:
         return None
-    if horario is None:
-        return None  # start time not yet published — skip until it is
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     return None  # start time not yet published — skip until it is
     if not link_evento:
         link_evento = meta["redirect_url"]
 

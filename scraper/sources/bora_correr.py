@@ -151,8 +151,9 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     if horario is None:
         horario = _fetch_horario_from_detail(link)
 
-    if horario is None:
-        return None
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     return None
 
     # Stable ID — UUID from the report button if present, else fallback to date+title
     uuid_m = _UUID_RE.search(str(cells[2]))

@@ -250,8 +250,9 @@ def _parse_post(post: dict, today: str) -> Corrida | None:
     race_id = f"halfmarathons_{post_id}_{data_evento[:4]}"
 
     horario = _normalize_time(meta.get("starting-time"))
-    if horario is None:
-        return None  # starting-time not yet published — skip until it is
+    # Horário no longer mandatory (policy 2026-07-11): keep the event without it.
+    # if horario is None:
+    #     return None  # starting-time not yet published — skip until it is
 
     now = now_iso()
     return Corrida(

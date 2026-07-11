@@ -118,13 +118,20 @@ def scrape() -> list[Corrida]:
     # subdivision come from the convocatoria page (behind a JS anti-bot challenge,
     # fetched via Playwright); events where they couldn't be recovered are dropped
     # rather than stored invalid.
+    # Horário no longer mandatory (policy 2026-07-11): it was removed from the
+    # hard-required filter below (original kept for reference); cidade, distâncias
+    # and a valid MX subdivision are still required.
+    # result = [
+    #     c for c in result
+    #     if c.horario and c.cidade and c.distancias and _geo.validate_estado("MX", c.estado)
+    # ]
     result = [
         c for c in result
-        if c.horario and c.cidade and c.distancias and _geo.validate_estado("MX", c.estado)
+        if c.cidade and c.distancias and _geo.validate_estado("MX", c.estado)
     ]
     dropped = before - len(result)
     if dropped:
-        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem horÃ¡rio/cidade/UF/distÃ¢ncia vÃ¡lida")
+        print(f"[{SOURCE_NAME}] descartados {dropped} eventos sem cidade/UF/distância válida")
     print(f"[{SOURCE_NAME}] {len(result)} corridas encontradas")
     return result
 

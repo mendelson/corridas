@@ -186,7 +186,10 @@ def _parse_message(div) -> Corrida | None:
         return None
 
     horario = _extract_horario(text) or _fetch_horario_from_link(link)
-    # Horário is mandatory only within the next 3 months; keep far-future events.
+    # Horário is no longer mandatory (policy change 2026-07-11 —
+    # horario_required() always returns False): events without one are kept.
+    # Extraction above still runs at full effort; the guard stays for easy
+    # restoration of the strict policy via utils.horario_required().
     if horario is None and horario_required(data_evento):
         return None
 

@@ -1019,13 +1019,15 @@ def _drop_kids_events(corridas: list[Corrida]) -> list[Corrida]:
 
 
 def _drop_events_without_horario(corridas: list[Corrida]) -> list[Corrida]:
-    """Drop events within the next 3 months that have no published start time.
+    """Drop events whose start time is missing AND required by policy.
 
-    Horário is a hard requirement for imminent events: users rely on it to plan
-    participation. But events 3+ months out often have no start time announced
-    yet — dropping those would hide them needlessly. So keep far-future events
-    without a horário (they're re-checked each run and the time is filled in as
-    they approach the 3-month window) and only drop near-term ones still missing it.
+    Policy change 2026-07-11: horario_required() now always returns False, so
+    this filter keeps every event — events without a published start time are
+    accepted. Scrapers still extract the horário with maximum effort and the
+    pipeline re-checks each run, filling it in as soon as a source publishes
+    it. The filter is kept in place (not deleted) so the previous strict
+    policy — dropping events within 3 months that lack a horário — can be
+    restored by re-enabling the original logic in utils.horario_required().
     """
     ok, dropped = [], []
     for c in corridas:

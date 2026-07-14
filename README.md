@@ -25,7 +25,7 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-07-14 10:41 | ✅ | 2026-07-14 10:41 · 52 ev |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-07-14 10:45 | ✅ | 2026-07-14 10:45 · 97 ev |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-07-14 10:42 | ✅ | 2026-07-14 10:42 · 7 ev |
-| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-07-14 10:41 | ✅ | 2026-07-14 10:41 · 19 ev |
+| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-07-14 18:34 | ✅ | 2026-07-14 18:34 · 52 ev |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-07-14 10:40 | ✅ | 2026-07-14 10:40 · 13 ev |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-07-14 10:40 | ✅ | 2026-07-14 10:40 · 4 ev |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-07-14 10:40 | ✅ | 2026-07-14 10:40 · 7 ev |

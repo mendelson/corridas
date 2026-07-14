@@ -175,14 +175,20 @@ def _scrape_event(url: str, hint_name: str, today: str, now: str) -> Corrida | N
 
     localizacao = f"{city}, {estado}"
 
-    # Distances from offers; fallback to title/description if none found
+    # Registration page URL — also the authoritative structured source for
+    # distances when the JSON-LD offers don't carry them.
+    slug_part = url.rsplit("/", 1)[-1]
+    reg_url = f"{_BASE}/ingressos/{slug_part}"
+
+    # Distances: prefer the JSON-LD offer names (structured registration
+    # modalidades, e.g. "Inscrição 5,3km"). Many events instead name their
+    # offers as generic ticket lots ("1° LOTE INSCRIÇÃO GERAL") with no
+    # distance — for those, read the registration page's ticket-category
+    # headers ("5KM SOLO", "6 KM"), a dedicated non-title structured field.
+    # Never parse distances from the event title.
     distancias = _parse_distances(ld.get("offers") or [])
     if not distancias:
-        fallback_text = " ".join(filter(None, [
-            ld.get("name") or "",
-            ld.get("description") or "",
-        ]))
-        distancias = _parse_distances_from_text(fallback_text)
+        distancias = _distances_from_ingressos(reg_url)
     if not distancias:
         return None
 
@@ -192,10 +198,6 @@ def _scrape_event(url: str, hint_name: str, today: str, now: str) -> Corrida | N
     # ID from URL: /evento/slug-1234 → atletis_1234
     event_id = _extract_id(url)
     race_id = f"atletis_{event_id}"
-
-    # Registration link: /ingressos/{slug}-{id}
-    slug_part = url.rsplit("/", 1)[-1]
-    reg_url = f"{_BASE}/ingressos/{slug_part}"
 
     return Corrida(
         id=race_id,
@@ -261,31 +263,38 @@ def _parse_distances(offers: list) -> list[Distancia]:
     return sorted(result, key=lambda d: float(d.km))
 
 
-def _parse_distances_from_text(text: str) -> list[Distancia]:
-    """Extract distances from free text, e.g. title or description.
-    Matches '5K', '10km', '42K', '21.097km', etc.
-    Falls back to marathon/half-marathon keywords when no numeric found.
+def _distances_from_ingressos(reg_url: str) -> list[Distancia]:
+    """Read distances from the registration page's ticket-category headers.
+
+    The /ingressos/{slug} page groups tickets under category blocks whose
+    header (``.ticket-title``) names the modalidade — e.g. "5KM SOLO",
+    "10KM QUARTETO", "6 KM". These are a dedicated structured field (not the
+    event title), so extracting km from them is safe. Non-distance categories
+    (KIDS, CORRIDA BABY/PET, CAMINHADA) carry no km and are skipped.
     """
+    try:
+        resp = get(reg_url, source=SOURCE_NAME, timeout=20)
+        if resp.status_code != 200:
+            return []
+        html = resp.text
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] erro ao buscar ingressos {reg_url}: {e}")
+        return []
+
+    soup = BeautifulSoup(html, "lxml")
     seen: set[float] = set()
     result: list[Distancia] = []
-    for m in _DIST_RE.finditer(text):
-        try:
-            km = float(m.group(1).replace(",", "."))
-        except ValueError:
-            continue
-        km = _snap(km)
-        if km not in seen and 1.0 <= km <= 250.0:
-            seen.add(km)
-            result.append(Distancia(km=km, data=None, horario=None))
-    if not result:
-        ltext = text.lower()
-        if re.search(r"\b(maratona|marathon|42k)\b", ltext):
-            is_half = bool(re.search(r"\b(meia|half|semi|21k)\b", ltext))
-            if not is_half:
-                result.append(Distancia(km=42.195, data=None, horario=None))
-        if re.search(r"\b(meia\s+maratona|half\s+marathon|21k)\b", ltext):
-            if 21.097 not in seen:
-                result.append(Distancia(km=21.097, data=None, horario=None))
+    for el in soup.select(".ticket-title"):
+        text = el.get_text(" ", strip=True)
+        for m in _DIST_RE.finditer(text):
+            try:
+                km = float(m.group(1).replace(",", "."))
+            except ValueError:
+                continue
+            km = _snap(km)
+            if km not in seen and 1.0 <= km <= 250.0:
+                seen.add(km)
+                result.append(Distancia(km=km, data=None, horario=None))
     return sorted(result, key=lambda d: float(d.km))
 
 

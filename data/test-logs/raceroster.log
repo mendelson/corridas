@@ -1,14 +1,14 @@
-[Race Roster] HTTP 202 'running' p0
+[Race Roster] erro 'running' p0: The read operation timed out
 [Race Roster] 'running': 0 upcoming de 0
-[Race Roster] HTTP 202 'marathon' p0
+[Race Roster] HTTP 504 'marathon' p0
 [Race Roster] 'marathon': 0 upcoming de 0
-[Race Roster] HTTP 202 '5k' p0
+[Race Roster] HTTP 504 '5k' p0
 [Race Roster] '5k': 0 upcoming de 0
-[Race Roster] HTTP 202 '10k' p0
+[Race Roster] HTTP 504 '10k' p0
 [Race Roster] '10k': 0 upcoming de 0
-[Race Roster] HTTP 202 'half marathon' p0
+[Race Roster] HTTP 504 'half marathon' p0
 [Race Roster] 'half marathon': 0 upcoming de 0
-[Race Roster] HTTP 202 'trail run' p0
+[Race Roster] HTTP 504 'trail run' p0
 [Race Roster] 'trail run': 0 upcoming de 0
 [Race Roster] 0 eventos únicos após dedup
 [Race Roster] 0 corridas válidas (0 ignoradas)

@@ -16,22 +16,23 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 Este site é um dos três irmãos (mmendelson.com, apps.mmendelson.com,
 run.mmendelson.com) com identidade visual padronizada — mesmas fontes e mesmo
-padrão de brand bar/rodapé, cada site com sua cor de destaque. O plano completo
-e as decisões estão em
+padrão de chrome/rodapé. O hub tem sua cor própria (dourado); **apps e run
+compartilham o mesmo código de cores**. O plano completo e as decisões estão em
 [`website/BRAND_STANDARDIZATION.md`](https://github.com/mendelson/website/blob/main/BRAND_STANDARDIZATION.md)
 (repositório do hub).
 
 - **Fontes**: IBM Plex Serif (título do app), IBM Plex Sans (corpo),
-  IBM Plex Mono (wordmark/chrome), via Google Fonts.
-- **Cor de destaque**: Ember `#e0693a`, derivada da listra do mascote-tênis
-  (`web/gallery/shoe-wear.js`) — o mascote é a marca do contexto de corrida.
-  Tokens em `web/style.css` (`:root`): fundo `#0f1115`, superfícies
-  `#171b22`/`#21262f`, borda `#2b313c`.
-- **Chrome de família**: brand bar (mascote + wordmark + seletor
-  Home/Apps/Run) acima do header do app, e bloco de rodapé compartilhado
-  (redes sociais + seletor + copyright). O bar é estático para o header do
-  app continuar sticky. Todos os filtros/menus próprios do site foram
-  mantidos.
+  IBM Plex Mono (chrome/números), via Google Fonts.
+- **Cores**: mesma paleta do apps.mmendelson.com — destaque azul `#3b82f6`,
+  fundo `#111`, superfícies `#1a1a1a`/`#242424`, borda `#333`, texto `#eee`,
+  secundário `#9a9a9a`. Tokens em `web/style.css` (`:root`). O mascote-tênis
+  (`web/gallery/shoe-wear.js`) mantém as cores próprias do desenho — é arte,
+  não token.
+- **Chrome de família**: o seletor Home/Apps/Run vive dentro do próprio
+  header do app (sem brand bar separado — o header já carrega o mascote +
+  título), e o rodapé tem o bloco compartilhado (redes sociais + seletor +
+  copyright `© M. Mendelson`). Navegação entre os três sites é sempre na
+  mesma aba. Todos os filtros/menus próprios do site foram mantidos.
 - **Botão de refresh removido** (2026-07): os dados mudam no máximo 4×/dia
   via pipeline; o botão só re-baixava o mesmo JSON. Trade-off aceito: quem
   deixar a aba aberta por muitas horas precisa recarregar a página.

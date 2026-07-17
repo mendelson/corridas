@@ -51,7 +51,6 @@ const STRINGS = {
     periodoAriaLabel: 'Filtrar por período',
     estadoAriaLabel: 'Filtrar por localização',
     fonteFilterAriaLabel: 'Filtrar por fonte',
-    refreshAriaLabel: 'Atualizar',
     homeAriaLabel: 'Minha localização e idioma',
     langAriaLabel: 'Idioma',
     clearFiltersAriaLabel: 'Limpar filtros',
@@ -116,7 +115,6 @@ const STRINGS = {
     periodoAriaLabel: 'Filter by period',
     estadoAriaLabel: 'Filter by location',
     fonteFilterAriaLabel: 'Filter by source',
-    refreshAriaLabel: 'Refresh',
     homeAriaLabel: 'My location and language',
     langAriaLabel: 'Language',
     clearFiltersAriaLabel: 'Clear filters',
@@ -181,7 +179,6 @@ const STRINGS = {
     periodoAriaLabel: 'Filtrar por período',
     estadoAriaLabel: 'Filtrar por ubicación',
     fonteFilterAriaLabel: 'Filtrar por fuente',
-    refreshAriaLabel: 'Actualizar',
     homeAriaLabel: 'Mi ubicación e idioma',
     langAriaLabel: 'Idioma',
     clearFiltersAriaLabel: 'Limpiar filtros',
@@ -246,7 +243,6 @@ const STRINGS = {
     periodoAriaLabel: 'Nach Zeitraum filtern',
     estadoAriaLabel: 'Nach Ort filtern',
     fonteFilterAriaLabel: 'Nach Quelle filtern',
-    refreshAriaLabel: 'Aktualisieren',
     homeAriaLabel: 'Mein Standort und Sprache',
     langAriaLabel: 'Sprache',
     clearFiltersAriaLabel: 'Filter löschen',
@@ -311,7 +307,6 @@ const STRINGS = {
     periodoAriaLabel: 'Filtrer par période',
     estadoAriaLabel: 'Filtrer par lieu',
     fonteFilterAriaLabel: 'Filtrer par source',
-    refreshAriaLabel: 'Actualiser',
     homeAriaLabel: 'Ma position et langue',
     langAriaLabel: 'Langue',
     clearFiltersAriaLabel: 'Effacer les filtres',
@@ -370,7 +365,7 @@ const T = STRINGS[LANG] || STRINGS.en;
 let searchInput, cardsList, emptyState, btnClear, btnClearEmpty,
     periodoSelect, estadoFilterBtn, estadoFilterLabel, estadoFilterDropdown,
     fonteFilterBtn, fonteFilterLabel, fonteFilterDropdown,
-    resultCount, btnRefresh, btnLang, btnHome,
+    resultCount, btnLang, btnHome,
     modeSelect, modeInterval, pillsContainer, intervalContainer,
     distMin, distMax, customDateRow, dateFrom, dateTo;
 
@@ -447,7 +442,6 @@ async function detectGeoEstado({ force = false } = {}) {
 // ---------------------------------------------------------------------------
 async function loadData() {
   resultCount.textContent = T.loading;
-  if (btnRefresh) btnRefresh.classList.add('spinning');
   try {
     // Boot shard first (~1/3 of the full payload: default-filter window) so
     // the first paint doesn't wait for the whole dataset on mobile.
@@ -472,7 +466,6 @@ async function loadData() {
     resultCount.textContent = T.loadError;
     console.error('loadData error', e);
   } finally {
-    if (btnRefresh) btnRefresh.classList.remove('spinning');
     // Data is fully loaded (or failed) — lift the loading screen. It runs its
     // zoom-in-on-the-worn-shoe transition and reveals the now-stable card list.
     if (window.Loading) window.Loading.done();
@@ -1896,7 +1889,6 @@ document.addEventListener('DOMContentLoaded', () => {
   fonteFilterLabel    = document.getElementById('fonteFilterLabel');
   fonteFilterDropdown = document.getElementById('fonteFilterDropdown');
   resultCount         = document.getElementById('resultCount');
-  btnRefresh          = document.getElementById('btnRefresh');
   btnLang             = document.getElementById('btnLang');
   btnHome             = document.getElementById('btnHome');
   modeSelect          = document.getElementById('modeSelect');
@@ -1929,7 +1921,6 @@ document.addEventListener('DOMContentLoaded', () => {
   periodoSelect.setAttribute('aria-label', T.periodoAriaLabel);
   estadoFilterBtn.setAttribute('aria-label', T.estadoAriaLabel);
   fonteFilterBtn.setAttribute('aria-label',  T.fonteFilterAriaLabel);
-  btnRefresh.setAttribute('aria-label', T.refreshAriaLabel);
   btnHome.setAttribute('aria-label',    T.homeAriaLabel);
   btnLang.setAttribute('aria-label',    T.langAriaLabel);
   btnClear.setAttribute('aria-label',       T.clearFiltersAriaLabel);
@@ -2025,13 +2016,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnClear.addEventListener('click',      clearFilters);
   btnClearEmpty.addEventListener('click', clearFilters);
-
-  btnRefresh.addEventListener('click', () => {
-    allCorridas = [];
-    filteredCorridas = [];
-    cardsList.innerHTML = '';
-    loadData();
-  });
 
   const _LANG_LABELS = { pt: 'Português', en: 'English', es: 'Español', de: 'Deutsch', fr: 'Français' };
   let _langDropdown = null;

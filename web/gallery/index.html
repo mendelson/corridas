@@ -20,7 +20,7 @@
        #fit is scaled down uniformly (see fitPage()), with its layout width
        widened by the same factor so the scaled result still fills the screen. */
     html, body { margin: 0; height: 100%; overflow: hidden; }
-    body { background: #0f1115; color: #fff; font-family: 'IBM Plex Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    body { background: #111; color: #fff; font-family: 'IBM Plex Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
     #fit { transform-origin: 0 0; }
     /* Shared horizontal gutter so the header and the full-bleed timeline always
        line up; scales with the viewport so it never glues to the edges on
@@ -96,7 +96,7 @@
     @keyframes puff { 0%{ transform: translate(0,4px) scale(.3); opacity: 0; } 18%{ opacity: var(--o,.6); } 100%{ transform: translate(var(--dx,0), var(--dy,-34px)) scale(var(--s,2.6)); opacity: 0; } }
     .shoe-lab { position: absolute; top: 38px; font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #8b94a4; white-space: nowrap; }
     .shoe-lab-start { left: 0; }
-    .shoe-lab-end { right: 0; color: #e0693a; }
+    .shoe-lab-end { right: 0; color: #3b82f6; }
     /* Year marks along the scrubber — a small tick + year for each intermediate
        year (the oldest year and TODAY remain the prominent end labels). */
     .shoe-years { position: absolute; left: 0; right: 0; top: 0; height: 100%; }
@@ -131,20 +131,20 @@
     /* The big year number pins to the gutter while its column spans the
        viewport (driven by updateStickyYears); the halo keeps it legible when it
        rides over the rail/cards, and the high z-index keeps it on top. */
-    .ylabel { position: absolute; top: 201px; font-family: 'IBM Plex Serif', Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; z-index: 4; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 12px #0f1115, 0 0 7px #0f1115; }
+    .ylabel { position: absolute; top: 201px; font-family: 'IBM Plex Serif', Georgia, serif; font-size: 22px; font-weight: 500; color: #f3efe7; line-height: 1; z-index: 4; pointer-events: none; white-space: nowrap; text-shadow: 0 1px 12px #111, 0 0 7px #111; }
     /* Year boundary: a slim vertical post (not a dot) so it can't be mistaken
        for an event marker. It straddles the rail at the start of each year. */
-    .ynode { position: absolute; top: 222px; width: 2.5px; height: 26px; border-radius: 1.5px; background: #f3efe7; box-shadow: 0 0 0 3px #0f1115; z-index: 2; }
+    .ynode { position: absolute; top: 222px; width: 2.5px; height: 26px; border-radius: 1.5px; background: #f3efe7; box-shadow: 0 0 0 3px #111; z-index: 2; }
     .mtick { position: absolute; top: 236px; width: 1px; height: 5px; background: #2b313b; z-index: 0; }
     .mlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 700; letter-spacing: .04em; color: #565c68; white-space: nowrap; pointer-events: none; }
     /* Event markers ranked by significance (see tier()): ordinary races are
        quiet flat dots, milestone races wear a small silver medal, and marathons
        — the most honourable — wear the boldest gold medal with a soft glow. The
        JS sets only `left` (event x − half the marker's width). */
-    .enode { position: absolute; border-radius: 50%; box-shadow: 0 0 0 3.5px #0f1115; z-index: 2; }
+    .enode { position: absolute; border-radius: 50%; box-shadow: 0 0 0 3.5px #111; z-index: 2; }
     .enode.ord  { top: 231px;   width: 8px;  height: 8px;  background: #6b7280; }
-    .enode.mile { top: 229px;   width: 12px; height: 12px; background: radial-gradient(circle at 36% 30%, #eef1f6, #C3CAD6 52%, #8f98a7); box-shadow: 0 0 0 3.5px #0f1115, inset 0 0 0 1px rgba(255,255,255,.35); }
-    .enode.mara { top: 227.5px; width: 15px; height: 15px; background: radial-gradient(circle at 36% 30%, #fbeaa9, #E8C04A 50%, #b07f24); box-shadow: 0 0 0 3.5px #0f1115, 0 0 11px 1px rgba(232,192,74,.5), inset 0 0 0 1px rgba(255,255,255,.4); }
+    .enode.mile { top: 229px;   width: 12px; height: 12px; background: radial-gradient(circle at 36% 30%, #eef1f6, #C3CAD6 52%, #8f98a7); box-shadow: 0 0 0 3.5px #111, inset 0 0 0 1px rgba(255,255,255,.35); }
+    .enode.mara { top: 227.5px; width: 15px; height: 15px; background: radial-gradient(circle at 36% 30%, #fbeaa9, #E8C04A 50%, #b07f24); box-shadow: 0 0 0 3.5px #111, 0 0 11px 1px rgba(232,192,74,.5), inset 0 0 0 1px rgba(255,255,255,.4); }
     /* Straight vertical leader line from a date dot to its card. Cards are laid
        out so each one sits directly over/under its dot (the timeline stretches
        in busy stretches to make room), so the connector is always vertical. */
@@ -188,12 +188,12 @@
     .logo-garmin { display: block; height: 13px; width: auto; max-width: 58px; fill: #1ca0e3; }
     .logo-polar { display: block; height: auto; width: auto; max-height: 13px; max-width: 54px; }
     .gylab { position: absolute; top: 244px; transform: translateX(-50%); white-space: nowrap; font-family: 'IBM Plex Serif', Georgia, serif; font-size: 13px; font-weight: 500; color: #4a5160; z-index: 1; pointer-events: none; }
-    .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #0f1115; z-index: 1; }
+    .gnode { position: absolute; top: 233px; width: 6px; height: 6px; border-radius: 3px; background: #2b313b; box-shadow: 0 0 0 3px #111; z-index: 1; }
     /* Discreet yearly-distance info card — low emphasis vs the race cards. */
     .ykm { position: absolute; z-index: 1; pointer-events: none; white-space: nowrap; font-size: 10px; font-weight: 600; letter-spacing: .02em; color: #6b7280; background: rgba(20,23,29,.72); border: 1px solid #20242c; border-radius: 7px; padding: 2.5px 7px; }
     /* "today" end marker — the timeline concludes here and grows over time */
-    .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #0f1115; border: 2px solid #e0693a; box-shadow: 0 0 0 4px #0f1115; z-index: 2; }
-    .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #e0693a; white-space: nowrap; z-index: 1; pointer-events: none; }
+    .tnode { position: absolute; top: 230px; width: 11px; height: 11px; border-radius: 6px; background: #111; border: 2px solid #3b82f6; box-shadow: 0 0 0 4px #111; z-index: 2; }
+    .tlab { position: absolute; top: 244px; transform: translateX(-50%); font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #3b82f6; white-space: nowrap; z-index: 1; pointer-events: none; }
     @media (max-width: 560px) {
       header { padding-top: 26px; padding-bottom: 14px; } /* gutter via --gutter */
       .gbtn-lbl { display: none; }

@@ -1906,8 +1906,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const headerTitle = document.querySelector('.app-title');
   if (headerTitle) headerTitle.innerHTML = SHOE_LOGO + '<span class="app-title-txt"></span>';
   if (headerTitle) headerTitle.querySelector('.app-title-txt').textContent = T.headerTitle;
-  // Brand bar: same shoe artwork as the title (single source of truth).
-  document.querySelectorAll('.brand-shoe-slot').forEach(el => { el.innerHTML = SHOE_LOGO; });
   searchInput.placeholder = T.searchPlaceholder;
   searchInput.setAttribute('aria-label', T.searchAriaLabel);
   modeSelect.textContent   = T.modeSelect;

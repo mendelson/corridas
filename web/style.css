@@ -1232,3 +1232,118 @@ html.load-lock body { overflow: hidden; }
 
 /* Reveal: the whole overlay (worn shoe standing on the ground, sun out) fades
    out via .hidden to show the loaded site. */
+
+/* ==========================================================================
+   Family chrome (brand bar + footer additions)
+   Shared structural pattern across mmendelson.com / apps / run — see
+   website/BRAND_STANDARDIZATION.md. The bar is static (scrolls away) so the
+   app header keeps its own sticky top:0 behavior. The shoe mark is injected
+   at runtime into .brand-shoe-slot from ShoeWear.SVG_MARKUP (same single
+   source of truth as the app title's logo); without JS the wordmark stands
+   alone.
+   ========================================================================== */
+
+.brandbar {
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.brandbar-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+  text-decoration: none;
+  min-height: 40px;
+}
+
+.brand-logo:hover { color: var(--color-accent); }
+
+.brand-shoe-slot .shoe-wear { height: 20px; width: auto; display: block; }
+
+.brand-word {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.site-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+}
+
+.site-switch a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 8px 10px;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-switch a:hover { color: var(--color-accent); }
+
+.site-switch a.active {
+  color: var(--color-accent);
+  border-bottom: 1px solid var(--color-accent);
+}
+
+.footer-family {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.foot-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 16px;
+  font-family: var(--font-mono);
+}
+
+.foot-social a,
+.foot-switch a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.foot-social a:hover,
+.foot-switch a:hover { color: var(--color-accent); }
+
+.foot-switch {
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+}
+
+.foot-switch a.active { color: var(--color-accent); }
+
+.foot-copy {
+  max-width: 1100px;
+  margin: 10px auto 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}

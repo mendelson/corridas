@@ -2,20 +2,17 @@
    CSS Custom Properties
    ===================================================================== */
 :root {
-  --color-bg: #0f0f0f;
-  --color-surface: #1a1a1a;
-  --color-surface-2: #242424;
-  --color-border: #2e2e2e;
-  --color-accent: #FF6B35;
-  --color-accent-dim: rgba(255, 107, 53, 0.15);
+  --color-bg: #0f1115;
+  --color-surface: #171b22;
+  --color-surface-2: #21262f;
+  --color-border: #2b313c;
+  --color-accent: #e0693a;
+  --color-accent-dim: rgba(224, 105, 58, 0.15);
   --color-text: #f0f0f0;
   --color-text-secondary: #a0a0a0;
   --color-green: #4caf50;
   --color-red: #ef5350;
-  --color-gray: #757575;
   --color-realized: #9e9e9e;
-  --color-fotos: #6BBF7A;
-  --color-fotos-dim: rgba(107, 191, 122, 0.15);
   --font-display: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', 'Courier New', Courier, monospace;
   --radius: 12px;
@@ -954,7 +951,7 @@ input { font-family: inherit; }
 .badge-selo--gold     { background: linear-gradient(135deg,#ffd75e,#e0a528); }
 .badge-selo--elite    { background: linear-gradient(135deg,#9ad0ff,#4f9fe0); }
 .badge-selo--label    { background: var(--color-surface-2); color: var(--color-text-secondary); border: 1px solid var(--color-border); }
-.badge-selo--major    { background: linear-gradient(135deg,#ff8a5b,#FF6B35); color:#fff; }
+.badge-selo--major    { background: linear-gradient(135deg,#f08a5e,#e0693a); color:#fff; }
 
 /* Colour dot reused in the filter options and legend. */
 .selo-dot {

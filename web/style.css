@@ -16,8 +16,8 @@
   --color-realized: #9e9e9e;
   --color-fotos: #6BBF7A;
   --color-fotos-dim: rgba(107, 191, 122, 0.15);
-  --font-display: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Courier New', Courier, monospace;
+  --font-display: 'IBM Plex Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', Courier, monospace;
   --radius: 12px;
   --radius-sm: 6px;
   --shadow: 0 2px 12px rgba(0,0,0,0.4);
@@ -63,8 +63,9 @@ input { font-family: inherit; }
 }
 
 .app-title {
+  font-family: 'IBM Plex Serif', Georgia, serif;
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-accent);
   letter-spacing: -0.02em;
   margin: 0; /* .app-title is an <h1>: kill the UA heading margins */

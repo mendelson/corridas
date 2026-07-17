@@ -8,6 +8,8 @@ A static-site aggregator for road-running events, served in production at **`htt
 
 **The site is a worldwide aggregator — not a Brazilian site that happens to list other countries.** All 5 locales (pt/en/es/de/fr) and all supported countries/locations are first-class. Every product decision — UX, SEO, prerendered content, static pages, filters, copy — must serve every supported language and location, never only pt/BR. Do not scope a feature to Brazil by default; if a rollout must be phased, the phasing criterion must be explicit and justified (e.g. volume, cost caps), not an assumption that Brazil is "the" audience.
 
+**Visual identity standardization in progress (cross-repo).** This site is one of three siblings (mmendelson.com hub, apps.mmendelson.com, run.mmendelson.com) getting shared fonts/tokens/brand-bar treatment while keeping its own distinct accent color (built around the shoe mascot in `web/gallery/shoe-wear.js`) and all of its existing filters/menus. The plan, decisions, and resumable phase checklist live in [`website/BRAND_STANDARDIZATION.md`](https://github.com/mendelson/website/blob/main/BRAND_STANDARDIZATION.md) (the hub repo) — see Phase 3 for this repo's scope. The five-shell-per-language architecture described above is explicitly **out of scope** for that initiative — it is not being changed.
+
 ## Common commands
 
 ```bash

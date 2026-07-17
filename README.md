@@ -12,6 +12,37 @@ Atualizado automaticamente a cada 6 horas via GitHub Actions.
 
 📍 **Mapa do site e rotas:** [`docs/site-map.md`](docs/site-map.md) — domínio, caminhos públicos e assets de `run.mmendelson.com`.
 
+## Identidade visual
+
+Este site é um dos três irmãos (mmendelson.com, apps.mmendelson.com,
+run.mmendelson.com) com identidade visual padronizada — mesmas fontes e mesmo
+padrão de brand bar/rodapé, cada site com sua cor de destaque. O plano completo
+e as decisões estão em
+[`website/BRAND_STANDARDIZATION.md`](https://github.com/mendelson/website/blob/main/BRAND_STANDARDIZATION.md)
+(repositório do hub).
+
+- **Fontes**: IBM Plex Serif (título do app), IBM Plex Sans (corpo),
+  IBM Plex Mono (wordmark/chrome), via Google Fonts.
+- **Cor de destaque**: Ember `#e0693a`, derivada da listra do mascote-tênis
+  (`web/gallery/shoe-wear.js`) — o mascote é a marca do contexto de corrida.
+  Tokens em `web/style.css` (`:root`): fundo `#0f1115`, superfícies
+  `#171b22`/`#21262f`, borda `#2b313c`.
+- **Chrome de família**: brand bar (mascote + wordmark + seletor
+  Home/Apps/Run) acima do header do app, e bloco de rodapé compartilhado
+  (redes sociais + seletor + copyright). O bar é estático para o header do
+  app continuar sticky. Todos os filtros/menus próprios do site foram
+  mantidos.
+- **Botão de refresh removido** (2026-07): os dados mudam no máximo 4×/dia
+  via pipeline; o botão só re-baixava o mesmo JSON. Trade-off aceito: quem
+  deixar a aba aberta por muitas horas precisa recarregar a página.
+- **Favicon animado**: `web/shoe-favicon.svg` — o mascote com as marcas de
+  uso oscilando lentamente (limpo → usado → limpo, 7 s, CSS `alternate`).
+  Gerado por `scripts/gen-shoe-favicon.js` a partir de
+  `web/gallery/shoe-wear.js` (fonte única do desenho); **não editar à mão** —
+  rode `node scripts/gen-shoe-favicon.js` após qualquer mudança no mascote.
+  Safari não anima favicons SVG e mostra o primeiro quadro (tênis limpo);
+  `favicon.ico`/`logomendi-favicon.png` seguem como fallback raster.
+
 ---
 
 ## Fontes ativas

@@ -108,24 +108,6 @@ input { font-family: inherit; }
 }
 
 
-.btn-apps {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 10px;
-  height: var(--touch);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  color: var(--color-text-secondary);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s;
-}
-.btn-apps:hover { color: var(--color-accent); border-color: var(--color-accent); }
-
 .btn-lang,
 .btn-home {
   min-width: var(--touch);
@@ -1234,49 +1216,12 @@ html.load-lock body { overflow: hidden; }
    out via .hidden to show the loaded site. */
 
 /* ==========================================================================
-   Family chrome (brand bar + footer additions)
+   Family chrome (header site switcher + footer additions)
    Shared structural pattern across mmendelson.com / apps / run — see
-   website/BRAND_STANDARDIZATION.md. The bar is static (scrolls away) so the
-   app header keeps its own sticky top:0 behavior. The shoe mark is injected
-   at runtime into .brand-shoe-slot from ShoeWear.SVG_MARKUP (same single
-   source of truth as the app title's logo); without JS the wordmark stands
-   alone.
+   website/BRAND_STANDARDIZATION.md. The Home/Apps/Run switcher lives inside
+   the app header itself (no separate brand bar — the header already carries
+   the shoe mark + title).
    ========================================================================== */
-
-.brandbar {
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-bg);
-}
-
-.brandbar-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.brand-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--color-text);
-  text-decoration: none;
-  min-height: 40px;
-}
-
-.brand-logo:hover { color: var(--color-accent); }
-
-.brand-shoe-slot .shoe-wear { height: 20px; width: auto; display: block; }
-
-.brand-word {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.04em;
-}
 
 .site-switch {
   display: flex;

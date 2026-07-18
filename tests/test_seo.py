@@ -32,7 +32,10 @@ def _load_generator():
 
 GEN = _load_generator()
 BASE = GEN.BASE
-EXPECTED_LOCS = {f"{BASE}/{prefix}/" for prefix, _ in GEN.LANGS}
+# The five localized homes plus the gallery (a single-URL page, listed but
+# not linked from the app — reached directly).
+GALLERY_LOC = f"{BASE}/gallery/"
+EXPECTED_LOCS = {f"{BASE}/{prefix}/" for prefix, _ in GEN.LANGS} | {GALLERY_LOC}
 EXPECTED_HREFLANGS = {code for _, code in GEN.LANGS} | {"x-default"}
 
 
@@ -54,7 +57,7 @@ def _parse(xml_text):
 # Generator-level semantics (fails if the generator logic breaks)
 # ---------------------------------------------------------------------------
 
-def test_generator_emits_exactly_the_five_localized_homes():
+def test_generator_emits_exactly_the_expected_locs():
     parsed = _parse(GEN.build_sitemap())
     assert set(parsed) == EXPECTED_LOCS, (
         f"sitemap <loc> set drifted: {set(parsed) ^ EXPECTED_LOCS}"
@@ -62,12 +65,17 @@ def test_generator_emits_exactly_the_five_localized_homes():
 
 
 def test_every_url_declares_full_reciprocal_hreflang():
-    """Each page must point to *all* language alternates + x-default, with the
-    correct absolute href — that reciprocity is exactly what Google requires."""
+    """Each localized home must point to *all* language alternates + x-default,
+    with the correct absolute href — that reciprocity is exactly what Google
+    requires. The gallery self-localizes on a single URL, so it carries no
+    hreflang cluster."""
     parsed = _parse(GEN.build_sitemap())
     code_to_url = {code: f"{BASE}/{prefix}/" for prefix, code in GEN.LANGS}
     code_to_url["x-default"] = f"{BASE}/"
     for loc, alts in parsed.items():
+        if loc == GALLERY_LOC:
+            assert alts == {}, f"{loc} must not declare hreflang alternates"
+            continue
         assert set(alts) == EXPECTED_HREFLANGS, f"{loc} missing alternates: {EXPECTED_HREFLANGS ^ set(alts)}"
         for code, href in alts.items():
             assert href == code_to_url[code], f"{loc} hreflang={code} -> {href}"

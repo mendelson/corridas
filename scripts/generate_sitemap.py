@@ -74,6 +74,15 @@ def build_sitemap() -> str:
             f"{alternates}\n"
             "  </url>"
         )
+    # The gallery is a single-URL page (it self-localizes on the same URL, so
+    # no hreflang cluster). Listed in the sitemap but not linked from the app —
+    # it is reached directly.
+    entries.append(
+        "  <url>\n"
+        f"    <loc>{escape(f'{BASE}/gallery/')}</loc>\n"
+        f"    <lastmod>{lastmod}</lastmod>\n"
+        "  </url>"
+    )
     body = "\n".join(entries)
     return (
         '<?xml version="1.0" encoding="UTF-8"?>\n'

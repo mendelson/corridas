@@ -1903,9 +1903,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // i18n static labels
   document.title = T.siteTitle;
+  // Header brand: the shoe mark only — the old "Próxima Corrida"/"Next Race"
+  // title text was dropped; the localized name survives as the aria-label.
   const headerTitle = document.querySelector('.app-title');
-  if (headerTitle) headerTitle.innerHTML = SHOE_LOGO + '<span class="app-title-txt"></span>';
-  if (headerTitle) headerTitle.querySelector('.app-title-txt').textContent = T.headerTitle;
+  if (headerTitle) {
+    headerTitle.innerHTML = SHOE_LOGO;
+    headerTitle.setAttribute('aria-label', T.headerTitle);
+  }
   searchInput.placeholder = T.searchPlaceholder;
   searchInput.setAttribute('aria-label', T.searchAriaLabel);
   modeSelect.textContent   = T.modeSelect;

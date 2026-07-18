@@ -3,6 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Analytics: GA4 with Consent Mode v2. Denied by default → cookieless until accepted. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('consent', 'default', { ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500 });
+    try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent','update',{ analytics_storage:'granted' }); } } catch(e){}
+    gtag('config', 'G-0MHS4QK452');
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0MHS4QK452"></script>
   <link rel="canonical" href="https://run.mmendelson.com/gallery/">
   <title>Galeria</title>
   <link rel="icon" type="image/svg+xml" href="/shoe-favicon.svg" />
@@ -199,6 +209,15 @@
       .gbtn-lbl { display: none; }
       .gbtn { padding: 0 9px; }
     }
+    /* Consent bar (GA4 Consent Mode) */
+    .consent-bar{position:fixed;left:0;right:0;bottom:0;z-index:200;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 20px;padding:14px 20px;background:#171b22;border-top:1px solid #2b313c;box-shadow:0 -6px 20px rgba(0,0,0,.4)}
+    .consent-bar[hidden]{display:none}
+    .consent-text{margin:0;font-size:13.5px;color:#eee;max-width:60ch}
+    .consent-actions{display:flex;gap:10px}
+    .consent-btn{min-height:40px;padding:0 18px;border-radius:8px;border:0;cursor:pointer;font:inherit;font-size:14px;font-weight:600;background:#3b82f6;color:#fff}
+    .consent-btn:hover{filter:brightness(1.1)}
+    .consent-btn--ghost{background:none;border:1px solid #2b313c;color:#eee;font-weight:500}
+    .consent-btn--ghost:hover{border-color:#3b82f6;filter:none}
   </style>
 </head>
 <body class="intro">
@@ -1449,5 +1468,13 @@
     }).catch(function(e){ console.error("gallery: failed to load data", e); render([], {}, []); finishChrome(false); });
   })();
   </script>
+  <div id="consent-bar" class="consent-bar" role="dialog" aria-live="polite" aria-label="Cookies" hidden>
+    <p class="consent-text"></p>
+    <div class="consent-actions">
+      <button type="button" class="consent-btn consent-btn--ghost" data-consent="decline"></button>
+      <button type="button" class="consent-btn" data-consent="accept"></button>
+    </div>
+  </div>
+  <script src="../analytics.js"></script>
 </body>
 </html>

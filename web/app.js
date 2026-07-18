@@ -1904,11 +1904,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // i18n static labels
   document.title = T.siteTitle;
   // Header brand: the shoe mark only — the old "Próxima Corrida"/"Next Race"
-  // title text was dropped; the localized name survives as the aria-label.
+  // title text is not shown; the localized name stays in the h1 as
+  // visually-hidden text (screen readers + the SEO h1-site-name test).
   const headerTitle = document.querySelector('.app-title');
   if (headerTitle) {
-    headerTitle.innerHTML = SHOE_LOGO;
-    headerTitle.setAttribute('aria-label', T.headerTitle);
+    headerTitle.innerHTML = SHOE_LOGO + '<span class="visually-hidden"></span>';
+    headerTitle.querySelector('.visually-hidden').textContent = T.headerTitle;
   }
   searchInput.placeholder = T.searchPlaceholder;
   searchInput.setAttribute('aria-label', T.searchAriaLabel);

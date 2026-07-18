@@ -209,7 +209,6 @@
       <nav class="gactions">
         <a class="gbtn" id="navCal" href="#"><span class="gbtn-icon" aria-hidden="true">📅</span><span class="gbtn-lbl" id="navCalLbl"></span></a>
         <a class="gbtn" id="navApps" href="https://apps.mmendelson.com" target="_blank" rel="noopener"><span class="gbtn-icon" aria-hidden="true">⌚</span><span class="gbtn-lbl">Apps</span></a>
-        <button class="gbtn" id="navZoom" type="button" aria-label="Reset view" title="Reset zoom &amp; scroll"><span class="gbtn-icon" aria-hidden="true">↺</span></button>
         <button class="gbtn" id="navLang" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="gbtn-icon" aria-hidden="true">🌐</span><span class="gbtn-lbl" id="navLangLbl"></span></button>
       </nav>
     </div>
@@ -1035,9 +1034,8 @@
     // desktop) scale the track about the rail; a spacer extends the scroller's
     // scrollWidth to baseWidth×zoom so NATIVE scroll, the auto-drift in tick()
     // and the shoe scrubber all keep operating on the zoomed timeline exactly as
-    // at 1× — one finger is left entirely to native scroll. The reset button
-    // (navZoom) returns to today at scale 1 and resumes the auto-drift; any
-    // re-render (draw) drops the transform first. _zoom is clamped between a
+    // at 1× — one finger is left entirely to native scroll. Any re-render
+    // (draw) drops the transform first (back to 1×). _zoom is clamped between a
     // fit-the-whole-timeline minimum and a modest zoom-in maximum.
     // Scale about the rail (the track's vertical centre at 235px of 470px), so a
     // zoom-in clips card edges symmetrically while the centre band — rail, nodes,
@@ -1082,21 +1080,13 @@
       _zoom=nz; applyZoom();
       scroller.scrollLeft = baseX*nz - fo;                   // keep the focal point fixed on screen
       pos=scroller.scrollLeft; endPos=startScroll();         // recompute the "today" drift bound
-      var b=document.getElementById("navZoom"); if(b) b.classList.toggle("active", _zoom!==1);
       pauseAuto();                                           // the drift resumes 3s after the gesture
     }
     function _dropZoom(){ // hard reset used by draw() when the track is replaced
       var t=_trk(); _zoom=1; _zoomBaseW=0;
       if(_zoomSpacer && _zoomSpacer.parentNode){ _zoomSpacer.parentNode.removeChild(_zoomSpacer); _zoomSpacer=null; }
       if(t){ t.style.transform=""; t.style.transformOrigin=""; }
-      var b=document.getElementById("navZoom"); if(b) b.classList.remove("active");
     }
-    function resetView(){ // back to 1× at today, drift resumes
-      _dropZoom(); // full teardown: scale→1, remove spacer, clear transform & re-measure next zoom
-      var s=startScroll(); scroller.scrollLeft=s; pos=s; endPos=startScroll();
-      held=false; auto=true;
-    }
-    (function(){ var z=document.getElementById("navZoom"); if(z) z.addEventListener("click", resetView); })();
     // View selector (Destaques | Todas) — picking the other segment swaps the
     // event set (highlights ⇄ all) with the in-place FLIP morph between views.
     (function(){

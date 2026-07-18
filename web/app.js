@@ -2043,6 +2043,7 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const [code, label] of sorted) {
       const btn = document.createElement('button');
       btn.className = 'lang-option' + (code === LANG ? ' lang-option-active' : '');
+      btn.dataset.lang = code; // analytics.js reads this for language_change
       btn.textContent = label;
       btn.addEventListener('click', () => {
         _closeLangDropdown();

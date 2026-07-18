@@ -114,6 +114,13 @@ input { font-family: inherit; }
   color: inherit;
 }
 
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
 .header-actions {
   display: flex;
   align-items: center;

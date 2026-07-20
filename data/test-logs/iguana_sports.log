@@ -1,10 +1,4 @@
-[Iguana Sports] 8 corridas encontradas
-✅  iguana_sports: 8 evento(s)
-    {"titulo": "SP 10K Challenge 2026", "data": "2026-05-31", "estado": "SP", "km": "10.0"}
-    {"titulo": "Nike SP City Marathon 2026", "data": "2026-07-26", "estado": "SP", "km": "21.097, 42.195"}
-    {"titulo": "Mizuno Athenas Run Stronger 2026", "data": "2026-06-21", "estado": "SP", "km": "6.0, 12.0, 18.0, 25.0"}
-    {"titulo": "Athenas Kids Run Stronger 2026", "data": "2026-06-21", "estado": "SP"}
-    {"titulo": "Run The Bridge 2026", "data": "2026-08-30", "estado": "SP", "km": "5.0, 10.0, 15.0, 30.0"}
-    ... e mais 3
-❌  iguana_sports: 2/8 eventos sem distâncias
-FAILURE_NOTE:2/8 eventos sem distâncias
+[Iguana Sports] erro ao buscar calendário: www.iguanasports.com.br bloqueado (429)
+EVENT_COUNT:0
+⚠️   iguana_sports: 0 eventos retornados
+FAILURE_NOTE:0 eventos

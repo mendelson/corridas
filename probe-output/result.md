@@ -1,11 +1,38 @@
-=== scraper test: atletis ===
-[Atletis] 72 candidatos de 76 eventos
-[Atletis] 52 corridas encontradas
-EVENT_COUNT:52
-✅  atletis: 52 evento(s)
-    {"titulo": "Corrida Do Coração - 3ª Edição Night Run", "data": "2026-07-18", "estado": "SC", "km": "5.0, 10.0"}
-    {"titulo": "Kta Trail Run 2026", "data": "2026-07-18", "estado": "MG", "km": "8.0, 12.0, 20.0, 21.097"}
-    {"titulo": "Corre Penha", "data": "2026-07-19", "estado": "PE", "km": "6.0"}
-    {"titulo": "Rústica Do Trabalhador", "data": "2026-07-26", "estado": "RS", "km": "5.0"}
-    {"titulo": "2ª Corrida Do Empreendedorismo", "data": "2026-07-26", "estado": "GO", "km": "3.0, 5.0, 10.0"}
-    ... e mais 47
+# Probe results — 1 request(s)
+
+
+============================================================
+  GET https://tudmqbzxfbrjljpdpili.supabase.co/functions/v1/eventos-publicos?slug=eq.advogarun2026
+============================================================
+
+[get chain]   HTTP 200
+  Content-Type:   application/json
+  Response size:  5530071 bytes
+  Full response → probe-output/tudmqbzxfbrjljpdpili_supabase_co_functions_v1_eventos_public.txt
+
+--- JSON structure ---
+list (454 items):
+  [0] sample:
+    dict (39 keys):
+      ['id'] = '1772632742790x235422566278758400'
+      ['created_at'] = None
+      ['Nome_evento'] = 'null'
+      ['Data_evento'] = None
+      ['Cidade'] = 'null'
+      ['Estado'] = 'null'
+      ['imagem'] = 'null'
+      ['UniqueID'] = '1772632742790x235422566278758400'
+      ['Ativo'] = 'não'
+      ['Banner_patrocinador'] = 'null'
+      ['Publicado'] = 'não'
+      ['slug'] = 'null'
+      ['organizador_email'] = 'cerradoadventure@gmail.com'
+      ['organizador_nome'] = 'null'
+      ['imagem_kit'] = 'null'
+      ['descricao_kit'] = 'null'
+      ['regulamento'] = 'null'
+      ['evento_cancelado'] = 'null'
+      ['nota_esclarecimento'] = 'null'
+      ['data_2'] = 'null'
+      ... (19 more keys)
+  ... (453 more items)

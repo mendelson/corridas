@@ -1,10 +1,8 @@
-[MKS Esportes] erro ao buscar https://www.mksesportes.com.br/country-club-montanha: The read operation timed out
-[MKS Esportes] erro ao buscar https://www.mksesportes.com.br/taboquinha-montanha: The read operation timed out
 [MKS Esportes] 3 corridas encontradas
 EVENT_COUNT:3
 ✅  mks_esportes: 3 evento(s)
-    {"titulo": "Meia De Búzios", "data": "2026-08-02", "estado": "RJ"}
     {"titulo": "Meia Das Pontes", "data": "2027-03-07", "estado": "DF", "km": "21.097"}
     {"titulo": "Bsb Ultra", "data": "2026-10-11", "estado": "DF", "km": "52.0"}
+    {"titulo": "Meia De Búzios", "data": "2026-08-02", "estado": "RJ"}
 ❌  mks_esportes: 1/3 eventos sem distâncias
 FAILURE_NOTE:1/3 eventos sem distâncias

@@ -195,6 +195,23 @@ _JSONLD_BLOCK_RE = _re.compile(
 _ARTICLE_TITLE_RE = _re.compile(r'<h2 class="card-title">(?:<a [^>]*>)?([^<]+)')
 
 
+def _load_prerender():
+    """Import scripts/generate_prerender.py (it imports generate_sitemap)."""
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        path = ROOT / "scripts" / "generate_prerender.py"
+        spec = importlib.util.spec_from_file_location("generate_prerender", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+    finally:
+        _sys.path.pop(0)
+
+
+PRE = _load_prerender()
+
+
 def _prerender_blocks():
     out = {}
     for prefix, path in _PAGES.items():
@@ -220,21 +237,15 @@ def test_prerender_localized_per_language():
     """Selection is per-language: targeted countries lead each shell's block,
     so the blocks must NOT all be identical (worldwide aggregator — each
     locale gets the events its audience searches for)."""
-    gp_path = ROOT / "scripts" / "generate_prerender.py"
-    import sys as _sys
-    _sys.path.insert(0, str(ROOT / "scripts"))
-    try:
-        spec = importlib.util.spec_from_file_location("generate_prerender", gp_path)
-        gp = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(gp)
-    finally:
-        _sys.path.pop(0)
+    gp = PRE
 
     data = _json.loads((WEB / "corridas.json").read_text(encoding="utf-8"))
     corridas = data["corridas"] if isinstance(data, dict) else data
     title_paises: dict[str, set] = {}
     for c in corridas:
-        title_paises.setdefault(c.get("titulo"), set()).add(c.get("pais") or "")
+        # the pre-render normalizes titles (control chars out, whitespace
+        # collapsed) — compare on the same normalized form
+        title_paises.setdefault(gp._clean_text(c.get("titulo")), set()).add(c.get("pais") or "")
 
     blocks = _prerender_blocks()
     assert len(set(blocks.values())) > 1, (
@@ -260,7 +271,7 @@ def test_prerender_localized_per_language():
 def test_prerender_titles_exist_in_corridas_json():
     data = _json.loads((WEB / "corridas.json").read_text(encoding="utf-8"))
     corridas = data["corridas"] if isinstance(data, dict) else data
-    titles = {c.get("titulo") for c in corridas}
+    titles = {PRE._clean_text(c.get("titulo")) for c in corridas}
     for prefix, block in _prerender_blocks().items():
         extracted = [_html.unescape(t.strip()) for t in _ARTICLE_TITLE_RE.findall(block)]
         assert extracted, f"{prefix}: no titles extracted from pre-render block"
@@ -268,6 +279,26 @@ def test_prerender_titles_exist_in_corridas_json():
         assert not missing, (
             f"{prefix}: pre-rendered events absent from corridas.json: {missing[:5]}"
         )
+
+
+def test_prerender_block_replacement_is_literal():
+    """A generated block is inserted verbatim — never as a regex replacement
+    template. JSON-LD carries backslash escapes (\\n, \\t, \\uXXXX); expanding
+    them writes raw control characters into the page and breaks every consumer
+    (this is what took the data pipeline down on 2026-07-26)."""
+    payload = _json.dumps({"name": "Corrida\nda\tVida\x07"}, ensure_ascii=False)
+    text = f"x {PRE.JSONLD_START}\nold\n{PRE.JSONLD_END} y"
+    out = PRE._replace_block(text, PRE.JSONLD_START, PRE.JSONLD_END, payload,
+                             Path("<memory>"))
+    assert payload in out, "payload was rewritten during block replacement"
+    round_trip = out.split(PRE.JSONLD_START)[1].split(PRE.JSONLD_END)[0].strip()
+    assert _json.loads(round_trip)["name"] == "Corrida\nda\tVida\x07"
+
+
+def test_prerender_clean_text_removes_control_characters():
+    assert PRE._clean_text("Corrida\nda\tVida\x07") == "Corrida da Vida"
+    assert PRE._clean_text("  Meia   de  Brasília ") == "Meia de Brasília"
+    assert PRE._clean_text(None) == ""
 
 
 def test_jsonld_itemlist_valid_and_consistent():

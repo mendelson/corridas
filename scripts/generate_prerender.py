@@ -123,13 +123,24 @@ def select_events(corridas: list[dict], today: str, lang: str) -> list[dict]:
     return selected
 
 
+# Control characters (C0/C1, minus the whitespace we collapse anyway) reach us
+# from source pages every so often. Left in place they produce unreadable cards
+# and, once serialized as JSON escapes, a JSON-LD block no consumer can parse.
+_CONTROL_RE = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f-\x9f]")
+
+
+def _clean_text(raw: object) -> str:
+    """Strip control characters and collapse whitespace to a single space."""
+    return re.sub(r"\s+", " ", _CONTROL_RE.sub("", str(raw or ""))).strip()
+
+
 def build_html(events: list[dict], lang: str) -> str:
     parts = []
     for ev in events:
-        titulo = html.escape(ev.get("titulo") or "")
+        titulo = html.escape(_clean_text(ev.get("titulo")))
         data_iso = html.escape(ev.get("data_evento") or "")
         data_human = html.escape(_fmt_date(ev.get("data_evento") or "", lang))
-        loc = html.escape(ev.get("localizacao") or "")
+        loc = html.escape(_clean_text(ev.get("localizacao")))
         pills = "".join(
             f'<span class="dist-pill">{html.escape(_fmt_km(d.get("km")))}</span>'
             for d in (ev.get("distancias") or []) if d.get("km") is not None
@@ -156,17 +167,17 @@ def build_jsonld(events: list[dict]) -> str:
     for i, ev in enumerate(events, start=1):
         item = {
             "@type": "SportsEvent",
-            "name": ev.get("titulo") or "",
+            "name": _clean_text(ev.get("titulo")),
             "sport": "Running",
             "startDate": ev.get("data_evento") or "",
             "eventStatus": "https://schema.org/EventScheduled",
             "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
             "location": {
                 "@type": "Place",
-                "name": ev.get("localizacao") or "",
+                "name": _clean_text(ev.get("localizacao")),
                 "address": {
                     "@type": "PostalAddress",
-                    "addressLocality": (ev.get("cidade") or "").split(",")[0],
+                    "addressLocality": _clean_text(ev.get("cidade")).split(",")[0],
                     "addressRegion": ev.get("estado") or "",
                     "addressCountry": ev.get("pais") or "",
                 },
@@ -192,7 +203,7 @@ def build_jsonld(events: list[dict]) -> str:
         org = next((f for f in (ev.get("fontes") or [])
                     if f.get("tipo") == "organizador" and f.get("nome")), None)
         if org:
-            item["organizer"] = {"@type": "Organization", "name": org["nome"]}
+            item["organizer"] = {"@type": "Organization", "name": _clean_text(org["nome"])}
             if org.get("link_evento"):
                 item["organizer"]["url"] = org["link_evento"]
         items.append({"@type": "ListItem", "position": i, "item": item})
@@ -205,7 +216,12 @@ def _replace_block(text: str, start: str, end: str, payload: str, path: Path) ->
     pattern = re.compile(re.escape(start) + r".*?" + re.escape(end), re.DOTALL)
     if not pattern.search(text):
         raise SystemExit(f"{path}: markers {start} … {end} not found")
-    return pattern.sub(start + "\n" + payload + "\n" + end, text)
+    block = start + "\n" + payload + "\n" + end
+    # The payload is a literal string, never a replacement template: JSON-LD
+    # legitimately contains backslash escapes (\n, \t, \uXXXX) and re.sub would
+    # expand them into real control characters (breaking the JSON) or abort on
+    # an unknown escape. A function replacement is inserted verbatim.
+    return pattern.sub(lambda _m: block, text)
 
 
 def main() -> None:

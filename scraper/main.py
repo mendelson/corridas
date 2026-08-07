@@ -39,7 +39,7 @@ from .sources import (
     minhas_inscricoes,
     correr_brasilia,
     bora_correr,
-    brasil_que_corre,
+    # brasil_que_corre,  # desativada 2026-08-07: o site responde 503 desde 2026-07-10 (30 falhas seguidas)
     portal_das_corridas,
     sesc_df,
     runner_brasil,
@@ -108,7 +108,7 @@ SOURCES = [
     conta_passos,
     correr_brasilia,
     bora_correr,
-    brasil_que_corre,
+    # brasil_que_corre,  # desativada 2026-08-07: o site responde 503 desde 2026-07-10 (30 falhas seguidas)
     sesc_df,
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,

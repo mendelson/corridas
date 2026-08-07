@@ -2,7 +2,7 @@ from . import (
     atletis,
     correr_brasilia,
     bora_correr,
-    brasil_que_corre,
+    # brasil_que_corre,  # desativada 2026-08-07: o site responde 503 desde 2026-07-10 (30 falhas seguidas)
     portal_das_corridas,
     central_da_corrida,
     conta_passos,

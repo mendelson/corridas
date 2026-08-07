@@ -98,7 +98,7 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-08-07 09:56 | ❌ 0 eventos | 2026-07-29 11:19 · 1675 ev |
+| HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-08-07 17:49 | ❌ 0 eventos | 2026-07-29 11:19 · 1675 ev |
 | RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-08-07 09:56 | ✅ | 2026-08-07 09:56 · 891 ev |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 100 ev |
 | Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-08-07 09:55 | ✅ | 2026-08-07 09:55 · 522 ev |

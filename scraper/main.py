@@ -49,7 +49,7 @@ from .sources import (
     largada_esportiva,
     volta_do_lago,
     runsignup,
-    halfmarathons,
+    # halfmarathons,  # desativada 2026-08-07: Cloudflare 403 em TODO o site (até /robots.txt)
     asdeporte,
     carreras_mexico,
     raceroster,
@@ -150,7 +150,7 @@ SOURCES = [
     volta_do_lago,
     # US/global running calendar
     runsignup,
-    halfmarathons,
+    # halfmarathons,  # desativada 2026-08-07: Cloudflare 403 em TODO o site (até /robots.txt)
     raceroster,
     usroadrunning,
     worldsmarathons,

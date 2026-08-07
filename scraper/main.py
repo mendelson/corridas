@@ -41,7 +41,7 @@ from .sources import (
     bora_correr,
     # brasil_que_corre,  # desativada 2026-08-07: o site responde 503 desde 2026-07-10 (30 falhas seguidas)
     portal_das_corridas,
-    sesc_df,
+    # sesc_df,  # desativada 2026-08-07: WAF F5 responde 'Request Rejected' com HTTP 200 em todo o site
     runner_brasil,
     teniscerto_provas,
     brasil_corrida,
@@ -109,7 +109,7 @@ SOURCES = [
     correr_brasilia,
     bora_correr,
     # brasil_que_corre,  # desativada 2026-08-07: o site responde 503 desde 2026-07-10 (30 falhas seguidas)
-    sesc_df,
+    # sesc_df,  # desativada 2026-08-07: WAF F5 responde 'Request Rejected' com HTTP 200 em todo o site
     # Multi-city circuit events (via dedicated API)
     circuito_das_estacoes,
     # Brazilian running event platforms

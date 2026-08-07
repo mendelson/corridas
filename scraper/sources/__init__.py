@@ -13,7 +13,7 @@ from . import (
     teniscerto_provas,
     tf_sports,
     tf_sports_app,
-    sesc_df,
+    # sesc_df,  # desativada 2026-08-07: WAF F5 responde 'Request Rejected' com HTTP 200 em todo o site
     ticket_sports,
     maratona_rio,
     maratona_porto_alegre,

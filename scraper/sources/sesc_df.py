@@ -12,6 +12,23 @@ The SESC DF running page is a Liferay portal. Each event card contains:
 Horário is NOT listed on the event card — it must be fetched from the
 "Saiba Mais" detail page.  Events without a published start time are
 skipped (the detail page gets the time closer to the event date).
+
+
+BLOCKED SINCE 2026-08-02 (disabled 2026-08-07) - F5 BIG-IP ASM, site-wide, and
+the failure mode is the trap here: the WAF answers **HTTP 200** with a 246-byte
+"The requested URL was rejected. Please consult with your administrator." page
+carrying a support ID. Because the status is 200, http_client's WAF detection
+(403/406/429) never fires, raise_for_status() passes, and the parser simply
+finds no event cards - so the source reported a plain "0 corridas encontradas"
+and looked exactly like the generic-selector parser bug the README warns about.
+It is not one.
+
+Measured across every path, /robots.txt and / included, so it is an edge block
+on the client IP class rather than a moved page. Re-enable by uncommenting in
+scraper/sources/__init__.py and scraper/main.py once a GET of
+https://www.sescdf.com.br/robots.txt from CI returns something that is NOT the
+rejection page - checking the status code alone will not tell you, since the
+block is served as 200. Grep the body for "Request Rejected".
 """
 from __future__ import annotations
 import re

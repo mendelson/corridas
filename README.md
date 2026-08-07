@@ -76,7 +76,7 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 | Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-08-07 09:56 | ✅ | 2026-08-07 09:56 · 64 ev |
 | Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-08-07 15:39 | ✅ | 2026-08-07 15:39 · 49 ev |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-08-07 09:55 | ❌ 0 eventos | 2026-07-10 11:46 · 4 ev |
-| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-08-07 09:55 | ❌ 0 eventos | 2026-08-02 10:30 · 1 ev |
+| SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-08-07 18:44 | ❌ 0 eventos | 2026-08-02 10:30 · 1 ev |
 
 ### Fontes brasileiras — eventos específicos
 

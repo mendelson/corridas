@@ -6,17 +6,32 @@ cities. Registration is handled on RunSignup (each event's `offers.url` points
 there), but this organizer site is the source of record and exposes clean,
 complete schema.org data.
 
-Ingestion â the per-state search listing embeds, inline, a full
-`@type: ["Event","SportsEvent"]` JSON-LD block for each of the next ~20 upcoming
-events, so no per-event detail fetch is needed:
+Ingestion - the per-state search listing:
 
     GET /Races/NearMe/RaceSearch.php?event_type=running_race&state=<ST>
         [&start_date=YYYY-MM-DD]      # paginate forward through the calendar
 
+The listing USED TO embed a full `@type: ["Event","SportsEvent"]` JSON-LD block
+per race, so no detail fetch was needed. Around 2026-07-29 the site replaced
+those with a single `ItemList` of `ListItem`s carrying only `name`,
+`description` and `url` - no `startDate`, no address, no `keywords`. Every
+`Event` block disappeared from the listing and this scraper went to 0 events
+for 15 consecutive health runs while the site itself stayed perfectly healthy.
+
+The DETAIL PAGES still carry the full Event block, unchanged, so ingestion now
+follows each `ListItem.url` and parses the JSON-LD there. Both shapes are
+handled - an inline Event block is still used when present, so this keeps
+working if the listing ever reverts.
+
 Each Event block carries `name`, `startDate` (date **and** start time),
-`location.address` (city / state / country) and `image`. We page forward by
-setting `start_date` to the day after the last event seen, until a page returns
-no new upcoming events.
+`location.address` (city / state / country), `keywords` and `image`. We page
+forward by setting `start_date` to the day after the last event seen, until a
+page returns no new upcoming events.
+
+Nothing is read out of the `ListItem` itself - not its `name`, not its
+`description`, and not the `race_date` in its URL. The listing supplies only
+the SET OF PAGES to open; every field comes from the detail page's structured
+Event block.
 
 Distances come from the structured `keywords`/`description` fields (e.g.
 "â¦ 5K, 10K, Half Marathon, running race â¦"), parsed via the shared
@@ -25,6 +40,7 @@ extract_distances_from_text helper â never from the title.
 from __future__ import annotations
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 
 from bs4 import BeautifulSoup
@@ -48,6 +64,11 @@ _US_STATES: frozenset[str] = frozenset({
 })
 
 _ID_RE = re.compile(r"/Races/[A-Z]{2}/[^/]+/(\d+)-", re.IGNORECASE)
+
+# Parallelism for the per-event detail fetches. This bounds how many requests
+# are IN FLIGHT, never how many are made: every ListItem on every page is
+# fetched and parsed (see "No result caps" in the README).
+_DETAIL_WORKERS = 8
 
 
 # ---------------------------------------------------------------------------
@@ -98,26 +119,87 @@ def _scrape_state(st: str, today: str, end_date: str, seen: dict[str, Corrida]) 
 
 
 def _parse_events(html: str, today: str, end_date: str) -> list[Corrida]:
-    soup = BeautifulSoup(html, "lxml")
+    """Events from one listing page, whichever shape the listing is in.
+
+    Inline `Event` blocks are used when present. When the listing carries only
+    an `ItemList` of links (the shape since ~2026-07-29), each linked detail
+    page is fetched and its own Event block is parsed instead."""
+    blocks = _ld_blocks(html)
+
     out: list[Corrida] = []
+    for blk in blocks:
+        types = blk.get("@type")
+        types = types if isinstance(types, list) else [types]
+        if "SportsEvent" not in types and "Event" not in types:
+            continue
+        c = _parse_event(blk, today, end_date)
+        if c:
+            out.append(c)
+    if out:
+        return out
+
+    return _parse_via_detail_pages(blocks, today, end_date)
+
+
+def _ld_blocks(html: str) -> list[dict]:
+    """Every JSON-LD object on the page, with any `@graph` members flattened."""
+    soup = BeautifulSoup(html, "lxml")
+    blocks: list[dict] = []
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             data = json.loads(script.string or "")
         except Exception:
             continue
-        # The listing wraps everything in a single JSON-LD document whose
-        # `@graph` holds the ItemList + one Event/SportsEvent per race, so flatten
-        # both the top-level objects and any @graph members.
-        candidates: list[dict] = []
         for top in (data if isinstance(data, list) else [data]):
             if not isinstance(top, dict):
                 continue
             graph = top.get("@graph")
             if isinstance(graph, list):
-                candidates.extend(g for g in graph if isinstance(g, dict))
+                blocks.extend(g for g in graph if isinstance(g, dict))
             else:
-                candidates.append(top)
-        for blk in candidates:
+                blocks.append(top)
+    return blocks
+
+
+def _listing_urls(blocks: list[dict]) -> list[str]:
+    """Detail-page URLs from the listing's ItemList, in listing order.
+
+    Only the URL is taken. The ListItem's `name` and `description` are NOT read
+    - the race name is not a structured carrier of distances or location, and
+    the `race_date` query parameter is not an event date field. Everything is
+    read from the detail page's own Event block."""
+    urls: list[str] = []
+    seen: set[str] = set()
+    for blk in blocks:
+        if blk.get("@type") != "ItemList":
+            continue
+        for item in blk.get("itemListElement") or []:
+            if not isinstance(item, dict):
+                continue
+            url = (item.get("url") or "").strip()
+            if not url or not _ID_RE.search(url) or url in seen:
+                continue
+            seen.add(url)
+            urls.append(url)
+    return urls
+
+
+def _parse_via_detail_pages(blocks: list[dict], today: str, end_date: str) -> list[Corrida]:
+    """Fetch every ListItem's detail page and parse its Event block."""
+    urls = _listing_urls(blocks)
+    if not urls:
+        return []
+
+    # Every URL the listing exposes is fetched; the pool bounds concurrency
+    # only. Order is restored afterwards so pagination sees a stable list.
+    with ThreadPoolExecutor(max_workers=_DETAIL_WORKERS) as pool:
+        pages = list(pool.map(_fetch_detail, urls))
+
+    out: list[Corrida] = []
+    for url, html in zip(urls, pages):
+        if not html:
+            continue
+        for blk in _ld_blocks(html):
             types = blk.get("@type")
             types = types if isinstance(types, list) else [types]
             if "SportsEvent" not in types and "Event" not in types:
@@ -125,7 +207,18 @@ def _parse_events(html: str, today: str, end_date: str) -> list[Corrida]:
             c = _parse_event(blk, today, end_date)
             if c:
                 out.append(c)
+            break
     return out
+
+
+def _fetch_detail(url: str) -> str | None:
+    try:
+        resp = get(url, source=SOURCE_NAME, timeout=30)
+        resp.raise_for_status()
+        return resp.text
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] detalhe {url}: {e}")
+        return None
 
 
 def _parse_event(blk: dict, today: str, end_date: str) -> Corrida | None:

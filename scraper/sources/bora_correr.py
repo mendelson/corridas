@@ -46,7 +46,12 @@ def _nome_for_link(url: str) -> str:
 # Snap nearby values to the canonical race distance (same pattern as ativo.py).
 _CANONICAL = [(42.195, 41.5, 43.0), (21.097, 20.5, 21.5)]
 
-_DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4})")
+# The date cell has always been DD/MM/, but the year is written either way:
+# it was DD/MM/YYYY until 2026-08-03 and the site switched to DD/MM/YY the
+# next day, which silently dropped every row (a 4-digit-only pattern matches
+# nothing in "08/08/26") and cost the source four days. Accept both; a
+# 2-digit year is read as 20YY, the only century this calendar can mean.
+_DATE_RE = re.compile(r"(\d{2})/(\d{2})/(\d{4}|\d{2})(?!\d)")
 _UUID_RE = re.compile(r"obterDadosReport\('([0-9a-f-]+)'", re.I)
 _KM_RE   = re.compile(r"\b(\d+(?:[.,]\d+)?)\s*[kK][mM]?\b")
 # Time-based runs ("5h", "6 horas", "12hrs") — endurance events with no fixed
@@ -76,7 +81,18 @@ def scrape() -> list[Corrida]:
         print(f"[{SOURCE_NAME}] erro ao buscar {URL}: {e}")
         return []
 
-    soup  = BeautifulSoup(resp.text, "lxml")
+    # The page is ISO-8859-1 and says so NOWHERE — no charset on the
+    # Content-Type header, no <meta charset>. httpx then falls back to UTF-8,
+    # every accented byte decodes to U+FFFD and normalize_titulo drops it, so
+    # "Corrida de Olho na Saúde" ships as "Corrida De Olho Na Sade". Decode
+    # explicitly instead of guessing; the response is only re-decoded when
+    # nothing declared an encoding, so a future charset header wins.
+    if resp.charset_encoding is None:
+        html_text = resp.content.decode("iso-8859-1", errors="replace")
+    else:
+        html_text = resp.text
+
+    soup  = BeautifulSoup(html_text, "lxml")
     today = today_iso()
     now   = now_iso()
 
@@ -107,12 +123,14 @@ def _parse_row(tr, today: str, now: str) -> Corrida | None:
     if len(cells) < 3:
         return None
 
-    # Cell 0: date (DD/MM/YYYY) and optional time
+    # Cell 0: date (DD/MM/YYYY or DD/MM/YY) and optional time
     cell0_text = cells[0].get_text(" ", strip=True)
     m = _DATE_RE.search(cell0_text)
     if not m:
         return None
     day, month, year = m.groups()
+    if len(year) == 2:
+        year = f"20{year}"
     data_evento = f"{year}-{month}-{day}"
     if data_evento < today:
         return None

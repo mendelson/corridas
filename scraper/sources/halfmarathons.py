@@ -3,6 +3,21 @@
 WordPress REST API at /wp-json/wp/v2/races.  Each post carries race
 metadata in `meta` and state in `class_list` as `race-calendar-{slug}`.
 Distances stored as miles strings to match RunSignup convention.
+
+
+BLOCKED SINCE 2026-07-29 (disabled 2026-08-07) - Cloudflare, site-wide.
+Measured from two independent IP populations (GitHub Actions and a separate
+sandbox): every path answers HTTP 403 with `server: cloudflare`, a `__cf_bm`
+bot-management cookie and a 103-byte body. Not only the wp-json API -
+/races/, /sitemap.xml and even /robots.txt are refused identically, so this is
+an edge block on the client IP class, not a moved endpoint or a changed API.
+
+It is a flat deny, not an interstitial: there is no "Just a moment..." page and
+no JS challenge to solve, so a Playwright fallback has nothing to render and
+would be refused at the same edge. Re-enable by uncommenting in
+scraper/sources/__init__.py and scraper/main.py once a plain GET of
+https://halfmarathons.net/robots.txt returns 200 from CI - that one request is
+the whole test, and it costs nothing.
 """
 from __future__ import annotations
 import re

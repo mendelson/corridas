@@ -1,90 +1,92 @@
 [main] iniciando scraping...
-[main] 20543 corridas no estado anterior
+[main] 20547 corridas no estado anterior
 [main] priorizando 3 fonte(s) com falha anterior: mks_esportes, corridas_brasil, volta_do_lago
-[Atletis] 86 candidatos de 90 eventos
+[Atletis] 82 candidatos de 90 eventos
 [Central da Corrida] sem distâncias, pulando: 'Pink For Life Run 2026 - Especial 10 Anos'
 [Central da Corrida] sem distâncias, pulando: '1 Gaia Pet Run'
-[Central da Corrida] 51 corridas encontradas
+[Central da Corrida] 50 corridas encontradas
+[Volta do Lago] 1 corrida(s) encontrada(s) via Ticket Sports
 [TF Sports App] events(data,pt-BR): 7 brutos
 [TF Sports App] events(sem-data,pt-BR): 0 brutos
-[Runner Brasil] 23 eventos no calendário
 [TF Sports] run-series: 29 eventos brutos
+[Runner Brasil] erro: Server error '502 Bad Gateway' for url 'https://www.runnerbrasil.com.br/'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
 [Iguana Sports] sem distâncias, pulando: 'Athenas Kids Run Longer 2026'
+[Ativo] 9 corridas encontradas
 [Iguana Sports] 4 corridas encontradas
 [Yescom] sem distâncias, pulando: '23ª Corrida Garotada'
+[Portal das Corridas] 189 páginas para inspecionar
+[Conta Passos] 5 corridas encontradas
+[Brasil Corrida] sem distâncias, pulando: 'Marotinha 2026'
 [Ticket Sports] distâncias de '5ª Corrida Do Sintese 2026' obtidas do regulamento
-[Ativo] 9 corridas encontradas
-[Volta do Lago] 1 corrida(s) encontrada(s) via Ticket Sports
 [Yescom] sem distâncias, pulando: '5ª Cachorrida Garoto'
 [Ticket Sports] distâncias de 'Corrida Pela Vida Agosto Verde' obtidas do regulamento
-[Portal das Corridas] 191 páginas para inspecionar
-[Brasil Corrida] sem distâncias, pulando: 'Marotinha 2026'
-[Brasil Corrida] 11 corridas encontradas
-[Conta Passos] 5 corridas encontradas
 [Ticket Sports] distâncias de '13ª Corrida Dos Bancários - Edição 2026' obtidas do regulamento
 [Yescom] sem distâncias, pulando: '35ª Dez Milhas Garoto'
 [Yescom] 5 corridas encontradas
-[Runner Brasil] 23 corridas encontradas
 Ignoring wrong pointing object 6 0 (offset 0)
 Ignoring wrong pointing object 11 0 (offset 0)
 Ignoring wrong pointing object 13 0 (offset 0)
 Ignoring wrong pointing object 16 0 (offset 0)
 Ignoring wrong pointing object 37 0 (offset 0)
+[Portal das Corridas] sem distâncias, pulando: 'Nm Run Corrida E Caminhada Pela Saúde Mental'
+[Ticket Sports] distâncias de 'All Limits - Lagoa Dos Ingleses 2026' obtidas do regulamento
+[Portal das Corridas] sem distâncias, pulando: '1ª Corrida Inclusica Da Apae'
+[Portal das Corridas] sem distâncias, pulando: '2º Cross Triathlon Sprint'
 [TF Sports App] events(recentes,pt-BR): 1912 brutos
 [TF Sports App] total Strapi locale=pt-BR: 1912 únicos
+[MKS Esportes] 3 corridas encontradas
+[Ticket Sports] distâncias de 'Th3 Tri Hard 2.0' obtidas do regulamento
+[TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
+[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Três Corações'
+[Portal das Corridas] sem distâncias, pulando: 'II Caminhada Floreser Calvin'
+[Portal das Corridas] sem distâncias, pulando: 'Tram Stage Race'
+[TF Sports App] Playwright listing: 5 eventos capturados
+[TF Sports App] total após merge: 1912
 [Circuito das Estações] 50 corridas encontradas
 [Largada Esportiva] HTTP OK 1112B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1112B) mas sem eventos reconhecíveis
-[TF Sports App] listing interceptado: 5 itens (https://painel-website.tfsports.com.br/api/events?populate=deep,6&sort=eventData.startDate:asc&pagination[pageSize]=12&pagination[page]=1&locale=pt-BR)
-[Portal das Corridas] sem distâncias, pulando: 'Nm Run Corrida E Caminhada Pela Saúde Mental'
-[Ticket Sports] distâncias de 'All Limits - Lagoa Dos Ingleses 2026' obtidas do regulamento
-[TF Sports App] Playwright listing: 5 eventos capturados
-[TF Sports App] total após merge: 1912
-[Portal das Corridas] sem distâncias, pulando: '1ª Corrida Inclusica Da Apae'
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Portal das Corridas] sem distâncias, pulando: '2º Cross Triathlon Sprint'
-[Ticket Sports] distâncias de 'Th3 Tri Hard 2.0' obtidas do regulamento
-[Portal das Corridas] sem distâncias, pulando: 'II Caminhada Floreser Calvin'
-[MKS Esportes] 3 corridas encontradas
-[Maratona do Rio] 1 corrida: 2027-05-30 dist=[5.0, 10.0, 21.097, 42.195]
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Portal das Corridas] sem distâncias, pulando: 'Tram Stage Race'
-[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Três Corações'
-[TF Sports App] adicionado: 'Run Series Recife 2026' em 2026-10-18
 [Portal das Corridas] sem distâncias, pulando: 'Corrida Da Independência 2026'
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[TF Sports App] adicionado: 'Run Series Recife 2026' em 2026-10-18
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
+[Ticket Sports] distâncias de 'Unasp Run E Unasp Run Kids' obtidas do regulamento
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Ticket Sports] distâncias de '2ª Corrida Dos Corretores De Imóveis PE - Colibri Run' obtidas do regulamento
+[Brasil Corrida] 11 corridas encontradas
+[Maratona do Rio] 1 corrida: 2027-05-30 dist=[5.0, 10.0, 21.097, 42.195]
+[Portal das Corridas] sem distâncias, pulando: 'Desafio Terra E Montanha'
+[Corridas Brasil] 2608 eventos na listagem, buscando detalhes...
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [TF Sports App] adicionado: 'Shopping Plaza Sul Run 2026' em 2026-11-22
 [TF Sports App] filtrado(tipo): 'Yoga No Marzen-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Online Com O Rafa-Integrado'
-[Ticket Sports] distâncias de '2ª Corrida Dos Corretores De Imóveis PE - Colibri Run' obtidas do regulamento
-[Ticket Sports] distâncias de 'Unasp Run E Unasp Run Kids' obtidas do regulamento
 [Maratona de Porto Alegre] 1 corrida encontrada (TS 86759): 42ª Maratona Internacional De Porto Alegre - 2027
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Portal das Corridas] sem distâncias, pulando: 'Desafio Terra E Montanha'
 [SP City Marathon] artigo SP City não encontrado no calendário
 [São Silvestre] sem horário publicado no site oficial — evento incluído sem horário
+[Ticket Sports] distâncias de '1ª Corrida E Caminhada Da Cooperação Maricá 2026' obtidas do regulamento
+[Minhas Inscrições] modalidade corrida-de-rua: 277 candidato(s)
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Ticket Sports] distâncias de 'Corrida Pela Vida Sumare' obtidas do regulamento
+[Minhas Inscrições] modalidade trail-run: 0 candidato(s)
 [TF Sports App] adicionado: 'Run Series Recife 2027' em 2027-10-18
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
+[Ticket Sports] distâncias de 'Disney Magic Run 2026' obtidas do regulamento
+[TF Sports App] adicionado: 'Run Series Recife 2028' em 2028-10-18
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] 0 corridas encontradas
-[Ticket Sports] distâncias de '1ª Corrida E Caminhada Da Cooperação Maricá 2026' obtidas do regulamento
-[Ticket Sports] distâncias de 'Corrida Pela Vida Sumare' obtidas do regulamento
-[Minhas Inscrições] modalidade corrida-de-rua: 277 candidato(s)
-[Corridas Brasil] 2585 eventos na listagem, buscando detalhes...
-[TF Sports App] adicionado: 'Run Series Recife 2028' em 2028-10-18
-[Minhas Inscrições] modalidade trail-run: 0 candidato(s)
 [TF Sports App] adicionado: 'Run Series Recife 2029' em 2029-10-18
+[Ticket Sports] distâncias de 'Hoka Sunset Run 2026 - Manaus' obtidas do regulamento
+[TF Sports App] filtrado(passado): 'Pará De Minas | Meia Maratona Da Construção Civil' (2025-11-09)
+[Correr Brasília] 60 corridas encontradas
+[Ticket Sports] distâncias de 'V Corrida Solidária Da Rede Feminina De Combate Ao Câncer' obtidas do regulamento
 [Prague Marathon] nenhuma ediÃ§Ã£o futura identificada
 [Stockholm Marathon] erro ao buscar pÃ¡gina: www.stockholmmarathon.se bloqueado (403)
 [Stockholm Marathon] nenhuma ediÃ§Ã£o futura identificada
-[Ticket Sports] distâncias de 'Disney Magic Run 2026' obtidas do regulamento
-[TF Sports App] filtrado(passado): 'Pará De Minas | Meia Maratona Da Construção Civil' (2025-11-09)
-[Ticket Sports] distâncias de 'Hoka Sunset Run 2026 - Manaus' obtidas do regulamento
 [TF Sports App] filtrado(passado): 'Corrida Mulher Maravilha' (2025-08-24)
 [TF Sports App] filtrado(tipo): 'Yoga Flow - Bianca Guimarães -Integrado'
 [TF Sports App] filtrado(tipo): 'Fullbody - Cátia Kilpp | Continue Em Movimento -Integrado'
@@ -96,17 +98,27 @@ Ignoring wrong pointing object 37 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Alongamento Em Casa - Grazia Nunes / Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Track & Field Expirience Festival Kaio Márcio -Integrado'
 [TF Sports App] filtrado(tipo): 'Vivenciar - Pausa Em Movimento -Integrado'
-[Ticket Sports] distâncias de 'V Corrida Solidária Da Rede Feminina De Combate Ao Câncer' obtidas do regulamento
-[TF Sports] run-series(sem data): 0 eventos brutos
-[TF Sports] run-series(recentes): 100 eventos brutos
-[TF Sports App] filtrado(passado): 'Prevenção Em Movimento -Integrado' (2025-06-14)
-[Comrades Marathon] erro ao buscar página: Client error '404 Not Found' for url 'https://comrades.com/race-information'
-For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Carmo De Minas'
+[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Inconfidentes'
 [Paris Marathon] erro ao buscar pÃ¡gina: Server error '500 Internal Server Error' for url 'https://www.schneiderelectricparismarathon.com/en/'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
-[Correr Brasília] 61 corridas encontradas
+[Comrades Marathon] erro ao buscar página: Client error '404 Not Found' for url 'https://comrades.com/race-information'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
 [Cardiff Half Marathon] erro ao buscar pÃ¡gina: www.cardiffhalfmarathon.co.uk bloqueado (403)
 [Ticket Sports] distâncias de '4º Corrida Do Centenário' obtidas do regulamento
+[RunSignup] API response keys: ['races']
+[RunSignup] total_results: ?
+[RunSignup] página 1: 250 corridas
+[TF Sports App] filtrado(passado): 'Prevenção Em Movimento -Integrado' (2025-06-14)
+[RunSignup] página 2: 250 corridas
+[Race Roster] 'running': 228 upcoming de 2000
+[TF Sports] run-series(sem data): 0 eventos brutos
+[RunSignup] página 3: 250 corridas
+[Ticket Sports] distâncias de 'Hoka Speed Run 2026 - Rio De Janeiro' obtidas do regulamento
+[TF Sports] run-series(recentes): 100 eventos brutos
+[Ticket Sports] distâncias de '5ª Choque Running' obtidas do regulamento
+[Ticket Sports] distâncias de 'Run Run Power Rangers | São Paulo' obtidas do regulamento
+[Ticket Sports] distâncias de 'Fitlife Run 2026' obtidas do regulamento
 [TF Sports App] filtrado(passado): 'Treinão Dia Das Mães -Integrado' (2025-05-10)
 [TF Sports App] filtrado(tipo): 'Mat Magic - Pricylla Delazeri I Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Flow - Bibi Guimarães | Continue Em Movimento -Integrado'
@@ -121,17 +133,16 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 [TF Sports App] filtrado(tipo): 'Yoga E Aromaterapia Com Lilica Lima -Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Fight - Chutes - Thamyres Bogado | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação Para O Despertar Da Kundaline _ Gisele Moreira _ Continue Em Movimento -Integrado'
-[RunSignup] API response keys: ['races']
-[RunSignup] total_results: ?
-[RunSignup] página 1: 250 corridas
-[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Carmo De Minas'
-[RunSignup] página 2: 250 corridas
-[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Inconfidentes'
-[Race Roster] 'running': 306 upcoming de 2000
-[Ticket Sports] distâncias de 'Hoka Speed Run 2026 - Rio De Janeiro' obtidas do regulamento
-[Ticket Sports] distâncias de '5ª Choque Running' obtidas do regulamento
-[RunSignup] página 3: 250 corridas
-[Ticket Sports] distâncias de 'Run Run Power Rangers | São Paulo' obtidas do regulamento
+[RunSignup] página 4: 250 corridas
+[RunSignup] 1000 corridas brutas no total
+[RunSignup] 888 corridas válidas (112 ignoradas)
+[World's Marathons] 7072 eventos no sitemap; buscando todos
+[Race Roster] 'marathon': 225 upcoming de 2000
+[Minhas Inscrições] modalidade ultramaratona: 1 candidato(s)
+[Minhas Inscrições] 278 candidato(s); buscando páginas de detalhe...
+[Ticket Sports] distâncias de 'Corrida Eu Amo Gravatá - 2ª Night Run' obtidas do regulamento
+[Portal das Corridas] 55 corridas encontradas
+[Ticket Sports] distâncias de 'Corrida Noturna Unimed Caruaru' obtidas do regulamento
 [TF Sports App] filtrado(passado): 'Running | Paulinia Ii-Integrado' (2025-08-03)
 [TF Sports App] filtrado(tipo): 'Vinyasa Yin - Duda Nascimento | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Pilates Para Todos - Luciana Borba | Continue Em Movimento -Integrado'
@@ -156,25 +167,22 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 [TF Sports App] filtrado(tipo): 'Treino Híbrido -Integrado'
 [TF Sports App] filtrado(tipo): 'Circuito Pq Arena 2025 - 2ª Etapa-Integrado'
 [TF Sports App] filtrado(tipo): 'Zumba Class -Integrado'
-[Ticket Sports] distâncias de 'Fitlife Run 2026' obtidas do regulamento
-[RunSignup] página 4: 250 corridas
-[RunSignup] 1000 corridas brutas no total
-[RunSignup] 889 corridas válidas (111 ignoradas)
-[World's Marathons] 7072 eventos no sitemap; buscando todos
-[Race Roster] 'marathon': 215 upcoming de 2000
-[Ticket Sports] distâncias de 'Corrida Eu Amo Gravatá - 2ª Night Run' obtidas do regulamento
+[Race Roster] '5k': 145 upcoming de 2000
+[Race Roster] '10k': 82 upcoming de 800
+[Ticket Sports] distâncias de 'Corrida Da Bandeira - 2026' obtidas do regulamento
+Ignoring wrong pointing object 6 0 (offset 0)
+Ignoring wrong pointing object 8 0 (offset 0)
+Ignoring wrong pointing object 11 0 (offset 0)
+Ignoring wrong pointing object 13 0 (offset 0)
+Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(passado): 'Night Running | Rio Claro-Integrado' (2025-07-05)
 [TF Sports App] filtrado(tipo): 'Treino De Pilates Solo Avançado-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga-Integrado'
 [TF Sports App] filtrado(tipo): 'Nascer Do Sol Com Cacau (Copacabana)-Integrado'
 [TF Sports App] filtrado(tipo): 'Nascer Do Sol Com Cacau (Barra Da Tijuca)-Integrado'
 [TF Sports App] filtrado(tipo): 'Campeonato Resenha Do Beach-Integrado'
-[Minhas Inscrições] modalidade ultramaratona: 1 candidato(s)
-[Minhas Inscrições] 278 candidato(s); buscando páginas de detalhe...
-[Ticket Sports] distâncias de 'Corrida Noturna Unimed Caruaru' obtidas do regulamento
-[Race Roster] '5k': 215 upcoming de 2000
-[Race Roster] '10k': 230 upcoming de 2000
-[Ticket Sports] distâncias de 'Corrida Da Bandeira - 2026' obtidas do regulamento
+[Race Roster] 'half marathon': 233 upcoming de 2000
+[Ticket Sports] distâncias de '2ª Pace Run' obtidas do regulamento
 [TF Sports App] filtrado(passado): 'Running Csul | Lagoa Dos Ingleses' (2025-07-20)
 [TF Sports App] filtrado(tipo): 'Master Class Em Pilates Ppp By Micha-Integrado'
 [TF Sports App] filtrado(tipo): 'Master Class Power Posture Pilates -Integrado'
@@ -193,38 +201,36 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 [TF Sports App] filtrado(tipo): 'Glúteos E Cardio - Andressa Rangel | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Capoeira - Dorta Capoeira / Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Capoeira - Dorta Capoeira / Continue Em Movimento -Integrado'
-Ignoring wrong pointing object 6 0 (offset 0)
-Ignoring wrong pointing object 8 0 (offset 0)
-Ignoring wrong pointing object 11 0 (offset 0)
-Ignoring wrong pointing object 13 0 (offset 0)
-Ignoring wrong pointing object 15 0 (offset 0)
-[Portal das Corridas] 53 corridas encontradas
-[Race Roster] 'half marathon': 236 upcoming de 2000
-[Ticket Sports] distâncias de '2ª Pace Run' obtidas do regulamento
+[Race Roster] 'trail run': 148 upcoming de 2000
+[Race Roster] 6625 eventos únicos após dedup
+[Race Roster] 456 corridas válidas (6169 ignoradas)
+[Ticket Sports] distâncias de 'La Vuelta Desafío Brasil Prova Estrada - Resistência Individual' obtidas do regulamento
+[Bora Correr] 46 corridas encontradas
 [TF Sports App] filtrado(passado): 'Festa - Finisher Volta A Ilha - 2025-Integrado' (2025-05-22)
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Suave | Graziela | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mudicalidade Fora Da Caixa-Integrado'
 [TF Sports App] filtrado(tipo): 'Tour De Cicle Indoor-Integrado'
-[Race Roster] 'trail run': 151 upcoming de 2000
-[Race Roster] 7448 eventos únicos após dedup
-[Race Roster] 580 corridas válidas (6868 ignoradas)
+[Carreras MÃ©xico] page 0: 21 items, 7 added
+[Carreras MÃ©xico] buscando convocatoria para 7 eventos...
+[Ticket Sports] distâncias de 'Inclusão A Toda Prova - SP 2026' obtidas do regulamento
+[Carreras MÃ©xico] localizaÃ§Ã£o: Ultra Maratón Amealco Bosques  â Hidalgo, HID
+[Carreras MÃ©xico] localizaÃ§Ã£o: Carrera Hestia â Cuernavaca, MOR
+[Asdeporte] 9 corrida(s) encontrada(s)
 [TF Sports App] filtrado(passado): 'Treinão Performance | Indaiatuba 2ª Edição-Integrado' (2025-06-29)
 [TF Sports App] filtrado(tipo): 'Tf Experience Yoga By Grp Construtora-Integrado'
 [TF Sports App] filtrado(tipo): 'Bt & Iguatemi Edition 2º Edição-Integrado'
-[Ticket Sports] distâncias de 'La Vuelta Desafío Brasil Prova Estrada - Resistência Individual' obtidas do regulamento
+[Carreras MÃ©xico] localizaÃ§Ã£o: Volcanik Trail Run 2026 â Pichucalco, CHP
+[Carreras MÃ©xico] descartados 4 eventos sem cidade/UF/distância válida
+[Carreras MÃ©xico] 3 corridas encontradas
+[Ticket Sports] distâncias de 'Corrida De Natal 2026 - Musal' obtidas do regulamento
+[Ticket Sports] distâncias de 'Federação De Atletas Fbca 2026' obtidas do regulamento
+[Ticket Sports] distâncias de 'Videira Wine Run 2027' obtidas do regulamento
+[Ticket Sports] distâncias de 'Vikings Run 2027' obtidas do regulamento
 [TF Sports App] filtrado(passado): 'Biomecânica Da Corrida (Teórico-Prático) -Integrado' (2025-05-31)
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Change Spin Fest-Integrado'
 [TF Sports App] filtrado(tipo): 'Dia Das Mães Sorelle!!-Integrado'
 [TF Sports App] filtrado(tipo): 'Mães Ativas-Integrado'
 [TF Sports App] filtrado(tipo): 'Bumbum Na Nuca-Integrado'
-[Ticket Sports] distâncias de 'Inclusão A Toda Prova - SP 2026' obtidas do regulamento
-[Asdeporte] 9 corrida(s) encontrada(s)
-[Bora Correr] 46 corridas encontradas
-[Carreras MÃ©xico] page 0: 21 items, 7 added
-[Carreras MÃ©xico] buscando convocatoria para 7 eventos...
-[Ticket Sports] distâncias de 'Corrida De Natal 2026 - Musal' obtidas do regulamento
-[Ticket Sports] distâncias de 'Federação De Atletas Fbca 2026' obtidas do regulamento
-[Carreras MÃ©xico] localizaÃ§Ã£o: Ultra Maratón Amealco Bosques  â Hidalgo, HID
 [TF Sports App] filtrado(passado): 'Mobilidade Para Corredores-Integrado' (2025-05-10)
 [TF Sports App] filtrado(tipo): 'Yoga - Josi Zarouk | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula De Yoga Samira Abdala Na Arcuri Imóveis -Integrado'
@@ -237,42 +243,6 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): '6 Anos Sul Em Trilhas -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Leila Barros | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Lili Prieto | Continue Em Movimento -Integrado'
-[Carreras MÃ©xico] localizaÃ§Ã£o: Carrera Hestia â Cuernavaca, MOR
-[Carreras MÃ©xico] localizaÃ§Ã£o: Volcanik Trail Run 2026 â Pichucalco, CHP
-[Carreras MÃ©xico] descartados 4 eventos sem cidade/UF/distância válida
-[Carreras MÃ©xico] 3 corridas encontradas
-[Ticket Sports] distâncias de 'Vikings Run 2027' obtidas do regulamento
-[Ticket Sports] distâncias de 'Videira Wine Run 2027' obtidas do regulamento
-[TF Sports App] filtrado(passado): 'Treino Corrida - Iniciantes A Avançados -Integrado' (2025-04-19)
-[TF Sports] events(data): 7 eventos brutos
-[TF Sports App] filtrado(passado): '2º Nightfall Run-Integrado' (2025-07-12)
-[TF Sports App] filtrado(tipo): 'Desafio Off Box-Integrado'
-[TF Sports App] filtrado(tipo): 'Aula De Lpf | Bianca Tiriba -Integrado'
-[TF Sports App] filtrado(tipo): 'Membros Inferiores - Cátia Brigato | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Treino De Polates Solo Avançado-Integrado'
-[TF Sports App] filtrado(tipo): 'Full Body - Daniel Agostinho | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Track&Field Experience Dia Das Mães -Integrado'
-[TF Sports App] filtrado(tipo): 'Pilates Solo-Integrado'
-[TF Sports App] filtrado(tipo): 'Torneio Kiosk - Open -Integrado'
-[TF Sports App] filtrado(tipo): 'Hatha Yoga Com Beatriz Mello-Integrado'
-[TF Sports App] filtrado(tipo): 'Full Body - Daniel Agostinho | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Hatha Yoga Para Todos - Jana Santos | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Alessandra Damazio | Continue Em Movimento -Integrado'
-[TF Sports App] filtrado(tipo): 'Meditação: Quem Sou Eu? - Mei Sousa | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Treino Funcional Mês Das Mães | Maria Almeida-Integrado'
-[TF Sports App] filtrado(tipo): 'Pilates Solo -Integrado'
-[TF Sports App] filtrado(tipo): 'Liana Gomes Convida | Aula De Lpf-Integrado'
-[TF Sports App] filtrado(tipo): 'Yôga - Força E Meditação Rafael Ramos | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Treino Funcional Dia Das Mães | Maria Almeida | -Integrado'
-[TF Sports App] filtrado(tipo): 'Aula Lpf Dia Das Mães - Maria Almeida -Integrado'
-[TF Sports App] filtrado(tipo): 'Hatha Flow - Gi Borba | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Hatha Flow - Gi Borba | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Hatha Flow - Gi Borba | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Full Body - Juann Melo | Continue Em Movimento-Integrado'
-[TF Sports App] filtrado(tipo): 'Bike Com Musica Ao Vivo Beat Mais -Integrado'
-[TF Sports App] filtrado(tipo): 'Yoga Candlelights-Integrado'
-[Finishers] 4615 eventos road (de 11354 provas) no Typesense
-[Finishers] buscando horário de 4411 eventos novos ou sem horário em cache (buildId=L8HAQlV25eDfzvZ4Gf859)
 [Ticket Sports] pulando 'Summit Abraceo Regional Sul' (sem distâncias)
 [Ticket Sports] pulando 'Manaus Tri - 2026' (sem distâncias)
 [Ticket Sports] pulando 'Corrida Kids Pais Filhos' (sem distâncias)
@@ -338,6 +308,7 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [Ticket Sports] pulando '2ª Trivitt Run' (sem distâncias)
 [Ticket Sports] pulando 'I Corrida Do Marista' (sem distâncias)
 [Ticket Sports] pulando 'Wtr Serra Do Mar 2026' (sem distâncias)
+[Finishers] 4572 eventos road (de 11247 provas) no Typesense
 [Ticket Sports] pulando 'La Vuelta Desafío Brasil By Btg Pactual 2026 - Prova Contra Relógio Por Equipes (C.R.E.)' (sem distâncias)
 [Ticket Sports] pulando 'Corridinha Granado Bebê SP 2026' (sem distâncias)
 [Ticket Sports] pulando 'AP - Federação Amapaense De Triahtlon - Featri - Registro Federativo - 2026' (sem distâncias)
@@ -353,7 +324,36 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [Ticket Sports] pulando 'Copa Nordeste E Circuito Brasileiro Longa Distância 2027 - Etapa Salvador' (sem distâncias)
 [Ticket Sports] pulando 'Hoka Speed Run 2027 - São Paulo' (sem distâncias)
 [Ticket Sports] pulando 'Hoka Speed Run 2027 - Salvador' (sem distâncias)
-[Ticket Sports] 822 corridas encontradas
+[Ticket Sports] 820 corridas encontradas
+[Finishers] buscando horário de 4368 eventos novos ou sem horário em cache (buildId=L8HAQlV25eDfzvZ4Gf859)
+[TF Sports App] filtrado(passado): 'Treino Corrida - Iniciantes A Avançados -Integrado' (2025-04-19)
+[TF Sports App] filtrado(passado): '2º Nightfall Run-Integrado' (2025-07-12)
+[TF Sports App] filtrado(tipo): 'Desafio Off Box-Integrado'
+[TF Sports App] filtrado(tipo): 'Aula De Lpf | Bianca Tiriba -Integrado'
+[TF Sports App] filtrado(tipo): 'Membros Inferiores - Cátia Brigato | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Treino De Polates Solo Avançado-Integrado'
+[TF Sports App] filtrado(tipo): 'Full Body - Daniel Agostinho | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Track&Field Experience Dia Das Mães -Integrado'
+[TF Sports App] filtrado(tipo): 'Pilates Solo-Integrado'
+[TF Sports App] filtrado(tipo): 'Torneio Kiosk - Open -Integrado'
+[TF Sports App] filtrado(tipo): 'Hatha Yoga Com Beatriz Mello-Integrado'
+[TF Sports App] filtrado(tipo): 'Full Body - Daniel Agostinho | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Hatha Yoga Para Todos - Jana Santos | Continue Em Movimento -Integrado'
+[TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Alessandra Damazio | Continue Em Movimento -Integrado'
+[TF Sports App] filtrado(tipo): 'Meditação: Quem Sou Eu? - Mei Sousa | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Treino Funcional Mês Das Mães | Maria Almeida-Integrado'
+[TF Sports App] filtrado(tipo): 'Pilates Solo -Integrado'
+[TF Sports App] filtrado(tipo): 'Liana Gomes Convida | Aula De Lpf-Integrado'
+[TF Sports App] filtrado(tipo): 'Yôga - Força E Meditação Rafael Ramos | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Treino Funcional Dia Das Mães | Maria Almeida | -Integrado'
+[TF Sports App] filtrado(tipo): 'Aula Lpf Dia Das Mães - Maria Almeida -Integrado'
+[TF Sports App] filtrado(tipo): 'Hatha Flow - Gi Borba | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Hatha Flow - Gi Borba | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Hatha Flow - Gi Borba | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Full Body - Juann Melo | Continue Em Movimento-Integrado'
+[TF Sports App] filtrado(tipo): 'Bike Com Musica Ao Vivo Beat Mais -Integrado'
+[TF Sports App] filtrado(tipo): 'Yoga Candlelights-Integrado'
+[TF Sports] events(data): 7 eventos brutos
 [TF Sports App] filtrado(passado): 'Treino Village Em Movimento-Integrado' (2025-04-26)
 [TF Sports App] filtrado(tipo): 'T&F Experience 6 Anos - Sul Em Trilhas-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Somático - Bia Baracho/ Continue Em Movimento -Integrado'
@@ -391,31 +391,12 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Master Class Power Posture Pilates By Micha -Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga Suave Com Marina-Integrado'
 [TF Sports App] filtrado(tipo): 'Box Blue Dragon Funcional-Integrado'
-[TF Sports] events(sem data): 0 eventos brutos
-[TF Sports] events(recentes): 100 eventos brutos
 [TF Sports App] filtrado(passado): 'Circuito Park Lagos 2ª Etapa-Integrado' (2025-08-03)
 [TF Sports App] filtrado(tipo): 'I Festival De Judô Ninjas Do Sol-Integrado'
+[TF Sports] events(sem data): 0 eventos brutos
 [TF Sports App] filtrado(passado): 'Track And Field Experience Cariri Shopping-Integrado' (2025-08-17)
 [TF Sports App] filtrado(tipo): 'Full Body Nível 2 - Allan Meneghim | Continue Em Movimento -Integrado'
-[TF Sports] experiences: 87 eventos brutos
-[TF Sports] filtrado(exp): 'Slopes Ski & Snowboard' area='Kite Surf'
-[TF Sports] filtrado(exp): 'Circuito Beach Tennis Starters | 4ª Etapa' area='Beach Tennis'
-[TF Sports] filtrado(exp): 'Esquenta Elas em Movimento' area='Funcional'
-[TF Sports] filtrado(exp): 'Sul em Trilhas nos Caminhos de Anita Garibaldi' area='Caminhada'
-[TF Sports] filtrado(exp): ' Bike no Rooftop Pulsen Go' area='Bike Indoor'
-[TF Sports] filtrado(exp): 'Bike no Rooftop Pulsen Go' area='Bike Funcional'
-[TF Sports] filtrado(exp): 'Yôganidrá & Soundhealing com Jacqueline Mito e Beto' area='Yoga'
-[TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
-[TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
-[TF Sports] filtrado(exp): 'Mulheres em Movimento | 2ªedição' area='Futevôlei '
-[TF Sports] filtrado(exp): 'Dia das Mães | Pilates de solo' area='Pilates'
-[TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
-[TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
-[TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
-[TF Sports] filtrado(exp): '3º Open de Tênis Colinas Kids' area='Tênis'
-[TF Sports] filtrado(exp): 'Passeio Ciclístico MAF' area='Bike'
-[TF Sports] filtrado(exp): 'Porto Bike Tour' area='Bike'
-[TF Sports] pulando 'Corrida Santa Madalena Sofia' (sem localização determinável)
+[TF Sports] events(recentes): 100 eventos brutos
 [TF Sports App] filtrado(passado): 'Running Vinhedo | Arca Fun - Kids -Integrado' (2025-06-15)
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Crossfit Vkn -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Beatriz Mello-Integrado'
@@ -439,7 +420,21 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Respiração E Reprogramação Emocional Com Ivani Tavares-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade E Flow - Carol Maragno | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Personal Semestral-Integration-Test'
-[TF Sports] pulando 'Conviver Run' (sem localização determinável)
+[TF Sports] experiences: 83 eventos brutos
+[TF Sports] filtrado(exp): 'Sul em Trilhas nos Caminhos de Anita Garibaldi' area='Caminhada'
+[TF Sports] filtrado(exp): ' Bike no Rooftop Pulsen Go' area='Bike Indoor'
+[TF Sports] filtrado(exp): 'Bike no Rooftop Pulsen Go' area='Bike Funcional'
+[TF Sports] filtrado(exp): 'Yôganidrá & Soundhealing com Jacqueline Mito e Beto' area='Yoga'
+[TF Sports] filtrado(exp): 'Desafio Vida no Eixo' area='Funcional'
+[TF Sports] filtrado(exp): 'Morning Flow | Bianca Coelho e Nara Prado' area='Funcional / Yoga'
+[TF Sports] filtrado(exp): 'Funcional com Eric Volpe | Edição Vila Olimpia' area='Funcional'
+[TF Sports] filtrado(exp): 'Open de Tênis | GP' area='Tênis'
+[TF Sports] filtrado(exp): 'Mulheres em Movimento | 2ªedição' area='Futevôlei '
+[TF Sports] filtrado(exp): 'Dia das Mães | Pilates de solo' area='Pilates'
+[TF Sports] filtrado(exp): 'Yoga Dance no Rota (2.0)' area='Yoga'
+[TF Sports] filtrado(exp): '3º Open de Tênis Colinas Kids' area='Tênis'
+[TF Sports] filtrado(exp): 'Passeio Ciclístico MAF' area='Bike'
+[TF Sports] filtrado(exp): 'Porto Bike Tour' area='Bike'
 [TF Sports App] filtrado(passado): 'Treinão Rafinha Running-Integrado' (2025-04-12)
 [TF Sports App] filtrado(tipo): 'Yôga - Força E Meditação - Rafael Ramos | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Spinning At The Park | Indaiatuba-Integrado'
@@ -460,18 +455,19 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Alongamento - Cintia Siboldi | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Life Experience By Luiz Fernando-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body Com Halteres | Pietro Campos - Continue Em Movimento -Integrado'
+[TF Sports] pulando 'Conviver Run' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Running Monjolinho | 2 Edição' (2025-06-22)
 [TF Sports App] filtrado(tipo): 'I Copa Handebol - Eccb-Integrado'
 [TF Sports App] filtrado(tipo): 'II Copa Pickleball - Duplas-Integrado'
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Inauguração All Mar Beach Sports-Integrado'
 [TF Sports App] filtrado(tipo): 'II Copa Pickleball-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Vinyasa - Lari Lazzaris | Continue Em Movimento -Integrado'
-[TF Sports] pulando 'Eu Respiro A Vida' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Running Contagem | 1Rmsports' (2025-05-25)
 [TF Sports App] filtrado(tipo): 'Test Privado Pt-Integrado'
 [TF Sports App] filtrado(tipo): 'Aulao Tfsports | Teste Trainer-Integrado'
 [TF Sports App] filtrado(tipo): '1ª Copa Kids By Caramelo-Integrado'
 [TF Sports App] filtrado(passado): 'Corrida 1Rm Sports-Integrado' (2025-05-25)
+[TF Sports] pulando 'Eu Respiro A Vida' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'No Pace De Festa Com Ju Toledo-Integrado' (2025-05-10)
 [TF Sports App] filtrado(tipo): 'Full Body - Rodrigo Lamarca -Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body - Rodrigo Lamarca -Integrado'
@@ -622,7 +618,6 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Yoga In Natura | Parque Barigui -Integrado'
 [TF Sports App] filtrado(tipo): 'Energy Vinyasa Yoga - Tati Landa | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação E Respiração - Bianca Coelho | Continue Em Movimento -Integrado'
-[TF Sports] pulando 'Paineiras' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Treino Pista Atletismo Centro Olimpico -Integrado' (2025-04-24)
 [TF Sports App] filtrado(tipo): 'Fitdance - Mayara Perin | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Fitdance - Mayara Perin | Continue Em Movimento -Integrado'
@@ -660,7 +655,6 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Eric Volpe | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Eric Volpe | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional E Hiit-Integrado'
-[TF Sports] pulando 'Running Sete Lagoas 2026' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Treinão De Corrida Ecológico -Integrado' (2025-05-17)
 [TF Sports App] filtrado(tipo): 'Funcional Para Corrida - Eric Volpe | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Ginastica Reeducativa Meditativa -Integrado'
@@ -678,13 +672,13 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Yoga Nidra Com Ana Lugh| Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade Global - Andrea Sacay | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Barre E Dança-Integrado'
+[TF Sports] pulando 'Paineiras' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Desafio Araribóia-Integrado' (2025-07-06)
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Yoga Para Todos - Tati Lu | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga - Yoga Para Todos - Tati Lu | Continue Em Movimento -Integrado'
 [TF Sports App] filtrado(tipo): 'Continue Em Movimento- Chair Dance-Integrado'
 [TF Sports App] filtrado(tipo): 'Meditação Pancha Kosha - Anna Oliveira | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Funcional Fight - Boxe - Thamyres Bogado | Continue Em Movimento-Integrado'
-[TF Sports] pulando 'Vinhedo' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Tf Experience- Corrida Dos Namorados Bauru Shopping -Integrado' (2025-06-22)
 [TF Sports App] filtrado(tipo): 'Flexibilidade Com Pilates - Monique Custódio | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Swásthya Yôga-Integrado'
@@ -739,7 +733,6 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Pós Corrida-Along E Mobilidade- Alessandra Castro | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Mobilidade E Alongamento - Liza Lambert | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body Workout - Liza Lambert | Continue Em Movimento-Integrado'
-[TF Sports] pulando 'Medrun | Vitória Da Conquista' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Aula De Corrida-Integrado' (2025-04-12)
 [TF Sports App] filtrado(tipo): 'Arena Park Beach Tennis - 50+/60+-Integrado'
 [TF Sports App] filtrado(tipo): 'Arena Park Beach Tennis - Mistas-Integrado'
@@ -751,8 +744,12 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Sem Barriga Clau Battelli -Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Futevôlei | Dalli Beach Sports-Integrado'
 [TF Sports App] filtrado(tipo): 'Full Body- Alessandra Castro / Continue Em Movimento-Integrado'
+[TF Sports] pulando 'Running Sete Lagoas 2026' (sem localização determinável)
+[TF Sports] pulando 'Medrun | Vitória Da Conquista' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Tf Running | Rock -Integrado' (2025-07-05)
 [TF Sports App] filtrado(tipo): 'Tf Hangar | Dia Das Mães -Integrado'
+[TF Sports] pulando 'Vinhedo' (sem localização determinável)
+[Atletis] 52 corridas encontradas
 [TF Sports App] filtrado(passado): 'Running | Catanduva-Integrado' (2025-06-22)
 [TF Sports App] filtrado(tipo): 'Treinão Run Franca - Com Personew-Integrado'
 [TF Sports App] filtrado(tipo): 'Integra | Funcional -Integrado'
@@ -769,23 +766,21 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Bike Do Poder - Etapa Verão - Heliponto Lassù-Integrado'
 [TF Sports App] filtrado(tipo): 'Torneio De Tênis Feminino-Integrado'
 [TF Sports App] filtrado(tipo): 'Yoga - Hellen Lima | Continue Em Movimento-Integrado'
-[TF Sports] pulando 'Maceió' (sem localização determinável)
-[Finishers] 4587 corridas encontradas
 [TF Sports App] filtrado(passado): 'Alunos RR Na Corrida Do Túnel -Integrado' (2025-03-30)
+[World's Marathons] 1071 corridas encontradas
 [TF Sports App] filtrado(passado): 'Simulado Maratona E Meia Maratona Do Rio -Integrado' (2025-04-13)
 [TF Sports App] filtrado(tipo): 'Lr Gap Training -Integrado'
 [TF Sports App] filtrado(tipo): "Va'A Team Challenge Oc6 210+ | Times-Integrado"
 [TF Sports App] filtrado(tipo): "Va'A Team Challenge Oc6 210+ | Capitão-Integrado"
 [TF Sports App] filtrado(tipo): 'Yoga In Natura | São Lourenço-Integrado'
+[TF Sports] pulando 'Maceió' (sem localização determinável)
+[Finishers] 4547 corridas encontradas
 [TF Sports App] filtrado(passado): 'Treinão Bruno Covas-Integrado' (2025-03-29)
 [TF Sports App] filtrado(tipo): 'Mobilidade: Perna E Coluna - Arthur Okitsu | Continue Em Movimento-Integrado'
-[World's Marathons] 1080 corridas encontradas
 [TF Sports App] filtrado(passado): 'Simulado Maratona E Meia Maratona Do Rio -Integrado' (2025-04-13)
 [TF Sports App] filtrado(passado): 'Rio Design Leblon Runners Club 3ª Edição-Integrado' (2025-05-18)
 [TF Sports App] filtrado(tipo): 'Yoga Nidra - Corpo E Mente - Thais Cirvídhiu - Corpo Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Tf Experience - 3 Anos Em Movimento-Integrado'
-[TF Sports] pulando 'Santa Cruz Do Sul | Seasc' (sem localização determinável)
-[Atletis] 55 corridas encontradas
 [TF Sports App] filtrado(passado): 'Especial Dia Das Mães Com Rafinha Running-Integrado' (2025-05-10)
 [TF Sports App] filtrado(tipo): 'Lpf - Patricia Capucho/ Continue Em Movimento-Integrado'
 [TF Sports] pulando 'Novo Hamburgo | I Fashion Run' (sem localização determinável)
@@ -804,7 +799,7 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Pilates - Flavia Brencys | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): 'Oxy Corrida Fitness -Integrado'
 [TF Sports App] filtrado(tipo): 'Track&Field Experience Yoga Adventure -Integrado'
-[TF Sports] pulando 'Campos Do Jordão' (sem localização determinável)
+[TF Sports] pulando 'Santa Cruz Do Sul | Seasc' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Villa Running | Café & Diversão-Integrado' (2025-03-30)
 [TF Sports App] filtrado(tipo): 'B10 Lpo Games 2ª Edição-Integrado'
 [TF Sports App] filtrado(tipo): 'Interval Mountain + Hiit 60 Min-Integrado'
@@ -813,6 +808,7 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'II Copa Pickleball - Duplas-Integrado'
 [TF Sports App] filtrado(tipo): 'II Copa Pickleball - Mistas-Integrado'
 [TF Sports App] filtrado(tipo): 'II Copa Pickleball - Simples-Integrado'
+[TF Sports] pulando 'Campos Do Jordão' (sem localização determinável)
 [TF Sports] pulando 'Assis | Menin' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Corrida Da Riviera-Integrado' (2025-04-20)
 [TF Sports App] filtrado(tipo): 'Soul Games-Integrado'
@@ -822,6 +818,9 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Funcional Com Gui Santos-Integrado'
 [TF Sports App] filtrado(passado): 'Desafio Das Serras Dupla 20+20Km-Integrado' (2025-08-03)
 [TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona Dupla 40+40-Integrado' (2025-08-03)
+[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona Solo 100Km-Integrado' (2025-08-02)
+[TF Sports App] filtrado(tipo): '🏻 \u200d️ Treinão Trail – Estradão De Terra \u200d️ \u200d️-Integrado'
+[TF Sports App] filtrado(tipo): 'Yoga Na Pedra Bonita-Integrado'
 [TF Sports] experiences(sem data): 1 eventos brutos
 [TF Sports] experiences(recentes): 100 eventos brutos
 [TF Sports] filtrado(exp-rec): 'Passeio Ciclístico MAF' area='Bike'
@@ -867,15 +866,12 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports] filtrado(exp-rec): 'Beach Tennis para Eles' area='Beach Tennis'
 [TF Sports] filtrado(exp-rec): 'RECONECTAR | 2ª Edição' area='Yoga'
 [TF Sports] filtrado(exp-rec): 'Sunset Bike | Gule + Insanos' area='Bike Indoor'
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona Solo 100Km-Integrado' (2025-08-02)
-[TF Sports App] filtrado(tipo): '🏻 \u200d️ Treinão Trail – Estradão De Terra \u200d️ \u200d️-Integrado'
-[TF Sports App] filtrado(tipo): 'Yoga Na Pedra Bonita-Integrado'
 [TF Sports App] filtrado(passado): 'Tf Running Jaú/ Daniel Rosalin-Integrado' (2025-07-06)
 [TF Sports App] filtrado(tipo): 'Vinyasa Flow -Integrado'
-[US Road Running] 497 corridas encontradas
 [TF Sports] pulando 'Santa Cruz Do Sul | Seasc' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Treino Corrida Na Usp-Integrado' (2025-03-22)
 [TF Sports App] filtrado(tipo): 'Pilates Global- Raquel Marquesini|Coninue Em Movimento -Integrado'
+[US Road Running] 467 corridas encontradas
 [TF Sports App] filtrado(passado): 'Runing | Cacoal-Integrado' (2025-04-27)
 [TF Sports App] filtrado(tipo): 'Catarina Sports Edition Spinning-Integrado'
 [TF Sports App] filtrado(tipo): 'Treino De Solo Avançado -Integrado'
@@ -883,20 +879,19 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(passado): 'Desafio Das Serras Maratona 42 Km Solo-Integrado' (2025-08-03)
 [TF Sports App] filtrado(passado): 'Desafio Das Serras Solo 20+20-Integrado' (2025-08-03)
 [TF Sports App] filtrado(passado): 'Inthegra-Integrado' (2025-06-08)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 21Km-Integrado' (2025-08-03)
 [TF Sports] pulando 'Maceió' (sem localização determinável)
 [TF Sports] pulando 'Medrun | Vitória Da Conquista' (sem localização determinável)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 12Km-Integrado' (2025-08-03)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras 6Km-Integrado' (2025-08-03)
+[TF Sports App] filtrado(passado): 'Desafio Das Serras 21Km-Integrado' (2025-08-03)
 [TF Sports] pulando 'Paineiras' (sem localização determinável)
-[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona 40+40-Integrado' (2025-08-03)
+[TF Sports App] filtrado(passado): 'Desafio Das Serras 12Km-Integrado' (2025-08-03)
 [TF Sports] pulando 'Running Sete Lagoas 2026' (sem localização determinável)
+[TF Sports App] filtrado(passado): 'Desafio Das Serras 6Km-Integrado' (2025-08-03)
+[TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona 40+40-Integrado' (2025-08-03)
+[TF Sports] pulando 'Assis | Menin' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Aulão De Corrida-Integrado' (2025-03-18)
-[TF Sports] pulando 'Corrida Santa Madalena Sofia' (sem localização determinável)
+[TF Sports] pulando 'Eu Respiro A Vida' (sem localização determinável)
 [TF Sports App] filtrado(passado): '3H Lote Final | Nit Ultra Run 2025-Integrado' (2025-05-17)
 [TF Sports App] filtrado(passado): '6H Lote Final | Nit Ultra Run 2025-Integrado' (2025-05-18)
-[TF Sports] pulando 'Assis | Menin' (sem localização determinável)
-[TF Sports] pulando 'Eu Respiro A Vida' (sem localização determinável)
 [TF Sports App] filtrado(passado): '12H Lote Final | Nit Ultra Run 2025-Integrado' (2025-05-17)
 [TF Sports App] filtrado(tipo): 'Aula Funcional Especial Mães Com Hello Personal -Integrado'
 [TF Sports App] filtrado(tipo): 'Treino Hiit 45 Min-Integrado'
@@ -911,7 +906,9 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Geraes Open | Professores -Integrado'
 [TF Sports App] filtrado(tipo): 'Geraes Open | Duplas -Integrado'
 [TF Sports App] filtrado(tipo): 'Geraes Open | Simples Masculina-Integrado'
+[TF Sports] pulando 'Campos Do Jordão' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Desafio Das Serras 20Km+20Km-Integrado' (2025-08-02)
+[TF Sports] pulando 'Novo Hamburgo | I Fashion Run' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Desafio Das Serras Ultramaratona 100 Km-Integrado' (2025-08-03)
 [TF Sports App] filtrado(tipo): 'Retiro A-Mar 3ª Edição-Integrado'
 [TF Sports App] filtrado(tipo): 'Hatha Yoga Com Marina-Integrado'
@@ -966,7 +963,8 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Hyrox Training Day Raphinha Running E Ct Oceânica-Integrado'
 [TF Sports App] filtrado(passado): 'Experience Running Itabuna -Integrado' (2025-07-20)
 [TF Sports App] filtrado(tipo): 'Yoga Para Liberar A Sabedoria Do Corpo-Integrado'
-[TF Sports] pulando 'Campos Do Jordão' (sem localização determinável)
+[TF Sports] 164 corridas encontradas
+[TF Sports] 72 duplicata(s) removida(s)
 [TF Sports App] filtrado(passado): 'Running | Pirassununga-Integrado' (2025-05-11)
 [TF Sports App] filtrado(tipo): 'Futevôlei Arena Park - Misto-Integrado'
 [TF Sports App] filtrado(tipo): 'Futevolei Arena Park-Integrado'
@@ -977,14 +975,11 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Beach Training-Integrado'
 [TF Sports App] filtrado(sem UF): 'Treino Corrida On-Line 30Min Em Esteira-Integrado' location='📍null'
 [TF Sports App] filtrado(tipo): 'Full Body - Josenilson Batista Da Silva | Em Movimento-Integrado'
-[TF Sports] pulando 'Novo Hamburgo | I Fashion Run' (sem localização determinável)
 [TF Sports App] filtrado(passado): 'Treino Especial Dia Das Mulheres -Integrado' (2025-03-08)
 [TF Sports App] filtrado(tipo): 'Dakoa Training Aracaju-Integrado'
 [TF Sports App] filtrado(tipo): 'Mensal-Integrado'
 [TF Sports App] filtrado(tipo): 'Swásthya Yôga - Ketie Soares / Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(passado): 'Vila Gastronômica Running Challenge Rp Capital Xp-Integrado' (2025-05-18)
-[TF Sports] 164 corridas encontradas
-[TF Sports] 72 duplicata(s) removida(s)
 [TF Sports App] filtrado(passado): 'Vila Gastronômica - Running Challenge Rp Capital Xp -Integrado' (2025-05-17)
 [TF Sports App] filtrado(tipo): 'A Cura Através Do Movimento | Ana Monteiro-Integrado'
 [TF Sports App] filtrado(tipo): 'Trekking Boca Da Onça-Integrado'
@@ -1556,7 +1551,6 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Vinyasa Yoga - Raquel Mouta | Continue Em Movimento-Integrado'
 [TF Sports App] filtrado(tipo): '1 Encontro Online De 2025-Integrado'
 [TF Sports App] filtrado(tipo): 'Semestre-Integrado'
-[Tênis Certo] 482 corrida(s) encontrada(s)
 [TF Sports App] filtrado(passado): 'Treino Funcional & Corrida Pq Villa Lobos-Integrado' (2025-01-18)
 [TF Sports App] filtrado(passado): 'Running Cabo Frio Park Lagos -Integrado' (2025-03-23)
 [TF Sports App] filtrado(tipo): 'Yoga Para Bruxismo Com Fernanda Rossi -Integrado'
@@ -1616,6 +1610,7 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(tipo): 'Aula Lpf Tfstudio - Maria Almeida-Integrado'
 [TF Sports App] filtrado(passado): 'Lançamentos Inthegra - Camisetas E Viseira-Integrado' (2025-01-11)
+[Tênis Certo] 482 corrida(s) encontrada(s)
 [TF Sports App] filtrado(passado): 'Pelotão Espaço Einstein -Integrado' (2025-01-18)
 [TF Sports App] filtrado(tipo): 'Chair Dance-Integrado'
 [TF Sports App] filtrado(tipo): 'Desafio Pré Carnaval -Integrado'
@@ -2229,45 +2224,45 @@ Ignoring wrong pointing object 15 0 (offset 0)
 [TF Sports App] filtrado(tipo): 'Pickleball'
 [TF Sports App] filtrado(tipo): 'Circuito Das Serras | Parque Da Cidade'
 [TF Sports App] 5 corridas encontradas
-[Corridas Brasil] 2585 corridas encontradas
-[main] 12265 registros coletados (antes do merge)
-[main] 12175 registros após validação
-[merger] 31 URL(s) detected as overused inscription links (treating as generic): ['https://centraldacorrida.com.br/evento/advogarun2026', 'https://centraldacorrida.com.br/evento/bayerische5hnightrun', 'https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-franca', 'https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-japao', 'https://centraldacorrida.com.br/evento/corrida-mulher-nao-se-cale-2026']
-[main] 10515 corridas após merge
-[main] verificando links de 10683 evento(s) não encontrado(s) no scrape (limite 900.0s)...
-[main] removendo 'Hero Hustle-2026' (miss_count=10)
-[main] recheck de links: 10568 resgatado(s), 1 removido(s), 0 adiado(s) para a próxima execução
-[main] 22811 corridas após reconciliação
-[merger] 6 URL(s) detected as overused inscription links (treating as generic): ['https://circuitoparquesdobrasil.com.br', 'https://www.sesc-rs.com.br/circuitodecorridas', 'https://www.sescbahia.com.br/portal/pagina/circuito-sesc-de-corridas', 'ticketsports.com.br/e/86297', 'ticketsports.com.br/e/86913']
-[main] 22809 corridas após dedup final
+[Corridas Brasil] 2608 corridas encontradas
+[main] 12056 registros coletados (antes do merge)
+[main] 11967 registros após validação
+[merger] 32 URL(s) detected as overused inscription links (treating as generic): ['https://centraldacorrida.com.br/evento/advogarun2026', 'https://centraldacorrida.com.br/evento/bayerische5hnightrun', 'https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-franca', 'https://centraldacorrida.com.br/evento/corre-que-da-bom-pelo-mundo-etapa-japao', 'https://centraldacorrida.com.br/evento/corrida-mulher-nao-se-cale-2026']
+[main] 10323 corridas após merge
+[main] verificando links de 10489 evento(s) não encontrado(s) no scrape (limite 900.0s)...
+[main] recheck de links: 10371 resgatado(s), 0 removido(s), 0 adiado(s) para a próxima execução
+[main] 22826 corridas após reconciliação
+[merger] 7 URL(s) detected as overused inscription links (treating as generic): ['https://circuitoparquesdobrasil.com.br', 'https://minhasinscricoes.com.br/evento/uaireverse2026', 'https://www.sesc-rs.com.br/circuitodecorridas', 'https://www.sescbahia.com.br/portal/pagina/circuito-sesc-de-corridas', 'ticketsports.com.br/e/86297']
+[main] 22824 corridas após dedup final
 [geo] limite de tempo (Nominatim/execução) atingido — adiando resoluções restantes para a próxima execução
 [main] 26 estado(s) resolvido(s) pelo geo cache
-[main] AVISO: 2252 evento(s) removido(s) por localização inválida:
+[main] AVISO: 2244 evento(s) removido(s) por localização inválida:
   • corrida-e-caminhada-pib-run-2026-rosario-ma_ma_2026-11-01 (pais=AR, estado vazio)
   • 3a-corrida-do-chopp-fsa_go_2026-12-13 (pais=AR, estado vazio)
   • tokyo-marathon_jp_2027 (pais=JP, estado vazio)
   • bmw-berlin-marathon_de_2026 (pais=DE, estado vazio)
   • copenhagen-marathon_dk_2027 (pais=DK, estado vazio)
-  • tcs-amsterdam-marathon_nl_2026 (pais=NL, estado vazio)
   • athens-classic-marathon_gr_2026 (pais=GR, estado vazio)
-  • valencia-trinidad-alfonso-marathon_es_2026 (pais=ES, estado vazio)
+  • dublin-city-marathon_ie_2026 (pais=IE, estado vazio)
+  • tcs-amsterdam-marathon_nl_2026 (pais=NL, estado vazio)
   • schneider-electric-paris-marathon_fr_2027 (pais=FR, estado vazio)
   • edinburgh-marathon-festival_gb_2027 (pais=GB, estado vazio)
-  • dublin-city-marathon_ie_2026 (pais=IE, estado vazio)
   • cardiff-half-marathon_gb_2026 (pais=GB, estado vazio)
+  • valencia-trinidad-alfonso-marathon_es_2026 (pais=ES, estado vazio)
   • ts_74707 (pais=IT, estado vazio)
   • ts_85488 (pais=PT, estado vazio)
   • ts_85973 (pais=AR, estado vazio)
-  • finishers_fbd83e3b-c02e-4cde-8f82-07322fa9bb53 (pais=FR, estado vazio)
-  • finishers_c31ae751-6945-41f4-b5ca-7da636a48a23 (pais=PL, estado vazio)
-  • finishers_e5dcdcac-4062-4b6f-913e-6f62717ba4dd (pais=FR, estado vazio)
-  • finishers_f7f2c3d9-9318-481c-a5de-dba3aaf27785 (pais=CL, estado vazio)
-  • finishers_2b1bca8b-e969-4d3e-a1a5-2cd9fd9a4f26 (pais=FR, estado vazio)
-  … e mais 2232
+  • finishers_e88be925-6639-43a5-9e2d-77739a435789 (pais=AT, estado vazio)
+  • finishers_208b4547-0897-4924-b976-46b19d228de2 (pais=FR, estado vazio)
+  • finishers_811951c9-3541-49dd-874e-6a3d6ead1ab3 (pais=DK, estado vazio)
+  • finishers_c2376eac-6dbb-4e11-8768-9dca1b4969dd (pais=FR, estado vazio)
+  • finishers_2018d4e8-a2ea-4aa0-bcdc-2cfef4f7db70 (pais=NO, estado vazio)
+  … e mais 2224
 [selos] 7 Majors do Wikidata: ['Berlin Marathon', 'Boston Marathon', 'Chicago Marathon', 'London Marathon', 'New York City Marathon', 'Sydney Marathon', 'Tokyo Marathon']
-[selos] 146 provas com selo (futuras) no World Athletics
-[selos] 134 eventos receberam selo World Athletics; 13 marcados como Major
+[selos] 145 provas com selo (futuras) no World Athletics
+[selos] 135 eventos receberam selo World Athletics; 13 marcados como Major
 [main] AVISO: link não-único 'Corridas Brasil' em 3 eventos; mantido corridasbrasil_61281, removidos 2
 [main] AVISO: link não-único 'Corridas Brasil' em 5 eventos; mantido corridasbrasil_52742, removidos 4
 [main] AVISO: link não-único 'Corridas Brasil' em 5 eventos; mantido corridasbrasil_56286, removidos 4
-[main] 20547 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] AVISO: link não-único 'Corridas Brasil' em 5 eventos; mantido corridasbrasil_56510, removidos 4
+[main] 20532 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json

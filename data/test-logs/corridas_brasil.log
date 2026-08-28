@@ -1,10 +1,2 @@
-[Corridas Brasil] 2493 eventos na listagem, buscando detalhes...
-[Corridas Brasil] 2493 corridas encontradas
-EVENT_COUNT:2493
-✅  corridas_brasil: 2493 evento(s)
-    {"titulo": "1ª Corrida Get Running", "data": "2026-08-25", "estado": "SC", "km": "5.0"}
-    {"titulo": "1ª Corrida Da Academia Totalfit", "data": "2026-08-27", "estado": "AM", "km": "5.0, 10.0"}
-    {"titulo": "Malacara Trail Race", "data": "2026-08-28", "estado": "SC", "km": "6.0, 13.0, 35.0, 70.0"}
-    {"titulo": "1ª Corrida Náutica", "data": "2026-08-29", "estado": "MT", "km": "5.0"}
-    {"titulo": "Insanity Mountain – Chapada Dos Veadeiros", "data": "2026-08-29", "estado": "GO", "km": "12.0, 20.0, 35.0, 60.0"}
-    ... e mais 2488
+/home/runner/work/corridas/corridas/scraper/sources/corridas_brasil.py:191: XMLParsedAsHTMLWarning: It looks like you're parsing an XML document using an HTML parser. If this really is an HTML document (maybe it's XHTML?), you can ignore or filter this warning. If it's XML, you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the lxml package installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
+  soup = BeautifulSoup(resp.text, "lxml")

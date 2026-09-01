@@ -1,3 +1,14 @@
+[Volta do Lago] Correr Brasília proxy chain falhou: [Errno -9] Address family for hostname not supported; tentando Playwright...
+[playwright] https://correrbrasilia.com.br/calendario/: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://correrbrasilia.com.br/calendario/", waiting until "domcontentloaded"
+
+[Volta do Lago] Correr Brasília erro: todos os métodos falharam para https://correrbrasilia.com.br/calendario/
+[Volta do Lago] Largada Esportiva proxy chain falhou: timed out; tentando Playwright...
+[playwright] https://largadaesportiva.com.br/api/Events: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "https://largadaesportiva.com.br/api/Events", waiting until "domcontentloaded"
+
 [Volta do Lago] 1 corrida(s) encontrada(s) via Ticket Sports
 EVENT_COUNT:1
 ✅  volta_do_lago: 1 evento(s)

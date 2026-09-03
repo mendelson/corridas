@@ -1,2 +1,12 @@
 /home/runner/work/corridas/corridas/scraper/sources/corridas_brasil.py:191: XMLParsedAsHTMLWarning: It looks like you're parsing an XML document using an HTML parser. If this really is an HTML document (maybe it's XHTML?), you can ignore or filter this warning. If it's XML, you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the lxml package installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
   soup = BeautifulSoup(resp.text, "lxml")
+[Corridas Brasil] 2658 eventos na listagem, buscando detalhes...
+[Corridas Brasil] 2658 corridas encontradas
+EVENT_COUNT:2658
+✅  corridas_brasil: 2658 evento(s)
+    {"titulo": "Cassino Ultra Race", "data": "2026-09-04", "estado": "RS", "km": "65.0, 135.0"}
+    {"titulo": "1ª Corrida AC Moviment Igreja Amor E Cuidado", "data": "2026-09-05", "estado": "SP", "km": "5.0"}
+    {"titulo": "13ª Corrida Dos Bancários", "data": "2026-09-05", "estado": "SE", "km": "5.0, 10.0"}
+    {"titulo": "Corrida Solidária Do Same E Ijbc", "data": "2026-09-05", "estado": "SE", "km": "5.0, 8.0"}
+    {"titulo": "1ª Corrida Do Figueira", "data": "2026-09-05", "estado": "SP", "km": "5.0"}
+    ... e mais 2653

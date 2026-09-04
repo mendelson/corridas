@@ -61,7 +61,7 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-09-04 13:03 | ✅ | 2026-09-04 13:03 · 8 ev |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-09-04 13:04 | ✅ | 2026-09-04 13:04 · 3 ev |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-09-04 13:04 | ✅ | 2026-09-04 13:04 · 7 ev |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-09-04 13:04 | ❌ 1/3 eventos sem distâncias | 2026-08-10 10:12 · 2 ev |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-09-04 13:53 | ✅ | 2026-09-04 13:53 · 2 ev |
 | Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-09-04 13:18 | ✅ | 2026-09-04 13:18 · 2657 ev |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-09-04 13:07 | ✅ | 2026-09-04 13:07 · 219 ev |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-09-04 13:06 | ✅ | 2026-09-04 13:06 · 21 ev |
@@ -86,7 +86,7 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 | Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-09-04 13:05 | ✅ | 2026-09-04 13:05 · 1 ev |
 | SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-09-04 13:04 | ✅ | 2026-09-04 13:04 · 0 ev |
 | São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-09-04 13:04 | ✅ | 2026-09-04 13:04 · 1 ev |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-09-04 13:05 | ❌ 1/1 eventos sem distâncias | 2026-08-21 09:30 · 0 ev |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-09-04 13:53 | ✅ | 2026-09-04 13:53 · 0 ev |
 
 ### Fontes mexicanas
 

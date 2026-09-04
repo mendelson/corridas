@@ -178,6 +178,13 @@ def _parse_event_page(url: str, today: str) -> Corrida | None:
     # if horario is None:
     #     return None  # start time not yet published — skip until it is
     distancias = _extract_distances(text)
+    if not distancias:
+        # Some MKS pages announce an edition long before publishing the percurso
+        # (e.g. "Meia de Búzios" 2027 carries date, venue and schedule but no
+        # distance anywhere on the page). Every event must have distances, so
+        # skip it — the next run emits it as soon as MKS publishes them.
+        print(f"[{SOURCE_NAME}] pulando '{titulo}' (sem distâncias publicadas)")
+        return None
 
     slug = url.rstrip("/").split("/")[-1].lower()
     if slug in _KNOWN_LOCATIONS:

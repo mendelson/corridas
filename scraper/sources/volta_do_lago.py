@@ -29,10 +29,13 @@ _CB_CALENDAR = "https://correrbrasilia.com.br/calendario/"
 _LE_API  = "https://largadaesportiva.com.br/api/Events"
 _LE_BASE = "https://largadaesportiva.com.br"
 _TS_API  = "https://www.ticketsports.app/api/events/list"
+_TS_DETAIL = "https://www.ticketsports.app/api/events/detail"
 _TS_BASE = "https://www.ticketsports.com.br"
 
+# "\b" after "lago" is load-bearing: without it this also matched
+# "Ultramaratona Volta da Lagoa" (Marechal Deodoro/AL), a different race.
 _MATCH_RE = re.compile(
-    r"volta\s+d[ao]\s+lago\s+paran[oó]|volta\s+d[ao]\s+lago",
+    r"volta\s+d[ao]\s+lago\b",
     re.IGNORECASE,
 )
 
@@ -151,6 +154,11 @@ def _search_correr_brasilia(today: str) -> list[Corrida]:
 
     # Fetch the detail page for the distances row and the registration link.
     distancias, reg_link = _fetch_cb_detail(event_url, name)
+    if not distancias:
+        # Every event must carry distances; emitting one without them breaks the
+        # data-quality contract. The next run picks it up once they are published.
+        print(f"[{SOURCE_NAME}] pulando '{name}' (Correr Brasília sem distâncias publicadas)")
+        return []
     link = reg_link or event_url
 
     now = now_iso()
@@ -281,6 +289,9 @@ def _search_largada_esportiva(today: str) -> list[Corrida]:
                 horario = f"{h:02d}:{mi:02d}"
 
         distancias = _extract_distances(ev.get("regulation") or "")
+        if not distancias:
+            print(f"[{SOURCE_NAME}] pulando '{name}' (Largada Esportiva sem distâncias publicadas)")
+            continue
         ev_id = ev.get("id")
         link = f"{_LE_BASE}/event/{ev_id}"
         localizacao, cidade, estado = _extract_location(ev, name)
@@ -332,15 +343,56 @@ def _search_ticket_sports(today: str) -> list[Corrida]:
     return []
 
 
+def _ts_detail_text(event_id) -> str:
+    """Fetch the Ticket Sports detail payload for an event and flatten every
+    description block into plain text.
+
+    The list endpoint returns only scheduling/pricing fields (no description,
+    no modalities), so distances are only ever available from here.
+    """
+    if not event_id:
+        return ""
+    try:
+        resp = get(_TS_DETAIL, params={"eventId": event_id})
+        resp.raise_for_status()
+        detail = resp.json()
+    except Exception as e:
+        print(f"[{SOURCE_NAME}] Ticket Sports detalhe (id={event_id}) falhou: {e}")
+        return ""
+
+    texts: list[str] = []
+
+    def _add(val) -> None:
+        if isinstance(val, str) and val:
+            texts.append(BeautifulSoup(val, "lxml").get_text(" ") if "<" in val else val)
+
+    for item in detail.get("eventContents") or []:
+        if isinstance(item, dict):
+            for key in ("description", "content", "text", "value"):
+                _add(item.get(key))
+    for key in ("description", "details", "eventDescription"):
+        _add(detail.get(key))
+    for mod in detail.get("modalities") or []:
+        if isinstance(mod, dict):
+            for key in ("name", "description", "title"):
+                _add(mod.get(key))
+        else:
+            _add(mod)
+
+    return " ".join(texts)
+
+
 def _parse_ts_event(ev: dict, today: str) -> Corrida | None:
     title  = ev.get("title") or ev.get("nome") or ""
     titulo = normalize_titulo(title)
     if not titulo:
         return None
 
-    event_id = ev.get("id") or ev.get("eventId") or ""
+    event_id = ev.get("eventId") or ev.get("id") or ""
+    uri      = ev.get("uri") or ""
     slug     = ev.get("url") or ev.get("slug") or ""
-    link     = (f"{_TS_BASE}/{slug}" if slug else
+    link     = (uri if uri else
+                f"{_TS_BASE}/{slug}" if slug else
                 f"{_TS_BASE}/evento/{event_id}" if event_id else _TS_BASE)
 
     raw_date = (ev.get("date") or ev.get("data") or
@@ -350,11 +402,11 @@ def _parse_ts_event(ev: dict, today: str) -> Corrida | None:
     if data_evento and data_evento < today:
         return None
 
-    dist_text = " ".join(filter(None, [
-        ev.get("description") or "", ev.get("descricao") or "",
-        ev.get("modalidades") or "",
-    ]))
-    distancias = _extract_distances(dist_text)
+    # Distances live only in the detail payload (see _ts_detail_text).
+    distancias = _extract_distances(_ts_detail_text(event_id))
+    if not distancias:
+        print(f"[{SOURCE_NAME}] pulando '{titulo}' (Ticket Sports sem distâncias publicadas)")
+        return None
 
     imagem = ev.get("image") or ev.get("foto") or ev.get("banner") or None
     if imagem and imagem.startswith("//"):

@@ -37,6 +37,28 @@ _TIME_RE = re.compile(
 
 _LOOKAHEAD_DAYS = 90
 
+# Concurrency. The calendar listing has grown past 2700 events in the 90-day
+# window, and every one of them needs a detail fetch (state + organizer URL);
+# nearly all of them then need an organizer fetch for the horário. At the old
+# 8 workers that is ~3min + ~10min, which tipped the health workflow's
+# 15-minute job cap and made this source fail every run from 2026-09-04 on.
+#
+# The fix is parallelism, never a result cap (CLAUDE.md "no result caps"): all
+# 2700+ events are still fetched and checked every run. Phase 1 hits
+# corridasbrasil.com.br itself, so it stays moderate to remain a good citizen
+# of a single small origin. Phase 2 fans out across hundreds of distinct
+# organizer hosts (ticketsports, cronovr, sporttimer, …), so the per-host rate
+# stays low even at higher total concurrency.
+_DETAIL_WORKERS = 16
+_HORARIO_WORKERS = 32
+
+# Timeout for the opportunistic organizer fetch. Horário is not a required
+# field (policy 2026-07-11 — events without one are kept), and these are
+# arbitrary third-party pages, so waiting the full 30s default on a hanging
+# organizer site costs far more than the field is worth. Phase 1 keeps the
+# default: state and organizer URL come from the source's own pages.
+_HORARIO_TIMEOUT = 10
+
 
 def scrape() -> list[Corrida]:
     today = today_iso()
@@ -56,7 +78,7 @@ def scrape() -> list[Corrida]:
     print(f"[{SOURCE_NAME}] {len(raw_events)} eventos na listagem, buscando detalhes...")
 
     # Phase 1: fetch detail pages (state + organizer URL)
-    with ThreadPoolExecutor(max_workers=8) as ex:
+    with ThreadPoolExecutor(max_workers=_DETAIL_WORKERS) as ex:
         futures = {ex.submit(_fetch_detail, ev["detail_url"]): ev for ev in raw_events}
         for fut in as_completed(futures):
             ev = futures[fut]
@@ -70,7 +92,7 @@ def scrape() -> list[Corrida]:
     # Phase 2: fetch organizer pages for horario
     need_horario = [ev for ev in raw_events if ev.get("org_url") and not ev.get("horario")]
     if need_horario:
-        with ThreadPoolExecutor(max_workers=8) as ex:
+        with ThreadPoolExecutor(max_workers=_HORARIO_WORKERS) as ex:
             futures2 = {ex.submit(_fetch_horario_from_url, ev["org_url"]): ev
                         for ev in need_horario}
             for fut in as_completed(futures2):
@@ -182,18 +204,23 @@ def _fetch_detail(url: str) -> dict | None:
 
 
 def _fetch_horario_from_url(url: str) -> str | None:
-    """Fetch organizer/registration page and extract start time."""
+    """Fetch organizer/registration page and extract start time.
+
+    Retries only a *failed* fetch (exception or non-200). The previous version
+    looped again whenever no horário was found, which re-downloaded the page
+    for every organizer that simply does not publish a start time — roughly
+    four out of five of them — doubling the cost of the slowest phase to buy
+    nothing. A second read of the same bytes cannot produce a different time.
+    """
     for _attempt in range(2):
         try:
-            resp = get(url)
+            resp = get(url, timeout=_HORARIO_TIMEOUT)
             if resp.status_code != 200:
                 continue
             soup = BeautifulSoup(resp.text, "lxml")
-            h = _extract_horario(soup.get_text(" ", strip=True))
-            if h:
-                return h
+            return _extract_horario(soup.get_text(" ", strip=True))
         except Exception:
-            pass
+            continue
     return None
 
 

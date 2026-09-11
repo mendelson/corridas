@@ -31,10 +31,21 @@ BOOT = ROOT / "web" / "corridas-boot.json"
 
 # First-paint shard window, anchored on the dataset's own gerado_em date (NOT
 # the wall clock — keeps the file reproducible from data/corridas.json alone).
-# −15d matches the frontend's default "past15" period filter; +60d covers the
-# first screens of the date-sorted list. The full file loads in background.
+# −15d matches the frontend's default "past15" period filter, so the recent-past
+# section renders complete on first paint. +30d covers the first screens of the
+# date-sorted list (renderCards only expands the first future month; later
+# months are collapsed headers). The full file loads in background and fills in
+# the rest before the loading screen lifts.
+#
+# The future side is deliberately tight: a road-running calendar is heavily
+# front-loaded (registration opens weeks, not years, ahead), so each extra day
+# of window costs far more bytes than a day out in the tail. At +60d the shard
+# had grown to ~60% of the full payload — no longer a first-paint shard at all,
+# which is what tests/test_web_data.py::test_boot_shard_meaningfully_smaller_
+# than_web_copy guards against. Keep this window tight enough that the shard
+# stays around a third of the web copy.
 BOOT_PAST_DAYS = 15
-BOOT_FUTURE_DAYS = 60
+BOOT_FUTURE_DAYS = 30
 
 # Top-level event fields the frontend reads (see app.js: c.<field>).
 KEEP = (

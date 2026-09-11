@@ -62,7 +62,7 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-09-11 13:11 | ✅ | 2026-09-11 13:11 · 3 ev |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-09-11 13:09 | ✅ | 2026-09-11 13:09 · 7 ev |
 | MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-09-11 13:10 | ✅ | 2026-09-11 13:10 · 2 ev |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-09-11 13:24 | ❌ | 2026-09-04 13:18 · 2657 ev |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-09-11 16:19 | ✅ | 2026-09-11 16:19 · 2769 ev |
 | Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-09-11 13:14 | ✅ | 2026-09-11 13:14 · 214 ev |
 | Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-09-11 13:10 | ✅ | 2026-09-11 13:10 · 20 ev |
 | Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-09-11 13:20 | ✅ | 2026-09-11 13:20 · 0 ev |

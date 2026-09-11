@@ -1,2 +1,12 @@
 /home/runner/work/corridas/corridas/scraper/sources/corridas_brasil.py:191: XMLParsedAsHTMLWarning: It looks like you're parsing an XML document using an HTML parser. If this really is an HTML document (maybe it's XHTML?), you can ignore or filter this warning. If it's XML, you should know that using an XML parser will be more reliable. To parse this document as XML, make sure you have the lxml package installed, and pass the keyword argument `features="xml"` into the BeautifulSoup constructor.
   soup = BeautifulSoup(resp.text, "lxml")
+[Corridas Brasil] 2769 eventos na listagem, buscando detalhes...
+[Corridas Brasil] 2769 corridas encontradas
+EVENT_COUNT:2769
+✅  corridas_brasil: 2769 evento(s)
+    {"titulo": "An Run - Alagoinhas Night Run", "data": "2026-09-12", "estado": "BA", "km": "5.0, 10.0"}
+    {"titulo": "Emex Night Run", "data": "2026-09-12", "estado": "RJ", "km": "5.0"}
+    {"titulo": "Corrida Wm Telecom", "data": "2026-09-12", "estado": "GO", "km": "5.0"}
+    {"titulo": "Vetrun Uninassau 2026", "data": "2026-09-12", "estado": "AL", "km": "5.0"}
+    {"titulo": "1ª Corrida De Santa Cruz", "data": "2026-09-12", "estado": "SP", "km": "5.0"}
+    ... e mais 2764

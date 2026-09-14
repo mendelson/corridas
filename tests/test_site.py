@@ -790,7 +790,7 @@ def test_language_fallback_to_english(browser, live_server):
     assert len(cards) > 0, "No cards on English page"
     # Page title should be English
     title = page.title()
-    assert "Next Race" in title or "Race" in title, f"Expected English title, got: {title}"
+    assert "Race" in title, f"Expected English title, got: {title}"
     ctx.close()
 
 

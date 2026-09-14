@@ -36,8 +36,8 @@ const LANG_URLS = { pt: '/pt', en: '/en', es: '/es', de: '/de', fr: '/fr' };
 // ---------------------------------------------------------------------------
 const STRINGS = {
   pt: {
-    siteTitle: 'Próxima Corrida',
-    headerTitle: 'Próxima Corrida',
+    siteTitle: 'Calendário de Corridas de Rua — Brasil e Mundo',
+    headerTitle: 'Calendário de Corridas de Rua',
     searchPlaceholder: 'Buscar corrida...',
     searchAriaLabel: 'Buscar corrida',
     modeSelect: 'Selecionar',
@@ -100,8 +100,8 @@ const STRINGS = {
     periodoSelect: 'Filtrar por período',
   },
   en: {
-    siteTitle: 'Next Race',
-    headerTitle: 'Next Race',
+    siteTitle: 'Road Running Race Calendar — Brazil & Worldwide',
+    headerTitle: 'Road Running Race Calendar',
     searchPlaceholder: 'Search race...',
     searchAriaLabel: 'Search race',
     modeSelect: 'Select',
@@ -164,8 +164,8 @@ const STRINGS = {
     periodoSelect: 'Filter by period',
   },
   es: {
-    siteTitle: 'Próxima Carrera',
-    headerTitle: 'Próxima Carrera',
+    siteTitle: 'Calendario de Carreras de Calle — Brasil y el Mundo',
+    headerTitle: 'Calendario de Carreras de Calle',
     searchPlaceholder: 'Buscar carrera...',
     searchAriaLabel: 'Buscar carrera',
     modeSelect: 'Seleccionar',
@@ -228,8 +228,8 @@ const STRINGS = {
     periodoSelect: 'Filtrar por período',
   },
   de: {
-    siteTitle: 'Nächstes Rennen',
-    headerTitle: 'Nächstes Rennen',
+    siteTitle: 'Laufkalender Straßenläufe — Brasilien & weltweit',
+    headerTitle: 'Laufkalender Straßenläufe',
     searchPlaceholder: 'Rennen suchen...',
     searchAriaLabel: 'Rennen suchen',
     modeSelect: 'Auswählen',
@@ -292,8 +292,8 @@ const STRINGS = {
     periodoSelect: 'Nach Zeitraum filtern',
   },
   fr: {
-    siteTitle: 'Prochaine Course',
-    headerTitle: 'Prochaine Course',
+    siteTitle: 'Calendrier des Courses sur Route — Brésil et Monde',
+    headerTitle: 'Calendrier des Courses sur Route',
     searchPlaceholder: 'Rechercher une course...',
     searchAriaLabel: 'Rechercher une course',
     modeSelect: 'Sélectionner',
@@ -1903,9 +1903,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // i18n static labels
   document.title = T.siteTitle;
-  // Header brand: the shoe mark only — the old "Próxima Corrida"/"Next Race"
-  // title text is not shown; the localized name stays in the h1 as
+  // Header brand: the shoe mark only. The site has no wordmark any more —
+  // its name IS its localized descriptive name, which stays in the h1 as
   // visually-hidden text (screen readers + the SEO h1-site-name test).
+  //
+  // siteTitle must be the FULL title, not a short name: this assignment runs
+  // on every load and replaces whatever the server sent. It used to set the
+  // bare wordmark, so the keyword-rich served title never survived rendering.
   const headerTitle = document.querySelector('.app-title');
   if (headerTitle) {
     headerTitle.innerHTML = SHOE_LOGO + '<span class="visually-hidden"></span>';

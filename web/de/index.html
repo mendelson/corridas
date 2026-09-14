@@ -3,16 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Analytics: GA4 with Consent Mode v2. Denied by default → cookieless until the visitor accepts. See website/ANALYTICS_TRACKING.md -->
+  <!-- Google Analytics (GA4), Consent Mode v2. ONE measurement ID for the whole
+       mmendelson.com family, so a hub -> apps -> run journey is one session:
+       the _ga cookies land on .mmendelson.com and every site reads the same
+       ones. Which site a hit came from is the built-in Hostname dimension, not
+       a parameter. Denied by default -> cookieless pings until the visitor
+       accepts. See website/ANALYTICS_TRACKING.md. -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('consent', 'default', { ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500 });
-    try { if (localStorage.getItem('mm_consent') === 'granted') { gtag('consent','update',{ analytics_storage:'granted' }); } } catch(e){}
-    gtag('config', 'G-C9QHPB8WZR');
+    // Consent is shared across the family, so it cannot live in localStorage
+    // alone: that is per ORIGIN, and the hub, apps and run are three origins.
+    // The record is a cookie on .mmendelson.com; localStorage stays as the
+    // fallback for hosts where that domain cannot be set (a local preview, the
+    // github.io project URL) and for visitors who answered before this change.
+    function mmConsentGet(k){ var m = document.cookie.match('(^|; )' + k + '=([^;]*)');
+      if (m) return decodeURIComponent(m[2]);
+      try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function mmConsentSet(k, v){
+      try { localStorage.setItem(k, v); } catch (e) {}
+      try { document.cookie = k + '=' + v + '; domain=.mmendelson.com; path=/; max-age=15552000; SameSite=Lax; Secure'; } catch (e) {}
+    }
+    // mm_consent_v is the banner VERSION the visitor answered. Only '2' — the
+    // banner that names the demographic signals — may grant them, so an older
+    // 'granted' stays analytics-only until the visitor is asked again.
+    try { var mmC = mmConsentGet('mm_consent'), mmV = mmConsentGet('mm_consent_v');
+          if (mmC === 'granted') { var mmU = { analytics_storage:'granted' };
+            if (mmV === '2') { mmU.ad_storage='granted'; mmU.ad_user_data='granted'; mmU.ad_personalization='granted'; }
+            gtag('consent','update', mmU); } } catch(e){}
+    // The three things GA4 does not collect by itself: the language actually
+    // RENDERED (it only sees the browser's), the colour scheme, and whether this
+    // is an installed PWA rather than a tab.
+    gtag('set', { ui_lang: document.documentElement.lang || '', ui_theme: (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light', display_mode: (window.matchMedia && matchMedia('(display-mode: standalone)').matches) ? 'standalone' : 'browser' });
+    gtag('config', 'G-0MHS4QK452');
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-C9QHPB8WZR"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0MHS4QK452"></script>
   <meta name="theme-color" content="#3b82f6" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />

@@ -1,6 +1,32 @@
-# CLAUDE.md
+<!-- ai-instructions:reference — rule 19. Do not replace with copied rules. -->
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+## Authoritative instructions — read them, they are NOT here
+
+The account-wide rules live in **[`mendelson/AI-Instructions`](https://github.com/mendelson/AI-Instructions)**
+and that repo is the single source of truth. **Read its `README.md` at the start
+of every session**, before planning work in this repo. If the session does not
+have it attached, attach it first (`add_repo` → `mendelson/AI-Instructions`);
+the rules are not optional context.
+
+Start with `README.md` (the rules themselves), then the `docs/` page for
+whatever you are touching — build, tests, localization, warnings, tiering,
+Apps Script, verification method.
+
+**This file does not restate those rules, and must never be edited to.** A copy
+here is correct the day it is written and silently wrong afterwards, because
+nothing keeps it in sync — that is rule 19, and it was written after a repo's
+mirrored copy quietly dropped a rule and ran a whole session without it.
+
+What belongs here instead: **facts about THIS repo** — its layout, its build
+quirks, the findings that cost someone a day, and *how* a rule lands here
+(naming a rule and pointing at the file it applies to is a reference; explaining
+what the rule is, is a copy).
+
+**If this file ever contains restated rules, or is missing this header, fix it
+in the session you notice** — do not file it as future work. Procedure:
+`AI-Instructions/docs/INSTRUCTIONS-SOURCING.md`.
+
+---
 
 ## What this project is
 
@@ -9,6 +35,21 @@ A static-site aggregator for road-running events, served in production at **`htt
 **The site is a worldwide aggregator — not a Brazilian site that happens to list other countries.** All 5 locales (pt/en/es/de/fr) and all supported countries/locations are first-class. Every product decision — UX, SEO, prerendered content, static pages, filters, copy — must serve every supported language and location, never only pt/BR. Do not scope a feature to Brazil by default; if a rollout must be phased, the phasing criterion must be explicit and justified (e.g. volume, cost caps), not an assumption that Brazil is "the" audience.
 
 **Visual identity standardization in progress (cross-repo).** This site is one of three siblings (mmendelson.com hub, apps.mmendelson.com, run.mmendelson.com) getting shared fonts/tokens/brand-bar treatment while keeping its own distinct accent color (built around the shoe mascot in `web/gallery/shoe-wear.js`) and all of its existing filters/menus. The plan, decisions, and resumable phase checklist live in [`website/BRAND_STANDARDIZATION.md`](https://github.com/mendelson/website/blob/main/BRAND_STANDARDIZATION.md) (the hub repo) — see Phase 3 for this repo's scope. The five-shell-per-language architecture described above is explicitly **out of scope** for that initiative — it is not being changed.
+
+**Analytics is family-wide, and the wiring is not local to this repo.** All five
+shells and `web/gallery/index.html` carry the same GA4 head block as the other
+two sites and send to the **same measurement id** — that is what makes a visit
+that crosses run/apps/hub one session rather than three. Consent is a cookie on
+`.mmendelson.com` (`mmConsentGet`/`mmConsentSet`, defined in that head block and
+used by `web/analytics.js`), never `localStorage`, which is per-origin and so
+made each site ask again. Two consequences for this repo specifically: the head
+block is duplicated in six files, so change it in all six (they are byte
+identical — diff them if unsure); and **bump `CACHE_NAME` in
+`web/service-worker.js`** when it changes, or installed PWA users keep the old
+one. The plan, the event taxonomy and the account-side steps live in
+[`website/ANALYTICS_TRACKING.md`](https://github.com/mendelson/website/blob/main/ANALYTICS_TRACKING.md);
+the browser check that covers all three sites is `tools/analytics-family-check/`
+in that same repo.
 
 ## Common commands
 

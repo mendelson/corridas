@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE_NAME = 'corridas-shell-v21';
+const CACHE_NAME = 'corridas-shell-v22';
 const SHELL_ASSETS = [
   './',
   './index.html',

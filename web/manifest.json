@@ -10,10 +10,22 @@
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "logomendi-favicon.png",
-      "sizes": "any",
+      "src": "favicon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "logomendi-favicon.png",
+      "sizes": "1180x1180",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

@@ -10,6 +10,21 @@ A static-site aggregator for road-running events, served in production at **`htt
 
 **Visual identity standardization in progress (cross-repo).** This site is one of three siblings (mmendelson.com hub, apps.mmendelson.com, run.mmendelson.com) getting shared fonts/tokens/brand-bar treatment while keeping its own distinct accent color (built around the shoe mascot in `web/gallery/shoe-wear.js`) and all of its existing filters/menus. The plan, decisions, and resumable phase checklist live in [`website/BRAND_STANDARDIZATION.md`](https://github.com/mendelson/website/blob/main/BRAND_STANDARDIZATION.md) (the hub repo) — see Phase 3 for this repo's scope. The five-shell-per-language architecture described above is explicitly **out of scope** for that initiative — it is not being changed.
 
+**Analytics is family-wide, and the wiring is not local to this repo.** All five
+shells and `web/gallery/index.html` carry the same GA4 head block as the other
+two sites and send to the **same measurement id** — that is what makes a visit
+that crosses run/apps/hub one session rather than three. Consent is a cookie on
+`.mmendelson.com` (`mmConsentGet`/`mmConsentSet`, defined in that head block and
+used by `web/analytics.js`), never `localStorage`, which is per-origin and so
+made each site ask again. Two consequences for this repo specifically: the head
+block is duplicated in six files, so change it in all six (they are byte
+identical — diff them if unsure); and **bump `CACHE_NAME` in
+`web/service-worker.js`** when it changes, or installed PWA users keep the old
+one. The plan, the event taxonomy and the account-side steps live in
+[`website/ANALYTICS_TRACKING.md`](https://github.com/mendelson/website/blob/main/ANALYTICS_TRACKING.md);
+the browser check that covers all three sites is `tools/analytics-family-check/`
+in that same repo.
+
 ## Common commands
 
 ```bash

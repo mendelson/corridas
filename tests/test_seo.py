@@ -377,12 +377,13 @@ def test_og_tags_consistent_with_head():
 # deployment noindex
 # ---------------------------------------------------------------------------
 
+# The site has no wordmark: its name is its localized descriptive name.
 _SITE_NAMES = {
-    "pt": "Próxima Corrida",
-    "en": "Next Race",
-    "es": "Próxima Carrera",
-    "de": "Nächstes Rennen",
-    "fr": "Prochaine Course",
+    "pt": "Calendário de Corridas de Rua",
+    "en": "Road Running Race Calendar",
+    "es": "Calendario de Carreras de Calle",
+    "de": "Laufkalender Straßenläufe",
+    "fr": "Calendrier des Courses sur Route",
 }
 
 

@@ -35,9 +35,11 @@
             gtag('consent','update', mmU); } } catch(e){}
     // The three things GA4 does not collect by itself: the language actually
     // RENDERED (it only sees the browser's), the colour scheme, and whether this
-    // is an installed PWA rather than a tab.
-    gtag('set', { ui_lang: document.documentElement.lang || '', ui_theme: (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light', display_mode: (window.matchMedia && matchMedia('(display-mode: standalone)').matches) ? 'standalone' : 'browser' });
-    gtag('config', 'G-0MHS4QK452');
+    // is an installed PWA rather than a tab. They go in the CONFIG call, not
+    // gtag('set', …) — measured against the real collect payload, custom keys
+    // passed to set() never leave the page, while config params ride along on
+    // every event to this destination.
+    gtag('config', 'G-0MHS4QK452', { ui_lang: document.documentElement.lang || '', ui_theme: (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light', display_mode: (window.matchMedia && matchMedia('(display-mode: standalone)').matches) ? 'standalone' : 'browser' });
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0MHS4QK452"></script>
   <link rel="canonical" href="https://run.mmendelson.com/gallery/">

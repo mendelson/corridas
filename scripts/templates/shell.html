@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html {{HTML_ATTRS}}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google Analytics (GA4), Consent Mode v2. ONE measurement ID for the whole
+       mmendelson.com family, so a hub -> apps -> run journey is one session:
+       the _ga cookies land on .mmendelson.com and every site reads the same
+       ones. Which site a hit came from is the built-in Hostname dimension, not
+       a parameter. Denied by default -> cookieless pings until the visitor
+       accepts. See website/ANALYTICS_TRACKING.md. -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('consent', 'default', { ad_storage:'denied', ad_user_data:'denied', ad_personalization:'denied', analytics_storage:'denied', wait_for_update:500 });
+    // Consent is shared across the family, so it cannot live in localStorage
+    // alone: that is per ORIGIN, and the hub, apps and run are three origins.
+    // The record is a cookie on .mmendelson.com; localStorage stays as the
+    // fallback for hosts where that domain cannot be set (a local preview, the
+    // github.io project URL) and for visitors who answered before this change.
+    function mmConsentGet(k){ var m = document.cookie.match('(^|; )' + k + '=([^;]*)');
+      if (m) return decodeURIComponent(m[2]);
+      try { return localStorage.getItem(k); } catch (e) { return null; } }
+    function mmConsentSet(k, v){
+      try { localStorage.setItem(k, v); } catch (e) {}
+      try { document.cookie = k + '=' + v + '; domain=.mmendelson.com; path=/; max-age=15552000; SameSite=Lax; Secure'; } catch (e) {}
+    }
+    // mm_consent_v is the banner VERSION the visitor answered. Only '2' — the
+    // banner that names the demographic signals — may grant them, so an older
+    // 'granted' stays analytics-only until the visitor is asked again.
+    try { var mmC = mmConsentGet('mm_consent'), mmV = mmConsentGet('mm_consent_v');
+          if (mmC === 'granted') { var mmU = { analytics_storage:'granted' };
+            if (mmV === '2') { mmU.ad_storage='granted'; mmU.ad_user_data='granted'; mmU.ad_personalization='granted'; }
+            gtag('consent','update', mmU); } } catch(e){}
+    // The three things GA4 does not collect by itself: the language actually
+    // RENDERED (it only sees the browser's), the colour scheme, and whether this
+    // is an installed PWA rather than a tab. They go in the CONFIG call, not
+    // gtag('set', …) — measured against the real collect payload, custom keys
+    // passed to set() never leave the page, while config params ride along on
+    // every event to this destination.
+    gtag('config', 'G-0MHS4QK452', { ui_lang: document.documentElement.lang || '', ui_theme: (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light', display_mode: (window.matchMedia && matchMedia('(display-mode: standalone)').matches) ? 'standalone' : 'browser' });
+  </script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0MHS4QK452"></script>
+  <meta name="theme-color" content="#3b82f6" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="{{APPLE_TITLE}}" />
+  <meta name="description" content="{{DESC}}" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+  <link rel="apple-touch-icon" href="/favicon-180.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <title>{{TITLE}}</title>
+  <link rel="canonical" href="{{CANONICAL}}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="{{SITE_NAME}}" />
+  <meta property="og:title" content="{{TITLE}}" />
+  <meta property="og:description" content="{{DESC}}" />
+  <meta property="og:url" content="{{CANONICAL}}" />
+  <meta property="og:image" content="{{OG_IMAGE}}" />
+  <meta property="og:locale" content="{{OG_LOCALE}}" />
+{{OG_ALTERNATES}}  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{TITLE}}" />
+  <meta name="twitter:description" content="{{DESC}}" />
+  <meta name="twitter:image" content="{{OG_IMAGE}}" />
+{{HREFLANG}}  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div id="loadingScreen" aria-hidden="true">
+    <div class="load-scene">
+      <span class="load-terrain"></span>
+      <div class="load-prints"></div>
+      <div class="load-shoe-stage"></div>
+    </div>
+  </div>
+  <header class="app-header">
+    <div class="header-brand">
+      <h1 class="app-title"><span class="visually-hidden">{{SITE_NAME}}</span></h1>
+      <div class="site-switch" role="navigation" aria-label="Sites">
+        <a href="https://mmendelson.com">Home</a>
+        <a href="https://apps.mmendelson.com">Apps</a>
+        <a href="/{{PREFIX}}/" class="active" aria-current="page">Run</a>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-home" id="btnHome">📍</button>
+      <button class="btn-lang" id="btnLang">🌐</button>
+    </div>
+  </header>
+
+  <div class="filters-bar" id="filtersBar">
+    <!-- Text search -->
+    <div class="filter-row filter-row-search">
+      <input type="search" id="searchInput" class="search-input"
+             placeholder="{{searchPlaceholder}}" aria-label="{{searchAriaLabel}}" autocomplete="off" />
+    </div>
+
+    <!-- Distance filter -->
+    <div class="filter-row" id="distanceFilter">
+      <div class="filter-mode-toggle">
+        <button class="mode-btn active" id="modeSelect" aria-pressed="true">{{modeSelect}}</button>
+        <button class="mode-btn" id="modeInterval" aria-pressed="false">{{modeInterval}}</button>
+      </div>
+      <div id="pillsContainer" class="pills-container">
+        <button class="pill" data-km="5" aria-pressed="false">5K</button>
+        <button class="pill" data-km="10" aria-pressed="false">10K</button>
+        <button class="pill" data-km="15" aria-pressed="false">15K</button>
+        <button class="pill" data-km="21" aria-pressed="false">21K</button>
+        <button class="pill" data-km="42" aria-pressed="false">42K</button>
+        <button class="pill" data-km="outros" aria-pressed="false">{{pillOther}}</button>
+      </div>
+      <div id="intervalContainer" class="interval-container hidden">
+        <label class="range-label">
+          <span id="labelDistFrom">{{labelDistFrom}}</span>
+          <input type="number" id="distMin" min="1" max="200" placeholder="km" aria-label="{{distMinAriaLabel}}" />
+        </label>
+        <label class="range-label">
+          <span id="labelDistTo">{{labelDistTo}}</span>
+          <input type="number" id="distMax" min="1" max="200" placeholder="km" aria-label="{{distMaxAriaLabel}}" />
+        </label>
+      </div>
+    </div>
+
+    <!-- Period + State + Source -->
+    <div class="filter-row filter-row-selects">
+      <div class="select-wrapper">
+        <select id="periodoSelect" aria-label="{{periodoAriaLabel}}">
+          <option value="past15">{{past15}}</option>
+          <option value="today">{{today}}</option>
+          <option value="30">{{next30}}</option>
+          <option value="90">{{next90}}</option>
+          <option value="180">{{next180}}</option>
+          <option value="all">{{allTime}}</option>
+          <option value="custom">{{custom}}</option>
+        </select>
+      </div>
+      <div class="estado-filter-wrapper" id="estadoFilterWrapper">
+        <button class="estado-filter-btn" id="estadoFilterBtn"
+                aria-haspopup="listbox" aria-expanded="false" aria-label="{{estadoAriaLabel}}">
+          <span id="estadoFilterLabel">{{allLocations}}</span>
+          <span class="estado-filter-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="estado-filter-dropdown hidden" id="estadoFilterDropdown" role="listbox">
+          <!-- populated dynamically -->
+        </div>
+      </div>
+      <div class="fonte-filter-wrapper" id="fonteFilterWrapper">
+        <button class="fonte-filter-btn" id="fonteFilterBtn"
+                aria-haspopup="listbox" aria-expanded="false" aria-label="{{fonteFilterAriaLabel}}">
+          <span id="fonteFilterLabel">{{allSources}}</span>
+          <span class="fonte-filter-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="fonte-filter-dropdown hidden" id="fonteFilterDropdown" role="listbox" aria-multiselectable="true">
+          <!-- populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom date range (hidden by default) -->
+    <div id="customDateRow" class="filter-row custom-date-row hidden">
+      <label class="range-label">
+        <span id="labelDateFrom">{{labelDateFrom}}</span>
+        <input type="date" id="dateFrom" aria-label="{{dateFromAriaLabel}}" />
+      </label>
+      <label class="range-label">
+        <span id="labelDateTo">{{labelDateTo}}</span>
+        <input type="date" id="dateTo" aria-label="{{dateToAriaLabel}}" />
+      </label>
+    </div>
+
+    <!-- Results count + clear -->
+    <div class="filter-row filter-meta">
+      <span id="resultCount" class="result-count">{{loading}}</span>
+      <button class="btn-clear hidden" id="btnClear" aria-label="{{clearFiltersAriaLabel}}">{{clearFilters}}</button>
+    </div>
+  </div>
+
+  <main id="cardsList" class="cards-list" role="list" aria-label="{{LIST_ARIA}}">
+    <!-- prerender:events:start -->
+{{PRERENDER_EVENTS}}
+<!-- prerender:events:end -->
+  </main>
+  <footer class="site-footer">
+    <p class="site-about">{{SITE_ABOUT}}</p>
+    <nav class="footer-langs" aria-label="{{LANGS_ARIA}}">{{FOOTER_LANGS}}</nav>
+    <div class="footer-family">
+      <nav class="foot-social" aria-label="Social">
+        <a href="https://www.linkedin.com/in/mateusmendelson/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/mendelson" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.youtube.com/mateusmendelson" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://www.strava.com/athletes/9485255" target="_blank" rel="noopener">Strava</a>
+        <a href="https://instagram.com/byte.papo" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://open.spotify.com/show/1zGax7Ftyup8WKN7BQGJ1g" target="_blank" rel="noopener">Spotify</a>
+        <a href="https://t.me/mmendelson" target="_blank" rel="noopener">Telegram</a>
+      </nav>
+      <div class="foot-switch" role="navigation" aria-label="Sites">
+        <a href="https://mmendelson.com">Home</a>
+        <a href="https://apps.mmendelson.com">Apps</a>
+        <a href="/{{PREFIX}}/" class="active">Run</a>
+      </div>
+    </div>
+    <p class="foot-copy">© 2026 M. Mendelson · <a href="#" class="foot-cookies" data-consent="reset">Cookies</a></p>
+  </footer>
+  <!-- prerender:jsonld:start -->
+{{PRERENDER_JSONLD}}
+<!-- prerender:jsonld:end -->
+
+  <div id="emptyState" class="empty-state hidden">
+    <p>{{noResults}}</p>
+    <button class="btn-clear" id="btnClearEmpty">{{clearFilters}}</button>
+  </div>
+
+  <template id="cardTemplate">
+    <article class="card" role="listitem">
+      <div class="card-collapsed" role="button" tabindex="0" aria-expanded="false">
+        <div class="card-body">
+          <div class="card-top">
+            <h2 class="card-title"></h2>
+          </div>
+          <div class="card-meta">
+            <span class="card-date"></span>
+            <span class="card-location"></span>
+          </div>
+          <div class="card-footer">
+            <div class="card-distances"></div>
+            <span class="badge-novo hidden"></span>
+            <span class="badge-fontes hidden"></span>
+          </div>
+        </div>
+      </div>
+      <div class="card-expanded hidden" aria-hidden="true">
+        <div class="expanded-title hidden"></div>
+        <div class="expanded-distances"></div>
+        <div class="expanded-fontes"></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="../gallery/shoe-wear.js"></script>
+  <script src="../loading.js"></script>
+  <div id="consent-bar" class="consent-bar" role="dialog" aria-live="polite" aria-label="Cookies" hidden>
+    <p class="consent-text"></p>
+    <div class="consent-actions">
+      <button type="button" class="consent-btn consent-btn--ghost" data-consent="decline"></button>
+      <button type="button" class="consent-btn" data-consent="accept"></button>
+    </div>
+  </div>
+  <script src="../app.js"></script>
+  <script src="../analytics.js"></script>
+</body>
+</html>

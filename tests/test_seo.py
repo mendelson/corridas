@@ -32,7 +32,7 @@ def _load_generator():
 
 GEN = _load_generator()
 BASE = GEN.BASE
-# The five localized homes plus the gallery (a single-URL page, listed but
+# The 28 localized homes plus the gallery (a single-URL page, listed but
 # not linked from the app — reached directly).
 GALLERY_LOC = f"{BASE}/gallery/"
 EXPECTED_LOCS = {f"{BASE}/{prefix}/" for prefix, _ in GEN.LANGS} | {GALLERY_LOC}
@@ -342,7 +342,14 @@ def test_jsonld_itemlist_valid_and_consistent():
 
 _OG_RE = _re.compile(r'<meta property="og:([a-z_:]+)" content="([^"]*)"')
 _TW_RE = _re.compile(r'<meta name="twitter:([a-z]+)" content="([^"]*)"')
-_OG_LOCALES = {"pt": "pt_BR", "en": "en_US", "es": "es_ES", "de": "de_DE", "fr": "fr_FR"}
+_OG_LOCALES = {
+    "pt": "pt_BR", "en": "en_US", "es": "es_ES", "de": "de_DE", "fr": "fr_FR",
+    "it": "it_IT", "nl": "nl_NL", "pt-pt": "pt_PT", "ru": "ru_RU", "pl": "pl_PL",
+    "cs": "cs_CZ", "sk": "sk_SK", "sl": "sl_SI", "hr": "hr_HR", "hu": "hu_HU",
+    "el": "el_GR", "da": "da_DK", "nb": "nb_NO", "sv": "sv_SE", "fi": "fi_FI",
+    "ja": "ja_JP", "ko": "ko_KR", "zh-cn": "zh_CN", "zh-tw": "zh_TW",
+    "th": "th_TH", "he": "he_IL", "id": "id_ID", "ms": "ms_MY",
+}
 
 
 def test_og_tags_consistent_with_head():
@@ -384,7 +391,35 @@ _SITE_NAMES = {
     "es": "Calendario de Carreras de Calle",
     "de": "Laufkalender Straßenläufe",
     "fr": "Calendrier des Courses sur Route",
+    "it": "Calendario delle corse su strada",
+    "nl": "Hardloopkalender voor wegwedstrijden",
+    "pt-pt": "Calendário de Corridas de Estrada",
+    "ru": "Календарь шоссейных забегов",
+    "pl": "Kalendarz biegów ulicznych",
+    "cs": "Kalendář silničních běhů",
+    "sk": "Kalendár cestných behov",
+    "sl": "Koledar cestnih tekov",
+    "hr": "Kalendar cestovnih utrka",
+    "hu": "Országúti futóversenyek naptára",
+    "el": "Ημερολόγιο αγώνων δρόμου",
+    "da": "Løbskalender for gadeløb",
+    "nb": "Løpskalender for gateløp",
+    "sv": "Loppkalender för gatulopp",
+    "fi": "Maantiejuoksujen kalenteri",
+    "ja": "ロードレースカレンダー",
+    "ko": "로드 레이스 캘린더",
+    "zh-cn": "路跑赛事日历",
+    "zh-tw": "路跑賽事行事曆",
+    "th": "ปฏิทินงานวิ่งถนน",
+    "he": "לוח מרוצי כביש",
+    "id": "Kalender Lomba Lari Jalan Raya",
+    "ms": "Kalendar Larian Jalan Raya",
 }
+
+
+def test_site_names_cover_every_language():
+    assert set(_SITE_NAMES) == {p for p, _ in GEN.LANGS}
+    assert set(_OG_LOCALES) == {p for p, _ in GEN.LANGS}
 
 
 def test_every_home_has_exactly_one_h1_with_site_name():
@@ -424,3 +459,53 @@ def test_pages_dev_mirrors_are_noindexed():
         line for line in headers.splitlines()
         if "X-Robots-Tag" in line or line.startswith("https://")
     ).replace("# ", ""), "_headers must not noindex the custom domain"
+
+
+# ---------------------------------------------------------------------------
+# Generated shells: one template, 28 languages
+# ---------------------------------------------------------------------------
+
+def _load_shells_generator():
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "scripts"))
+    try:
+        path = ROOT / "scripts" / "generate_shells.py"
+        spec = importlib.util.spec_from_file_location("generate_shells", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod
+    finally:
+        _sys.path.pop(0)
+
+
+def test_shells_match_their_generator():
+    """Every web/{lang}/index.html (and the root page) is what
+    scripts/generate_shells.py renders from the template + app.js STRINGS.
+    A hand edit to one shell — or a STRINGS change nobody propagated — fails
+    here instead of leaving 27 languages out of step."""
+    gen = _load_shells_generator()
+    assert gen.main(["--check"]) == 0, "run: python scripts/generate_shells.py"
+
+
+def test_shell_html_lang_and_direction():
+    """<html lang> is the hreflang tag (pt-BR, pt-PT, zh-TW …); only the
+    right-to-left language sets dir="rtl"."""
+    for prefix, code in GEN.LANGS:
+        html = (WEB / prefix / "index.html").read_text(encoding="utf-8")
+        m = _re.search(r"<html ([^>]*)>", html)
+        assert m, f"{prefix}: no <html> tag"
+        attrs = m.group(1)
+        assert f'lang="{code}"' in attrs, f"{prefix}: <html {attrs}>"
+        assert ('dir="rtl"' in attrs) == (prefix == "he"), f"{prefix}: <html {attrs}>"
+
+
+def test_shell_ui_text_is_localized():
+    """No shell except English carries the English filter labels — a sign the
+    template placeholders fell back to the wrong language."""
+    english = ("Search race...", "Clear filters", "No races found with current filters.")
+    for prefix, _ in GEN.LANGS:
+        if prefix == "en":
+            continue
+        html = (WEB / prefix / "index.html").read_text(encoding="utf-8")
+        leaked = [t for t in english if t in html]
+        assert not leaked, f"{prefix}: English UI text in shell: {leaked}"

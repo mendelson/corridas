@@ -1,6 +1,6 @@
 """Generate web/sitemap.xml for the multilingual static site.
 
-The site ships five language shells (web/{lang}/index.html) that are
+The site ships 28 language shells (web/{lang}/index.html) that are
 equivalent translations of the same calendar. Search engines need a sitemap
 that (a) lists every localized home and (b) declares the reciprocal hreflang
 alternates so the right language is served per region instead of being treated
@@ -21,14 +21,40 @@ from xml.sax.saxutils import escape
 BASE = "https://run.mmendelson.com"
 
 # UI language path prefix -> hreflang code. The path prefix is what appears in
-# the URL (/pt/, /en/ …); the hreflang code is the BCP-47 tag search engines
-# match against. pt is region-qualified (pt-BR) because the audience is Brazil.
+# the URL (/pt/, /pt-pt/, /zh-cn/ …); the hreflang code is the BCP-47 tag
+# search engines match against. The set is the 28 locales of the Connect IQ
+# Store listings (shared with apps.mmendelson.com). Portuguese and Chinese are
+# region-qualified because each ships two distinct variants; the Store's Java
+# codes iw/in are served as he/id.
 LANGS: list[tuple[str, str]] = [
     ("pt", "pt-BR"),
     ("en", "en"),
     ("es", "es"),
     ("de", "de"),
     ("fr", "fr"),
+    ("it", "it"),
+    ("nl", "nl"),
+    ("pt-pt", "pt-PT"),
+    ("ru", "ru"),
+    ("pl", "pl"),
+    ("cs", "cs"),
+    ("sk", "sk"),
+    ("sl", "sl"),
+    ("hr", "hr"),
+    ("hu", "hu"),
+    ("el", "el"),
+    ("da", "da"),
+    ("nb", "nb"),
+    ("sv", "sv"),
+    ("fi", "fi"),
+    ("ja", "ja"),
+    ("ko", "ko"),
+    ("zh-cn", "zh-CN"),
+    ("zh-tw", "zh-TW"),
+    ("th", "th"),
+    ("he", "he"),
+    ("id", "id"),
+    ("ms", "ms"),
 ]
 
 ROOT = Path(__file__).resolve().parent.parent

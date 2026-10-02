@@ -1369,7 +1369,7 @@ const STRINGS = {
     periodoSelect: 'Suodata ajanjakson mukaan',
   },
   ja: {
-    siteTitle: 'ロードレースカレンダー — ブラジルと世界',
+    siteTitle: 'ロードレースカレンダー — ブラジルと世界のマラソン・ランニング大会',
     headerTitle: 'ロードレースカレンダー',
     searchPlaceholder: 'レースを検索...',
     searchAriaLabel: 'レースを検索',
@@ -1433,7 +1433,7 @@ const STRINGS = {
     periodoSelect: '期間で絞り込む',
   },
   ko: {
-    siteTitle: '로드 레이스 캘린더 — 브라질과 전 세계',
+    siteTitle: '로드 레이스 캘린더 — 브라질과 전 세계 마라톤·러닝 대회',
     headerTitle: '로드 레이스 캘린더',
     searchPlaceholder: '대회 검색...',
     searchAriaLabel: '대회 검색',
@@ -1497,7 +1497,7 @@ const STRINGS = {
     periodoSelect: '기간별 필터',
   },
   'zh-cn': {
-    siteTitle: '路跑赛事日历 — 巴西与全球',
+    siteTitle: '路跑赛事日历 — 巴西与全球马拉松、半程马拉松及路跑比赛',
     headerTitle: '路跑赛事日历',
     searchPlaceholder: '搜索赛事...',
     searchAriaLabel: '搜索赛事',
@@ -1561,7 +1561,7 @@ const STRINGS = {
     periodoSelect: '按时间段筛选',
   },
   'zh-tw': {
-    siteTitle: '路跑賽事行事曆 — 巴西與全球',
+    siteTitle: '路跑賽事行事曆 — 巴西與全球馬拉松、半程馬拉松及路跑比賽',
     headerTitle: '路跑賽事行事曆',
     searchPlaceholder: '搜尋賽事...',
     searchAriaLabel: '搜尋賽事',
@@ -3734,7 +3734,11 @@ function formatMonth(yearMonth) {
   const [year, month] = yearMonth.split('-').map(Number);
   if (!_IS_LEGACY_LANG) {
     try {
-      const s = new Date(year, month - 1, 15).toLocaleDateString(LOCALE_TAG, { month: 'long', year: 'numeric' });
+      // Russian appends the year abbreviation ("октябрь 2026 г."), which the
+      // upper-cased month header turns into a stray "Г." — drop it.
+      const s = new Date(year, month - 1, 15)
+        .toLocaleDateString(LOCALE_TAG, { month: 'long', year: 'numeric' })
+        .replace(/\s*г\.$/, '');
       return s.charAt(0).toLocaleUpperCase(LOCALE_TAG) + s.slice(1);
     } catch (e) { /* fall through to the static table */ }
   }

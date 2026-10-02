@@ -107,8 +107,15 @@ def page_en(browser, live_server):
 
 @pytest.fixture
 def page_factory(browser, live_server):
-    """Factory yielding a page for the requested UI language ('pt', 'en', 'es', 'de', 'fr')."""
-    _locales = {"pt": "pt-BR", "en": "en-US", "es": "es-ES", "de": "de-DE", "fr": "fr-FR"}
+    """Factory yielding a page for the requested UI language (any of the 28 URL prefixes)."""
+    _locales = {
+        "pt": "pt-BR", "en": "en-US", "es": "es-ES", "de": "de-DE", "fr": "fr-FR",
+        "it": "it-IT", "nl": "nl-NL", "pt-pt": "pt-PT", "ru": "ru-RU", "pl": "pl-PL",
+        "cs": "cs-CZ", "sk": "sk-SK", "sl": "sl-SI", "hr": "hr-HR", "hu": "hu-HU",
+        "el": "el-GR", "da": "da-DK", "nb": "nb-NO", "sv": "sv-SE", "fi": "fi-FI",
+        "ja": "ja-JP", "ko": "ko-KR", "zh-cn": "zh-CN", "zh-tw": "zh-TW",
+        "th": "th-TH", "he": "he-IL", "id": "id-ID", "ms": "ms-MY",
+    }
     contexts = []
 
     def make(lang: str):

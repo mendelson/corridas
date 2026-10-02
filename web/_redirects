@@ -4,11 +4,25 @@
 /highlights /gallery 301
 /highlights/* /gallery/:splat 301
 
-# "Gallery" in each UI language → the single /gallery.
-#   pt: galeria · en: gallery (the path itself) · es: galería · de/fr: galerie
+# "Gallery" in each Latin-script UI language → the single /gallery.
+#   pt/pt-pt/pl: galeria · en: gallery (the path itself) · es: galería
+#   de/fr/cs: galerie · it/fi: galleria · nl: galerij · da/nb/sv: galleri
+#   sk/hu: galéria · sl/hr: galerija · id/ms: galeri
 /galeria /gallery 301
 /galeria/* /gallery/:splat 301
 /galería /gallery 301
 /galería/* /gallery/:splat 301
 /galerie /gallery 301
 /galerie/* /gallery/:splat 301
+/galleria /gallery 301
+/galleria/* /gallery/:splat 301
+/galerij /gallery 301
+/galerij/* /gallery/:splat 301
+/galleri /gallery 301
+/galleri/* /gallery/:splat 301
+/galéria /gallery 301
+/galéria/* /gallery/:splat 301
+/galerija /gallery 301
+/galerija/* /gallery/:splat 301
+/galeri /gallery 301
+/galeri/* /gallery/:splat 301

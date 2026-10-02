@@ -89,23 +89,34 @@ def _open_fonte_dropdown(page):
 # ---------------------------------------------------------------------------
 
 def test_language_menu_current_first_then_alphabetical(page_pt, live_server):
-    """In pt locale the lang dropdown must start with Português; rest alphabetical."""
+    """In pt locale the lang dropdown must start with Português (Brasil); the
+    rest follow in the browser's collation order (the same localeCompare the
+    menu sorts with — a code-point sort would put "Čeština" after "Svenska")."""
     _open_lang_dropdown(page_pt)
     buttons = page_pt.query_selector_all(".lang-dropdown button.lang-option")
     labels = [b.text_content().strip() for b in buttons]
     assert len(labels) >= 2, "Expected at least 2 language options"
-    assert labels[0] == "Português", f"First item should be Português, got: {labels[0]}"
+    assert labels[0] == "Português (Brasil)", f"First item should be Português (Brasil), got: {labels[0]}"
     rest = labels[1:]
-    assert rest == sorted(rest), f"Remaining labels not sorted: {rest}"
+    expected = page_pt.evaluate("labels => labels.slice().sort((a, b) => a.localeCompare(b))", rest)
+    assert rest == expected, f"Remaining labels not sorted: {rest}"
 
 
 def test_language_menu_all_locales_present(page_pt, live_server):
-    """All 5 language labels must appear in the dropdown."""
+    """All 28 language labels must appear in the dropdown, each in its own language."""
     _open_lang_dropdown(page_pt)
     buttons = page_pt.query_selector_all(".lang-dropdown button.lang-option")
     labels = {b.text_content().strip() for b in buttons}
-    expected = {"Português", "English", "Español", "Deutsch", "Français"}
-    assert expected == labels, f"Missing languages: {expected - labels}"
+    expected = {
+        "Português (Brasil)", "English", "Español", "Deutsch", "Français",
+        "Italiano", "Nederlands", "Português (Portugal)", "Русский", "Polski",
+        "Čeština", "Slovenčina", "Slovenščina", "Hrvatski", "Magyar", "Ελληνικά",
+        "Dansk", "Norsk bokmål", "Svenska", "Suomi", "日本語", "한국어",
+        "简体中文", "繁體中文", "ไทย", "עברית", "Bahasa Indonesia", "Bahasa Melayu",
+    }
+    assert expected == labels, f"Language menu drift: missing {expected - labels}, extra {labels - expected}"
+    codes = {b.get_attribute("data-lang") for b in buttons}
+    assert codes == set(_UI_LANGS), f"menu codes drift: {codes ^ set(_UI_LANGS)}"
 
 
 # ---------------------------------------------------------------------------
@@ -729,31 +740,40 @@ def test_initial_load_no_session_cache(browser, live_server):
 # STRINGS key alignment test (no browser needed — reads app.js directly)
 # ---------------------------------------------------------------------------
 
-def test_all_strings_keys_aligned_across_locales(live_server):
-    """All 5 locales in STRINGS must define exactly the same set of keys."""
-    app_js = (WEB_DIR / "app.js").read_text(encoding="utf-8")
+_UI_LANGS = [
+    "pt", "en", "es", "de", "fr", "it", "nl", "pt-pt", "ru", "pl", "cs", "sk",
+    "sl", "hr", "hu", "el", "da", "nb", "sv", "fi", "ja", "ko", "zh-cn", "zh-tw",
+    "th", "he", "id", "ms",
+]
 
-    # Find the STRINGS = { ... }; block.
-    # Strategy: locate each locale block by 'pt: {', 'en: {', etc.
-    locales = ["pt", "en", "es", "de", "fr"]
+
+def test_all_strings_keys_aligned_across_locales(live_server):
+    """All 28 locales in STRINGS must define exactly the same set of keys."""
+    app_js = (WEB_DIR / "app.js").read_text(encoding="utf-8")
+    start = app_js.index("const STRINGS = {")
+    strings_block = app_js[start:app_js.index("\n};\n", start)]
+
+    # Locate each locale block by its 2-space-indented head: `pt: {`, or the
+    # quoted form for hyphenated codes (`'pt-pt': {`).
+    locales = _UI_LANGS
     locale_keys = {}
 
     for locale in locales:
         # Find the start of this locale's object
-        pattern = rf'\b{locale}\s*:\s*\{{'
-        m = re.search(pattern, app_js)
+        pattern = rf"^  (?:'{re.escape(locale)}'|{re.escape(locale)}):\s*\{{"
+        m = re.search(pattern, strings_block, re.MULTILINE)
         assert m, f"Could not find locale '{locale}' in STRINGS"
 
         start = m.end()  # position right after the opening brace
         depth = 1
         i = start
-        while i < len(app_js) and depth > 0:
-            if app_js[i] == '{':
+        while i < len(strings_block) and depth > 0:
+            if strings_block[i] == '{':
                 depth += 1
-            elif app_js[i] == '}':
+            elif strings_block[i] == '}':
                 depth -= 1
             i += 1
-        locale_body = app_js[start:i - 1]
+        locale_body = strings_block[start:i - 1]
 
         # Extract top-level keys: lines starting with an identifier followed by ':'
         keys = set()
@@ -775,8 +795,8 @@ def test_all_strings_keys_aligned_across_locales(live_server):
 
 def test_language_fallback_to_english(browser, live_server):
     """A context with an unmapped browser locale loads the English strings."""
-    # 'zh-TW' is not mapped → BROWSER_LANG should fall back to 'en'
-    ctx = browser.new_context(locale="zh-TW")
+    # Swahili is not one of the 28 → BROWSER_LANG should fall back to 'en'
+    ctx = browser.new_context(locale="sw-KE")
     # Geo mocks + abort of all third-party requests so networkidle settles.
     _isolate_context(ctx)
     page = ctx.new_page()
@@ -1091,6 +1111,13 @@ _COUNTRY_EXPECTATIONS = {
     "es": {"BR": "Brasil",   "US": "EE.UU.",      "DE": "Alemania",     "FR": "Francia", "GB": "Reino Unido",            "IT": "Italia",  "JP": "Japón", "MX": "México"},
     "de": {"BR": "Brasilien", "US": "USA",        "DE": "Deutschland",  "FR": "Frankreich", "GB": "Vereinigtes Königreich", "IT": "Italien", "JP": "Japan", "MX": "Mexiko"},
     "fr": {"BR": "Brésil",   "US": "États-Unis",  "DE": "Allemagne",    "FR": "France",  "GB": "Royaume-Uni",            "IT": "Italie",  "JP": "Japon", "MX": "Mexique"},
+    # The languages beyond the first five take country names from CLDR
+    # (Intl.DisplayNames) — a sample across scripts.
+    "ja":    {"BR": "ブラジル", "DE": "ドイツ",   "JP": "日本",    "IT": "イタリア"},
+    "ru":    {"BR": "Бразилия", "DE": "Германия", "JP": "Япония",  "IT": "Италия"},
+    "pt-pt": {"BR": "Brasil",   "DE": "Alemanha", "FR": "França",  "IT": "Itália"},
+    "he":    {"BR": "ברזיל",    "JP": "יפן",      "IT": "איטליה"},
+    "zh-tw": {"BR": "巴西",     "DE": "德國",     "JP": "日本"},
 }
 
 # Subdivisions for which _SUBDIV_LABELS in app.js must define per-language names.
@@ -1100,10 +1127,18 @@ _SUBDIV_EXPECTATIONS = {
     "es": [("BR", "DF", "Brasília"), ("DE", "BY", "Baviera"),  ("GB", "ENG", "Inglaterra"),       ("GB", "SCT", "Escocia"),  ("IT", "VE", "Venecia"), ("MX", "CMX", "Ciudad de México")],
     "de": [("BR", "DF", "Brasília"), ("DE", "BY", "Bayern"),   ("GB", "ENG", "England"),          ("GB", "SCT", "Schottland"), ("IT", "VE", "Venedig"), ("MX", "CMX", "Mexiko-Stadt")],
     "fr": [("BR", "DF", "Brasília"), ("DE", "BY", "Bavière"),  ("GB", "ENG", "Angleterre"),       ("GB", "SCT", "Écosse"),   ("IT", "VE", "Venise"),  ("MX", "CMX", "Mexico")],
+    # From _SUBDIV_LABELS_MORE.
+    "ja":    [("BR", "DF", "ブラジリア"), ("DE", "BY", "バイエルン州"), ("GB", "SCT", "スコットランド"), ("IT", "VE", "ヴェネツィア"), ("MX", "CMX", "メキシコシティ")],
+    "ru":    [("BR", "DF", "Бразилиа"), ("DE", "BY", "Бавария"), ("GB", "ENG", "Англия"), ("IT", "VE", "Венеция")],
+    "pt-pt": [("BR", "DF", "Brasília"), ("DE", "BY", "Baviera"), ("GB", "SCT", "Escócia"), ("IT", "VE", "Veneza")],
+    "he":    [("GB", "ENG", "אנגליה"), ("MX", "CMX", "מקסיקו סיטי")],
+    "zh-tw": [("BR", "DF", "巴西利亞"), ("DE", "BY", "巴伐利亞邦")],
 }
 
+_LOCALIZATION_SAMPLE = ["pt", "en", "es", "de", "fr", "ja", "ru", "pt-pt", "he", "zh-tw"]
 
-@pytest.mark.parametrize("lang", ["pt", "en", "es", "de", "fr"])
+
+@pytest.mark.parametrize("lang", _LOCALIZATION_SAMPLE)
 def test_country_names_translated(page_factory, live_server, lang):
     """_localizeCountryByIso2(iso2) must return the country name in the active language.
 
@@ -1120,7 +1155,7 @@ def test_country_names_translated(page_factory, live_server, lang):
     assert not failures, "\n".join(failures)
 
 
-@pytest.mark.parametrize("lang", ["pt", "en", "es", "de", "fr"])
+@pytest.mark.parametrize("lang", _LOCALIZATION_SAMPLE)
 def test_subdivision_names_translated(page_factory, live_server, lang):
     """_localizeSubdiv(pais, code, fallback) must return the subdivision name in the active language.
 
@@ -1148,6 +1183,8 @@ def test_subdivision_names_translated(page_factory, live_server, lang):
     ("es", "Brazil"),
     ("de", "Brazil"),
     ("fr", "Brazil"),
+    ("ja", "Brazil"),
+    ("he", "Brazil"),
 ])
 def test_no_english_brazil_on_localized_pages(page_factory, live_server, lang, wrong_country):
     """Non-English pages must not show the English country name 'Brazil' in any card location."""
@@ -1275,3 +1312,37 @@ def test_selo_legend_opens(page_pt, live_server):
     # Legend must teach the hierarchy (user doesn't know the ranking).
     for tier in ("Platinum", "Gold", "Elite", "Label", "Major"):
         assert tier in opened["text"], f"legend missing {tier}"
+
+
+# ---------------------------------------------------------------------------
+# Browser-language → UI-language mapping (the 28 store languages)
+# ---------------------------------------------------------------------------
+
+_LANG_FROM_TAG_CASES = {
+    "pt-BR": "pt", "pt": "pt", "pt-PT": "pt-pt", "pt-AO": "pt-pt",
+    "zh-CN": "zh-cn", "zh": "zh-cn", "zh-Hans-HK": "zh-cn", "zh-TW": "zh-tw",
+    "zh-HK": "zh-tw", "zh-Hant": "zh-tw", "nb-NO": "nb", "no": "nb", "nn-NO": "nb",
+    "iw": "he", "he-IL": "he", "in": "id", "id-ID": "id", "ms-MY": "ms",
+    "en-GB": "en", "ja-JP": "ja", "sw-KE": None, "ca-ES": None, "": None,
+}
+
+
+def test_lang_from_tag_maps_regional_variants_and_aliases(page_en):
+    """Regional variants that are separate languages here (pt-PT, zh-TW) are
+    told apart by subtag; the Store's Java codes (iw, in) and the Norwegian
+    umbrella (no, nn) fold into he, id and nb; anything else is unsupported."""
+    actual = page_en.evaluate(
+        "cases => Object.fromEntries(cases.map(t => [t, _langFromTag(t)]))",
+        list(_LANG_FROM_TAG_CASES),
+    )
+    wrong = {t: (actual[t], exp) for t, exp in _LANG_FROM_TAG_CASES.items() if actual[t] != exp}
+    assert not wrong, f"_langFromTag mismatches (got, expected): {wrong}"
+
+
+def test_hebrew_shell_is_right_to_left(page_factory):
+    """The Hebrew shell renders right-to-left, in Hebrew."""
+    page = page_factory("he")
+    assert page.evaluate("getComputedStyle(document.body).direction") == "rtl"
+    assert page.evaluate("document.title") == "לוח מרוצי כביש — ברזיל וכל העולם"
+    count = page.inner_text("#resultCount")
+    assert "מרוצים" in count or "מרוץ" in count, f"result count not in Hebrew: {count!r}"

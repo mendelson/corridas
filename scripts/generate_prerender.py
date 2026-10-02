@@ -44,14 +44,44 @@ JSONLD_START = "<!-- prerender:jsonld:start -->"
 JSONLD_END = "<!-- prerender:jsonld:end -->"
 
 # Countries whose audience primarily searches in each language. "en" is the
-# global fallback: it claims everything not claimed by another locale.
+# global fallback: it claims everything not claimed by the other launch
+# languages (_EN_SKIPS). A country may appear under two languages (Belgium,
+# Switzerland, Portugal …): both shells then lead with its events.
 LANG_COUNTRIES: dict[str, set[str]] = {
     "pt": {"BR", "PT"},
     "es": {"ES", "MX", "AR", "CL", "CO", "PE", "UY", "PY", "BO", "EC", "VE",
            "CR", "PA", "GT", "DO", "SV", "HN", "NI", "CU"},
     "de": {"DE", "AT", "CH"},
     "fr": {"FR", "BE", "LU", "MC"},
+    "it": {"IT", "SM", "VA", "CH"},
+    "nl": {"NL", "BE"},
+    "pt-pt": {"PT", "AO", "MZ", "CV"},
+    "ru": {"RU", "BY", "KZ", "KG"},
+    "pl": {"PL"},
+    "cs": {"CZ"},
+    "sk": {"SK"},
+    "sl": {"SI"},
+    "hr": {"HR", "BA"},
+    "hu": {"HU"},
+    "el": {"GR", "CY"},
+    "da": {"DK"},
+    "nb": {"NO"},
+    "sv": {"SE"},
+    "fi": {"FI"},
+    "ja": {"JP"},
+    "ko": {"KR"},
+    "zh-cn": {"CN", "SG"},
+    "zh-tw": {"TW", "HK", "MO"},
+    "th": {"TH"},
+    "he": {"IL"},
+    "id": {"ID"},
+    "ms": {"MY", "BN"},
 }
+
+# English shares its countries with the newer languages instead of losing them:
+# it skips only the other four languages the site launched with, so /en/ still
+# leads with Japan, Italy, the Netherlands … as /ja/, /it/, /nl/ now do too.
+_EN_SKIPS = ("pt", "es", "de", "fr")
 
 _MONTHS = {
     "pt": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
@@ -64,6 +94,47 @@ _MONTHS = {
            "August", "September", "Oktober", "November", "Dezember"],
     "fr": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet",
            "août", "septembre", "octobre", "novembre", "décembre"],
+    "it": ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio",
+           "agosto", "settembre", "ottobre", "novembre", "dicembre"],
+    "nl": ["januari", "februari", "maart", "april", "mei", "juni", "juli",
+           "augustus", "september", "oktober", "november", "december"],
+    "pt-pt": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
+              "agosto", "setembro", "outubro", "novembro", "dezembro"],
+    # Genitive forms: the month follows the day ("3 октября 2026 г.").
+    "ru": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+           "августа", "сентября", "октября", "ноября", "декабря"],
+    "pl": ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca",
+           "sierpnia", "września", "października", "listopada", "grudnia"],
+    "cs": ["ledna", "února", "března", "dubna", "května", "června", "července",
+           "srpna", "září", "října", "listopadu", "prosince"],
+    "sk": ["januára", "februára", "marca", "apríla", "mája", "júna", "júla",
+           "augusta", "septembra", "októbra", "novembra", "decembra"],
+    "sl": ["januar", "februar", "marec", "april", "maj", "junij", "julij",
+           "avgust", "september", "oktober", "november", "december"],
+    "hr": ["siječnja", "veljače", "ožujka", "travnja", "svibnja", "lipnja", "srpnja",
+           "kolovoza", "rujna", "listopada", "studenoga", "prosinca"],
+    "hu": ["január", "február", "március", "április", "május", "június", "július",
+           "augusztus", "szeptember", "október", "november", "december"],
+    "el": ["Ιανουαρίου", "Φεβρουαρίου", "Μαρτίου", "Απριλίου", "Μαΐου", "Ιουνίου",
+           "Ιουλίου", "Αυγούστου", "Σεπτεμβρίου", "Οκτωβρίου", "Νοεμβρίου", "Δεκεμβρίου"],
+    "da": ["januar", "februar", "marts", "april", "maj", "juni", "juli",
+           "august", "september", "oktober", "november", "december"],
+    "nb": ["januar", "februar", "mars", "april", "mai", "juni", "juli",
+           "august", "september", "oktober", "november", "desember"],
+    "sv": ["januari", "februari", "mars", "april", "maj", "juni", "juli",
+           "augusti", "september", "oktober", "november", "december"],
+    # Partitive: "3. lokakuuta 2026".
+    "fi": ["tammikuuta", "helmikuuta", "maaliskuuta", "huhtikuuta", "toukokuuta",
+           "kesäkuuta", "heinäkuuta", "elokuuta", "syyskuuta", "lokakuuta",
+           "marraskuuta", "joulukuuta"],
+    "th": ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+           "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"],
+    "he": ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי",
+           "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"],
+    "id": ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli",
+           "Agustus", "September", "Oktober", "November", "Desember"],
+    "ms": ["Januari", "Februari", "Mac", "April", "Mei", "Jun", "Julai",
+           "Ogos", "September", "Oktober", "November", "Disember"],
 }
 
 
@@ -71,17 +142,31 @@ def _fmt_date(iso: str, lang: str) -> str:
     """Human date in the shell's language (mirrors the frontend's long form)."""
     try:
         y, m, d = iso.split("-")
-        month = _MONTHS[lang][int(m) - 1]
-    except (ValueError, IndexError, KeyError):
+        mi, day = int(m), int(d)
+        if not 1 <= mi <= 12:
+            raise ValueError(iso)
+    except (ValueError, AttributeError):
         return iso
-    day = int(d)
+    # Numeric-month languages: no month names to look up.
+    if lang in ("ja", "zh-cn", "zh-tw"):
+        return f"{y}年{mi}月{day}日"
+    if lang == "ko":
+        return f"{y}년 {mi}월 {day}일"
+    month = _MONTHS.get(lang, _MONTHS["en"])[mi - 1]
     if lang == "en":
         return f"{month} {day}, {y}"
-    if lang == "de":
+    if lang in ("de", "da", "nb", "fi", "cs", "sk", "sl", "hr"):
         return f"{day}. {month} {y}"
-    if lang == "fr":
-        return f"{day} {month} {y}"
-    return f"{day} de {month} de {y}"  # pt / es
+    if lang == "hu":
+        return f"{y}. {month} {day}."
+    if lang == "ru":
+        return f"{day} {month} {y} г."
+    if lang == "he":
+        return f"{day} ב{month} {y}"
+    if lang in ("pt", "pt-pt", "es"):
+        return f"{day} de {month} de {y}"
+    # fr, it, nl, pl, el, sv, th, id, ms: day month year
+    return f"{day} {month} {y}"
 
 
 def _fmt_km(km) -> str:
@@ -109,8 +194,8 @@ def select_events(corridas: list[dict], today: str, lang: str) -> list[dict]:
     upcoming.sort(key=lambda c: c.get("data_evento") or "9999")
 
     countries = LANG_COUNTRIES.get(lang)
-    if countries is None:  # "en": everything not claimed by another locale
-        claimed = set().union(*LANG_COUNTRIES.values())
+    if countries is None:  # "en": everything the other launch languages leave
+        claimed = set().union(*(LANG_COUNTRIES[l] for l in _EN_SKIPS))
         targeted = [c for c in upcoming if (c.get("pais") or "") not in claimed]
     else:
         targeted = [c for c in upcoming if (c.get("pais") or "") in countries]

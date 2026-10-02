@@ -251,14 +251,14 @@ def test_prerender_localized_per_language():
     assert len(set(blocks.values())) > 1, (
         "pre-rendered blocks are identical across languages — localization lost"
     )
-    claimed = set().union(*gp.LANG_COUNTRIES.values())
+    claimed = set().union(*(gp.LANG_COUNTRIES[l] for l in gp._EN_SKIPS))
     for prefix, block in blocks.items():
         titles = [_html.unescape(t.strip()) for t in _ARTICLE_TITLE_RE.findall(block)]
         assert titles, f"{prefix}: no titles extracted from pre-render block"
         allowed = gp.LANG_COUNTRIES.get(prefix)
         first = titles[0]
         paises = title_paises.get(first, set())
-        if allowed is None:  # en — global fallback: first event not claimed elsewhere
+        if allowed is None:  # en — global fallback: first event not claimed by pt/es/de/fr
             assert paises - claimed or not paises & claimed, (
                 f"en: first pre-rendered event '{first}' belongs to another locale ({paises})"
             )
@@ -266,6 +266,22 @@ def test_prerender_localized_per_language():
             assert paises & allowed, (
                 f"{prefix}: first pre-rendered event '{first}' not in {sorted(allowed)} ({paises})"
             )
+
+
+def test_prerender_english_keeps_its_worldwide_pool():
+    """The newer languages share their countries with English instead of taking
+    them away: /en/ led with Japan, Italy, the Netherlands … before /ja/, /it/
+    and /nl/ existed, and must keep doing so — only the other launch languages'
+    countries (pt/es/de/fr) are skipped, exactly as before."""
+    events = [
+        {"id": "br", "pais": "BR", "data_evento": "2099-01-01"},
+        {"id": "jp", "pais": "JP", "data_evento": "2099-01-02"},
+        {"id": "it", "pais": "IT", "data_evento": "2099-01-03"},
+    ]
+    en = [c["id"] for c in PRE.select_events(events, "2098-12-31", "en")]
+    assert en[:2] == ["jp", "it"], f"en lost its worldwide countries: {en}"
+    assert PRE.select_events(events, "2098-12-31", "ja")[0]["id"] == "jp"
+    assert set(PRE._EN_SKIPS) == {"pt", "es", "de", "fr"}
 
 
 def test_prerender_titles_exist_in_corridas_json():

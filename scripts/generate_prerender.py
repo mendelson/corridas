@@ -44,9 +44,9 @@ JSONLD_START = "<!-- prerender:jsonld:start -->"
 JSONLD_END = "<!-- prerender:jsonld:end -->"
 
 # Countries whose audience primarily searches in each language. "en" is the
-# global fallback: it claims everything not claimed by another locale. A
-# country may appear under two languages (Belgium, Switzerland, Portugal …):
-# both shells then lead with its events.
+# global fallback: it claims everything not claimed by the other launch
+# languages (_EN_SKIPS). A country may appear under two languages (Belgium,
+# Switzerland, Portugal …): both shells then lead with its events.
 LANG_COUNTRIES: dict[str, set[str]] = {
     "pt": {"BR", "PT"},
     "es": {"ES", "MX", "AR", "CL", "CO", "PE", "UY", "PY", "BO", "EC", "VE",
@@ -77,6 +77,11 @@ LANG_COUNTRIES: dict[str, set[str]] = {
     "id": {"ID"},
     "ms": {"MY", "BN"},
 }
+
+# English shares its countries with the newer languages instead of losing them:
+# it skips only the other four languages the site launched with, so /en/ still
+# leads with Japan, Italy, the Netherlands … as /ja/, /it/, /nl/ now do too.
+_EN_SKIPS = ("pt", "es", "de", "fr")
 
 _MONTHS = {
     "pt": ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
@@ -189,8 +194,8 @@ def select_events(corridas: list[dict], today: str, lang: str) -> list[dict]:
     upcoming.sort(key=lambda c: c.get("data_evento") or "9999")
 
     countries = LANG_COUNTRIES.get(lang)
-    if countries is None:  # "en": everything not claimed by another locale
-        claimed = set().union(*LANG_COUNTRIES.values())
+    if countries is None:  # "en": everything the other launch languages leave
+        claimed = set().union(*(LANG_COUNTRIES[l] for l in _EN_SKIPS))
         targeted = [c for c in upcoming if (c.get("pais") or "") not in claimed]
     else:
         targeted = [c for c in upcoming if (c.get("pais") or "") in countries]

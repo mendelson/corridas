@@ -84,9 +84,9 @@
     .gbtn:hover { color: #f3efe7; border-color: #454c59; background: #1b2027; }
     .gbtn.active { color: #E8C04A; border-color: #4a4426; background: #1b2027; }
     .gbtn-icon { font-size: 14px; line-height: 1; }
-    .lang-dd { position: fixed; z-index: 9999; background: #161a20; border: 1px solid #2a2f38; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.5); display: flex; flex-direction: column; min-width: 152px; overflow: hidden; padding: 4px; animation: ddIn .16s ease-out both; }
+    .lang-dd { position: fixed; z-index: 9999; background: #161a20; border: 1px solid #2a2f38; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.5); display: flex; flex-direction: column; min-width: 152px; max-height: 70vh; overflow-y: auto; overscroll-behavior: contain; padding: 4px; animation: ddIn .16s ease-out both; }
     @keyframes ddIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-    .lang-opt { background: none; border: none; border-radius: 7px; padding: 9px 12px; text-align: left; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 13px; color: #cfd4dd; cursor: pointer; transition: background .12s, color .12s; }
+    .lang-opt { background: none; border: none; border-radius: 7px; padding: 9px 12px; text-align: start; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 13px; color: #cfd4dd; cursor: pointer; transition: background .12s, color .12s; }
     .lang-opt:hover { background: #1f242c; color: #f3efe7; }
     .lang-opt.active { color: #E8C04A; font-weight: 700; }
     .overline { font-size: 10.5px; letter-spacing: .24em; text-transform: uppercase; color: #6a7080; font-weight: 700; }
@@ -289,13 +289,51 @@
       es: { loc:"es",    t:["Carreras que","marcaron el camino"],  today:"HOY", cal:"Calendario", type:{marathon:"Maratón",half:"Media maratón",race:"Carrera",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"1ª media maratón",firstMarathon:"1ª maratón",pb:"Récord personal",firstRunEmilia:"1ª carrera con Emília"}, hl:"Destacados", all:"Todas", cert:"Certificado" },
       de: { loc:"de",    t:["Läufe, die","den Weg prägten"],       today:"HEUTE", cal:"Kalender", type:{marathon:"Marathon",half:"Halbmarathon",race:"Lauf",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Erster Halbmarathon",firstMarathon:"Erster Marathon",pb:"Persönliche Bestzeit",firstRunEmilia:"Erster Lauf mit Emília"}, hl:"Höhepunkte", all:"Alle", cert:"Zertifikat" },
       fr: { loc:"fr",    t:["Des courses qui","ont marqué la route"], today:"AUJOURD'HUI", cal:"Calendrier", type:{marathon:"Marathon",half:"Semi-marathon",race:"Course",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Premier semi-marathon",firstMarathon:"Premier marathon",pb:"Record personnel",firstRunEmilia:"Première course avec Emília"}, hl:"Temps forts", all:"Toutes", cert:"Certificat" },
+      it: { loc:"it",    t:["Gare che","hanno segnato il cammino"], today:"OGGI", cal:"Calendario", type:{marathon:"Maratona",half:"Mezza maratona",race:"Gara",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"Prima mezza maratona",firstMarathon:"Prima maratona",pb:"Record personale",firstRunEmilia:"Prima corsa con Emília"}, hl:"In evidenza", all:"Tutte", cert:"Certificato" },
+      nl: { loc:"nl",    t:["Wedstrijden die","de weg bepaalden"], today:"VANDAAG", cal:"Kalender", type:{marathon:"Marathon",half:"Halve marathon",race:"Wedstrijd",ten:"10K"}, ms:{marathon:"Marathon",firstHalf:"Eerste halve marathon",firstMarathon:"Eerste marathon",pb:"Persoonlijk record",firstRunEmilia:"Eerste loop met Emília"}, hl:"Hoogtepunten", all:"Alle", cert:"Certificaat" },
+      "pt-pt": { loc:"pt-PT", t:["Corridas que","marcaram o caminho"], today:"HOJE", cal:"Calendário", type:{marathon:"Maratona",half:"Meia maratona",race:"Corrida",ten:"10K"}, ms:{marathon:"Maratona",firstHalf:"1.ª meia maratona",firstMarathon:"1.ª maratona",pb:"Recorde pessoal",firstRunEmilia:"1.ª corrida com a Emília"}, hl:"Destaques", all:"Todas", cert:"Certificado" },
+      ru: { loc:"ru",    t:["Забеги, которые","определили путь"], today:"СЕГОДНЯ", cal:"Календарь", type:{marathon:"Марафон",half:"Полумарафон",race:"Забег",ten:"10K"}, ms:{marathon:"Марафон",firstHalf:"Первый полумарафон",firstMarathon:"Первый марафон",pb:"Личный рекорд",firstRunEmilia:"Первый забег с Эмилией"}, hl:"Избранное", all:"Все", cert:"Сертификат" },
+      pl: { loc:"pl",    t:["Biegi, które","wyznaczyły drogę"], today:"DZIŚ", cal:"Kalendarz", type:{marathon:"Maraton",half:"Półmaraton",race:"Bieg",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Pierwszy półmaraton",firstMarathon:"Pierwszy maraton",pb:"Rekord życiowy",firstRunEmilia:"Pierwszy bieg z Emílią"}, hl:"Wyróżnione", all:"Wszystkie", cert:"Certyfikat" },
+      cs: { loc:"cs",    t:["Závody, které","určily cestu"], today:"DNES", cal:"Kalendář", type:{marathon:"Maraton",half:"Půlmaraton",race:"Závod",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"První půlmaraton",firstMarathon:"První maraton",pb:"Osobní rekord",firstRunEmilia:"První běh s Emílií"}, hl:"Výběr", all:"Vše", cert:"Certifikát" },
+      sk: { loc:"sk",    t:["Behy, ktoré","určili cestu"], today:"DNES", cal:"Kalendár", type:{marathon:"Maratón",half:"Polmaratón",race:"Beh",ten:"10K"}, ms:{marathon:"Maratón",firstHalf:"Prvý polmaratón",firstMarathon:"Prvý maratón",pb:"Osobný rekord",firstRunEmilia:"Prvý beh s Emíliou"}, hl:"Výber", all:"Všetko", cert:"Certifikát" },
+      sl: { loc:"sl",    t:["Teki, ki so","zaznamovali pot"], today:"DANES", cal:"Koledar", type:{marathon:"Maraton",half:"Polmaraton",race:"Tek",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Prvi polmaraton",firstMarathon:"Prvi maraton",pb:"Osebni rekord",firstRunEmilia:"Prvi tek z Emílio"}, hl:"Izpostavljeno", all:"Vse", cert:"Potrdilo" },
+      hr: { loc:"hr",    t:["Utrke koje su","obilježile put"], today:"DANAS", cal:"Kalendar", type:{marathon:"Maraton",half:"Polumaraton",race:"Utrka",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Prvi polumaraton",firstMarathon:"Prvi maraton",pb:"Osobni rekord",firstRunEmilia:"Prva utrka s Emílijom"}, hl:"Istaknuto", all:"Sve", cert:"Potvrda" },
+      hu: { loc:"hu",    t:["Versenyek, amelyek","kijelölték az utat"], today:"MA", cal:"Naptár", type:{marathon:"Maraton",half:"Félmaraton",race:"Verseny",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Első félmaraton",firstMarathon:"Első maraton",pb:"Egyéni csúcs",firstRunEmilia:"Első futás Emíliával"}, hl:"Kiemelt", all:"Összes", cert:"Oklevél" },
+      el: { loc:"el",    t:["Αγώνες που","σημάδεψαν τη διαδρομή"], today:"ΣΗΜΕΡΑ", cal:"Ημερολόγιο", type:{marathon:"Μαραθώνιος",half:"Ημιμαραθώνιος",race:"Αγώνας",ten:"10K"}, ms:{marathon:"Μαραθώνιος",firstHalf:"Πρώτος ημιμαραθώνιος",firstMarathon:"Πρώτος μαραθώνιος",pb:"Προσωπικό ρεκόρ",firstRunEmilia:"Πρώτο τρέξιμο με την Emília"}, hl:"Κορυφαίες", all:"Όλες", cert:"Πιστοποιητικό" },
+      da: { loc:"da",    t:["Løb, der","formede rejsen"], today:"I DAG", cal:"Kalender", type:{marathon:"Maraton",half:"Halvmaraton",race:"Løb",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Første halvmaraton",firstMarathon:"Første maraton",pb:"Personlig rekord",firstRunEmilia:"Første løb med Emília"}, hl:"Højdepunkter", all:"Alle", cert:"Diplom" },
+      nb: { loc:"nb",    t:["Løp som","formet reisen"], today:"I DAG", cal:"Kalender", type:{marathon:"Maraton",half:"Halvmaraton",race:"Løp",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Første halvmaraton",firstMarathon:"Første maraton",pb:"Personlig rekord",firstRunEmilia:"Første løp med Emília"}, hl:"Høydepunkter", all:"Alle", cert:"Diplom" },
+      sv: { loc:"sv",    t:["Lopp som","formade resan"], today:"I DAG", cal:"Kalender", type:{marathon:"Maraton",half:"Halvmaraton",race:"Lopp",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Första halvmaraton",firstMarathon:"Första maraton",pb:"Personbästa",firstRunEmilia:"Första loppet med Emília"}, hl:"Höjdpunkter", all:"Alla", cert:"Diplom" },
+      fi: { loc:"fi",    t:["Juoksut, jotka","muovasivat matkaa"], today:"TÄNÄÄN", cal:"Kalenteri", type:{marathon:"Maraton",half:"Puolimaraton",race:"Juoksu",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Ensimmäinen puolimaraton",firstMarathon:"Ensimmäinen maraton",pb:"Ennätys",firstRunEmilia:"Ensimmäinen juoksu Emílian kanssa"}, hl:"Kohokohdat", all:"Kaikki", cert:"Todistus" },
+      ja: { loc:"ja",    t:["道のりを","刻んだレース"], today:"今日", cal:"カレンダー", type:{marathon:"マラソン",half:"ハーフマラソン",race:"レース",ten:"10K"}, ms:{marathon:"マラソン",firstHalf:"初ハーフマラソン",firstMarathon:"初フルマラソン",pb:"自己ベスト",firstRunEmilia:"エミリアと初めてのラン"}, hl:"ハイライト", all:"すべて", cert:"完走証" },
+      ko: { loc:"ko",    t:["여정을","만든 레이스"], today:"오늘", cal:"캘린더", type:{marathon:"마라톤",half:"하프 마라톤",race:"레이스",ten:"10K"}, ms:{marathon:"마라톤",firstHalf:"첫 하프 마라톤",firstMarathon:"첫 풀 마라톤",pb:"개인 최고 기록",firstRunEmilia:"에밀리아와의 첫 달리기"}, hl:"하이라이트", all:"전체", cert:"완주 증명서" },
+      "zh-cn": { loc:"zh-CN", t:["铭刻旅程的","每一场比赛"], today:"今天", cal:"日历", type:{marathon:"马拉松",half:"半程马拉松",race:"比赛",ten:"10K"}, ms:{marathon:"马拉松",firstHalf:"首个半程马拉松",firstMarathon:"首个全程马拉松",pb:"个人最佳",firstRunEmilia:"与 Emília 的第一次跑步"}, hl:"精选", all:"全部", cert:"证书" },
+      "zh-tw": { loc:"zh-TW", t:["銘刻旅程的","每一場比賽"], today:"今天", cal:"行事曆", type:{marathon:"馬拉松",half:"半程馬拉松",race:"比賽",ten:"10K"}, ms:{marathon:"馬拉松",firstHalf:"首場半程馬拉松",firstMarathon:"首場全程馬拉松",pb:"個人最佳",firstRunEmilia:"與 Emília 的第一次跑步"}, hl:"精選", all:"全部", cert:"證書" },
+      th: { loc:"th-TH-u-ca-gregory", t:["การแข่งขันที่","หล่อหลอมเส้นทาง"], today:"วันนี้", cal:"ปฏิทิน", type:{marathon:"มาราธอน",half:"ฮาล์ฟมาราธอน",race:"การแข่งขัน",ten:"10K"}, ms:{marathon:"มาราธอน",firstHalf:"ฮาล์ฟมาราธอนแรก",firstMarathon:"มาราธอนแรก",pb:"สถิติส่วนตัว",firstRunEmilia:"วิ่งครั้งแรกกับ Emília"}, hl:"ไฮไลต์", all:"ทั้งหมด", cert:"ใบประกาศ" },
+      he: { loc:"he",    t:["מרוצים","שעיצבו את הדרך"], today:"היום", cal:"לוח מרוצים", type:{marathon:"מרתון",half:"חצי מרתון",race:"מרוץ",ten:"10K"}, ms:{marathon:"מרתון",firstHalf:"חצי מרתון ראשון",firstMarathon:"מרתון ראשון",pb:"שיא אישי",firstRunEmilia:"ריצה ראשונה עם אמיליה"}, hl:"נבחרים", all:"הכול", cert:"תעודה" },
+      id: { loc:"id",    t:["Lomba yang","membentuk perjalanan"], today:"HARI INI", cal:"Kalender", type:{marathon:"Maraton",half:"Setengah maraton",race:"Lomba",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Setengah maraton pertama",firstMarathon:"Maraton pertama",pb:"Rekor pribadi",firstRunEmilia:"Lari pertama bersama Emília"}, hl:"Sorotan", all:"Semua", cert:"Sertifikat" },
+      ms: { loc:"ms",    t:["Larian yang","membentuk perjalanan"], today:"HARI INI", cal:"Kalendar", type:{marathon:"Maraton",half:"Separuh maraton",race:"Larian",ten:"10K"}, ms:{marathon:"Maraton",firstHalf:"Separuh maraton pertama",firstMarathon:"Maraton pertama",pb:"Rekod peribadi",firstRunEmilia:"Larian pertama bersama Emília"}, hl:"Sorotan", all:"Semua", cert:"Sijil" },
     };
     // The gallery has a single URL and never navigates to change language —
     // the switch happens in place. The choice falls back to the browser
     // language and is remembered in localStorage (no URL change, no reload).
     var STORE_KEY="gallery_lang";
     var _saved=null; try{_saved=localStorage.getItem(STORE_KEY);}catch(e){}
-    var lang=(_saved||navigator.language||"en").slice(0,2).toLowerCase(); if(!STR[lang]) lang="en";
+    // Same mapping as app.js: regional variants that are languages of their own
+    // here (pt-PT, zh-TW) are told apart by subtag; iw/in/no fold into he/id/nb.
+    function langFromTag(tag){
+      var p=String(tag||"").toLowerCase().replace(/_/g,"-").split("-"), b=p[0], sub=p.slice(1);
+      function has(list){ for(var i=0;i<sub.length;i++){ if(list.indexOf(sub[i])>=0) return true; } return false; }
+      if(b==="pt") return has(["pt","ao","mz","cv","gw","st","tl"])?"pt-pt":"pt";
+      if(b==="zh") return has(["hans"])?"zh-cn":(has(["hant","tw","hk","mo"])?"zh-tw":"zh-cn");
+      if(b==="no"||b==="nn") return "nb";
+      if(b==="iw") return "he";
+      if(b==="in") return "id";
+      return STR[b]?b:null;
+    }
+    var lang=STR[_saved]?_saved:null;
+    if(!lang){ var prefs=(navigator.languages&&navigator.languages.length)?navigator.languages:[navigator.language];
+      for(var pi=0;pi<prefs.length&&!lang;pi++){ lang=langFromTag(prefs[pi]); } }
+    if(!lang) lang="en";
     var T=STR[lang], LOC=T.loc;
     // View mode: "all" (full timeline) or "highlights" (only marathons + milestone
     // races). Persisted; the timeline re-renders and collapses/extends to fit.
@@ -329,8 +367,8 @@
       lang=nl; T=STR[lang]; LOC=T.loc;
       try{localStorage.setItem(STORE_KEY, lang);}catch(e){}
       buildMonths();
-      document.documentElement.lang=lang;
-      document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie"}[lang])||"Gallery";
+      document.documentElement.lang=T.loc.split("-u-")[0];
+      document.title=({pt:"Galeria",en:"Gallery",es:"Galería",de:"Galerie",fr:"Galerie",it:"Galleria",nl:"Galerij","pt-pt":"Galeria",ru:"Галерея",pl:"Galeria",cs:"Galerie",sk:"Galéria",sl:"Galerija",hr:"Galerija",hu:"Galéria",el:"Γκαλερί",da:"Galleri",nb:"Galleri",sv:"Galleri",fi:"Galleria",ja:"ギャラリー",ko:"갤러리","zh-cn":"相册","zh-tw":"相簿",th:"แกลเลอรี",he:"גלריה",id:"Galeri",ms:"Galeri"}[lang])||"Gallery";
       document.getElementById("title").innerHTML=esc(T.t[0])+"<br>"+esc(T.t[1]);
       document.getElementById("navCal").setAttribute("href","/"+lang);
       document.getElementById("navCalLbl").textContent=T.cal;
@@ -346,7 +384,7 @@
     // language), apps (Garmin/watch apps), and the in-place language switcher.
     (function wireNav(){
       var navLang=document.getElementById("navLang");
-      var LABELS={pt:"Português",en:"English",es:"Español",de:"Deutsch",fr:"Français"};
+      var LABELS={pt:"Português (Brasil)",en:"English",es:"Español",de:"Deutsch",fr:"Français",it:"Italiano",nl:"Nederlands","pt-pt":"Português (Portugal)",ru:"Русский",pl:"Polski",cs:"Čeština",sk:"Slovenčina",sl:"Slovenščina",hr:"Hrvatski",hu:"Magyar",el:"Ελληνικά",da:"Dansk",nb:"Norsk bokmål",sv:"Svenska",fi:"Suomi",ja:"日本語",ko:"한국어","zh-cn":"简体中文","zh-tw":"繁體中文",th:"ไทย",he:"עברית",id:"Bahasa Indonesia",ms:"Bahasa Melayu"};
       var dd=null;
       function close(){ if(dd){ dd.remove(); dd=null; navLang.setAttribute("aria-expanded","false"); } }
       navLang.addEventListener("click",function(e){
@@ -366,6 +404,7 @@
         var r=navLang.getBoundingClientRect();
         dd.style.top=(r.bottom+6)+"px";
         dd.style.right=(window.innerWidth-r.right)+"px";
+        dd.style.maxHeight=Math.max(160,window.innerHeight-r.bottom-18)+"px";
         setTimeout(function(){ document.addEventListener("click",close,{once:true}); },0);
       });
     })();

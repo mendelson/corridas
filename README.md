@@ -57,7 +57,7 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 | Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-10-08 16:01 | ✅ | 2026-10-08 16:01 · 50 ev |
 | TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-10-08 16:06 | ✅ | 2026-10-08 16:06 · 80 ev |
 | Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-10-08 16:02 | ✅ | 2026-10-08 16:02 · 4 ev |
-| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-10-08 16:03 | ❌ 1 IDs duplicados no batch: 'atletis_4966'×2 | 2026-10-02 15:17 · 53 ev |
+| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-10-09 14:54 | ✅ | 2026-10-09 14:54 · 54 ev |
 | Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-10-08 16:02 | ✅ | 2026-10-08 16:02 · 11 ev |
 | Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-10-08 16:01 | ✅ | 2026-10-08 16:01 · 3 ev |
 | Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-10-08 16:00 | ✅ | 2026-10-08 16:00 · 4 ev |

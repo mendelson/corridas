@@ -71,6 +71,7 @@ def scrape() -> list[Corrida]:
 
     features = geojson.get("features") or []
     candidates: list[tuple[str, str]] = []
+    seen_ids: set[str] = set()
 
     for feat in features:
         props = feat.get("properties") or {}
@@ -96,6 +97,16 @@ def scrape() -> list[Corrida]:
             continue
 
         full_url = _BASE + url_path if url_path.startswith("/") else url_path
+
+        # The map can list one event more than once (several pins, or the same
+        # numeric id under different slugs). The Corrida id is derived from that
+        # id alone, so a repeat would be emitted twice and fail the duplicate-id
+        # check — skip it before spending a page fetch on it.
+        event_id = _extract_id(full_url)
+        if event_id in seen_ids:
+            continue
+        seen_ids.add(event_id)
+
         candidates.append((full_url, name))
 
     print(f"[{SOURCE_NAME}] {len(candidates)} candidatos de {len(features)} eventos")

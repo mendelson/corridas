@@ -3341,6 +3341,9 @@ function matchesSearch(c) {
 // ---------------------------------------------------------------------------
 // Render
 // ---------------------------------------------------------------------------
+// How long the "Novo" badge stays on an event after it is first seen (days).
+const NEW_BADGE_DAYS = 15;
+
 function renderCards() {
   cardsList.innerHTML = '';
 
@@ -3351,7 +3354,7 @@ function renderCards() {
   emptyState.classList.add('hidden');
 
   const today       = todayStr();
-  const threeDaysAgo = addDays(today, -3);
+  const newSince    = addDays(today, -NEW_BADGE_DAYS);
   const frag        = document.createDocumentFragment();
 
   let toRender   = filteredCorridas;
@@ -3374,16 +3377,16 @@ function renderCards() {
     const hasFuture = corridas.some(c => !c.data_evento || c.data_evento >= today);
     const expand = hasFuture && !firstFutureMonthFound;
     if (expand) firstFutureMonthFound = true;
-    const hasNew = corridas.some(c => c.first_seen_at && c.first_seen_at >= threeDaysAgo);
+    const hasNew = corridas.some(c => c.first_seen_at && c.first_seen_at >= newSince);
     const { section, cardsContainer } = buildMonthSection(monthKey, corridas.length, expand, hasNew);
     for (const corrida of corridas) {
-      cardsContainer.appendChild(buildCard(corrida, today, threeDaysAgo));
+      cardsContainer.appendChild(buildCard(corrida, today, newSince));
     }
     frag.appendChild(section);
   }
 
   if (recentPast.length > 0) {
-    frag.prepend(buildPastSection(recentPast, today, threeDaysAgo));
+    frag.prepend(buildPastSection(recentPast, today, newSince));
   }
 
   cardsList.appendChild(frag);
@@ -3412,7 +3415,7 @@ function _anchorOpenMonth() {
   if (section) _scrollSectionToTop(section, 'instant');
 }
 
-function buildPastSection(corridas, today, threeDaysAgo) {
+function buildPastSection(corridas, today, newSince) {
   const sorted = [...corridas].sort((a, b) =>
     (b.data_evento || '').localeCompare(a.data_evento || ''));
 
@@ -3433,7 +3436,7 @@ function buildPastSection(corridas, today, threeDaysAgo) {
   cardsContainer.className = 'month-cards month-cards--collapsed';
 
   for (const corrida of sorted) {
-    cardsContainer.appendChild(buildCard(corrida, today, threeDaysAgo));
+    cardsContainer.appendChild(buildCard(corrida, today, newSince));
   }
 
   btn.addEventListener('click', () => {
@@ -3523,7 +3526,7 @@ function _buildCardLocation(c) {
   return parts.join(', ') || c.localizacao || '';
 }
 
-function buildCard(c, today, threeDaysAgo) {
+function buildCard(c, today, newSince) {
   const tmpl = document.getElementById('cardTemplate');
   const node  = tmpl.content.cloneNode(true);
   const card  = node.querySelector('.card');
@@ -3546,7 +3549,7 @@ function buildCard(c, today, threeDaysAgo) {
   // "Novo" badge
   const badgeNovo = card.querySelector('.badge-novo');
   if (badgeNovo) {
-    const isNew = c.first_seen_at && c.first_seen_at >= threeDaysAgo;
+    const isNew = c.first_seen_at && c.first_seen_at >= newSince;
     badgeNovo.textContent = T.badgeNovo;
     badgeNovo.classList.toggle('hidden', !isNew);
   }

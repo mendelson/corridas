@@ -95,7 +95,20 @@ jobs:
           BRANCH="data/scrape-${{ github.run_id }}"
           git checkout -b "$BRANCH"
           git commit -m "chore: atualiza corridas $STAMP"
-          git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "$BRANCH"
+          # O scrape leva ~1h: um erro transitório do GitHub no push (ex.: "remote:
+          # Internal Server Error", run de 2026-10-07) não pode jogá-lo fora.
+          # Repete com backoff exponencial (2s, 4s, 8s, 16s); o push é idempotente
+          # (se o servidor chegou a gravar a ref, a nova tentativa vira "up-to-date").
+          PUSH_URL="https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+          for delay in 2 4 8 16 0; do
+            git push "$PUSH_URL" "$BRANCH" && break
+            if [ "$delay" -eq 0 ]; then
+              echo "::error::git push falhou em todas as tentativas."
+              exit 1
+            fi
+            echo "::warning::git push falhou — nova tentativa em ${delay}s."
+            sleep "$delay"
+          done
           # PRs de scrape anteriores ainda abertas estão supersedidas — fechar.
           for old in $(gh pr list --state open --json number,headRefName \
                          -q '.[] | select(.headRefName | startswith("data/scrape-")) | .number'); do

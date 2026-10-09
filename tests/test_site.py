@@ -372,12 +372,12 @@ def test_event_date_localized_per_language(page_en, live_server):
 # ---------------------------------------------------------------------------
 
 def test_new_event_badge_visible_for_recent(page_pt, live_server):
-    """A card whose corrida.first_seen_at is within 7 days must show a visible badge-novo."""
+    """A card whose corrida.first_seen_at is within 15 days must show a visible badge-novo."""
     from datetime import datetime, timezone, timedelta
 
     now = datetime.now(tz=timezone.utc)
-    # Use same 3-day window and date-string format as the app's threeDaysAgo
-    cutoff = (now - timedelta(days=3)).date().isoformat()
+    # Use same 15-day window and date-string format as the app's newSince
+    cutoff = (now - timedelta(days=15)).date().isoformat()
 
     # Find a new event among what's currently visible (respects active location filter)
     titulo = page_pt.evaluate(
@@ -420,7 +420,7 @@ def test_month_section_badge_when_has_new(page_pt, live_server):
 
     corridas = _load_corridas()
     now = datetime.now(tz=timezone.utc)
-    cutoff = (now - timedelta(days=7)).isoformat()
+    cutoff = (now - timedelta(days=15)).isoformat()
 
     has_new = any(c.get("first_seen_at", "") >= cutoff for c in corridas)
     if not has_new:

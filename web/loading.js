@@ -7,7 +7,7 @@
  *   → outono (céu âmbar, folhas ao vento)
  *   → inverno(céu frio, neve caindo)
  * Só a animação da estação atual é exibida (as outras não aparecem).
- * Quando os dados estão prontos e o ciclo terminou (≥~2,8s), revela o site.
+ * Quando os dados estão prontos e o ciclo terminou (≥~2s, uma estação), revela o site.
  *
  * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen.
  * app.js chama window.Loading.done() quando body.dataset.fullDataReady = '1'.
@@ -149,7 +149,7 @@
   }
   var MY_SEASON = currentSeason();
 
-  var DURATION = 8000;            // shoe-wear arc length
+  var DURATION = 2000;            // one season (was 4 × 2s); also the shoe-wear arc length
   // Debug aid (e.g. ?loaderMs=16000) to slow the arc down for inspection/QA;
   // no effect in normal use.
   try { var _m = +(new URLSearchParams(location.search).get('loaderMs')); if (_m > 0) DURATION = _m; } catch (e) {}

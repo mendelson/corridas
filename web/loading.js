@@ -1,11 +1,12 @@
 /*!
  * loading.js — Tela de carregamento: o tênis da galeria fica centrado (no zoom,
  * pisando no chão) e envelhece de novo → desgastado enquanto o clima passa pelas
- * QUATRO ESTAÇÕES, na horizontal:
+ * estação do local do usuário (fuso horário → hemisfério + data):
  *   primavera (céu verde, chuva leve + pétalas, respingos no tênis)
  *   → verão  (céu azul, sol forte)
  *   → outono (céu âmbar, folhas ao vento)
  *   → inverno(céu frio, neve caindo)
+ * Só a animação da estação atual é exibida (as outras não aparecem).
  * Quando os dados estão prontos e o ciclo terminou (≥~2,8s), revela o site.
  *
  * Depende de ShoeWear (gallery/shoe-wear.js) e do overlay #loadingScreen.
@@ -125,11 +126,33 @@
   function smooth(t) { t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
 
   var SEASONS = ['s-spring', 's-summer', 's-autumn', 's-winter'];
-  var DURATION = 8000;            // 4 seasons × 2s each
+
+  // The season the visitor is in right now. The loader can't wait for the async
+  // IP geolocation, so the hemisphere comes from the browser's time zone: DST
+  // direction when the zone has DST, otherwise a list of southern-hemisphere zones.
+  function southern() {
+    try {
+      var y = new Date().getFullYear();
+      var jan = new Date(y, 0, 1).getTimezoneOffset(), jul = new Date(y, 6, 1).getTimezoneOffset();
+      if (jan !== jul) return jan < jul;
+      var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+      return /^(Australia|Antarctica)\/|^America\/(Sao_Paulo|Bahia|Fortaleza|Recife|Belem|Maceio|Araguaina|Manaus|Cuiaba|Campo_Grande|Porto_Velho|Rio_Branco|Noronha|Boa_Vista|Santarem|Eirunepe|La_Paz|Lima|Santiago|Asuncion|Montevideo|Argentina\/)|^Africa\/(Johannesburg|Maputo|Harare|Lusaka|Windhoek|Luanda|Lubumbashi|Blantyre|Gaborone|Maseru|Mbabane|Kinshasa|Dar_es_Salaam)|^Pacific\/(Auckland|Fiji|Tongatapu|Apia|Noumea|Port_Moresby|Tahiti|Pago_Pago|Norfolk|Guadalcanal)|^Indian\/(Antananarivo|Mauritius|Reunion|Comoro|Mayotte)|^Asia\/Jakarta|^Asia\/Makassar/.test(tz);
+    } catch (e) { return false; }
+  }
+  function currentSeason() {
+    var m = new Date().getMonth();                 // 0 = Jan
+    if (southern()) m = (m + 6) % 12;
+    if (m === 11 || m <= 1) return 3;              // Dec–Feb  → winter
+    if (m <= 4) return 0;                          // Mar–May  → spring
+    if (m <= 7) return 1;                          // Jun–Aug  → summer
+    return 2;                                      // Sep–Nov  → autumn
+  }
+  var MY_SEASON = currentSeason();
+
+  var DURATION = 8000;            // shoe-wear arc length
   // Debug aid (e.g. ?loaderMs=16000) to slow the arc down for inspection/QA;
   // no effect in normal use.
   try { var _m = +(new URLSearchParams(location.search).get('loaderMs')); if (_m > 0) DURATION = _m; } catch (e) {}
-  var SEG = DURATION / 4;         // 2s per season
   var MIN_MS = DURATION;          // loader stays for the whole cycle
   var startT = now(), done = false, finished = false, season = -1, raf = null, lastSplash = 0;
 
@@ -158,12 +181,11 @@
 
   ctl.setProgress(0);
   applyHero();
-  setSeason(0);
+  setSeason(MY_SEASON);
 
   function tick() {
     var t = now() - startT;
     ctl.setProgress(smooth(t / DURATION));                 // progressive wear → final
-    setSeason(Math.min(SEASONS.length - 1, Math.floor(t / SEG)));
     if (!reduce && season === 0 && t - lastSplash >= 90) { lastSplash = t; spawnSplash(); spawnSplash(); }
     if (t >= MIN_MS && done) { finish(); return; }
     raf = requestAnimationFrame(tick);
@@ -175,7 +197,6 @@
     finished = true;
     if (raf) cancelAnimationFrame(raf);
     ctl.setProgress(1);
-    setSeason(SEASONS.length - 1);
     unlock();                        // scroll back as soon as the fade-out starts
     overlay.classList.add('hidden');
     setTimeout(dismissNow, 600);

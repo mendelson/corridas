@@ -1,10 +1,5 @@
-[Circuito das Estações] 79 corridas encontradas
-✅  circuito_das_estacoes: 79 evento(s)
-    {"titulo": "Circuito das Estações - Inverno - São Paulo", "data": "2026-06-28", "estado": "SP", "km": "5.0, 10.0, 15.0"}
-    {"titulo": "Circuito das Estações - Primavera - São Paulo", "data": "2026-09-13", "estado": "SP", "km": "5.0, 10.0, 18.0"}
-    {"titulo": "Circuito das Estações - Verão - São Paulo", "data": "2026-12-20", "estado": "SP", "km": "5.0, 10.0"}
-    {"titulo": "Circuito das Estações - Inverno - Rio de Janeiro", "data": "2026-05-31", "estado": "RJ", "km": "5.0, 10.0, 15.0"}
-    {"titulo": "Circuito das Estações - Primavera - Rio de Janeiro", "data": "2026-09-20", "estado": "RJ", "km": "5.0, 10.0, 18.0"}
-    ... e mais 74
-❌  circuito_das_estacoes: 79/79 eventos sem horário
-FAILURE_NOTE:79/79 eventos sem horário
+[Circuito das Estações] erro: Server error '500 Internal Server Error' for url 'https://hotsites.nortemkt.com/api/events/circuito-das-estacoes'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+EVENT_COUNT:0
+⚠️   circuito_das_estacoes: 0 eventos retornados
+FAILURE_NOTE:0 eventos

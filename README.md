@@ -52,29 +52,29 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 573 ev |
-| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 26 ev |
-| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 56 ev |
-| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-11-06 16:38 | ⚠️ 0 eventos (1/3) | 2026-11-05 17:05 · 61 ev |
-| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 3 ev |
-| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-11-06 16:43 | ✅ | 2026-11-06 16:43 · 43 ev |
-| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 8 ev |
-| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 3 ev |
-| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 2 ev |
-| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-11-06 16:47 | ⚠️  (1/3) | 2026-11-05 17:10 · 2164 ev |
-| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-11-06 16:34 | ✅ | 2026-11-06 16:34 · 168 ev |
-| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-11-06 16:43 | ✅ | 2026-11-06 16:43 · 21 ev |
-| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-11-06 16:43 | ✅ | 2026-11-06 16:43 · 0 ev |
-| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 21 ev |
+| Ticket Sports<!--ticket_sports--> | ✅ | `ticketsports.app/api/events/list` | JSON API | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 577 ev |
+| Circuito das Estações<!--circuito_das_estacoes--> | ✅ | `hotsites.nortemkt.com/api/events/circuito-das-estacoes` | JSON API dedicada | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 26 ev |
+| Central da Corrida<!--central_da_corrida--> | ✅ | `centraldacorrida.com.br/calendario` | Supabase edge-function API | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 55 ev |
+| TF Sports<!--tf_sports--> | ✅ | `painel-website.tfsports.com.br/api` + `tfsports.com.br` | Strapi v4 API + token do bundle Next.js | 2026-11-07 15:20 | ⚠️ 0 eventos (2/3) | 2026-11-05 17:05 · 61 ev |
+| Yescom<!--yescom--> | ✅ | `yescom.com.br` | HTML (homepage + páginas de evento) | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 3 ev |
+| Atletis<!--atletis--> | ✅ | `atletis.com.br/events/coordinates` | GeoJSON + JSON-LD por evento | 2026-11-07 15:21 | ✅ | 2026-11-07 15:21 · 43 ev |
+| Brasil Corrida<!--brasil_corrida--> | ✅ | `brasilcorrida.com.br/api/src/Site` | JSON API | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 8 ev |
+| Iguana Sports<!--iguana_sports--> | ✅ | `iguanasports.com.br/blogs/calendario-corridas-de-rua` | HTML (blog de calendário) | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 3 ev |
+| Ativo<!--ativo--> | ✅ | `ativo.com/eventos.json` | JSON API | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 1 ev |
+| MKS Esportes<!--mks_esportes--> | ✅ | `mksesportes.com.br` (sitemap + HTML) | HTML | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 2 ev |
+| Corridas Brasil<!--corridas_brasil--> | ✅ | `corridasbrasil.com.br/calendario/` | HTML | 2026-11-07 15:27 | ✅ | 2026-11-07 15:27 · 2081 ev |
+| Minhas Inscrições<!--minhas_inscricoes--> | ✅ | `minhasinscricoes.com.br/pt-br/calendario?url=corrida-de-rua` | HTML | 2026-11-07 15:22 | ✅ | 2026-11-07 15:22 · 157 ev |
+| Runner Brasil<!--runner_brasil--> | ✅ | `runnerbrasil.com.br` | HTML | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 21 ev |
+| Largada Esportiva<!--largada_esportiva--> | ✅ | `largadaesportiva.com.br` | Playwright (intercepção de JSON) + HTML | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Portal das Corridas<!--portal_das_corridas--> | ✅ | `portaldascorridas.com.br/event-pages-sitemap.xml` | Wix sitemap + páginas individuais (JSON-LD) | 2026-11-07 15:20 | ⚠️ 0 eventos (1/3) | 2026-11-06 16:32 · 21 ev |
 
 ### Fontes brasileiras — específicas Brasília-DF
 
 | Fonte | Em uso | URL de busca | Método | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Conta Passos<!--conta_passos--> | ✅ | `contapassos.com.br` | RSC payload da home (Next.js) | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 2 ev |
-| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 32 ev |
-| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 22 ev |
+| Conta Passos<!--conta_passos--> | ✅ | `contapassos.com.br` | RSC payload da home (Next.js) | 2026-11-07 15:18 | ✅ | 2026-11-07 15:18 · 2 ev |
+| Correr Brasília<!--correr_brasilia--> | ✅ | `correrbrasilia.com.br/calendario/` | HTML | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 32 ev |
+| Bora Correr<!--bora_correr--> | ✅ | `coelhodeprograma.com.br/boracorrer` | HTML (tabela #tabDados) | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 21 ev |
 | Brasil que Corre<!--brasil_que_corre--> | ✅ | `brasilquecorre.com/distritofederal` | HTML (cs-text-widget) | 2026-08-07 09:55 | ❌ 0 eventos | 2026-07-10 11:46 · 4 ev |
 | SESC DF<!--sesc_df--> | ✅ | `sescdf.com.br/corridas` | HTML | 2026-08-07 18:44 | ❌ 0 eventos | 2026-08-02 10:30 · 1 ev |
 
@@ -82,27 +82,27 @@ compartilham o mesmo código de cores**. O plano completo e as decisões estão 
 
 | Fonte | Em uso | URL de busca | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- |
-| Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 1 ev |
-| Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-11-06 16:44 | ✅ | 2026-11-06 16:44 · 0 ev |
-| São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-11-06 16:40 | ✅ | 2026-11-06 16:40 · 0 ev |
+| Maratona do Rio<!--maratona_rio--> | ✅ | `maratonadorio.com.br` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Maratona de Porto Alegre<!--maratona_porto_alegre--> | ✅ | `maratonadeportoalegre.com.br` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| SP City Marathon<!--sp_city_marathon--> | ✅ | `iguanasports.com.br/products/sp-city-marathon-{ano}` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 0 ev |
+| São Silvestre<!--evento_unico/sao_silvestre--> | ✅ | `saosilvestre.com.br` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Volta do Lago<!--volta_do_lago--> | ✅ | `largadaesportiva.com.br/api/Events` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
 
 ### Fontes mexicanas
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-11-06 16:39 | ✅ | 2026-11-06 16:39 · 7 ev |
+| Asdeporte<!--asdeporte--> | ✅ | `asdeporte.com/eventos` | Next.js; extrai `pageProps.recomended` do `__NEXT_DATA__`; ~30 eventos/run | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 8 ev |
 
 ### Fontes internacionais — plataformas agregadoras
 
 | Fonte | Em uso | URL de busca | Observação | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
 | HalfMarathons.net<!--halfmarathons--> | ✅ | `halfmarathons.net/wp-json/wp/v2/races` | WordPress REST API paginada (EUA); distâncias em milhas como string | 2026-08-07 17:49 | ❌ 0 eventos | 2026-07-29 11:19 · 1675 ev |
-| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 869 ev |
+| RunSignup<!--runsignup--> | ✅ | `runsignup.com/Rest/races` | REST API paginada (EUA/global); distâncias em milhas preservadas como string | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 875 ev |
 | World Athletics<!--world_athletics--> | ✅ | `worldathletics.org/competitions/world-athletics-label-road-races` | HTML público; `__NEXT_DATA__`; provas com Label IAAF (Platinum/Gold/Silver/Bronze) | 2026-07-11 13:40 | ✅ | 2026-07-11 13:40 · 100 ev |
-| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 344 ev |
-| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-11-06 16:35 | ✅ | 2026-11-06 16:35 · 4702 ev |
+| Race Roster<!--raceroster--> | ✅ | `search.raceroster.com/search` | REST API pública; paginada por termo de busca; distâncias parseadas de strings como `42km`/`3mi` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 214 ev |
+| Finishers<!--finishers--> | ✅ | `*.typesense.net/multi_search` (coleção `races`) | Typesense público (chave search-only do bundle JS); `raceDiscipline:=road` global; horário enriquecido da página `/event/{slug}` com cache persistente | 2026-11-07 15:23 | ✅ | 2026-11-07 15:23 · 4671 ev |
 
 ---
 
@@ -118,29 +118,29 @@ Os demais são grandes provas internacionais de destaque mas não pertencem ao g
 
 | Evento | ⭐ WMM | Em uso | URL oficial | Testado em | Status | Últ. sucesso |
 | --- | --- | --- | --- | --- | --- | --- |
-| Tokyo Marathon<!--evento_unico/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 1 ev |
-| Boston Marathon<!--evento_unico/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| TCS London Marathon<!--evento_unico/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 1 ev |
-| BMW Berlin Marathon<!--evento_unico/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 0 ev |
-| Bank of America Chicago Marathon<!--evento_unico/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 1 ev |
-| TCS New York City Marathon<!--evento_unico/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 0 ev |
-| TCS Sydney Marathon<!--evento_unico/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 0 ev |
-| Schneider Electric Paris Marathon<!--evento_unico/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 1 ev |
-| Brighton Marathon<!--evento_unico/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 1 ev |
-| Volkswagen Prague Marathon<!--evento_unico/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-11-06 16:45 | ✅ | 2026-11-06 16:45 · 0 ev |
-| Copenhagen Marathon<!--evento_unico/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| Edinburgh Marathon Festival<!--evento_unico/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| Stockholm Marathon<!--evento_unico/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 0 ev |
-| Manchester Marathon<!--evento_unico/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 1 ev |
-| Great North Run<!--evento_unico/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 0 ev |
-| Cardiff Half Marathon<!--evento_unico/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 0 ev |
-| Manchester Half Marathon<!--evento_unico/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-11-06 16:44 | ✅ | 2026-11-06 16:44 · 1 ev |
-| TCS Amsterdam Marathon<!--evento_unico/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 0 ev |
-| Venice Marathon<!--evento_unico/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-11-06 16:33 | ✅ | 2026-11-06 16:33 · 0 ev |
-| Dublin City Marathon<!--evento_unico/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 0 ev |
-| Athens Classic Marathon<!--evento_unico/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 1 ev |
-| Valencia Trinidad Alfonso Marathon<!--evento_unico/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-11-06 16:32 | ✅ | 2026-11-06 16:32 · 1 ev |
-| Comrades Marathon<!--evento_unico/comrades--> |  | ✅ | `comrades.com/race-information` | 2026-11-06 16:31 | ✅ | 2026-11-06 16:31 · 0 ev |
+| Tokyo Marathon<!--evento_unico/tokyo--> | ⭐ | ✅ | `marathon.tokyo/en` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Boston Marathon<!--evento_unico/boston--> | ⭐ | ✅ | `baa.org/races/boston-marathon` | 2026-11-07 15:18 | ✅ | 2026-11-07 15:18 · 1 ev |
+| TCS London Marathon<!--evento_unico/london--> | ⭐ | ✅ | `tcslondonmarathon.com` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| BMW Berlin Marathon<!--evento_unico/berlin--> | ⭐ | ✅ | `bmw-berlin-marathon.com/en` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Bank of America Chicago Marathon<!--evento_unico/chicago--> | ⭐ | ✅ | `chicagomarathon.com` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| TCS New York City Marathon<!--evento_unico/nyc--> | ⭐ | ✅ | `nyrr.org/races/tcsnycmarathon` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 0 ev |
+| TCS Sydney Marathon<!--evento_unico/sydney--> | ⭐ | ✅ | `tcssydneymarathon.com` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Schneider Electric Paris Marathon<!--evento_unico/paris--> |  | ✅ | `schneiderelectricparismarathon.com/en` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Brighton Marathon<!--evento_unico/brighton--> |  | ✅ | `londonmarathonevents.co.uk/brighton-marathon-weekend` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 1 ev |
+| Volkswagen Prague Marathon<!--evento_unico/prague--> |  | ✅ | `runczech.com/en/races/volkswagen-prague-marathon` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Copenhagen Marathon<!--evento_unico/copenhagen--> |  | ✅ | `copenhagenmarathon.dk/en` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Edinburgh Marathon Festival<!--evento_unico/edinburgh--> |  | ✅ | `edinburghmarathon.com` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Stockholm Marathon<!--evento_unico/stockholm--> |  | ✅ | `stockholmmarathon.se/eng` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 0 ev |
+| Manchester Marathon<!--evento_unico/manchester--> |  | ✅ | `manchestermarathon.co.uk` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Great North Run<!--evento_unico/great_north_run--> |  | ✅ | `greatrun.org/events/great-north-run` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Cardiff Half Marathon<!--evento_unico/cardiff_half--> |  | ✅ | `cardiffhalfmarathon.co.uk` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Manchester Half Marathon<!--evento_unico/manchester_half--> |  | ✅ | `manchesterhalfmarathon.com` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 1 ev |
+| TCS Amsterdam Marathon<!--evento_unico/amsterdam--> |  | ✅ | `tcsamsterdammarathon.nl/en` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Venice Marathon<!--evento_unico/venice--> |  | ✅ | `venicemarathon.it/en` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 0 ev |
+| Dublin City Marathon<!--evento_unico/dublin--> |  | ✅ | `irishlifedublinmarathon.ie` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 0 ev |
+| Athens Classic Marathon<!--evento_unico/athens--> |  | ✅ | `athensauthenticmarathon.gr/en` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 1 ev |
+| Valencia Trinidad Alfonso Marathon<!--evento_unico/valencia--> |  | ✅ | `valenciaciudaddelrunning.com/en/marathon` | 2026-11-07 15:19 | ✅ | 2026-11-07 15:19 · 1 ev |
+| Comrades Marathon<!--evento_unico/comrades--> |  | ✅ | `comrades.com/race-information` | 2026-11-07 15:20 | ✅ | 2026-11-07 15:20 · 0 ev |
 
 ---
 

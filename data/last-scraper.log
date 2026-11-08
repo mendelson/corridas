@@ -1,5 +1,5 @@
 [main] iniciando scraping...
-[main] 13992 corridas no estado anterior
+[main] 13988 corridas no estado anterior
 [main] priorizando 4 fonte(s) com falha anterior: tf_sports, tf_sports_app, portal_das_corridas, carreras_mexico
 [Carreras MÃ©xico] page 0: erro Client error '401 Unauthorized' for url 'https://www.tiempometa.com/api3/js_site/events?api_key=48513987f33edea8&page=0&page_size=50&target_url=https%3A%2F%2Fcarrerasmexico.com%2F'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
@@ -29,138 +29,138 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 [MKS Esportes] pulando 'Meia De Búzios' (sem distâncias publicadas)
 [MKS Esportes] 2 corridas encontradas
 [Iguana Sports] 3 corridas encontradas
-[Portal das Corridas] 192 páginas para inspecionar
-[Ativo] 1 corridas encontradas
-[Runner Brasil] 21 eventos no calendário
 [TF Sports] token não encontrado, tentando sem autenticação
 [TF Sports App] token não encontrado, tentando sem autenticação
-[Ticket Sports] distâncias de 'Corrida E Caminhada Teles Pires 2026' obtidas do regulamento
+[Runner Brasil] 21 eventos no calendário
 [TF Sports] run-series: erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] run-series: 0 eventos brutos
+[Ticket Sports] distâncias de 'Corrida E Caminhada Teles Pires 2026' obtidas do regulamento
 [Ticket Sports] distâncias de 'Corrida Eu Amo Gravatá - 2ª Night Run' obtidas do regulamento
 [TF Sports] run-series(sem data): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] run-series(sem data): 0 eventos brutos
 [TF Sports App] events(data,pt-BR): erro página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports App] events(data,pt-BR): 0 brutos
-[Corridas Brasil] 1829 eventos na listagem, buscando detalhes...
-[Conta Passos] 2 corridas encontradas
+[Ticket Sports] distâncias de 'Corrida Noturna Unimed Caruaru' obtidas do regulamento
 [TF Sports] run-series(recentes): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] run-series(recentes): 0 eventos brutos
-[Brasil Corrida] 8 corridas encontradas
-[Ticket Sports] distâncias de 'Corrida Noturna Unimed Caruaru' obtidas do regulamento
-[Portal das Corridas] sem distâncias, pulando: '1 Alprun 035'
+[Ticket Sports] distâncias de 'Corrida Do After 2026' obtidas do regulamento
 [TF Sports App] events(sem-data,pt-BR): erro página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports App] events(sem-data,pt-BR): 0 brutos
 [TF Sports] events(data): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] events(data): 0 eventos brutos
 [TF Sports] events(sem data): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] events(sem data): 0 eventos brutos
-[Ticket Sports] distâncias de 'Corrida Do After 2026' obtidas do regulamento
-[TF Sports App] events(recentes,pt-BR): erro página 1: painel-website.tfsports.com.br bloqueado (403)[TF Sports] events(recentes): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
-[TF Sports] events(recentes): 0 eventos brutos
-
+[Brasil Corrida] 9 corridas encontradas
+[TF Sports App] events(recentes,pt-BR): erro página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports App] events(recentes,pt-BR): 0 brutos
 [TF Sports App] total Strapi locale=pt-BR: 0 únicos
+[TF Sports] events(recentes): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
+[TF Sports] events(recentes): 0 eventos brutos
 [TF Sports] experiences: erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] experiences: 0 eventos brutos
+[Ativo] 1 corridas encontradas
 [TF Sports] experiences(sem data): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] experiences(sem data): 0 eventos brutos
 [TF Sports] experiences(recentes): erro ao buscar página 1: painel-website.tfsports.com.br bloqueado (403)
 [TF Sports] experiences(recentes): 0 eventos brutos
 [TF Sports] 0 corridas encontradas
-[Portal das Corridas] sem distâncias, pulando: '2ª Corrida Ecológica De São Thomé Das Letras'
 [Ticket Sports] distâncias de 'Corrida Right TO Run' obtidas do regulamento
-[Portal das Corridas] sem distâncias, pulando: 'Pousão Nigth Run'
-[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Inconfidentes'
-[Ticket Sports] distâncias de 'Corrida Da Bandeira - 2026' obtidas do regulamento
-[Portal das Corridas] sem distâncias, pulando: 'Corrida Com Proposito 2027'
+[Conta Passos] 2 corridas encontradas
+[Portal das Corridas] 192 páginas para inspecionar
 [Yescom] 3 corridas encontradas
-[Portal das Corridas] sem distâncias, pulando: '2ª Night Run Camanducaia'
-[Circuito das Estações] 26 corridas encontradas
-[Portal das Corridas] sem distâncias, pulando: 'Corrida E Caminhada Santa Casa De Caridade De Machado'
+[Ticket Sports] distâncias de 'Corrida Da Bandeira - 2026' obtidas do regulamento
 [Largada Esportiva] HTTP OK 1210B → https://largadaesportiva.com.br/eventos
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] HTTP: página obtida (1210B) mas sem eventos reconhecíveis
+[Portal das Corridas] sem distâncias, pulando: '1 Alprun 035'
+[Circuito das Estações] 26 corridas encontradas
+[Portal das Corridas] sem distâncias, pulando: '2ª Corrida Ecológica De São Thomé Das Letras'
 [Maratona do Rio] 1 corrida: 2027-05-30 dist=[5.0, 10.0, 21.097, 42.195]
 [TF Sports App] Playwright listing: 0 eventos capturados
 [TF Sports App] total após merge: 0
 [TF Sports App] 0 corridas encontradas
-[Portal das Corridas] sem distâncias, pulando: 'Desafio Da Torre 2027'
 [Runner Brasil] 21 corridas encontradas
 [São Silvestre] sem horário publicado no site oficial — evento incluído sem horário
 [SP City Marathon] artigo SP City não encontrado no calendário
-[Portal das Corridas] sem distâncias, pulando: 'Fepi Run 2026'
+[Corridas Brasil] 1829 eventos na listagem, buscando detalhes...
+[Portal das Corridas] sem distâncias, pulando: 'Pousão Nigth Run'[Portal das Corridas] sem distâncias, pulando: 'Corrida Com Proposito 2027'
+
 [Ticket Sports] distâncias de '1 Corrida Do Cav 20 Anos' obtidas do regulamento
+[Portal das Corridas] sem distâncias, pulando: 'Circuito De Rua Pedal E Corrida Ifsuldeminas 2026 Inconfidentes'
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/eventos: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Ticket Sports] distâncias de 'Disney Magic Run 2026 - São Paulo' obtidas do regulamento
-[Ticket Sports] distâncias de 'Du Rosa Azul 2026 - 4ª Edição' obtidas do regulamento
 [Ticket Sports] distâncias de 'Corrida Dos Morros - 7ª Edição' obtidas do regulamento
-[Ticket Sports] distâncias de 'Jmc Move 2026' obtidas do regulamento
+[Portal das Corridas] sem distâncias, pulando: 'Corrida E Caminhada Santa Casa De Caridade De Machado'
+[Ticket Sports] distâncias de 'Du Rosa Azul 2026 - 4ª Edição' obtidas do regulamento
+[Portal das Corridas] sem distâncias, pulando: '2ª Night Run Camanducaia'
 [Maratona de Porto Alegre] 1 corrida encontrada (TS 86759): 42ª Maratona Internacional De Porto Alegre - 2027
-[Ticket Sports] distâncias de 'Corrida Unasp Run' obtidas do regulamento
+[Ticket Sports] distâncias de 'Jmc Move 2026' obtidas do regulamento[Ticket Sports] distâncias de 'Corrida Unasp Run' obtidas do regulamento
+
+[Portal das Corridas] sem distâncias, pulando: 'Desafio Da Torre 2027'
 [Ticket Sports] distâncias de 'Circuito Kids Quatro Estações - Etapa Primavera' obtidas do regulamento
-[TCS Sydney Marathon] nenhuma ediÃ§Ã£o futura identificada
 [BMW Berlin Marathon] nenhuma ediÃ§Ã£o futura identificada
-[TCS New York City Marathon] nenhuma ediÃ§Ã£o futura identificada
+[TCS Sydney Marathon] nenhuma ediÃ§Ã£o futura identificada
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Portal das Corridas] 20 corridas encontradas
+[Portal das Corridas] sem distâncias, pulando: 'Fepi Run 2026'
+[TCS New York City Marathon] nenhuma ediÃ§Ã£o futura identificada
+[Prague Marathon] nenhuma ediÃ§Ã£o futura identificada
 [Stockholm Marathon] erro ao buscar pÃ¡gina: www.stockholmmarathon.se bloqueado (403)
 [Stockholm Marathon] nenhuma ediÃ§Ã£o futura identificada
 [Dublin City Marathon] erro ao buscar pÃ¡gina: Server disconnected without sending a response.
 [Dublin City Marathon] nenhuma ediÃ§Ã£o futura identificada
-[Prague Marathon] nenhuma ediÃ§Ã£o futura identificada
-[Comrades Marathon] não foi possível extrair data/distância/chegada da página
+[Portal das Corridas] 19 corridas encontradas
+[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
+[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Paris Marathon] erro ao buscar pÃ¡gina: Server error '500 Domain Not Found' for url 'https://www.schneiderelectricparismarathon.com/en/'
 For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
+[Amsterdam Marathon] nenhuma ediÃ§Ã£o futura identificada
+[Comrades Marathon] não foi possível extrair data/distância/chegada da página
 [Cardiff Half Marathon] erro ao buscar pÃ¡gina: www.cardiffhalfmarathon.co.uk bloqueado (403)
 [Cardiff Half Marathon] nenhuma ediÃ§Ã£o futura identificada
 [Great North Run] nenhuma ediÃ§Ã£o futura identificada
-[Amsterdam Marathon] nenhuma ediÃ§Ã£o futura identificada
-[Largada Esportiva] Playwright https://largadaesportiva.com.br/calendario: 0 respostas JSON interceptadas
-[Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Minhas Inscrições] modalidade corrida-de-rua: 176 candidato(s)
+[Minhas Inscrições] modalidade corrida-de-rua: 175 candidato(s)
 [Ticket Sports] distâncias de 'Hoka Sunset Run 2026 - Manaus' obtidas do regulamento
 [RunSignup] API response keys: ['races']
 [RunSignup] total_results: ?
 [RunSignup] página 1: 250 corridas
 [Volta do Lago] evento não encontrado em nenhuma plataforma
-[World's Marathons] 7173 eventos no sitemap; buscando todos
-[Ticket Sports] distâncias de 'Inclusão A Toda Prova - SP 2026' obtidas do regulamento
-[RunSignup] página 2: 250 corridas
 [Correr Brasília] 28 corridas encontradas
 [Largada Esportiva] Playwright https://largadaesportiva.com.br/corridas-de-rua: 0 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
-[Race Roster] 'running': 143 upcoming de 2000
-[RunSignup] página 3: 250 corridas
-[Ticket Sports] distâncias de 'Corrida Da Laranja' obtidas do regulamento
+[World's Marathons] 7173 eventos no sitemap; buscando todos
+[RunSignup] página 2: 250 corridas
+[Ticket Sports] distâncias de 'Inclusão A Toda Prova - SP 2026' obtidas do regulamento
+[Race Roster] 'running': 141 upcoming de 2000
 [Largada Esportiva] Playwright https://largadaesportiva.com.br: 1 respostas JSON interceptadas
 [Largada Esportiva] HTML: nenhum card encontrado. Tags raiz: ['noscript', 'div', 'script', 'script']
 [Largada Esportiva] 0 corridas encontradas
-[Race Roster] 'marathon': 149 upcoming de 2000
+[RunSignup] página 3: 250 corridas
+[Ticket Sports] distâncias de 'Corrida Da Laranja' obtidas do regulamento
+[Race Roster] 'marathon': 147 upcoming de 2000
+[Bora Correr] 18 corridas encontradas
 [RunSignup] página 4: 250 corridas
 [RunSignup] 1000 corridas brutas no total
 [RunSignup] 872 corridas válidas (128 ignoradas)
-[Bora Correr] 21 corridas encontradas
 [Ticket Sports] distâncias de 'Corrida De Natal 2026 - Musal' obtidas do regulamento
 [Ticket Sports] distâncias de 'Federação De Atletas Fbca 2026' obtidas do regulamento
+[Race Roster] '5k': 100 upcoming de 2000
 [Ticket Sports] distâncias de 'Corrida Iluminada De Natal 2026' obtidas do regulamento
-[Race Roster] '5k': 101 upcoming de 2000
 [Asdeporte] 7 corrida(s) encontrada(s)
-[Race Roster] '10k': 123 upcoming de 2000
+[Race Roster] '10k': 120 upcoming de 2000
+[Minhas Inscrições] modalidade trail-run: 2 candidato(s)
 [Ticket Sports] distâncias de '1º Edição Fera Sports Beach' obtidas do regulamento
 [Ticket Sports] distâncias de 'Trilheiros Trail Run' obtidas do regulamento
-[Minhas Inscrições] modalidade trail-run: 2 candidato(s)
-[Ticket Sports] distâncias de 'Vikings Run 2027' obtidas do regulamento
 [Minhas Inscrições] modalidade ultramaratona: 0 candidato(s)
-[Minhas Inscrições] 178 candidato(s); buscando páginas de detalhe...
-[Race Roster] 'half marathon': 167 upcoming de 2000
+[Minhas Inscrições] 177 candidato(s); buscando páginas de detalhe...
+[Ticket Sports] distâncias de 'Vikings Run 2027' obtidas do regulamento
+[Race Roster] 'half marathon': 166 upcoming de 2000
 [Ticket Sports] distâncias de 'Videira Wine Run 2027' obtidas do regulamento
-[Ticket Sports] distâncias de 'Treinão Coração Em Movimento' obtidas do regulamento
-[Race Roster] 'trail run': 88 upcoming de 2000
+[Race Roster] 'trail run': 77 upcoming de 2000
 [Race Roster] 7224 eventos únicos após dedup
 [Race Roster] 311 corridas válidas (6913 ignoradas)
+[Ticket Sports] distâncias de 'Treinão Coração Em Movimento' obtidas do regulamento
 [Ticket Sports] distâncias de 'Corrida Juntos Pelo Autismo' obtidas do regulamento
 [Ticket Sports] pulando 'Corredor Conceito 2027' (sem distâncias)
 [Ticket Sports] pulando 'Festival Esportes De Aventura Serrinha' (sem distâncias)
@@ -218,25 +218,25 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 [Ticket Sports] pulando 'Hoka Speed Run 2027 - São Paulo' (sem distâncias)
 [Ticket Sports] pulando 'Hoka Speed Run 2027 - Salvador' (sem distâncias)
 [Ticket Sports] pulando 'Iron Biker Kids 2027' (sem distâncias)
-[Ticket Sports] 570 corridas encontradas
+[Ticket Sports] 571 corridas encontradas
 [Finishers] 4649 eventos road (de 11420 provas) no Typesense
-[Finishers] buscando horário de 4359 eventos novos ou sem horário em cache (buildId=fEzmTYZ1f--XvL4UeD2Uh)
+[Finishers] buscando horário de 4359 eventos novos ou sem horário em cache (buildId=t29MIvkq5eTkfC_AaNmMV)
 [Minhas Inscrições] 146 corridas encontradas
-[US Road Running] 583 corridas encontradas
+[US Road Running] 604 corridas encontradas
 [Atletis] 43 corridas encontradas
+[World's Marathons] 1049 corridas encontradas
 [Finishers] 4627 corridas encontradas
-[World's Marathons] 1047 corridas encontradas
 [Corridas Brasil] 1829 corridas encontradas
 [Tênis Certo] 361 corrida(s) encontrada(s)
-[main] 10599 registros coletados (antes do merge)
-[main] 10515 registros após validação
+[main] 10620 registros coletados (antes do merge)
+[main] 10537 registros após validação
 [merger] 16 URL(s) detected as overused inscription links (treating as generic): ['https://centraldacorrida.com.br/evento/k-run-corrida-expo-korea', 'https://minhasinscricoes.com.br/evento/uaireverse2026', 'https://tenis.cc/3ygtcqt', 'https://tenis.cc/47kvapy', 'https://tenis.cc/4e5s3vy']
-[main] 9353 corridas após merge
-[main] verificando links de 4525 evento(s) não encontrado(s) no scrape (limite 900.0s)...
-[main] recheck de links: 4442 resgatado(s), 0 removido(s), 0 adiado(s) para a próxima execução
-[main] 16290 corridas após reconciliação
+[main] 9372 corridas após merge
+[main] verificando links de 4524 evento(s) não encontrado(s) no scrape (limite 900.0s)...
+[main] recheck de links: 4418 resgatado(s), 0 removido(s), 0 adiado(s) para a próxima execução
+[main] 16292 corridas após reconciliação
 [merger] 4 URL(s) detected as overused inscription links (treating as generic): ['https://minhasinscricoes.com.br/evento/uaireverse2026', 'https://www.portorun.com', 'ticketsports.com.br/e/86297', 'ticketsports.com.br/e/88634']
-[main] 16290 corridas após dedup final
+[main] 16292 corridas após dedup final
 [geo] limite de tempo (Nominatim/execução) atingido — adiando resoluções restantes para a próxima execução
 [main] 33 estado(s) resolvido(s) pelo geo cache
 [main] AVISO: 2280 evento(s) removido(s) por localização inválida:
@@ -264,7 +264,7 @@ For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/St
 [selos] Wikidata indisponível — usando cache de majors: query.wikidata.org bloqueado (403)
 [selos] 7 Majors do Wikidata: ['Berlin Marathon', 'Boston Marathon', 'Chicago Marathon', 'London Marathon', 'New York City Marathon', 'Sydney Marathon', 'Tokyo Marathon']
 [selos] 81 provas com selo (futuras) no World Athletics
-[selos] 44 eventos receberam selo World Athletics; 12 marcados como Major
+[selos] 45 eventos receberam selo World Athletics; 12 marcados como Major
 [main] AVISO: link não-único 'Runner Brasil' em 3 eventos; mantido runnerbrasil_9985, removidos 2
 [main] AVISO: link não-único 'Corridas Brasil' em 5 eventos; mantido corridasbrasil_56510, removidos 4
-[main] 13988 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
+[main] 14006 corridas salvas em /home/runner/work/corridas/corridas/data/corridas.json
